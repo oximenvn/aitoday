@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Đào tạo và tinh chỉnh các mô hình Reranker với Sentence Transformers v4 | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này hướng dẫn cách đào tạo và tinh chỉnh các mô hình Reranker với Sentence Transformers v4.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Đào tạo và tinh chỉnh các mô hình Reranker với Sentence Transformers v4</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này hướng dẫn cách đào tạo và tinh chỉnh các mô hình Reranker với Sentence Transformers v4. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-04-19T00:00:00&#43;00:00">April 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            14 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/train-sentence-transformers/st-hf-thumbnail.png" alt="Đào tạo và tinh chỉnh các mô hình Reranker với Sentence Transformers v4">
+        <figcaption class="text-center italic text-xs">Bài viết này hướng dẫn cách đào tạo và tinh chỉnh các mô hình Reranker với Sentence Transformers v4.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="đào-tạo-và-tinh-chỉnh-mô-hình-reranker-với-sentence-transformers-v4">Đào tạo và Tinh chỉnh Mô hình Reranker với Sentence Transformers v4</h1>
+<p><a href="https://sbert.net/">Sentence Transformers</a> là một thư viện Python để sử dụng và đào tạo các mô hình embedding và reranker cho một loạt các ứng dụng, chẳng hạn như tạo sinh tăng cường truy xuất, tìm kiếm ngữ nghĩa, tương đồng văn bản ngữ nghĩa, khai thác diễn giải, v.v. Bản cập nhật v4.0 của nó giới thiệu một phương pháp đào tạo mới cho reranker, còn được gọi là mô hình cross-encoder, tương tự như bản cập nhật v3.0 đã giới thiệu cho mô hình embedding. Trong bài đăng trên blog này, tôi sẽ chỉ cho bạn cách sử dụng nó để tinh chỉnh một mô hình reranker đánh bại tất cả các tùy chọn hiện có trên chính xác dữ liệu của bạn. Phương pháp này cũng có thể đào tạo các mô hình reranker mới cực kỳ mạnh mẽ từ đầu.</p>
+<p>Việc tinh chỉnh các mô hình reranker bao gồm một số thành phần: tập dữ liệu, hàm mất mát, đối số đào tạo, bộ đánh giá và chính lớp huấn luyện. Tôi sẽ xem xét từng thành phần này, kèm theo các ví dụ thực tế về cách chúng có thể được sử dụng để tinh chỉnh các mô hình reranker mạnh mẽ.</p>
+<p>Cuối cùng, trong phần <a href="#evaluation">Đánh giá</a>, tôi sẽ chỉ cho bạn rằng mô hình reranker nhỏ đã được tinh chỉnh <a href="https://huggingface.co/tomaarsen/reranker-ModernBERT-base-gooaq-bce">tomaarsen/reranker-ModernBERT-base-gooaq-bce</a> mà tôi đã đào tạo cùng với bài đăng trên blog này dễ dàng vượt trội hơn 13 mô hình reranker công khai được sử dụng phổ biến nhất trên tập dữ liệu đánh giá của tôi. Nó thậm chí còn đánh bại các mô hình lớn hơn 4 lần.</p>
+<p>Lặp lại công thức với một mô hình cơ sở lớn hơn sẽ tạo ra <a href="https://huggingface.co/tomaarsen/reranker-ModernBERT-large-gooaq-bce">tomaarsen/reranker-ModernBERT-large-gooaq-bce</a>, một mô hình reranker thổi bay tất cả các mô hình reranker đa năng hiện có trên dữ liệu của tôi.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/train-reranker/reranker_gooaq_model_size_ndcg.png" alt="Kích thước mô hình so với NDCG cho Reranker trên GooAQ"></p>
+<p>Nếu bạn quan tâm đến việc tinh chỉnh các mô hình embedding thay vào đó, thì hãy cân nhắc đọc qua bài đăng trên blog trước đây của tôi <a href="https://huggingface.co/blog/train-sentence-transformers">Đào tạo và Tinh chỉnh Mô hình Embedding với Sentence Transformers v3</a>.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#what-are-reranker-models">Mô hình Reranker là gì?</a></li>
+<li><a href="#why-finetune">Tại sao cần tinh chỉnh?</a></li>
+<li><a href="#training-components">Các thành phần đào tạo</a></li>
+<li><a href="#dataset">Tập dữ liệu</a>
+<ul>
+<li><a href="#data-on-the-hugging-face-hub">Dữ liệu trên Hugging Face Hub</a></li>
+<li><a href="#local-data-csv-json-parquet-arrow-sql">Dữ liệu cục bộ (CSV, JSON, Parquet, Arrow, SQL)</a></li>
+<li><a href="#local-data-that-requires-pre-processing">Dữ liệu cục bộ yêu cầu tiền xử lý</a></li>
+<li><a href="#dataset-format">Định dạng tập dữ liệu</a></li>
+<li><a href="#hard-negatives-mining">Khai thác âm bản khó</a></li>
+</ul>
+</li>
+<li><a href="#loss-function">Hàm mất mát</a></li>
+<li><a href="#training-arguments">Đối số đào tạo</a></li>
+<li><a href="#evaluator">Bộ đánh giá</a>
+<ul>
+<li><a href="#crossencodercorrelationevaluator-with-stsb">CrossEncoderCorrelationEvaluator với STSb</a></li>
+<li><a href="#crossencoderrerankingevaluator-with-gooaq-mined-negatives">CrossEncoderRerankingEvaluator với các âm bản được khai thác GooAQ</a></li>
+</ul>
+</li>
+<li><a href="#trainer">Huấn luyện viên</a>
+<ul>
+<li><a href="#callbacks">Gọi lại</a></li>
+<li><a href="#multi-dataset-training">Đào tạo đa tập dữ liệu</a></li>
+</ul>
+</li>
+<li><a href="#training-tips">Mẹo đào tạo</a></li>
+<li><a href="#evaluation">Đánh giá</a></li>
+<li><a href="#additional-resources">Tài nguyên bổ sung</a>
+<ul>
+<li><a href="#training-examples">Ví dụ đào tạo</a></li>
+<li><a href="#documentation">Tài liệu</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="mô-hình-reranker-là-gì">Mô hình Reranker là gì?</h2>
+<p>Các mô hình Reranker, thường được triển khai bằng kiến ​​trúc Cross Encoder, được thiết kế để đánh giá mức độ liên quan giữa các cặp văn bản (ví dụ: truy vấn và tài liệu hoặc hai câu). Không giống như Sentence Transformers (hay còn gọi là bi-encoder, mô hình embedding), nhúng độc lập từng văn bản vào vectơ và tính toán độ tương đồng thông qua một số liệu khoảng cách, Cross Encoder xử lý các văn bản được ghép nối cùng nhau thông qua một mạng nơ-ron dùng chung, dẫn đến một điểm số đầu ra. Bằng cách cho phép hai văn bản chú ý lẫn nhau, các mô hình Cross Encoder có thể vượt trội hơn các mô hình embedding.</p>
+<p>Tuy nhiên, sức mạnh này đi kèm với sự đánh đổi: Các mô hình Cross Encoder chậm hơn vì chúng xử lý mọi cặp văn bản có thể (ví dụ: 10 truy vấn với 500 tài liệu ứng viên yêu cầu 5.000 phép tính thay vì 510 cho mô hình embedding). Điều này làm cho chúng kém hiệu quả hơn cho việc truy xuất ban đầu quy mô lớn nhưng lý tưởng cho việc reranking: tinh chỉnh các kết quả top-k được xác định đầu tiên bởi các mô hình Sentence Transformer nhanh hơn. Các hệ thống tìm kiếm mạnh nhất thường sử dụng phương pháp &ldquo;truy xuất và rerank&rdquo; hai giai đoạn này.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/train-reranker/embedding_vs_reranker_model.png" alt="Embedding so với Mô hình Reranker"></p>
+<p>Trong suốt bài đăng trên blog này, tôi sẽ sử dụng &ldquo;mô hình reranker&rdquo; và &ldquo;mô hình Cross Encoder&rdquo; thay thế cho nhau.</p>
+<h2 id="tại-sao-cần-tinh-chỉnh">Tại sao cần tinh chỉnh?</h2>
+<p>Các mô hình Reranker thường được giao một vấn đề đầy thách thức:</p>
+<blockquote>
+<p>Trong số <em>k</em> tài liệu có liên quan cao này, tài liệu nào trả lời truy vấn tốt nhất?</p></blockquote>
+<p>Các mô hình reranker đa năng được đào tạo để thực hiện đầy đủ câu hỏi chính xác này trong một loạt các lĩnh vực và chủ đề, ngăn chúng đạt được tiềm năng tối đa trong lĩnh vực cụ thể của bạn. Thông qua tinh chỉnh, mô hình có thể học cách tập trung hoàn toàn vào lĩnh vực và/hoặc ngôn ngữ quan trọng đối với bạn.</p>
+<p>Trong phần <a href="#evaluation">Đánh giá</a> ở cuối bài đăng trên blog này, tôi sẽ chỉ ra rằng việc đào tạo một mô hình trên miền của bạn có thể vượt trội so với bất kỳ mô hình reranker đa năng nào, ngay cả khi các đường cơ sở đó lớn hơn nhiều. Đừng đánh giá thấp sức mạnh của việc tinh chỉnh trên miền của bạn!</p>
+<h2 id="các-thành-phần-đào-tạo">Các thành phần đào tạo</h2>
+<p>Đào tạo các mô hình reranker liên quan đến các thành phần sau:</p>
+<ol>
+<li><a href="#dataset">Tập dữ liệu</a>: Dữ liệu được sử dụng để đào tạo và/hoặc đánh giá.</li>
+<li><a href="#loss-function">Hàm mất mát</a>: Một hàm đo lường hiệu suất của mô hình và hướng dẫn quá trình tối ưu hóa.</li>
+<li><a href="#training-arguments">Đối số đào tạo</a> (tùy chọn): Các tham số có tác động đến hiệu suất đào tạo, theo dõi và gỡ lỗi.</li>
+<li><a href="#evaluator">Bộ đánh giá</a> (tùy chọn): Một lớp để đánh giá mô hình trước, trong hoặc sau khi đào tạo.</li>
+<li><a href="#trainer">Huấn luyện viên</a>: Tập hợp tất cả các thành phần đào tạo lại với nhau.</li>
+</ol>
+<p>Hãy xem xét kỹ hơn từng thành phần.</p>
+<h2 id="tập-dữ-liệu">Tập dữ liệu</h2>
+<p><a href="https://sbert.net/docs/package_reference/cross_encoder/trainer.html#sentence_transformers.cross_encoder.trainer.CrossEncoderTrainer">CrossEncoderTrainer</a> sử dụng các phiên bản <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.Dataset">datasets.Dataset</a> hoặc <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.DatasetDict">datasets.DatasetDict</a> để đào tạo và đánh giá. Bạn có thể tải dữ liệu từ <a href="https://huggingface.co/datasets">Hugging Face Datasets Hub</a> hoặc sử dụng dữ liệu cục bộ của bạn ở bất kỳ định dạng nào bạn thích (ví dụ: CSV, JSON, Parquet, Arrow hoặc SQL).</p>
+<p><strong>Lưu ý:</strong> Rất nhiều tập dữ liệu công khai hoạt động ngay lập tức với Sentence Transformers đã được gắn thẻ <code>sentence-transformers</code> trên Hugging Face Hub, vì vậy bạn có thể dễ dàng tìm thấy chúng trên <a href="https://huggingface.co/datasets?other=sentence-transformers">https://huggingface.co/datasets?other=sentence-transformers</a>. Hãy cân nhắc duyệt qua những thứ này để tìm các tập dữ liệu sẵn sàng có thể hữu ích cho các tác vụ, miền hoặc ngôn ngữ của bạn.</p>
+<h3 id="dữ-liệu-trên-hugging-face-hub">Dữ liệu trên Hugging Face Hub</h3>
+<p>Bạn có thể sử dụng hàm <a href="https://huggingface.co/docs/datasets/main/en/package_reference/loading_methods#datasets.load_dataset">load_dataset</a> để tải dữ liệu từ tập dữ liệu trong <a href="https://huggingface.co/datasets">Hugging Face Hub</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;sentence-transformers/natural-questions&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(train_dataset)
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Dataset({
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    features: [&#39;query&#39;, &#39;answer&#39;],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    num_rows: 100231
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">})
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><p>Một số tập dữ liệu, như <a href="https://huggingface.co/datasets/nthakur/swim-ir-monolingual">nthakur/swim-ir-monolingual</a>, có nhiều tập hợp con với các định dạng dữ liệu khác nhau. Bạn cần chỉ định tên tập hợp con cùng với tên tập dữ liệu, ví dụ: <code>dataset = load_dataset(&quot;nthakur/swim-ir-monolingual&quot;, &quot;de&quot;, split=&quot;train&quot;)</code>.</p>
+<h3 id="dữ-liệu-cục-bộ-csv-json-parquet-arrow-sql">Dữ liệu cục bộ (CSV, JSON, Parquet, Arrow, SQL)</h3>
+<p>Bạn cũng có thể sử dụng <a href="https://huggingface.co/docs/datasets/main/en/package_reference/loading_methods#datasets.load_dataset">load_dataset</a> để tải dữ liệu cục bộ ở một số định dạng tệp nhất định:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;csv&#34;</span>, data_files<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;my_file.csv&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># hoặc</span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;json&#34;</span>, data_files<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;my_file.json&#34;</span>)
+</span></span></code></pre></div><h3 id="dữ-liệu-cục-bộ-yêu-cầu-tiền-xử-lý">Dữ liệu cục bộ yêu cầu tiền xử lý</h3>
+<p>Bạn có thể sử dụng <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.Dataset.from_dict">datasets.Dataset.from_dict</a> nếu dữ liệu cục bộ của bạn yêu cầu tiền xử lý. Điều này cho phép bạn khởi tạo tập dữ liệu của mình bằng một từ điển các danh sách:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> Dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>queries <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>documents <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Mở một tệp, thực hiện tiền xử lý, lọc, làm sạch, v.v.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># và thêm vào danh sách</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> Dataset<span style="color:#f92672">.</span>from_dict({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;query&#34;</span>: queries,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;document&#34;</span>: documents,
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p>Mỗi khóa trong từ điển trở thành một cột trong tập dữ liệu kết quả.</p>
+<h3 id="định-dạng-tập-dữ-liệu">Định dạng tập dữ liệu</h3>
+<p>Điều quan trọng là định dạng tập dữ liệu của bạn phù hợp với hàm mất mát của bạn (hoặc bạn chọn một hàm mất mát phù hợp với định dạng tập dữ liệu và mô hình của bạn). Xác minh xem định dạng tập dữ liệu và mô hình có hoạt động với hàm mất mát hay không bao gồm ba bước:</p>
+<ol>
+<li>Tất cả các cột không có tên là &ldquo;label&rdquo;, &ldquo;labels&rdquo;, &ldquo;score&rdquo; hoặc &ldquo;scores&rdquo; được coi là <em>Đầu vào</em> theo bảng <a href="https://sbert.net/docs/cross_encoder/loss_overview.html">Tổng quan về Mất mát</a>. Số lượng cột còn lại phải khớp với số lượng đầu vào hợp lệ cho tổn thất đã chọn của bạn.</li>
+<li>Nếu hàm mất mát của bạn yêu cầu <em>Nhãn</em> theo bảng <a href="https://sbert.net/docs/cross_encoder/loss_overview.html">Tổng quan về Mất mát</a>, thì tập dữ liệu của bạn phải có <strong>một cột có tên là &ldquo;label&rdquo;, &ldquo;labels&rdquo;, &ldquo;score&rdquo; hoặc &ldquo;scores&rdquo;</strong>. Cột này tự động được lấy làm nhãn.</li>
+<li>Số lượng nhãn đầu ra mô hình khớp với những gì được yêu cầu cho tổn thất theo bảng <a href="https://sbert.net/docs/cross_encoder/loss_overview.html">Tổng quan về Mất mát</a>.</li>
+</ol>
+<p>Ví dụ: cho một tập dữ liệu có các cột <code>[&quot;text1&quot;, &quot;text2&quot;, &quot;label&quot;]</code> trong đó cột &ldquo;label&rdquo; có điểm tương đồng float dao động từ 0 đến 1 và một mô hình xuất ra 1 nhãn, chúng ta có thể sử dụng nó với <a href="https://sbert.net/docs/package_reference/cross_encoder/losses.html#binarycrossentropyloss">BinaryCrossEntropyLoss</a> vì:</p>
+<ol>
+<li>tập dữ liệu có một cột &ldquo;label&rdquo; như được yêu cầu cho hàm mất mát này.</li>
+<li>tập dữ liệu có 2 cột không phải nhãn, chính xác số lượng được yêu cầu bởi hàm mất mát này.</li>
+<li>mô hình có 1 nhãn đầu ra, chính xác như yêu cầu của hàm mất mát này.</li>
+</ol>
+<p>Hãy đảm bảo sắp xếp lại các cột tập dữ liệu của bạn bằng <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.Dataset.select_columns">Dataset.select_columns</a> nếu các cột của bạn không được sắp xếp chính xác. Ví dụ: nếu tập dữ liệu của bạn có <code>[&quot;good_answer&quot;, &quot;bad_answer&quot;, &quot;question&quot;]</code> làm cột, thì tập dữ liệu này về mặt kỹ thuật có thể được sử dụng với một tổn thất yêu cầu bộ ba (neo, dương tính, âm tính), nhưng cột <code>good_answer</code> sẽ được coi là neo, <code>bad_answer</code> là dương tính và <code>question</code> là âm tính.</p>
+<p>Ngoài ra, nếu tập dữ liệu của bạn có các cột không liên quan (ví dụ: sample_id, siêu dữ liệu, nguồn, loại), bạn nên xóa chúng bằng <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.Dataset.remove_columns">Dataset.remove_columns</a> vì chúng sẽ được sử dụng làm đầu vào nếu không. Bạn cũng có thể sử dụng <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.Dataset.select_columns">Dataset.select_columns</a> để chỉ giữ lại các cột mong muốn.</p>
+<h3 id="khai-thác-âm-bản-khó">Khai thác âm bản khó</h3>
+<p>Sự thành công của việc đào tạo các mô hình reranker thường phụ thuộc vào chất lượng của các <em>âm bản</em>, tức là các đoạn mà điểm số truy vấn-âm bản phải thấp. Các âm bản có thể được chia thành hai loại:</p>
+<ul>
+<li><strong>Âm bản mềm</strong>: các đoạn hoàn toàn không liên quan. Còn được gọi là âm bản dễ.</li>
+<li><strong>Âm bản khó</strong>: các đoạn có vẻ như có thể liên quan đến truy vấn, nhưng không phải vậy.</li>
+</ul>
+<p>Một ví dụ ngắn gọn là:</p>
+<ul>
+<li><strong>Truy vấn</strong>: Apple được thành lập ở đâu?</li>
+<li><strong>Âm bản mềm</strong>: Cầu Cache River là một giàn cầu pony Parker bắc qua Sông Cache giữa Walnut Ridge và Paragould, Arkansas.</li>
+<li><strong>Âm bản khó</strong>: Táo Fuji là một giống táo được phát triển vào cuối những năm 1930 và được đưa ra thị trường vào năm 1962.</li>
+</ul>
+<p>Các mô hình CrossEncoder mạnh nhất thường được đào tạo để nhận ra các âm bản khó, và vì vậy, có giá trị để có thể &ldquo;khai thác&rdquo; các âm bản khó để đào tạo cùng. Sentence Transformers hỗ trợ một hàm <a href="https://sbert.net/docs/package_reference/util.html#sentence_transformers.util.mine_hard_negatives">mine_hard_negatives</a> mạnh mẽ có thể hỗ trợ, cho một tập dữ liệu các cặp truy vấn-trả lời:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SentenceTransformer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.util <span style="color:#f92672">import</span> mine_hard_negatives
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tải tập dữ liệu GooAQ: https://huggingface.co/datasets/sentence-transformers/gooaq</span>
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;sentence-transformers/gooaq&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)<span style="color:#f92672">.</span>select(range(<span style="color:#ae81ff">100_000</span>))
+</span></span><span style="display:flex;"><span>print(train_dataset)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khai thác các âm bản khó bằng cách sử dụng một mô hình nhúng rất hiệu quả</span>
+</span></span><span style="display:flex;"><span>embedding_model <span style="color:#f92672">=</span> SentenceTransformer(<span style="color:#e6db74">&#34;sentence-transformers/static-retrieval-mrl-en-v1&#34;</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cpu&#34;</span>)
+</span></span><span style="display:flex;"><span>hard_train_dataset <span style="color:#f92672">=</span> mine_hard_negatives(
+</span></span><span style="display:flex;"><span>    train_dataset,
+</span></span><span style="display:flex;"><span>    embedding_model,
+</span></span><span style="display:flex;"><span>    num_negatives<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>,  <span style="color:#75715e"># Có bao nhiêu âm bản trên mỗi cặp câu hỏi-trả lời</span>
+</span></span><span style="display:flex;"><span>    range_min<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>,  <span style="color:#75715e"># Bỏ qua x mẫu tương tự nhất</span>
+</span></span><span style="display:flex;"><span>    range_max<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>,  <span style="color:#75715e"># Chỉ xem xét x mẫu tương tự nhất</span>
+</span></span><span style="display:flex;"><span>    max_score<span style="color:#f92672">=</span><span style="color:#ae81ff">0.8</span>,  <span style="color:#75715e"># Chỉ xem xét các mẫu có điểm tương đồng tối đa là x</span>
+</span></span><span style="display:flex;"><span>    margin<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,  <span style="color:#75715e"># Điểm tương đồng giữa truy vấn và mẫu âm bản phải thấp hơn x so với điểm tương đồng truy vấn-dương tính</span>
+</span></span><span style="display:flex;"><span>    sampling_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;top&#34;</span>,  <span style="color:#75715e"># Lấy mẫu ngẫu nhiên âm bản từ phạm vi</span>
+</span></span><span style="display:flex;"><span>    batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>,  <span style="color:#75715e"># Sử dụng kích thước lô là 4096 cho mô hình nhúng</span>
+</span></span><span style="display:flex;"><span>    output_format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;labeled-pair&#34;</span>,  <span style="color:#75715e"># Định dạng đầu ra là (truy vấn, đoạn văn, nhãn), như được yêu cầu bởi BinaryCrossEntropyLoss</span>
+</span></span><span style="display:flex;"><span>    use_faiss<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,  <span style="color:#75715e"># Nên sử dụng FAISS để giữ cho mức sử dụng bộ nhớ thấp (pip install faiss-gpu hoặc pip install faiss-cpu)</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>print(hard_train_dataset)
+</span></span><span style="display:flex;"><span>print(hard_train_dataset[<span style="color:#ae81ff">1</span>])
+</span></span></code></pre></div><p>Xem kết quả của tập lệnh này.</p>
+<pre tabindex="0"><code>Dataset({
+    features: [&#39;question&#39;, &#39;answer&#39;],
+    num_rows: 100000
+})
+
+Batches: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 22/22 [00:01&lt;00:00, 13.74it/s]
+Batches: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 36.49it/s]
+Querying FAISS index: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 7/7 [00:19&lt;00:00,  2.80s/it]
+Metric       Positive       Negative     Difference
+Count         100,000        436,925
+Mean           0.5882         0.4040         0.2157
+Median         0.5989         0.4024         0.1836
+Std            0.1425         0.0905         0.1013
+Min           -0.0514         0.1405         0.1014
+25%            0.4993         0.3377         0.1352
+50%            0.5989         0.4024         0.1836
+75%            0.6888         0.4681         0.2699
+Max            0.9748         0.7486         0.7545
+Skipped 2420871 potential negatives (23.97%) due to the margin of 0.1.
+Skipped 43 potential negatives (0.00%) due to the maximum score of 0.8.
+Could not find enough negatives for 63075 samples (12.62%). Consider adjusting the range_max, range_min, margin and max_score parameters if you&#39;d like to find more valid negatives.
+Dataset({
+    features: [&#39;question&#39;, &#39;answer&#39;, &#39;label&#39;],
+    num_rows: 536925
+})
+
+{
+    &#39;question&#39;: &#39;làm thế nào để chuyển dấu trang từ máy tính xách tay này sang máy tính xách tay khác?&#39;,
+    &#39;answer&#39;: &#39;Sử dụng ổ đĩa ngoài Hầu như bất kỳ ổ đĩa ngoài nào, bao gồm cả ổ USB thumb hoặc thẻ SD đều có thể được sử dụng để chuyển tệp của bạn từ máy tính xách tay này sang máy tính xách tay khác. Kết nối ổ đĩa với máy tính xách tay cũ của bạn; kéo tệp của bạn vào ổ đĩa, sau đó ngắt kết nối nó và chuyển nội dung ổ đĩa vào máy tính xách tay mới của bạn.&#39;,
+    &#39;label&#39;: 0
+}
+</code></pre><ul>
+<li><a href="https://huggingface.co/datasets/sentence-transformers/gooaq">sentence-transformers/gooaq</a></li>
+<li><a href="https://huggingface.co/sentence-transformers/static-retrieval-mrl-en-v1">sentence-transformers/static-retrieval-mrl-en-v1</a></li>
+</ul>
+<h2 id="hàm-mất-mát">Hàm mất mát</h2>
+<p>Các hàm mất mát giúp đánh giá hiệu suất của mô hình trên một tập dữ liệu và hướng dẫn quá trình đào tạo. Hàm mất mát phù hợp cho tác vụ của bạn phụ thuộc vào dữ liệu bạn có và những gì bạn đang cố gắng đạt được. Bạn có thể tìm thấy danh sách đầy đủ các hàm mất mát có sẵn trong <a href="https://sbert.net/docs/cross_encoder/loss_overview.html">Tổng quan về Mất mát</a>.</p>
+<p>Hầu hết các hàm mất mát đều dễ thiết lập - bạn chỉ cần cung cấp mô hình <code>CrossEncoder</code> bạn đang đào tạo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> CrossEncoder
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder.losses <span style="color:#f92672">import</span> CachedMultipleNegativesRankingLoss
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tải một mô hình để đào tạo/tinh chỉnh</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> CrossEncoder(<span style="color:#e6db74">&#34;xlm-roberta-base&#34;</span>, num_labels<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#75715e"># num_labels=1 dành cho reranker</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khởi tạo CachedMultipleNegativesRankingLoss, yêu cầu các cặp</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># văn bản hoặc bộ ba có liên quan</span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> CachedMultipleNegativesRankingLoss(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tải một tập dữ liệu đào tạo ví dụ hoạt động với hàm mất mát của chúng tôi:</span>
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;sentence-transformers/gooaq&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span></code></pre></div><h2 id="đối-số-đào-tạo">Đối số đào tạo</h2>
+<p>Bạn có thể tùy chỉnh quá trình đào tạo bằng cách sử dụng lớp <a href="https://sbert.net/docs/package_reference/cross_encoder/training_args.html#crossencodertrainingarguments">CrossEncoderTrainingArguments</a>. Lớp này cho phép bạn điều chỉnh các tham số có thể tác động đến tốc độ đào tạo và giúp bạn hiểu điều gì đang xảy ra trong quá trình đào tạo.</p>
+<p>Để biết thêm thông tin về các đối số đào tạo hữu ích nhất, hãy xem <a href="https://sbert.net/docs/cross_encoder/training_overview.html#training-arguments">Tổng quan về Đào tạo Cross Encoder &gt; Đối số Đào tạo</a>. Rất đáng để đọc để tận dụng tối đa quá trình đào tạo của bạn.</p>
+<p>Đây là một ví dụ về cách thiết lập <a href="https://sbert.net/docs/package_reference/cross_encoder/training_args.html#crossencodertrainingarguments">CrossEncoderTrainingArguments</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder <span style="color:#f92672">import</span> CrossEncoderTrainingArguments
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>args <span style="color:#f92672">=</span> CrossEncoderTrainingArguments(
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Tham số bắt buộc:</span>
+</span></span><span style="display:flex;"><span>    output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;models/reranker-MiniLM-msmarco-v1&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Tham số đào tạo tùy chọn:</span>
+</span></span><span style="display:flex;"><span>    num_train_epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    per_device_train_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>,
+</span></span><span style="display:flex;"><span>    per_device_eval_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>,
+</span></span><span style="display:flex;"><span>    learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">2e-5</span>,
+</span></span><span style="display:flex;"><span>    warmup_ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>    fp16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,  <span style="color:#75715e"># Đặt thành False nếu bạn gặp lỗi rằng GPU của bạn không thể chạy trên FP16</span>
+</span></span><span style="display:flex;"><span>    bf16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,  <span style="color:#75715e"># Đặt thành True nếu bạn có GPU hỗ trợ BF16</span>
+</span></span><span style="display:flex;"><span>    batch_sampler<span style="color:#f92672">=</span>BatchSamplers<span style="color:#f92672">.</span>NO_DUPLICATES,  <span style="color:#75715e"># các tổn thất sử dụng &#34;âm bản trong lô&#34; được hưởng lợi từ việc không có bản sao</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Tham số theo dõi/gỡ lỗi tùy chọn:</span>
+</span></span><span style="display:flex;"><span>    eval_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>    eval_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>    save_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>    save_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>    save_total_limit<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    logging_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>    run_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;reranker-MiniLM-msmarco-v1&#34;</span>,  <span style="color:#75715e"># Sẽ được sử dụng trong W&amp;B nếu `wandb` được cài đặt</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h2 id="bộ-đánh-giá">Bộ đánh giá</h2>
+<p>Để theo dõi hiệu suất của mô hình của bạn trong quá trình đào tạo, bạn có thể chuyển một <code>eval_dataset</code> đến <a href="https://sbert.net/docs/package_reference/cross_encoder/trainer.html#sentence_transformers.trainer.CrossEncoderTrainer">CrossEncoderTrainer</a>. Tuy nhiên, bạn có thể muốn các số liệu chi tiết hơn ngoài tổn thất đánh giá. Đó là nơi các bộ đánh giá có thể giúp bạn đánh giá hiệu suất của mô hình của bạn bằng cách sử dụng các số liệu cụ thể ở các giai đoạn đào tạo khác nhau. Bạn có thể sử dụng tập dữ liệu đánh giá, bộ đánh giá, cả hai hoặc không, tùy thuộc vào nhu cầu của bạn. Chiến lược và tần suất đánh giá được kiểm soát bởi <code>eval_strategy</code> và <code>eval_steps</code> <a href="#training-arguments">Đối số Đào tạo</a>.</p>
+<p>Sentence Transformers bao gồm các bộ đánh giá tích hợp sau:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Bộ đánh giá</th>
+          <th style="text-align: left">Dữ liệu bắt buộc</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><a href="https://sbert.net/docs/package_reference/cross_encoder/evaluation.html#crossencoderclassificationevaluator">CrossEncoderClassificationEvaluator</a></td>
+          <td style="text-align: left">Các cặp có nhãn lớp (nhị phân hoặc đa lớp)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><a href="https://sbert.net/docs/package_reference/cross_encoder/evaluation.html#crossencodercorrelationevaluator">CrossEncoderCorrelationEvaluator</a></td>
+          <td style="text-align: left">Các cặp có điểm tương đồng</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><a href="https://sbert.net/docs/package_reference/cross_encoder/evaluation.html#crossencodernanobeirevaluator">CrossEncoderNanoBEIREvaluator</a></td>
+          <td style="text-align: left">Không yêu cầu dữ liệu</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><a href="https://sbert.net/docs/package_reference/cross_encoder/evaluation.html#crossencoderrerankingevaluator">CrossEncoderRerankingEvaluator</a></td>
+          <td style="text-align: left">Danh sách từ điể</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="link-bài-báo-gốc"><a href="https://huggingface.co/blog/train-reranker">Link bài báo gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/march-26-2025/">March 26, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/bdfb13/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/leaderboards-on-the-hub/thumbnail_3c3h_aragen.png" alt="Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu bảng xếp hạng hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/b633ac/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/llama_4.png" alt="Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face!" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face!</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu Llama 4 Maverick &amp; Scout trên Hugging Face.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/ac4fc5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/why-gradio-stands-out/thumbnail.png" alt="17 lý do tại sao Gradio không chỉ là một thư viện UI khác" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">17 lý do tại sao Gradio không chỉ là một thư viện UI khác</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/bdfb13/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/leaderboards-on-the-hub/thumbnail_3c3h_aragen.png" alt="Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/53b449/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/google-5x-data-1280-720.png?w=350&amp;h=175&amp;crop=1" alt="BigQuery lớn hơn 5 lần so với Snowflake và Databricks Google đang làm gì để làm cho nó tốt hơn nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">BigQuery lớn hơn 5 lần so với Snowflake và Databricks Google đang làm gì để làm cho nó tốt hơn nữa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/357cc7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/infisical/thumbnail.png" alt="Cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/6f9241/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/Capital-One-hero.png?w=350&amp;h=175&amp;crop=1" alt="Cách mã hóa lại dữ liệu đang tái tạo bảo mật dữ liệu trong kỷ nguyên AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách mã hóa lại dữ liệu đang tái tạo bảo mật dữ liệu trong kỷ nguyên AI</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

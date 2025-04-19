@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face! | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này giới thiệu Llama 4 Maverick &amp; Scout trên Hugging Face.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face!</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này giới thiệu Llama 4 Maverick &amp; Scout trên Hugging Face. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-04-19T00:00:00&#43;00:00">April 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/llama_4.png" alt="Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face!">
+        <figcaption class="text-center italic text-xs">Bài viết này giới thiệu Llama 4 Maverick &amp; Scout trên Hugging Face.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="chào-mừng-llama-4-maverick--scout-trên-hugging-face">Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face</h1>
+<p>Chúng tôi vô cùng vui mừng chào đón thế hệ mô hình ngôn ngữ lớn tiếp theo từ Meta đến Hugging Face Hub: <a href="https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct">Llama 4 Maverick (~400B)</a> và <a href="https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct">Llama 4 Scout (~109B)!</a> 🤗 Cả hai đều là các mô hình Mixture of Experts (MoE) với 17B tham số đang hoạt động.</p>
+<p>Được phát hành ngày hôm nay, những mô hình đa phương thức mạnh mẽ này đại diện cho một bước tiến đáng kể. Chúng tôi đã làm việc chặt chẽ với Meta để đảm bảo tích hợp liền mạch vào hệ sinh thái Hugging Face, bao gồm cả transformers và TGI ngay từ ngày đầu tiên.</p>
+<p>Đây chỉ là sự khởi đầu cho hành trình của chúng tôi với Llama 4. Trong những ngày tới, chúng tôi sẽ tiếp tục hợp tác với cộng đồng để xây dựng các mô hình, bộ dữ liệu và ứng dụng tuyệt vời với Maverick và Scout! 🔥</p>
+<h2 id="llama-4-là-gì">Llama 4 là gì?</h2>
+<p>Llama 4, được phát triển bởi Meta, giới thiệu một kiến trúc Mixture-of-Experts (MoE) tự hồi quy mới. Thế hệ này bao gồm hai mô hình:</p>
+<ul>
+<li><strong>Llama 4 Maverick</strong> có khả năng cao với 17B tham số hoạt động trong tổng số ~400B, với 128 chuyên gia.</li>
+<li><strong>Llama 4 Scout</strong> hiệu quả cũng có 17B tham số hoạt động trong tổng số ~109B, chỉ sử dụng 16 chuyên gia.</li>
+</ul>
+<p>Cả hai mô hình đều tận dụng tính năng hợp nhất sớm (early fusion) cho đa phương thức gốc, cho phép chúng xử lý các đầu vào văn bản và hình ảnh. Maverick và Scout đều được đào tạo trên tối đa 40 nghìn tỷ token trên dữ liệu bao gồm 200 ngôn ngữ (với hỗ trợ tinh chỉnh cụ thể cho 12 ngôn ngữ bao gồm tiếng Ả Rập, tiếng Tây Ban Nha, tiếng Đức và tiếng Hindi).</p>
+<p>Đối với việc triển khai, Llama 4 Scout được thiết kế để dễ tiếp cận, phù hợp với một GPU cấp máy chủ duy nhất thông qua lượng tử hóa 4-bit hoặc 8-bit tức thì, trong khi Maverick có sẵn ở định dạng BF16 và FP8. Các mô hình này được phát hành theo Thỏa thuận Giấy phép Cộng đồng Llama 4 tùy chỉnh, có sẵn trên kho lưu trữ mô hình.</p>
+<h2 id="các-tính-năng-và-tích-hợp-trên-hugging-face">Các tính năng và tích hợp trên Hugging Face</h2>
+<p>Để giúp cộng đồng tận dụng các mô hình hiện đại này ngay lập tức, chúng tôi rất vui mừng thông báo các tích hợp sau:</p>
+<ul>
+<li><strong>Điểm kiểm tra mô hình trên Hub:</strong> Cả trọng số mô hình Llama 4 Maverick và Llama 4 Scout đều có sẵn trực tiếp trên Hugging Face Hub thuộc tổ chức <code>meta-llama</code>. Điều này bao gồm cả các biến thể cơ sở và được điều chỉnh theo hướng dẫn. Điều này cho phép dễ dàng truy cập, khám phá và tải xuống. Bạn cần chấp nhận các điều khoản cấp phép trên thẻ mô hình trước khi truy cập trọng số.</li>
+<li><strong>Tích hợp Hugging Face <code>transformers</code>:</strong> Hãy bắt đầu xây dựng ngay bây giờ! Các mô hình Llama 4 được tích hợp đầy đủ với <code>transformers</code> (phiên bản <code>v4.51.0</code>). Điều này cho phép dễ dàng tải, suy luận và tinh chỉnh bằng cách sử dụng các API quen thuộc, bao gồm hỗ trợ cho các khả năng đa phương thức gốc của chúng và các thư viện hạ nguồn như TRL.</li>
+<li><strong>Hỗ trợ tự động cho song song tensor</strong> và ánh xạ thiết bị tự động trong transformers.</li>
+<li><strong>Hỗ trợ Suy luận tạo văn bản (TGI):</strong> Để triển khai được tối ưu hóa và có thể mở rộng, cả hai mô hình đều được hỗ trợ bởi TGI. Điều này cho phép tạo văn bản thông lượng cao, giúp tích hợp Llama 4 vào các ứng dụng sản xuất dễ dàng hơn.</li>
+<li><strong>Hỗ trợ lượng tử hóa:</strong> Mã cho lượng tử hóa int4 tức thì được cung cấp cho Scout, giảm thiểu suy giảm hiệu suất đồng thời cho phép triển khai trên dấu chân phần cứng nhỏ hơn. Maverick bao gồm trọng số lượng tử hóa FP8 để triển khai hiệu quả trên phần cứng tương thích.</li>
+<li><strong>Xet Storage:</strong> Để cải thiện việc tải lên, tải xuống và hỗ trợ lặp lại nhanh hơn trên các mô hình đã tinh chỉnh của cộng đồng, chúng tôi đã khởi chạy tất cả các mô hình Llama 4 bằng cách sử dụng <a href="https://huggingface.co/blog/xet-on-the-hub">Xet storage backend</a>. Hệ thống lưu trữ này được thiết kế để tải lên và tải xuống nhanh hơn và với Llama 4, nó đạt được ~25% loại bỏ trùng lặp. Tất cả các mô hình phái sinh (tinh chỉnh, lượng tử hóa, v.v.) sẽ có khả năng loại bỏ trùng lặp cao hơn (~40%), giúp cộng đồng tiết kiệm nhiều thời gian và băng thông hơn.</li>
+</ul>
+<h2 id="độ-dài-ngữ-cảnh-và-lựa-chọn-kiến-trúc">Độ dài ngữ cảnh và lựa chọn kiến trúc</h2>
+<p>Các mô hình Llama 4 đã được đào tạo trước với độ dài ngữ cảnh là 256K. Các mô hình Instruct được tinh chỉnh để hỗ trợ độ dài ngữ cảnh lớn hơn nhiều: 1M trong phiên bản 128 chuyên gia lớn (Maverick) và 10M (!) cho phiên bản 16 chuyên gia (Scout).</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Mô hình</th>
+          <th style="text-align: center">Instruct</th>
+          <th style="text-align: center">Độ dài ngữ cảnh</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Scout (16E)</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">10M</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Maverick (128E)</td>
+          <td style="text-align: center">✅</td>
+          <td style="text-align: center">1M</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Scout (16E)</td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center">256K</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Maverick (128E)</td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center">256K</td>
+      </tr>
+  </tbody>
+</table>
+<p>Những độ dài ngữ cảnh lớn này đi kèm với một vài lựa chọn kiến trúc rất thú vị. Cho đến khi báo cáo kỹ thuật chính thức được công bố, đây là những gì chúng ta biết cho đến nay.</p>
+<ul>
+<li><strong>Không có lớp RoPE (NoPE)</strong></li>
+</ul>
+<p>NoPE (tên dễ thương, +1 điểm lôi cuốn), đã được khám phá từ năm 2022, chỉ từ bỏ các lược đồ mã hóa vị trí truyền thống, chẳng hạn như RoPE, thường được áp dụng nhất trong các mô hình transformers. Trong trường hợp của Llama 4, các lớp NoPE được sử dụng cứ sau 4 lớp. Các lớp này rất quan trọng đối với ngữ cảnh dài, vì chúng sử dụng mặt nạ nhân quả đầy đủ trên ngữ cảnh.</p>
+<p>Đối với các lớp RoPE (ba trong số 4), <em>chunked attention</em> được sử dụng.</p>
+<p>Meta đề cập đến việc sử dụng <em>xen kẽ</em> các lớp NoPE, cùng với điều chỉnh nhiệt độ (như được giải thích bên dưới), là kiến trúc <code>iRoPE</code>.</p>
+<ul>
+<li><strong>Chunked attention</strong> (trong các lớp RoPE)</li>
+</ul>
+<p>Như một cách để giảm yêu cầu về bộ nhớ, Llama 4 sử dụng chunked attention trong các lớp hoạt động với mã hóa vị trí RoPE truyền thống (ba trong số 4 lớp giải mã). Cách tốt nhất để hình dung cách chunked attention hoạt động là thông qua biểu diễn ASCII này được trích xuất từ mã nguồn <a href="https://github.com/huggingface/transformers/blob/main/src/transformers/models/llama4/modeling_llama4.py#L848-L857">transformers</a>:</p>
+<pre tabindex="0"><code>&#39;What&#39;      :  0 ■ ⬚ ⬚ ⬚ ⬚ ⬚
+&#39; is&#39;       :  1 ■ ■ ⬚ ⬚ ⬚ ⬚
+&#39; ch&#39;       :  2 ■ ■ ■ ⬚ ⬚ ⬚
+&#39;unked&#39;     :  3 ⬚ ⬚ ⬚ ■ ⬚ ⬚
+&#39; attention&#39;:  4 ⬚ ⬚ ⬚ ■ ■ ⬚
+&#39;?&#39;         :  5 ⬚ ⬚ ⬚ ■ ■ ■
+</code></pre><p>Sơ đồ này cho thấy mặt nạ chú ý sẽ được sử dụng nếu độ dài chunked attention là 3. Trong trường hợp của Llama 4, độ dài chunked attention là <code>8192</code>. Điều này có nghĩa là các lớp RoPE chỉ có thể theo dõi ngữ cảnh trong các khối 8K, trong khi các lớp NoPE có quyền truy cập vào toàn bộ ngữ cảnh. Bạn có thể xem nó như một phiên bản hiệu quả hơn về bộ nhớ và tính toán của Sliding Window Attention.</p>
+<ul>
+<li><strong>Điều chỉnh nhiệt độ chú ý</strong></li>
+</ul>
+<p>Các khối chú ý được áp dụng cho các ngữ cảnh dài có một vấn đề: điểm xác suất chú ý <em>mờ dần</em> gần bằng không hơn khi độ dài chuỗi tăng lên. Đây là một hệ quả đã biết của việc áp dụng hàm <em>softmax</em> cho các chuỗi rất dài. Để giải quyết vấn đề này, Llama 4 sử dụng một softmax được chia tỷ lệ, mà mô hình gọi là điều chỉnh nhiệt độ. Điều này được áp dụng trong các lớp NoPE, nhưng không áp dụng trong các lớp RoPE vì chúng tham gia vào các chuỗi con ngắn hơn.</p>
+<p>Phương pháp này là một cách để cải thiện khả năng khái quát hóa cho độ dài ngữ cảnh tùy ý và có lẽ là một trong những yếu tố quan trọng để đạt được độ dài ngữ cảnh 10M trong Llama 4 Scout.</p>
+<ul>
+<li><strong>Chuẩn hóa QK</strong></li>
+</ul>
+<p>Llama Scout (phiên bản 16 chuyên gia) sử dụng một chuẩn hóa RMS bổ sung mà không cần tham số có thể học được của các trạng thái Query và Key trong các lớp RoPE, sau khi các nhúng RoPE đã được áp dụng.</p>
+<ul>
+<li><strong>Xen kẽ MoE</strong></li>
+</ul>
+<p>Llama Scout là một MoE đầy đủ bao gồm 16 chuyên gia. Llama Maverick sử dụng 128 chuyên gia, nhưng các lớp MoE và lớp dày đặc luân phiên nhau. Do đó, các chuyên gia được áp dụng trong một nửa số lớp.</p>
+<ul>
+<li><strong>Đồng chưng cất</strong></li>
+</ul>
+<p>Llama Maverick đã được đồng chưng cất từ một mô hình lớn hơn, Llama Behemoth, sử dụng một hàm mất mát mới, có trọng số động cho các logit của học sinh và giáo viên.</p>
+<ul>
+<li><strong>MetaP</strong></li>
+</ul>
+<p>Các mô hình tận dụng MetaP, một phương pháp có khả năng được lấy cảm hứng từ <a href="https://huggingface.co/papers/2203.03466">MuP</a>, để điều chỉnh tối ưu các siêu tham số trên các kích thước khác nhau bao gồm ngân sách đào tạo và kích thước mô hình.</p>
+<h2 id="cách-sử-dụng-với-transformers">Cách sử dụng với Transformers</h2>
+<p>Bắt đầu với Llama 4 bằng cách sử dụng <code>transformers</code> rất đơn giản. Đảm bảo bạn đã cài đặt <code>transformers v4.51.0</code> trở lên (<code>pip install -U transformers huggingface_hub[hf_xet]</code>). Dưới đây là một ví dụ nhanh sử dụng mô hình Maverick được điều chỉnh theo hướng dẫn, phản hồi về hai hình ảnh, sử dụng song song tensor để có tốc độ tối đa. Bạn cần chạy tập lệnh này trên một phiên bản có 8 GPU, sử dụng một lệnh như:
+<code>torchrun –nproc-per-instance=8 script.py</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoProcessor, Llama4ForConditionalGeneration
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;meta-llama/Llama-4-Maverick-17B-128E-Instruct&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>processor <span style="color:#f92672">=</span> AutoProcessor<span style="color:#f92672">.</span>from_pretrained(model_id)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> Llama4ForConditionalGeneration<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    attn_implementation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;flex_attention&#34;</span>,
+</span></span><span style="display:flex;"><span>    device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>url1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://huggingface.co/datasets/huggingface/documentation-images/resolve/0052a70beed5bf71b92610a43a52df6d286cd5f3/diffusers/rabbit.jpg&#34;</span>
+</span></span><span style="display:flex;"><span>url2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/datasets/cat_style_layout.png&#34;</span>
+</span></span><span style="display:flex;"><span>messages <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;content&#34;</span>: [
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;image&#34;</span>, <span style="color:#e6db74">&#34;url&#34;</span>: url1},
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;image&#34;</span>, <span style="color:#e6db74">&#34;url&#34;</span>: url2},
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;text&#34;</span>, <span style="color:#e6db74">&#34;text&#34;</span>: <span style="color:#e6db74">&#34;Can you describe how these two images are similar, and how they differ?&#34;</span>},
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> processor<span style="color:#f92672">.</span>apply_chat_template(
+</span></span><span style="display:flex;"><span>    messages,
+</span></span><span style="display:flex;"><span>    add_generation_prompt<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    tokenize<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    return_dict<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>,
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">.</span>to(model<span style="color:#f92672">.</span>device)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>outputs <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">**</span>inputs,
+</span></span><span style="display:flex;"><span>    max_new_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">256</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> processor<span style="color:#f92672">.</span>batch_decode(outputs[:, inputs[<span style="color:#e6db74">&#34;input_ids&#34;</span>]<span style="color:#f92672">.</span>shape[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]:])[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>print(response)
+</span></span><span style="display:flex;"><span>print(outputs[<span style="color:#ae81ff">0</span>])
+</span></span></code></pre></div><p>Hãy nhớ kiểm tra thẻ mô hình trên các repos (<a href="https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Original">Llama 4 Maverick (~400B)</a> và <a href="https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Original">Llama 4 Scout (~109B)</a>) để biết hướng dẫn sử dụng chi tiết, bao gồm các ví dụ đa phương thức, các định dạng nhắc nhở cụ thể (như lời nhắc hệ thống), chi tiết lượng tử hóa và các tùy chọn cấu hình nâng cao!</p>
+<h2 id="điểm-đánh-giá">Điểm đánh giá</h2>
+<p>Kết quả đánh giá xác nhận sức mạnh của các mô hình này, cho thấy hiệu suất hiện đại vượt trội đáng kể so với các phiên bản tiền nhiệm như Llama 3.1 405B. Ví dụ: trên các tác vụ lý luận và kiến thức, Maverick được điều chỉnh theo hướng dẫn đạt 80,5% trên MMLU Pro và 69,8% trên GPQA Diamond, trong khi Scout đạt lần lượt 74,3% và 57,2%.</p>
+<!-- raw HTML omitted -->
+<h4 id="mô-hình-được-đào-tạo-trước">Mô hình được đào tạo trước</h4>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Danh mục</th>
+          <th style="text-align: left">Điểm chuẩn</th>
+          <th style="text-align: left"># Bắn</th>
+          <th style="text-align: left">Đo lường</th>
+          <th style="text-align: left">Llama 3.1 70B</th>
+          <th style="text-align: left">Llama 3.1 405B</th>
+          <th style="text-align: left"><strong>Llama 4 Scout</strong></th>
+          <th style="text-align: left"><strong>Llama 4 Maverick</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Lý luận &amp; Kiến thức</td>
+          <td style="text-align: left">MMLU</td>
+          <td style="text-align: left">5</td>
+          <td style="text-align: left">macro_avg/acc_char</td>
+          <td style="text-align: left">79.3</td>
+          <td style="text-align: left">85.2</td>
+          <td style="text-align: left">79.6</td>
+          <td style="text-align: left">85.5</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">MMLU-Pro</td>
+          <td style="text-align: left">5</td>
+          <td style="text-align: left">macro_avg/em</td>
+          <td style="text-align: left">53.8</td>
+          <td style="text-align: left">61.6</td>
+          <td style="text-align: left">58.2</td>
+          <td style="text-align: left">62.9</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">MATH</td>
+          <td style="text-align: left">4</td>
+          <td style="text-align: left">em_maj1@1</td>
+          <td style="text-align: left">41.6</td>
+          <td style="text-align: left">53.5</td>
+          <td style="text-align: left">50.3</td>
+          <td style="text-align: left">61.2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Mã</td>
+          <td style="text-align: left">MBPP</td>
+          <td style="text-align: left">3</td>
+          <td style="text-align: left">pass@1</td>
+          <td style="text-align: left">66.4</td>
+          <td style="text-align: left">74.4</td>
+          <td style="text-align: left">67.8</td>
+          <td style="text-align: left">77.6</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Đa ngôn ngữ</td>
+          <td style="text-align: left">TydiQA</td>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">average/f1</td>
+          <td style="text-align: left">29.9</td>
+          <td style="text-align: left">34.3</td>
+          <td style="text-align: left">31.5</td>
+          <td style="text-align: left">31.7</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Hình ảnh</td>
+          <td style="text-align: left">ChartQA</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">relaxed_accuracy</td>
+          <td style="text-align: left">Không hỗ trợ</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">83.4</td>
+          <td style="text-align: left">85.3</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">DocVQA</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">anls</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">89.4</td>
+          <td style="text-align: left">91.6</td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="mô-hình-được-điều-chỉnh-theo-hướng-dẫn">Mô hình được điều chỉnh theo hướng dẫn</h4>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Danh mục</th>
+          <th style="text-align: left">Điểm chuẩn</th>
+          <th style="text-align: left"># Bắn</th>
+          <th style="text-align: left">Đo lường</th>
+          <th style="text-align: left">Llama 3.3 70B</th>
+          <th style="text-align: left">Llama 3.1 405B</th>
+          <th style="text-align: left"><strong>Llama 4 Scout</strong></th>
+          <th style="text-align: left"><strong>Llama 4 Maverick</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Lý luận hình ảnh</td>
+          <td style="text-align: left">MMMU</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">accuracy</td>
+          <td style="text-align: left">Không hỗ trợ</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">69.4</td>
+          <td style="text-align: left">73.4</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">MMMU Pro<!-- raw HTML omitted -->^<!-- raw HTML omitted --></td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">accuracy</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">52.2</td>
+          <td style="text-align: left">59.6</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">MathVista</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">accuracy</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">70.7</td>
+          <td style="text-align: left">73.7</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Hiểu hình ảnh</td>
+          <td style="text-align: left">ChartQA</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">relaxed_accuracy</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">88.8</td>
+          <td style="text-align: left">90.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">DocVQA (test)</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">anls</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">94.4</td>
+          <td style="text-align: left">94.4</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Mã</td>
+          <td style="text-align: left">LiveCodeBench (10/01/2024–02/01/2025)</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">pass@1</td>
+          <td style="text-align: left">33.3</td>
+          <td style="text-align: left">27.7</td>
+          <td style="text-align: left">32.8</td>
+          <td style="text-align: left">43.4</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Lý luận &amp; Kiến thức</td>
+          <td style="text-align: left">MMLU Pro</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">macro_avg/em</td>
+          <td style="text-align: left">68.9</td>
+          <td style="text-align: left">73.4</td>
+          <td style="text-align: left">74.3</td>
+          <td style="text-align: left">80.5</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">GPQA Diamond</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">accuracy</td>
+          <td style="text-align: left">50.5</td>
+          <td style="text-align: left">49.0</td>
+          <td style="text-align: left">57.2</td>
+          <td style="text-align: left">69.8</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Đa ngôn ngữ</td>
+          <td style="text-align: left">MGSM</td>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">average/em</td>
+          <td style="text-align: left">91.1</td>
+          <td style="text-align: left">91.6</td>
+          <td style="text-align: left">90.6</td>
+          <td style="text-align: left">92.3</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Ngữ cảnh dài</td>
+          <td style="text-align: left">MTOB (nửa cuốn sách) eng→kgv/kgv→eng</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">chrF</td>
+          <td style="text-align: left">Cửa sổ 128K</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">42.2/36.6</td>
+          <td style="text-align: left">54.0/46.4</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">MTOB (toàn bộ cuốn sách) eng→kgv/kgv→eng</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">chrF</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">39.7/36.3</td>
+          <td style="text-align: left">50.8/46.7</td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<h2 id="lời-cảm-ơn">Lời cảm ơn</h2>
+<p>Phát hành một thứ khổng lồ như Llama 4 đòi hỏi một nỗ lực to lớn trên các nhóm, địa lý và rất nhiều VM. Theo thứ tự không cụ thể, chúng tôi xin cảm ơn Arthur, Lysandre, Cyril, Pablo, Marc, Mohammed từ nhóm Transformers. Chúng tôi biết ơn toàn bộ nhóm vLLM vì những cuộc thảo luận phong phú, những hiểu biết sâu sắc, thử nghiệm và gỡ lỗi chung trong quá trình tích hợp căng thẳng này với nhiều thách thức. Với nhu cầu tối ưu hóa lớn hơn, chúng tôi xin cảm ơn Mohit vì đã tự mình thêm hỗ trợ cho Llama 4 trong TGI. Các mô hình chonky này yêu cầu một số kỹ thuật nghiêm túc ở cấp độ lưu trữ. Điều này cũng đòi hỏi rất nhiều nỗ lực từ Ajit, Rajat, Jared, Di, Yucheng và phần còn lại của <a href="http://hf.co/xet-team">nhóm Xet</a>.</p>
+<p>Có rất nhiều người tham gia vào nỗ lực này, xin cảm ơn rất nhiều đến phần còn lại của các nhóm Hugging Face, vLLM và Meta Llama vì sự hợp lực tuyệt vời!</p>
+<h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h2>
+<ul>
+<li>Để tìm hiểu thêm về Xet Storage: <a href="https://huggingface.co/blog/xet-on-the-hub">bài đăng trên blog</a> và <a href="https://huggingface.co/docs/hub/storage-backends">tài liệu Hub</a>.</li>
+<li>Xem bài đăng trên <a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/">blog</a> phát hành của Meta.</li>
+</ul>
+<h3 id="link-bài-báo-gốc"><a href="https://huggingface.co/blog/llama4-release">Link bài báo gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/april-5-2025/">April 5, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/bdfb13/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/leaderboards-on-the-hub/thumbnail_3c3h_aragen.png" alt="Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu bảng xếp hạng hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/357cc7/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/infisical/thumbnail.png" alt="Cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này mô tả cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/ac4fc5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/why-gradio-stands-out/thumbnail.png" alt="17 lý do tại sao Gradio không chỉ là một thư viện UI khác" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">17 lý do tại sao Gradio không chỉ là một thư viện UI khác</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/bdfb13/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/leaderboards-on-the-hub/thumbnail_3c3h_aragen.png" alt="Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/53b449/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/google-5x-data-1280-720.png?w=350&amp;h=175&amp;crop=1" alt="BigQuery lớn hơn 5 lần so với Snowflake và Databricks Google đang làm gì để làm cho nó tốt hơn nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">BigQuery lớn hơn 5 lần so với Snowflake và Databricks Google đang làm gì để làm cho nó tốt hơn nữa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/357cc7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/infisical/thumbnail.png" alt="Cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/6f9241/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/Capital-One-hero.png?w=350&amp;h=175&amp;crop=1" alt="Cách mã hóa lại dữ liệu đang tái tạo bảo mật dữ liệu trong kỷ nguyên AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách mã hóa lại dữ liệu đang tái tạo bảo mật dữ liệu trong kỷ nguyên AI</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

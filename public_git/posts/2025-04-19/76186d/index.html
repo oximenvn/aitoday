@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Giới thiệu Dataframe mới của Gradio! | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này giới thiệu Dataframe mới của Gradio.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Giới thiệu Dataframe mới của Gradio!</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này giới thiệu Dataframe mới của Gradio. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-04-19T00:00:00&#43;00:00">April 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            4 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/gradio-dataframe-update/thumbnail.png" alt="Giới thiệu Dataframe mới của Gradio!">
+        <figcaption class="text-center italic text-xs">Bài viết này giới thiệu Dataframe mới của Gradio.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="giới-thiệu-dataframe-mới-của-gradio">Giới thiệu Dataframe mới của Gradio!</h1>
+<p>Giao diện <code>gr.Dataframe</code> của Gradio là một trong những giao diện phổ biến nhất của chúng tôi, chúng tôi đã thấy nó được sử dụng trong nhiều ứng dụng tuyệt vời, như bảng xếp hạng, bảng điều khiển và trực quan hóa tương tác. Mặc dù chúng tôi đã không thực hiện bất kỳ thay đổi nào đối với dataframe trong một thời gian khá dài, nhưng tồn đọng các vấn đề của chúng tôi đã tăng lên và một số cải tiến đã được yêu cầu trong một thời gian.</p>
+<p>Vâng — bây giờ chúng tôi rất vui mừng được phát hành một loạt các bản cập nhật mới cho giao diện dataframe của Gradio. Trong 6 tuần qua, chúng tôi đã giải quyết hơn 70 vấn đề về dataframe - bao gồm lỗi, cải tiến và nâng cấp.</p>
+<h3 id="1-lựa-chọn-đa-ô">1. Lựa chọn đa ô</h3>
+<p>Bạn có thể chọn nhiều ô cùng một lúc! Sao chép hoặc xóa các giá trị trên vùng chọn của bạn một cách dễ dàng.</p>
+<!-- raw HTML omitted -->
+<h3 id="2-số-hàng--ghim-cột">2. Số hàng &amp; <strong>Ghim cột</strong></h3>
+<p>Thêm cột số hàng và giữ các cột quan trọng trong tầm nhìn trong khi điều hướng các tập dữ liệu rộng bằng tham số <code>pinned_columns</code>. Không còn bị mất dấu những gì bạn đang xem!</p>
+<!-- raw HTML omitted -->
+<h3 id="3-nút-sao-chép-và-nút-toàn-màn-hình">3. Nút sao chép và nút toàn màn hình</h3>
+<p>Dễ dàng sao chép các giá trị ô vào định dạng được phân tách bằng dấu phẩy với nút sao chép mới của chúng tôi. Cần xem tốt hơn? Nút toàn màn hình cho phép bạn tương tác mà không bị phân tâm và có thể được bật bằng tham số <code>show_full_screen</code>.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h3 id="4-nút-cuộn-lên-đầu-trang">4. Nút cuộn lên đầu trang</h3>
+<p>Nhìn vào tất cả dữ liệu đó! Bây giờ chúng ta có thể chỉ cần cuộn lên đầu trang.</p>
+<!-- raw HTML omitted -->
+<h3 id="5-nâng-cấp-khả-năng-truy-cập-và-kiểu-dáng-nâng-cao">5. Nâng cấp khả năng truy cập và kiểu dáng nâng cao</h3>
+<p>Điều hướng bằng bàn phím được cải thiện giúp <code>gr.Dataframe</code> dễ truy cập hơn bao giờ hết. Bạn cũng có thể kiểm soát giao diện dataframe của mình bằng tham số styler chuyên dụng và nâng cao trải nghiệm người dùng của ứng dụng.</p>
+<!-- raw HTML omitted -->
+<h3 id="6-lựa-chọn-hàng-và-cột">6. Lựa chọn hàng và cột</h3>
+<p>Truy cập toàn bộ dữ liệu hàng trong các sự kiện chọn để có khả năng tương tác và thao tác dữ liệu trực quan hơn.</p>
+<!-- raw HTML omitted -->
+<h3 id="7-cột-tĩnh">7. Cột tĩnh</h3>
+<p>Tùy chỉnh khả năng tương tác của dataframe của bạn bằng cách chỉ định các cột không thể chỉnh sửa bằng tham số <code>static_columns</code>.</p>
+<!-- raw HTML omitted -->
+<h3 id="8-chức-năng-tìm-kiếm">8. Chức năng tìm kiếm</h3>
+<p>Nhanh chóng tìm dữ liệu bạn cần với tính năng tìm kiếm mạnh mẽ của chúng tôi bằng cách đặt tham số <code>show_search</code> thành <code>&quot;search&quot;</code>.</p>
+<!-- raw HTML omitted -->
+<h3 id="9-chức-năng-lọc">9. Chức năng lọc</h3>
+<p>Thu hẹp tập dữ liệu của bạn để tập trung chính xác vào những gì bạn cần với các tùy chọn lọc linh hoạt với <code>show_search</code> được đặt thành <code>&quot;filter&quot;</code>.</p>
+<!-- raw HTML omitted -->
+<h3 id="10-cải-thiện-lựa-chọn-ô">10. Cải thiện lựa chọn ô</h3>
+<p>Trải nghiệm lựa chọn ô mượt mà hơn, trực quan hơn, hoạt động theo cách bạn mong đợi.</p>
+<!-- raw HTML omitted -->
+<h2 id="điều-gì-tiếp-theo">Điều gì tiếp theo?</h2>
+<p>Với hơn 70 vấn đề đã được giải quyết, chúng tôi đã thực hiện những cải tiến lớn, nhưng luôn có nhiều việc hơn để chúng tôi làm. Nhìn về phía trước, chúng tôi vẫn có nhiều ý tưởng hơn để thực hiện và chúng tôi rất vui được tiếp tục tinh chỉnh khả năng truy cập, hiệu suất và tích hợp. Hãy để mắt đến một số bản trình diễn thú vị trên mạng xã hội của chúng tôi bằng cách sử dụng dataframe trên <a href="https://x.com/gradio">X</a> của Gradio.</p>
+<h2 id="hãy-tự-mình-thử">Hãy tự mình thử!</h2>
+<p>Dataframe được cập nhật đang hoạt động trong bản phát hành Gradio mới nhất. Cập nhật cài đặt của bạn bằng <code>pip install --upgrade gradio</code>.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> gradio <span style="color:#66d9ef">as</span> gr
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df_headers <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;Tên&#34;</span>, <span style="color:#e6db74">&#34;Dân số&#34;</span>, <span style="color:#e6db74">&#34;Kích thước (tối thiểu cm)&#34;</span>, <span style="color:#e6db74">&#34;Kích thước (tối đa cm)&#34;</span>, <span style="color:#e6db74">&#34;Cân nặng (tối thiểu kg)&#34;</span>, <span style="color:#e6db74">&#34;Cân nặng (tối đa kg)&#34;</span>, <span style="color:#e6db74">&#34;Tuổi thọ (tối thiểu năm)&#34;</span>, <span style="color:#e6db74">&#34;Tuổi thọ (tối đa năm)&#34;</span>]
+</span></span><span style="display:flex;"><span>df_data <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    [<span style="color:#e6db74">&#34;Cáo đỏ Ailen&#34;</span>, <span style="color:#ae81ff">185000</span>, <span style="color:#ae81ff">48</span>, <span style="color:#ae81ff">92</span>, <span style="color:#ae81ff">4.2</span>, <span style="color:#ae81ff">6.8</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#e6db74">&#34;Lửng Ailen&#34;</span>, <span style="color:#ae81ff">95000</span>, <span style="color:#ae81ff">62</span>, <span style="color:#ae81ff">88</span>, <span style="color:#ae81ff">8.5</span>, <span style="color:#ae81ff">13.5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">8</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#e6db74">&#34;Rái cá Ailen&#34;</span>, <span style="color:#ae81ff">13500</span>, <span style="color:#ae81ff">58</span>, <span style="color:#ae81ff">98</span>, <span style="color:#ae81ff">5.5</span>, <span style="color:#ae81ff">11.5</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">13</span>]
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> gr<span style="color:#f92672">.</span>Blocks() <span style="color:#66d9ef">as</span> demo:
+</span></span><span style="display:flex;"><span>    df <span style="color:#f92672">=</span> gr<span style="color:#f92672">.</span>Dataframe(
+</span></span><span style="display:flex;"><span>        label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Động vật hoang dã Ailen&#34;</span>,
+</span></span><span style="display:flex;"><span>        value<span style="color:#f92672">=</span>df_data,
+</span></span><span style="display:flex;"><span>        headers<span style="color:#f92672">=</span>df_headers,
+</span></span><span style="display:flex;"><span>        interactive<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        show_search<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;search&#34;</span>,
+</span></span><span style="display:flex;"><span>        show_copy_button<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        show_fullscreen_button<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        show_row_numbers<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        pinned_columns<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        static_columns<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>        column_widths<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;300px&#34;</span>]
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>demo<span style="color:#f92672">.</span>launch()
+</span></span></code></pre></div><p>Xem <a href="https://www.gradio.app/docs/gradio/dataframe">tài liệu Gradio</a> để biết các ví dụ và hướng dẫn để bắt đầu với các tính năng mới này. Chúng tôi rất mong được xem những gì bạn tạo ra! Có suy nghĩ hoặc đề xuất? Chia sẻ chúng bằng cách nêu vấn đề trong kho <a href="https://github.com/gradio-app/gradio">GitHub</a> của chúng tôi.</p>
+<p>Chúc bạn xây dựng vui vẻ!</p>
+<h3 id="link-bài-báo-gốc"><a href="https://huggingface.co/blog/gradio-dataframe-upgrade">Link bài báo gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/march-24-2025/">March 24, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/bdfb13/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/leaderboards-on-the-hub/thumbnail_3c3h_aragen.png" alt="Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu bảng xếp hạng hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/b633ac/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/llama_4.png" alt="Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face!" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face!</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu Llama 4 Maverick &amp; Scout trên Hugging Face.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/ac4fc5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/why-gradio-stands-out/thumbnail.png" alt="17 lý do tại sao Gradio không chỉ là một thư viện UI khác" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">17 lý do tại sao Gradio không chỉ là một thư viện UI khác</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/bdfb13/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/leaderboards-on-the-hub/thumbnail_3c3h_aragen.png" alt="Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/53b449/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/google-5x-data-1280-720.png?w=350&amp;h=175&amp;crop=1" alt="BigQuery lớn hơn 5 lần so với Snowflake và Databricks Google đang làm gì để làm cho nó tốt hơn nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">BigQuery lớn hơn 5 lần so với Snowflake và Databricks Google đang làm gì để làm cho nó tốt hơn nữa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/357cc7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/infisical/thumbnail.png" alt="Cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Hugging Face mở rộng quy mô quản lý bí mật cho cơ sở hạ tầng AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/6f9241/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/Capital-One-hero.png?w=350&amp;h=175&amp;crop=1" alt="Cách mã hóa lại dữ liệu đang tái tạo bảo mật dữ liệu trong kỷ nguyên AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách mã hóa lại dữ liệu đang tái tạo bảo mật dữ liệu trong kỷ nguyên AI</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
