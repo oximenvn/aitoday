@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>17 lý do tại sao Gradio không chỉ là một thư viện UI khác | AI Today - SkyAI</title>
+
+<meta name="description" content="Gradio không chỉ là một thư viện UI.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">17 lý do tại sao Gradio không chỉ là một thư viện UI khác</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Gradio không chỉ là một thư viện UI. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-04-19T00:00:00&#43;00:00">April 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            22 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/why-gradio-stands-out/thumbnail.png" alt="17 lý do tại sao Gradio không chỉ là một thư viện UI khác">
+        <figcaption class="text-center italic text-xs">Gradio không chỉ là một thư viện UI.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="17-lý-do-tại-sao-gradio-không-chỉ-là-một-thư-viện-ui-thông-thường">17 lý do tại sao Gradio không chỉ là một thư viện UI thông thường</h1>
+<p>&ldquo;Ồ, Gradio? Đó là một thư viện Python để xây dựng UI, phải không?&rdquo;</p>
+<p>Chúng tôi nghe điều này rất nhiều, và mặc dù Gradio cho phép bạn tạo UI tương tác với mã Python tối thiểu, nhưng việc gọi Gradio là &ldquo;thư viện UI&rdquo; đã bỏ lỡ bức tranh lớn hơn! Gradio <strong>hơn</strong> là một thư viện UI — nó là một khuôn khổ để <strong>tương tác với các mô hình máy học</strong> thông qua cả UI và API, cung cấp các đảm bảo mạnh mẽ về hiệu suất, bảo mật và khả năng phản hồi.</p>
+<p>Trong bài viết này, chúng ta sẽ giới thiệu các tính năng độc đáo của Gradio và giải thích tại sao chúng rất cần thiết để xây dựng các ứng dụng AI mạnh mẽ. Chúng tôi sẽ chia sẻ các liên kết đến tài liệu chính thức và ghi chú phát hành của Gradio, để bạn có thể khám phá thêm nếu bạn tò mò.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/why-gradio-stands-out/gradio-comparison-chart.png" alt="So sánh Gradio với các framework khác"></p>
+<h3 id="1-truy-cập-api-universal">1. Truy cập API Universal</h3>
+<p>Tất cả các ứng dụng Gradio đều là API! Khi bạn xây dựng một ứng dụng Gradio, bạn cũng có thể sử dụng các thư viện máy khách mạnh mẽ của Gradio để truy cập chương trình vào các ứng dụng Gradio này. Chúng tôi cung cấp:</p>
+<ul>
+<li>SDK chính thức trong Python (gradio_client) và JavaScript (@gradio/client), cùng với hỗ trợ truy cập API cURL</li>
+<li>Tự động tạo các điểm cuối REST API cho mỗi sự kiện được xác định trong ứng dụng Gradio của bạn</li>
+<li>Tài liệu API được tạo tự động, có thể truy cập thông qua liên kết &ldquo;Xem API&rdquo;</li>
+<li>Thư viện máy khách với các tính năng nâng cao như xử lý tệp, nhân bản Hugging Face Space, v.v.</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/quickstart#the-gradio-python-and-java-script-ecosystem">Khám phá thư viện máy khách</a>, <a href="https://www.gradio.app/guides/querying-gradio-apps-with-curl">Truy vấn ứng dụng Gradio với Curl</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio</strong>:</p>
+<ul>
+<li>Hầu hết các framework Python khác thiếu cơ chế truy cập API chính thức</li>
+<li>Trong khi các framework web truyền thống yêu cầu các triển khai riêng biệt cho UI và các điểm cuối API, Gradio tự động tạo cả hai từ một triển khai duy nhất, bao gồm cả tài liệu.</li>
+</ul>
+<h3 id="2-trình-ghi-api-tương-tác-để-phát-triển">2. Trình ghi API tương tác để phát triển</h3>
+<p>&ldquo;Trình ghi API&rdquo; của Gradio đã được giới thiệu trong phiên bản 4.26. Công cụ phát triển mạnh mẽ này cho phép các nhà phát triển ghi lại các tương tác UI của họ trong thời gian thực và tự động tạo các lệnh gọi API tương ứng bằng Python hoặc JavaScript.</p>
+<ul>
+<li>&ldquo;Trình ghi API&rdquo; có thể được tìm thấy trên trang &ldquo;Xem API&rdquo; đã thảo luận ở trên.</li>
+<li>Nó giúp ghi lại cách sử dụng API của các ứng dụng Gradio thông qua các ví dụ thực tế của riêng bạn</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/getting-started-with-the-python-client#:~:text=The%20View%20API%20page%20also,run%20with%20the%20Python%20Client">Khám phá Trình ghi API</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Bạn không thể dễ dàng viết các tương tác UI theo cách này trong hầu hết các framework Python và Web khác. Đây là một khả năng độc đáo của Gradio trong bối cảnh công cụ ML.</li>
+<li>Sự kết hợp của Trình ghi API với thư viện Gradio Client tạo ra một quá trình chuyển đổi suôn sẻ từ khám phá UI sang phát triển bằng các điểm cuối API.</li>
+</ul>
+<h3 id="3-ứng-dụng-ml-nhanh-với-kết-xuất-phía-máy-chủ">3. Ứng dụng ML nhanh với kết xuất phía máy chủ</h3>
+<p>Gradio 5.0 giới thiệu kết xuất phía máy chủ (SSR), thay đổi cách các ứng dụng ML tải và hoạt động. Trong khi các framework UI truyền thống dựa vào kết xuất phía máy khách, SSR của Gradio:</p>
+<ul>
+<li>Loại bỏ vòng quay tải và giảm đáng kể thời gian tải trang ban đầu</li>
+<li>Kết xuất trước UI trên máy chủ, cho phép tương tác ngay lập tức của người dùng</li>
+<li>Cải thiện SEO cho các ứng dụng đã xuất bản</li>
+<li>Tự động kích hoạt cho việc triển khai Hugging Face Spaces trong khi vẫn có thể định cấu hình cho quá trình phát triển cục bộ</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://github.com/gradio-app/gradio/issues/9463#:~:text=Server">Đọc thêm về SSR của Gradio 5</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Các framework UI Python truyền thống bị giới hạn trong kết xuất phía máy khách trong khi việc triển khai SSR trong các framework web JS yêu cầu chuyên môn phát triển full-stack rộng rãi</li>
+<li>Gradio cung cấp hiệu suất cấp framework web trong khi vẫn duy trì trải nghiệm phát triển Python thuần túy (Lưu ý: ngoại trừ việc phải cài đặt Node!)</li>
+</ul>
+<h3 id="4-quản-lý-hàng-đợi-tự-động-cho-các-tác-vụ-ml">4. Quản lý hàng đợi tự động cho các tác vụ ML</h3>
+<p>Gradio cung cấp một hệ thống xếp hàng tinh vi được thiết kế riêng cho các ứng dụng ML, xử lý cả tính toán chuyên sâu về GPU và quyền truy cập của người dùng với số lượng lớn.</p>
+<ul>
+<li>Hàng đợi của Gradio tự động xử lý các loại tác vụ khác nhau được xác định trong ứng dụng của bạn, cho dù đó là các dự đoán dài chạy trên GPU, truyền phát âm thanh/video hay các tác vụ không phải ML.</li>
+<li>Các ứng dụng của bạn có thể mở rộng quy mô cho hàng nghìn người dùng đồng thời mà không xảy ra tranh chấp tài nguyên và áp đảo hệ thống</li>
+<li>Cập nhật trạng thái hàng đợi theo thời gian thực thông qua Sự kiện phía máy chủ, hiển thị cho người dùng vị trí hiện tại của họ trong hàng đợi.</li>
+<li>Bạn có thể định cấu hình giới hạn đồng thời để xử lý song song các yêu cầu</li>
+<li>Bạn thậm chí có thể có các sự kiện khác nhau gộp các tài nguyên thông qua các hàng đợi được chia sẻ bằng <code>concurrency_id</code></li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/queuing">Tìm hiểu về Xếp hàng</a>, <a href="https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance">Khám phá các điều khiển đồng thời</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Hầu hết các framework Python khác không cung cấp quản lý tài nguyên trong khi chạy các phiên đồng thời. Nếu bạn đang sử dụng các framework web phổ biến, bạn có thể phải tự triển khai hệ thống xếp hàng theo cách thủ công.</li>
+<li>Hệ thống quản lý hàng đợi tích hợp của Gradio loại bỏ nhu cầu về bộ lập lịch bên ngoài và cho phép bạn xây dựng các ứng dụng ML chuyên sâu về GPU hoặc lan truyền.</li>
+</ul>
+<h3 id="5-truyền-phát-hiệu-suất-cao-cho-đầu-ra-ml-thời-gian-thực">5. Truyền phát hiệu suất cao cho đầu ra ML thời gian thực</h3>
+<p>Khả năng truyền phát của Gradio cho phép cập nhật thời gian thực, độ trễ thấp, rất quan trọng đối với các ứng dụng ML hiện đại. Framework cung cấp:</p>
+<ul>
+<li>Trải nghiệm nhà phát triển đơn giản: Gradio cung cấp truyền phát thông qua các trình tạo Python đơn giản bằng cách sử dụng các câu lệnh <code>yield</code>.</li>
+<li>Điều này hỗ trợ truyền phát tạo văn bản theo mã thông báo, cập nhật tạo hình ảnh từng bước hoặc thậm chí truyền phát âm thanh/video mượt mà thông qua giao thức HTTP Live Streaming (HLS)</li>
+<li>WebRTC/WebSocket API cho các ứng dụng thời gian thực thông qua <a href="https://fastrtc.org/">FastRTC</a></li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/streaming-outputs/#:~:text=In%20some%20cases%2C%20you%20may,returning%20it%20all%20at%20once">Hướng dẫn triển khai</a>, <a href="https://huggingface.co/blog/gradio-5#gradio-5-production-ready-machine-learning-apps">Tìm hiểu thêm về các cải tiến truyền phát của Gradio 5</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Các framework Python khác yêu cầu quản lý luồng thủ công và thăm dò ý kiến để cập nhật truyền phát. Các framework web tương tự cần triển khai WebSocket hoặc WebRTC tùy chỉnh để truyền phát thời gian thực.</li>
+<li>Bạn có thể tạo các ứng dụng truyền phát âm thanh/video thời gian thực hoàn toàn bằng Python với <a href="https://fastrtc.org/">FastRTC</a> và Gradio.</li>
+</ul>
+<h3 id="6-hỗ-trợ-ứng-dụng-nhiều-trang-tích-hợp">6. Hỗ trợ ứng dụng nhiều trang tích hợp</h3>
+<p>Gradio đã phát triển vượt ra ngoài các ứng dụng một trang với hỗ trợ nhiều trang gốc, cho phép các nhà phát triển xây dựng các ứng dụng AI/ML toàn diện.</p>
+<ul>
+<li>Bạn có thể có nhiều trang trong một ngữ cảnh ứng dụng duy nhất</li>
+<li>Gradio cung cấp định tuyến URL tự động và tạo thanh điều hướng</li>
+<li>Tài nguyên phụ trợ, chẳng hạn như hàng đợi, được chia sẻ trên các trang</li>
+<li>Các nhà phát triển có thể chia mã trên nhiều tệp trong khi vẫn duy trì một ngữ cảnh ứng dụng duy nhất. Điều này tốt cho khả năng bảo trì và thử nghiệm tệp.</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/multipage-apps">Khám phá ứng dụng nhiều trang</a>, <a href="https://www.gradio.app/guides/multipage-apps#:~:text=Separate%20Files">Tìm hiểu về tổ chức trang</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Các framework Python khác yêu cầu các tập lệnh riêng biệt cho mỗi trang, giới hạn việc chia sẻ trạng thái giữa các trang. Các framework Web phổ biến cũng yêu cầu thiết lập định tuyến rõ ràng.</li>
+<li>Gradio cung cấp định tuyến tự động và thanh điều hướng bằng các khai báo Python đơn giản! Tính năng này biến Gradio từ một nền tảng demo thành một framework web mạnh mẽ để xây dựng các ứng dụng ML đầy đủ tính năng.</li>
+</ul>
+<h3 id="7-thực-thi-hàm-phía-máy-khách-mới-với-groovy">7. Thực thi hàm phía máy khách mới với Groovy</h3>
+<p>Gradio 5 giới thiệu một thư viện chuyển đổi Python sang JavaScript tự động có tên là Groovy. Điều này hiện cho phép khả năng phản hồi UI tức thì mà không cần các chuyến đi khứ hồi máy chủ.</p>
+<ul>
+<li>Các hàm Python có thể thực hiện cập nhật UI đơn giản trực tiếp trong trình duyệt với cờ <code>js=True</code></li>
+<li>Được sử dụng chủ yếu để cập nhật ngay lập tức các thuộc tính Thành phần khác nhau</li>
+<li>Điều này loại bỏ độ trễ cho các tương tác UI đơn giản</li>
+<li>Giảm tải máy chủ cho các bản cập nhật giao diện cơ bản. Đặc biệt hữu ích cho các ứng dụng được lưu trữ lan truyền hoặc khi sử dụng ứng dụng trên các kết nối có độ trễ cao.</li>
+<li>Cho phép các nhà phát triển viết các ứng dụng có tính phản hồi cao mà không cần chuyên môn về JavaScript</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/client-side-functions">Đọc về Hàm phía máy khách</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Hầu hết các framework Python khác yêu cầu các chuyến đi khứ hồi máy chủ cho tất cả các bản cập nhật UI. Các framework Web phổ biến triển khai codebase JavaScript riêng biệt cho logic phía máy khách.</li>
+<li>Việc chuyển đổi tự động từ Python sang JavaScript của Gradio cung cấp trải nghiệm phát triển một ngôn ngữ trong khi cung cấp hiệu suất gốc trên web — một sự kết hợp không có trong các framework khác.</li>
+</ul>
+<h3 id="8-hệ-thống-tạo-chủ-đề-toàn-diện-và-các-thành-phần-ui-hiện-đại">8. Hệ thống tạo chủ đề toàn diện và các thành phần UI hiện đại</h3>
+<p>Gradio cung cấp một hệ thống tạo chủ đề tinh vi có thể biến các ứng dụng ML của bạn thành các giao diện bóng bẩy, chuyên nghiệp.</p>
+<ul>
+<li>Gradio có các cài đặt trước chủ đề sẵn sàng sử dụng như Monochrome, Soft, Ocean, Glass, v.v. Các chủ đề này cũng có hỗ trợ chế độ tối tích hợp.</li>
+<li>Tất cả các chủ đề Gradio đều tự động phản hồi trên thiết bị di động và chúng tôi đã đảm bảo rằng các ứng dụng Gradio của bạn tự động có thể truy cập được cho những người sử dụng trình đọc màn hình.</li>
+<li>Các thành phần Gradio đi kèm với các lựa chọn UI dành riêng cho ML, ví dụ: chúng tôi cung cấp các nút Hoàn tác/Thử lại/Thích cho giao diện trò chuyện, các thành phần ImageEditor và AnnotatedImage cho các trường hợp sử dụng phân đoạn/tạo mặt nạ, ImageSlider cho các chuyển đổi hình ảnh thành hình ảnh, v.v.</li>
+<li>Gradio gần đây đã giới thiệu các tính năng UI nâng cao cho Reasoning LLM, Agent, Multistep Agent, Nested Thought và Nested Agent trong giao diện trò chuyện của chúng tôi, nâng Agent AI lên trạng thái hạng nhất trong UI trò chuyện.</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/themes">Khám phá chủ đề Gradio</a>, <a href="https://github.com/gradio-app/gradio/issues/9463">Xem UI Refresh</a>, <a href="https://www.gradio.app/guides/agents-and-tool-usage">Xây dựng UI cho Agent</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Các framework Python khác cung cấp tùy chỉnh màu rất hạn chế mà không cần tạo chủ đề toàn diện. Bạn sẽ phải triển khai quản lý chủ đề và CSS theo cách thủ công trong tất cả các framework Web phổ biến.</li>
+<li>Với Gradio, các chuyên gia ML có thể tạo các ứng dụng có giao diện chuyên nghiệp mà không cần chuyên môn về thiết kế web trong khi vẫn duy trì tính linh hoạt để triển khai thương hiệu tùy chỉnh khi cần thiết.</li>
+</ul>
+<h3 id="9-giao-diện-động-của-gradio">9. Giao diện động của Gradio</h3>
+<p>Với sự ra đời của decorator <code>@gr.render()</code>, các thành phần và trình lắng nghe sự kiện mà bạn xác định trong ứng dụng Gradio của mình không còn cố định nữa — bạn có thể thêm các thành phần và trình lắng nghe mới một cách động dựa trên tương tác của người dùng và trạng thái.</p>
+<ul>
+<li>Giờ đây, bạn có thể kết xuất các sửa đổi UI ngay lập tức dựa trên đầu ra mô hình hoặc quy trình làm việc của bạn.</li>
+<li>Xin lưu ý rằng Gradio cũng cung cấp phương thức <code>.render()</code>, khác với decorator. Nó cho phép kết xuất bất kỳ Khối Gradio nào trong một Khối khác.</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/dynamic-apps-with-render-decorator">Khám phá Decorator kết xuất</a>, <a href="https://www.gradio.app/guides/multipage-apps">Xem Ví dụ về ứng dụng động</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Các framework Python khác có khả năng UI động rất hạn chế. Framework web yêu cầu JavaScript cho bất kỳ loại cập nhật giao diện nào.</li>
+<li>Gradio cho phép thao tác UI động. Các nhà phát triển có thể tạo các giao diện tinh vi và đáp ứng bằng Python đơn giản.</li>
+</ul>
+<h3 id="10-phát-triển-giao-diện-trực-quan-với-gradio-sketch">10. Phát triển giao diện trực quan với Gradio Sketch</h3>
+<p>Gradio Sketch giới thiệu một môi trường phát triển trực quan mang đến cho bạn giao diện thiết kế ứng dụng ML không cần mã. Về cơ bản, nó là một trình soạn thảo WYSIWYG giúp bạn xây dựng bố cục giao diện của mình với các thành phần Gradio, xác định các sự kiện và đính kèm các hàm vào các sự kiện này.</p>
+<ul>
+<li>Bạn có thể chọn và thêm các thành phần vào giao diện của mình trong khi xem trước các thay đổi giao diện trong thời gian thực.</li>
+<li>Bạn thậm chí có thể thêm trình lắng nghe sự kiện một cách trực quan vào các thành phần của mình. Toàn bộ mã ứng dụng được tạo tự động từ các thiết kế giao diện trực quan của bạn.</li>
+<li>Gradio Sketch bao gồm một tính năng tạo mã cho phép bạn tạo mã cho các hàm suy luận của mình.</li>
+<li>Hơn nữa, người dùng có thể lặp lại nhiều lời nhắc để có được chính xác mã mà họ muốn.</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://github.com/gradio-app/gradio/pull/10630">Khám phá Gradio Sketch</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Bạn cần viết mã để xây dựng bố cục của mình cho tất cả các framework Python khác.</li>
+<li>Gradio sketch làm giảm đường cong học tập cho những người không viết mã. Nó tăng tốc đáng kể quá trình phát triển ứng dụng cho mọi người và do đó giúp dân chủ hóa AI.</li>
+</ul>
+<h3 id="11-hỗ-trợ-ứng-dụng-web-lũy-tiến-pwa">11. Hỗ trợ ứng dụng web lũy tiến (PWA)</h3>
+<p>Gradio cung cấp các khả năng Ứng dụng Web lũy tiến. PWA là các ứng dụng web là các trang web hoặc trang web thông thường nhưng có thể xuất hiện với người dùng như các ứng dụng dành riêng cho nền tảng có thể cài đặt.</p>
+<ul>
+<li>Bạn có thể tạo các ứng dụng ML cho Thiết bị di động và Máy tính để bàn mà không cần cung cấp thêm cấu hình.</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/sharing-your-app#progressive-web-app-pwa">Tìm hiểu về Hỗ trợ PWA</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Hầu hết các framework Python khác thiếu hỗ trợ PWA gốc. Bạn sẽ phải định cấu hình PWA trong hầu hết các framework web phổ biến theo cách thủ công</li>
+<li>Khả năng Gradio này giúp các ứng dụng ML dễ tiếp cận hơn với quyền truy cập của người dùng rộng hơn. Bạn có thể tạo ứng dụng dành cho thiết bị di động ngay lập tức với biểu tượng bạn chọn mà không cần thêm nỗ lực phát triển.</li>
+</ul>
+<h3 id="12-thực-thi-trong-trình-duyệt-với-gradio-lite">12. Thực thi trong trình duyệt với Gradio Lite</h3>
+<p>Gradio Lite cho phép thực thi phía trình duyệt thông qua Pyodide (WebAssembly). Bạn có thể xây dựng bản demo ML bằng các dịch vụ suy luận mô hình phía máy khách như Transformers.js và ONNX.</p>
+<ul>
+<li>Nâng cao quyền riêng tư (tất cả dữ liệu đều ở trong trình duyệt của người dùng)</li>
+<li>Chi phí máy chủ bằng không để triển khai!</li>
+<li>Suy luận mô hình có khả năng ngoại tuyến</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/gradio-lite">Khám phá Gradio Lite</a>, <a href="https://www.gradio.app/guides/gradio-lite-and-transformers-js">Tìm hiểu về tích hợp Transformers.js</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Hầu hết các framework Python khác yêu cầu hoạt động liên tục của máy chủ. Đồng thời, các framework Web phổ biến cần các triển khai JavaScript riêng biệt cho phụ trợ</li>
+<li>Có các nền tảng trang web tĩnh không cần phụ trợ máy chủ, nhưng chúng cung cấp tương tác rất hạn chế hoặc cơ bản</li>
+<li>Gradio cho phép triển khai không cần máy chủ các ứng dụng ML Python. Với Gradio Lite, ngay cả các dịch vụ lưu trữ tệp tĩnh (như GitHub Pages) cũng có thể lưu trữ các ứng dụng ML hoàn chỉnh. Gradio Lite đã định vị một cách độc đáo Gradio để cung cấp ứng dụng ML trên thiết bị hoặc trên cạnh</li>
+</ul>
+<h3 id="13-phát-triển-nhanh-chóng-với-các-công-cụ-hỗ-trợ-ai">13. Phát triển nhanh chóng với các công cụ hỗ trợ AI</h3>
+<p>Gradio đã giới thiệu các tính năng cải tiến giúp tăng tốc đáng kể chu kỳ phát triển ứng dụng ML.</p>
+<ul>
+<li>Gradio cung cấp khả năng tải lại nóng để cập nhật mã tức thì trong UI Gradio của bạn trong quá trình phát triển.</li>
+<li>Chúng tôi cũng cung cấp <a href="https://www.gradio.app/playground">AI Playground</a> để tạo ứng dụng dựa trên ngôn ngữ tự nhiên.</li>
+<li>Bạn có thể nhanh chóng tạo nguyên mẫu ứng dụng trong một dòng duy nhất bằng cách tích hợp với HuggingFace và <a href="https://huggingface.co/blog/inference-providers">nhà cung cấp suy luận</a>. Điều này cũng có thể đạt được với bất kỳ điểm cuối API nào tương thích với OpenAI. Bạn có thể hoàn thành tất cả điều này chỉ bằng cách sử dụng gr.load()</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://github.com/gradio-app/gradio/issues/9463">Đọc về các cải tiến gần đây với Gradio 5</a>, <a href="https://www.gradio.app/guides/using-hugging-face-integrations">Tạo nguyên mẫu với Huggingface</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Hầu hết các framework Python khác sẽ yêu cầu làm mới thủ công để cập nhật mã trong khi phát triển ứng dụng. Điều tương tự cũng xảy ra với hầu hết các framework Web — bạn cần các đường ống xây dựng phức tạp và máy chủ phát triển.</li>
+<li>Với AI Playground, Gradio cung cấp phản hồi UI tức thì và phát triển được hỗ trợ bởi AI. Trọng tâm này vào phát triển nhanh chóng và các công cụ được hỗ trợ bởi AI cho phép các nhà nghiên cứu và nhà phát triển tạo và sửa đổi các ứng dụng ML một cách nhanh chóng.</li>
+</ul>
+<h3 id="14-chia-sẻ-ứng-dụng-dễ-dàng">14. Chia sẻ ứng dụng dễ dàng</h3>
+<p>Khi ứng dụng Gradio của bạn đã sẵn sàng, bạn có thể chia sẻ ứng dụng đó mà không cần lo lắng về độ phức tạp của việc triển khai hoặc lưu trữ.</p>
+<ul>
+<li>Bạn có thể tạo URL công khai tức thì chỉ bằng cách đặt một tham số: <code>demo.launch(share=True)</code>. Ứng dụng có thể truy cập được trên một miền duy nhất theo định dạng <code>xxxxx.gradio.live</code> trong khi vẫn giữ cho mã và mô hình của bạn chạy trong môi trường cục bộ</li>
+<li>Các liên kết chia sẻ này có thời gian chờ 168 giờ (1 tuần) trên máy chủ chia sẻ chính thức của Gradio</li>
+<li>Bạn có thể tạo URL công khai tức thì chỉ bằng cách đặt một tham số: <code>demo.launch(share=True)</code>. Ứng dụng có thể truy cập trên miền <code>*.gradio.live</code> trong 1 tuần.</li>
+<li>Liên kết chia sẻ tạo một đường hầm TLS an toàn đến ứng dụng đang chạy cục bộ của bạn thông qua máy chủ chia sẻ của Gradio bằng Fast Reverse Proxy (FRP)</li>
+<li>Đối với các triển khai doanh nghiệp hoặc các tình huống yêu cầu miền tùy chỉnh hoặc các biện pháp bảo mật bổ sung, bạn có thể lưu trữ máy chủ FRP của riêng mình để tránh thời gian chờ 1 tuần</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/quickstart#sharing-your-demo">Tìm hiểu về Chia sẻ nhanh</a>, <a href="https://www.gradio.app/guides/understanding-gradio-share-links">Liên kết chia sẻ và Máy chủ chia sẻ</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Các framework Python khác yêu cầu triển khai đám mây và nhiều cấu hình để chia sẻ ứng dụng của bạn với công chúng. Đối với framework Web, bạn cần thiết lập máy chủ và lưu trữ thủ công.</li>
+<li>Gradio cung cấp chia sẻ tức thì từ môi trường phát triển cục bộ của bạn mà không cần tạo bất kỳ quy trình triển khai nào, định cấu hình máy chủ để lưu trữ hoặc bất kỳ chuyển tiếp cổng nào. Điều này cung cấp khả năng cộng tác hoặc trình diễn ngay lập tức cho cộng đồng.</li>
+<li>Với hơn 5.000 ứng dụng Gradio được chia sẻ thông qua các liên kết chia sẻ tại bất kỳ thời điểm nào, phương pháp này là lý tưởng để tạo nguyên mẫu nhanh chóng và thu thập phản hồi ngay lập tức về ứng dụng máy học của bạn</li>
+</ul>
+<h3 id="15-bảo-mật-cấp-doanh-nghiệp-và-khả-năng-sẵn-sàng-sản-xuất">15. Bảo mật cấp doanh nghiệp và khả năng sẵn sàng sản xuất</h3>
+<p>Gradio đã phát triển từ một công cụ tạo nguyên mẫu thành một framework sẵn sàng sản xuất với các biện pháp bảo mật toàn diện. Các cải tiến gần đây của chúng tôi bao gồm:</p>
+<ul>
+<li>Kiểm tra bảo mật của bên thứ ba từ Trail of Bits và đánh giá lỗ hổng của các ứng dụng xây dựng Gradio.</li>
+<li>Dựa trên phản hồi nhận được từ kiểm toán viên bảo mật của chúng tôi, chúng tôi đã tăng cường xử lý tệp và kiểm soát tải lên. Giờ đây, chúng tôi có các cài đặt bảo mật có thể định cấu hình thông qua các biến môi trường trực quan. Ví dụ: bạn có thể kiểm soát quyền truy cập vào đường dẫn tệp thông qua GRADIO_ALLOWED_PATHS và kết xuất phía máy chủ thông qua GRADIO_SSR_MODE</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://huggingface.co/blog/gradio-5-security">Đọc về Cải thiện bảo mật</a>, <a href="https://www.gradio.app/guides/environment-variables#:~:text=10.%20">Khám phá Biến môi trường</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Hầu hết các framework Python khác thường tập trung vào các kịch bản phát triển hơn là bảo mật sản xuất. Các framework Web điển hình của bạn cung cấp bảo mật chung mà không cần xem xét đến ML.</li>
+<li>Với Gradio, bạn có được bảo mật chuyên dụng cho các kịch bản triển khai ML, xử lý tải lên tệp được bảo vệ cho đầu vào mô hình ML và xử lý i/o mô hình được làm sạch.</li>
+<li>Những cải tiến ở cấp độ sản xuất này làm cho Gradio phù hợp với việc triển khai ML doanh nghiệp trong khi vẫn duy trì tính đơn giản của nó để phát triển nhanh chóng. Framework Gradio hiện cung cấp các mặc định bảo mật mạnh mẽ đồng thời cung cấp khả năng kiểm soát chi tiết cho các yêu cầu triển khai cụ thể.</li>
+</ul>
+<h3 id="16-thành-phần-dataframe-nâng-cao">16. Thành phần Dataframe nâng cao</h3>
+<p>Thành phần dataframe được cập nhật của Gradio giải quyết các nhu cầu trực quan hóa dữ liệu phổ biến trong các ứng dụng ML với các cải tiến thực tế:</p>
+<ul>
+<li>Chọn nhiều ô</li>
+<li>Số hàng và ghim cột để điều hướng các tập dữ liệu lớn</li>
+<li>Chức năng tìm kiếm và lọc để khám phá dữ liệu</li>
+<li>Các cột tĩnh (không thể chỉnh sửa)</li>
+<li>Cải thiện khả năng truy cập với điều hướng bàn phím tốt hơn</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://huggingface.co/blog/gradio-dataframe-upgrade">Giới thiệu Dataframe mới của Gradio!</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Các framework khác thường yêu cầu thư viện JavaScript cho các chức năng tương tự</li>
+<li>Gradio triển khai các tính năng này trong khi vẫn duy trì API Python đơn giản</li>
+<li>Những cải tiến này hỗ trợ các quy trình làm việc ML thực tế như khám phá dữ liệu và bảng điều khiển tương tác</li>
+</ul>
+<h3 id="17-liên-kết-sâu-để-chia-sẻ-trạng-thái-ứng-dụng">17. Liên kết sâu để chia sẻ trạng thái ứng dụng</h3>
+<p>Tính năng <em>Liên kết sâu</em> của Gradio cho phép người dùng nắm bắt và chia sẻ trạng thái chính xác của một ứng dụng:</p>
+<ul>
+<li>Chia sẻ đầu ra mô hình duy nhất của bạn với người khác</li>
+<li>Tạo ảnh chụp nhanh ứng dụng của bạn tại các thời điểm cụ thể</li>
+<li>Triển khai với một thành phần <code>gr.DeepLinkButton</code> duy nhất</li>
+<li>Hoạt động với mọi ứng dụng Gradio công khai (được lưu trữ hoặc sử dụng <code>share=True</code>)</li>
+</ul>
+<p><strong>Đọc thêm:</strong> <a href="https://www.gradio.app/guides/sharing-your-app#sharing-deep-links">Sử dụng Liên kết sâu</a></p>
+<p><strong>Điều gì làm nên sự khác biệt của Gradio:</strong></p>
+<ul>
+<li>Hầu hết các framework đều yêu cầu mã quản lý trạng thái tùy chỉnh để đạt được chức năng tương tự</li>
+<li>Liên kết sâu hoạt động trên tất cả các thành phần Gradio một cách tự động</li>
+<li>Cho phép chia sẻ đầu ra được tạo mà không cần thêm nỗ lực triển khai!</li>
+</ul>
+<h3 id="kết-luận">Kết luận</h3>
+<p>Gradio đã phát triển từ một công cụ demo thành một framework tập trung vào AI, cho phép các nhà phát triển xây dựng các ứng dụng web hoàn chỉnh bằng Python mà không yêu cầu chuyên môn về phát triển web.</p>
+<p>Các cải tiến trong Gradio 4 và 5, chẳng hạn như chuyển đổi từ Python sang JavaScript, hàng đợi tích hợp cho các mô hình chuyên sâu về tài nguyên, truyền phát âm thanh video thời gian thực với FastRTC và kết xuất phía máy chủ, cung cấp các khả năng mà nếu không sẽ yêu cầu công việc triển khai rộng rãi trong các framework khác.</p>
+<p>Bằng cách xử lý các mối quan tâm về cơ sở hạ tầng như tạo điểm cuối API, lỗ hổng bảo mật và quản lý hàng đợi, Gradio cho phép các chuyên gia ML tập trung vào phát triển mô hình trong khi vẫn cung cấp các giao diện người dùng bóng bẩy. Framework Gradio hỗ trợ cả tạo mẫu nhanh chóng và các kịch bản triển khai sản xuất thông qua cùng một codebase Python.</p>
+<p>Chúng tôi mời bạn <strong>dùng thử Gradio</strong> cho dự án ML tiếp theo của bạn và trực tiếp trải nghiệm lý do tại sao nó không chỉ là một thư viện UI thông thường. Cho dù bạn là nhà nghiên cứu, nhà phát triển hay người đam mê ML, Gradio đều cung cấp các công cụ cho mọi người.</p>
+<p><a href="https://www.gradio.app/guides/quickstart">Khám phá khả năng của Gradio!</a></p>
+<h3 id="link-bài-báo-gốc"><a href="https://huggingface.co/blog/why-gradio-stands-out">Link bài báo gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/april-16-2025/">April 16, 2025</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/f19d1f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/inference-providers-cohere/thumbnail.png" alt="Cohere trên các nhà cung cấp suy luận Hugging Face 🔥" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cohere trên các nhà cung cấp suy luận Hugging Face 🔥</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Cohere trên các nhà cung cấp suy luận Hugging Face.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/761d67/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/helmet/thumbnail.png" alt="Giới thiệu HELMET" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu HELMET</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu HELMET.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/ac4fc5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/why-gradio-stands-out/thumbnail.png" alt="17 lý do tại sao Gradio không chỉ là một thư viện UI khác" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">17 lý do tại sao Gradio không chỉ là một thư viện UI khác</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/53b449/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/google-5x-data-1280-720.png?w=350&amp;h=175&amp;crop=1" alt="BigQuery lớn hơn 5 lần so với Snowflake và Databricks Google đang làm gì để làm cho nó tốt hơn nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">BigQuery lớn hơn 5 lần so với Snowflake và Databricks Google đang làm gì để làm cho nó tốt hơn nữa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/6f9241/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/Capital-One-hero.png?w=350&amp;h=175&amp;crop=1" alt="Cách mã hóa lại dữ liệu đang tái tạo bảo mật dữ liệu trong kỷ nguyên AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách mã hóa lại dữ liệu đang tái tạo bảo mật dữ liệu trong kỷ nguyên AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/c8a36b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://scontent.fhan15-2.fna.fbcdn.net/v/t39.2365-6/492216842_576463918172339_3408275426150658552_n.png?_nc_cat=107&amp;ccb=1-7&amp;_nc_sid=e280be&amp;_nc_ohc=_mkRDzBZ93cQ7kNvwFB3ECK&amp;_nc_oc=AdmW_dBLMWf4lNNbwDrQDlc39xLK-KZDzpEgwqlJPV9qeccSsBM-8-YRcxCaoY_9T1k2xufc7GkFzi8UxGwUqwol&amp;_nc_zt=14&amp;_nc_ht=scontent.fhan15-2.fna&amp;_nc_gid=bxKVrJZc-I1NQYfARbWnzQ&amp;oh=00_AfHitfPRtZX-kZOAi2C5F39EnnrWDNtXV8CCo4JYQUi91Q&amp;oe=681DD416" alt="Cải tiến hệ thống AI thông qua tiến bộ trong nhận thức, định vị và suy luận" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cải tiến hệ thống AI thông qua tiến bộ trong nhận thức, định vị và suy luận</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/f19d1f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/inference-providers-cohere/thumbnail.png" alt="Cohere trên các nhà cung cấp suy luận Hugging Face 🔥" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cohere trên các nhà cung cấp suy luận Hugging Face 🔥</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

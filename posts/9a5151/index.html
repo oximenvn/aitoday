@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Giới thiệu Gemini 2.5 Flash | AI Today - SkyAI</title>
+
+<meta name="description" content="Mo ta">
+    <link rel="stylesheet" href="/css/main.css">
+
+<link rel="icon" type="image/svg+xml" href="http://localhost:1313/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="http://localhost:1313/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="http://localhost:1313/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="http://localhost:1313/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="http://localhost:1313/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="http://localhost:1313/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Giới thiệu Gemini 2.5 Flash</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Mo ta </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-04-19T00:00:00&#43;00:00">April 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            6 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/oLv3Jl8j5l64yXU6YCE-238fqaeNuq9DOmOhksHZwUjJNDlB18xVehDswPohGRaN1cdArPSFA5cdZsXSqhFU-Jy5F6THyhGfo9L_QkZfNQDeKzxP2S8=w400-h225-n-nu" alt="Giới thiệu Gemini 2.5 Flash">
+        <figcaption class="text-center italic text-xs">Mo ta</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="tóm-tắt-và-dịch-bài-báo-gốc">Tóm tắt và dịch bài báo gốc</h1>
+<h2 id="tóm-tắt-tiếng-việt">Tóm tắt tiếng Việt:</h2>
+<p>Dưới đây là bản dịch tiếng Việt của bài viết, đã loại bỏ các thông tin không liên quan và giữ lại hình ảnh và code mẫu:</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>    &lt;title&gt;
+        
+        Bắt đầu xây dựng với Gemini 2.5 Flash
+        
+        
+        - Google Developers Blog
+        
+    &lt;/title&gt;
+    &lt;meta property=&quot;og:title&quot; content=&quot;Bắt đầu xây dựng với Gemini 2.5 Flash- Google Developers Blog&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+    
+&lt;meta name=&quot;description&quot; content=&quot;Gemini 2.5 Flash hiện đang ở bản xem trước, cung cấp khả năng suy luận được cải thiện đồng thời ưu tiên tốc độ và hiệu quả chi phí cho các nhà phát triển.&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>      { &quot;@type&quot;: &quot;Person&quot;, &quot;name&quot;: &quot;Tulsee Doshi&quot;, &quot;url&quot;: &quot;/en/search/?author=Tulsee+Doshi&quot; }
+    
+    
+  ]
+}
+</code></pre>
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;!-- Google Tag Manager --&gt;
+    &lt;script type=&quot;text/javascript&quot; nonce=&quot;PKT4qMpOo15Z38saRMlR1g==&quot; src=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-cms-assets/site/20250401-180100/js/analytics.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- End Google Tag Manager --&gt;
+
+    
+    &lt;link href=&quot;//www.gstatic.com/glue/v27_1/glue.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-cms-assets/site/20250401-180100/css/dgc_blog.css&quot;&gt;
+    &lt;link rel=&quot;icon&quot; href=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-assets/meta/favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;link rel=&quot;apple-touch-icon&quot; href=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-assets/meta/apple-touch-icon.png&quot;&gt;
+
+    
+			&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+			&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+			&lt;link rel=&quot;preload&quot; href=&quot;https://fonts.googleapis.com/css2?family=Product+Sans&amp;family=Google+Sans+Display:ital@0;1&amp;family=Google+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;family=Google+Sans+Text:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;display=swap&quot; as=&quot;style&quot;&gt;
+			&lt;link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/css2?family=Product+Sans&amp;family=Google+Sans+Display:ital@0;1&amp;family=Google+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;family=Google+Sans+Text:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;display=swap&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/css2?family=Roboto:wght@400&amp;display=swap&quot;&gt;
+
+    
+    &lt;link href=&quot;https://www.gstatic.com/glue/cookienotificationbar/cookienotificationbar.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>&lt;/head&gt;
+
+&lt;body id=&quot;main-content&quot; class=&quot;glue-body &quot;&gt;
+    &lt;!-- Google Tag Manager (noscript) --&gt;
+    &lt;noscript&gt;&lt;iframe src=&quot;https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL &quot;
+    height=&quot;0&quot; width=&quot;0&quot; style=&quot;display:none;visibility:hidden&quot;&gt;&lt;/iframe&gt;&lt;/noscript&gt;
+    &lt;!-- End Google Tag Manager (noscript) --&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>  &lt;section class=&quot;tags-container glue-page glue-spacer-5-top&quot;&gt;
+    &lt;div class=&quot;glue-eyebrow&quot;&gt;&lt;a href=&quot;/en/search/?product_categories=Gemini&quot;&gt;Gemini&lt;/a&gt; / &lt;a href=&quot;/en/search/?product_categories=Google+AI+Studio&quot;&gt;Google AI Studio&lt;/a&gt;&lt;/div&gt;
+  &lt;/section&gt;
+
+
+&lt;section class=&quot;heading-container glue-page  glue-spacer-1-top&quot;&gt;
+  &lt;h1 class=&quot;glue-headline glue-headline--headline-1&quot;&gt;Bắt đầu xây dựng với Gemini 2.5 Flash&lt;/h1&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;summary-container glue-page glue-spacer-4-top&quot;&gt;
+  &lt;div class=&quot;date-time&quot;&gt;
+    &lt;div class=&quot;published-date glue-font-weight-medium&quot;&gt;17 THÁNG 4, 2025&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;glue-page glue-grid glue-spacer-1-top&quot;&gt;
+
+  &lt;section class=&quot;author-container glue-grid__col glue-grid__col--span-4-sm glue-grid__col--span-10-md&quot;&gt;
+  
+    
+      &lt;div class=&quot;author-obj&quot;&gt;
+        &lt;a class=&quot;glue-font-weight-medium&quot; href=&quot;/en/search/?author=Tulsee+Doshi&quot;&gt;Tulsee Doshi&lt;/a&gt;
+        
+          &lt;span class=&quot;glue-font-weight-medium role&quot;&gt;Giám đốc Quản lý Sản phẩm&lt;/span&gt;
+        
+        
+          &lt;span class=&quot;glue-font-weight-medium team&quot;&gt;Gemini&lt;/span&gt;
+        
+      &lt;/div&gt;
+    
+
+  
+  &lt;/section&gt;
+&lt;/section&gt;
+
+
+&lt;section class=&quot;blocks-container glue-page glue-spacer-3-top&quot;&gt;
+  &lt;div class=&quot;block&quot;&gt;
+</code></pre>
+<p><!-- raw HTML omitted -->  <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->Hôm nay, chúng tôi đang triển khai phiên bản đầu tiên của <!-- raw HTML omitted -->Gemini 2.5 Flash<!-- raw HTML omitted --> ở chế độ <!-- raw HTML omitted -->xem trước<!-- raw HTML omitted --> thông qua Gemini API qua <!-- raw HTML omitted -->Google AI Studio<!-- raw HTML omitted --> và <!-- raw HTML omitted -->Vertex AI<!-- raw HTML omitted -->. Dựa trên nền tảng phổ biến của 2.0 Flash, phiên bản mới này mang đến một nâng cấp lớn về khả năng suy luận, đồng thời vẫn ưu tiên tốc độ và chi phí. Gemini 2.5 Flash là mô hình suy luận kết hợp hoàn toàn đầu tiên của chúng tôi, cho phép các nhà phát triển bật hoặc tắt khả năng tư duy. Mô hình này cũng cho phép các nhà phát triển thiết lập ngân sách tư duy để tìm ra sự đánh đổi phù hợp giữa chất lượng, chi phí và độ trễ. Ngay cả khi <!-- raw HTML omitted -->tắt tư duy,<!-- raw HTML omitted --> các nhà phát triển vẫn có thể duy trì tốc độ nhanh của 2.0 Flash và cải thiện hiệu suất.<!-- raw HTML omitted --><!-- raw HTML omitted -->Các mô hình Gemini 2.5 của chúng tôi là các mô hình tư duy, có khả năng suy luận thông qua suy nghĩ của chúng trước khi phản hồi. Thay vì tạo ra kết quả ngay lập tức, mô hình có thể thực hiện một quy trình &ldquo;tư duy&rdquo; để hiểu rõ hơn về lời nhắc, chia nhỏ các tác vụ phức tạp và lên kế hoạch phản hồi. Đối với các tác vụ phức tạp đòi hỏi nhiều bước suy luận (như giải các bài toán hoặc phân tích các câu hỏi nghiên cứu), quy trình tư duy cho phép mô hình đưa ra các câu trả lời chính xác và toàn diện hơn. Trên thực tế, Gemini 2.5 Flash hoạt động mạnh mẽ trên <!-- raw HTML omitted -->Hard Prompts in LMArena<!-- raw HTML omitted -->, chỉ đứng sau 2.5 Pro.<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>        &lt;img
+            class=&quot;regular-image&quot;
+            src=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/gemini_2-5_flashcomp_benchmarks_dark2x.original.png&quot;
+            alt=&quot;Bảng so sánh hiển thị các số liệu về giá cả và hiệu suất cho LLM&quot;
+        /&gt;
+    
+    
+        
+            &lt;div class=&quot;regular-image-description&quot;&gt;
+                2.5 Flash có các số liệu tương đương với các mô hình hàng đầu khác với một phần nhỏ chi phí và kích thước.
+            &lt;/div&gt;
+        
+    
+&lt;/div&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>        &lt;img
+            class=&quot;regular-image&quot;
+            src=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/Gemini-2.5-Flash-price-to-performance-compariso.original.png&quot;
+            alt=&quot;So sánh giá trên hiệu suất của Gemini 2.5 Flash&quot;
+        /&gt;
+    
+    
+        
+            &lt;div class=&quot;regular-image-description&quot;&gt;
+                Gemini 2.5 Flash thêm một mô hình khác vào biên Pareto về chi phí so với chất lượng của Google.*
+            &lt;/div&gt;
+        
+    
+&lt;/div&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>        &lt;img
+            class=&quot;regular-image&quot;
+            src=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/gemini_s_b_s_scaling_graphs.original.png&quot;
+            alt=&quot;Đồ thị lô cho thấy sự cải thiện về chất lượng suy luận khi ngân sách tư duy tăng lên&quot;
+        /&gt;
+    
+    
+        
+            &lt;div class=&quot;regular-image-description&quot;&gt;
+                Cải thiện chất lượng suy luận khi ngân sách tư duy tăng lên.
+            &lt;/div&gt;
+        
+    
+&lt;/div&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->client<!-- raw HTML omitted --> <!-- raw HTML omitted -->=<!-- raw HTML omitted --> <!-- raw HTML omitted -->genai<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->Client<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->api_key<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->&quot;GEMINI_API_KEY&quot;<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->response<!-- raw HTML omitted --> <!-- raw HTML omitted -->=<!-- raw HTML omitted --> <!-- raw HTML omitted -->client<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->models<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->generate_content<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->model<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->&quot;gemini-2.5-flash-preview-04-17&quot;<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->contents<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->&quot;You roll two dice. What’s the probability they add up to 7?&quot;<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->config<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->genai<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->types<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->GenerateContentConfig<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->thinking_config<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->genai<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->types<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->ThinkingConfig<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->thinking_budget<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->1024<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->)<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->)<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->)<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->print<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->response<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->text<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<pre><code>&lt;section class=&quot;navigation-container glue-page glue-spacer-6-top&quot;&gt;
+  &lt;div class=&quot;posted-in-section&quot;&gt;
+    &lt;div class=&quot;posted-in-section__heading&quot;&gt;
+      &lt;span class=&quot;glue-caption&quot;&gt;
+        được đăng trong:
+      &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;posted-in-section__tags&quot;&gt;
+      &lt;ul&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?product_categories=Gemini&quot; class=&quot;glue-caption&quot;&gt;Gemini&lt;/a&gt;
+              &lt;/li&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?product_categories=Google+AI+Studio&quot; class=&quot;glue-caption&quot;&gt;Google AI Studio&lt;/a&gt;
+              &lt;/li&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?technology_categories=AI&quot; class=&quot;glue-caption&quot;&gt;AI&lt;/a&gt;
+              &lt;/li&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?content_type_categories=Announcements&quot; class=&quot;glue-caption&quot;&gt;Thông báo&lt;/a&gt;
+              &lt;/li&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?content_type_categories=Industry+Trends&quot; class=&quot;glue-caption&quot;&gt;Xu hướng ngành&lt;/a&gt;
+              &lt;/li&gt;
+          
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?tag=Gemini API&quot; class=&quot;glue-caption&quot;&gt;Gemini API&lt;/a&gt;
+              &lt;/li&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?tag=Generative AI&quot; class=&quot;glue-caption&quot;&gt;AI tạo sinh&lt;/a&gt;
+              &lt;/li&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?tag=Explore&quot; class=&quot;glue-caption&quot;&gt;Khám phá&lt;/a&gt;
+              &lt;/li&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?tag=LLMs&quot; class=&quot;glue-caption&quot;&gt;LLMs&lt;/a&gt;
+              &lt;/li&gt;
+          
+              &lt;li&gt;
+                  &lt;a href=&quot;/en/search/?tag=Developer Tools&quot; class=&quot;glue-caption&quot;&gt;Công cụ dành cho nhà phát triển&lt;/a&gt;
+              &lt;/li&gt;
+          
+      &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;buttons-section&quot;&gt;
+    &lt;div class=&quot;buttons-section__left&quot;&gt;
+      &lt;a href=&quot;&quot; class=&quot;glue-button--icon glue-elevation-level-1 disabled&quot; aria-label=&quot;Trước&quot;&gt;
+        &lt;svg role=&quot;presentation&quot; aria-hidden=&quot;true&quot; class=&quot;glue-icon&quot;&gt;
+          &lt;use href=&quot;/glue-icon/#chevron-left&quot;&gt;&lt;/use&gt;
+        &lt;/svg&gt;
+      &lt;/a&gt;
+      &lt;span class=&quot;caption disabled&quot;&gt;Trước&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;buttons-section__right&quot;&gt;
+      &lt;span class=&quot;caption &quot;&gt;Tiếp theo&lt;/span&gt;
+      &lt;a href=&quot;/en/google-martech-solutions-putting-generative-ai-in-marketing/&quot; class=&quot;glue-button--icon glue-elevation-level-1 &quot;  aria-label=&quot;Tiếp theo&quot;&gt;
+        &lt;svg role=&quot;presentation&quot; aria-hidden=&quot;true&quot; class=&quot;glue-icon&quot;&gt;
+          &lt;use href=&quot;/glue-icon/#chevron-right&quot;&gt;&lt;/use&gt;
+        &lt;/svg&gt;
+      &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+
+&lt;section class=&quot;related-posts-container glue-page glue-spacer-6-top glue-spacer-3-bottom&quot;&gt;
+  &lt;span class=&quot;glue-headline glue-headline--headline-3&quot;&gt;Bài viết liên quan&lt;/span&gt;
+  &lt;div class=&quot;related-posts-container__carousel glue-page glue-spacer-5-top&quot;&gt;
+    &lt;div class=&quot;glue-carousel glue-carousel--cards glue-carousel-related-posts&quot; aria-label=&quot;Bài viết liên quan&quot;&gt;
+      &lt;!-- Previous --&gt;
+      &lt;button class=&quot;glue-carousel__button glue-carousel__button--prev&quot;
+          aria-label=&quot;Đi đến slide trước&quot;&gt;
+        &lt;svg role=&quot;presentation&quot; aria-hidden=&quot;true&quot; class=&quot;glue-icon glue-icon--32px&quot;&gt;
+          &lt;use href=&quot;/glue-icon/#chevron-left&quot;&gt;&lt;/use&gt;
+        &lt;/svg&gt;
+      &lt;/button&gt;
+      &lt;!-- Next --&gt;
+      &lt;button class=&quot;glue-carousel__button glue-carousel__button--next&quot;
+          aria-label=&quot;Đi đến slide tiếp theo&quot;&gt;
+        &lt;svg role=&quot;presentation&quot; aria-hidden=&quot;true&quot; class=&quot;glue-icon glue-icon--32px&quot;&gt;
+          &lt;use href=&quot;/glue-icon/#chevron-right&quot;&gt;&lt;/use&gt;
+        &lt;/svg&gt;
+      &lt;/button&gt;
+      &lt;!-- List --&gt;
+      &lt;div class=&quot;glue-carousel__viewport&quot;&gt;
+        &lt;div class=&quot;glue-carousel__list&quot;&gt;
+          
+            &lt;a class=&quot;glue-card glue-carousel__item&quot; href=&quot;/en/google-martech-solutions-putting-generative-ai-in-marketing/&quot;&gt;
+              &lt;div aria-label=&quot;Ba giải pháp MarTech đưa AI tạo sinh vào hoạt động tiếp thị&quot; class=&quot;glue-card__inner&quot;&gt;
+                &lt;picture class=&quot;glue-card__asset&quot;&gt;
+                  &lt;img alt=&quot;Ba giải pháp MarTech đưa AI tạo sinh vào hoạt động tiếp thị&quot; src=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/MarchTech-Blog1-A-Meta.2e16d0ba.fill-800x400.png&quot;&gt;
+                &lt;/picture&gt;
+                &lt;div class=&quot;glue-card__content&quot;&gt;
+                  &lt;div class=&quot;glue-card__tags glue-spacer-2-top&quot;&gt;
+                    
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Cloud&lt;/span&gt;
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Gemini&lt;/span&gt;
+                        
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;AI&lt;/span&gt;
+                        
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Nghiên cứu điển hình&lt;/span&gt;
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Kinh doanh và Lãnh đạo&lt;/span&gt;
+                        
+                    
+                  &lt;/div&gt;
+                  &lt;p class=&quot;glue-headline glue-headline--headline-5&quot;&gt;Ba giải pháp MarTech đưa AI tạo sinh vào hoạt động tiếp thị&lt;/p&gt;
+                  &lt;div class=&quot;glue-card__cta-custom glue-spacer-3-top&quot;&gt;
+                    &lt;span class=&quot;glue-cta&quot;&gt;16 THÁNG 4, 2025&lt;/span&gt;
+                    &lt;svg aria-hidden=&quot;true&quot; class=&quot;glue-icon glue-icon--24px&quot; role=&quot;presentation&quot;&gt;
+                      &lt;use href=&quot;/glue-icon/#arrow-forward&quot;&gt;&lt;/use&gt;
+                    &lt;/svg&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/a&gt;
+          
+            &lt;a class=&quot;glue-card glue-carousel__item&quot; href=&quot;/en/gemma-3-quantized-aware-trained-state-of-the-art-ai-to-consumer-gpus/&quot;&gt;
+              &lt;div aria-label=&quot;Gemma 3 QAT Models: Đưa AI tiên tiến nhất đến GPU tiêu dùng&quot; class=&quot;glue-card__inner&quot;&gt;
+                &lt;picture class=&quot;glue-card__asset&quot;&gt;
+                  &lt;img alt=&quot;Gemma 3 QAT Models: Đưa AI tiên tiến nhất đến GPU tiêu dùng&quot; src=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/Gemma3_Quantized-meta.2e16d0ba.fill-800x400.png&quot;&gt;
+                &lt;/picture&gt;
+                &lt;div class=&quot;glue-card__content&quot;&gt;
+                  &lt;div class=&quot;glue-card__tags glue-spacer-2-top&quot;&gt;
+                    
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Gemma&lt;/span&gt;
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;AI Edge&lt;/span&gt;
+                        
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;AI&lt;/span&gt;
+                        
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Thông báo&lt;/span&gt;
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Xu hướng ngành&lt;/span&gt;
+                        
+                    
+                  &lt;/div&gt;
+                  &lt;p class=&quot;glue-headline glue-headline--headline-5&quot;&gt;Gemma 3 QAT Models: Đưa AI tiên tiến nhất đến GPU tiêu dùng&lt;/p&gt;
+                  &lt;div class=&quot;glue-card__cta-custom glue-spacer-3-top&quot;&gt;
+                    &lt;span class=&quot;glue-cta&quot;&gt;18 THÁNG 4, 2025&lt;/span&gt;
+                    &lt;svg aria-hidden=&quot;true&quot; class=&quot;glue-icon glue-icon--24px&quot; role=&quot;presentation&quot;&gt;
+                      &lt;use href=&quot;/glue-icon/#arrow-forward&quot;&gt;&lt;/use&gt;
+                    &lt;/svg&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/a&gt;
+          
+            &lt;a class=&quot;glue-card glue-carousel__item&quot; href=&quot;/en/making-it-easier-to-build-with-the-gemini-api-in-google-ai-studio/&quot;&gt;
+              &lt;div aria-label=&quot;Giúp bạn dễ dàng xây dựng hơn với Gemini API trong Google AI Studio&quot; class=&quot;glue-card__inner&quot;&gt;
+                &lt;picture class=&quot;glue-card__asset&quot;&gt;
+                  &lt;img alt=&quot;Giúp bạn dễ dàng xây dựng hơn với Gemini API trong Google AI Studio&quot; src=&quot;https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/GAIS-update-starter-apps-meta.2e16d0ba.fill-800x400.png&quot;&gt;
+                &lt;/picture&gt;
+                &lt;div class=&quot;glue-card__content&quot;&gt;
+                  &lt;div class=&quot;glue-card__tags glue-spacer-2-top&quot;&gt;
+                    
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Gemini&lt;/span&gt;
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Google AI Studio&lt;/span&gt;
+                        
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;AI&lt;/span&gt;
+                        
+                        
+                        &lt;span class=&quot;glue-label&quot;&gt;Thông báo&lt;/span&gt;
+                        
+                    
+                  &lt;/div&gt;
+                  &lt;p class=&quot;glue-headline glue-headline--headline-5&quot;&gt;Giúp bạn dễ dàng xây dựng hơn với Gemini API trong Google AI Studio&lt;/p&gt;
+                  &lt;div class=&quot;glue-card__cta-custom glue-spacer-3-top&quot;&gt;
+                    &lt;span class=&quot;glue-cta&quot;&gt;16 THÁNG 4, 2025&lt;/span&gt;
+                    &lt;svg aria-hidden=&quot;true&quot; class=&quot;glue-icon glue-icon--24px&quot; role=&quot;presentation&quot;&gt;
+                      &lt;use href=&quot;/glue-icon/#arrow-forward&quot;&gt;&lt;/use&gt;
+                    &lt;/svg&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/a&gt;
+          
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- Navigation dots --&gt;
+      &lt;div class=&quot;glue-carousel__navigation&quot; aria-label=&quot;Chọn một trang&quot;
+           data-glue-carousel-navigation-label=&quot;Đã chọn tab $glue_carousel_page_number$ trên $glue_carousel_page_total$&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<h2 id="link-bài-báo-gốc">Link bài báo gốc:</h2>
+<p><a href="https://developers.googleblog.com/en/start-building-with-gemini-25-flash/?utm_source=deepmind.google&amp;utm_medium=referral&amp;utm_campaign=gdm&amp;utm_content=">https://developers.googleblog.com/en/start-building-with-gemini-25-flash/?utm_source=deepmind.google&amp;utm_medium=referral&amp;utm_campaign=gdm&amp;utm_content=</a></p>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      <div id="comment" class="border p-8 bg-zinc-100 rounded-2xl">
+
+        <h2 class="text-xl font-semibold">Comment</h2>
+
+        <p>Disqus comment here</p></div>
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/#" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/#" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/#" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="http://localhost:1313/posts/9a5151/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/oLv3Jl8j5l64yXU6YCE-238fqaeNuq9DOmOhksHZwUjJNDlB18xVehDswPohGRaN1cdArPSFA5cdZsXSqhFU-Jy5F6THyhGfo9L_QkZfNQDeKzxP2S8=w400-h225-n-nu" alt="Giới thiệu Gemini 2.5 Flash" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Gemini 2.5 Flash</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="http://localhost:1313/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các thay đổi mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script src="/js/insertoggle.js"></script>
+</body>
+</html>
