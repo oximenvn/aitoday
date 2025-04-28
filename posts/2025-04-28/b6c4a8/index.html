@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Các tác nhân nhỏ một tác nhân được hỗ trợ bởi MCP trong 50 dòng mã | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Các tác nhân nhỏ một tác nhân được hỗ trợ bởi MCP trong 50 dòng mã</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-04-28T00:00:00&#43;00:00">April 28, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/tiny-agents/thumbnail.jpg" alt="Các tác nhân nhỏ một tác nhân được hỗ trợ bởi MCP trong 50 dòng mã">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="tiny-agents-một-agent-được-hỗ-trợ-bởi-mcp-trong-50-dòng-code">Tiny Agents: Một Agent được hỗ trợ bởi MCP trong 50 dòng code</h1>
+<p>Trong vài tuần qua, tôi đã tìm hiểu về MCP (Model Context Protocol) để hiểu xem sự cường điệu xung quanh nó là gì.</p>
+<p>TL;DR của tôi là nó khá đơn giản, nhưng vẫn khá mạnh mẽ: <strong>MCP là một API tiêu chuẩn để hiển thị các bộ Công cụ có thể được kết nối với LLM.</strong></p>
+<p>Việc mở rộng một Inference Client khá đơn giản - tại HF, chúng tôi có hai SDK client chính thức: <code>@huggingface/inference</code> trong JS và <code>huggingface_hub</code> trong Python - để cũng hoạt động như một MCP client và kết nối các công cụ có sẵn từ các máy chủ MCP vào suy luận LLM.</p>
+<p>Nhưng trong khi làm điều đó, tôi nhận ra điều thứ hai:</p>
+<blockquote>
+<p><strong>Một khi bạn có MCP Client, một Agent thực tế chỉ là một vòng lặp while trên đầu nó.</strong></p></blockquote>
+<p>Trong bài viết ngắn này, tôi sẽ hướng dẫn bạn cách tôi triển khai nó trong Typescript (JS), cách bạn có thể áp dụng MCP và cách nó sẽ làm cho AI Agentic trở nên đơn giản hơn trong tương lai.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/tiny-agents/thumbnail.jpg" alt="meme"></p>
+<p>Hình ảnh được cung cấp bởi <a href="https://x.com/adamdotdev">https://x.com/adamdotdev</a></p>
+<h2 id="cách-chạy-bản-demo-hoàn-chỉnh">Cách chạy bản demo hoàn chỉnh</h2>
+<p>Nếu bạn có NodeJS (với <code>pnpm</code> hoặc <code>npm</code>), chỉ cần chạy lệnh này trong một terminal:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx @huggingface/mcp-client
+</span></span></code></pre></div><p>hoặc nếu sử dụng <code>pnpm</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pnpx @huggingface/mcp-client
+</span></span></code></pre></div><p>Điều này cài đặt package của tôi vào một thư mục tạm thời sau đó thực thi lệnh của nó.</p>
+<p>Bạn sẽ thấy Agent đơn giản của bạn kết nối với hai máy chủ MCP riêng biệt (chạy cục bộ), tải các công cụ của chúng, sau đó nhắc bạn về một cuộc trò chuyện.</p>
+<!-- raw HTML omitted -->
+<p>Theo mặc định, Agent ví dụ của chúng tôi kết nối với hai máy chủ MCP sau:</p>
+<ul>
+<li>máy chủ hệ thống tệp &ldquo;chính tắc&rdquo; <a href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem">file system server</a>, có quyền truy cập vào Desktop của bạn,</li>
+<li>và máy chủ <a href="https://github.com/microsoft/playwright-mcp">Playwright MCP</a>, biết cách sử dụng trình duyệt Chromium được cách ly cho bạn.</li>
+</ul>
+<blockquote>
+<p>Lưu ý: điều này hơi phản trực giác nhưng hiện tại, tất cả các máy chủ MCP thực sự là các tiến trình cục bộ (mặc dù các máy chủ từ xa sẽ sớm ra mắt).</p></blockquote>
+<p>Đầu vào của chúng tôi cho video đầu tiên này là:</p>
+<blockquote>
+<p>viết một bài haiku về cộng đồng Hugging Face và viết nó vào một tệp có tên &ldquo;hf.txt&rdquo; trên Desktop của tôi</p></blockquote>
+<p>Bây giờ hãy thử lời nhắc này liên quan đến một số hoạt động duyệt Web:</p>
+<blockquote>
+<p>thực hiện Tìm kiếm trên Web cho các nhà cung cấp suy luận HF trên Brave Search và mở 3 kết quả đầu tiên</p></blockquote>
+<!-- raw HTML omitted -->
+<h3 id="mô-hình-và-nhà-cung-cấp-mặc-định">Mô hình và nhà cung cấp mặc định</h3>
+<p>Về cặp mô hình/nhà cung cấp, Agent ví dụ của chúng tôi sử dụng theo mặc định:</p>
+<ul>
+<li><a href="https://huggingface.co/Qwen/Qwen2.5-72B-Instruct">&ldquo;Qwen/Qwen2.5-72B-Instruct&rdquo;</a></li>
+<li>chạy trên <a href="https://huggingface.co/docs/inference-providers/providers/nebius">Nebius</a></li>
+</ul>
+<p>Tất cả điều này có thể định cấu hình thông qua các biến môi trường! Xem:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">agent</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Agent</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">provider</span>: <span style="color:#66d9ef">process.env.PROVIDER</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#34;nebius&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">model</span>: <span style="color:#66d9ef">process.env.MODEL_ID</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#34;Qwen/Qwen2.5-72B-Instruct&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">apiKey</span>: <span style="color:#66d9ef">process.env.HF_TOKEN</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">servers</span>: <span style="color:#66d9ef">SERVERS</span>,
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="code-nằm-ở-đâu">Code nằm ở đâu</h2>
+<p>Code Tiny Agent nằm trong sub-package <code>mcp-client</code> của mono-repo <code>huggingface.js</code>, là GitHub mono-repo trong đó tất cả các thư viện JS của chúng tôi cư trú.</p>
+<p><a href="https://github.com/huggingface/huggingface.js/tree/main/packages/mcp-client">https://github.com/huggingface/huggingface.js/tree/main/packages/mcp-client</a></p>
+<blockquote>
+<p>Codebase sử dụng các tính năng JS hiện đại (đặc biệt là async generators) giúp mọi thứ dễ triển khai hơn, đặc biệt là các sự kiện không đồng bộ như phản hồi LLM. Bạn có thể cần hỏi LLM về các tính năng JS đó nếu bạn chưa quen thuộc với chúng.</p></blockquote>
+<h2 id="nền-tảng-cho-điều-này-hỗ-trợ-gốc-cho-việc-gọi-công-cụ-trong-llm">Nền tảng cho điều này: hỗ trợ gốc cho việc gọi công cụ trong LLM.</h2>
+<p>Điều sẽ làm cho toàn bộ bài đăng trên blog này trở nên rất dễ dàng là thế hệ LLM gần đây (cả đóng và mở) đã được đào tạo để gọi hàm, hay còn gọi là sử dụng công cụ.</p>
+<p>Một công cụ được xác định bởi tên của nó, một mô tả và một biểu diễn JSONSchema của các tham số của nó. Theo một nghĩa nào đó, nó là một biểu diễn mờ đục về giao diện của bất kỳ hàm nào, khi nhìn từ bên ngoài (có nghĩa là, LLM không quan tâm đến cách hàm thực sự được triển khai).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">weatherTool</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;function&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_weather&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">description</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Get current temperature for a given location.&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">parameters</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">properties</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">location</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;string&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">description</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;City and country e.g. Bogotá, Colombia&#34;</span>,
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Tài liệu chính tắc mà tôi sẽ liên kết đến đây là <a href="https://platform.openai.com/docs/guides/function-calling?api-mode=chat">OpenAI&rsquo;s function calling doc</a>. (Vâng&hellip; OpenAI gần như xác định các tiêu chuẩn LLM cho toàn bộ cộng đồng 😅).</p>
+<p>Các inference engine cho phép bạn chuyển một danh sách các công cụ khi gọi LLM và LLM có quyền tự do gọi không, một hoặc nhiều công cụ đó. Là một nhà phát triển, bạn chạy các công cụ và đưa kết quả của chúng trở lại LLM để tiếp tục tạo.</p>
+<blockquote>
+<p>Lưu ý rằng ở backend (ở cấp độ inference engine), các công cụ chỉ đơn giản được chuyển đến mô hình trong một <code>chat_template</code> được định dạng đặc biệt, giống như bất kỳ tin nhắn nào khác, và sau đó được phân tích cú pháp từ phản hồi (sử dụng các token đặc biệt dành riêng cho mô hình) để hiển thị chúng dưới dạng các lệnh gọi công cụ.</p></blockquote>
+<h2 id="triển-khai-mcp-client-trên-inferenceclient">Triển khai MCP client trên InferenceClient</h2>
+<p>Bây giờ chúng ta đã biết một công cụ là gì trong các LLM gần đây, hãy triển khai client MCP thực tế.</p>
+<p>Tài liệu chính thức tại <a href="https://modelcontextprotocol.io/quickstart/client">https://modelcontextprotocol.io/quickstart/client</a> được viết khá tốt. Bạn chỉ phải thay thế bất kỳ đề cập nào đến Anthropic client SDK bằng bất kỳ OpenAI-compatible client SDK nào khác. (Ngoài ra còn có một <a href="https://modelcontextprotocol.io/llms-full.txt">llms.txt</a> mà bạn có thể đưa vào LLM bạn chọn để giúp bạn code cùng).</p>
+<p>Để nhắc lại, chúng tôi sử dụng <code>InferenceClient</code> của HF cho inference client của chúng tôi.</p>
+<blockquote>
+<p>Tệp code <code>McpClient.ts</code> hoàn chỉnh là <a href="https://github.com/huggingface/huggingface.js/blob/main/packages/mcp-client/src/McpClient.ts">ở đây</a> nếu bạn muốn theo dõi bằng code thực tế 🤓</p></blockquote>
+<p>Lớp <code>McpClient</code> của chúng tôi có:</p>
+<ul>
+<li>một Inference Client (hoạt động với bất kỳ Inference Provider nào và <code>huggingface/inference</code> hỗ trợ cả remote và local endpoints)</li>
+<li>một tập hợp các phiên bản MCP client, một cho mỗi máy chủ MCP được kết nối (vâng, chúng tôi muốn hỗ trợ nhiều máy chủ)</li>
+<li>và một danh sách các công cụ có sẵn sẽ được điền từ các máy chủ được kết nối và chỉ được định dạng lại một chút.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">McpClient</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">client</span>: <span style="color:#66d9ef">InferenceClient</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">provider</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">model</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">clients</span>: <span style="color:#66d9ef">Map</span>&lt;<span style="color:#f92672">ToolName</span>, <span style="color:#a6e22e">Client</span>&gt; <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Map</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">availableTools</span>: <span style="color:#66d9ef">ChatCompletionInputTool</span>[] <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">constructor</span>({ <span style="color:#a6e22e">provider</span>, <span style="color:#a6e22e">model</span>, <span style="color:#a6e22e">apiKey</span> }<span style="color:#f92672">:</span> { <span style="color:#a6e22e">provider</span>: <span style="color:#66d9ef">InferenceProvider</span>; <span style="color:#a6e22e">model</span>: <span style="color:#66d9ef">string</span>; <span style="color:#a6e22e">apiKey</span>: <span style="color:#66d9ef">string</span> }) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">client</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">InferenceClient</span>(<span style="color:#a6e22e">apiKey</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">provider</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">provider</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">model</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">model</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// [...]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Để kết nối với một máy chủ MCP, SDK TypeScript <code>@modelcontextprotocol/sdk/client</code> chính thức cung cấp một lớp <code>Client</code> với một phương thức <code>listTools()</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#a6e22e">addMcpServer</span>(<span style="color:#a6e22e">server</span>: <span style="color:#66d9ef">StdioServerParameters</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Promise</span>&lt;<span style="color:#f92672">void</span>&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">transport</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">StdioClientTransport</span>({
+</span></span><span style="display:flex;"><span>        ...<span style="color:#a6e22e">server</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">env</span><span style="color:#f92672">:</span> { ...<span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">PATH</span>: <span style="color:#66d9ef">process.env.PATH</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#34;&#34;</span> },
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mcp</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Client</span>({ <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;@huggingface/mcp-client&#34;</span>, <span style="color:#a6e22e">version</span>: <span style="color:#66d9ef">packageVersion</span> });
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">mcp</span>.<span style="color:#a6e22e">connect</span>(<span style="color:#a6e22e">transport</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">toolsResult</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">mcp</span>.<span style="color:#a6e22e">listTools</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">debug</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Connected to server with tools:&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">toolsResult</span>.<span style="color:#a6e22e">tools</span>.<span style="color:#a6e22e">map</span>(({ <span style="color:#a6e22e">name</span> }) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">name</span>)
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">tool</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">toolsResult</span>.<span style="color:#a6e22e">tools</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clients</span>.<span style="color:#66d9ef">set</span>(<span style="color:#a6e22e">tool</span>.<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">mcp</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">availableTools</span>.<span style="color:#a6e22e">push</span>(
+</span></span><span style="display:flex;"><span>        ...<span style="color:#a6e22e">toolsResult</span>.<span style="color:#a6e22e">tools</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">tool</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;function&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">function</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">tool.name</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">description</span>: <span style="color:#66d9ef">tool.description</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">parameters</span>: <span style="color:#66d9ef">tool.inputSchema</span>,
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>            } <span style="color:#a6e22e">satisfies</span> <span style="color:#a6e22e">ChatCompletionInputTool</span>;
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>StdioServerParameters</code> là một giao diện từ MCP SDK sẽ cho phép bạn dễ dàng sinh ra một tiến trình cục bộ: như chúng tôi đã đề cập trước đó, hiện tại, tất cả các máy chủ MCP thực sự là các tiến trình cục bộ.</p>
+<p>Đối với mỗi máy chủ MCP mà chúng tôi kết nối, chúng tôi định dạng lại một chút danh sách các công cụ của nó và thêm chúng vào <code>this.availableTools</code>.</p>
+<h3 id="cách-sử-dụng-các-công-cụ">Cách sử dụng các công cụ</h3>
+<p>Dễ dàng, bạn chỉ cần chuyển <code>this.availableTools</code> đến LLM chat-completion của bạn, ngoài mảng tin nhắn thông thường của bạn:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">stream</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">chatCompletionStream</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">provider</span>: <span style="color:#66d9ef">this.provider</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">model</span>: <span style="color:#66d9ef">this.model</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">messages</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">tools</span>: <span style="color:#66d9ef">this.availableTools</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">tool_choice</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;auto&#34;</span>,
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p><code>tool_choice: &quot;auto&quot;</code> là tham số bạn chuyển cho LLM để tạo ra không, một hoặc nhiều lệnh gọi công cụ.</p>
+<p>Khi phân tích cú pháp hoặc phát trực tuyến đầu ra, LLM sẽ tạo ra một số lệnh gọi công cụ (tức là một tên hàm và một số đối số được mã hóa JSON), mà bạn (với tư cách là nhà phát triển) cần tính toán. MCP client SDK một lần nữa làm cho điều đó rất dễ dàng; nó có một phương thức <code>client.callTool()</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">toolName</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">toolCall</span>.<span style="color:#66d9ef">function</span>.<span style="color:#a6e22e">name</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">toolArgs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">toolCall</span>.<span style="color:#66d9ef">function</span>.<span style="color:#a6e22e">arguments</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">toolMessage</span>: <span style="color:#66d9ef">ChatCompletionInputMessageTool</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">role</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;tool&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">tool_call_id</span>: <span style="color:#66d9ef">toolCall.id</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">content</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">toolName</span>,
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/// Get the appropriate session for this tool
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">client</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clients</span>.<span style="color:#66d9ef">get</span>(<span style="color:#a6e22e">toolName</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">client</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">callTool</span>({ <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">toolName</span>, <span style="color:#a6e22e">arguments</span>: <span style="color:#66d9ef">toolArgs</span> });
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">toolMessage</span>.<span style="color:#a6e22e">content</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">content</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">text</span>;
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">toolMessage</span>.<span style="color:#a6e22e">content</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`Error: No session found for tool: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">toolName</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Cuối cùng, bạn sẽ thêm tin nhắn công cụ kết quả vào mảng <code>messages</code> của bạn và trở lại LLM.</p>
+<h2 id="agent-50-dòng-code-của-chúng-tôi-">Agent 50 dòng code của chúng tôi 🤯</h2>
+<p>Bây giờ chúng ta đã có một MCP client có khả năng kết nối với các máy chủ MCP tùy ý để lấy danh sách các công cụ và có khả năng chèn chúng và phân tích cú pháp chúng từ suy luận LLM, vậy&hellip; một Agent là gì?</p>
+<blockquote>
+<p>Một khi bạn có một inference client với một bộ công cụ, thì một Agent chỉ là một vòng lặp while trên đầu nó.</p></blockquote>
+<p>Chi tiết hơn, một Agent chỉ đơn giản là một sự kết hợp của:</p>
+<ul>
+<li>một system prompt</li>
+<li>một LLM Inference client</li>
+<li>một MCP client để kết nối một bộ Công cụ vào nó từ một loạt các máy chủ MCP</li>
+<li>một số luồng điều khiển cơ bản (xem bên dưới cho vòng lặp while)</li>
+</ul>
+<blockquote>
+<p>Tệp code <code>Agent.ts</code> hoàn chỉnh là <a href="https://github.com/huggingface/huggingface.js/blob/main/packages/mcp-client/src/Agent.ts">ở đây</a>.</p></blockquote>
+<p>Lớp Agent của chúng tôi chỉ đơn giản là mở rộng McpClient:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Agent</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">McpClient</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">servers</span>: <span style="color:#66d9ef">StdioServerParameters</span>[];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">messages</span>: <span style="color:#66d9ef">ChatCompletionInputMessage</span>[];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">constructor</span>({
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">provider</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">model</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">apiKey</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">servers</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">prompt</span>,
+</span></span><span style="display:flex;"><span>    }<span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">provider</span>: <span style="color:#66d9ef">InferenceProvider</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">model</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">apiKey</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">servers</span>: <span style="color:#66d9ef">StdioServerParameters</span>[];
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">prompt?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>    }) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>({ <span style="color:#a6e22e">provider</span>, <span style="color:#a6e22e">model</span>, <span style="color:#a6e22e">apiKey</span> });
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">servers</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">servers</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">messages</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">role</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;system&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">content</span>: <span style="color:#66d9ef">prompt</span> <span style="color:#f92672">??</span> <span style="color:#a6e22e">DEFAULT_SYSTEM_PROMPT</span>,
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>        ];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Theo mặc định, chúng tôi sử dụng một system prompt rất đơn giản lấy cảm hứng từ một trong những prompt được chia sẻ trong <a href="https://cookbook.openai.com/examples/gpt4-1_prompting_guide">GPT-4.1 prompting guide</a>.</p>
+<p>Mặc dù điều này đến từ OpenAI 😈, nhưng câu này đặc biệt áp dụng cho ngày càng nhiều mô hình, cả đóng và mở:</p>
+<blockquote>
+<p>Chúng tôi khuyến khích các nhà phát triển sử dụng độc quyền trường công cụ để chuyển các công cụ, thay vì tự chèn các mô tả công cụ vào lời nhắc của bạn và viết một trình phân tích cú pháp riêng biệt cho các lệnh gọi công cụ, như một số người đã báo cáo đã làm trong quá khứ.</p></blockquote>
+<p>Có nghĩa là, chúng ta không cần cung cấp danh sách các ví dụ sử dụng công cụ được định dạng tỉ mỉ trong prompt. Tham số <code>tools: this.availableTools</code> là đủ.</p>
+<p>Tải các công cụ trên Agent thực tế chỉ là kết nối với các máy chủ MCP mà chúng ta muốn (song song vì nó rất dễ thực hiện trong JS):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#a6e22e">loadTools</span>()<span style="color:#f92672">:</span> <span style="color:#a6e22e">Promise</span>&lt;<span style="color:#f92672">void</span>&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">Promise</span>.<span style="color:#a6e22e">all</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">servers</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">s</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">addMcpServer</span>(<span style="color:#a6e22e">s</span>)));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Chúng tôi thêm hai công cụ bổ sung (ngoài MCP) mà LLM có thể sử dụng cho luồng điều khiển của Agent chúng tôi:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">taskCompletionTool</span>: <span style="color:#66d9ef">ChatCompletionInputTool</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;function&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;task_complete&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">description</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Call this tool when the task given by the user is complete&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">parameters</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">properties</span><span style="color:#f92672">:</span> {},
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">askQuestionTool</span>: <span style="color:#66d9ef">ChatCompletionInputTool</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;function&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;ask_question&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">description</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Ask a question to the user to get more info required to solve or clarify their problem.&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">parameters</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">properties</span><span style="color:#f92672">:</span> {},
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">exitLoopTools</span> <span style="color:#f92672">=</span> [<span style="color:#a6e22e">taskCompletionTool</span>, <span style="color:#a6e22e">askQuestionTool</span>];
+</span></span></code></pre></div><p>Khi gọi bất kỳ công cụ nào trong số này, Agent sẽ phá vỡ vòng lặp của nó và trả quyền điều khiển lại cho người dùng để có đầu vào mới.</p>
+<h3 id="vòng-lặp-while-hoàn-chỉnh">Vòng lặp while hoàn chỉnh</h3>
+<p>Hãy xem vòng lặp while hoàn chỉnh của chúng ta.🎉</p>
+<p>Điểm chính của vòng lặp while chính của Agent chúng tôi là chúng tôi chỉ đơn giản lặp lại với LLM luân phiên giữa việc gọi công cụ và cung cấp cho nó các kết quả công cụ và chúng tôi làm như vậy <strong>cho đến khi LLM bắt đầu phản hồi với hai tin nhắn không phải công cụ liên tiếp</strong>.</p>
+<p>Đây là vòng lặp while hoàn chỉnh:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">numOfTurns</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">nextTurnShouldCallTools</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span><span style="color:#f92672">*</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">processSingleTurnWithTools</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">messages</span>, {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">exitLoopTools</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">exitIfFirstChunkNoTool</span>: <span style="color:#66d9ef">numOfTurns</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">nextTurnShouldCallTools</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">abortSignal</span>: <span style="color:#66d9ef">opts.abortSignal</span>,
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">err</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">instanceof</span> Error <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">message</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;AbortError&#34;</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">err</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">numOfTurns</span><span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">currentLast</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">messages</span>.<span style="color:#a6e22e">at</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">!</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">currentLast</span>.<span style="color:#a6e22e">role</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;tool&#34;</span> <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">currentLast</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">exitLoopTools</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">t</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">t</span>.<span style="color:#66d9ef">function</span>.<span style="color:#a6e22e">name</span>).<span style="color:#a6e22e">includes</span>(<span style="color:#a6e22e">currentLast</span>.<span style="color:#a6e22e">name</span>)
+</span></span><span style="display:flex;"><span>    ) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">currentLast</span>.<span style="color:#a6e22e">role</span> <span style="color:#f92672">!==</span> <span style="color:#e6db74">&#34;tool&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">numOfTurns</span> <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">MAX_NUM_TURNS</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">currentLast</span>.<span style="color:#a6e22e">role</span> <span style="color:#f92672">!==</span> <span style="color:#e6db74">&#34;tool&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">nextTurnShouldCallTools</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">currentLast</span>.<span style="color:#a6e22e">role</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;tool&#34;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">nextTurnShouldCallTools</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">nextTurnShouldCallTools</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="các-bước-tiếp-theo">Các bước tiếp theo</h2>
+<p>Có rất nhiều bước tiếp theo tiềm năng thú vị khi bạn đã có MCP Client đang chạy và một cách đơn giản để xây dựng Agents 🔥</p>
+<ul>
+<li>Thử nghiệm với <strong>các mô hình khác</strong>
+<ul>
+<li><a href="https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503">mistralai/Mistral-Small-3.1-24B-Instruct-2503</a> được tối ưu hóa để gọi hàm</li>
+<li>Gemma 3 27B, các mô hình <a href="https://huggingface.co/collections/google/gemma-3-qat-67ee61ccacbf2be4195c265b">Gemma 3 QAT</a> là một lựa chọn phổ biến để gọi hàm mặc dù nó sẽ yêu cầu chúng ta triển khai phân tích cú pháp công cụ vì nó không sử dụng <code>tools</code> gốc (một PR sẽ được hoan nghênh!)</li>
+</ul>
+</li>
+<li>Thử nghiệm với tất cả <a href="https://huggingface.co/docs/inference-providers/index">Inference Providers</a>:
+<ul>
+<li>Cerebras, Cohere, Fal, Fireworks, Hyperbolic, Nebius, Novita, Replicate, SambaNova, Together, v.v.</li>
+<li>mỗi nhà cung cấp có các tối ưu hóa khác nhau để gọi hàm (cũng tùy thuộc vào mô hình) do đó hiệu suất có thể khác nhau!</li>
+</ul>
+</li>
+<li>Kết nối <strong>LLM cục bộ</strong> bằng llama.cpp hoặc LM Studio</li>
+</ul>
+<p>Pull request và đóng góp được hoan nghênh!
+Một lần nữa, mọi thứ ở đây đều là <a href="https://github.com/huggingface/huggingface.js">mã nguồn mở</a>! 💎❤️</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/tiny-agents">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/april-25-2025/">April 25, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/bdfb13/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/leaderboards-on-the-hub/thumbnail_3c3h_aragen.png" alt="Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bảng xếp hạng tiếng Ả Rập Giới thiệu hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu bảng xếp hạng hướng dẫn bằng tiếng Ả Rập, cập nhật AraGen và hơn thế nữa.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-19/b633ac/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/llama_4.png" alt="Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face!" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-04-19T00:00:00&#43;00:00">Apr 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng Llama 4 Maverick &amp; Scout trên Hugging Face!</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu Llama 4 Maverick &amp; Scout trên Hugging Face.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-28/b6c4a8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/tiny-agents/thumbnail.jpg" alt="Các tác nhân nhỏ một tác nhân được hỗ trợ bởi MCP trong 50 dòng mã" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các tác nhân nhỏ một tác nhân được hỗ trợ bởi MCP trong 50 dòng mã</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-28/862180/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chỉ số kinh tế Anthropic Tác động của AI đối với phát triển phần mềm</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-28/f29fb9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Hội đồng cố vấn kinh tế Anthropic</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-26/0d2af7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/cfr0z3n_graphic_novel_vector_art_flat_illustration_splash_pag_9dd6886b-a55b-42e5-97c5-1d907b6e1f87_3_5e63ec.png?w=700&amp;h=350&amp;crop=1" alt="AI lỏng đang cách mạng hóa LLM để hoạt động trên các thiết bị biên như điện thoại thông minh với mô hình &#39;Hyena Edge&#39; mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AI lỏng đang cách mạng hóa LLM để hoạt động trên các thiết bị biên như điện thoại thông minh với mô hình &#39;Hyena Edge&#39; mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-04-26/b48e32/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/04/nuneybits_Vector_art_of_a_retro_computer_on_the_computer_screen_eb75076b-1b63-4eff-8629-e4d166b60095.webp?w=700&amp;h=350&amp;crop=1" alt="Có thật là sếp của bạn đang gọi không? Jericho Security huy động được 15 triệu đô la để ngăn chặn gian lận deepfake, gây thiệt hại cho các doanh nghiệp 200 triệu đô la chỉ riêng trong năm 2025" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Có thật là sếp của bạn đang gọi không? Jericho Security huy động được 15 triệu đô la để ngăn chặn gian lận deepfake, gây thiệt hại cho các doanh nghiệp 200 triệu đô la chỉ riêng trong năm 2025</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
