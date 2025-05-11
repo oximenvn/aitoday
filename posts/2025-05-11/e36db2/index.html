@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bộ dữ liệu cộng đồng LeRobot- “ImageNet” của ngành Robot học — Khi nào và Như thế nào? | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Bộ dữ liệu cộng đồng LeRobot- “ImageNet” của ngành Robot học — Khi nào và Như thế nào?</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-05-11T00:00:00&#43;00:00">May 11, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            15 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/195_lerobot_datasets/1.png" alt="Bộ dữ liệu cộng đồng LeRobot- “ImageNet” của ngành Robot học — Khi nào và Như thế nào?">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="bộ-dữ-liệu-cộng-đồng-lerobot-imagenet-của-ngành-robot--khi-nào-và-như-thế-nào">Bộ Dữ Liệu Cộng Đồng LeRobot: &ldquo;ImageNet&rdquo; Của Ngành Robot — Khi Nào Và Như Thế Nào?</h1>
+<p>🧭 <strong>TL;DR — Tại sao bài đăng này?</strong></p>
+<p>Trong bài đăng này, chúng ta:</p>
+<ul>
+<li>Nhận thấy tác động ngày càng tăng của các bộ dữ liệu <strong>LeRobot</strong> do cộng đồng đóng góp</li>
+<li>Làm nổi bật những thách thức hiện tại trong việc thu thập và quản lý dữ liệu robot</li>
+<li>Chia sẻ các bước thực tế và các phương pháp hay nhất để tối đa hóa tác động của nỗ lực tập thể này</li>
+</ul>
+<p>Mục tiêu của chúng tôi là định hình khái niệm khái quát hóa như một <em>vấn đề dữ liệu</em> và chỉ ra rằng việc xây dựng một &ldquo;ImageNet của ngành robot&rdquo; mở, đa dạng không chỉ khả thi mà còn đang diễn ra.</p>
+<h2 id="giới-thiệu">Giới Thiệu</h2>
+<p>Những tiến bộ gần đây trong các mô hình Vision-Language-Action (VLA) đã cho phép robot thực hiện một loạt các nhiệm vụ—từ các lệnh đơn giản như &ldquo;nắm lấy khối lập phương&rdquo; đến các hoạt động phức tạp hơn như gấp quần áo hoặc lau bàn. Các mô hình này nhằm mục đích đạt được <strong>khái quát hóa</strong>: khả năng thực hiện các tác vụ trong các môi trường mới, với các đối tượng chưa từng thấy và trong các điều kiện khác nhau.</p>
+<blockquote>
+<p><strong>“Thách thức lớn nhất trong ngành robot không phải là sự khéo léo mà là khái quát hóa—trên các cấp độ vật lý, thị giác và ngữ nghĩa.”</strong>
+— <em>Trí Thông Minh Vật Lý</em></p></blockquote>
+<p>Một robot phải <em>&quot;tìm ra cách thực hiện chính xác ngay cả một nhiệm vụ đơn giản trong một môi trường mới hoặc với các đối tượng mới,&quot;</em> và điều này đòi hỏi cả kỹ năng mạnh mẽ và hiểu biết thông thường về thế giới. Tuy nhiên, tiến trình thường bị giới hạn bởi <strong>sự sẵn có của dữ liệu đa dạng</strong> cho các hệ thống robot như vậy.</p>
+<blockquote>
+<p>“Khái quát hóa phải xảy ra ở nhiều cấp độ. Ở cấp độ thấp, robot phải hiểu cách nhặt một cái thìa (bằng cán) hoặc đĩa (bằng mép), ngay cả khi nó chưa từng thấy những chiếc thìa hoặc đĩa cụ thể này trước đây và ngay cả khi chúng được đặt trong một đống bát đĩa bẩn. Ở cấp độ cao hơn, robot phải hiểu ngữ nghĩa của từng nhiệm vụ—đặt quần áo và giày dép ở đâu (lý tưởng nhất là trong giỏ giặt hoặc tủ quần áo, không phải trên giường) và loại công cụ nào phù hợp để lau vết đổ. Sự khái quát hóa này đòi hỏi cả kỹ năng vật lý mạnh mẽ và sự hiểu biết thông thường về môi trường, để robot có thể khái quát hóa ở nhiều cấp độ cùng một lúc, từ vật lý, đến thị giác, đến ngữ nghĩa. Điều này càng trở nên khó khăn hơn do sự sẵn có hạn chế của dữ liệu đa dạng cho các hệ thống robot như vậy.”
+— <em>Trí Thông Minh Vật Lý</em></p></blockquote>
+<h2 id="từ-mô-hình-đến-dữ-liệu-thay-đổi-góc-nhìn">Từ Mô Hình Đến Dữ Liệu: Thay Đổi Góc Nhìn</h2>
+<p>Để đơn giản hóa, cốt lõi của các chính sách tổng quát nằm ở một ý tưởng đơn giản: <strong>đồng huấn luyện trên các bộ dữ liệu không đồng nhất</strong>. Bằng cách cho các mô hình VLA tiếp xúc với nhiều môi trường, nhiệm vụ và hình dạng robot khác nhau, chúng ta có thể dạy các mô hình không chỉ cách hành động mà còn <em>tại sao</em>—cách diễn giải một cảnh, hiểu một mục tiêu và điều chỉnh các kỹ năng trên các bối cảnh.</p>
+<blockquote>
+<p>💡 <strong>“Khái quát hóa không chỉ là một thuộc tính của mô hình—nó là một hiện tượng dữ liệu.”</strong>
+Nó xuất hiện từ sự đa dạng, chất lượng và mức độ trừu tượng của dữ liệu huấn luyện.</p></blockquote>
+<p>Điều này đưa chúng ta đến một câu hỏi cơ bản:</p>
+<p><strong>Với các bộ dữ liệu hiện tại, giới hạn trên của khái quát hóa mà chúng ta có thể mong đợi là gì?</strong></p>
+<p>Liệu một robot có thể phản hồi một cách có ý nghĩa đối với một lời nhắc hoàn toàn mới—ví dụ: <em>&quot;tổ chức một bữa tiệc sinh nhật bất ngờ&quot;</em>—nếu nó chưa từng gặp bất cứ điều gì tương tự trong quá trình huấn luyện? Đặc biệt khi hầu hết các bộ dữ liệu được thu thập trong các phòng thí nghiệm học thuật, bởi một số lượng người hạn chế, trong các thiết lập được kiểm soát tốt?</p>
+<p>Chúng tôi định hình khái quát hóa như một <strong>góc nhìn tập trung vào dữ liệu</strong>: coi nó như quá trình trừu tượng hóa các mẫu rộng hơn từ dữ liệu—về cơ bản là <em>“thu nhỏ”</em> để tiết lộ các cấu trúc và nguyên tắc không phụ thuộc vào nhiệm vụ. Sự thay đổi trong góc nhìn này nhấn mạnh vai trò của <strong>sự đa dạng của bộ dữ liệu</strong>, chứ không chỉ riêng kiến trúc mô hình, trong việc thúc đẩy khái quát hóa.</p>
+<h2 id="tại-sao-ngành-robot-thiếu-thời-điểm-imagenet">Tại Sao Ngành Robot Thiếu Thời Điểm ImageNet?</h2>
+<p>Cho đến nay, phần lớn các bộ dữ liệu robot đến từ các môi trường học thuật có cấu trúc. Ngay cả khi chúng ta mở rộng lên hàng triệu bản trình diễn, một bộ dữ liệu thường sẽ chiếm ưu thế, hạn chế sự đa dạng. Không giống như ImageNet—bộ dữ liệu đã tổng hợp dữ liệu quy mô internet và ghi lại thế giới thực một cách toàn diện hơn—ngành robot thiếu một chuẩn mực đa dạng, do cộng đồng thúc đẩy tương đương.</p>
+<p>Điều này phần lớn là do việc thu thập dữ liệu cho ngành robot đòi hỏi <strong>phần cứng vật lý và nỗ lực đáng kể</strong>.</p>
+<h2 id="xây-dựng-cộng-đồng-lerobot">Xây Dựng Cộng Đồng LeRobot</h2>
+<p>Đó là lý do tại <strong>LeRobot</strong>, chúng tôi đang nỗ lực để làm cho việc thu thập dữ liệu robot dễ tiếp cận hơn—ở nhà, ở trường hoặc bất cứ đâu. Chúng tôi:</p>
+<ul>
+<li>Đơn giản hóa quy trình ghi</li>
+<li>Hợp lý hóa việc tải lên Hugging Face Hub, để thúc đẩy chia sẻ cộng đồng</li>
+<li>Giảm chi phí phần cứng</li>
+</ul>
+<p>Chúng tôi đã thấy kết quả: số lượng bộ dữ liệu do cộng đồng đóng góp trên Hub đang tăng lên nhanh chóng.</p>
+<!-- raw HTML omitted -->
+<p>Nếu chúng ta chia nhỏ các bộ dữ liệu đã tải lên theo loại robot, chúng ta thấy rằng hầu hết các đóng góp là cho So100 và Koch, làm cho cánh tay robot và các nhiệm vụ điều khiển trở thành trọng tâm chính của bối cảnh bộ dữ liệu LeRobot hiện tại. Tuy nhiên, điều quan trọng cần nhớ là tiềm năng còn vượt xa hơn thế. Các lĩnh vực như xe tự hành, robot hỗ trợ và điều hướng di động có thể hưởng lợi nhiều từ dữ liệu được chia sẻ. Động lực này đưa chúng ta đến gần hơn với một tương lai nơi các bộ dữ liệu phản ánh một nỗ lực toàn cầu, không chỉ là đóng góp của một phòng thí nghiệm hoặc tổ chức duy nhất.</p>
+<!-- raw HTML omitted -->
+<p>Dưới đây chỉ là một vài bộ dữ liệu do cộng đồng đóng góp nổi bật cho thấy ngành robot có thể đa dạng và giàu trí tưởng tượng như thế nào:</p>
+<ul>
+<li><a href="https://huggingface.co/spaces/lerobot/visualize_dataset?path=%2Flirislab%2Fclose_top_drawer_teabox%2Fepisode_1"><code>lirislab/close_top_drawer_teabox</code></a>:: thao tác chính xác với ngăn kéo gia dụng</li>
+<li><a href="https://huggingface.co/spaces/lerobot/visualize_dataset?path=%2FChojins%2Fchess_game_001_blue_stereo%2Fepisode_1"><code>Chojins/chess_game_001_blue_stereo</code></a>: một trận đấu cờ vua đầy đủ được ghi lại từ thiết lập camera stereo</li>
+<li><a href="https://huggingface.co/spaces/lerobot/visualize_dataset?path=%2Fpierfabre%2Fchicken%2Fepisode_6"><code>pierfabre/chicken</code></a>: vâng — một robot tương tác với các hình động vật đầy màu sắc, bao gồm cả một con gà 🐔</li>
+</ul>
+<p>Khám phá các bộ dữ liệu sáng tạo bổ sung dưới thẻ <a href="https://huggingface.co/datasets?other=LeRobot"><code>LeRobot</code></a> trên Hugging Face Hub và xem chúng một cách tương tác trong <a href="https://huggingface.co/spaces/lerobot/visualize_dataset">Trình Trực Quan Hóa Bộ Dữ Liệu LeRobot</a>.</p>
+<h2 id="mở-rộng-quy-mô-một-cách-có-trách-nhiệm">Mở Rộng Quy Mô Một Cách Có Trách Nhiệm</h2>
+<p>Khi việc thu thập dữ liệu robot trở nên dân chủ hơn, <strong>quản lý trở thành thách thức tiếp theo</strong>. Mặc dù các bộ dữ liệu này vẫn được thu thập trong các thiết lập bị hạn chế, nhưng chúng là một bước quan trọng hướng tới các chính sách robot giá cả phải chăng, đa năng. Không phải ai cũng có quyền truy cập vào phần cứng đắt tiền—nhưng với <strong>cơ sở hạ tầng được chia sẻ và sự hợp tác mở</strong>, chúng ta có thể xây dựng một thứ gì đó lớn hơn nhiều.</p>
+<blockquote>
+<p>🧠 <strong>“Khái quát hóa không được giải quyết trong phòng thí nghiệm—nó được dạy bởi thế giới.”</strong>
+Dữ liệu của chúng ta càng đa dạng, các mô hình của chúng ta càng có khả năng hơn.</p></blockquote>
+<hr>
+<h2 id="dữ-liệu-tốt-hơn--mô-hình-tốt-hơn">Dữ Liệu Tốt Hơn = Mô Hình Tốt Hơn</h2>
+<p>Tại sao chất lượng dữ liệu lại quan trọng? Dữ liệu chất lượng kém dẫn đến hiệu suất hạ nguồn kém, đầu ra thiên vị và các mô hình không khái quát hóa được. Do đó, <strong>việc thu thập dữ liệu hiệu quả và chất lượng cao</strong> đóng vai trò quan trọng trong việc thúc đẩy các chính sách robot tổng quát.</p>
+<p>Trong khi các mô hình nền tảng về thị giác và ngôn ngữ đã phát triển mạnh trên các bộ dữ liệu quy mô lớn, cấp độ web, thì ngành robot lại thiếu một &ldquo;Internet của robot&rdquo;—một kho dữ liệu rộng lớn, đa dạng về các tương tác trong thế giới thực. Thay vào đó, dữ liệu robot bị phân mảnh trên các hình dạng, thiết lập cảm biến và chế độ điều khiển khác nhau, tạo thành các <em>ốc đảo dữ liệu</em> biệt lập.</p>
+<p>Để khắc phục điều này, các phương pháp tiếp cận gần đây như <a href="https://huggingface.co/papers/2503.14734">Gr00t</a> tổ chức dữ liệu huấn luyện dưới dạng một <strong>kim tự tháp</strong>, trong đó:</p>
+<ul>
+<li>Dữ liệu web và video quy mô lớn tạo thành <strong>nền tảng</strong></li>
+<li>Dữ liệu tổng hợp thêm <strong>sự đa dạng mô phỏng</strong></li>
+<li>Các tương tác robot trong thế giới thực ở <strong>đỉnh</strong> đặt nền tảng cho mô hình trong quá trình thực thi vật lý</li>
+</ul>
+<p>Trong khuôn khổ này, việc thu thập dữ liệu thế giới thực hiệu quả là không thể thiếu—nó neo các hành vi đã học được trong phần cứng robot thực tế và <strong>thu hẹp khoảng cách sim-to-real</strong>, cuối cùng cải thiện khả năng khái quát hóa, khả năng thích ứng và hiệu suất của các mô hình nền tảng robot.</p>
+<p>Bằng cách mở rộng <strong>khối lượng và sự đa dạng của các bộ dữ liệu thế giới thực</strong>, chúng ta giảm phân mảnh giữa các nguồn dữ liệu không đồng nhất. Khi các bộ dữ liệu không liên kết về môi trường, hình dạng hoặc phân phối tác vụ, các mô hình gặp khó khăn trong việc chuyển giao kiến thức giữa các miền.</p>
+<blockquote>
+<p>🔗 <strong>Dữ liệu thế giới thực hoạt động như mô liên kết</strong>—nó căn chỉnh các ưu tiên trừu tượng với hành động có cơ sở và cho phép mô hình xây dựng các biểu diễn mạch lạc và có thể chuyển giao hơn.</p></blockquote>
+<p>Do đó, việc tăng tỷ lệ tương tác robot thực tế không chỉ đơn thuần là tăng cường tính chân thực—nó <strong>củng cố về mặt cấu trúc</strong> các liên kết giữa tất cả các lớp của kim tự tháp, dẫn đến các chính sách mạnh mẽ và có khả năng hơn.</p>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="những-thách-thức-với-các-bộ-dữ-liệu-cộng-đồng-hiện-tại">Những Thách Thức Với Các Bộ Dữ Liệu Cộng Đồng Hiện Tại</h2>
+<p>Tại LeRobot, chúng tôi đã bắt đầu phát triển một quy trình quản lý tự động để xử lý hậu kỳ các bộ dữ liệu cộng đồng. Trong giai đoạn xử lý hậu kỳ, chúng tôi đã xác định một số lĩnh vực mà những cải tiến có thể tăng cường hơn nữa chất lượng bộ dữ liệu và tạo điều kiện cho việc quản lý hiệu quả hơn trong tương lai:</p>
+<h3 id="1-chú-thích-nhiệm-vụ-không-đầy-đủ-hoặc-không-nhất-quán">1. Chú Thích Nhiệm Vụ Không Đầy Đủ Hoặc Không Nhất Quán</h3>
+<p>Nhiều bộ dữ liệu thiếu mô tả nhiệm vụ, thiếu chi tiết hoặc mơ hồ về nhiệm vụ cần thực hiện. Ngữ nghĩa hiện đang là cốt lõi của nhận thức, có nghĩa là hiểu bối cảnh và chi tiết cụ thể của một nhiệm vụ là rất quan trọng đối với hiệu suất của robot. Các biểu thức chi tiết đảm bảo rằng robot hiểu chính xác những gì được mong đợi, nhưng cũng cung cấp kiến thức và từ vựng rộng hơn cho hệ thống nhận thức. Sự mơ hồ có thể dẫn đến giải thích không chính xác và do đó, các hành động không chính xác.</p>
+<p>Hướng dẫn nhiệm vụ có thể:</p>
+<ul>
+<li>Trống</li>
+<li>Quá ngắn (ví dụ: &ldquo;Giữ&rdquo;, &ldquo;Lên&rdquo;)</li>
+<li>Không có bất kỳ ý nghĩa cụ thể nào (ví dụ: &ldquo;task desc&rdquo;, &ldquo;desc&rdquo;)</li>
+</ul>
+<p>Các chú thích cấp độ nhiệm vụ con thường bị thiếu, gây khó khăn cho việc mô hình hóa các hệ thống phân cấp nhiệm vụ phức tạp.
+Mặc dù điều này có thể được xử lý bằng VLM, nhưng vẫn tốt hơn là có một chú thích nhiệm vụ do tác giả của bộ dữ liệu cung cấp.</p>
+<h3 id="2-sự-không-nhất-quán-trong-ánh-xạ-tính-năng">2. Sự Không Nhất Quán Trong Ánh Xạ Tính Năng</h3>
+<p>Các tính năng như <code>images.laptop</code> được gắn nhãn mơ hồ:</p>
+<ul>
+<li>Đôi khi nó là chế độ xem của người thứ ba</li>
+<li>Những lần khác, nó giống như một camera kẹp (cổ tay) hơn</li>
+</ul>
+<p>Ánh xạ thủ công các tính năng của bộ dữ liệu với các tên tiêu chuẩn mất thời gian và dễ xảy ra lỗi.
+Chúng ta có thể tự động suy luận loại tính năng bằng cách sử dụng VLM hoặc các mô hình thị giác máy tính để phân loại góc nhìn camera. Tuy nhiên, ghi nhớ điều này giúp có một bộ dữ liệu sạch hơn.</p>
+<h3 id="3-các-tập-có-chất-lượng-thấp-hoặc-không-đầy-đủ">3. Các Tập Có Chất Lượng Thấp Hoặc Không Đầy Đủ</h3>
+<p>Một số bộ dữ liệu chứa:</p>
+<ul>
+<li>Các tập chỉ có 1 hoặc rất ít khung hình</li>
+<li>Các tệp dữ liệu bị xóa thủ công (ví dụ: các tệp <code>.parquet</code> bị xóa mà không cần lập chỉ mục lại), phá vỡ tính nhất quán tuần tự.</li>
+</ul>
+<h3 id="4-kích-thước-hành-độngtrạng-thái-không-nhất-quán">4. Kích Thước Hành Động/Trạng Thái Không Nhất Quán</h3>
+<p>Các bộ dữ liệu khác nhau sử dụng các kích thước hành động hoặc trạng thái khác nhau, ngay cả đối với cùng một robot (ví dụ: <code>so100</code>).
+Một số bộ dữ liệu hiển thị sự không nhất quán trong định dạng hành động/trạng thái.</p>
+<hr>
+<h2 id="điều-gì-tạo-nên-một-bộ-dữ-liệu-tốt">Điều Gì Tạo Nên Một Bộ Dữ Liệu Tốt?</h2>
+<p>Bây giờ chúng ta đã biết rằng việc tạo một bộ dữ liệu chất lượng cao là điều cần thiết để huấn luyện các chính sách robot đáng tin cậy và có thể khái quát hóa, chúng tôi đã vạch ra một danh sách kiểm tra các phương pháp hay nhất để hỗ trợ bạn thu thập dữ liệu hiệu quả.</p>
+<h3 id="chất-lượng-hình-ảnh">Chất Lượng Hình Ảnh</h3>
+<ul>
+<li>✅ Tốt nhất nên sử dụng <strong>hai góc nhìn camera</strong></li>
+<li>✅ Đảm bảo <strong>quay video ổn định</strong> (không rung)</li>
+<li>✅ Duy trì <strong>ánh sáng trung tính, ổn định</strong> (tránh tông màu quá vàng hoặc xanh lam)</li>
+<li>✅ Đảm bảo <strong>phơi sáng nhất quán</strong> và <strong>lấy nét sắc nét</strong></li>
+<li>✅ <strong>Cánh tay dẫn đầu không nên xuất hiện</strong> trong khung hình</li>
+<li>✅ Các <strong>đối tượng chuyển động duy nhất</strong> phải là cánh tay theo sau và các vật phẩm được thao tác (tránh các chi/cơ thể người)</li>
+<li>✅ Sử dụng <strong>nền tĩnh, không gây xao nhãng</strong> hoặc áp dụng các biến thể được kiểm soát</li>
+<li>✅ Ghi ở <strong>độ phân giải cao</strong> (ít nhất 480x640 / 720p)</li>
+</ul>
+<h3 id="siêu-dữ-liệu--giao-thức-ghi">Siêu Dữ Liệu &amp; Giao Thức Ghi</h3>
+<ul>
+<li>✅ Chọn <strong>đúng loại robot</strong> trong siêu dữ liệu
+Nếu bạn đang sử dụng một robot tùy chỉnh không có trong <a href="https://github.com/huggingface/lerobot/blob/main/lerobot/common/robot_devices/robots/configs.py">sổ đăng ký cấu hình LeRobot</a> chính thức,
+chúng tôi khuyên bạn nên kiểm tra xem các robot tương tự được đặt tên như thế nào trong các bộ dữ liệu hiện có trên <a href="https://huggingface.co/datasets?search=lerobot">LeRobot Hub</a> để đảm bảo tính nhất quán.</li>
+<li>✅ Ghi video ở tốc độ khoảng <strong>30 khung hình trên giây (FPS)</strong></li>
+<li>✅ Nếu <strong>xóa các tập</strong>, hãy đảm bảo <strong>cập nhật các tệp siêu dữ liệu cho phù hợp</strong> (chúng tôi sẽ cung cấp các công cụ thích hợp để chỉnh sửa bộ dữ liệu)</li>
+</ul>
+<h3 id="quy-ước-đặt-tên-tính-năng">Quy Ước Đặt Tên Tính Năng</h3>
+<p>Sử dụng một sơ đồ đặt tên nhất quán và có thể diễn giải cho tất cả các góc nhìn camera và quan sát:</p>
+<p><strong>Định dạng:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&lt;phương thức&gt;. &lt;vị trí&gt;
+</span></span></code></pre></div><p><strong>Ví dụ:</strong></p>
+<ul>
+<li><code>images.top</code></li>
+<li><code>images.front</code></li>
+<li><code>images.left</code></li>
+<li><code>images.right</code></li>
+</ul>
+<p><strong>Tránh các tên dành riêng cho thiết bị:</strong></p>
+<ul>
+<li>❌ <code>images.laptop</code></li>
+<li>❌ <code>images.phone</code></li>
+</ul>
+<p><strong>Đối với camera gắn trên cổ tay, hãy chỉ định hướng:</strong></p>
+<ul>
+<li><code>images.wrist.left</code></li>
+<li><code>images.wrist.right</code></li>
+<li><code>images.wrist.top</code></li>
+<li><code>images.wrist.bottom</code></li>
+</ul>
+<blockquote>
+<p>Việc đặt tên nhất quán cải thiện sự rõ ràng và giúp các mô hình hạ nguồn diễn giải tốt hơn các cấu hình không gian và đầu vào đa dạng.</p></blockquote>
+<h2 id="chú-thích-nhiệm-vụ">Chú Thích Nhiệm Vụ</h2>
+<ul>
+<li>✅ Sử dụng trường <code>task</code> để <strong>mô tả rõ ràng mục tiêu của robot</strong>
+<ul>
+<li><em>Ví dụ:</em> <code>Nhặt khối lego màu vàng và bỏ vào hộp</code></li>
+</ul>
+</li>
+<li>✅ Giữ cho mô tả nhiệm vụ <strong>ngắn gọn</strong> (từ <strong>25–50 ký tự</strong>)</li>
+<li>✅ Tránh các tên mơ hồ hoặc chung chung như <code>task1</code>, <code>demo2</code>, v.v.</li>
+</ul>
+<hr>
+<p>Dưới đây, chúng tôi cung cấp một danh sách kiểm tra đóng vai trò là hướng dẫn để ghi bộ dữ liệu, vạch ra các điểm chính cần ghi nhớ trong quá trình thu thập dữ liệu.</p>
+<!-- raw HTML omitted -->
+<h2 id="bạn-có-thể-giúp-bằng-cách-nào">Bạn Có Thể Giúp Bằng Cách Nào?</h2>
+<p>Thế hệ robot tổng quát tiếp theo sẽ không được xây dựng bởi một người hoặc phòng thí nghiệm duy nhất—chúng sẽ được xây dựng bởi tất cả chúng ta. Cho dù bạn là sinh viên, nhà nghiên cứu hay chỉ đơn giản là tò mò về robot, đây là cách bạn có thể tham gia:</p>
+<ul>
+<li>🎥 Ghi bộ dữ liệu của riêng bạn — Sử dụng các công cụ LeRobot để ghi lại và tải lên các bộ dữ liệu chất lượng tốt từ robot của bạn.</li>
+<li>🧠 Cải thiện chất lượng bộ dữ liệu — Tuân theo danh sách kiểm tra của chúng tôi, dọn dẹp bản ghi của bạn và giúp đặt ra các tiêu chuẩn mới cho dữ liệu robot.</li>
+<li>📦 Đóng góp cho Hub — Tải lên bộ dữ liệu, chia sẻ ví dụ và khám phá những gì người khác đang xây dựng.</li>
+<li>💬 Tham gia cuộc trò chuyện — Đưa ra phản hồi, yêu cầu tính năng hoặc giúp định hình lộ trình bằng cách tham gia <a href="https://discord.gg/ttk5CV6tUw">Máy Chủ Discord</a> LeRobot của chúng tôi.</li>
+<li>🌍 Phát triển phong trào — Giới thiệu LeRobot cho câu lạc bộ, lớp học hoặc phòng thí nghiệm của bạn. Càng nhiều cộng tác viên = khái quát hóa càng tốt.</li>
+</ul>
+<blockquote>
+<p>Hãy bắt đầu ghi, bắt đầu đóng góp—bởi vì tương lai của robot tổng quát phụ thuộc vào dữ liệu mà chúng ta xây dựng ngày hôm nay.</p></blockquote>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/lerobot-datasets">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/may-11-2025/">May 11, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-05/4a7beb/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/qwen-3-chat-template-deep-dive/thumbnail.png" alt="4 điều mà Chat Template của Qwen-3 dạy chúng ta" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-05T00:00:00&#43;00:00">May 05, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">4 điều mà Chat Template của Qwen-3 dạy chúng ta</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-01/5eae5e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/llama-guard-4/thumbnail.png" alt="Chào mừng Llama Guard 4 trên Hugging Face Hub" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-01T00:00:00&#43;00:00">May 01, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng Llama Guard 4 trên Hugging Face Hub</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Không có mô tả ngắn gọn.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-11/e36db2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/195_lerobot_datasets/1.png" alt="Bộ dữ liệu cộng đồng LeRobot- “ImageNet” của ngành Robot học — Khi nào và Như thế nào?" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bộ dữ liệu cộng đồng LeRobot- “ImageNet” của ngành Robot học — Khi nào và Như thế nào?</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-11/9ee031/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/05/upscalemedia-transformed.jpeg?w=700&amp;h=350&amp;crop=1" alt="MCP và nghịch lý đổi mới- Tại sao các tiêu chuẩn mở sẽ cứu AI khỏi chính nó" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">MCP và nghịch lý đổi mới- Tại sao các tiêu chuẩn mở sẽ cứu AI khỏi chính nó</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-10/cbee1f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/05/What-your-tools-miss-at-213-AM-How-gen-AI-attack-chains-exploit-telemetry-lag.jpg?w=700&amp;h=350&amp;crop=1" alt="Những gì các công cụ của bạn bỏ lỡ lúc 2-13 sáng- Cách các chuỗi tấn công AI tổng quát khai thác độ trễ đo từ xa - Phần 1" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Những gì các công cụ của bạn bỏ lỡ lúc 2-13 sáng- Cách các chuỗi tấn công AI tổng quát khai thác độ trễ đo từ xa - Phần 1</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-08/1ea7b9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu tính năng tìm kiếm web trên Anthropic API</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-07/a12fa1/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/05/nuneybits_Vector_art_of_a_server_farm_in_the_cloud_eabe8f44-4654-4483-8a52-3323b5e73242.webp?w=700&amp;h=350&amp;crop=1" alt="Báo cáo của AWS- AI tạo sinh vượt qua bảo mật trong ngân sách công nghệ toàn cầu năm 2025" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Báo cáo của AWS- AI tạo sinh vượt qua bảo mật trong ngân sách công nghệ toàn cầu năm 2025</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
