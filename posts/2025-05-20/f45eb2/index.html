@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô hình ngôn ngữ thị giác (Tốt hơn, Nhanh hơn, Mạnh hơn) | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này thảo luận về những tiến bộ trong mô hình ngôn ngữ thị giác.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Mô hình ngôn ngữ thị giác (Tốt hơn, Nhanh hơn, Mạnh hơn)</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này thảo luận về những tiến bộ trong mô hình ngôn ngữ thị giác. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-05-20T00:00:00&#43;00:00">May 20, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            23 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/vlms2/vlms2.png" alt="Mô hình ngôn ngữ thị giác (Tốt hơn, Nhanh hơn, Mạnh hơn)">
+        <figcaption class="text-center italic text-xs">Bài viết này thảo luận về những tiến bộ trong mô hình ngôn ngữ thị giác.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="mô-hình-ngôn-ngữ-thị-giác-tốt-hơn-nhanh-hơn-mạnh-hơn">Mô hình Ngôn ngữ Thị giác (Tốt hơn, Nhanh hơn, Mạnh hơn)</h1>
+<p>Các Mô hình Ngôn ngữ Thị giác (VLMs) đang là chủ đề bàn tán sôi nổi. Trong <a href="https://huggingface.co/blog/vlms">một bài đăng trên blog trước đây</a> (từ <em>tháng 4 năm 2024</em>), chúng tôi đã nói rất nhiều về VLMs. Phần lớn là về <a href="https://huggingface.co/papers/2304.08485">LLaVA</a>, mô hình ngôn ngữ thị giác mã nguồn mở <strong>thành công</strong> và <strong>dễ dàng tái tạo</strong> đầu tiên, cùng với các mẹo về cách khám phá, đánh giá và tinh chỉnh các mô hình mở.</p>
+<p>Kể từ đó, rất nhiều điều đã thay đổi. Các mô hình đã trở nên <a href="https://huggingface.co/blog/smolvlm">nhỏ hơn nhưng mạnh mẽ hơn</a>. Chúng ta đã thấy sự trỗi dậy của các kiến trúc và khả năng mới (lý luận, tính chủ động, hiểu video dài, v.v.). Song song đó, các mô hình hoàn toàn mới, chẳng hạn như Tạo sinh Tăng cường Truy xuất Đa phương thức (RAG) và các tác nhân đa phương thức đã hình thành.</p>
+<p>Trong bài đăng trên blog này, chúng ta sẽ nhìn lại và giải mã mọi thứ đã xảy ra với các mô hình ngôn ngữ thị giác trong năm qua. Bạn sẽ khám phá những thay đổi quan trọng, các xu hướng mới nổi và những phát triển đáng chú ý.</p>
+<blockquote>
+<p>Chúng tôi đặc biệt khuyên bạn nên đọc bài đăng trên blog đầu tiên nếu bạn muốn có một cuốn sách giới thiệu hay về cách thức hoạt động của các mô hình ngôn ngữ thị giác.</p></blockquote>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#new-model-trends">Xu hướng Mô hình Mới</a>
+<ul>
+<li><a href="#any-to-any-models">Mô hình Bất kỳ-sang-Bất kỳ</a></li>
+<li><a href="#reasoning-models">Mô hình Suy luận</a></li>
+<li><a href="#smol-yet-capable-models">Mô hình Nhỏ nhưng Có khả năng</a></li>
+<li><a href="#mixture-of-experts-as-decoders">Hỗn hợp Chuyên gia làm Bộ giải mã</a></li>
+<li><a href="#vision-language-action-models">Mô hình Hành động Ngôn ngữ Thị giác</a></li>
+</ul>
+</li>
+<li><a href="#specialized-capabilities">Khả năng Chuyên biệt</a>
+<ul>
+<li><a href="#object-detection-segmentation-counting-with-vision-language-models">Phát hiện Đối tượng, Phân đoạn, Đếm với Mô hình Ngôn ngữ Thị giác</a></li>
+<li><a href="#multimodal-safety-models">Mô hình An toàn Đa phương thức</a></li>
+<li><a href="#multimodal-rag-retrievers-rerankers">RAG Đa phương thức: trình truy xuất, trình xếp hạng lại</a></li>
+</ul>
+</li>
+<li><a href="#multimodal-agents">Tác nhân Đa phương thức</a></li>
+<li><a href="#video-language-models">Mô hình Ngôn ngữ Video</a></li>
+<li><a href="#new-alignment-techniques-for-vision-language-models">Kỹ thuật Điều chỉnh Mới cho Mô hình Ngôn ngữ Thị giác</a></li>
+<li><a href="#new-benchmarks">Điểm chuẩn Mới</a>
+<ul>
+<li><a href="#mmt-bench">MMT-Bench</a></li>
+<li><a href="#mmmu-pro">MMMU-Pro</a></li>
+</ul>
+</li>
+<li><a href="#extra-our-model-picks">Bổ sung: Lựa chọn Mô hình của Chúng tôi</a></li>
+<li><a href="#useful-resources">Tài nguyên Hữu ích</a></li>
+</ul>
+<h2 id="xu-hướng-mô-hình-mới">Xu hướng Mô hình Mới</h2>
+<p>Trong phần này, chúng ta sẽ xem xét các loại VLM mới. Trong khi một số hoàn toàn mới, những loại khác là phiên bản cải tiến của các nghiên cứu trước đây.</p>
+<h2 id="mô-hình-bất-kỳ-sang-bất-kỳ">Mô hình Bất kỳ-sang-Bất kỳ</h2>
+<p>Mô hình bất kỳ-sang-bất kỳ, như tên gọi của chúng, là các mô hình có thể nhận bất kỳ phương thức nào và xuất bất kỳ phương thức nào (hình ảnh, văn bản, âm thanh). Chúng thực hiện điều đó bằng cách căn chỉnh các phương thức, trong đó một đầu vào từ một phương thức có thể được dịch sang một phương thức khác (ví dụ: từ &ldquo;chó&rdquo; sẽ được liên kết với hình ảnh một con chó hoặc với cách phát âm của từ đó).</p>
+<p>Các mô hình này có nhiều bộ mã hóa (một cho mỗi phương thức) và sau đó hợp nhất các nhúng lại với nhau để tạo ra một không gian biểu diễn chung. Các bộ giải mã (nhiều hoặc một) sử dụng không gian tiềm ẩn chung làm đầu vào và giải mã thành phương thức được chọn. Nỗ lực sớm nhất để xây dựng các mô hình bất kỳ-sang-bất kỳ là <a href="https://huggingface.co/collections/facebook/chameleon-668da9663f80d483b4c61f58">Chameleon của Meta</a>, có thể nhận hình ảnh và văn bản và xuất hình ảnh và văn bản. Meta không phát hành khả năng tạo hình ảnh trong mô hình này, vì vậy Alpha-VLLM đã phát hành <a href="https://huggingface.co/collections/Alpha-VLLM/lumina-mgpt-family-66ae48a59a973eeae4513848">Lumina-mGPT</a>, đã xây dựng khả năng tạo hình ảnh trên Chameleon.</p>
+<p>Mô hình bất kỳ-sang-bất kỳ mới nhất và có khả năng nhất, <a href="https://huggingface.co/collections/Qwen/qwen25-omni-67de1e5f0f9464dc6314b36e">Qwen 2.5 Omni</a> (hình bên dưới) là một ví dụ điển hình để hiểu kiến trúc của một mô hình bất kỳ-sang-bất kỳ.</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/qwen-omni.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/qwen-omni.png" alt=""></a></p>
+<p>Qwen2.5-Omni sử dụng kiến trúc &ldquo;Thinker-Talker&rdquo; mới lạ, trong đó &ldquo;Thinker&rdquo; xử lý việc tạo văn bản và &ldquo;Talker&rdquo; tạo ra các phản hồi bằng giọng nói tự nhiên theo cách phát trực tuyến. <a href="https://huggingface.co/openbmb/MiniCPM-o-2_6">MiniCPM-o 2.6</a>, một mô hình đa phương thức tham số 8B có khả năng hiểu và tạo nội dung trên các phương thức hình ảnh, giọng nói và ngôn ngữ. <a href="https://huggingface.co/deepseek-ai/Janus-Pro-7B">Janus-Pro-7B</a> do DeepSeek AI giới thiệu, là một mô hình đa phương thức thống nhất vượt trội trong cả việc hiểu và tạo nội dung trên các phương thức. Nó có kiến trúc mã hóa hình ảnh tách rời, tách biệt các quy trình để hiểu và tạo.</p>
+<p>Chúng tôi nghi ngờ số lượng các mô hình như vậy sẽ tăng lên trong những năm tới. Có một trực giác nổi tiếng rằng học đa phương thức là cách duy nhất chúng ta có thể học các biểu diễn sâu tốt hơn. Chúng tôi đã tuyển chọn một số mô hình và bản trình diễn bất kỳ-sang-bất kỳ trong <a href="https://huggingface.co/collections/merve/any-to-any-models-6822042ee8eb7fb5e38f9b62">bộ sưu tập này</a>.</p>
+<h3 id="mô-hình-suy-luận">Mô hình Suy luận</h3>
+<p>Mô hình suy luận là các mô hình có thể giải quyết các vấn đề phức tạp. Chúng ta đã thấy chúng lần đầu tiên với các mô hình ngôn ngữ lớn và bây giờ là các mô hình ngôn ngữ thị giác. Cho đến năm 2025, chỉ có một mô hình suy luận đa phương thức mã nguồn mở, <a href="https://huggingface.co/Qwen/QVQ-72B-Preview">QVQ-72B-preview</a> của Qwen. Đó là một mô hình thử nghiệm được phát triển bởi nhóm Alibaba Qwen và đi kèm với nhiều tuyên bố từ chối trách nhiệm.</p>
+<p>Năm nay có một người chơi khác, <a href="https://huggingface.co/moonshotai/Kimi-VL-A3B-Thinking">Kimi-VL-A3B-Thinking</a> của nhóm Moonshot AI. Nó bao gồm MoonViT (SigLIP-so-400M) làm bộ mã hóa hình ảnh và bộ giải mã Hỗn hợp Chuyên gia (MoE) với tổng số 16B tham số và chỉ 2,8B tham số đang hoạt động. Mô hình này là một phiên bản được tinh chỉnh theo chuỗi suy nghĩ dài và được điều chỉnh thêm (học tăng cường) của mô hình ngôn ngữ thị giác cơ sở Kimi-VL. Bạn có thể thử mô hình <a href="https://huggingface.co/spaces/moonshotai/Kimi-VL-A3B-Thinking">tại đây</a>.</p>
+<blockquote>
+<p>Các tác giả cũng đã phát hành một phiên bản được tinh chỉnh theo hướng dẫn có tên <a href="https://huggingface.co/moonshotai/Kimi-VL-A3B-Instruct">Kimi-VL-A3B-Instruct</a>.</p></blockquote>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/kimi-vl.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/kimi-vl.png" alt=""></a>
+Mô hình có thể nhận video dài, PDF, ảnh chụp màn hình và hơn thế nữa. Nó cũng có các khả năng của tác nhân.</p>
+<h3 id="mô-hình-nhỏ-nhưng-có-khả-năng">Mô hình Nhỏ nhưng Có khả năng</h3>
+<p>Cộng đồng đã từng mở rộng quy mô trí tuệ thông qua số lượng tham số, và sau đó là dữ liệu tổng hợp chất lượng cao. Sau một thời điểm nhất định, các điểm chuẩn bão hòa và các mô hình mở rộng quy mô có lợi nhuận giảm dần. Cộng đồng đã thu hẹp các mô hình lớn hơn thông qua nhiều phương pháp khác nhau, như chưng cất. Điều này có ý nghĩa vì nó giảm chi phí tính toán, đơn giản hóa việc triển khai và mở ra các trường hợp sử dụng như thực thi cục bộ, tăng cường bảo mật dữ liệu.</p>
+<p>Khi chúng ta nói về các mô hình ngôn ngữ thị giác nhỏ, chúng ta thường đề cập đến các mô hình có ít hơn 2B tham số có thể chạy trên GPU tiêu dùng. SmolVLM là một họ mô hình ví dụ điển hình cho các mô hình ngôn ngữ thị giác nhỏ hơn. Thay vì thu hẹp các mô hình lớn hơn, các tác giả đã đi hết con đường và cố gắng đưa các mô hình vào số lượng tham số nhỏ như 256M, 500M và 2.2B. Ví dụ: SmolVLM2 đã cố gắng giải quyết vấn đề hiểu video với các kích thước này và thấy 500M là một sự đánh đổi tốt. Tại Hugging Face, chúng tôi đã xây dựng một ứng dụng iPhone, HuggingSnap, để chứng minh rằng các kích thước mô hình này có thể đạt được khả năng hiểu video trên các thiết bị tiêu dùng.</p>
+<p>Một mô hình nổi bật khác là <a href="https://huggingface.co/google/gemma-3-4b-it">gemma3-4b-it</a> của Google DeepMind. Nó đặc biệt thú vị vì nó là một trong những mô hình đa phương thức nhỏ nhất có cửa sổ ngữ cảnh 128k token và hỗ trợ hơn 140 ngôn ngữ. Mô hình này đi kèm với họ mô hình Gemma 3, với mô hình lớn nhất của nó xếp thứ nhất trên Chatbot Arena tại thời điểm đó. Mô hình lớn nhất sau đó đã được chưng cất thành một biến thể 1B.</p>
+<p>Cuối cùng, mặc dù không phải là nhỏ nhất, <a href="https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct">Qwen2.5-VL-3B-Instruct</a> đáng được lưu ý. Mô hình này có thể thực hiện nhiều tác vụ khác nhau, từ bản địa hóa (phát hiện và chỉ đối tượng), đến hiểu tài liệu, đến các tác vụ của tác nhân; với độ dài ngữ cảnh lên đến 32k token.</p>
+<p>Bạn có thể sử dụng các mô hình nhỏ thông qua tích hợp MLX và Llama.cpp. Đối với MLX, giả sử bạn đã cài đặt nó, bạn có thể bắt đầu với SmolVLM-500M-Instruct với một dòng lệnh này:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 -m mlx_vlm.generate --model HuggingfaceTB/SmolVLM-500M-Instruct --max-tokens <span style="color:#ae81ff">400</span> --temp 0.0 --image https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm_example.jpg --prompt <span style="color:#e6db74">&#34;What is in this image?&#34;</span>
+</span></span></code></pre></div><p>Bạn có thể bắt đầu sử dụng mô hình <a href="https://huggingface.co/collections/google/gemma-3-release-67c6c6f89c4f76621268bb6d">gemma-3-4b-it</a> ở định dạng GGUF với llama.cpp thông qua CLI với một dòng lệnh này:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>llama-mtmd-cli -hf ggml-org/gemma-3-4b-it-GGUF
+</span></span></code></pre></div><p>Bạn cũng có thể phục vụ cùng một mô hình như sau.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>llama-server -hf ggml-org/gemma-3-4b-it-GGUF
+</span></span></code></pre></div><p>Chúng tôi muốn gửi lời cảm ơn đến <a href="https://huggingface.co/vikhyatk/moondream2">moondream2</a> và <a href="https://huggingface.co/collections/microsoft/florence-6669f44df0d87d9c3bfb76de">Florence-2</a> vì chúng là những nỗ lực sớm nhất cho các mô hình ngôn ngữ thị giác nhỏ nhất. Trong blog này, chúng tôi chủ yếu đề cập đến các mô hình mới hơn (chủ yếu là các mô hình ra mắt sau tháng 4 năm 2024).</p>
+<h3 id="hỗn-hợp-chuyên-gia-làm-bộ-giải-mã">Hỗn hợp Chuyên gia làm Bộ giải mã</h3>
+<p>Các mô hình Hỗn hợp Chuyên gia (MoE) cung cấp một <em>thay thế</em> cho các kiến trúc <strong>dày đặc</strong> bằng cách chọn và kích hoạt một cách động chỉ các mô hình con phù hợp nhất, được gọi là &ldquo;chuyên gia&rdquo;, để xử lý một phân đoạn dữ liệu đầu vào nhất định. Cơ chế kích hoạt chọn lọc này (được thực hiện bởi một bộ định tuyến) đã chứng minh tiềm năng tăng cường đáng kể hiệu suất mô hình và hiệu quả hoạt động trong khi sử dụng ít tài nguyên tính toán hơn.</p>
+<p>MoE nhanh hơn khi suy luận so với các đối tác dày đặc tham số tương tự của chúng vì sự kích hoạt chọn lọc của một lát nhỏ hơn của mạng. Chúng cũng hội tụ nhanh chóng trong quá trình đào tạo. Mọi thứ tốt đẹp đều có một cái giá, vì MoE cần chi phí bộ nhớ nhiều hơn do toàn bộ mô hình nằm trên GPU, ngay cả khi một phần nhỏ hơn được sử dụng.</p>
+<p>Trong kiến trúc Transformer được áp dụng rộng rãi, các lớp MoE thường được tích hợp bằng cách thay thế các lớp Mạng Chuyển tiếp (FFN) tiêu chuẩn trong mỗi khối Transformer. Các mạng dày đặc sử dụng toàn bộ mô hình để chạy một suy luận, trong khi các mạng MoE có kích thước tương tự chọn lọc kích hoạt một số chuyên gia. Điều này giúp sử dụng tính toán tốt hơn và suy luận nhanh hơn.</p>
+<p>Các mô hình ngôn ngữ thị giác có bộ giải mã hỗn hợp chuyên gia dường như đã tăng cường hiệu suất. Ví dụ: Kimi-VL hiện là mô hình suy luận mở tiên tiến nhất có bộ giải mã hỗn hợp chuyên gia. Hỗn hợp Chuyên gia cho thấy kết quả đầy hứa hẹn với sự tập trung của <a href="https://huggingface.co/papers/2401.15947">MoE-LLaVA</a> vào hiệu quả và giảm ảo giác và các khả năng đa phương thức rộng rãi của <a href="https://huggingface.co/deepseek-ai/deepseek-vl2">DeepSeek-VL2</a> cũng vậy. Phiên bản Llama mới nhất (<a href="https://huggingface.co/collections/meta-llama/llama-4-67f0c30d9fe03840bc9d0164">Llama 4</a>) là một MoE với các khả năng thị giác. MoE là một lĩnh vực nghiên cứu đầy hứa hẹn với tư cách là một bộ giải mã và chúng tôi nghi ngờ sự gia tăng các mô hình như thế này.</p>
+<blockquote>
+<p>Để hiểu rõ hơn về MoE, chúng tôi khuyên bạn nên đọc <a href="https://huggingface.co/blog/moe">bài viết tuyệt vời này</a>.</p></blockquote>
+<h3 id="mô-hình-hành-động-ngôn-ngữ-thị-giác">Mô hình Hành động Ngôn ngữ Thị giác</h3>
+<p>VLM thậm chí còn đánh dấu sự hiện diện của chúng trong lĩnh vực robot học! Ở đó, chúng được gọi là các mô hình hành động ngôn ngữ thị giác (VLA). Nhưng đừng bị lừa, chúng chủ yếu là VLM với một chút ria mép và mũ. VLA nhận hình ảnh và hướng dẫn bằng văn bản, đồng thời trả về văn bản cho biết các hành động mà robot cần thực hiện trực tiếp. VLA mở rộng các mô hình ngôn ngữ thị giác bằng cách thêm các mã thông báo hành động và trạng thái để tương tác và điều khiển các môi trường vật lý. Các mã thông báo bổ sung này đại diện cho trạng thái bên trong của hệ thống (cách nó nhận thức môi trường), các hành động (những gì nó thực hiện dựa trên các lệnh) và thông tin liên quan đến thời gian (như thứ tự các bước trong một tác vụ). Các mã thông báo này được thêm vào đầu vào ngôn ngữ thị giác để tạo ra các hành động hoặc chính sách.</p>
+<p>VLA thường được tinh chỉnh trên một VLM cơ sở. Một số người mở rộng định nghĩa này hơn nữa và định nghĩa VLA là bất kỳ mô hình nào tương tác trực quan với thế giới thực hoặc kỹ thuật số. Trong định nghĩa này, VLA có thể thực hiện điều hướng UI hoặc được sử dụng trong các quy trình làm việc của tác nhân. Nhưng nhiều người tin rằng những ứng dụng này thuộc về miền VLM.</p>
+<p>Các ví dụ điển hình về VLA là <a href="https://huggingface.co/lerobot/pi0">π0</a> và π0-FAST, các mô hình nền tảng robot đầu tiên của Physical Intelligence, được chuyển sang thư viện LeRobot của Hugging Face. Các mô hình này được đào tạo trên 7 nền tảng robot và 68 tác vụ duy nhất. Chúng cho thấy hiệu suất zero-shot và tinh chỉnh mạnh mẽ trên các hoạt động phức tạp, thực tế như gấp quần áo, dọn bàn, đóng gói hàng tạp hóa, lắp ráp hộp và truy xuất đối tượng.</p>
+<p><a href="https://huggingface.co/nvidia/GR00T-N1-2B">GR00T N1</a> là mô hình nền tảng VLA mở của NVIDIA cho robot hình người đa năng. Nó hiểu hình ảnh và ngôn ngữ, và biến chúng thành các hành động, như di chuyển cánh tay hoặc tuân theo các hướng dẫn, nhờ một hệ thống kết hợp suy luận thông minh với điều khiển chuyển động thời gian thực. GR00T N1 cũng xây dựng trên định dạng tập dữ liệu LeRobot, tiêu chuẩn mở được tạo ra để đơn giản hóa việc chia sẻ và đào tạo trên các bản trình diễn robot.</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/pi0.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/pi0.png" alt=""></a></p>
+<p>Lấy từ <a href="https://www.physicalintelligence.company/download/pi0.pdf">bài báo</a></p>
+<p>Bây giờ chúng ta đã xem xét các cải tiến mô hình VLM mới nhất, hãy khám phá cách các khả năng đã được thiết lập đã phát triển.</p>
+<h2 id="khả-năng-chuyên-biệt">Khả năng Chuyên biệt</h2>
+<h3 id="phát-hiện-đối-tượng-phân-đoạn-đếm-với-mô-hình-ngôn-ngữ-thị-giác">Phát hiện Đối tượng, Phân đoạn, Đếm với Mô hình Ngôn ngữ Thị giác</h3>
+<p>Như chúng ta đã thấy trong các phần trước, VLM cho phép <em>khái quát hóa</em> trên các tác vụ thị giác máy tính truyền thống. Các mô hình hiện có thể nhận hình ảnh và nhiều loại lời nhắc, chẳng hạn như văn bản mở và xuất văn bản có cấu trúc với các mã thông báo bản địa hóa (để phát hiện, phân đoạn và hơn thế nữa).</p>
+<p>Năm ngoái, <a href="https://huggingface.co/blog/paligemma">PaliGemma</a> là mô hình đầu tiên cố gắng giải quyết các tác vụ này. Mô hình này nhận một hình ảnh và văn bản, trong đó văn bản là mô tả về một đối tượng quan tâm, cùng với tiền tố tác vụ. Lời nhắc văn bản có dạng &ldquo;phân đoạn mèo sọc&rdquo; hoặc &ldquo;phát hiện chim trên mái nhà&rdquo;.</p>
+<p>Đối với phát hiện, mô hình xuất ra tọa độ hộp giới hạn dưới dạng <em>mã thông báo</em>. Mặt khác, đối với phân đoạn, mô hình xuất ra mã thông báo phát hiện và mã thông báo phân đoạn. Các mã thông báo phân đoạn này không phải là tất cả các tọa độ pixel được phân đoạn, mà là các chỉ mục sổ mã được giải mã bởi một bộ tự mã hóa biến đổi được đào tạo để giải mã các mã thông báo này thành các mặt nạ phân đoạn hợp lệ (như trong hình bên dưới).</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/pg2-seg.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/pg2-seg.png" alt=""></a></p>
+<p>Nhiều mô hình đã được giới thiệu để thực hiện các tác vụ bản địa hóa sau PaliGemma. Cuối năm ngoái, một phiên bản nâng cấp của PaliGemma, PaliGemma 2, đã xuất hiện với cùng các khả năng và hiệu suất tốt hơn. Một mô hình khác ra đời sau đó là Molmo của Allen AI, có thể chỉ vào các trường hợp bằng dấu chấm và đếm các trường hợp đối tượng.</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/molmo-pointing.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/molmo-pointing.png" alt=""></a></p>
+<p>Qwen2.5-VL cũng có thể phát hiện, chỉ vào và đếm các đối tượng, và điều này bao gồm cả các thành phần UI làm đối tượng!</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/qwen3-gui.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/qwen3-gui.png" alt=""></a></p>
+<h3 id="mô-hình-an-toàn-đa-phương-thức">Mô hình An toàn Đa phương thức</h3>
+<p>Các mô hình ngôn ngữ thị giác trong sản xuất yêu cầu <strong>lọc</strong> đầu vào và đầu ra để ngăn chặn việc vượt ngục và các đầu ra có hại để tuân thủ. Nội dung có hại khác nhau, từ đầu vào có bạo lực đến nội dung khiêu dâm. Đó là nơi các mô hình an toàn đa phương thức xuất hiện: chúng được sử dụng trước và sau các mô hình ngôn ngữ thị giác để lọc đầu vào và đầu ra của chúng. Chúng giống như các mô hình an toàn LLM nhưng có thêm đầu vào hình ảnh.</p>
+<p>Đầu năm 2025, Google đã giới thiệu mô hình an toàn đa phương thức mở đầu tiên, <a href="https://huggingface.co/google/shieldgemma-2-4b-it">ShieldGemma 2</a>. Nó được xây dựng trên ShieldGemma, mô hình an toàn chỉ có văn bản. Mô hình này nhận hình ảnh và chính sách nội dung và trả về liệu một hình ảnh có an toàn cho một chính sách nhất định hay không. <em>Chính sách</em> đề cập đến một tiêu chí trong đó hình ảnh không phù hợp. ShieldGemma 2 cũng có thể được sử dụng để lọc đầu ra của các mô hình tạo hình ảnh.</p>
+<p><a href="https://huggingface.co/spaces/merve/llama-guard-4">Llama Guard 4</a> của Meta là một mô hình an toàn đa phương thức và đa ngôn ngữ dày đặc. Nó được tỉa dày đặc từ Llama 4 Scout (một hỗn hợp các chuyên gia đa phương thức) với khả năng tinh chỉnh an toàn.</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/llama-guard.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/llama-guard.png" alt=""></a></p>
+<p>Mô hình có thể được sử dụng cho suy luận chỉ bằng văn bản và đa phương thức. Mô hình này cũng có thể nhận đầu ra của mô hình ngôn ngữ thị giác, hoàn thành các cuộc trò chuyện và lọc chúng trước khi gửi chúng cho người dùng.</p>
+<h3 id="rag-đa-phương-thức-trình-truy-xuất-trình-xếp-hạng-lại">RAG Đa phương thức: trình truy xuất, trình xếp hạng lại</h3>
+<p>Bây giờ hãy xem xét cách Tạo sinh Tăng cường Truy xuất đã phát triển trong không gian đa phương thức. RAG cho các tài liệu phức tạp, thường được định dạng ở định dạng PDF, được xử lý theo ba bước:</p>
+<ol>
+<li>phân tích cú pháp tài liệu hoàn chỉnh thành văn bản</li>
+<li>chuyển văn bản thuần túy và truy vấn cho trình truy xuất và trình xếp hạng lại để nhận tài liệu phù hợp nhất</li>
+<li>chuyển ngữ cảnh và truy vấn có liên quan cho LLM</li>
+</ol>
+<p>Một trình phân tích cú pháp PDF truyền thống bao gồm nhiều yếu tố để giữ lại cấu trúc và các yếu tố hình ảnh trong tài liệu, chẳng hạn như <em>bố cục</em>, <em>bảng</em>, <em>hình ảnh</em>, <em>biểu đồ</em>, tất cả được hiển thị thành một markdown. Nhưng thiết lập này có thể khó duy trì.
+<a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/rag-1.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/rag-1.png" alt=""></a></p>
+<p>Với sự trỗi dậy của các mô hình ngôn ngữ thị giác, vấn đề này đã được giải quyết: hiện có các trình truy xuất và trình xếp hạng lại đa phương thức.</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/rag-2.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/rag-2.png" alt=""></a></p>
+<p>Trình truy xuất đa phương thức nhận một ngăn xếp PDF và một truy vấn làm đầu vào và trả về số trang phù hợp nhất cùng với điểm tin cậy của chúng. Các điểm số đại diện cho khả năng trang đó chứa câu trả lời cho truy vấn hoặc mức độ liên quan của truy vấn đến trang. Điều này bỏ qua bước phân tích cú pháp giòn.</p>
+<p>Các trang phù hợp nhất sau đó được đưa vào mô hình ngôn ngữ thị giác cùng với truy vấn và VLM tạo ra câu trả lời.</p>
+<p>Có hai <strong>kiến trúc trình truy xuất đa phương thức</strong> chính:</p>
+<ol>
+<li>Nhúng Ảnh chụp Màn hình Tài liệu (DSE, MCDSE)</li>
+<li>Các mô hình giống ColBERT (ColPali, ColQwen2, ColSmolVLM)</li>
+</ol>
+<p>Các mô hình DSE bao gồm một bộ mã hóa văn bản và một bộ mã hóa hình ảnh, trả về một vectơ duy nhất cho mỗi truy vấn. Các điểm số trả về là softmax trên các tích vô hướng của các nhúng. Chúng trả về một vectơ duy nhất cho mỗi đoạn văn.</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/dse.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/dse.png" alt=""></a></p>
+<p>Lấy từ <a href="https://arxiv.org/pdf/2406.11251">bài báo</a></p>
+<p>Các mô hình giống ColBERT, như ColPali, cũng là các mô hình bộ mã hóa kép, với một sự thay đổi: ColPali có một mô hình ngôn ngữ thị giác làm bộ mã hóa hình ảnh và một mô hình ngôn ngữ lớn làm bộ mã hóa văn bản. Các mô hình này vốn không phải là bộ mã hóa, nhưng các mô hình xuất ra các nhúng, sau đó được chuyển đến &ldquo;MaxSim&rdquo;. Các đầu ra là nhiều vectơ, một cho mỗi mã thông báo, không giống như DSE. Trong MaxSim, sự tương đồng giữa mỗi nhúng mã thông báo văn bản và mỗi nhúng bản vá hình ảnh được tính toán và phương pháp này nắm bắt các sắc thái tốt hơn. Do lý do này, các mô hình giống ColBERT ít hiệu quả về chi phí hơn, có hiệu suất tốt hơn.</p>
+<p>Bên dưới, bạn có thể thấy độ trễ lập chỉ mục cho ColPali. Vì nó chỉ là một mô hình duy nhất, nên nó cũng dễ bảo trì hơn.</p>
+<p><a href="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/colpali.png"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/colpali.png" alt=""></a>
+Lấy từ <a href="https://arxiv.org/pdf/2407.01449">bài báo</a></p>
+<p>Trên Hugging Face Hub, bạn có thể tìm thấy các mô hình này trong tác vụ &ldquo;<a href="https://huggingface.co/models?pipeline_tag=visual-document-retrieval&amp;sort=trending">Truy xuất Tài liệu Trực quan</a>&rdquo;.</p>
+<p>Điểm chuẩn phổ biến nhất cho tác vụ này là ViDoRe, bao gồm các tài liệu bằng <strong>tiếng Anh</strong> và <strong>tiếng Pháp</strong>, với các tài liệu khác nhau, từ báo cáo tài chính, hình vẽ khoa học đến tài liệu hành chính. Mỗi ví dụ về ViDoRe có tài liệu dưới dạng hình ảnh, một truy vấn và các câu trả lời tiềm năng. Các tài liệu phù hợp với các truy vấn giúp ích cho việc đào tạo trước đối chiếu, vì vậy tập hợp đào tạo ViDoRe được sử dụng để đào tạo các mô hình mới.</p>
+<h2 id="tác-nhân-đa-phương-thức">Tác nhân Đa phương thức</h2>
+<p>Các mô hình ngôn ngữ thị giác mở ra nhiều quy trình làm việc của tác nhân, từ trò chuyện với tài liệu đến sử dụng máy tính. Ở đây, chúng ta sẽ đề cập đến loại thứ hai vì nó đòi hỏi các khả năng của tác nhân nâng cao hơn. Gần đây, đã có nhiều bản phát hành mô hình ngôn ngữ thị giác hiểu và hoạt động trên UI. Bản phát hành mới nhất là UI-TARS-1.5 của ByteDance, đã cho thấy kết quả tuyệt vời trong việc hoạt động trên trình duyệt, máy tính và sử dụng điện thoại. Nó cũng có thể chơi trò chơi với lý luận và hoạt động trong các trò chơi thế giới mở. Một bản phát hành có tác động khác của năm nay là MAGMA-8B, đó là một mô hình nền tảng cho cả điều hướng UI và tương tác vật lý với thế giới thực. Hơn nữa, Qwen2.5-VL (đặc biệt là <a href="https://huggingface.co/Qwen/Qwen2.5-VL-32B-Instruct">biến thể 32B</a> của nó vì nó được đào tạo thêm về các tác vụ của tác nhân) và <a href="https://huggingface.co/collections/moonshotai/kimi-vl-a3b-67f67b6ac91d3b03d382dd85">mô hình suy luận Kimi-VL</a> rất tốt trong các tác vụ của tác nhân GUI.</p>
+<p>Đầu năm 2025, chúng tôi đã giới thiệu smolagents, một thư viện tác nhân nhẹ mới triển khai khung ReAct. Ngay sau đó, chúng tôi đã triển khai hỗ trợ ngôn ngữ thị giác cho thư viện. Quá trình tích hợp này diễn ra trên hai trường hợp sử dụng:</p>
+<ul>
+<li>Khi bắt đầu chạy, cung cấp hình ảnh một lần. Điều này hữu ích cho AI tài liệu với việc sử dụng công cụ.</li>
+<li>Truy xuất hình ảnh động. Điều này hữu ích cho các trường hợp như điều khiển GUI với các tác nhân VLM, trong đó tác nhân liên tục chụp ảnh màn hình.</li>
+</ul>
+<p>Thư viện cung cấp các khối xây dựng để người dùng xây dựng các quy trình làm việc của tác nhân của riêng họ với khả năng hiểu hình ảnh. Chúng tôi cung cấp các tập lệnh khác nhau và các lệnh CLI một dòng để giúp người dùng bắt đầu dễ dàng.</p>
+<p>Đối với trường hợp đầu tiên, giả sử chúng ta muốn một tác nhân mô tả các tài liệu (điều này không có tính tác nhân cao, nhưng tốt cho các trường hợp sử dụng tối thiểu). Bạn có thể khởi tạo CodeAgent (một tác nhân tự viết mã!) như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>agent <span style="color:#f92672">=</span> CodeAgent(tools<span style="color:#f92672">=</span>[], model<span style="color:#f92672">=</span>model) <span style="color:#75715e"># không cần công cụ</span>
+</span></span><span style="display:flex;"><span>agent<span style="color:#f92672">.</span>run(<span style="color:#e6db74">&#34;Mô tả các tài liệu này:&#34;</span>, images<span style="color:#f92672">=</span>[document_1, document_2, document_3])
+</span></span></code></pre></div><p>Đối với trường hợp sử dụng sau, nơi chúng ta cần một tác nhân để chụp ảnh màn hình, chúng ta có thể xác định một lệnh gọi lại để được thực thi ở cuối mỗi <code>ActionStep</code>. Đối với trường hợp sử dụng của riêng bạn, nơi bạn cần lấy hình ảnh động, hãy sửa đổi lệnh gọi lại theo bất kỳ cách nào bạn muốn. Chúng tôi sẽ không xác định nó ở đây chi tiết để đơn giản. Tùy chọn, bạn có thể đọc bài đăng trên blog và chính tập lệnh ở cuối bài đăng trên blog này. Hiện tại, hãy xem cách chúng tôi khởi tạo tác nhân với các lệnh gọi lại và các bước điều khiển trình duyệt.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_screenshot</span>(memory_step: ActionStep, agent: CodeAgent) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Chụp ảnh màn hình và ghi vào các quan sát.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>  png_bytes <span style="color:#f92672">=</span> driver<span style="color:#f92672">.</span>get_screenshot_as_png()
+</span></span><span style="display:flex;"><span>        memory_step<span style="color:#f92672">.</span>observations_images <span style="color:#f92672">=</span> [image<span style="color:#f92672">.</span>copy()]  <span style="color:#75715e"># lưu hình ảnh vào memory_step</span>
+</span></span><span style="display:flex;"><span>    url_info <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;URL hiện tại: </span><span style="color:#e6db74">{</span>driver<span style="color:#f92672">.</span>current_url<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    memory_step<span style="color:#f92672">.</span>observations <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>        url_info <span style="color:#66d9ef">if</span> memory_step<span style="color:#f92672">.</span>observations <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span> <span style="color:#66d9ef">else</span> memory_step<span style="color:#f92672">.</span>observations <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> url_info
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>agent <span style="color:#f92672">=</span> CodeAgent(
+</span></span><span style="display:flex;"><span>    tools<span style="color:#f92672">=</span>[go_back, close_popups, search_item_ctrl_f], <span style="color:#75715e"># chuyển các công cụ điều hướng</span>
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>    additional_authorized_imports<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;helium&#34;</span>],
+</span></span><span style="display:flex;"><span>    step_callbacks<span style="color:#f92672">=</span>[save_screenshot], <span style="color:#75715e"># chuyển lệnh gọi lại</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Bạn có thể chỉ cần thử toàn bộ ví dụ bằng cách chạy lệnh CLI sau. Nó bắt đầu một tác nhân có quyền truy cập để kiểm soát trình duyệt web, được hỗ trợ bởi một mô hình ngôn ngữ thị giác để hoàn thành các tác vụ tự động hóa web (vui lòng thay thế bằng trang web bạn muốn điều hướng đến).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>webagent <span style="color:#e6db74">&#34;đi đến xyz.com/men, đến phần giảm giá, nhấp vào mặt hàng quần áo đầu tiên bạn thấy. Lấy chi tiết sản phẩm và giá, trả lại chúng. lưu ý rằng tôi đang mua sắm từ Pháp&#34;</span>
+</span></span></code></pre></div><p>smolagents cung cấp các loại mô hình khác nhau, chẳng hạn như các mô hình biến áp cục bộ, các mô hình mã nguồn mở được phục vụ bằng cách sử dụng các Nhà cung cấp Suy luận hoặc các điểm cuối nhà cung cấp mô hình mã nguồn đóng. Chúng tôi khuyến khích sử dụng các mô hình mã nguồn mở vì nhiều quy trình làm việc của tác nhân hiện yêu cầu suy luận, điều này có lợi từ các mô hình có một số lượng lớn các tham số. Qwen 2.5 VL kể từ tháng 4 năm 2025 là một ứng cử viên tốt cho các quy trình làm việc của tác nhân, vì mô hình này được đào tạo thêm về các tác vụ của tác nhân.</p>
+<h2 id="mô-hình-ngôn-ngữ-video">Mô hình Ngôn ngữ Video</h2>
+<p>Hầu hết các mô hình ngôn ngữ thị giác ngày nay có thể xử lý video, bởi vì video có thể được biểu diễn dưới dạng một chuỗi các khung hình. Tuy nhiên, việc hiểu video rất phức tạp vì mối quan hệ thời gian giữa các khung hình và số lượng lớn các khung hình, vì vậy các kỹ thuật khác nhau được sử dụng để chọn một tập hợp đại diện của các khung hình video.
+[<img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/vlm2/video.png" alt="">](<a href="https://huggingface.co/datasets/huggingface/documentation-ima">https://huggingface.co/datasets/huggingface/documentation-ima</a></p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/vlms-2025">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/may-12-2025/">May 12, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-20/172ca5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/fast-whisper-endpoints/thumbnail.png" alt="Chuyển ngữ whisper cực nhanh với Inference Endpoints" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-20T00:00:00&#43;00:00">May 20, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chuyển ngữ whisper cực nhanh với Inference Endpoints</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này thảo luận về cách sử dụng Inference Endpoints để có được bản ghi whisper cực nhanh.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-20/b4a5b2/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/gradio-mcp/thumbnail.png" alt="Cách xây dựng máy chủ MCP bằng Gradio" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-20T00:00:00&#43;00:00">May 20, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách xây dựng máy chủ MCP bằng Gradio</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này thảo luận về cách xây dựng máy chủ MCP bằng Gradio.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-20/b4a5b2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/gradio-mcp/thumbnail.png" alt="Cách xây dựng máy chủ MCP bằng Gradio" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách xây dựng máy chủ MCP bằng Gradio</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-20/4b64f0/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/kaggle-integration/thumbnail.png" alt="Cải thiện khả năng truy cập mô hình Hugging Face cho người dùng Kaggle" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cải thiện khả năng truy cập mô hình Hugging Face cho người dùng Kaggle</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-20/172ca5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/fast-whisper-endpoints/thumbnail.png" alt="Chuyển ngữ whisper cực nhanh với Inference Endpoints" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chuyển ngữ whisper cực nhanh với Inference Endpoints</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-20/1b9a82/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/azure-ai-foundry/satya-hf-build-compressed.png" alt="Microsoft và Hugging Face mở rộng hợp tác" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Microsoft và Hugging Face mở rộng hợp tác</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-20/f45eb2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/vlms2/vlms2.png" alt="Mô hình ngôn ngữ thị giác (Tốt hơn, Nhanh hơn, Mạnh hơn)" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mô hình ngôn ngữ thị giác (Tốt hơn, Nhanh hơn, Mạnh hơn)</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
