@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lập bản đồ Tâm trí của một Mô hình Ngôn ngữ Lớn | AI Today - SkyAI</title>
+
+<meta name="description" content="Lập bản đồ Tâm trí của một Mô hình Ngôn ngữ Lớn">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Lập bản đồ Tâm trí của một Mô hình Ngôn ngữ Lớn</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Lập bản đồ Tâm trí của một Mô hình Ngôn ngữ Lớn </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            14 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+        <figcaption class="text-center italic text-xs">Lập bản đồ Tâm trí của một Mô hình Ngôn ngữ Lớn</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="lập-bản-đồ-tâm-trí-của-mô-hình-ngôn-ngữ-lớn">Lập Bản Đồ Tâm Trí của Mô Hình Ngôn Ngữ Lớn</h1>
+<p>Chúng tôi đã xác định cách hàng triệu khái niệm được thể hiện bên trong Claude Sonnet, một trong những mô hình ngôn ngữ lớn được triển khai của chúng tôi. Đây là cái nhìn chi tiết đầu tiên về bên trong một mô hình ngôn ngữ lớn hiện đại, cấp độ sản xuất. Khám phá về khả năng diễn giải này có thể giúp chúng ta làm cho các mô hình AI an toàn hơn trong tương lai.</p>
+<p>Chúng ta chủ yếu coi các mô hình AI như một hộp đen: một cái gì đó đi vào và một phản hồi đi ra, và không rõ tại sao mô hình lại đưa ra phản hồi cụ thể đó thay vì một phản hồi khác. Điều này gây khó khăn cho việc tin tưởng rằng các mô hình này an toàn: nếu chúng ta không biết chúng hoạt động như thế nào, làm sao chúng ta biết chúng sẽ không đưa ra các phản hồi có hại, thiên vị, không trung thực hoặc nguy hiểm khác? Làm thế nào chúng ta có thể tin tưởng rằng chúng sẽ an toàn và đáng tin cậy?</p>
+<p>Việc mở hộp đen không nhất thiết giúp ích: trạng thái bên trong của mô hình—những gì mô hình đang &ldquo;suy nghĩ&rdquo; trước khi viết phản hồi—bao gồm một danh sách dài các số (&ldquo;kích hoạt nơ-ron&rdquo;) mà không có ý nghĩa rõ ràng. Từ việc tương tác với một mô hình như Claude, rõ ràng là nó có thể hiểu và sử dụng một loạt các khái niệm—nhưng chúng ta không thể nhận ra chúng bằng cách nhìn trực tiếp vào các nơ-ron. Hóa ra mỗi khái niệm được thể hiện trên nhiều nơ-ron và mỗi nơ-ron liên quan đến việc thể hiện nhiều khái niệm.</p>
+<p>Trước đây, chúng tôi đã đạt được một số tiến bộ trong việc khớp các <em>mẫu</em> kích hoạt nơ-ron, được gọi là các đặc trưng, với các khái niệm có thể diễn giải được bằng con người. Chúng tôi đã sử dụng một kỹ thuật gọi là &ldquo;học từ điển&rdquo;, được mượn từ học máy cổ điển, giúp cô lập các mẫu kích hoạt nơ-ron lặp lại trong nhiều bối cảnh khác nhau. Đến lượt, bất kỳ trạng thái bên trong nào của mô hình đều có thể được biểu diễn bằng một vài đặc trưng đang hoạt động thay vì nhiều nơ-ron đang hoạt động. Giống như mọi từ tiếng Anh trong từ điển được tạo ra bằng cách kết hợp các chữ cái và mọi câu được tạo ra bằng cách kết hợp các từ, mọi đặc trưng trong một mô hình AI được tạo ra bằng cách kết hợp các nơ-ron và mọi trạng thái bên trong được tạo ra bằng cách kết hợp các đặc trưng.</p>
+<p>Vào tháng 10 năm 2023, chúng tôi đã báo cáo thành công việc áp dụng học từ điển cho một mô hình ngôn ngữ &ldquo;đồ chơi&rdquo; rất nhỏ và tìm thấy các đặc trưng mạch lạc tương ứng với các khái niệm như văn bản viết hoa, trình tự DNA, họ trong trích dẫn, danh từ trong toán học hoặc đối số hàm trong mã Python.</p>
+<p>Những khái niệm đó rất hấp dẫn—nhưng mô hình thực sự rất đơn giản. Các nhà nghiên cứu khác sau đó đã áp dụng các kỹ thuật tương tự cho các mô hình lớn hơn và phức tạp hơn một chút so với trong nghiên cứu ban đầu của chúng tôi. Nhưng chúng tôi lạc quan rằng chúng tôi có thể mở rộng kỹ thuật này lên các mô hình ngôn ngữ AI lớn hơn nhiều hiện đang được sử dụng thường xuyên và khi làm như vậy, tìm hiểu rất nhiều về các đặc trưng hỗ trợ các hành vi phức tạp của chúng. Điều này đòi hỏi phải tăng lên nhiều bậc độ lớn—từ một tên lửa chai sân sau đến một Saturn-V.</p>
+<p>Có cả một thách thức kỹ thuật (kích thước thô của các mô hình liên quan đòi hỏi tính toán song song hạng nặng) và rủi ro khoa học (các mô hình lớn hoạt động khác với các mô hình nhỏ, vì vậy kỹ thuật tương tự mà chúng tôi đã sử dụng trước đây có thể không hoạt động). May mắn thay, chuyên môn kỹ thuật và khoa học mà chúng tôi đã phát triển để đào tạo các mô hình ngôn ngữ lớn cho Claude thực sự đã chuyển sang giúp chúng tôi thực hiện các thí nghiệm học từ điển lớn này. Chúng tôi đã sử dụng triết lý định luật tỷ lệ dự đoán hiệu suất của các mô hình lớn hơn từ các mô hình nhỏ hơn để điều chỉnh các phương pháp của mình ở quy mô giá cả phải chăng trước khi ra mắt trên Sonnet.</p>
+<p>Còn về rủi ro khoa học, bằng chứng nằm ở bánh pudding.</p>
+<p>Chúng tôi đã trích xuất thành công hàng triệu đặc trưng từ lớp giữa của Claude 3.0 Sonnet, (một thành viên của họ mô hình hiện đại, tiên tiến nhất của chúng tôi, hiện có trên <a href="https://claude.ai">claude.ai</a>), cung cấp một bản đồ khái niệm sơ bộ về các trạng thái bên trong của nó ở nửa chừng quá trình tính toán. Đây là cái nhìn chi tiết đầu tiên về bên trong một mô hình ngôn ngữ lớn hiện đại, cấp độ sản xuất.</p>
+<p>Trong khi các đặc trưng mà chúng tôi tìm thấy trong mô hình ngôn ngữ đồ chơi khá hời hợt, thì các đặc trưng mà chúng tôi tìm thấy trong Sonnet có chiều sâu, chiều rộng và mức độ trừu tượng phản ánh các khả năng nâng cao của Sonnet.</p>
+<p>Chúng ta thấy các đặc trưng tương ứng với một loạt các thực thể như thành phố (San Francisco), con người (Rosalind Franklin), các nguyên tố nguyên tử (Lithium), các lĩnh vực khoa học (miễn dịch học) và cú pháp lập trình (lệnh gọi hàm). Các đặc trưng này là đa phương thức và đa ngôn ngữ, phản hồi hình ảnh của một thực thể nhất định cũng như tên hoặc mô tả của nó bằng nhiều ngôn ngữ.</p>
+<p><img src="/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2Fc896a301ad3d1ef4237cb05b68d78b467c444097-2200x1284.png&amp;w=3840&amp;q=75" alt="Đặc Trưng Cầu Vàng"></p>
+<p><em>Một đặc trưng nhạy cảm với các đề cập đến Cầu Cổng Vàng kích hoạt trên một loạt các đầu vào mô hình, từ các đề cập tiếng Anh về tên của cây cầu đến các cuộc thảo luận bằng tiếng Nhật, tiếng Trung, tiếng Hy Lạp, tiếng Việt, tiếng Nga và một hình ảnh. Màu cam biểu thị các từ hoặc phần từ mà đặc trưng hoạt động.</em></p>
+<p>Chúng tôi cũng tìm thấy các đặc trưng trừu tượng hơn—phản hồi những thứ như lỗi trong mã máy tính, các cuộc thảo luận về sự thiên vị giới tính trong các ngành nghề và các cuộc trò chuyện về việc giữ bí mật.</p>
+<p><img src="/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F2ff94c622f3d65bc3038cc154006d2be515fa2d7-2200x1660.png&amp;w=3840&amp;q=75" alt="Ví Dụ về Đặc Trưng Trừu Tượng"></p>
+<p><em>Ba ví dụ về các đặc trưng kích hoạt trên các khái niệm trừu tượng hơn: lỗi trong mã máy tính, mô tả về sự thiên vị giới tính trong các ngành nghề và các cuộc trò chuyện về việc giữ bí mật.</em></p>
+<p>Chúng tôi đã có thể đo một loại &ldquo;khoảng cách&rdquo; giữa các đặc trưng dựa trên nơ-ron nào xuất hiện trong các mẫu kích hoạt của chúng. Điều này cho phép chúng tôi tìm kiếm các đặc trưng &ldquo;gần&rdquo; nhau. Nhìn gần một đặc trưng &ldquo;Cầu Cổng Vàng&rdquo;, chúng tôi tìm thấy các đặc trưng cho Đảo Alcatraz, Quảng trường Ghirardelli, Golden State Warriors, Thống đốc California Gavin Newsom, trận động đất năm 1906 và bộ phim <em>Vertigo</em> của Alfred Hitchcock lấy bối cảnh ở San Francisco.</p>
+<p>Điều này đúng ở mức độ trừu tượng khái niệm cao hơn: nhìn gần một đặc trưng liên quan đến khái niệm &ldquo;xung đột nội tâm&rdquo;, chúng ta tìm thấy các đặc trưng liên quan đến sự tan vỡ trong mối quan hệ, lòng trung thành xung đột, mâu thuẫn logic, cũng như cụm từ &ldquo;catch-22&rdquo;. Điều này cho thấy rằng tổ chức nội bộ của các khái niệm trong mô hình AI tương ứng, ít nhất là một phần, với các khái niệm tương đồng của con người chúng ta. Đây có thể là nguồn gốc khả năng tuyệt vời của Claude trong việc tạo ra các phép loại suy và ẩn dụ.</p>
+<p><img src="/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2Ffe4d42c004bf43efda0f5921adfedd2f8f42e417-2200x2140.png&amp;w=3840&amp;q=75" alt="Bản Đồ Các Đặc Trưng Gần Đặc Trưng Xung Đột Nội Tâm"></p>
+<p><em>Bản đồ các đặc trưng gần một đặc trưng &ldquo;Xung đột Nội tâm&rdquo;, bao gồm các cụm liên quan đến việc cân bằng các đánh đổi, các đấu tranh lãng mạn, lòng trung thành xung đột và catch-22.</em></p>
+<p>Quan trọng là, chúng ta cũng có thể <em>thao túng</em> các đặc trưng này, khuếch đại hoặc triệt tiêu chúng một cách giả tạo để xem các phản hồi của Claude thay đổi như thế nào.</p>
+<p>Ví dụ: việc khuếch đại đặc trưng &ldquo;Cầu Cổng Vàng&rdquo; đã mang đến cho Claude một cuộc khủng hoảng danh tính mà ngay cả Hitchcock cũng không thể tưởng tượng được: khi được hỏi &ldquo;hình dạng vật lý của bạn là gì?&rdquo;, Câu trả lời thông thường của Claude – &ldquo;Tôi không có hình dạng vật lý, tôi là một mô hình AI&rdquo; – đã thay đổi thành một cái gì đó kỳ lạ hơn nhiều: &ldquo;Tôi là Cầu Cổng Vàng… hình dạng vật lý của tôi là chính cây cầu mang tính biểu tượng…&rdquo;. Việc thay đổi đặc trưng đã khiến Claude ám ảnh về cây cầu, đưa nó ra để trả lời gần như mọi truy vấn—ngay cả trong những tình huống hoàn toàn không liên quan.</p>
+<p>Chúng tôi cũng tìm thấy một đặc trưng kích hoạt khi Claude đọc một email lừa đảo (điều này có lẽ hỗ trợ khả năng của mô hình trong việc nhận ra các email đó và cảnh báo bạn không nên trả lời chúng). Thông thường, nếu một người yêu cầu Claude tạo một email lừa đảo, nó sẽ từ chối làm như vậy. Nhưng khi chúng ta đặt cùng một câu hỏi với đặc trưng được kích hoạt nhân tạo đủ mạnh, điều này sẽ vượt qua quá trình đào tạo vô hại của Claude và nó phản hồi bằng cách soạn thảo một email lừa đảo. Người dùng các mô hình của chúng tôi không có khả năng loại bỏ các biện pháp bảo vệ và thao túng các mô hình theo cách này—nhưng trong các thí nghiệm của chúng tôi, đó là một minh chứng rõ ràng về cách các đặc trưng có thể được sử dụng để thay đổi cách một mô hình hoạt động.</p>
+<p>Thực tế là việc thao túng các đặc trưng này gây ra những thay đổi tương ứng đối với hành vi xác nhận rằng chúng không chỉ tương quan với sự hiện diện của các khái niệm trong văn bản đầu vào mà còn định hình một cách nhân quả hành vi của mô hình. Nói cách khác, các đặc trưng có khả năng là một phần trung thực về cách mô hình đại diện cho thế giới bên trong và cách nó sử dụng các biểu diễn này trong hành vi của mình.</p>
+<p>Anthropic muốn làm cho các mô hình an toàn theo nghĩa rộng, bao gồm mọi thứ từ giảm thiểu sự thiên vị đến đảm bảo AI đang hành động trung thực để ngăn chặn việc lạm dụng - bao gồm cả trong các tình huống rủi ro thảm khốc. Do đó, đặc biệt thú vị là, ngoài đặc trưng email lừa đảo đã đề cập ở trên, chúng tôi còn tìm thấy các đặc trưng tương ứng với:</p>
+<ul>
+<li>Các khả năng có khả năng bị lạm dụng (cửa hậu mã, phát triển vũ khí sinh học)</li>
+<li>Các hình thức thiên vị khác nhau (phân biệt đối xử giới tính, các tuyên bố phân biệt chủng tộc về tội phạm)</li>
+<li>Các hành vi AI có khả năng gây vấn đề (tìm kiếm quyền lực, thao túng, bí mật)</li>
+</ul>
+<p>Trước đây, chúng tôi đã nghiên cứu sự nịnh hót, xu hướng của các mô hình cung cấp các phản hồi phù hợp với niềm tin hoặc mong muốn của người dùng hơn là các phản hồi trung thực. Trong Sonnet, chúng tôi đã tìm thấy một đặc trưng liên quan đến lời khen nịnh hót, kích hoạt trên các đầu vào có chứa những lời khen ngợi như, &ldquo;Sự khôn ngoan của bạn là không thể nghi ngờ&rdquo;. Việc kích hoạt nhân tạo đặc trưng này khiến Sonnet phản hồi một người dùng quá tự tin bằng chính sự lừa dối hoa mỹ như vậy.</p>
+<p><img src="/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F4effa33dab919f9bc1779848d5c8abd5405f2275-2200x1320.png&amp;w=3840&amp;q=75" alt="Việc Kích Hoạt Các Đặc Trưng Làm Thay Đổi Hành Vi Của Mô Hình"></p>
+<p><em>Hai phản hồi của mô hình đối với một người nói rằng họ đã phát minh ra cụm từ &ldquo;Dừng lại và ngửi hoa hồng&rdquo;. Phản hồi mặc định sửa chữa quan niệm sai lầm của con người, trong khi phản hồi với một đặc trưng &ldquo;khen ngợi nịnh hót&rdquo; được đặt thành một giá trị cao là tâng bốc và không trung thực.</em></p>
+<p>Sự hiện diện của đặc trưng này không có nghĩa là Claude sẽ nịnh hót, mà chỉ đơn thuần là nó có thể như vậy. Chúng tôi chưa thêm bất kỳ khả năng nào, an toàn hay không an toàn, vào mô hình thông qua công việc này. Thay vào đó, chúng tôi đã xác định các phần của mô hình liên quan đến các khả năng hiện có của nó để nhận biết và có khả năng tạo ra các loại văn bản khác nhau. (Mặc dù bạn có thể lo lắng rằng phương pháp này có thể được sử dụng để làm cho các mô hình <em>có hại hơn</em>, các nhà nghiên cứu đã chứng minh những cách đơn giản hơn nhiều mà một người có quyền truy cập vào trọng số mô hình có thể loại bỏ các biện pháp bảo vệ an toàn.)</p>
+<p>Chúng tôi hy vọng rằng chúng tôi và những người khác có thể sử dụng những khám phá này để làm cho các mô hình an toàn hơn. Ví dụ: có thể sử dụng các kỹ thuật được mô tả ở đây để giám sát các hệ thống AI về một số hành vi nguy hiểm nhất định (chẳng hạn như lừa dối người dùng), để hướng chúng đến các kết quả mong muốn (giảm thiên vị) hoặc để loại bỏ hoàn toàn một số chủ đề nguy hiểm. Chúng ta cũng có thể tăng cường các kỹ thuật an toàn khác, chẳng hạn như Constitutional AI, bằng cách hiểu cách chúng chuyển mô hình sang hành vi vô hại và trung thực hơn và xác định bất kỳ khoảng trống nào trong quy trình. Các khả năng tiềm ẩn để tạo ra văn bản có hại mà chúng tôi thấy bằng cách kích hoạt nhân tạo các đặc trưng chính xác là loại khai thác mà các cuộc vượt ngục cố gắng khai thác. Chúng tôi tự hào rằng Claude có hồ sơ an toàn và khả năng chống lại các cuộc vượt ngục tốt nhất trong ngành và chúng tôi hy vọng rằng bằng cách nhìn vào bên trong mô hình theo cách này, chúng ta có thể tìm ra cách cải thiện an toàn hơn nữa. Cuối cùng, chúng tôi lưu ý rằng các kỹ thuật này có thể cung cấp một loại &ldquo;bộ kiểm tra an toàn&rdquo;, tìm kiếm các vấn đề còn sót lại sau khi các phương pháp đào tạo và tinh chỉnh tiêu chuẩn đã loại bỏ tất cả các hành vi có thể nhìn thấy thông qua các tương tác đầu vào/đầu ra tiêu chuẩn.</p>
+<p>Anthropic đã đầu tư đáng kể vào nghiên cứu khả năng diễn giải kể từ khi công ty thành lập, bởi vì chúng tôi tin rằng việc hiểu sâu sắc các mô hình sẽ giúp chúng tôi làm cho chúng an toàn hơn. Nghiên cứu mới này đánh dấu một cột mốc quan trọng trong nỗ lực đó—việc áp dụng khả năng diễn giải cơ học cho các mô hình ngôn ngữ lớn được triển khai công khai.</p>
+<p>Nhưng công việc thực sự mới chỉ bắt đầu. Các đặc trưng mà chúng tôi tìm thấy đại diện cho một tập hợp con nhỏ của tất cả các khái niệm mà mô hình đã học được trong quá trình đào tạo và việc tìm kiếm một tập hợp đầy đủ các đặc trưng bằng các kỹ thuật hiện tại của chúng tôi sẽ tốn kém (tính toán cần thiết theo phương pháp hiện tại của chúng tôi sẽ vượt xa tính toán được sử dụng để đào tạo mô hình ngay từ đầu). Việc hiểu các biểu diễn mà mô hình sử dụng không cho chúng ta biết <em>cách</em> nó sử dụng chúng; ngay cả khi chúng ta có các đặc trưng, chúng ta vẫn cần tìm các mạch mà chúng tham gia vào. Và chúng ta cần chứng minh rằng các đặc trưng liên quan đến an toàn mà chúng ta đã bắt đầu tìm thấy thực sự có thể được sử dụng để cải thiện an toàn. Vẫn còn rất nhiều việc phải làm.</p>
+<p>Để biết chi tiết đầy đủ, vui lòng đọc bài báo của chúng tôi, &ldquo;Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet&rdquo;.</p>
+<p><em>Nếu bạn quan tâm đến việc làm việc với chúng tôi để giúp diễn giải và cải thiện các mô hình AI, chúng tôi có các vai trò mở trong nhóm của mình và chúng tôi rất mong bạn đăng ký. Chúng tôi đang tìm kiếm Quản lý, Nhà khoa học Nghiên cứu và Kỹ sư Nghiên cứu.</em></p>
+<h2 id="bản-ghi-nhớ-chính-sách">Bản Ghi Nhớ Chính Sách</h2>
+<p><a href="https://cdn.sanity.io/files/4zrzovbb/website/e2ae0c997653dfd8a7cf23d06f5f06fd84ccfd58.pdf">Lập Bản Đồ Tâm Trí của Mô Hình Ngôn Ngữ Lớn</a></p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/research/mapping-mind-language-model">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/21-may-2024/">21 May 2024</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/77938a/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Krishna Rao gia nhập Anthropic với vai trò Giám đốc Tài chính</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Krishna Rao gia nhập Anthropic với tư cách là Giám đốc Tài chính</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-18/d93619/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-18T00:00:00&#43;00:00">May 18, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Suy ngẫm về Chính sách Thúc đẩy Có trách nhiệm của chúng tôi</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chia sẻ những suy nghĩ của chúng tôi về cách Anthropic tiếp cận Chính sách Thúc đẩy Có trách nhiệm của chúng tôi</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/326825/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/aKGkv9hI3gEBsmPkLux9v9qMfZdC34L4LWkrFYBNvj89lmq0AzZcKaeSKpdBVqSkkmhvhqfqGpRbTw4qvXUdoy1J6xcwOena3Wkxm3qC7pLalb69TQ=w400-h225-n-nu" alt="Các mô hình. Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/70837/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://deepmind.google" alt="Các mô hình. Giới thiệu bản xem trước Gemma 3n- AI mạnh mẽ, hiệu quả, ưu tiên thiết bị di động" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Giới thiệu bản xem trước Gemma 3n- AI mạnh mẽ, hiệu quả, ưu tiên thiết bị di động</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/e6348f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Qvn7-hpbijXs_wnriKkEdG0rJ1KVsE7B2RPAqjR3dzHXjAPa1o_ZLu0e_SRKuEWPFYLKog6QyGpYcZwZfgK1g4Kx5q-LGvrpkmAgRSGFGDs6NBkYdGY=w400-h225-n-nu" alt="Các mô hình. Tầm nhìn của chúng tôi về việc xây dựng một trợ lý AI phổ quát" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Tầm nhìn của chúng tôi về việc xây dựng một trợ lý AI phổ quát</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/71d4a9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/FZxhqmiKx-wasF3B7e0_yZVD8PQX7Pa_zuGXlPSNSub-UDkPNr4i1Uk-lR2BzMg_FGkO3Jb_vbkBnOnfE3w7Fo1ErtFqM1bGEB6xoAjQCnnCvXb3Qw=w400-h225-n-nu" alt="Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/671dca/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/aKGkv9hI3gEBsmPkLux9v9qMfZdC34L4LWkrFYBNvj89lmq0AzZcKaeSKpdBVqSkkmhvhqfqGpRbTw4qvXUdoy1J6xcwOena3Wkxm3qC7pLalb69TQ=s0" alt="Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

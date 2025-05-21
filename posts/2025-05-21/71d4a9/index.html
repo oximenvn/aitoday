@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới | AI Today - SkyAI</title>
+
+<meta name="description" content="Giới thiệu Veo 3 và Imagen 4, và một công cụ mới để làm phim có tên là Flow.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Giới thiệu Veo 3 và Imagen 4, và một công cụ mới để làm phim có tên là Flow. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            8 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/FZxhqmiKx-wasF3B7e0_yZVD8PQX7Pa_zuGXlPSNSub-UDkPNr4i1Uk-lR2BzMg_FGkO3Jb_vbkBnOnfE3w7Fo1ErtFqM1bGEB6xoAjQCnnCvXb3Qw=w400-h225-n-nu" alt="Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới">
+        <figcaption class="text-center italic text-xs">Giới thiệu Veo 3 và Imagen 4, và một công cụ mới để làm phim có tên là Flow.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="khơi-nguồn-sáng-tạo-của-bạn-với-các-mô-hình-và-công-cụ-truyền-thông-tạo-sinh-mới">Khơi nguồn sáng tạo của bạn với các mô hình và công cụ truyền thông tạo sinh mới</h1>
+<p>Từ Imagen 4 và Veo 3 đến Flow, hãy dùng thử các công cụ tạo sinh phương tiện mới này ngay hôm nay.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/5.20v2_SS_1920x1080.width-1300.png" alt="Ảnh chụp màn hình bài viết"></p>
+<p>Hôm nay, chúng tôi xin giới thiệu các mô hình truyền thông tạo sinh mới nhất, đánh dấu những đột phá đáng kể. Các mô hình này tạo ra những hình ảnh, video và âm nhạc ngoạn mục, trao quyền cho các nghệ sĩ hiện thực hóa tầm nhìn sáng tạo của họ. Chúng cũng cung cấp các công cụ tuyệt vời để mọi người thể hiện bản thân.</p>
+<p>Veo 3 và Imagen 4, các mô hình tạo video và hình ảnh mới nhất của chúng tôi, thúc đẩy giới hạn của quá trình tạo phương tiện, với các khả năng mới đột phá. Chúng tôi cũng đang mở rộng quyền truy cập vào Lyria 2, cung cấp cho các nhạc sĩ nhiều công cụ hơn để sáng tạo âm nhạc. Cuối cùng, chúng tôi mời những người kể chuyện bằng hình ảnh dùng thử Flow, công cụ làm phim AI mới của chúng tôi. Sử dụng các mô hình tiên tiến nhất của Google DeepMind, Flow cho phép bạn dệt nên những bộ phim điện ảnh với khả năng kiểm soát tinh vi hơn đối với nhân vật, cảnh và phong cách, để đưa câu chuyện của bạn vào cuộc sống.</p>
+<p>Chúng tôi đã hợp tác chặt chẽ với các ngành công nghiệp sáng tạo — nhà làm phim, nhạc sĩ, nghệ sĩ, người sáng tạo YouTube — để giúp định hình các mô hình và sản phẩm này một cách có trách nhiệm và cung cấp cho người sáng tạo các công cụ mới để nhận ra những khả năng của AI trong nghệ thuật của họ.</p>
+<h2 id="veo-3-video-gặp-âm-thanh">Veo 3: Video, gặp âm thanh</h2>
+<p><a href="http://deepmind.google/models/veo">Veo 3</a>, mô hình tạo video hiện đại mới của chúng tôi, không chỉ cải thiện chất lượng của Veo 2 mà lần đầu tiên, còn có thể tạo ra video có âm thanh — tiếng ồn giao thông ở hậu cảnh của cảnh đường phố thành phố, tiếng chim hót trong công viên, thậm chí cả cuộc đối thoại giữa các nhân vật.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Trên mọi phương diện, Veo 3 đều vượt trội từ lời nhắc bằng văn bản và hình ảnh đến vật lý thực tế và đồng bộ hóa môi chính xác. Nó rất tuyệt vời trong việc thấu hiểu; bạn có thể kể một câu chuyện ngắn gọn trong lời nhắc của mình và mô hình sẽ trả lại cho bạn một đoạn clip thể hiện câu chuyện đó. Veo 3 hiện có sẵn cho người đăng ký Ultra ở Hoa Kỳ trong <a href="http://gemini.google.com/">ứng dụng Gemini</a> và trong <a href="http://flow.google/">Flow</a>. Nó cũng có sẵn cho người dùng doanh nghiệp trên <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-veo-3-imagen-4-and-lyria-2-on-vertex-ai">Vertex AI</a>.</p>
+<h2 id="cập-nhật-veo-2-các-khả-năng-mới-được-xây-dựng-với-và-cho-các-nhà-làm-phim">Cập nhật Veo 2: Các khả năng mới được xây dựng với và cho các nhà làm phim</h2>
+<p>Khi chúng tôi nâng cấp Veo 3, chúng tôi cũng đã thêm các khả năng mới vào mô hình Veo 2 phổ biến của mình, được xây dựng dựa trên công việc của chúng tôi với những người sáng tạo và <a href="https://youtu.be/Q4zqVrLI8a0">nhà làm phim</a>. Hôm nay, chúng tôi đang tung ra một số khả năng mới này, bao gồm:</p>
+<ul>
+<li><strong>Tính năng video được hỗ trợ tham khảo hiện đại của chúng tôi</strong> cho phép bạn cung cấp cho Veo hình ảnh về nhân vật, cảnh, đối tượng và thậm chí cả phong cách để kiểm soát và nhất quán sáng tạo tốt hơn.</li>
+<li><strong>Điều khiển máy ảnh</strong> giúp bạn xác định chính xác chuyển động của máy ảnh, bao gồm xoay, đẩy và thu phóng, để đạt được cảnh quay hoàn hảo.</li>
+<li><strong>Vẽ ngoài</strong> cho phép bạn mở rộng khung hình, chuyển video của bạn từ chân dung sang phong cảnh và giúp bạn dễ dàng điều chỉnh mọi kích thước màn hình, đồng thời bổ sung một cách thông minh vào cảnh.</li>
+<li><strong>Thêm và xóa đối tượng</strong> cho phép bạn thêm hoặc xóa các đối tượng khỏi video của mình. Veo hiểu tỷ lệ, tương tác và bóng đổ, đồng thời sử dụng sự hiểu biết này để tạo ra một cảnh trông tự nhiên và chân thực.</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><em>Một người phụ nữ đi bộ trong hành lang được thực hiện với Veo2</em></p>
+<!-- raw HTML omitted -->
+<p><em>Một cảnh đan được thực hiện bởi Veo</em></p>
+<!-- raw HTML omitted -->
+<p><em>Vẽ ngoài</em></p>
+<!-- raw HTML omitted -->
+<p><em>Cảnh phi hành gia với Veo</em></p>
+<!-- raw HTML omitted -->
+<p><em>Xóa hình ảnh</em></p>
+<p>Video được hỗ trợ tham khảo và điều khiển máy ảnh hiện đã có trong <a href="http://flow.google/">Flow</a>. Chúng tôi rất vui khi mang tất cả <a href="http://deepmind.google/models/veo">các khả năng mới</a> này đến <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-veo-3-imagen-4-and-lyria-2-on-vertex-ai">Vertex AI API</a> trong những tuần tới và đến nhiều sản phẩm hơn trong vài tháng tới.</p>
+<h2 id="flow-công-cụ-làm-phim-ai-được-thiết-kế-cho-veo">Flow: Công cụ làm phim AI được thiết kế cho Veo</h2>
+<p><a href="https://blog.google/technology/ai/google-flow-veo-ai-filmmaking-tool/">Flow</a>, được xây dựng với và cho những người sáng tạo, là một công cụ làm phim AI cho phép bạn tạo liền mạch các clip, cảnh và câu chuyện điện ảnh bằng cách kết hợp các mô hình tiên tiến nhất của Google DeepMind: Veo, Imagen và Gemini. Sử dụng ngôn ngữ tự nhiên để mô tả các cảnh quay của bạn cho Flow, quản lý các thành phần cho câu chuyện của bạn — dàn diễn viên, địa điểm, đối tượng và phong cách — ở một nơi thuận tiện duy nhất và sử dụng Flow để dệt câu chuyện của bạn thành những cảnh đẹp.</p>
+<p><a href="http://flow.google/">Flow</a> hiện có sẵn cho người đăng ký gói Google AI Pro và Ultra ở Hoa Kỳ, với nhiều quốc gia khác sẽ sớm ra mắt.</p>
+<!-- raw HTML omitted -->
+<h2 id="imagen-4-chất-lượng-tuyệt-đẹp-và-kiểu-chữ-vượt-trội">Imagen 4: Chất lượng tuyệt đẹp và kiểu chữ vượt trội</h2>
+<p>Mô hình Imagen mới nhất của chúng tôi kết hợp tốc độ với độ chính xác để tạo ra những hình ảnh tuyệt đẹp. Imagen 4 có độ rõ nét đáng kể ở các chi tiết đẹp như vải phức tạp, giọt nước và lông động vật, đồng thời vượt trội cả về phong cách hiện thực và trừu tượng. Imagen 4 có thể tạo hình ảnh với nhiều tỷ lệ khung hình và độ phân giải lên đến 2k - thậm chí còn tốt hơn cho việc in ấn hoặc thuyết trình. Nó cũng vượt trội hơn đáng kể về chính tả và kiểu chữ, giúp bạn dễ dàng tạo thiệp chúc mừng, áp phích và thậm chí cả truyện tranh của riêng mình.</p>
+<p>Imagen 4 hiện có sẵn trong <a href="http://gemini.google.com/">ứng dụng Gemini</a>, <a href="http://labs.google/whisk">Whisk</a>, <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-veo-3-imagen-4-and-lyria-2-on-vertex-ai">Vertex AI</a> và trên Slides, Vids, Docs, v.v. trong <a href="https://workspace.google.com/blog/product-announcements/new-ways-to-do-your-best-work">Workspace</a>.</p>
+<p>Sắp tới, chúng tôi cũng sẽ tung ra một biến thể nhanh của Imagen 4, nhanh hơn gấp 10 lần so với Imagen 3 — để bạn có thể khám phá ý tưởng thậm chí còn nhanh hơn.</p>
+<h2 id="lyria-2-sáng-tác-mạnh-mẽ-và-khám-phá-vô-tận">Lyria 2: Sáng tác mạnh mẽ và khám phá vô tận</h2>
+<p>Vào tháng 4, chúng tôi đã <a href="https://deepmind.google/discover/blog/music-ai-sandbox-now-with-new-features-and-broader-access/">mở rộng quyền truy cập</a> vào Music AI Sandbox, được hỗ trợ bởi <a href="https://deepmind.google/technologies/lyria">Lyria 2</a>. Music AI Sandbox cung cấp cho các nhạc sĩ, nhà sản xuất và nhạc sĩ một bộ công cụ thử nghiệm, có thể khơi dậy những khả năng sáng tạo mới và giúp các nghệ sĩ khám phá những ý tưởng âm nhạc độc đáo. Chuyên môn và phản hồi có giá trị từ ngành công nghiệp âm nhạc giúp chúng tôi đảm bảo các công cụ của mình trao quyền cho người sáng tạo, đồng thời mời những người sáng tạo hiện thực hóa những khả năng của AI trong nghệ thuật của họ.</p>
+<p>Lyria 2 mang lại khả năng sáng tác mạnh mẽ và khám phá vô tận, đồng thời hiện đã có sẵn cho người sáng tạo <a href="https://www.youtube.com/shorts/uQY6Z6O_dZQ">thông qua YouTube Shorts</a> và các doanh nghiệp trong <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-veo-3-imagen-4-and-lyria-2-on-vertex-ai">Vertex AI</a>. Chúng tôi cũng đã tạo <a href="https://goo.gle/lyria-realtime">Lyria RealTime</a>, mô hình tạo nhạc tương tác của chúng tôi cung cấp năng lượng cho <a href="https://labs.google/fx/tools/music-fx-dj">MusicFX DJ</a>, có sẵn thông qua <a href="https://ai.google.dev/gemini-api/docs/music-generation">API</a> và trong <a href="https://aistudio.google.com/app/apps/bundled/promptdj-midi">AI Studio</a>. Lyria RealTime cho phép bất kỳ ai tương tác tạo, kiểm soát và biểu diễn nhạc tạo sinh trong thời gian thực.</p>
+<h2 id="sáng-tạo-có-trách-nhiệm-và-cộng-tác-với-cộng-đồng-sáng-tạo">Sáng tạo có trách nhiệm và cộng tác với cộng đồng sáng tạo</h2>
+<p>Kể từ khi ra mắt vào năm 2023, <a href="https://deepmind.google/technologies/synthid/">SynthID</a> đã đóng dấu bản quyền cho hơn 10 tỷ hình ảnh, video, tệp âm thanh và văn bản, giúp xác định chúng là do AI tạo ra và giảm khả năng thông tin sai lệch và gán sai. Đầu ra được tạo bởi Veo 3, Imagen 4 và Lyria 2 sẽ tiếp tục có hình mờ <a href="https://deepmind.google/technologies/synthid/">SynthID</a>.</p>
+<p>Hôm nay, chúng tôi ra mắt <a href="https://blog.google/technology/ai/google-synthid-ai-content-detector/">SynthID Detector</a>, một cổng thông tin xác minh để giúp mọi người xác định nội dung do AI tạo ra. Tải lên một phần nội dung và SynthID Detector sẽ xác định xem toàn bộ tệp hay chỉ một phần của tệp có SynthID hay không.</p>
+<p>Với tất cả các mô hình AI tạo sinh của mình, chúng tôi mong muốn giải phóng sự sáng tạo của con người và cho phép các nghệ sĩ và người sáng tạo đưa ý tưởng của họ vào cuộc sống nhanh hơn và dễ dàng hơn bao giờ hết.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://blog.google/technology/ai/generative-media-models-io-2025">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/20-may-2025/">20 May 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/blog.google/">Blog.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/326825/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/aKGkv9hI3gEBsmPkLux9v9qMfZdC34L4LWkrFYBNvj89lmq0AzZcKaeSKpdBVqSkkmhvhqfqGpRbTw4qvXUdoy1J6xcwOena3Wkxm3qC7pLalb69TQ=w400-h225-n-nu" alt="Các mô hình. Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các mô hình. Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Gemini 2.5 Pro tiếp tục được các nhà phát triển yêu thích với tư cách là mô hình tốt nhất để viết mã và 2.5 Flash thậm chí còn tốt hơn với bản cập nhật mới. Chúng tôi đang mang đến những khả năng mới cho các mô hình của mình, bao gồm...</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/e6348f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Qvn7-hpbijXs_wnriKkEdG0rJ1KVsE7B2RPAqjR3dzHXjAPa1o_ZLu0e_SRKuEWPFYLKog6QyGpYcZwZfgK1g4Kx5q-LGvrpkmAgRSGFGDs6NBkYdGY=w400-h225-n-nu" alt="Các mô hình. Tầm nhìn của chúng tôi về việc xây dựng một trợ lý AI phổ quát" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các mô hình. Tầm nhìn của chúng tôi về việc xây dựng một trợ lý AI phổ quát</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chúng tôi đang mở rộng Gemini để trở thành một mô hình thế giới có thể lập kế hoạch và hình dung những trải nghiệm mới bằng cách mô phỏng các khía cạnh của thế giới.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/326825/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/aKGkv9hI3gEBsmPkLux9v9qMfZdC34L4LWkrFYBNvj89lmq0AzZcKaeSKpdBVqSkkmhvhqfqGpRbTw4qvXUdoy1J6xcwOena3Wkxm3qC7pLalb69TQ=w400-h225-n-nu" alt="Các mô hình. Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/70837/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://deepmind.google" alt="Các mô hình. Giới thiệu bản xem trước Gemma 3n- AI mạnh mẽ, hiệu quả, ưu tiên thiết bị di động" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Giới thiệu bản xem trước Gemma 3n- AI mạnh mẽ, hiệu quả, ưu tiên thiết bị di động</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/e6348f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Qvn7-hpbijXs_wnriKkEdG0rJ1KVsE7B2RPAqjR3dzHXjAPa1o_ZLu0e_SRKuEWPFYLKog6QyGpYcZwZfgK1g4Kx5q-LGvrpkmAgRSGFGDs6NBkYdGY=w400-h225-n-nu" alt="Các mô hình. Tầm nhìn của chúng tôi về việc xây dựng một trợ lý AI phổ quát" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Tầm nhìn của chúng tôi về việc xây dựng một trợ lý AI phổ quát</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/71d4a9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/FZxhqmiKx-wasF3B7e0_yZVD8PQX7Pa_zuGXlPSNSub-UDkPNr4i1Uk-lR2BzMg_FGkO3Jb_vbkBnOnfE3w7Fo1ErtFqM1bGEB6xoAjQCnnCvXb3Qw=w400-h225-n-nu" alt="Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/671dca/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/aKGkv9hI3gEBsmPkLux9v9qMfZdC34L4LWkrFYBNvj89lmq0AzZcKaeSKpdBVqSkkmhvhqfqGpRbTw4qvXUdoy1J6xcwOena3Wkxm3qC7pLalb69TQ=s0" alt="Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

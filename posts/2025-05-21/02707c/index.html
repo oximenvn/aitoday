@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Khám phá các backend lượng tử hóa trong Diffusers | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết khám phá các backend lượng tử hóa khác nhau có sẵn trong Diffusers.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Khám phá các backend lượng tử hóa trong Diffusers</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết khám phá các backend lượng tử hóa khác nhau có sẵn trong Diffusers. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/diffusers-quantization/thumbnail.png" alt="Khám phá các backend lượng tử hóa trong Diffusers">
+        <figcaption class="text-center italic text-xs">Bài viết khám phá các backend lượng tử hóa khác nhau có sẵn trong Diffusers.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="khám-phá-các-backend-lượng-tử-hóa-trong-diffusers">Khám phá các Backend Lượng tử hóa trong Diffusers</h1>
+<p>Các mô hình khuếch tán lớn như Flux (mô hình tạo ảnh từ văn bản dựa trên luồng) có thể tạo ra những hình ảnh tuyệt đẹp, nhưng kích thước của chúng có thể là một trở ngại, đòi hỏi bộ nhớ và tài nguyên tính toán đáng kể. Lượng tử hóa cung cấp một giải pháp mạnh mẽ, thu nhỏ các mô hình này để giúp chúng dễ tiếp cận hơn mà không làm giảm đáng kể hiệu suất. Nhưng câu hỏi lớn luôn là: bạn có thực sự phân biệt được sự khác biệt trong hình ảnh cuối cùng không?</p>
+<p>Trước khi đi sâu vào các chi tiết kỹ thuật về cách các backend lượng tử hóa khác nhau trong Hugging Face Diffusers hoạt động, tại sao không kiểm tra nhận thức của chính bạn?</p>
+<h2 id="nhận-diện-mô-hình-lượng-tử-hóa">Nhận diện Mô hình Lượng tử hóa</h2>
+<p>Chúng tôi đã tạo ra một thiết lập nơi bạn có thể cung cấp một lời nhắc và chúng tôi tạo ra kết quả bằng cả mô hình độ chính xác cao ban đầu (ví dụ: Flux-dev ở BF16) và một số phiên bản lượng tử hóa (BnB 4-bit, BnB 8-bit). Sau đó, các hình ảnh được tạo ra sẽ được trình bày cho bạn và thử thách của bạn là xác định hình ảnh nào đến từ các mô hình lượng tử hóa.</p>
+<p>Hãy thử tại đây!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">gradio-app</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://diffusers-flux-quant.hf.space&#34;</span>&gt;&lt;/<span style="color:#f92672">gradio-app</span>&gt;
+</span></span></code></pre></div><p>Thông thường, đặc biệt với lượng tử hóa 8-bit, sự khác biệt là rất nhỏ và có thể không đáng chú ý nếu không kiểm tra kỹ. Lượng tử hóa mạnh hơn như 4-bit hoặc thấp hơn có thể dễ nhận thấy hơn, nhưng kết quả vẫn có thể tốt, đặc biệt là khi xem xét khả năng tiết kiệm bộ nhớ lớn. NF4 thường mang lại sự cân bằng tốt nhất.</p>
+<p>Bây giờ, hãy đi sâu hơn.</p>
+<h2 id="backend-lượng-tử-hóa-trong-diffusers">Backend Lượng tử hóa trong Diffusers</h2>
+<p>Dựa trên bài đăng trước của chúng tôi, &ldquo;Bộ chuyển đổi khuếch tán tiết kiệm bộ nhớ với Quanto và Diffusers&rdquo;, bài đăng này khám phá các backend lượng tử hóa đa dạng được tích hợp trực tiếp vào Hugging Face Diffusers. Chúng ta sẽ xem xét cách hỗ trợ bitsandbytes, GGUF, torchao, Quanto và FP8 gốc giúp các mô hình lớn và mạnh mẽ dễ tiếp cận hơn, đồng thời trình bày cách sử dụng chúng với Flux.</p>
+<p>Trước khi đi sâu vào các backend lượng tử hóa, hãy giới thiệu FluxPipeline (sử dụng checkpoint <code>black-forest-labs/FLUX.1-dev</code>) và các thành phần của nó, mà chúng ta sẽ lượng tử hóa. Tải toàn bộ mô hình <code>FLUX.1-dev</code> ở độ chính xác BF16 yêu cầu khoảng 31.447 GB bộ nhớ. Các thành phần chính là:</p>
+<ul>
+<li><strong>Bộ mã hóa văn bản (CLIP và T5):</strong>
+<ul>
+<li><strong>Chức năng:</strong> Xử lý các lời nhắc văn bản đầu vào. FLUX-dev sử dụng CLIP để hiểu ban đầu và T5 lớn hơn để hiểu sắc thái và hiển thị văn bản tốt hơn.</li>
+<li><strong>Bộ nhớ:</strong> T5 - 9.52 GB; CLIP - 246 MB (ở BF16)</li>
+</ul>
+</li>
+<li><strong>Transformer (Mô hình chính - MMDiT):</strong>
+<ul>
+<li><strong>Chức năng:</strong> Phần tạo cốt lõi (Bộ chuyển đổi khuếch tán đa phương thức). Tạo hình ảnh trong không gian tiềm ẩn từ các nhúng văn bản.</li>
+<li><strong>Bộ nhớ:</strong> 23.8 GB (ở BF16)</li>
+</ul>
+</li>
+<li><strong>Bộ mã hóa tự động biến phân (VAE):</strong>
+<ul>
+<li><strong>Chức năng:</strong> Dịch hình ảnh giữa không gian pixel và không gian tiềm ẩn. Giải mã biểu diễn tiềm ẩn được tạo thành hình ảnh dựa trên pixel.</li>
+<li><strong>Bộ nhớ:</strong> 168 MB (ở BF16)</li>
+</ul>
+</li>
+<li><strong>Tiêu điểm của Lượng tử hóa:</strong> Các ví dụ sẽ chủ yếu tập trung vào <code>transformer</code> và <code>text_encoder_2</code> (T5) để tiết kiệm bộ nhớ đáng kể nhất.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>prompts <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Phong cách Baroque, nội thất cung điện xa hoa với trần mạ vàng trang trí công phu, thảm trang trí phức tạp và ánh sáng ấn tượng trên một cầu thang lớn.&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Phong cách tương lai, một sân bay vũ trụ năng động với các tàu vũ trụ bằng bạc bóng bẩy neo đậu tại các bệ góc cạnh, được bao quanh bởi các hành tinh xa xôi và các đường năng lượng phát sáng.&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Phong cách Noir, một con hẻm tối tăm với những ngọn đèn đường nhấp nháy và một bóng người đơn độc mặc áo khoác trench, được bao bọc bởi những viên đá cuội ngâm trong mưa và các cửa hàng tối tăm.&#34;</span>,
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h3 id="bitsandbytes-bnb">bitsandbytes (BnB)</h3>
+<p><a href="https://github.com/bitsandbytes-foundation/bitsandbytes"><code>bitsandbytes</code></a> là một thư viện phổ biến và thân thiện với người dùng để lượng tử hóa 8-bit và 4-bit, được sử dụng rộng rãi cho LLM và tinh chỉnh QLoRA. Chúng ta cũng có thể sử dụng nó cho các mô hình khuếch tán và luồng dựa trên transformer.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">BF16</th>
+          <th style="text-align: left">BnB 4-bit</th>
+          <th style="text-align: left">BnB 8-bit</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><em>So sánh trực quan các đầu ra của mô hình Flux-dev bằng cách sử dụng lượng tử hóa BF16 (trái), BnB 4-bit (giữa) và BnB 8-bit (phải). (Nhấp vào hình ảnh để phóng to)</em></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers <span style="color:#f92672">import</span> FluxPipeline
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers <span style="color:#f92672">import</span> BitsAndBytesConfig <span style="color:#66d9ef">as</span> DiffusersBitsAndBytesConfig
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers.quantizers <span style="color:#f92672">import</span> PipelineQuantizationConfig
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> BitsAndBytesConfig <span style="color:#66d9ef">as</span> TransformersBitsAndBytesConfig
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;black-forest-labs/FLUX.1-dev&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipeline_quant_config <span style="color:#f92672">=</span> PipelineQuantizationConfig(
+</span></span><span style="display:flex;"><span>    quant_mapping<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;transformer&#34;</span>: DiffusersBitsAndBytesConfig(load_in_4bit<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, bnb_4bit_quant_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nf4&#34;</span>, bnb_4bit_compute_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;text_encoder_2&#34;</span>: TransformersBitsAndBytesConfig(load_in_4bit<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, bnb_4bit_quant_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nf4&#34;</span>, bnb_4bit_compute_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16),
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipe <span style="color:#f92672">=</span> FluxPipeline<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    quantization_config<span style="color:#f92672">=</span>pipeline_quant_config,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>pipe<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#34;cuda&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Phong cách Baroque, nội thất cung điện xa hoa với trần mạ vàng trang trí công phu, thảm trang trí phức tạp và ánh sáng ấn tượng trên một cầu thang lớn.&#34;</span>
+</span></span><span style="display:flex;"><span>pipe_kwargs <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;prompt&#34;</span>: prompt,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;height&#34;</span>: <span style="color:#ae81ff">1024</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;width&#34;</span>: <span style="color:#ae81ff">1024</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;guidance_scale&#34;</span>: <span style="color:#ae81ff">3.5</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;num_inference_steps&#34;</span>: <span style="color:#ae81ff">50</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;max_sequence_length&#34;</span>: <span style="color:#ae81ff">512</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Mức sử dụng bộ nhớ của Pipeline: </span><span style="color:#e6db74">{</span>torch<span style="color:#f92672">.</span>cuda<span style="color:#f92672">.</span>max_memory_reserved() <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span><span style="color:#f92672">**</span><span style="color:#ae81ff">3</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> GB&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>image <span style="color:#f92672">=</span> pipe(
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">**</span>pipe_kwargs, generator<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>manual_seed(<span style="color:#ae81ff">0</span>),
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">.</span>images[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Mức sử dụng bộ nhớ của Pipeline: </span><span style="color:#e6db74">{</span>torch<span style="color:#f92672">.</span>cuda<span style="color:#f92672">.</span>max_memory_reserved() <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span><span style="color:#f92672">**</span><span style="color:#ae81ff">3</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> GB&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>image<span style="color:#f92672">.</span>save(<span style="color:#e6db74">&#34;flux-dev_bnb_4bit.png&#34;</span>)
+</span></span></code></pre></div><blockquote>
+<p><strong>Lưu ý:</strong> Khi sử dụng <code>PipelineQuantizationConfig</code> với <code>bitsandbytes</code>, bạn cần nhập riêng <code>DiffusersBitsAndBytesConfig</code> từ <code>diffusers</code> và <code>TransformersBitsAndBytesConfig</code> từ <code>transformers</code>. Điều này là do các thành phần này có nguồn gốc từ các thư viện khác nhau. Nếu bạn thích một thiết lập đơn giản hơn mà không cần quản lý các lần nhập riêng biệt này, bạn có thể sử dụng một phương pháp thay thế để lượng tử hóa cấp pipeline, một ví dụ về phương pháp này có trong <a href="https://huggingface.co/docs/diffusers/main/en/quantization/overview#pipeline-level-quantization:~:text=The%20config%20below%20will%20work%20for%20most%20diffusion%20pipelines%20that%20have%20a%20transformer%20component%20present.%20In%20most%20case%2C%20you%20will%20want%20to%20quantize%20the%20transformer%20component%20as%20that%20is%20often%20the%20most%20compute%2D%20intensive%20part%20of%20a%20diffusion%20pipeline">tài liệu Diffusers về lượng tử hóa cấp Pipeline</a>.</p></blockquote>
+<!-- raw HTML omitted -->
+<p>Để biết thêm thông tin, hãy xem <a href="https://huggingface.co/docs/diffusers/quantization/bitsandbytes">tài liệu bitsandbytes</a>.</p>
+<h3 id="torchao">torchao</h3>
+<p><a href="https://github.com/pytorch/ao"><code>torchao</code></a> là một thư viện gốc PyTorch để tối ưu hóa kiến trúc, cung cấp lượng tử hóa, độ thưa và các loại dữ liệu tùy chỉnh, được thiết kế để tương thích với <code>torch.compile</code> và FSDP. Diffusers hỗ trợ một loạt các loại dữ liệu kỳ lạ của <code>torchao</code>, cho phép kiểm soát chi tiết việc tối ưu hóa mô hình.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">int4_weight_only</th>
+          <th style="text-align: left">int8_weight_only</th>
+          <th style="text-align: left">float8_weight_only</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><em>So sánh trực quan các đầu ra của mô hình Flux-dev bằng cách sử dụng lượng tử hóa torchao int4_weight_only (trái), int8_weight_only (giữa) và float8_weight_only (phải). (Nhấp vào hình ảnh để phóng to)</em></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="color:#75715e">@@
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">- from diffusers import BitsAndBytesConfig as DiffusersBitsAndBytesConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+ from diffusers import TorchAoConfig as DiffusersTorchAoConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">- from transformers import BitsAndBytesConfig as TransformersBitsAndBytesConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+ from transformers import TorchAoConfig as TransformersTorchAoConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span><span style="color:#75715e">@@
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>pipeline_quant_config = PipelineQuantizationConfig(
+</span></span><span style="display:flex;"><span>    quant_mapping={
+</span></span><span style="display:flex;"><span><span style="color:#f92672">-         &#34;transformer&#34;: DiffusersBitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=&#34;nf4&#34;, bnb_4bit_compute_dtype=torch.bfloat16),
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">-         &#34;text_encoder_2&#34;: TransformersBitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=&#34;nf4&#34;, bnb_4bit_compute_dtype=torch.bfloat16),
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+         &#34;transformer&#34;: DiffusersTorchAoConfig(&#34;int8_weight_only&#34;),
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+         &#34;text_encoder_2&#34;: TransformersTorchAoConfig(&#34;int8_weight_only&#34;),
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="color:#75715e">@@
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">- from diffusers import BitsAndBytesConfig as DiffusersBitsAndBytesConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+ from diffusers import TorchAoConfig as DiffusersTorchAoConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">- from transformers import BitsAndBytesConfig as TransformersBitsAndBytesConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+ from transformers import TorchAoConfig as TransformersTorchAoConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span><span style="color:#75715e">@@
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>pipeline_quant_config = PipelineQuantizationConfig(
+</span></span><span style="display:flex;"><span>    quant_mapping={
+</span></span><span style="display:flex;"><span><span style="color:#f92672">-         &#34;transformer&#34;: DiffusersBitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=&#34;nf4&#34;, bnb_4bit_compute_dtype=torch.bfloat16),
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">-         &#34;text_encoder_2&#34;: TransformersBitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=&#34;nf4&#34;, bnb_4bit_compute_dtype=torch.bfloat16),
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+         &#34;transformer&#34;: DiffusersTorchAoConfig(&#34;int4_weight_only&#34;),
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+         &#34;text_encoder_2&#34;: TransformersTorchAoConfig(&#34;int4_weight_only&#34;),
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipe = FluxPipeline.from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    quantization_config=pipeline_quant_config,
+</span></span><span style="display:flex;"><span>    torch_dtype=torch.bfloat16,
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">+    device_map=&#34;balanced&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">- pipe.to(&#34;cuda&#34;)
+</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Để biết thêm thông tin, hãy xem <a href="https://huggingface.co/docs/diffusers/quantization/torchao">tài liệu torchao</a>.</p>
+<h3 id="quanto">Quanto</h3>
+<p><a href="https://github.com/huggingface/optimum-quanto">Quanto</a> là một thư viện lượng tử hóa được tích hợp với hệ sinh thái Hugging Face thông qua thư viện <a href="https://huggingface.co/docs/optimum/index"><code>optimum</code></a>.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">INT4</th>
+          <th style="text-align: left">INT8</th>
+          <th style="text-align: left">FP8</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><em>So sánh trực quan các đầu ra của mô hình Flux-dev bằng cách sử dụng lượng tử hóa Quanto INT4 (trái), INT8 (giữa) và FP8 (phải). (Nhấp vào hình ảnh để phóng to)</em></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="color:#75715e">@@
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">- from diffusers import BitsAndBytesConfig as DiffusersBitsAndBytesConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+ from diffusers import QuantoConfig as DiffusersQuantoConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">- from transformers import BitsAndBytesConfig as TransformersBitsAndBytesConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+ from transformers import QuantoConfig as TransformersQuantoConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span><span style="color:#75715e">@@
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>pipeline_quant_config = PipelineQuantizationConfig(
+</span></span><span style="display:flex;"><span>    quant_mapping={
+</span></span><span style="display:flex;"><span><span style="color:#f92672">-         &#34;transformer&#34;: DiffusersBitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=&#34;nf4&#34;, bnb_4bit_compute_dtype=torch.bfloat16),
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">-         &#34;text_encoder_2&#34;: TransformersBitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=&#34;nf4&#34;, bnb_4bit_compute_dtype=torch.bfloat16),
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+         &#34;transformer&#34;: DiffusersQuantoConfig(weights_dtype=&#34;int8&#34;),
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+         &#34;text_encoder_2&#34;: TransformersQuantoConfig(weights_dtype=&#34;int8&#34;),
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<blockquote>
+<p><strong>Lưu ý:</strong> Tại thời điểm viết bài này, để hỗ trợ float8 với Quanto, bạn cần <code>optimum-quanto&lt;0.2.5</code> và sử dụng trực tiếp quanto. Chúng tôi sẽ làm việc để khắc phục điều này.</p></blockquote>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers <span style="color:#f92672">import</span> AutoModel, FluxPipeline
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> T5EncoderModel
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> optimum.quanto <span style="color:#f92672">import</span> freeze, qfloat8, quantize
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;black-forest-labs/FLUX.1-dev&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>text_encoder_2 <span style="color:#f92672">=</span> T5EncoderModel<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    subfolder<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text_encoder_2&#34;</span>,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>quantize(text_encoder_2, weights<span style="color:#f92672">=</span>qfloat8)
+</span></span><span style="display:flex;"><span>freeze(text_encoder_2)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>transformer <span style="color:#f92672">=</span> AutoModel<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>      model_id,
+</span></span><span style="display:flex;"><span>      subfolder<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;transformer&#34;</span>,
+</span></span><span style="display:flex;"><span>      torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>quantize(transformer, weights<span style="color:#f92672">=</span>qfloat8)
+</span></span><span style="display:flex;"><span>freeze(transformer)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipe <span style="color:#f92672">=</span> FluxPipeline<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    transformer<span style="color:#f92672">=</span>transformer,
+</span></span><span style="display:flex;"><span>    text_encoder_2<span style="color:#f92672">=</span>text_encoder_2,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#34;cuda&#34;</span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Để biết thêm thông tin, hãy xem <a href="https://huggingface.co/docs/diffusers/quantization/quanto">tài liệu Quanto</a>.</p>
+<h3 id="gguf">GGUF</h3>
+<p>GGUF là một định dạng tệp phổ biến trong cộng đồng llama.cpp để lưu trữ các mô hình lượng tử hóa.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Q2_k</th>
+          <th style="text-align: left">Q4_1</th>
+          <th style="text-align: left">Q8_0</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><em>So sánh trực quan các đầu ra của mô hình Flux-dev bằng cách sử dụng lượng tử hóa GGUF Q2_k (trái), Q4_1 (giữa) và Q8_0 (phải). (Nhấp vào hình ảnh để phóng to)</em></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers <span style="color:#f92672">import</span> FluxPipeline, FluxTransformer2DModel, GGUFQuantizationConfig
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;black-forest-labs/FLUX.1-dev&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Đường dẫn đến một tệp GGUF đã được lượng tử hóa trước</span>
+</span></span><span style="display:flex;"><span>ckpt_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q4_1.gguf&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>transformer <span style="color:#f92672">=</span> FluxTransformer2DModel<span style="color:#f92672">.</span>from_single_file(
+</span></span><span style="display:flex;"><span>    ckpt_path,
+</span></span><span style="display:flex;"><span>    quantization_config<span style="color:#f92672">=</span>GGUFQuantizationConfig(compute_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16),
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipe <span style="color:#f92672">=</span> FluxPipeline<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    transformer<span style="color:#f92672">=</span>transformer,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>pipe<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#34;cuda&#34;</span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Để biết thêm thông tin, hãy xem <a href="https://huggingface.co/docs/diffusers/quantization/gguf">tài liệu GGUF</a>.</p>
+<h3 id="fp8-layerwise-casting-enable_layerwise_casting">FP8 Layerwise Casting (<code>enable_layerwise_casting</code>)</h3>
+<p>FP8 Layerwise Casting là một kỹ thuật tối ưu hóa bộ nhớ. Nó hoạt động bằng cách lưu trữ trọng số của mô hình ở định dạng FP8 (dấu phẩy động 8 bit) nhỏ gọn, sử dụng khoảng một nửa bộ nhớ so với độ chính xác FP16 hoặc BF16 tiêu chuẩn.
+Ngay trước khi một lớp thực hiện các tính toán của nó, các trọng số của nó sẽ được ép lên độ chính xác tính toán cao hơn (như FP16/BF16) một cách động. Ngay sau đó, các trọng số được ép trở lại FP8 để lưu trữ hiệu quả. Cách tiếp cận này hoạt động vì các tính toán cốt lõi vẫn giữ được độ chính xác cao và các lớp đặc biệt nhạy cảm với lượng tử hóa (như chuẩn hóa) thường bị bỏ qua. Kỹ thuật này cũng có thể được kết hợp với <a href="https://huggingface.co/docs/diffusers/en/optimization/memory#group-offloading">tải xuống theo nhóm</a> để tiết kiệm bộ nhớ hơn nữa.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">FP8 (e4m3)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><!-- raw HTML omitted -->        <!-- raw HTML omitted --><!-- raw HTML omitted -->      <!-- raw HTML omitted --></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><em>Đầu ra trực quan của mô hình Flux-dev bằng cách sử dụng lượng tử hóa FP8 Layerwise Casting (e4m3).</em></td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers <span style="color:#f92672">import</span> AutoModel, FluxPipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;black-forest-labs/FLUX.1-dev&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>transformer <span style="color:#f92672">=</span> AutoModel<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    subfolder<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;transformer&#34;</span>,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>transformer<span style="color:#f92672">.</span>enable_layerwise_casting(storage_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float8_e4m3fn, compute_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipe <span style="color:#f92672">=</span> FluxPipeline<span style="color:#f92672">.</span>from_pretrained(model_id, transformer<span style="color:#f92672">=</span>transformer, torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16)
+</span></span><span style="display:flex;"><span>pipe<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#34;cuda&#34;</span>)
+</span></span></code></pre></div><p>Để biết thêm thông tin, hãy xem <a href="https://huggingface.co/docs/diffusers/main/en/optimization/memory#layerwise-casting">tài liệu Layerwise casting</a>.</p>
+<h2 id="kết-hợp-với-tối-ưu-hóa-bộ-nhớ-khác-và-torchcompile">Kết hợp với Tối ưu hóa Bộ nhớ khác và torch.compile</h2>
+<p>Hầu hết các backend lượng tử hóa này có thể được kết hợp với các kỹ thuật tối ưu hóa bộ nhớ được cung cấp trong Diffusers. Hãy khám phá việc tải CPU, tải nhóm và <code>torch.compile</code>. Bạn có thể tìm hiểu thêm về các kỹ thuật này trong <a href="https://huggingface.co/docs/diffusers/main/en/optimization/memory">tài liệu Diffusers</a>.</p>
+<blockquote>
+<p><strong>Lưu ý:</strong> Tại thời điểm viết bài này, bnb + <code>torch.compile</code> cũng hoạt động nếu bnb được cài đặt từ nguồn và sử dụng pytorch nightly hoặc với fullgraph=False.</p></blockquote>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>import torch
+</span></span><span style="display:flex;"><span>from diffusers import FluxPipeline
+</span></span><span style="display:flex;"><span>from diffusers import BitsAndBytesConfig as DiffusersBitsAndBytesConfig
+</span></span><span style="display:flex;"><span>from diffusers.quantizers import PipelineQuantizationConfig
+</span></span><span style="display:flex;"><span>from transformers import BitsAndBytesConfig as TransformersBitsAndBytesConfig
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id = &#34;black-forest-labs/FLUX.1-dev&#34;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipeline_quant_config = PipelineQuantizationConfig(
+</span></span><span style="display:flex;"><span>    quant_mapping={
+</span></span><span style="display:flex;"><span>        &#34;transformer&#34;: DiffusersBitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=&#34;nf4&#34;, bnb_4bit_compute_dtype=torch.bfloat16),
+</span></span><span style="display:flex;"><span>        &#34;text_encoder_2&#34;: TransformersBitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=&#34;nf4&#34;, bnb_4bit_compute_dtype=torch.bfloat16),
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipe = FluxPipeline.from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    quantization_config=pipeline_quant_config,
+</span></span><span style="display:flex;"><span>    torch_dtype=torch.bfloat16
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">- pipe.to(&#34;cuda&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+ pipe.enable_model_cpu_offload()
+</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<p><strong>Tải CPU Mô hình (<code>enable_model_cpu_offload</code>)</strong>: Phương pháp này di chuyển toàn bộ các thành phần mô hình (như UNet, bộ mã hóa văn bản hoặc VAE) giữa CPU và GPU trong pipeline suy luận. Nó cung cấp khả năng tiết kiệm VRAM đáng kể và thường nhanh hơn so với việc tải chi tiết hơn vì nó liên quan đến ít lần truyền dữ liệu lớn hơn.</p>
+<p><strong>bnb + <code>enable_model_cpu_offload</code></strong>:</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>import torch
+</span></span><span style="display:flex;"><span>from diffusers import FluxPipeline, AutoModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model_id = &#34;black-forest-labs/FLUX.1-dev&#34;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>transformer = AutoModel.from_pretrained(
+</span></span><span style="display:flex;"><span>    model_id,
+</span></span><span style="display:flex;"><span>    subfolder=&#34;transformer&#34;,
+</span></span><span style="display:flex;"><span>    torch_dtype=torch.bfloat16,
+</span></span><span style="display:flex;"><span>    # device_map=&#34;cuda&#34;
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>transformer.enable_layerwise_casting(storage_dtype=torch.float8_e4m3fn, compute_dtype=torch.bfloat16)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ transformer.enable_group_offload(onload_device=torch.device(&#34;cuda&#34;), offload_device=torch.device(&#34;cpu&#34;), offload_type=&#34;leaf_level&#34;, use_stream=True)
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>
+</span></span><span style="display:flex;"><span>pipe = FluxPipeline.from_pretrained(model_id, transformer=transformer, torch_dtype=torch.bfloat16)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">- pipe.to(&#34;cuda&#34;)
+</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<p><strong>Tải nhóm (<code>enable_group_offload</code> cho các thành phần <code>diffusers</code> hoặc <code>apply_group_offloading</code> cho các <code>torch.nn.Module</code> chung)</strong>: Nó di chuyển các nhóm lớp mô hình bên trong (như các phiên bản <code>torch.nn.ModuleList</code> hoặc <code>torch.nn.Sequential</code>) sang CPU. Cách</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/diffusers-quantization">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/may-21-2025/">May 21, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/e05ab2/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/nanovlm/thumbnail.png" alt="nanoVLM- Kho lưu trữ đơn giản nhất để huấn luyện VLM của bạn bằng PyTorch thuần túy" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">nanoVLM- Kho lưu trữ đơn giản nhất để huấn luyện VLM của bạn bằng PyTorch thuần túy</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết giới thiệu nanoVLM, một kho lưu trữ đơn giản để huấn luyện các mô hình ngôn ngữ thị giác (VLM) bằng PyTorch thuần túy.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/270aee/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://scontent.fhan15-1.fna.fbcdn.net/v/t39.2365-6/499353575_1401009174272603_3007119488904320268_n.png?_nc_cat=101&amp;ccb=1-7&amp;_nc_sid=e280be&amp;_nc_ohc=KfbrXBIy_NAQ7kNvwGLf2-X&amp;_nc_oc=Adn8iUCF6P3TM4-DaJ45kKXAhR8T7EJqNO3kMyttdgeypM8pf-JLE3kSB8QHbUWl3--RNmfpl-jJSKg_WgeJ5PX7&amp;_nc_zt=14&amp;_nc_ht=scontent.fhan15-1.fna&amp;_nc_gid=IHaxMxO2XLLBe3vuwTAiKg&amp;oh=00_AfL34KcT8w0z78a13SsuveazPo1VbAYDFNGP3v76R6mc6w&amp;oe=68483992" alt="Giới thiệu Chương trình Khởi nghiệp Llama" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu Chương trình Khởi nghiệp Llama</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chúng tôi vui mừng thông báo Chương trình Khởi nghiệp Llama, một sáng kiến mới để trao quyền cho các công ty khởi nghiệp giai đoạn đầu đổi mới và xây dựng các ứng dụng AI tạo sinh bằng Llama.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/326825/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/aKGkv9hI3gEBsmPkLux9v9qMfZdC34L4LWkrFYBNvj89lmq0AzZcKaeSKpdBVqSkkmhvhqfqGpRbTw4qvXUdoy1J6xcwOena3Wkxm3qC7pLalb69TQ=w400-h225-n-nu" alt="Các mô hình. Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/70837/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://deepmind.google" alt="Các mô hình. Giới thiệu bản xem trước Gemma 3n- AI mạnh mẽ, hiệu quả, ưu tiên thiết bị di động" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Giới thiệu bản xem trước Gemma 3n- AI mạnh mẽ, hiệu quả, ưu tiên thiết bị di động</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/e6348f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Qvn7-hpbijXs_wnriKkEdG0rJ1KVsE7B2RPAqjR3dzHXjAPa1o_ZLu0e_SRKuEWPFYLKog6QyGpYcZwZfgK1g4Kx5q-LGvrpkmAgRSGFGDs6NBkYdGY=w400-h225-n-nu" alt="Các mô hình. Tầm nhìn của chúng tôi về việc xây dựng một trợ lý AI phổ quát" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Tầm nhìn của chúng tôi về việc xây dựng một trợ lý AI phổ quát</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/71d4a9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/FZxhqmiKx-wasF3B7e0_yZVD8PQX7Pa_zuGXlPSNSub-UDkPNr4i1Uk-lR2BzMg_FGkO3Jb_vbkBnOnfE3w7Fo1ErtFqM1bGEB6xoAjQCnnCvXb3Qw=w400-h225-n-nu" alt="Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các mô hình. Thúc đẩy sự sáng tạo của bạn với các mô hình và công cụ truyền thông sáng tạo mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/671dca/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/aKGkv9hI3gEBsmPkLux9v9qMfZdC34L4LWkrFYBNvj89lmq0AzZcKaeSKpdBVqSkkmhvhqfqGpRbTw4qvXUdoy1J6xcwOena3Wkxm3qC7pLalb69TQ=s0" alt="Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini 2.5- Các mô hình thông minh nhất của chúng tôi đang ngày càng trở nên tốt hơn</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
