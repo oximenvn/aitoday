@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-06-03T00:00:00&#43;00:00">June 3, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            19 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/smolvla/SmolVLA_thumbnail.png" alt="SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="smolvla-mô-hình-tầm-nhìn-ngôn-ngữ-hành-động-hiệu-quả-được-đào-tạo-trên-dữ-liệu-cộng-đồng-lerobot">SmolVLA: Mô hình Tầm nhìn-Ngôn ngữ-Hành động Hiệu quả được Đào tạo trên Dữ liệu Cộng đồng Lerobot</h1>
+<p>Hôm nay, chúng tôi giới thiệu <a href="https://huggingface.co/lerobot/smolvla_base">SmolVLA</a>, một mô hình Tầm nhìn-Ngôn ngữ-Hành động mã nguồn mở, nhỏ gọn (450M) dành cho robot, chạy trên phần cứng tiêu dùng.</p>
+<ul>
+<li>Được đào tạo trước chỉ trên các bộ dữ liệu mã nguồn mở do cộng đồng chia sẻ dưới thẻ <a href="https://huggingface.co/datasets?other=lerobot&amp;sort=trending">lerobot</a>.</li>
+<li>SmolVLA-450M vượt trội hơn nhiều VLA lớn hơn và các đường cơ sở mạnh mẽ như <a href="https://huggingface.co/papers/2401.02117">ACT</a> trong mô phỏng (LIBERO, Meta-World) và các tác vụ trong thế giới thực (<a href="https://github.com/TheRobotStudio/SO-ARM100">SO100, SO101</a>).</li>
+<li>Hỗ trợ <em>suy luận không đồng bộ</em> để <strong>phản hồi nhanh hơn 30%</strong> và <strong>tăng gấp đôi thông lượng tác vụ</strong>.</li>
+</ul>
+<p><strong>Các liên kết hữu ích</strong>:</p>
+<ul>
+<li>Phần cứng được sử dụng để đào tạo và đánh giá SO-100/101: <a href="https://github.com/TheRobotStudio/SO-ARM100">https://github.com/TheRobotStudio/SO-ARM100</a></li>
+<li>Mô hình cơ bản <a href="https://huggingface.co/lerobot/smolvla_base">https://huggingface.co/lerobot/smolvla_base</a></li>
+<li>Báo cáo: <a href="https://huggingface.co/papers/2506.01844">https://huggingface.co/papers/2506.01844</a></li>
+</ul>
+<h2 id="-bảng-nội-dung">📚 Bảng nội dung</h2>
+<ul>
+<li><a href="#tl-dr">🧭 TL;DR</a></li>
+<li><a href="#introduction">📖 Giới thiệu</a></li>
+<li><a href="#meet-smolvla">🤖 Gặp gỡ SmolVLA</a></li>
+<li><a href="#-how-to-use-smolvla">🚀 Cách sử dụng SmolVLA?</a>
+<ul>
+<li><a href="#install">Cài đặt</a></li>
+<li><a href="#finetune-the-pretrained-model">Tinh chỉnh mô hình đã được đào tạo trước</a></li>
+<li><a href="#train-from-scratch">Đào tạo từ đầu</a></li>
+</ul>
+</li>
+<li><a href="#method">🧠 Phương pháp</a>
+<ul>
+<li><a href="#main-architecture">Kiến trúc chính</a>
+<ul>
+<li><a href="#vision-language-model-vlm">Mô hình Tầm nhìn-Ngôn ngữ (VLM)</a></li>
+<li><a href="#action-expert-flow-matching-transformer">Chuyên gia Hành động: Biến đổi Flow Matching</a></li>
+</ul>
+</li>
+<li><a href="#design-choices-for-efficiency-and-robustness">Lựa chọn thiết kế để đạt hiệu quả và độ bền</a>
+<ul>
+<li><a href="#visual-token-reduction">Giảm số lượng token hình ảnh</a></li>
+<li><a href="#faster-inference-via-layer-skipping">Suy luận nhanh hơn thông qua Bỏ qua lớp</a></li>
+<li><a href="#interleaved-cross-and-self-attention">Chú ý chéo và tự chú ý xen kẽ</a></li>
+</ul>
+</li>
+<li><a href="#asynchronous-inference">Suy luận không đồng bộ</a></li>
+</ul>
+</li>
+<li><a href="#community-datasets">📦 Bộ dữ liệu cộng đồng</a>
+<ul>
+<li><a href="#improving-task-annotations">Cải thiện chú thích tác vụ</a></li>
+<li><a href="#standardizing-camera-views">Chuẩn hóa chế độ xem camera</a></li>
+</ul>
+</li>
+<li><a href="#results">📊 Kết quả</a></li>
+<li><a href="#conclusion">✅ Kết luận</a></li>
+<li><a href="#call-to-action">📣 Kêu gọi hành động</a></li>
+</ul>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Trong vài năm qua, Transformers đã thúc đẩy sự tiến bộ vượt bậc trong AI, từ các mô hình ngôn ngữ có khả năng suy luận giống con người đến các hệ thống đa phương thức có thể hiểu cả hình ảnh và văn bản. Tuy nhiên, trong lĩnh vực robot thực tế, những tiến bộ đã chậm hơn nhiều. Robot vẫn gặp khó khăn trong việc khái quát hóa trên các đối tượng, môi trường và tác vụ đa dạng. Sự tiến bộ hạn chế này bắt nguồn từ <strong>việc thiếu dữ liệu đa dạng, chất lượng cao</strong> và sự vắng mặt của các mô hình có thể <strong>suy luận và hành động giống như con người trong thế giới vật chất</strong>.</p>
+<p>Để đáp ứng những thách thức này, lĩnh vực này gần đây đã chuyển sang <strong>các mô hình tầm nhìn-ngôn ngữ-hành động (VLA)</strong>, nhằm mục đích thống nhất nhận thức, hiểu ngôn ngữ và dự đoán hành động trong một kiến trúc duy nhất. VLA thường lấy các quan sát trực quan thô và hướng dẫn bằng ngôn ngữ tự nhiên làm đầu vào và xuất ra các hành động tương ứng của robot. Mặc dù đầy hứa hẹn, nhưng phần lớn tiến bộ gần đây trong VLA vẫn bị khóa sau các mô hình độc quyền được đào tạo trên các bộ dữ liệu riêng tư quy mô lớn, thường yêu cầu thiết lập phần cứng tốn kém và nguồn lực kỹ thuật rộng lớn.
+Do đó, cộng đồng nghiên cứu robot rộng lớn hơn phải đối mặt với những rào cản đáng kể trong việc tái tạo và xây dựng dựa trên các mô hình này.</p>
+<p>SmolVLA giải quyết khoảng cách này bằng cách cung cấp một mô hình VLA mã nguồn mở, nhỏ gọn và hiệu quả có thể được đào tạo trên <strong>phần cứng cấp tiêu dùng chỉ sử dụng các bộ dữ liệu có sẵn công khai</strong>. Bằng cách phát hành không chỉ trọng số mô hình mà còn sử dụng phần cứng nguồn mở rất hợp lý, SmolVLA nhằm mục đích dân chủ hóa quyền truy cập vào các mô hình tầm nhìn-ngôn ngữ-hành động và đẩy nhanh nghiên cứu hướng tới các tác nhân robot tổng quát.</p>
+<!-- raw HTML omitted -->
+<h2 id="gặp-gỡ-smolvla">Gặp gỡ SmolVLA!</h2>
+<p><strong>SmolVLA-450M</strong> là mô hình VLA mã nguồn mở, nhỏ gọn nhưng có khả năng của chúng tôi. Nó là:</p>
+<ul>
+<li>Đủ nhỏ để chạy trên CPU, đào tạo trên một GPU tiêu dùng duy nhất hoặc thậm chí là MacBook!</li>
+<li>Được đào tạo trên dữ liệu robot công khai, do cộng đồng chia sẻ</li>
+<li>Được phát hành với đầy đủ các công thức đào tạo và suy luận</li>
+<li>Có thể được kiểm tra và triển khai trên phần cứng rất hợp lý (SO-100, SO-101, LeKiwi, v.v.)</li>
+</ul>
+<p>Lấy cảm hứng từ các mô hình đào tạo của Mô hình Ngôn ngữ Lớn (LLM), SmolVLA trải qua giai đoạn đào tạo trước trên dữ liệu thao tác chung, sau đó là đào tạo sau cụ thể cho từng tác vụ. Về mặt kiến trúc, nó kết hợp Transformers với <strong>bộ giải mã flow-matching</strong> và được tối ưu hóa cho tốc độ và suy luận độ trễ thấp với các lựa chọn thiết kế sau:</p>
+<ul>
+<li>Bỏ qua một nửa số lớp của mô hình tầm nhìn để suy luận nhanh hơn và kích thước nhỏ hơn</li>
+<li>Xen kẽ các khối tự chú ý và chú ý chéo</li>
+<li>Sử dụng ít token hình ảnh hơn</li>
+<li>Tận dụng các VLM được đào tạo trước nhỏ hơn</li>
+</ul>
+<p>Mặc dù sử dụng ít hơn 30 nghìn tập đào tạo—ít hơn một bậc so với các VLA khác—SmolVLA <strong>phù hợp hoặc vượt quá hiệu suất</strong> của các mô hình lớn hơn nhiều, cả trong mô phỏng và thế giới thực.</p>
+<p>Để giúp robot thời gian thực dễ sử dụng hơn, chúng tôi giới thiệu một ngăn xếp suy luận không đồng bộ. Công nghệ này tách biệt cách robot thực hiện các hành động với cách chúng hiểu những gì chúng nhìn và nghe. Do sự tách biệt này, robot có thể phản ứng nhanh hơn trong môi trường thay đổi nhanh chóng.</p>
+<!-- raw HTML omitted -->
+<h2 id="-cách-sử-dụng-smolvla">🚀 Cách sử dụng SmolVLA?</h2>
+<p>SmolVLA được thiết kế để dễ sử dụng và tích hợp—cho dù bạn đang tinh chỉnh trên dữ liệu của riêng mình hay cắm nó vào một ngăn xếp robot hiện có.</p>
+<h3 id="cài-đặt">Cài đặt</h3>
+<p>Đầu tiên, cài đặt các phụ thuộc cần thiết:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>git clone https:<span style="color:#f92672">//</span>github<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>huggingface<span style="color:#f92672">/</span>lerobot<span style="color:#f92672">.</span>git
+</span></span><span style="display:flex;"><span>cd lerobot
+</span></span><span style="display:flex;"><span>pip install <span style="color:#f92672">-</span>e <span style="color:#e6db74">&#34;.[smolvla]&#34;</span>
+</span></span></code></pre></div><h3 id="tinh-chỉnh-mô-hình-đã-được-đào-tạo-trước">Tinh chỉnh mô hình đã được đào tạo trước</h3>
+<p>Sử dụng <a href="https://hf.co/lerobot/smolvla_base"><code>smolvla_base</code></a>, mô hình 450M đã được đào tạo trước của chúng tôi, với khung đào tạo lerobot:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>python lerobot<span style="color:#f92672">/</span>scripts<span style="color:#f92672">/</span>train<span style="color:#f92672">.</span>py \
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span>policy<span style="color:#f92672">.</span>path<span style="color:#f92672">=</span>lerobot<span style="color:#f92672">/</span>smolvla_base \
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span>dataset<span style="color:#f92672">.</span>repo_id<span style="color:#f92672">=</span>lerobot<span style="color:#f92672">/</span>svla_so100_stacking \
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span>batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> \
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span>steps<span style="color:#f92672">=</span><span style="color:#ae81ff">200000</span>
+</span></span></code></pre></div><h3 id="đào-tạo-từ-đầu">Đào tạo từ đầu</h3>
+<p>Nếu bạn muốn xây dựng từ kiến trúc (VLM + chuyên gia hành động đã được đào tạo trước) thay vì một điểm kiểm tra đã được đào tạo trước:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>python lerobot<span style="color:#f92672">/</span>scripts<span style="color:#f92672">/</span>train<span style="color:#f92672">.</span>py \
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span>policy<span style="color:#f92672">.</span>type<span style="color:#f92672">=</span>smolvla \
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span>dataset<span style="color:#f92672">.</span>repo_id<span style="color:#f92672">=</span>lerobot<span style="color:#f92672">/</span>svla_so100_stacking \
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span>batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> \
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">--</span>steps<span style="color:#f92672">=</span><span style="color:#ae81ff">200000</span>
+</span></span></code></pre></div><p>Bạn cũng có thể tải <code>SmolVLAPolicy</code> trực tiếp:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>policy <span style="color:#f92672">=</span> SmolVLAPolicy<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;lerobot/smolvla_base&#34;</span>)
+</span></span></code></pre></div><h2 id="phương-pháp">Phương pháp</h2>
+<p>SmolVLA không chỉ là một mô hình nhẹ nhưng có khả năng, mà còn là một phương pháp để đào tạo và đánh giá các chính sách robot tổng quát. Trong phần này, chúng tôi giới thiệu <em>kiến trúc mô hình</em> đằng sau SmolVLA và <em>thiết lập suy luận không đồng bộ</em> được sử dụng để đánh giá, đã được chứng minh là có khả năng thích ứng cao hơn và có khả năng phục hồi nhanh hơn.</p>
+<p>SmolVLA bao gồm hai thành phần cốt lõi: một <strong>Mô hình Tầm nhìn-Ngôn ngữ (VLM)</strong> xử lý các đầu vào đa phương thức và một <strong>chuyên gia hành động</strong> xuất ra các lệnh điều khiển robot. Dưới đây, chúng tôi chia sẻ chi tiết về các thành phần chính của kiến trúc SmolVLA và Suy luận không đồng bộ. Bạn có thể tìm thêm chi tiết trong <a href="https://huggingface.co/papers/2506.01844">báo cáo kỹ thuật</a> của chúng tôi.</p>
+<h3 id="kiến-trúc-chính">Kiến trúc chính</h3>
+<h4 id="mô-hình-tầm-nhìn-ngôn-ngữ-vlm">Mô hình Tầm nhìn-Ngôn ngữ (VLM)</h4>
+<p>Chúng tôi sử dụng <a href="https://huggingface.co/HuggingFaceTB/SmolVLM2-500M-Video-Instruct">SmolVLM2</a> làm xương sống VLM của chúng tôi. Nó được tối ưu hóa cho các đầu vào đa hình ảnh và bao gồm một bộ mã hóa tầm nhìn SigLIP và một bộ giải mã ngôn ngữ <a href="https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct">SmolLM2</a>.</p>
+<ul>
+<li><strong>Token hình ảnh</strong> được trích xuất thông qua bộ mã hóa tầm nhìn</li>
+<li><strong>Hướng dẫn ngôn ngữ</strong> được mã hóa thành token và được đưa trực tiếp vào bộ giải mã.</li>
+<li><strong>Trạng thái cảm biến vận động</strong> được chiếu thành một token duy nhất bằng cách sử dụng một lớp tuyến tính để căn chỉnh với chiều token của mô hình ngôn ngữ.</li>
+</ul>
+<p>Các lớp bộ giải mã xử lý hình ảnh, ngôn ngữ và token trạng thái được nối. Các tính năng kết quả sau đó được chuyển cho chuyên gia hành động.</p>
+<h4 id="chuyên-gia-hành-động-biến-đổi-flow-matching">Chuyên gia Hành động: Biến đổi Flow Matching</h4>
+<p><strong>Chuyên gia hành động</strong> của SmolVLA là một biến đổi nhỏ gọn (tham số ~100M) tạo ra các khối hành động, tức là các chuỗi hành động robot trong tương lai, được điều kiện trên các đầu ra của VLM. Nó được đào tạo bằng một <strong>mục tiêu flow matching</strong>, điều này dạy cho mô hình hướng dẫn các mẫu nhiễu trở lại sự thật cơ bản. Ngược lại, trong khi các biểu diễn hành động rời rạc (ví dụ: thông qua mã hóa thành token) rất mạnh mẽ, chúng thường yêu cầu giải mã tự hồi quy, chậm và kém hiệu quả tại thời điểm suy luận. Flow matching cho phép <strong>dự đoán trực tiếp, không tự hồi quy các hành động liên tục</strong>, cho phép điều khiển thời gian thực với độ chính xác cao.</p>
+<p>Nói một cách trực quan hơn, trong quá trình đào tạo, chúng tôi thêm nhiễu ngẫu nhiên vào các chuỗi hành động thực của robot và yêu cầu mô hình dự đoán &ldquo;vectơ hiệu chỉnh&rdquo; đưa chúng trở lại quỹ đạo chính xác. Điều này tạo thành một trường vectơ mượt mà trên không gian hành động, giúp mô hình học các chính sách điều khiển chính xác và ổn định.</p>
+<p>Chúng tôi triển khai điều này bằng cách sử dụng kiến trúc biến đổi với <strong>các khối chú ý xen kẽ</strong> (xem hình 2) và giảm kích thước ẩn của nó xuống <strong>75% của VLM</strong>, giữ cho mô hình nhẹ để triển khai.</p>
+<h3 id="lựa-chọn-thiết-kế-để-đạt-hiệu-quả-và-độ-bền">Lựa chọn thiết kế để đạt hiệu quả và độ bền</h3>
+<p>Trong khi kết hợp mô hình tầm nhìn-ngôn ngữ với một mô-đun dự đoán hành động là một mẫu thiết kế phổ biến trong các hệ thống VLA gần đây—chẳng hạn như Pi0, GR00T, Chính sách khuếch tán — chúng tôi đã xác định một số lựa chọn kiến trúc giúp tăng cường đáng kể độ bền và hiệu suất. Trong SmolVLA, chúng tôi áp dụng ba kỹ thuật chính: <strong>giảm số lượng token hình ảnh, bỏ qua các lớp trên trong VLM</strong> và <strong>xen kẽ các lớp chú ý chéo và tự chú ý</strong> trong chuyên gia hành động.</p>
+<h4 id="giảm-số-lượng-token-hình-ảnh">Giảm số lượng token hình ảnh</h4>
+<p>Hình ảnh có độ phân giải cao cải thiện nhận thức nhưng có thể làm chậm đáng kể quá trình suy luận. Để đạt được sự cân bằng, <strong>SmolVLA giới hạn số lượng token hình ảnh ở 64 trên mỗi khung hình</strong> trong cả quá trình đào tạo và suy luận. Ví dụ: hình ảnh 512×512 được nén thành chỉ 64 token, <strong>thay vì 1024</strong>, sử dụng <strong>PixelShuffle</strong> như một kỹ thuật xáo trộn hiệu quả. Trong khi Mô hình Tầm nhìn-Ngôn ngữ (VLM) cơ bản ban đầu được đào tạo trước bằng cách sử dụng lát hình ảnh để có phạm vi bao phủ rộng hơn, <strong>SmolVLA chỉ sử dụng hình ảnh toàn cục tại thời điểm chạy</strong> để giữ cho suy luận nhẹ và nhanh.</p>
+<h4 id="suy-luận-nhanh-hơn-thông-qua-bỏ-qua-lớp">Suy luận nhanh hơn thông qua Bỏ qua lớp</h4>
+<p>Thay vì luôn dựa vào lớp cuối cùng của VLM—điều này có thể tốn kém và đôi khi không tối ưu—chúng tôi sử dụng <strong>các tính năng từ các lớp trung gian</strong>. Các nghiên cứu trước đây đã chỉ ra rằng các lớp ban đầu thường cung cấp các biểu diễn tốt hơn cho các tác vụ hạ lưu.
+Trong SmolVLA, chuyên gia hành động chỉ tham gia vào các tính năng VLM lên đến một lớp NN có thể cấu hình trong quá trình đào tạo, được đặt thành <strong>một nửa tổng số lớp</strong>. Điều này <strong>giảm một nửa chi phí tính toán</strong> của cả VLM và chuyên gia hành động, giúp tăng tốc đáng kể suy luận với sự mất mát hiệu suất tối thiểu.</p>
+<h4 id="chú-ý-chéo-và-tự-chú-ý-xen-kẽ">Chú ý chéo và tự chú ý xen kẽ</h4>
+<p>Bên trong chuyên gia hành động, các lớp chú ý luân phiên giữa:</p>
+<ul>
+<li><strong>Chú ý chéo (CA)</strong>, nơi các token hành động tham gia vào các tính năng của VLM</li>
+<li><strong>Tự chú ý (SA)</strong>, nơi các token hành động tham gia lẫn nhau (quan hệ nhân quả—chỉ đến quá khứ)</li>
+</ul>
+<p>Chúng tôi phát hiện ra rằng <strong>thiết kế xen kẽ</strong> này vừa nhẹ hơn vừa hiệu quả hơn so với việc sử dụng các khối chú ý đầy đủ. Các mô hình chỉ dựa vào CA hoặc chỉ dựa vào SA có xu hướng hy sinh sự mượt mà hoặc sự tiếp đất.</p>
+<p>Trong SmolVLA, CA đảm bảo rằng các hành động được điều kiện tốt về nhận thức và hướng dẫn, trong khi SA cải thiện <strong>sự mượt mà về thời gian</strong>—đặc biệt quan trọng đối với việc điều khiển trong thế giới thực, nơi các dự đoán giật có thể dẫn đến hành vi không an toàn hoặc không ổn định.</p>
+<h2 id="suy-luận-không-đồng-bộ">Suy luận không đồng bộ</h2>
+<!-- raw HTML omitted -->
+<p>Các chính sách visuomotor hiện đại xuất ra <strong>các khối hành động</strong>—các chuỗi hành động để thực hiện. Có hai cách để quản lý chúng:</p>
+<ul>
+<li><strong>Đồng bộ (sync):</strong> Robot thực hiện một khối, sau đó tạm dừng trong khi khối tiếp theo được tính toán. Đơn giản, nhưng gây ra sự chậm trễ khi robot không thể phản ứng với các đầu vào mới.</li>
+<li><strong>Không đồng bộ (async):</strong> Trong khi thực hiện khối hiện tại, robot đã gửi quan sát mới nhất đến <strong>Máy chủ chính sách</strong> (có thể được lưu trữ trên GPU) cho khối tiếp theo. Điều này tránh thời gian chờ và cải thiện khả năng phản ứng.</li>
+</ul>
+<p>Ngăn xếp không đồng bộ của chúng tôi tách rời việc thực hiện hành động khỏi dự đoán khối, dẫn đến khả năng thích ứng cao hơn và hoàn toàn không có độ trễ thực thi tại thời điểm chạy. Nó dựa trên các cơ chế chính sau:</p>
+<ul>
+<li><strong>1. Kích hoạt sớm:</strong> Khi độ dài hàng đợi giảm xuống dưới một ngưỡng (ví dụ: 70%), chúng tôi gửi một quan sát đến <strong>Máy chủ chính sách</strong>, yêu cầu một khối hành động mới.</li>
+<li><strong>2. Các luồng tách rời:</strong> Vòng điều khiển tiếp tục thực thi → suy luận xảy ra song song (không chặn).</li>
+<li><strong>3. Hợp nhất khối:</strong> Các hành động chồng chéo từ các khối kế tiếp được ghép với một quy tắc hợp nhất đơn giản để tránh giật.</li>
+</ul>
+<p>Chúng tôi thực sự hào hứng về việc phát hành suy luận không đồng bộ vì nó đảm bảo khả năng thích ứng lớn hơn và cải thiện hiệu suất mà không cần thay đổi mô hình. Tóm lại, suy luận không đồng bộ giúp robot phản hồi nhanh bằng cách chồng chéo quá trình thực thi và dự đoán từ xa.</p>
+<h2 id="bộ-dữ-liệu-cộng-đồng">Bộ dữ liệu cộng đồng</h2>
+<p>Trong khi các mô hình tầm nhìn và ngôn ngữ phát triển mạnh trên các bộ dữ liệu quy mô web như LAION, ImageNet và Common Crawl, thì robot lại thiếu một tài nguyên tương đương. Không có &ldquo;Internet của robot&rdquo;. Thay vào đó, dữ liệu bị phân mảnh trên các loại robot, cảm biến, sơ đồ điều khiển và định dạng khác nhau—tạo thành các &ldquo;đảo dữ liệu&rdquo; bị ngắt kết nối. Trong <a href="https://huggingface.co/blog/lerobot-datasets">bài đăng trước</a> của chúng tôi, chúng tôi đã khám phá cách sự phân mảnh này có thể được giải quyết thông qua các nỗ lực hợp tác, mở. Giống như ImageNet đã xúc tác các đột phá trong thị giác máy tính bằng cách cung cấp một điểm chuẩn lớn, đa dạng, chúng tôi tin rằng <strong>các bộ dữ liệu robot do cộng đồng điều khiển</strong> có thể đóng vai trò nền tảng tương tự cho các chính sách robot tổng quát.</p>
+<p><strong>SmolVLA là bước đầu tiên của chúng tôi hướng tới tầm nhìn đó</strong>: Nó được đào tạo trước trên một hỗn hợp được tuyển chọn gồm các bộ dữ liệu có sẵn công khai, do cộng đồng đóng góp được thiết kế để phản ánh sự thay đổi trong thế giới thực. Thay vì chỉ tối ưu hóa cho kích thước bộ dữ liệu, chúng tôi tập trung vào sự đa dạng: một loạt các hành vi, quan điểm của camera và hiện thân để thúc đẩy sự chuyển giao và khái quát hóa.</p>
+<p>Tất cả dữ liệu đào tạo được sử dụng trong SmolVLA đến từ <strong>Bộ dữ liệu cộng đồng LeRobot</strong>, bộ dữ liệu robot được chia sẻ trên Hugging Face Hub dưới thẻ <code>lerobot</code>. Được thu thập trong các cài đặt đa dạng, từ phòng thí nghiệm đến phòng khách, các bộ dữ liệu này đại diện cho một nỗ lực mở, phi tập trung để mở rộng quy mô dữ liệu robot thế giới thực.</p>
+<!-- raw HTML omitted -->
+<p>Chúng tôi đã sử dụng một công cụ <a href="https://huggingface.co/spaces/Beegbrain/FilterLeRobotData">lọc</a> tùy chỉnh do <a href="https://huggingface.co/Beegbrain">Alexandre Chapin</a> và <a href="https://huggingface.co/villekuosmanen">Ville Kuosmanen</a> tạo ra để chọn các bộ dữ liệu dựa trên số lượng khung hình, chất lượng hình ảnh và phạm vi tác vụ. Sau một đánh giá thủ công tỉ mỉ (đặc biệt cảm ơn Marina Barannikov), chúng tôi đã tuyển chọn một bộ sưu tập gồm <strong>487 bộ dữ liệu chất lượng cao</strong> tập trung vào <strong>cánh tay robot SO100</strong>, được chuẩn hóa ở <strong>30 FPS</strong>. Điều này mang lại khoảng <strong>10 triệu khung hình</strong>—ít nhất <strong>nhỏ hơn một bậc</strong> so với các bộ dữ liệu điểm chuẩn phổ biến khác, nhưng đa dạng hơn đáng kể.</p>
+<h3 id="cải-thiện-chú-thích-tác-vụ">Cải thiện chú thích tác vụ</h3>
+<p>Một vấn đề phổ biến trên các bộ dữ liệu cộng đồng là mô tả tác vụ bị ồn ào hoặc thiếu. Nhiều tập không có chú thích hoặc bao gồm các nhãn mơ hồ như &ldquo;mô tả tác vụ&rdquo; hoặc &ldquo;Di chuyển&rdquo;, &ldquo;Chọn&rdquo;. Để cải thiện chất lượng và chuẩn hóa đầu vào văn bản trên các bộ dữ liệu, chúng tôi đã sử dụng <a href="https://huggingface.co/Qwen/Qwen2.5-3B-Instruct">Qwen2.5-VL-3B-Instruct</a> để tạo ra các mô tả ngắn gọn, hướng đến hành động.</p>
+<p>Với các khung mẫu và nhãn gốc, mô hình được nhắc để viết lại hướng dẫn dưới 30 ký tự, bắt đầu bằng một động từ hành động (ví dụ: &ldquo;Chọn&rdquo;, &ldquo;Đặt&rdquo;, &ldquo;Mở&rdquo;).</p>
+<p>Lời nhắc đã sử dụng là:</p>
+<pre tabindex="0"><code>Đây là mô tả tác vụ hiện tại: {current_task}. Tạo một câu rất ngắn, rõ ràng và đầy đủ mô tả hành động được thực hiện bởi cánh tay robot (tối đa 30 ký tự). Không bao gồm các từ không cần thiết.
+Hãy ngắn gọn.
+Dưới đây là một số ví dụ: Chọn khối lập phương và đặt nó vào hộp, mở ngăn kéo, v.v.
+Bắt đầu trực tiếp bằng một động từ hành động như &#34;Chọn&#34;, &#34;Đặt&#34;, &#34;Mở&#34;, v.v.
+Tương tự như các ví dụ đã cung cấp, hành động chính được thực hiện bởi cánh tay robot là gì?
+</code></pre><h3 id="chuẩn-hóa-chế-độ-xem-camera">Chuẩn hóa chế độ xem camera</h3>
+<p>Một thách thức khác là việc đặt tên camera không nhất quán. Một số bộ dữ liệu sử dụng các tên rõ ràng như trên cùng hoặc <code>wrist.right</code>, trong khi những bộ dữ liệu khác sử dụng các nhãn mơ hồ như <code>images.laptop</code>, có nghĩa khác nhau.
+Để khắc phục điều này, chúng tôi đã tự thực hiện các bộ dữ liệu và ánh xạ từng chế độ xem camera với một sơ đồ tiêu chuẩn hóa:</p>
+<p><code>OBS_IMAGE_1</code>: Chế độ xem từ trên xuống
+<code>OBS_IMAGE_2</code>: Chế độ xem gắn trên cổ tay
+<code>OBS_IMAGE_3+</code>: Các quan điểm bổ sung</p>
+<p>Chúng tôi tiếp tục cô lập những đóng góp của việc đào tạo trước bộ dữ liệu cộng đồng và tinh chỉnh đa tác vụ. Nếu không được đào tạo trước trên các bộ dữ liệu cộng đồng LeRobot, SmolVLA ban đầu đạt được <strong>51,7%</strong> thành công trên SO100. Sau khi đào tạo trước trên dữ liệu do cộng đồng thu thập, hiệu suất tăng lên <strong>78,3%</strong>, một <strong>cải thiện tuyệt đối +26,6%</strong>. Việc tinh chỉnh đa tác vụ tiếp tục tăng cường hiệu suất, cho thấy khả năng chuyển tác vụ mạnh mẽ ngay cả trong các chế độ dữ liệu thấp.</p>
+<!-- raw HTML omitted -->
+<h2 id="kết-quả">Kết quả</h2>
+<p>Chúng tôi đánh giá SmolVLA trên các tiêu chuẩn mô phỏng và thế giới thực để kiểm tra khả năng khái quát hóa, hiệu quả và độ bền của nó. Mặc dù nhỏ gọn, nó liên tục vượt trội hoặc phù hợp với hiệu suất của các mô hình và chính sách lớn hơn đáng kể được đào tạo trước trên dữ liệu robot quy mô lớn hơn.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Trong các cài đặt thế giới thực, SmolVLA được đánh giá trên hai bộ đa dạng: SO100 và SO101. Các tác vụ này bao gồm chọn-đặt, xếp chồng và sắp xếp, với cả cấu hình đối tượng trong phân phối và ngoài phân phối.
+Trên SO101, SmolVLA cũng vượt trội trong khả năng khái quát hóa:</p>
+<!-- raw HTML omitted -->
+<p>Cuối cùng, chúng tôi đánh giá SmolVLA trong các chế độ suy luận đồng bộ và không đồng bộ. Suy luận không đồng bộ tách rời việc thực hiện hành động khỏi suy luận mô hình, cho phép chính sách phản ứng trong khi robot đang di chuyển.</p>
+<ul>
+<li>Cả hai chế độ đều đạt được thành công tác vụ tương tự (≈78%), nhưng suy luận không đồng bộ:
+<ul>
+<li>Hoàn thành các tác vụ <strong>nhanh hơn ~30%</strong> (9,7 giây so với 13,75 giây)</li>
+<li>Cho phép <strong>hoàn thành nhiều hơn gấp 2 lần</strong> trong các cài đặt thời gian cố định (19 so với 9 khối lập phương)</li>
+</ul>
+</li>
+</ul>
+<p>Điều này dẫn đến hiệu suất trong thế giới thực nhạy bén và mạnh mẽ hơn, đặc biệt là trong các môi trường động với các đối tượng đang thay đổi hoặc các nhiễu loạn bên ngoài.</p>
+<!-- raw HTML omitted -->
+<h2 id="kết-luận">Kết luận</h2>
+<p>SmolVLA là đóng góp của chúng tôi cho việc xây dựng các mô hình nền tảng robot mở, hiệu quả và có thể tái tạo. Mặc dù có kích thước nhỏ, nó phù hợp hoặc vượt trội so với các mô hình độc quyền lớn hơn trên một loạt các tác vụ mô phỏng và thế giới thực. Bằng cách chỉ dựa vào các bộ dữ liệu do cộng đồng đóng góp và phần cứng giá cả phải chăng, SmolVLA hạ thấp rào cản gia nhập cho các nhà nghiên cứu, nhà giáo dục và những người có sở thích.
+Nhưng đây chỉ là sự khởi đầu. SmolVLA không chỉ là một mô hình — nó là một phần của phong trào mã nguồn mở ngày càng phát triển hướng tới robot có thể mở rộng, hợp tác.</p>
+<h2 id="kêu-gọi-hành-động">Kêu gọi hành động:</h2>
+<ul>
+<li><strong>Dùng thử!</strong> Tinh chỉnh SmolVLA trên dữ liệu của riêng bạn, triển khai nó trên phần cứng giá cả phải chăng hoặc so sánh nó với ngăn xếp hiện tại của bạn và chia sẻ nó trên twitter/linkedin.</li>
+<li><strong>Tải lên bộ dữ liệu!</strong> Có một robot? Thu thập và chia sẻ dữ liệu của bạn bằng định dạng lerobot. Giúp mở rộng bộ dữ liệu cộng đồng cung cấp sức mạnh cho SmolVLA.</li>
+<li><strong>Tham gia thảo luận trên blog.</strong> Thả câu hỏi, ý tưởng hoặc phản hồi của bạn vào phần thảo luận bên dưới. Chúng tôi rất sẵn lòng giúp đỡ với việc tích hợp, đào tạo hoặc triển khai.</li>
+<li><strong>Đóng góp.</strong> Cải thiện bộ dữ liệu, báo cáo vấn đề, đề xuất ý tưởng mới. Mọi đóng góp đều giúp ích.</li>
+<li><strong>Truyền bá.</strong> Chia sẻ SmolVLA với các nhà nghiên cứu, nhà phát triển hoặc nhà giáo dục đồng nghiệp quan tâm đến các chính sách robot thời gian thực, hiệu quả.</li>
+<li><strong>Giữ liên lạc:</strong> Theo dõi <a href="https://huggingface.co/lerobot">tổ chức LeRobot</a> và <a href="https://discord.com/invite/ttk5CV6tUw">máy chủ Discord</a> để biết các bản cập nhật, hướng dẫn và bản phát hành mới.</li>
+</ul>
+<p>Cùng nhau, chúng ta có thể làm cho robot trong thế giới thực có khả năng hơn, giá cả phải chăng hơn và cởi mở hơn. ✨</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/smolvla">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/june-3-2025/">June 3, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-03/5ee38c/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/vllm-colocate/thumbnail.png" alt="Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-03T00:00:00&#43;00:00">Jun 03, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-28/c5139e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/liger-grpo/thumbnail.png" alt="Liger GRPO gặp TRL" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-28T00:00:00&#43;00:00">May 28, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Liger GRPO gặp TRL</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết của khách</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-03/10871a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/aethir.jpg?w=700&amp;h=350&amp;crop=1" alt="Aethir cho phép thu hút người dùng tốt hơn thông qua phát trực tuyến Instant Play cho Doctor Who- Worlds Apart" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Aethir cho phép thu hút người dùng tốt hơn thông qua phát trực tuyến Instant Play cho Doctor Who- Worlds Apart</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-03/5ee38c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/vllm-colocate/thumbnail.png" alt="Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-03/37fcd4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smolvla/SmolVLA_thumbnail.png" alt="SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-02/bb350b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/ChatGPT-Image-Jun-1-2025-12_34_25-AM.png?w=700&amp;h=350&amp;crop=1" alt="Khi LLM của bạn gọi cảnh sát- Tiếng còi cảnh báo của Claude 4 và ngăn xếp rủi ro AI đại lý mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Khi LLM của bạn gọi cảnh sát- Tiếng còi cảnh báo của Claude 4 và ngăn xếp rủi ro AI đại lý mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-28/c5139e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/liger-grpo/thumbnail.png" alt="Liger GRPO gặp TRL" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Liger GRPO gặp TRL</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

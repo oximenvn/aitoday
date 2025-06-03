@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-06-03T00:00:00&#43;00:00">June 3, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            19 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/vllm-colocate/thumbnail.png" alt="Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="không-gpu-nào-bị-bỏ-lại-phía-sau-mở-khóa-hiệu-quả-với-vllm-đồng-vị-trí-trong-trl">KHÔNG GPU nào bị bỏ lại phía sau: Mở khóa hiệu quả với vLLM đồng vị trí trong TRL</h1>
+<p>TRL hỗ trợ huấn luyện LLM bằng GRPO, một thuật toán học trực tuyến được giới thiệu gần đây trong bài báo <em>DeepSeekMath</em>. Trong GRPO, mô hình học hỏi từ chính các đầu ra của nó: nó tạo ra các phản hồi trong quá trình huấn luyện, nhận được phản hồi và sử dụng phản hồi đó để cải thiện bản thân theo thời gian.</p>
+<p>Điều này làm cho quá trình tạo trở thành một bước quan trọng trong vòng lặp huấn luyện — và cũng là một nút thắt lớn. Để tăng tốc quá trình tạo, TRL tích hợp với vLLM. Sự kết hợp này cho phép bạn huấn luyện các mô hình mạnh mẽ hiệu quả hơn trong thiết lập GRPO. Tuy nhiên, có một nhược điểm.</p>
+<h2 id="-vấn-đề">🧨 Vấn đề</h2>
+<p>Trước TRL v0.18.0, vLLM chỉ được hỗ trợ ở <strong>chế độ máy chủ</strong>, chạy như một quy trình riêng biệt trên các GPU khác với công việc huấn luyện. Nó giao tiếp với tập lệnh huấn luyện qua HTTP, điều này làm cho thiết lập trở nên mô-đun và dễ sử dụng — nhưng cũng gây ra sự kém hiệu quả của GPU.</p>
+<p>Đây là những gì xảy ra:</p>
+<ul>
+<li>Trong quá trình huấn luyện, mô hình cần tạo ra các phần hoàn thành thường xuyên.</li>
+<li>Trình huấn luyện gửi yêu cầu đến máy chủ vLLM, chạy trên các GPU riêng của nó.</li>
+<li>Trong khi vLLM tạo, các <strong>GPU huấn luyện ở trạng thái chờ</strong> và đợi.</li>
+<li>Sau khi quá trình tạo xong, <strong>GPU vLLM trở nên nhàn rỗi</strong>, và quá trình huấn luyện tiếp tục.</li>
+</ul>
+<p>Quá trình &ldquo;ping-pong&rdquo; giữa huấn luyện và tạo ra:</p>
+<ul>
+<li>Lãng phí thời gian GPU ở cả hai phía</li>
+<li>Tăng nhu cầu về <strong>GPU bổ sung</strong> chỉ để chạy suy luận</li>
+<li>Giảm <strong>thông lượng tổng thể và chi phí cao hơn</strong></li>
+</ul>
+<p>Trong các phương pháp học trực tuyến như GRPO — nơi quá trình tạo diễn ra liên tục — sự kém hiệu quả này thậm chí còn trở nên khó chịu hơn. Bạn chi nhiều hơn cho phần cứng, nhưng không nhận được hiệu suất như mong đợi.</p>
+<p><strong>Vì vậy, câu hỏi quan trọng trở thành:</strong> <em>Liệu chúng ta có thể chia sẻ cùng một GPU cho cả huấn luyện và tạo, thay vì tách chúng ra?</em></p>
+<h2 id="-cơ-hội">💡 Cơ hội</h2>
+<p>Vấn đề chính là huấn luyện và suy luận chạy trên các GPU riêng biệt, dẫn đến thời gian nhàn rỗi và sử dụng không hết công suất. Giải pháp tự nhiên? Chạy cả hai trên cùng một GPU. Thay vì để vLLM hoạt động như một máy chủ độc lập trong quy trình và thiết bị riêng, điều gì sẽ xảy ra nếu vLLM có thể chạy cùng với mã huấn luyện, trong cùng một nhóm quy trình phân tán? Điều này sẽ cho phép chúng ta khởi chạy một công việc phân tán duy nhất, nơi huấn luyện và suy luận chia sẻ cùng một thiết bị, chuyển đổi giữa các tác vụ một cách hiệu quả mà không lãng phí tài nguyên.</p>
+<p>Phương pháp này là những gì chúng ta gọi là <strong>đồng vị trí</strong>. Huấn luyện và suy luận được đồng vị trí trên cùng một GPU và được điều phối thông qua cùng một nhóm quy trình, cho phép chúng thay phiên nhau một cách trơn tru — không cần thêm phần cứng.</p>
+<p>Trước đây, điều này là không thể trong TRL, dựa vào vLLM như một máy chủ HTTP bên ngoài. Điều đó đã thay đổi với <!-- raw HTML omitted -->PR #3394<!-- raw HTML omitted --> của chúng tôi, đã thêm hỗ trợ cho trình khởi chạy bên ngoài của vLLM và tích hợp thực sự vào quy trình huấn luyện.</p>
+<h3 id="những-gì-nó-cho-phép">Những gì nó cho phép</h3>
+<ul>
+<li><strong>Thực thi thống nhất</strong>: Bằng cách nhúng vLLM vào cùng một nhóm quy trình, cả tác vụ huấn luyện và suy luận có thể chia sẻ cùng một GPU, thay phiên nhau thay vì chờ đợi lẫn nhau. Điều này làm giảm thời gian nhàn rỗi và tăng hiệu quả tổng thể.</li>
+<li><strong>Bỏ qua giao tiếp HTTP</strong>: Không cần gọi API REST hoặc kết nối mạng — vLLM chạy nội tuyến với vòng lặp huấn luyện, tránh được chi phí và độ trễ.</li>
+<li><strong>Khả năng tương thích Torchrun</strong>: Hoạt động liền mạch với <code>torchrun</code>, vì vậy rất dễ dàng mở rộng quy mô trên các nút với những thay đổi cấu hình tối thiểu.</li>
+<li><strong>Hỗ trợ TP và DP</strong>: Tương thích với tính song song tensor và tính song song dữ liệu, làm cho nó phù hợp với các lần chạy huấn luyện quy mô lớn.</li>
+<li><strong>Mô hình thực thi SPMD</strong>: Sử dụng mô hình Single Program, Multiple Data (SPMD), trong đó mỗi GPU chạy phiên bản công cụ của riêng mình đồng bộ. Lý tưởng cho thiết lập đa GPU, đa nút phân tán.</li>
+<li><strong>Triển khai đơn giản hóa</strong>: Bạn không còn cần duy trì tập lệnh máy chủ riêng — vLLM được khởi chạy và kiểm soát trực tiếp bên trong công việc huấn luyện của bạn.</li>
+<li><strong>Thông lượng nâng cao</strong>: Bằng cách tránh GPU nhàn rỗi và loại bỏ giao tiếp giữa các quy trình, hệ thống cung cấp quá trình huấn luyện và tạo nhanh hơn, đặc biệt quan trọng trong thiết lập học trực tuyến như GRPO.</li>
+<li><strong>Giao tiếp giữa các quy trình mạnh mẽ</strong>: Điều này mạnh mẽ hơn vì nó tránh được sự phức tạp của việc thiết lập các nhóm quy trình phân tán giữa các quy trình độc lập, như yêu cầu trong chế độ máy chủ.</li>
+</ul>
+<p>Nhờ tính năng này, huấn luyện và suy luận đồng vị trí không còn là một bản hack — giờ đây nó là <strong>ưu tiên hàng đầu, có thể mở rộng và sẵn sàng cho sản xuất</strong>.</p>
+<h2 id="-thiết-kế-từ-các-máy-chủ-riêng-biệt-đến-gpu-được-chia-sẻ">🧩 Thiết kế: Từ các máy chủ riêng biệt đến GPU được chia sẻ</h2>
+<p>Sự thay đổi từ TRL máy chủ sang TRL đồng vị trí là tất cả về việc sử dụng GPU thông minh hơn. Sơ đồ bên dưới cho thấy sự khác biệt:</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vllm-colocate/gpus-design.png" alt="gpus-design"></p>
+<h3 id="thiết-lập-trl-máy-chủ-hàng-trên-cùng">Thiết lập TRL máy chủ (Hàng trên cùng)</h3>
+<p>Trong thiết lập TRL máy chủ, huấn luyện và suy luận chạy trên các GPU riêng biệt. Ví dụ:</p>
+<ul>
+<li>GPU 0 đến 2 được sử dụng để huấn luyện.</li>
+<li>GPU 3 được dành riêng hoàn toàn để chạy vLLM như một máy chủ riêng biệt.</li>
+</ul>
+<p>Trong các bước huấn luyện, <strong>GPU 3 ở trạng thái chờ</strong>. Trong các bước tạo (suy luận), <strong>GPU 0–2 ở trạng thái chờ</strong> trong khi GPU 3 tạo ra đầu ra.</p>
+<p>Điều này dẫn đến:</p>
+<ul>
+<li>Sử dụng GPU không hiệu quả, với các thiết bị thường xuyên chờ đợi lẫn nhau</li>
+<li>GPU bổ sung được cung cấp chỉ dành cho suy luận</li>
+<li>Tăng chi phí và sự phức tạp</li>
+</ul>
+<h3 id="thiết-lập-trl-đồng-vị-trí-hàng-dưới-cùng">Thiết lập TRL đồng vị trí (Hàng dưới cùng)</h3>
+<p>Ngược lại, thiết lập TRL đồng vị trí chạy cả huấn luyện và vLLM trên <strong>cùng một GPU</strong>. Mỗi GPU:</p>
+<ul>
+<li>Chạy vòng lặp huấn luyện</li>
+<li>Khởi chạy một công cụ vLLM trong <strong>cùng một quy trình</strong></li>
+</ul>
+<p>Huấn luyện và suy luận <strong>thay phiên nhau</strong> sử dụng tài nguyên của GPU — không cần thiết bị chuyên dụng hoặc quy trình riêng biệt.</p>
+<p>Thiết kế này:</p>
+<ul>
+<li>Giảm thời gian nhàn rỗi</li>
+<li>Giảm thiểu giao tiếp giữa các quy trình và HTTP</li>
+<li>Sử dụng hết bộ nhớ và tính toán GPU có sẵn</li>
+<li>Cung cấp <strong>thông lượng nhanh hơn</strong> mà không tăng yêu cầu về phần cứng</li>
+</ul>
+<h2 id="-ghi-chú-triển-khai">🛠️ Ghi chú triển khai</h2>
+<p>Thay vì khởi chạy vLLM như một máy chủ, quá trình huấn luyện bây giờ khởi chạy vLLM <strong>trong quy trình</strong> bằng cách sử dụng trình khởi chạy bên ngoài, như được hiển thị bên dưới:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>self<span style="color:#f92672">.</span>llm <span style="color:#f92672">=</span> LLM(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model<span style="color:#f92672">.</span>name_or_path,
+</span></span><span style="display:flex;"><span>    tensor_parallel_size<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>vllm_tensor_parallel_size,
+</span></span><span style="display:flex;"><span>    gpu_memory_utilization<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>vllm_gpu_memory_utilization,
+</span></span><span style="display:flex;"><span>    max_num_seqs<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>args<span style="color:#f92672">.</span>per_device_train_batch_size
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span> self<span style="color:#f92672">.</span>vllm_tensor_parallel_size
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span> self<span style="color:#f92672">.</span>args<span style="color:#f92672">.</span>gradient_accumulation_steps,
+</span></span><span style="display:flex;"><span>    max_model_len<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>max_prompt_length <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>max_completion_length,
+</span></span><span style="display:flex;"><span>    distributed_executor_backend<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;external_launcher&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Feed identical seed for tp groups to ensure sampling results are the same across workers</span>
+</span></span><span style="display:flex;"><span>    seed<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>accelerator<span style="color:#f92672">.</span>process_index <span style="color:#f92672">//</span> self<span style="color:#f92672">.</span>vllm_tensor_parallel_size,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>vLLM đồng vị trí tôn trọng nhóm quy trình và cấu trúc thứ hạng torch.distributed. Điều này cho phép vLLM được khởi tạo cùng với quá trình huấn luyện mà không xung đột và làm cho thiết lập TP/DP hoạt động liền mạch:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>vllm_tensor_parallel_size <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create subgroups of ranks for TP, each group with `vllm_tensor_parallel_size` ranks.</span>
+</span></span><span style="display:flex;"><span>    self<span style="color:#f92672">.</span>tp_group, _ <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>distributed<span style="color:#f92672">.</span>new_subgroups_by_enumeration(
+</span></span><span style="display:flex;"><span>        [
+</span></span><span style="display:flex;"><span>            list(range(i <span style="color:#f92672">*</span> self<span style="color:#f92672">.</span>vllm_tensor_parallel_size, (i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> self<span style="color:#f92672">.</span>vllm_tensor_parallel_size))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>accelerator<span style="color:#f92672">.</span>num_processes <span style="color:#f92672">//</span> self<span style="color:#f92672">.</span>vllm_tensor_parallel_size)
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><p>vLLM đồng vị trí không còn dựa vào API REST — nó chạy trực tiếp trong bộ nhớ và giao tiếp thông qua các lệnh gọi Python gốc:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>vllm_tensor_parallel_size <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>    orig_size <span style="color:#f92672">=</span> len(prompts_text)
+</span></span><span style="display:flex;"><span>    gathered_prompts <span style="color:#f92672">=</span> [<span style="color:#66d9ef">None</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>vllm_tensor_parallel_size)]
+</span></span><span style="display:flex;"><span>    torch<span style="color:#f92672">.</span>distributed<span style="color:#f92672">.</span>all_gather_object(gathered_prompts, prompts_text, group<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>tp_group)
+</span></span><span style="display:flex;"><span>    all_prompts_text <span style="color:#f92672">=</span> [p <span style="color:#66d9ef">for</span> sublist <span style="color:#f92672">in</span> gathered_prompts <span style="color:#66d9ef">for</span> p <span style="color:#f92672">in</span> sublist]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    all_prompts_text <span style="color:#f92672">=</span> prompts_text
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> profiling_context(self, <span style="color:#e6db74">&#34;vLLM.generate&#34;</span>):
+</span></span><span style="display:flex;"><span>    all_outputs <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>llm<span style="color:#f92672">.</span>generate(all_prompts_text, sampling_params<span style="color:#f92672">=</span>sampling_params, use_tqdm<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>completion_ids <span style="color:#f92672">=</span> [output<span style="color:#f92672">.</span>token_ids <span style="color:#66d9ef">for</span> outputs <span style="color:#f92672">in</span> all_outputs <span style="color:#66d9ef">for</span> output <span style="color:#f92672">in</span> outputs<span style="color:#f92672">.</span>outputs]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>vllm_tensor_parallel_size <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>    local_rank_in_group <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>distributed<span style="color:#f92672">.</span>get_rank(group<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>tp_group)
+</span></span><span style="display:flex;"><span>    tp_slice <span style="color:#f92672">=</span> slice(local_rank_in_group <span style="color:#f92672">*</span> orig_size, (local_rank_in_group <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> orig_size)
+</span></span><span style="display:flex;"><span>    completion_ids <span style="color:#f92672">=</span> completion_ids[tp_slice]
+</span></span></code></pre></div><p>Để sử dụng thiết lập này, chỉ cần đặt vllm_mode=&ldquo;colocate&rdquo; trong cấu hình GRPO của bạn:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>training_args <span style="color:#f92672">=</span> GRPOConfig(
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>,
+</span></span><span style="display:flex;"><span>    use_vllm<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    vllm_mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;colocate&#34;</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><blockquote>
+<p>Lưu ý: Tùy thuộc vào kích thước mô hình và yêu cầu bộ nhớ GPU tổng thể cho quá trình huấn luyện, bạn có thể cần điều chỉnh tham số vllm_gpu_memory_utilization trong <code>GRPOConfig</code> để tránh lỗi sử dụng không hết hoặc hết bộ nhớ.</p></blockquote>
+<h2 id="-trình-bày-hiệu-suất-trl-đồng-vị-trí-so-với-trl-thông-thường">📊 Trình bày: Hiệu suất TRL đồng vị trí so với TRL thông thường</h2>
+<p>Để đo lường tác động của việc đồng vị trí, chúng tôi đã chạy một loạt các thí nghiệm so sánh <strong>chế độ máy chủ</strong> truyền thống (trong đó vLLM chạy trên một GPU riêng biệt như một máy chủ độc lập) với <strong>chế độ đồng vị trí</strong> mới (trong đó huấn luyện và suy luận chia sẻ cùng một GPU).</p>
+<p>Ở <strong>chế độ máy chủ</strong>, chỉ có 7 GPU được sử dụng để huấn luyện vì 1 GPU được dành riêng hoàn toàn cho máy chủ suy luận vLLM.</p>
+<p>Ở <strong>chế độ đồng vị trí</strong>, tất cả 8 GPU được sử dụng để huấn luyện — tăng kích thước lô hiệu quả theo mặc định.</p>
+<p>Để đảm bảo so sánh công bằng, chúng tôi đã <strong>chuẩn hóa thông lượng ở chế độ máy chủ theo hệ số 8/7</strong>. Điều chỉnh này tính đến khả năng huấn luyện lớn hơn ở chế độ đồng vị trí và cho phép chúng tôi so sánh hai thiết lập trong điều kiện huấn luyện tương đương.</p>
+<h3 id="thí-nghiệm-1-mô-hình-15b--thay-đổi-kích-thước-lô">Thí nghiệm 1: Mô hình 1.5B — Thay đổi kích thước lô</h3>
+<ul>
+<li>Khi kích thước lô tăng lên, thông lượng được cải thiện trong cả hai thiết lập.</li>
+<li><strong>Thiết lập đồng vị trí đạt tốc độ nhanh hơn tới 1,43 lần</strong> ở kích thước lô lớn nhất.</li>
+<li>Các lô lớn hơn tận dụng tốt hơn bộ nhớ GPU được chia sẻ ở chế độ đồng vị trí.
+<img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vllm-colocate/small-b.png" alt="small-b"></li>
+</ul>
+<h3 id="thí-nghiệm-2-mô-hình-15b--thay-đổi-tính-song-song-tensor-tp">Thí nghiệm 2: Mô hình 1.5B — Thay đổi tính song song Tensor (TP)</h3>
+<ul>
+<li>Trong thiết lập đồng vị trí, tăng TP <strong>làm giảm hiệu suất</strong>.</li>
+<li>Phân mảnh nhiều hơn giới thiệu nhiều chi phí giao tiếp hơn — điều này <strong>không lý tưởng cho các mô hình nhỏ hơn</strong>.</li>
+<li><strong>Kết luận</strong>: Đối với các mô hình nhỏ, hãy tránh phân mảnh quá mức ở chế độ đồng vị trí.
+<img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vllm-colocate/small-tp.png" alt="small-tp"></li>
+</ul>
+<h3 id="thí-nghiệm-3-mô-hình-7b--thay-đổi-kích-thước-lô">Thí nghiệm 3: Mô hình 7B — Thay đổi kích thước lô</h3>
+<ul>
+<li>Một lần nữa, chế độ đồng vị trí <strong>mở rộng quy mô tốt hơn với kích thước lô</strong>.</li>
+<li>Mức tăng đạt được <strong>tốc độ nhanh hơn 1,35 lần</strong> ở lô lớn nhất được kiểm tra.
+<img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vllm-colocate/med-b.png" alt="med-b"></li>
+</ul>
+<h3 id="thí-nghiệm-4-mô-hình-7b--thay-đổi-tính-song-song-tensor-tp">Thí nghiệm 4: Mô hình 7B — Thay đổi tính song song Tensor (TP)</h3>
+<ul>
+<li>Xu hướng ngược lại từ mô hình 1.5B.</li>
+<li>Với 7B, <strong>nhiều TP cải thiện thông lượng hơn</strong>, đạt được <strong>tốc độ nhanh hơn tới 1,73 lần</strong>.</li>
+<li><strong>Các mô hình lớn hơn được hưởng lợi từ việc phân mảnh</strong> trong thiết lập đồng vị trí.
+<img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vllm-colocate/med-tp.png" alt="med-tp"></li>
+</ul>
+<h2 id="-mở-rộng-quy-mô-lên-mô-hình-72b">📊 Mở rộng quy mô lên mô hình 72B</h2>
+<p>Khi huấn luyện các mô hình lớn như <strong>Qwen2.5-Math-72B</strong>, điều quan trọng là sử dụng đúng chiến lược để làm cho quá trình huấn luyện hiệu quả, có thể mở rộng và ổn định trên nhiều GPU và nút. Trong thiết lập của mình, chúng tôi đã kết hợp <strong>vLLM đồng vị trí</strong> với một số tối ưu hóa chính để làm cho việc này hoạt động hiệu quả.</p>
+<h3 id="chế-độ-ngủ-trong-vllm">Chế độ ngủ trong vLLM</h3>
+<p>Khi sử dụng huấn luyện đồng vị trí, việc quản lý bộ nhớ GPU là rất quan trọng để cả huấn luyện và suy luận có thể chạy trơn tru trên cùng một thiết bị. Để hỗ trợ điều này, chúng tôi đã thêm API <code>sleep()</code> của vLLM vào vòng lặp huấn luyện GRPO.</p>
+<p>Hàm <code>sleep()</code> tạm thời tạm dừng công cụ vLLM và giải phóng bộ nhớ GPU. Nó hỗ trợ hai cấp độ:</p>
+<ul>
+<li><strong>Cấp 1</strong>: Dỡ trọng số mô hình từ GPU (giữ chúng trong bộ nhớ CPU) và xóa bộ đệm KV.
+Hữu ích khi cùng một mô hình sẽ được sử dụng lại sớm.</li>
+<li><strong>Cấp 2</strong>: Dỡ cả trọng số mô hình và bộ đệm KV hoàn toàn.
+Tốt nhất cho các trường hợp mà mô hình sẽ thay đổi hoặc sẽ không được sử dụng lại ngay lập tức.</li>
+</ul>
+<p>Trong GRPO, mô hình được cập nhật sau mỗi bước — vì vậy chúng tôi sử dụng <strong>chế độ ngủ Cấp 2</strong>.</p>
+<p>Lợi ích của chế độ ngủ Cấp 2:</p>
+<ul>
+<li><strong>Tối đa hóa bộ nhớ GPU miễn phí</strong> để huấn luyện</li>
+<li><strong>Tránh tranh chấp bộ nhớ</strong> giữa huấn luyện và tạo</li>
+<li>Giữ cho đồng vị trí hiệu quả, ngay cả đối với các mô hình lớn như Qwen2.5-72B</li>
+</ul>
+<p>Sự bổ sung nhỏ này tạo ra một <strong>sự khác biệt lớn</strong> trong việc cho phép huấn luyện đồng vị trí trơn tru và có thể mở rộng.</p>
+<h3 id="tối-ưu-hóa-deepspeed">Tối ưu hóa DeepSpeed</h3>
+<p>Để huấn luyện các mô hình lớn như Qwen2.5-72B, chúng tôi dựa vào <strong>DeepSpeed ZeRO Stage 3</strong>, cùng một thiết lập được sử dụng trong TRL thông thường.</p>
+<p>ZeRO giúp mở rộng các mô hình lớn bằng cách phân phối bộ nhớ trên các GPU. Stage 3 đi xa hơn bằng cách phân vùng:</p>
+<ul>
+<li>Trọng số mô hình</li>
+<li>Độ dốc</li>
+<li>Trạng thái trình tối ưu hóa</li>
+</ul>
+<p>Điều này rất cần thiết cho các mô hình không thể phù hợp với một GPU duy nhất. Với ZeRO Stage 3, mỗi GPU chỉ xử lý một phần của mô hình.</p>
+<p>Các tùy chọn bổ sung mà chúng tôi kích hoạt:</p>
+<ul>
+<li><code>&quot;offload_optimizer&quot;: {&quot;device&quot;: &quot;cpu&quot;}</code>
+Chuyển trạng thái trình tối ưu hóa sang CPU để giải phóng bộ nhớ GPU — rất quan trọng trong thiết lập đồng vị trí.</li>
+<li><code>&quot;overlap_comm&quot;: true</code>
+Cho phép giao tiếp chồng lên tính toán, tăng tốc quá trình huấn luyện.</li>
+<li><code>&quot;contiguous_gradients&quot;: true</code>
+Phân bổ độ dốc trong một khối bộ nhớ duy nhất, cải thiện khả năng truy cập bộ nhớ và giảm phân mảnh.</li>
+</ul>
+<p>Các tối ưu hóa này giúp <strong>huấn luyện hiệu quả các mô hình 72B</strong> và đảm bảo đồng vị trí vẫn ổn định trong điều kiện hạn chế bộ nhớ.</p>
+<h3 id="tích-hợp-tăng-tốc">Tích hợp tăng tốc</h3>
+<p>Như được khuyến nghị trong TRL, chúng tôi sử dụng <strong>Accelerate</strong>, một thư viện nhẹ giúp đơn giản hóa quá trình huấn luyện phân tán. Nó xử lý:</p>
+<ul>
+<li>Khởi chạy công việc đa GPU và đa nút</li>
+<li>Tính song song dữ liệu</li>
+<li>Tích lũy độ dốc</li>
+<li>Tải dữ liệu phân tán</li>
+</ul>
+<p>Điều này làm cho thiết lập sạch sẽ, có thể mở rộng và dễ bảo trì.</p>
+<h3 id="thí-nghiệm-5-qwen25-math-72b--thông-lượng-độ-chính-xác-và-kết-quả-điểm-chuẩn">Thí nghiệm 5: Qwen2.5-Math-72B — Thông lượng, độ chính xác và kết quả điểm chuẩn</h3>
+<h4 id="thông-lượng">Thông lượng</h4>
+<p>Ngay cả với <strong>ít hơn 4 GPU</strong>, <strong>thiết lập đồng vị trí nhanh hơn ~1,26 lần</strong> so với TRL thông thường.
+Điều này làm nổi bật hiệu quả của việc chia sẻ GPU thông minh hơn và làm sạch bộ nhớ bằng cách sử dụng <code>sleep()</code>.
+<img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vllm-colocate/72b-tput.png" alt="72b-tput"></p>
+<h4 id="đường-cong-phần-thưởng">Đường cong phần thưởng</h4>
+<p>Các đồ thị phần thưởng huấn luyện cho thiết lập đồng vị trí và thông thường <strong>gần như giống hệt nhau</strong>, chứng minh rằng:</p>
+<ul>
+<li><strong>Huấn luyện đồng vị trí bảo toàn độ chính xác</strong></li>
+<li><strong>Không có hồi quy trong hiệu suất học tập của mô hình</strong>
+<img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vllm-colocate/blogpost_72b_rewards.png" alt="blogpost_72b_rewards"></li>
+</ul>
+<h4 id="điểm-chuẩn-math500">Điểm chuẩn Math500</h4>
+<p>Chúng tôi đã đánh giá ba mô hình: <strong>Mô hình cơ sở</strong>, <strong>Mô hình được huấn luyện đồng vị trí</strong>, <strong>Mô hình được huấn luyện thông thường</strong> trên điểm chuẩn Math500. Cả hai mô hình được huấn luyện <strong>đều vượt trội hơn so với cơ sở</strong>, và <strong>mô hình đồng vị trí hoạt động ngang bằng</strong> với mô hình được huấn luyện thông thường — xác nhận rằng đồng vị trí không ảnh hưởng đến hiệu suất hạ nguồn.
+<img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vllm-colocate/blogpost_72b_math500.png" alt="blogpost_72b_math500"></p>
+<h2 id="-thách-thức--bài-học-kinh-nghiệm--các-bước-tiếp-theo">🎓 Thách thức &amp; Bài học kinh nghiệm &amp; Các bước tiếp theo</h2>
+<p>Thông qua công việc của chúng tôi về việc mở rộng quy mô huấn luyện GRPO với vLLM đồng vị trí, chúng tôi đã đối mặt với một số thách thức quan trọng và học được những bài học quan trọng về hiệu quả, tính linh hoạt và thiết kế hệ thống khi huấn luyện các mô hình lớn.</p>
+<h3 id="thách-thức">Thách thức</h3>
+<ul>
+<li><strong>Lỗi song song Tensor trong vLLM ≥ 0.8.0.</strong> Tính song song Tensor (TP) với external_launcher đã ngừng hoạt động trong vLLM phiên bản 0.8.0 trở lên. Điều này đã được theo dõi theo Vấn đề <!-- raw HTML omitted -->#15895<!-- raw HTML omitted -->. Để xác định điểm phá vỡ, chúng tôi đã tuân theo phương pháp được mô tả trong nhà phát triển vLLM này <!-- raw HTML omitted -->bài đăng trên blog<!-- raw HTML omitted -->, cung cấp các bánh xe cho mọi cam kết. Sau khi chia đôi, chúng tôi đã xác định cam kết phá vỡ là <!-- raw HTML omitted -->cc10281<!-- raw HTML omitted -->. Nguyên nhân gốc rễ là tính xác định — các phiên bản mới hơn yêu cầu thiết lập rõ ràng hạt giống ngẫu nhiên. Sau khi hạt giống được thiết lập, vấn đề đã biến mất.</li>
+<li><strong>Lỗi bộ đệm ngủ Cấp 2.</strong> Ban đầu, chế độ ngủ cấp 2 không hoạt động chính xác khi chúng tôi cố gắng tải lại trọng số bằng load_weights. Vấn đề này đã được theo dõi trong <!-- raw HTML omitted -->Vấn đề #16564<!-- raw HTML omitted -->. Vấn đề là bộ đệm mô hình (như chạy trung bình/phương sai trong BatchNorm) không được khôi phục sau khi thức dậy từ chế độ ngủ. Bản sửa lỗi đi kèm với PR <!-- raw HTML omitted -->#16889<!-- raw HTML omitted -->, đã thêm logic để khôi phục rõ ràng các bộ đệm khi thức dậy từ chế độ ngủ cấp 2. Bây giờ chúng tôi giữ một bản sao của các bộ đệm gốc và áp dụng lại chúng theo cách thủ công sau khi tải trọng số mới.</li>
+<li><strong>Lỗi phân đoạn khi thoát.</strong> Vẫn còn một vấn đề mở với chế độ ngủ vLLM gây ra lỗi phân đoạn khi kết thúc quá trình huấn luyện khi đóng các quy trình. Điều này đã được báo cáo trong Vấn đề <!-- raw HTML omitted -->#16993<!-- raw HTML omitted -->. Sự cố này xảy ra trong quá trình tắt máy nhưng không làm hỏng quá trình huấn luyện, vì vậy chúng tôi đã có thể hoàn thành tất cả các bản trình diễn và thử nghiệm được chia sẻ trong blog này. Tuy nhiên, chúng tôi đang chờ bản sửa lỗi chính thức trước khi tích hợp sleep() hoàn toàn vào TRL ngược dòng.</li>
+</ul>
+<p>Những thách thức này không phải là những yếu tố cản trở, nhưng chúng đòi hỏi gỡ lỗi cẩn thận, kiểm soát phiên bản và hiểu sâu hơn về cách vLLM quản lý bộ nhớ và tính song song dưới vỏ bọc.</p>
+<h3 id="bài-học-kinh-nghiệm">Bài học kinh nghiệm</h3>
+<ul>
+<li>Suy luận đồng vị trí cải thiện đáng kể việc sử dụng GPU. Bằng cách cho phép huấn luyện và tạo chia sẻ cùng một GPU, chúng ta loại bỏ thời gian nhàn rỗi và giảm yêu cầu về phần cứng — đạt được thông lượng cao hơn ngay cả với ít GPU hơn.</li>
+<li>Tính năng sleep() của vLLM rất cần thiết cho đồng vị trí quy mô lớn. Nó cho phép kiểm soát chi tiết việc sử dụng bộ nhớ, cho phép huấn luyện hoàn toàn thu hồi bộ nhớ GPU giữa các bước tạo — một yếu tố quan trọng cho các mô hình như Qwen2.5-72B.</li>
+<li>DeepSpeed ZeRO Stage 3 rất cần thiết cho việc huấn luyện các mô hình lớn. Nó cho phép các mạng cực kỳ lớn phù hợp với bộ nhớ bằng cách phân phối trọng số mô hình, độ dốc và trạng thái trình tối ưu hóa trên nhiều GPU. Theo kinh nghiệm của chúng tôi, việc kích hoạt contiguous_gradients đã giúp giảm phân mảnh bộ nhớ, trong khi việc dỡ trình tối ưu hóa sang CPU đã giải phóng bộ nhớ GPU quan trọng — cả hai đều đặc biệt hữu ích trong thiết lập đồng vị trí.</li>
+<li>Đồng vị trí rất mạnh mẽ nhưng đi kèm với sự đánh đổi. Nó hoạt động tốt nhất khi bộ nhớ GPU được quản lý cẩn thận, thường yêu cầu điều chỉnh thủ công các tham số sử dụng bộ nhớ như vllm_gpu_memory_utilization. Mặc dù nó mang lại lợi ích thông lượng rõ ràng và giảm thời gian GPU nhàn rỗi, đồng vị trí có thể không lý tưởng cho các mô hình có ngân sách bộ nhớ eo hẹp hoặc khi phân mảnh bộ nhớ không được kiểm soát tốt. Tuy nhiên, khi được thực hiện đúng cách, nó sẽ mở ra những lợi ích hiệu quả đáng kể.</li>
+<li>Khả năng tương thích TP/DP, Accelerate và hỗ trợ torchrun giúp triển khai liền mạch. Mặc dù kiến trúc cơ bản phức tạp, toàn bộ hệ thống có thể được khởi chạy và mở rộng quy mô với các công cụ phân tán tiêu chuẩn.</li>
+<li>Huấn luyện đồng vị trí duy trì chất lượng mô hình. Trên nhiều điểm chuẩn (Math500, AIME24), thiết lập đồng vị trí và thông thường đã tạo ra kết quả so sánh được, xác nhận rằng hiệu suất không bị hy sinh cho hiệu quả.</li>
+</ul>
+<h2 id="-kết-luận">✅ Kết luận</h2>
+<p>Bài đăng trên blog này đã khám phá cách đồng vị trí vLLM với huấn luyện GRPO mở ra những lợi ích hiệu quả đáng kể khi huấn luyện các mô hình ngôn ngữ lớn — bao gồm cả các mô hình lớn như Qwen2.5-72B.</p>
+<p>Theo truyền thống, TRL chỉ hỗ trợ vLLM ở chế độ máy chủ, yêu cầu các quy trình và GPU riêng biệt cho suy luận, dẫn đến lãng phí tính toán và thời gian nhàn rỗi. Với việc giới thiệu trình khởi chạy bên ngoài của vLLM và PR đồng vị trí trong TRL <!-- raw HTML omitted -->PR #3394<!-- raw HTML omitted -->, giờ đây chúng ta có thể chạy huấn luyện và suy luận trong cùng một nhóm quy trình phân tán, trên cùng một GPU, với hỗ trợ đầy đủ cho TP, DP và Accelerate.</p>
+<p>Mặc dù vẫn còn những thách thức — chẳng hạn như lỗi vLLM dành riêng cho phiên bản và các trường hợp cạnh như với sleep() — kết quả tổng thể cho thấy rằng GRPO đồng vị trí là một giải pháp thiết thực, có thể mở rộng để huấn luyện hiệu quả các mô hình lớn. Chúng tôi rất vui được tiếp tục tinh chỉnh thiết lập này, tích hợp các tính năng như FSDP và thúc đẩy giới hạn của quá trình huấn luyện mô hình lớn — làm cho nó nhanh hơn, rẻ hơn và dễ tiếp cận hơn cho mọi người xây dựng thế hệ LLM tiếp theo.</p>
+<h2 id="-hãy-dùng-thử">✅ Hãy dùng thử!</h2>
+<p>Dưới đây là một ví dụ để thử huấn luyện GRPO với vLLM đồng vị trí.</p>
+<h3 id="-train_grpo_colocatepy">📄 <code>train_grpo_colocate.py</code></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> trl <span style="color:#f92672">import</span> GRPOConfig, GRPOTrainer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Load dataset</span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;trl-lib/tldr&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define the reward function</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">reward_len</span>(completions, <span style="color:#f92672">**</span>kwargs):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [<span style="color:#f92672">-</span>abs(<span style="color:#ae81ff">20</span> <span style="color:#f92672">-</span> len(completion)) <span style="color:#66d9ef">for</span> completion <span style="color:#f92672">in</span> completions]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define training arguments</span>
+</span></span><span style="display:flex;"><span>training_args <span style="color:#f92672">=</span> GRPOConfig(
+</span></span><span style="display:flex;"><span>    output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Qwen2-0.5B-GRPO&#34;</span>,
+</span></span><span style="display:flex;"><span>    logging_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    use_vllm<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    vllm_mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;colocate&#34;</span>,
+</span></span><span style="display:flex;"><span>    vllm_tensor_parallel_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    vllm_gpu_memory_utilization<span style="color:#f92672">=</span><span style="color:#ae81ff">0.3</span>,
+</span></span><span style="display:flex;"><span>    max_prompt_length<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span>,
+</span></span><span style="display:flex;"><span>    max_completion_length<span style="color:#f92672">=</span><span style="color:#ae81ff">1024</span>,
+</span></span><span style="display:flex;"><span>    max_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    num_generations<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>    num_train_epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    per_device_train_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>    push_to_hub<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    report_to<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create and run the trainer</span>
+</span></span><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> GRPOTrainer(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Qwen/Qwen2-0.5B-Instruct&#34;</span>,
+</span></span><span style="display:flex;"><span>    reward_funcs<span style="color:#f92672">=</span>reward_len,
+</span></span><span style="display:flex;"><span>    args<span style="color:#f92672">=</span>training_args,
+</span></span><span style="display:flex;"><span>    train_dataset<span style="color:#f92672">=</span>dataset,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>trainer<span style="color:#f92672">.</span>train()
+</span></span></code></pre></div><h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/vllm-colocate">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/june-3-2025/">June 3, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-03/37fcd4/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smolvla/SmolVLA_thumbnail.png" alt="SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-03T00:00:00&#43;00:00">Jun 03, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-28/c5139e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/liger-grpo/thumbnail.png" alt="Liger GRPO gặp TRL" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-28T00:00:00&#43;00:00">May 28, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Liger GRPO gặp TRL</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết của khách</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-03/10871a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/aethir.jpg?w=700&amp;h=350&amp;crop=1" alt="Aethir cho phép thu hút người dùng tốt hơn thông qua phát trực tuyến Instant Play cho Doctor Who- Worlds Apart" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Aethir cho phép thu hút người dùng tốt hơn thông qua phát trực tuyến Instant Play cho Doctor Who- Worlds Apart</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-03/5ee38c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/vllm-colocate/thumbnail.png" alt="Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Không để GPU nào bị bỏ lại phía sau- Mở khóa hiệu quả với vLLM đồng vị trí trong TRL</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-03/37fcd4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smolvla/SmolVLA_thumbnail.png" alt="SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SmolVLA- Mô hình Vision-Language-Action hiệu quả được đào tạo trên Dữ liệu Cộng đồng Lerobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-02/bb350b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/ChatGPT-Image-Jun-1-2025-12_34_25-AM.png?w=700&amp;h=350&amp;crop=1" alt="Khi LLM của bạn gọi cảnh sát- Tiếng còi cảnh báo của Claude 4 và ngăn xếp rủi ro AI đại lý mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Khi LLM của bạn gọi cảnh sát- Tiếng còi cảnh báo của Claude 4 và ngăn xếp rủi ro AI đại lý mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-28/c5139e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/liger-grpo/thumbnail.png" alt="Liger GRPO gặp TRL" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Liger GRPO gặp TRL</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
