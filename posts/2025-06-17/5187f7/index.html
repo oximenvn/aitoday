@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động | AI Today - SkyAI</title>
+
+<meta name="description" content="Đánh giá các tác nhân GUI của bạn một cách dễ dàng!">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Đánh giá các tác nhân GUI của bạn một cách dễ dàng! </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-06-17T00:00:00&#43;00:00">June 17, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/structured-codeagent/thumbnail-codeagent.png" alt="CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động">
+        <figcaption class="text-center italic text-xs">Đánh giá các tác nhân GUI của bạn một cách dễ dàng!</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="codeagents--structure-một-cách-tốt-hơn-để-thực-hiện-các-hành-động">CodeAgents + Structure: Một cách tốt hơn để thực hiện các hành động</h1>
+<p>Hôm nay chúng tôi chia sẻ nghiên cứu kết nối hai mô hình mạnh mẽ trong thiết kế tác nhân AI: tính biểu đạt của các hành động dựa trên mã và độ tin cậy của thế hệ có cấu trúc. Phát hiện của chúng tôi cho thấy rằng việc buộc <strong>CodeAgents</strong> tạo cả suy nghĩ và mã ở định dạng JSON có cấu trúc có thể vượt trội hơn đáng kể so với các phương pháp truyền thống trên nhiều tiêu chuẩn.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/structured-codeagent/accuracy.png" alt="accuracy.png">
+Hình 1: So sánh độ chính xác của ba phương pháp: Structured CodeAgent (màu xanh lam), CodeAgent (màu cam) và ToolCallingAgent (màu xám) trên <a href="https://huggingface.co/datasets/akseljoonas/smolbench">SmolBench (GAIA, MATH, SimpleQA và Frames)</a>. Các thanh lỗi biểu thị Khoảng tin cậy 95%.</p>
+<h2 id="-sự-phát-triển-của-các-hành-động-của-tác-nhân">🤔 Sự phát triển của các hành động của tác nhân</h2>
+<p>Các tác nhân AI cần thực hiện các hành động trên thế giới - cho dù đó là gọi API, xử lý dữ liệu hay suy luận các vấn đề phức tạp. Cách các tác nhân thể hiện các hành động này đã phát triển thông qua một số mô hình:</p>
+<p><strong>Tác nhân JSON truyền thống</strong>: Các tác nhân tạo JSON có cấu trúc để gọi các công cụ.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;tool&#34;</span>: <span style="color:#e6db74">&#34;get_weather&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;arguments&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;city&#34;</span>: <span style="color:#e6db74">&#34;Paris&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Các tác nhân này hoạt động bằng cách chọn từ một danh sách các công cụ được xác định trước và tạo các lệnh gọi có định dạng JSON. Phương pháp gọi công cụ này đã được phổ biến bởi <a href="https://openai.com/index/function-calling-and-other-api-updates/">API gọi hàm</a> của OpenAI và kể từ đó đã trở thành phương pháp gọi công cụ được sử dụng rộng rãi nhất.</p>
+<p>Nó đáng tin cậy, nhưng bị giới hạn bởi:</p>
+<ul>
+<li><strong>Một tập hợp các hành động hạn chế</strong>: Các hành động mà tác nhân có thể thực hiện chỉ được thể hiện thông qua các công cụ được xác định trước, điều này hạn chế chức năng của nó.</li>
+<li><strong>Thiếu khả năng kết hợp</strong>: Nếu tác vụ yêu cầu kết hợp thông tin từ nhiều nguồn, thì các tác nhân JSON gặp khó khăn vì chúng thiếu hỗ trợ để duy trì trạng thái trung gian trên các lệnh gọi công cụ. Mặc dù một số mô hình hỗ trợ các lệnh gọi công cụ song song, nhưng chúng không thể dễ dàng xử lý các tình huống trong đó đầu ra của một công cụ xác định hành động tiếp theo hoặc nơi cần so sánh và xử lý kết quả cùng nhau.</li>
+<li><strong>Cấu trúc cứng nhắc</strong>: Rất hạn chế trong việc xử lý các trường hợp mà các công cụ không khớp chính xác với những gì cần phải làm.</li>
+</ul>
+<p><strong>Code Agents</strong>: Các tác nhân sử dụng khả năng viết mã vốn có của họ và viết trực tiếp mã Python có thể thực thi.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># We can get the average temperature in 3 cities in 1 model call.</span>
+</span></span><span style="display:flex;"><span>temperature_sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> city <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#34;Paris&#34;</span>, <span style="color:#e6db74">&#34;Tokyo&#34;</span>, <span style="color:#e6db74">&#34;New York&#34;</span>]:
+</span></span><span style="display:flex;"><span>    temp <span style="color:#f92672">=</span> get_weather(city)
+</span></span><span style="display:flex;"><span>    temperature_sum <span style="color:#f92672">+=</span> temp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Average temperature: </span><span style="color:#e6db74">{</span>temperature_sum <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span><span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">°C&#34;</span>)
+</span></span></code></pre></div><p>Sự thay đổi này, lần đầu tiên được trình bày dưới dạng CodeAct trong bài báo “<a href="https://arxiv.org/abs/2402.01030">Hành động mã có thể thực thi khơi gợi các tác nhân LLM tốt hơn</a>”, đã mang lại cho các tác nhân AI sự linh hoạt để viết mã Python có thể thực thi tùy ý ngoài việc gọi công cụ.</p>
+<p>Điểm mấu chốt ở đây là <strong>các công cụ được gọi trực tiếp từ bên trong mã</strong>, giúp cho việc quản lý biến và trạng thái đáng tin cậy hơn nhiều. Các tác nhân có thể gọi các công cụ trong các vòng lặp, hàm và câu lệnh điều kiện - về cơ bản tạo ra một biểu đồ động về việc thực thi công cụ trong mỗi hành động!</p>
+<p>Ưu điểm của việc sử dụng <a href="https://github.com/huggingface/smolagents/blob/6a12ebdf210207eec22d5940157f522463fc1c59/src/smolagents/agents.py#L1344">CodeAgent</a>:</p>
+<ul>
+<li><strong>Sử dụng công cụ thông minh</strong>: Các tác nhân quyết định sử dụng công cụ nào dựa trên những gì đang xảy ra vào thời điểm đó.</li>
+<li><strong>Tính linh hoạt không giới hạn</strong>: Có thể sử dụng bất kỳ chức năng Python nào để đạt được mục tiêu.</li>
+<li><strong>Khả năng kiểm tra suy nghĩ</strong>: Các tác nhân có thể đưa ra giả thuyết và kiểm tra, dẫn đến sự linh hoạt hơn trong hành động của họ</li>
+</ul>
+<p>Tuy nhiên, việc phân tích cú pháp mã từ markdown có thể dễ xảy ra lỗi, điều này dẫn chúng ta đến một đề xuất: tại sao không sử dụng thế hệ có cấu trúc để tạo ra các hành động mã?</p>
+<h3 id="-thêm-đầu-ra-có-cấu-trúc-vào-code-agent">➡️ Thêm đầu ra có cấu trúc vào Code Agent</h3>
+<p>Với đầu ra có cấu trúc, bạn có thể buộc LLM tạo ra các suy nghĩ và mã rõ ràng dưới dạng một blob JSON:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#75715e">// The &#34;code&#34; block gets parsed into executable Python
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;thoughts&#34;</span>: <span style="color:#e6db74">&#34;I want to find the average temperature across 3 cities.&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;code&#34;</span>: <span style="color:#e6db74">&#34;temperature_sum = 0\nfor city in [\&#34;Paris\&#34;, \&#34;Tokyo\&#34;, \&#34;New York\&#34;]:\n    temp = get_weather(city)\n    temperature_sum += temp\n\nprint(f\&#34;Average temperature: {temperature_sum / 3:.1f}°C\&#34;)&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Sự khác biệt chính là thế hệ được thực thi: về cơ bản, bây giờ thay vì chỉ được nhắc đưa ra suy nghĩ, sau đó là mã, việc sử dụng <a href="https://huggingface.co/docs/text-generation-inference/en/conceptual/guidance">đầu ra có cấu trúc</a> buộc nó phải tôn trọng cấu trúc.</p>
+<p>Phương pháp này thêm độ tin cậy của thế hệ có cấu trúc vào tính linh hoạt của việc thực thi mã, do đó có được những điều tốt nhất của cả hai thế giới.</p>
+<ul>
+<li><strong>Lý luận rõ ràng</strong>: Trường <code>thoughts</code> buộc tác nhân phải lý luận ngay trước khi thực hiện hành động.</li>
+<li><strong>Phân tích cú pháp đáng tin cậy</strong>: Cấu trúc JSON loại bỏ các lỗi phân tích cú pháp markdown</li>
+<li><strong>Tính biểu đạt đầy đủ của mã</strong>: Trường <code>code</code> duy trì tất cả tính linh hoạt của các tác nhân mã</li>
+<li><strong>Phân tách tốt hơn</strong>: Phân tách rõ ràng giữa lập kế hoạch và thực thi</li>
+</ul>
+<h2 id="-kết-quả-điểm-chuẩn">🧪 Kết quả điểm chuẩn</h2>
+<p>Chúng tôi đã so sánh ba mô hình này trên nhiều tiêu chuẩn bao gồm GAIA, MATH, SimpleQA và Frames. Kết quả cho thấy một mô hình rõ ràng: <strong>Các hành động mã + thế hệ có cấu trúc liên tục cải thiện hiệu suất cho các mô hình có khả năng</strong>.</p>
+<p>Trên hầu hết các mô hình có khả năng, phương pháp có cấu trúc liên tục vượt trội hơn phương pháp CodeAgent thông thường trung bình từ 2-7 điểm phần trăm.</p>
+<ul>
+<li><strong>Mô hình OpenAI</strong>: Cho thấy những cải tiến lớn nhất với cấu trúc, đặc biệt là trên các tác vụ nặng về lý luận</li>
+<li><strong>Mô hình Claude</strong>: Hưởng lợi từ cấu trúc, với Claude 3.7 Sonnet cho thấy kết quả đặc biệt mạnh mẽ</li>
+<li><strong>Mô hình Qwen</strong>: Nhìn chung được cải thiện với cấu trúc, mặc dù &ldquo;thuế cấu trúc&rdquo; (xem trong phần tiếp theo) lẻn vào cho các mô hình nhỏ hơn.</li>
+</ul>
+<h2 id="-tại-sao-cấu-trúc-nói-chung-giúp">💡 Tại sao cấu trúc (nói chung) giúp</h2>
+<h3 id="vấn-đề-phân-tích-cú-pháp-là-có-thật">Vấn đề phân tích cú pháp là có thật</h3>
+<p><a href="https://github.com/huggingface/smolagents/blob/6a12ebdf210207eec22d5940157f522463fc1c59/src/smolagents/agents.py#L1344">Việc triển khai CodeAgent của chúng tôi trong smolagents</a> trích xuất mã Python từ đầu ra LLM, điều này có thể thất bại khi:</p>
+<ul>
+<li>Việc xây dựng khối mã trong markdown không đầy đủ hoặc được định dạng không chính xác</li>
+<li>Nhiều khối mã xuất hiện trong một phản hồi duy nhất</li>
+</ul>
+<p>Thế hệ có cấu trúc loại bỏ những vấn đề này với việc phân tích cú pháp JSON đáng tin cậy.</p>
+<p>Để hiểu tại sao thế hệ có cấu trúc lại quan trọng, chúng tôi đã phân tích 15.724 dấu vết tác nhân trên các tiêu chuẩn của chúng tôi. Kết quả rất nổi bật:</p>
+<ul>
+<li><strong>2,4%</strong> dấu vết có lỗi phân tích cú pháp trong lần gọi đầu tiên của chúng</li>
+<li>Dấu vết <strong>có</strong> lỗi phân tích cú pháp lần gọi đầu tiên: Tỷ lệ thành công <strong>42,3%</strong></li>
+<li>Dấu vết <strong>không có</strong> lỗi phân tích cú pháp lần gọi đầu tiên: Tỷ lệ thành công <strong>51,3%</strong></li>
+</ul>
+<p><strong>Dấu vết tác nhân không có lỗi phân tích cú pháp thành công thường xuyên hơn 21,3% so với những dấu vết có lỗi phân tích cú pháp.</strong></p>
+<p>Đây không chỉ là về sự tiện lợi - các lỗi phân tích cú pháp tạo ra một loạt các thất bại ảnh hưởng đáng kể đến hiệu suất tổng thể của tác nhân. Khi một tác nhân không thể thực hiện hành động đầu tiên của mình do mã bị lỗi, nó thường gặp khó khăn trong việc phục hồi, dẫn đến các đường dẫn giải quyết vấn đề không tối ưu.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/structured-codeagent/parsing_error.png" alt="parsing error.png">
+Hình 2: Các lỗi phân tích cú pháp trong bước đầu tiên làm giảm tỷ lệ thành công của tác nhân xuống 21,3% và tăng số bước trung bình thực hiện từ 3,18 lên 4,63.</p>
+<p><strong>Ngoài ra: Quá trình suy luận được thực thi</strong></p>
+<p>Việc sử dụng thế hệ có cấu trúc và <code>thoughts</code> rõ ràng không chỉ nhắc nhở mà còn buộc các tác nhân phải diễn đạt lý luận của chúng trước khi hành động. Điều này dẫn đến:</p>
+<ul>
+<li><strong>Lập kế hoạch tốt hơn</strong>: Các tác nhân suy nghĩ về các vấn đề một cách có hệ thống hơn</li>
+<li><strong>Độ tin cậy nâng cao</strong>: Lý luận rõ ràng bắt được các lỗi logic sớm</li>
+</ul>
+<h3 id="thuế-cấu-trúc">Thuế cấu trúc</h3>
+<p>Kết quả của chúng tôi cũng tiết lộ một ngưỡng khả năng rõ ràng: các mô hình cần có đủ khả năng tuân theo hướng dẫn và phạm vi bảo hiểm JSON trong dữ liệu tiền huấn luyện của chúng để hưởng lợi từ thế hệ có cấu trúc. Điều này cho thấy rằng các phương pháp có cấu trúc hoạt động tốt nhất với:</p>
+<ul>
+<li>Các mô hình lớn, được đào tạo tốt</li>
+<li>Các mô hình có khả năng tuân theo hướng dẫn mạnh mẽ</li>
+<li>Các mô hình được tinh chỉnh trên thế hệ có cấu trúc.</li>
+</ul>
+<h4 id="khi-cấu-trúc-bị-phá-vỡ-một-ví-dụ-thực-tế">Khi cấu trúc bị phá vỡ: Một ví dụ thực tế</h4>
+<p>Đây là những gì xảy ra khi một mô hình nhỏ hơn (ví dụ: <code>mistralai/Mistral-7B-Instruct-v0.3</code>) cố gắng tạo ra mã có cấu trúc - tải nhận thức trở nên quá lớn:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;thought&#34;</span>: <span style="color:#e6db74">&#34;I need to find the height...&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;code&#34;</span>: <span style="color:#e6db74">&#34;web_search(query=\&#34;Eiffel Tower height\&#34;)\&#34;, \&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Mô hình tạo ra mã Python bị hỏng cú pháp: <code>web_search(query=&quot;Eiffel Tower height&quot;)&quot;,</code> - hãy chú ý đến chuỗi bị lỗi với một dấu ngoặc kép và dấu phẩy thừa. Điều này dẫn đến một SyntaxError và lỗi thực thi ngay lập tức.</p>
+<p>Điều này minh họa cho &ldquo;thuế cấu trúc&rdquo;: các mô hình nhỏ hơn phải vật lộn để đồng thời xử lý định dạng JSON, cú pháp Python và logic giải quyết vấn đề thực tế. Gánh nặng nhận thức của thế hệ có cấu trúc có thể áp đảo các mô hình mà nếu không sẽ hoạt động khá tốt với thế hệ mã dựa trên markdown đơn giản hơn.</p>
+<h2 id="-khi-nào-nên-sử-dụng-codeagents-có-cấu-trúc">🚀 Khi nào nên sử dụng CodeAgents có cấu trúc</h2>
+<p><strong>✅ Sử dụng CodeAgents có cấu trúc khi:</strong></p>
+<ul>
+<li>Làm việc với các mô hình có khả năng (tham số 32B+ hoặc các mô hình tiên phong)</li>
+<li>Các nhiệm vụ yêu cầu lý luận và thực thi mã phức tạp</li>
+<li>Bạn cần phân tích cú pháp đầu ra của tác nhân đáng tin cậy</li>
+</ul>
+<p><strong>⚠️ Cân nhắc các lựa chọn thay thế khi:</strong></p>
+<ul>
+<li>Làm việc với các mô hình nhỏ hơn phải vật lộn với thế hệ có cấu trúc</li>
+<li>Quy trình làm việc đơn giản, được xác định trước là đủ</li>
+</ul>
+<h3 id="cách-sử-dụng-với-smolagents">Cách sử dụng với smolagents:</h3>
+<p>Nó siêu đơn giản! Chỉ cần bật nó với <code>use_structured_outputs_internally:</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> smolagents <span style="color:#f92672">import</span> CodeAgent, InferenceClientModel, GoogleSearchTool
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Configure agent for structured generation</span>
+</span></span><span style="display:flex;"><span>agent <span style="color:#f92672">=</span> CodeAgent(
+</span></span><span style="display:flex;"><span>    tools<span style="color:#f92672">=</span>[GoogleSearchTool(provider<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;serper&#34;</span>)],
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>InferenceClientModel(<span style="color:#e6db74">&#34;Qwen/Qwen3-235B-A22B&#34;</span>, provider<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;nebius&#39;</span>),
+</span></span><span style="display:flex;"><span>    use_structured_outputs_internally<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>  <span style="color:#75715e"># Enable structured output</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> agent<span style="color:#f92672">.</span>run(<span style="color:#e6db74">&#34;Calculate the time for a cheetah to run across the Golden Gate Bridge&#34;</span>)
+</span></span></code></pre></div><p>LLM sẽ tạo ra một cái gì đó như thế này:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;thoughts&#34;</span>: <span style="color:#e6db74">&#34;I need to find the length of the Golden Gate Bridge and the top speed of a cheetah, then calculate the time.&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;code&#34;</span>: <span style="color:#e6db74">&#34;bridge_info = web_search(&#39;Golden Gate Bridge length meters&#39;)\ncheetah_speed = web_search(&#39;Cheetah top speed&#39;) ...&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Sau đó, phần &ldquo;code&rdquo; được thực thi bởi tác nhân như bình thường: đây là CodeAgent tiêu chuẩn, nhưng bây giờ nó có độ tin cậy phân tích cú pháp 100%!</p>
+<h3 id="lời-khuyên-thực-hiện">Lời khuyên thực hiện</h3>
+<ol>
+<li><strong>Lời nhắc rõ ràng</strong>: Đảm bảo lời nhắc của bạn chỉ định rõ ràng cấu trúc JSON dự kiến</li>
+<li><strong>Lựa chọn mô hình</strong>: Chọn các mô hình có khả năng tạo cấu trúc mạnh mẽ</li>
+<li><strong>Chọn nhà cung cấp phù hợp:</strong> Một số nhà cung cấp API như OpenAI hoặc Anthropic hỗ trợ tạo cấu trúc ngay lập tức. Nếu bạn đang sử dụng các nhà cung cấp Inference thông qua Hugging Face, thì sự hỗ trợ của tạo cấu trúc khác nhau giữa các nhà cung cấp. Dưới đây là danh sách các nhà cung cấp hỗ trợ tạo cấu trúc: <a href="https://www.notion.so/Structured-generation-support-for-Models-in-smolagents-1f51384ebcac8074a051e6dd03d1fe1d?pvs=21">Hỗ trợ tạo cấu trúc cho Mô hình trong smolagents‣</a></li>
+</ol>
+<h2 id="bức-tranh-lớn-hơn---điều-gì-tiếp-theo">Bức tranh lớn hơn - Điều gì tiếp theo?</h2>
+<p>Nghiên cứu này cho thấy chúng ta đang tiến tới một sự hiểu biết sắc thái hơn về kiến trúc tác nhân. Nó không chỉ là &ldquo;tác nhân có thể làm gì?&rdquo; mà là &ldquo;tác nhân nên suy nghĩ như thế nào về những gì nó đang làm?&rdquo;</p>
+<p>Có lẽ làm cho quá trình lý luận rõ ràng hơn sẽ giúp mô hình đi đúng hướng. Hoặc có lẽ chỉ là dễ phân tích cú pháp hơn. Dù bằng cách nào, đó là một chiến thắng.</p>
+<p>Nhưng đây chỉ là sự khởi đầu. Có rất nhiều câu hỏi còn lại để khám phá:</p>
+<ul>
+<li>Những cải tiến cấu trúc nào khác có thể giúp ích?</li>
+<li>Làm thế nào chúng ta làm cho điều này hoạt động tốt hơn trên các kiến trúc mô hình khác nhau, đặc biệt là các mô hình smol?</li>
+<li>Điều này cho chúng ta biết gì về bản chất của lý luận AI?</li>
+</ul>
+<p>Hiện tại, nếu bạn đang sử dụng smolagents (hoặc xây dựng hệ thống CodeAgent của riêng bạn), hãy cân nhắc dùng thử đầu ra có cấu trúc. Các lỗi phân tích cú pháp của bạn sẽ cảm ơn bạn và bạn có thể chỉ thấy một sự gia tăng hiệu suất tốt!</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/structured-codeagent">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/may-28-2025/">May 28, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/0d6ef5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/inference-providers/welcome-groq.jpg" alt="Groq trên các nhà cung cấp suy luận Hugging Face 🔥" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-17T00:00:00&#43;00:00">Jun 17, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Groq trên các nhà cung cấp suy luận Hugging Face 🔥</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu Groq trên Hugging Face Inference Providers</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-13/ace681/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/nvidia-training-cluster/nvidia-training-cluster-thumbnail-compressed.png" alt="Giới thiệu cụm đào tạo dưới dạng dịch vụ - một sự hợp tác mới với NVIDIA" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-13T00:00:00&#43;00:00">Jun 13, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu cụm đào tạo dưới dạng dịch vụ - một sự hợp tác mới với NVIDIA</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Cụm đào tạo giúp bạn dễ dàng hơn bao giờ hết để bắt đầu đào tạo mô hình AI.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/1a021a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/W9PL-AhEIkMIIOofH5enUao22iPF2hTcpQb8RzhB-ICENAH1H157Ano1Sct-aTwBLENLzy_To594B_Nr4AuE4cXLqUlGUE7dC6F6iJ4oxWWXU9vO=s0" alt="Chúng tôi đang mở rộng dòng sản phẩm mô hình Gemini 2.5" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chúng tôi đang mở rộng dòng sản phẩm mô hình Gemini 2.5</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/5187f7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/structured-codeagent/thumbnail-codeagent.png" alt="CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/5b69b9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/RDxs5FJG0yDcAAZeqcAPpvMNJMUt1H-teV0SlcnXQppIH-gYRKLsjSJttY5_JvHnta4jqyOsoDiQip92MtXN8S6z0oV2GIiINuzcYuhFuLNGD5-u2-A=w400-h225-n-nu" alt="Gemini 2.5- Cập nhật cho dòng mô hình tư duy của chúng tôi" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini 2.5- Cập nhật cho dòng mô hình tư duy của chúng tôi</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/0d6ef5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/inference-providers/welcome-groq.jpg" alt="Groq trên các nhà cung cấp suy luận Hugging Face 🔥" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Groq trên các nhà cung cấp suy luận Hugging Face 🔥</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/13d4bf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://scontent.fhan15-2.fna.fbcdn.net/v/t39.2365-6/507991940_2503258366721326_3148808797188197104_n.png?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=e280be&amp;_nc_ohc=jVW0Q2j4j0UQ7kNvwGzC0CV&amp;_nc_oc=Adk0nOPtDtmvR1hMSmcB9pKPhDczKEYLTldBvnEjgR9_JyKa1qlxh3A0U8OKhJDMxbdcPue93A-64AdyHZGzrMVq&amp;_nc_zt=14&amp;_nc_ht=scontent.fhan15-2.fna&amp;_nc_gid=3TXLAi_ZLZrHylmFJUY6Mg&amp;oh=00_AfMKlG5vO_CgEAgDpqe3-jA7PpgAOiknOkLI9t3K_aZcxQ&amp;oe=686BD283" alt="Thông báo nhóm khởi nghiệp Llama khai mạc" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo nhóm khởi nghiệp Llama khai mạc</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
