@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tinh chỉnh FLUX.1-dev (LoRA) trên phần cứng tiêu dùng | AI Today - SkyAI</title>
+
+<meta name="description" content="Tinh chỉnh FLUX.1-dev bằng LoRA trên phần cứng tiêu dùng.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Tinh chỉnh FLUX.1-dev (LoRA) trên phần cứng tiêu dùng</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Tinh chỉnh FLUX.1-dev bằng LoRA trên phần cứng tiêu dùng. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-06-21T00:00:00&#43;00:00">June 21, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/flux-qlora/thumbnail.png" alt="Tinh chỉnh FLUX.1-dev (LoRA) trên phần cứng tiêu dùng">
+        <figcaption class="text-center italic text-xs">Tinh chỉnh FLUX.1-dev bằng LoRA trên phần cứng tiêu dùng.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="lora-tinh-chỉnh-flux1-dev-trên-phần-cứng-tiêu-dùng">(LoRA) Tinh chỉnh FLUX.1-dev trên phần cứng tiêu dùng</h1>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Trong bài đăng trước của chúng tôi, <a href="https://huggingface.co/blog/diffusers-quantization">Khám phá phần phụ trợ lượng tử hóa trong Diffusers</a>, chúng tôi đã đi sâu vào cách các kỹ thuật lượng tử hóa khác nhau có thể thu nhỏ các mô hình khuếch tán như FLUX.1-dev, giúp chúng dễ tiếp cận hơn đáng kể để <em>suy luận</em> mà không ảnh hưởng đáng kể đến hiệu suất. Chúng ta đã thấy cách <code>bitsandbytes</code>, <code>torchao</code> và các công cụ khác làm giảm dấu chân bộ nhớ để tạo hình ảnh.</p>
+<p>Thực hiện suy luận là rất tuyệt, nhưng để làm cho các mô hình này thực sự là của riêng mình, chúng ta cũng cần có khả năng tinh chỉnh chúng. Do đó, trong bài đăng này, chúng tôi giải quyết vấn đề <em>tinh chỉnh</em> <em>hiệu quả</em> các mô hình này với mức sử dụng bộ nhớ đỉnh dưới ~10 GB VRAM trên một GPU duy nhất. Bài đăng này sẽ hướng dẫn bạn tinh chỉnh FLUX.1-dev bằng QLoRA với thư viện <code>diffusers</code>. Chúng tôi sẽ giới thiệu kết quả từ NVIDIA RTX 4090. Chúng tôi cũng sẽ nêu bật cách đào tạo FP8 với <code>torchao</code> có thể tối ưu hóa hơn nữa tốc độ trên phần cứng tương thích.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#dataset">Bộ dữ liệu</a></li>
+<li><a href="#flux-architecture">Kiến trúc FLUX</a></li>
+<li><a href="#qlora-fine-tuning-flux1-dev-with-diffusers">QLoRA Tinh chỉnh FLUX.1-dev với diffusers</a>
+<ul>
+<li><a href="#key-optimization-techniques">Các kỹ thuật tối ưu hóa chính</a></li>
+<li><a href="#setup--results">Thiết lập &amp; Kết quả</a></li>
+</ul>
+</li>
+<li><a href="#fp8-fine-tuning-with-torchao">FP8 Tinh chỉnh với <code>torchao</code></a></li>
+<li><a href="#inference-with-trained-lora-adapters">Suy luận với bộ điều hợp LoRA đã qua đào tạo</a>
+<ul>
+<li><a href="#option-1-loading-lora-adapters">Tùy chọn 1: Tải bộ điều hợp LoRA</a></li>
+<li><a href="#option-2-merging-lora-into-base-model">Tùy chọn 2: Hợp nhất LoRA vào mô hình cơ sở</a></li>
+</ul>
+</li>
+<li><a href="#running-on-google-colab">Chạy trên Google Colab</a></li>
+<li><a href="#conclusion">Kết luận</a></li>
+</ul>
+<h2 id="bộ-dữ-liệu">Bộ dữ liệu</h2>
+<p>Chúng tôi muốn tinh chỉnh <code>black-forest-labs/FLUX.1-dev</code> để áp dụng phong cách nghệ thuật của Alphonse Mucha, sử dụng một <a href="https://huggingface.co/datasets/derekl35/alphonse-mucha-style">bộ dữ liệu</a> nhỏ.</p>
+<h2 id="kiến-trúc-flux">Kiến trúc FLUX</h2>
+<p>Mô hình bao gồm ba thành phần chính:</p>
+<ul>
+<li>Bộ mã hóa văn bản (CLIP và T5)</li>
+<li>Transformer (Mô hình chính - Flux Transformer)</li>
+<li>Bộ mã hóa tự động biến thiên (VAE)</li>
+</ul>
+<p>Trong phương pháp QLoRA của chúng tôi, chúng tôi tập trung độc quyền vào việc tinh chỉnh <strong>thành phần transformer</strong>. Bộ mã hóa văn bản và VAE vẫn bị đóng băng trong suốt quá trình đào tạo.</p>
+<h2 id="qlora-tinh-chỉnh-flux1-dev-với-diffusers">QLoRA Tinh chỉnh FLUX.1-dev với <code>diffusers</code></h2>
+<p>Chúng tôi đã sử dụng tập lệnh đào tạo <code>diffusers</code> (được sửa đổi một chút từ <a href="https://github.com/huggingface/diffusers/blob/main/examples/research_projects/flux_lora_quantization/train_dreambooth_lora_flux_miniature.py">https://github.com/huggingface/diffusers/blob/main/examples/research_projects/flux_lora_quantization/train_dreambooth_lora_flux_miniature.py</a>) được thiết kế để tinh chỉnh LoRA theo phong cách DreamBooth của các mô hình FLUX. Ngoài ra, một phiên bản rút gọn để tái tạo kết quả trong bài đăng trên blog này (và được sử dụng trong <a href="https://colab.research.google.com/github/DerekLiu35/notebooks/blob/main/flux_lora_quant_blogpost.ipynb">Google Colab</a>) có sẵn <a href="https://github.com/huggingface/diffusers/blob/main/examples/research_projects/flux_lora_quantization/train_dreambooth_lora_flux_nano.py">tại đây</a>. Hãy cùng xem xét các phần quan trọng cho QLoRA và hiệu quả bộ nhớ:</p>
+<h3 id="các-kỹ-thuật-tối-ưu-hóa-chính">Các kỹ thuật tối ưu hóa chính</h3>
+<p><strong>LoRA (Điều chỉnh thứ hạng thấp) Deep Dive:</strong> <a href="https://huggingface.co/docs/peft/main/en/conceptual_guides/lora">LoRA</a> giúp việc đào tạo mô hình hiệu quả hơn bằng cách theo dõi các cập nhật trọng số với các ma trận thứ hạng thấp. Thay vì cập nhật ma trận trọng số đầy đủ <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> W <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->, LoRA tìm hiểu hai ma trận nhỏ hơn <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->A<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> A <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->A<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> và <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->B<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> B <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->B<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->. Bản cập nhật cho trọng số cho mô hình là <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Δ<!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->B<!-- raw HTML omitted --><!-- raw HTML omitted -->A<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> \Delta W = B A <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Δ<!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->B<!-- raw HTML omitted --><!-- raw HTML omitted -->A<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->, trong đó <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->A<!-- raw HTML omitted --><!-- raw HTML omitted -->∈<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->R<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted -->×<!-- raw HTML omitted --><!-- raw HTML omitted -->k<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> A \in \mathbb{R}^{r \times k} <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->A<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->∈<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->R<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted -->×<!-- raw HTML omitted --><!-- raw HTML omitted -->k<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> và <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->B<!-- raw HTML omitted --><!-- raw HTML omitted -->∈<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->R<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->d<!-- raw HTML omitted --><!-- raw HTML omitted -->×<!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> B \in \mathbb{R}^{d \times r} <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->B<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->∈<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->R<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->d<!-- raw HTML omitted --><!-- raw HTML omitted -->×<!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->. Số <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> r <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (gọi là <em>hạng</em>) nhỏ hơn nhiều so với các kích thước ban đầu, có nghĩa là ít tham số để cập nhật hơn. Cuối cùng, <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->α<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> \alpha <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->α<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> là một hệ số tỷ lệ cho các kích hoạt LoRA. Điều này ảnh hưởng đến mức độ ảnh hưởng của LoRA đến các bản cập nhật và thường được đặt thành cùng giá trị với <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> r <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> hoặc bội số của nó. Nó giúp cân bằng ảnh hưởng của mô hình được đào tạo trước và bộ điều hợp LoRA. Để biết giới thiệu chung về khái niệm này, hãy xem bài đăng trên blog trước của chúng tôi: <a href="https://huggingface.co/blog/lora">Sử dụng LoRA để tinh chỉnh Stable Diffusion hiệu quả</a>.</p>
+<!-- raw HTML omitted -->
+<p><strong>QLoRA: Nhà máy điện hiệu quả:</strong> <a href="https://huggingface.co/docs/peft/main/en/developer_guides/quantization">QLoRA</a> tăng cường LoRA bằng cách tải mô hình cơ sở được đào tạo trước ở định dạng lượng tử hóa trước (thường là 4-bit thông qua <code>bitsandbytes</code>), cắt giảm đáng kể dấu chân bộ nhớ của mô hình cơ sở. Sau đó, nó đào tạo bộ điều hợp LoRA (thường là ở FP16/BF16) trên đầu cơ sở lượng tử hóa này. Điều này làm giảm đáng kể VRAM cần thiết để giữ mô hình cơ sở.</p>
+<p>Ví dụ: trong <a href="https://github.com/huggingface/diffusers/blob/main/examples/dreambooth/README_hidream.md#using-quantization">tập lệnh đào tạo DreamBooth cho HiDream</a> lượng tử hóa 4-bit với bitsandbytes làm giảm mức sử dụng bộ nhớ đỉnh của tinh chỉnh LoRA từ ~60GB xuống ~37GB mà không làm giảm chất lượng. Nguyên tắc tương tự là những gì chúng ta áp dụng ở đây để tinh chỉnh FLUX.1 trên phần cứng cấp tiêu dùng.</p>
+<p><strong>Trình tối ưu hóa 8-bit (AdamW):</strong></p>
+<p>Trình tối ưu hóa AdamW tiêu chuẩn duy trì ước tính thời điểm đầu tiên và thứ hai cho mỗi tham số ở 32-bit (FP32), tiêu tốn rất nhiều bộ nhớ. AdamW 8-bit sử dụng lượng tử hóa theo khối để lưu trữ trạng thái trình tối ưu hóa với độ chính xác 8-bit, đồng thời duy trì tính ổn định của quá trình đào tạo. Kỹ thuật này có thể giảm mức sử dụng bộ nhớ trình tối ưu hóa ~75% so với FP32 AdamW tiêu chuẩn. Bật nó trong tập lệnh rất đơn giản:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Kiểm tra cờ --use_8bit_adam</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>use_8bit_adam:
+</span></span><span style="display:flex;"><span>    optimizer_class <span style="color:#f92672">=</span> bnb<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>AdamW8bit
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    optimizer_class <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>AdamW
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>optimizer <span style="color:#f92672">=</span> optimizer_class(
+</span></span><span style="display:flex;"><span>    params_to_optimize,
+</span></span><span style="display:flex;"><span>    betas<span style="color:#f92672">=</span>(args<span style="color:#f92672">.</span>adam_beta1, args<span style="color:#f92672">.</span>adam_beta2),
+</span></span><span style="display:flex;"><span>    weight_decay<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>adam_weight_decay,
+</span></span><span style="display:flex;"><span>    eps<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>adam_epsilon,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p><strong>Kiểm tra gradient:</strong></p>
+<p>Trong quá trình chuyển tiếp, các kích hoạt trung gian thường được lưu trữ để tính toán gradient chuyển ngược. Kiểm tra điểm gradient đánh đổi tính toán cho bộ nhớ bằng cách chỉ lưu trữ một số <em>kích hoạt điểm kiểm tra</em> nhất định và tính toán lại các kích hoạt khác trong quá trình lan truyền ngược.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>gradient_checkpointing:
+</span></span><span style="display:flex;"><span>    transformer<span style="color:#f92672">.</span>enable_gradient_checkpointing()
+</span></span></code></pre></div><p><strong>Bộ nhớ đệm tiềm ẩn:</strong></p>
+<p>Kỹ thuật tối ưu hóa này xử lý trước tất cả hình ảnh đào tạo thông qua bộ mã hóa VAE trước khi bắt đầu đào tạo. Nó lưu trữ các biểu diễn tiềm ẩn kết quả trong bộ nhớ. Trong quá trình đào tạo, thay vì mã hóa hình ảnh một cách nhanh chóng, các tiềm ẩn được lưu trong bộ nhớ đệm được sử dụng trực tiếp. Cách tiếp cận này mang lại hai lợi ích chính:</p>
+<ol>
+<li>loại bỏ các phép tính mã hóa VAE dư thừa trong quá trình đào tạo, tăng tốc mỗi bước đào tạo</li>
+<li>cho phép loại bỏ hoàn toàn VAE khỏi bộ nhớ GPU sau khi lưu vào bộ nhớ đệm. Sự đánh đổi là tăng mức sử dụng RAM để lưu trữ tất cả các tiềm ẩn được lưu trong bộ nhớ đệm, nhưng điều này thường có thể quản lý được đối với các bộ dữ liệu nhỏ.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Bộ nhớ đệm tiềm ẩn trước khi đào tạo nếu cờ được đặt</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>cache_latents:
+</span></span><span style="display:flex;"><span>        latents_cache <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> batch <span style="color:#f92672">in</span> tqdm(train_dataloader, desc<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Caching latents&#34;</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>                batch[<span style="color:#e6db74">&#34;pixel_values&#34;</span>] <span style="color:#f92672">=</span> batch[<span style="color:#e6db74">&#34;pixel_values&#34;</span>]<span style="color:#f92672">.</span>to(
+</span></span><span style="display:flex;"><span>                    accelerator<span style="color:#f92672">.</span>device, non_blocking<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, dtype<span style="color:#f92672">=</span>weight_dtype
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>                latents_cache<span style="color:#f92672">.</span>append(vae<span style="color:#f92672">.</span>encode(batch[<span style="color:#e6db74">&#34;pixel_values&#34;</span>])<span style="color:#f92672">.</span>latent_dist)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># VAE không còn cần thiết nữa, giải phóng bộ nhớ của nó</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">del</span> vae
+</span></span><span style="display:flex;"><span>        free_memory()
+</span></span></code></pre></div><p><strong>Thiết lập lượng tử hóa 4-bit (<code>BitsAndBytesConfig</code>):</strong></p>
+<p>Phần này trình bày cấu hình QLoRA cho mô hình cơ sở:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Xác định kiểu dữ liệu tính toán dựa trên độ chính xác hỗn hợp</span>
+</span></span><span style="display:flex;"><span>bnb_4bit_compute_dtype <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>float32
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>mixed_precision <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;fp16&#34;</span>:
+</span></span><span style="display:flex;"><span>    bnb_4bit_compute_dtype <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>float16
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">elif</span> args<span style="color:#f92672">.</span>mixed_precision <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;bf16&#34;</span>:
+</span></span><span style="display:flex;"><span>    bnb_4bit_compute_dtype <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>bfloat16
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>nf4_config <span style="color:#f92672">=</span> BitsAndBytesConfig(
+</span></span><span style="display:flex;"><span>    load_in_4bit<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    bnb_4bit_quant_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nf4&#34;</span>,
+</span></span><span style="display:flex;"><span>    bnb_4bit_compute_dtype<span style="color:#f92672">=</span>bnb_4bit_compute_dtype,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>transformer <span style="color:#f92672">=</span> FluxTransformer2DModel<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    args<span style="color:#f92672">.</span>pretrained_model_name_or_path,
+</span></span><span style="display:flex;"><span>    subfolder<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;transformer&#34;</span>,
+</span></span><span style="display:flex;"><span>    quantization_config<span style="color:#f92672">=</span>nf4_config,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>bnb_4bit_compute_dtype,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Chuẩn bị mô hình cho đào tạo k-bit</span>
+</span></span><span style="display:flex;"><span>transformer <span style="color:#f92672">=</span> prepare_model_for_kbit_training(transformer, use_gradient_checkpointing<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Kiểm tra gradient được bật sau đó thông qua transformer.enable_gradient_checkpointing() nếu arg được đặt</span>
+</span></span></code></pre></div><p><strong>Xác định cấu hình LoRA (<code>LoraConfig</code>):</strong>
+Bộ điều hợp được thêm vào transformer lượng tử hóa:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>transformer_lora_config <span style="color:#f92672">=</span> LoraConfig(
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>rank,
+</span></span><span style="display:flex;"><span>    lora_alpha<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>rank, 
+</span></span><span style="display:flex;"><span>    init_lora_weights<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gaussian&#34;</span>,
+</span></span><span style="display:flex;"><span>    target_modules<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;to_k&#34;</span>, <span style="color:#e6db74">&#34;to_q&#34;</span>, <span style="color:#e6db74">&#34;to_v&#34;</span>, <span style="color:#e6db74">&#34;to_out.0&#34;</span>], <span style="color:#75715e"># Các khối chú ý FLUX</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>transformer<span style="color:#f92672">.</span>add_adapter(transformer_lora_config)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;tham số có thể đào tạo: </span><span style="color:#e6db74">{</span>transformer<span style="color:#f92672">.</span>num_parameters(only_trainable<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74"> || tất cả tham số: </span><span style="color:#e6db74">{</span>transformer<span style="color:#f92672">.</span>num_parameters()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># các tham số có thể đào tạo: 4.669.440 || tất cả các tham số: 11.906.077.760</span>
+</span></span></code></pre></div><p>Chỉ những tham số LoRA này mới có thể đào tạo được.</p>
+<h3 id="tính-toán-trước-các-nhúng-văn-bản-clipt5">Tính toán trước các nhúng văn bản (CLIP/T5)</h3>
+<p>Trước khi khởi chạy tinh chỉnh QLoRA, chúng ta có thể tiết kiệm một lượng lớn VRAM và thời gian thực bằng cách lưu vào bộ nhớ đệm các đầu ra của bộ mã hóa văn bản một lần.</p>
+<p>Tại thời điểm đào tạo, trình tải dữ liệu chỉ cần đọc các nhúng được lưu trong bộ nhớ đệm thay vì mã hóa lại chú thích, vì vậy bộ mã hóa CLIP/T5 không bao giờ phải nằm trong bộ nhớ GPU.</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># https://github.com/huggingface/diffusers/blob/main/examples/research_projects/flux_lora_quantization/compute_embeddings.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> argparse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> huggingface_hub.utils <span style="color:#f92672">import</span> insecure_hashlib
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> tqdm.auto <span style="color:#f92672">import</span> tqdm
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> T5EncoderModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers <span style="color:#f92672">import</span> FluxPipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MAX_SEQ_LENGTH <span style="color:#f92672">=</span> <span style="color:#ae81ff">77</span>
+</span></span><span style="display:flex;"><span>OUTPUT_PATH <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;embeddings.parquet&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_image_hash</span>(image):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> insecure_hashlib<span style="color:#f92672">.</span>sha256(image<span style="color:#f92672">.</span>tobytes())<span style="color:#f92672">.</span>hexdigest()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_flux_dev_pipeline</span>():
+</span></span><span style="display:flex;"><span>    id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;black-forest-labs/FLUX.1-dev&#34;</span>
+</span></span><span style="display:flex;"><span>    text_encoder <span style="color:#f92672">=</span> T5EncoderModel<span style="color:#f92672">.</span>from_pretrained(id, subfolder<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text_encoder_2&#34;</span>, load_in_8bit<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>)
+</span></span><span style="display:flex;"><span>    pipeline <span style="color:#f92672">=</span> FluxPipeline<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>        id, text_encoder_2<span style="color:#f92672">=</span>text_encoder, transformer<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, vae<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;balanced&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> pipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@torch.no_grad</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">compute_embeddings</span>(pipeline, prompts, max_sequence_length):
+</span></span><span style="display:flex;"><span>    all_prompt_embeds <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    all_pooled_prompt_embeds <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    all_text_ids <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> prompt <span style="color:#f92672">in</span> tqdm(prompts, desc<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Encoding prompts.&#34;</span>):
+</span></span><span style="display:flex;"><span>        (
+</span></span><span style="display:flex;"><span>            prompt_embeds,
+</span></span><span style="display:flex;"><span>            pooled_prompt_embeds,
+</span></span><span style="display:flex;"><span>            text_ids,
+</span></span><span style="display:flex;"><span>        ) <span style="color:#f92672">=</span> pipeline<span style="color:#f92672">.</span>encode_prompt(prompt<span style="color:#f92672">=</span>prompt, prompt_2<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, max_sequence_length<span style="color:#f92672">=</span>max_sequence_length)
+</span></span><span style="display:flex;"><span>        all_prompt_embeds<span style="color:#f92672">.</span>append(prompt_embeds)
+</span></span><span style="display:flex;"><span>        all_pooled_prompt_embeds<span style="color:#f92672">.</span>append(pooled_prompt_embeds)
+</span></span><span style="display:flex;"><span>        all_text_ids<span style="color:#f92672">.</span>append(text_ids)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    max_memory <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>cuda<span style="color:#f92672">.</span>max_memory_allocated() <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Bộ nhớ tối đa được phân bổ: </span><span style="color:#e6db74">{</span>max_memory<span style="color:#e6db74">:</span><span style="color:#e6db74">.3f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> GB&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> all_prompt_embeds, all_pooled_prompt_embeds, all_text_ids
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run</span>(args):
+</span></span><span style="display:flex;"><span>    dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;Norod78/Yarn-art-style&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span><span style="display:flex;"><span>    image_prompts <span style="color:#f92672">=</span> {generate_image_hash(sample[<span style="color:#e6db74">&#34;image&#34;</span>]): sample[<span style="color:#e6db74">&#34;text&#34;</span>] <span style="color:#66d9ef">for</span> sample <span style="color:#f92672">in</span> dataset}
+</span></span><span style="display:flex;"><span>    all_prompts <span style="color:#f92672">=</span> list(image_prompts<span style="color:#f92672">.</span>values())
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>len(all_prompts)<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    pipeline <span style="color:#f92672">=</span> load_flux_dev_pipeline()
+</span></span><span style="display:flex;"><span>    all_prompt_embeds, all_pooled_prompt_embeds, all_text_ids <span style="color:#f92672">=</span> compute_embeddings(
+</span></span><span style="display:flex;"><span>        pipeline, all_prompts, args<span style="color:#f92672">.</span>max_sequence_length
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, (image_hash, _) <span style="color:#f92672">in</span> enumerate(image_prompts<span style="color:#f92672">.</span>items()):
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>append((image_hash, all_prompt_embeds[i], all_pooled_prompt_embeds[i], all_text_ids[i]))
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>len(data)<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Tạo DataFrame</span>
+</span></span><span style="display:flex;"><span>    embedding_cols <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;prompt_embeds&#34;</span>, <span style="color:#e6db74">&#34;pooled_prompt_embeds&#34;</span>, <span style="color:#e6db74">&#34;text_ids&#34;</span>]
+</span></span><span style="display:flex;"><span>    df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;image_hash&#34;</span>] <span style="color:#f92672">+</span> embedding_cols)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>len(df)<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Chuyển đổi danh sách nhúng thành mảng (để lưu trữ đúng cách trong parquet)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> col <span style="color:#f92672">in</span> embedding_cols:
+</span></span><span style="display:flex;"><span>        df[col] <span style="color:#f92672">=</span> df[col]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: x<span style="color:#f92672">.</span>cpu()<span style="color:#f92672">.</span>numpy()<span style="color:#f92672">.</span>flatten()<span style="color:#f92672">.</span>tolist())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Lưu dataframe vào một tệp parquet</span>
+</span></span><span style="display:flex;"><span>    df<span style="color:#f92672">.</span>to_parquet(args<span style="color:#f92672">.</span>output_path)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Dữ liệu đã được tuần tự hóa thành công thành </span><span style="color:#e6db74">{</span>args<span style="color:#f92672">.</span>output_path<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser()
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;--max_sequence_length&#34;</span>,
+</span></span><span style="display:flex;"><span>        type<span style="color:#f92672">=</span>int,
+</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span>MAX_SEQ_LENGTH,
+</span></span><span style="display:flex;"><span>        help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Độ dài chuỗi tối đa để sử dụng để tính toán các nhúng. Càng nhiều chi phí tính toán càng cao.&#34;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--output_path&#34;</span>, type<span style="color:#f92672">=</span>str, default<span style="color:#f92672">=</span>OUTPUT_PATH, help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Đường dẫn để tuần tự hóa tệp parquet.&#34;</span>)
+</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    run(args)
+</span></span></code></pre></div><h3 id="cách-sử-dụng">Cách sử dụng</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python compute_embeddings.py <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --max_sequence_length <span style="color:#ae81ff">77</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --output_path embeddings_alphonse_mucha.parquet
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Bằng cách kết hợp điều này với các tiềm ẩn VAE được lưu trong bộ nhớ đệm (<code>--cache_latents</code>), bạn giảm mô hình hoạt động xuống chỉ còn transformer được lượng tử hóa + bộ điều hợp LoRA, giữ cho toàn bộ tinh chỉnh thoải mái dưới 10 GB bộ nhớ GPU.</p>
+<h3 id="thiết-lập--kết-quả">Thiết lập &amp; Kết quả</h3>
+<p>Để trình diễn này, chúng tôi đã tận dụng NVIDIA RTX 4090 (24GB VRAM) để khám phá hiệu suất của nó. Lệnh đào tạo đầy đủ sử dụng <code>accelerate</code> được hiển thị bên dưới.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Bạn cần tính toán trước các nhúng văn bản trước. Xem kho lưu trữ diffusers.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># https://github.com/huggingface/diffusers/tree/main/examples/research_projects/flux_lora_quantization</span>
+</span></span><span style="display:flex;"><span>accelerate launch --config_file<span style="color:#f92672">=</span>accelerate.yaml <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  train_dreambooth_lora_flux_miniature.py <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --pretrained_model_name_or_path<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black-forest-labs/FLUX.1-dev&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --data_df_path<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;embeddings_alphonse_mucha.parquet&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;alphonse_mucha_lora_flux_nf4&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --mixed_precision<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bf16&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --use_8bit_adam <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --weighting_scheme<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;none&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --width<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --height<span style="color:#f92672">=</span><span style="color:#ae81ff">768</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --train_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --repeats<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --learning_rate<span style="color:#f92672">=</span>1e-4 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --guidance_scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --report_to<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;wandb&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --gradient_accumulation_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --gradient_checkpointing <span style="color:#ae81ff">\ </span><span style="color:#75715e"># có thể bỏ kiểm tra điểm khi HW có hơn 16 GB.</span>
+</span></span><span style="display:flex;"><span>  --lr_scheduler<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;constant&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --lr_warmup_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --cache_latents <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --rank<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --max_train_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">700</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --seed<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span>
+</span></span></code></pre></div><p><strong>Cấu hình cho RTX 4090:</strong></p>
+<p>Trên RTX 4090 của chúng tôi, chúng tôi đã sử dụng <code>train_batch_size</code> là 1, <code>gradient_accumulation_steps</code> là 4, <code>mixed_precision=&quot;bf16&quot;</code>, <code>gradient_checkpointing=True</code>, <code>use_8bit_adam=True</code>, LoRA <code>rank</code> là 4 và độ phân giải 512x768. Các tiềm ẩn đã được lưu trong bộ nhớ đệm với <code>cache_latents=True</code>.</p>
+<p><strong>Dấu chân bộ nhớ (RTX 4090):</strong></p>
+<ul>
+<li><strong>QLoRA:</strong> Mức sử dụng VRAM đỉnh cho tinh chỉnh QLoRA là khoảng 9GB.</li>
+<li><strong>BF16 LoRA:</strong> Chạy LoRA tiêu chuẩn (với FLUX.1-dev cơ sở ở FP16) trên cùng một thiết lập đã tiêu thụ 26 GB VRAM.</li>
+<li><strong>BF16 tinh chỉnh đầy đủ:</strong> Ước tính sẽ là ~120 GB VRAM mà không có tối ưu hóa bộ nhớ.</li>
+</ul>
+<p><strong>Thời gian đào tạo (RTX 4090):</strong></p>
+<p>Tinh chỉnh trong 700 bước trên bộ dữ liệu Alphonse Mucha mất khoảng 41 phút trên RTX 4090 với <code>train_batch_size</code> là 1 và độ phân giải là 512x768.</p>
+<p><strong>Chất lượng đầu ra:</strong></p>
+<p>Thước đo cuối cùng là nghệ thuật được tạo ra. Dưới đây là các mẫu từ mô hình được tinh chỉnh QLoRA của chúng tôi trên <a href="https://huggingface.co/datasets/derekl35/alphonse-mucha-style">bộ dữ liệu derekl35/alphonse-mucha-style</a>:</p>
+<p>Bảng này so sánh các kết quả chính xác <code>bf16</code> chính. Mục tiêu của việc tinh chỉnh là dạy cho mô hình phong cách riêng biệt của Alphonse Mucha.</p>
+<!-- raw HTML omitted -->
+<p>Mô hình được tinh chỉnh đã nắm bắt được phong cách nghệ thuật nouveau mang tính biểu tượng của Mucha một cách độc đáo, thể hiện rõ ở các họa tiết trang trí và bảng màu đặc biệt. Quy trình QLoRA duy trì độ trung thực tuyệt vời đồng thời tìm hiểu phong cách mới.</p>
+<!-- raw HTML omitted -->
+<p>Kết quả gần như giống hệt nhau, cho thấy QLoRA hoạt động hiệu quả với cả độ chính xác hỗn hợp <code>fp16</code> và <code>bf16</code>.</p>
+<h3 id="so-sánh-mô-hình-cơ-sở-so-với-q">So sánh mô hình: Cơ sở so với Q</h3>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/flux-qlora">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/june-19-2025/">June 19, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/5187f7/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/structured-codeagent/thumbnail-codeagent.png" alt="CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-17T00:00:00&#43;00:00">Jun 17, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Đánh giá các tác nhân GUI của bạn một cách dễ dàng!</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/0d6ef5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/inference-providers/welcome-groq.jpg" alt="Groq trên các nhà cung cấp suy luận Hugging Face 🔥" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-17T00:00:00&#43;00:00">Jun 17, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Groq trên các nhà cung cấp suy luận Hugging Face 🔥</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu Groq trên Hugging Face Inference Providers</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-21/af266a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Hỗ trợ MCP từ xa trong Claude Code</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-21/df48a4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/flux-qlora/thumbnail.png" alt="Tinh chỉnh FLUX.1-dev (LoRA) trên phần cứng tiêu dùng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tinh chỉnh FLUX.1-dev (LoRA) trên phần cứng tiêu dùng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-18/6e1fd0/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://images.squarespace-cdn.com/content/v1/6213c340453c3f502425776e/1742315840734-UVDY61NLPYUGESWQU3BE/Stable&#43;Virtual&#43;Camera&#43;1x1&#43;Option&#43;10.png" alt="Giới thiệu Camera Ảo Ổn định- Tạo Video Đa Góc Nhìn với Điều Khiển Camera 3D" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Camera Ảo Ổn định- Tạo Video Đa Góc Nhìn với Điều Khiển Camera 3D</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/1a021a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/W9PL-AhEIkMIIOofH5enUao22iPF2hTcpQb8RzhB-ICENAH1H157Ano1Sct-aTwBLENLzy_To594B_Nr4AuE4cXLqUlGUE7dC6F6iJ4oxWWXU9vO=s0" alt="Chúng tôi đang mở rộng dòng sản phẩm mô hình Gemini 2.5" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chúng tôi đang mở rộng dòng sản phẩm mô hình Gemini 2.5</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-17/5187f7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/structured-codeagent/thumbnail-codeagent.png" alt="CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">CodeAgents &#43; Cấu trúc- Một Cách Tốt Hơn để Thực Hiện Hành Động</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
