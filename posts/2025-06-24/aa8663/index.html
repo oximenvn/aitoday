@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP | AI Today - SkyAI</title>
+
+<meta name="description" content="Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-06-24T00:00:00&#43;00:00">June 24, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            13 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://venturebeat.com/wp-content/uploads/2025/06/nuneybits_Vector_art_of_AI_agent_handshake_f856c181-d118-4cfb-a49c-5969b31bb862.webp?w=700&amp;h=350&amp;crop=1" alt="Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP">
+        <figcaption class="text-center italic text-xs">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="salesforce-ra-mắt-agentforce-3-với-khả-năng-quan-sát-tác-nhân-ai-và-hỗ-trợ-mcp">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP</h1>
+<p>Salesforce đã tung ra những cải tiến lớn cho nền tảng tác nhân AI của mình vào thứ Hai, giải quyết những trở ngại lớn nhất mà các doanh nghiệp phải đối mặt khi triển khai lực lượng lao động kỹ thuật số ở quy mô lớn: Biết các tác nhân đó thực sự đang làm gì và đảm bảo chúng có thể hoạt động an toàn trên các hệ thống của công ty.</p>
+<p>Bản phát hành <a href="https://www.salesforce.com/agentforce/">Agentforce 3</a> của công ty giới thiệu &ldquo;<a href="https://www.salesforce.com/agentforce/command-center/">Trung tâm điều khiển</a>&rdquo; toàn diện, cung cấp cho các nhà điều hành khả năng hiển thị theo thời gian thực về hiệu suất của tác nhân AI, cùng với hỗ trợ gốc cho các tiêu chuẩn tương tác mới nổi, cho phép các tác nhân kết nối với hàng trăm công cụ kinh doanh bên ngoài mà không cần mã hóa tùy chỉnh.</p>
+<!-- raw HTML omitted -->
+<p>Thời điểm này phản ánh nhu cầu tăng vọt của doanh nghiệp đối với các tác nhân AI. Theo dữ liệu của Salesforce, việc sử dụng tác nhân AI đã tăng 233% trong sáu tháng, với hơn 8.000 khách hàng đăng ký triển khai công nghệ này. Những người chấp nhận sớm đang thấy lợi nhuận có thể đo lường được: <a href="https://engine.com/">Engine</a> đã giảm thời gian xử lý trường hợp khách hàng xuống 15%, trong khi <a href="https://1800accountant.com/">1-800Accountant</a> đã đạt được 70% giải pháp tự động cho các yêu cầu trò chuyện hành chính trong mùa thuế cao điểm.</p>
+<p>Jayesh Govindarajan, Phó chủ tịch điều hành của Salesforce AI, cho biết trong một cuộc phỏng vấn độc quyền với VentureBeat: &ldquo;Chúng tôi có hàng trăm, nếu không phải hàng nghìn, triển khai trực tiếp và chúng đang chạy ở quy mô lớn.&rdquo; Ông lưu ý, công ty đã tiến xa hơn các triển khai thử nghiệm: &ldquo;Các tác nhân AI không còn là thử nghiệm nữa. Chúng thực sự đã đi sâu vào cấu trúc của doanh nghiệp.&rdquo;</p>
+<p>Adam Evans, Phó chủ tịch điều hành kiêm Tổng giám đốc của Salesforce AI, cho biết trong một sự kiện trực tiếp vào thứ Hai công bố nâng cấp nền tảng: “Trong vài tháng qua, chúng tôi đã lắng nghe sâu sắc khách hàng của mình và tiếp tục tốc độ đổi mới công nghệ nhanh chóng. Kết quả là Agentforce 3, một bước tiến lớn cho nền tảng của chúng tôi, mang lại trí thông minh cao hơn, hiệu suất cao hơn và sự tin tưởng và trách nhiệm giải trình lớn hơn cho mọi triển khai Agentforce.&quot;</p>
+<h2 id="gã-khổng-lồ-thực-phẩm-toàn-cầu-pepsico-đang-dẫn-đầu-cuộc-cách-mạng-tác-nhân-ai-doanh-nghiệp-như-thế-nào">Gã khổng lồ thực phẩm toàn cầu PepsiCo đang dẫn đầu cuộc cách mạng tác nhân AI doanh nghiệp như thế nào</h2>
+<p>Trong số các công ty đang nắm bắt công nghệ này có <a href="https://www.pepsico.com/">PepsiCo</a>, công ty đang triển khai Agentforce như một phần của quá trình chuyển đổi dựa trên AI rộng lớn hơn trong các hoạt động toàn cầu của mình. Trong một cuộc phỏng vấn độc quyền với VentureBeat, Athina Kanioura, Giám đốc chiến lược và chuyển đổi của PepsiCo, mô tả việc triển khai này là rất quan trọng đối với sự phát triển của công ty trong một thị trường ngày càng phức tạp.</p>
+<p>Kanioura nói với VentureBeat: &ldquo;Là đối tác lâu năm của Salesforce, chúng tôi nhận thấy cơ hội tích hợp một cách toàn diện cách chúng tôi sử dụng nền tảng của họ trong toàn bộ hoạt động kinh doanh của mình - đặc biệt là khi bối cảnh khách hàng phát triển, thương mại trở nên phức tạp hơn và nhu cầu tích hợp tốt hơn dữ liệu của chúng tôi tăng lên.&rdquo;</p>
+<p>Gã khổng lồ thực phẩm và đồ uống, có sản phẩm được tiêu thụ hơn một tỷ lần mỗi ngày trên toàn thế giới, coi các tác nhân AI là điều cần thiết để đáp ứng khách hàng &ldquo;ở nơi họ ở - và theo những cách họ muốn tương tác với chúng tôi&rdquo;, đồng thời thúc đẩy hiệu quả hoạt động bằng cách tích hợp các hệ thống và đơn giản hóa quy trình.</p>
+<p>Mối quan hệ kéo dài bảy năm của PepsiCo với Salesforce đã định vị công ty để nhanh chóng triển khai các tác nhân AI. Kanioura giải thích: &ldquo;Chúng tôi rất hào hứng về cách Agentforce có thể nâng cao trải nghiệm hàng ngày cho những người bán hàng tại hiện trường của chúng tôi - hợp lý hóa quy trình làm việc và đưa ra những hiểu biết sâu sắc hơn theo thời gian thực.&rdquo;</p>
+<h2 id="mảnh-ghép-còn-thiếu-tại-sao-ai-doanh-nghiệp-cần-giám-sát-và-kiểm-soát-theo-thời-gian-thực">Mảnh ghép còn thiếu: Tại sao AI doanh nghiệp cần giám sát và kiểm soát theo thời gian thực</h2>
+<p>Trung tâm điều khiển thể hiện phản ứng của Salesforce đối với một khoảng trống quan trọng trên thị trường AI doanh nghiệp. Mặc dù các công ty đã vội vã triển khai các tác nhân AI cho dịch vụ khách hàng, bán hàng và các tác vụ vận hành, nhưng nhiều công ty thiếu khả năng hiển thị về cách những nhân viên kỹ thuật số đó đang hoạt động hoặc tác động đến kết quả kinh doanh.</p>
+<p>Govindarajan mô tả thách thức mà các doanh nghiệp phải đối mặt khi đã vượt qua các chương trình thí điểm: &ldquo;Xây dựng bản demo tác nhân AI là một chuyện, nhưng khi bạn thực sự xây dựng một hệ thống đại lý và đặt nó trước người dùng của mình, thì đó là một tiêu chuẩn khác.&rdquo; Ông giải thích, các công ty cần các công cụ để hiểu khi nào các tác nhân AI đang gặp khó khăn và khi nào cần đưa con người vào quy trình làm việc.</p>
+<p>Công ty thừa nhận trong thông báo của mình: &ldquo;Các nhóm không thể thấy các tác nhân đang làm gì - hoặc phát triển chúng đủ nhanh.&rdquo; Nền tảng quan sát mới cung cấp phân tích chi tiết về các tương tác của tác nhân, giám sát sức khỏe với cảnh báo theo thời gian thực và các đề xuất tối ưu hóa do AI cung cấp.</p>
+<p>Hệ thống giải quyết những gì Govindarajan gọi là &ldquo;các vấn đề ngày thứ hai&rdquo; - những thách thức vận hành xuất hiện sau khi triển khai ban đầu. Ông nói: &ldquo;Bạn có thể có nhiều tác nhân cho nhiều người dùng khác nhau và bạn cần có khả năng quan sát cách điều đó thực sự tác động đến tác vụ cần hoàn thành ở quy mô lớn.&rdquo; Điều này bao gồm quản lý việc bàn giao giữa các tác nhân kỹ thuật số và nhân viên là con người khi cần đưa ra các quyết định hoặc phê duyệt phức tạp.</p>
+<p>Hệ thống ghi lại tất cả hoạt động của tác nhân trong <a href="https://www.salesforce.com/data/">Data Cloud</a> của Salesforce bằng tiêu chuẩn <a href="https://opentelemetry.io/">OpenTelemetry</a>, cho phép tích hợp với các công cụ giám sát hiện có như <a href="https://www.datadoghq.com/">Datadog</a> và các hệ thống doanh nghiệp khác. Điều này giải quyết nhu cầu của doanh nghiệp trong việc kết hợp việc giám sát tác nhân AI vào các quy trình làm việc vận hành hiện có của họ.</p>
+<h2 id="tiêu-chuẩn-mở-và-tích-hợp-an-toàn-các-tác-nhân-ai-kết-nối-trên-các-hệ-thống-doanh-nghiệp-như-thế-nào">Tiêu chuẩn mở và tích hợp an toàn: Các tác nhân AI kết nối trên các hệ thống doanh nghiệp như thế nào</h2>
+<p>Có lẽ quan trọng hơn là việc Salesforce chấp nhận <a href="https://www.anthropic.com/news/model-context-protocol">Giao thức bối cảnh mô hình</a> (MCP), một tiêu chuẩn mở mới nổi để tương tác tác nhân AI. Nền tảng này sẽ bao gồm hỗ trợ MCP gốc, cho phép các tác nhân Agentforce kết nối với bất kỳ máy chủ tuân thủ MCP nào mà không cần công việc phát triển tùy chỉnh.</p>
+<p>Gary Lerhaupt, Phó chủ tịch kiến trúc sản phẩm tại Salesforce, giải thích trong một cuộc phỏng vấn độc quyền với VentureBeat: &ldquo;Có khả năng tương tác chung và sau đó có những gì chúng tôi gọi là khả năng tương tác cấp doanh nghiệp. Nếu không phải là cấp doanh nghiệp, thì nó giống như khả năng tương tác không đáng tin cậy.&rdquo; Ông nói, sự khác biệt chính nằm ở các cơ chế quản trị và kiểm soát mà khách hàng doanh nghiệp yêu cầu.</p>
+<p>Khả năng này, hoạt động cùng với thị trường AgentExchange mở rộng, cho phép các doanh nghiệp truy cập vào các tích hợp dựng sẵn với hơn 30 đối tác, bao gồm <a href="https://aws.amazon.com/">Amazon Web Services</a>, <a href="https://www.box.com/home">Box</a>, <a href="https://cloud.google.com/?hl=en">Google Cloud</a>, <a href="https://www.ibm.com/">IBM</a>, <a href="https://www.paypal.com/us/home">PayPal</a> và <a href="https://stripe.com/">Stripe</a>. Lerhaupt cho biết công ty đang ra mắt với &ldquo;hơn 20, có thể là 25 cộng&rdquo; các máy chủ MCP đã được kiểm tra, với các đối tác như PayPal cung cấp khả năng lập hóa đơn và Box cung cấp quyền truy cập tài liệu thông qua các triển khai MCP của họ.</p>
+<p>Kanioura cho biết: &ldquo;Trong một thế giới đầy công cụ AI, Agentforce nổi bật không chỉ vì công nghệ có một không hai mà còn vì cách nó phù hợp một cách liền mạch vào hệ sinh thái công nghệ, cách chúng tôi làm việc và chiến lược, tiêu chuẩn và khuôn khổ AI của chúng tôi.&rdquo;</p>
+<h2 id="tăng-cường-hiệu-suất-mô-hình-ai-nhanh-hơn-và-bảo-mật-nâng-cao-cho-các-ngành-được-quản-lý">Tăng cường hiệu suất: Mô hình AI nhanh hơn và bảo mật nâng cao cho các ngành được quản lý</h2>
+<p>Nền tảng của các tính năng mới là những gì Salesforce gọi là kiến trúc &ldquo;<a href="https://www.salesforceben.com/introducing-atlas-the-brain-behind-salesforce-agentforce/">Atlas</a>&rdquo; nâng cao được thiết kế để có hiệu suất và bảo mật cấp doanh nghiệp. Nền tảng này hiện cung cấp độ trễ thấp hơn 50% so với tháng 1 năm 2025, cũng như truyền trực tuyến phản hồi cho trải nghiệm người dùng theo thời gian thực và chuyển đổi dự phòng tự động giữa các nhà cung cấp mô hình AI để đảm bảo hoạt động liên tục.</p>
+<p>Đối với các ngành được quản lý, cách tiếp cận của Salesforce đối với việc lưu trữ các mô hình AI trực tiếp trong cơ sở hạ tầng của mình giải quyết các mối lo ngại bảo mật quan trọng. Govindarajan giải thích: &ldquo;Với Anthropic, toàn bộ ngăn xếp sẽ chạy trong cơ sở hạ tầng của Salesforce. Các cuộc gọi không được gửi đến OpenAI và lưu lượng truy cập sẽ chạy trong VPC của Salesforce. Đối với các ngành được quản lý, đó là những gì chúng tôi đã làm.&rdquo;</p>
+<p>Điều quan trọng đối với các ngành được quản lý, Salesforce hiện lưu trữ <a href="https://www.anthropic.com/news/claude-4">các mô hình Claude của Anthropic</a> trực tiếp trong cơ sở hạ tầng của mình thông qua <a href="https://aws.amazon.com/bedrock/">Amazon Bedrock</a>, giữ dữ liệu nhạy cảm trong phạm vi bảo mật của Salesforce. Công ty có kế hoạch bổ sung <a href="https://blog.google/technology/ai/google-gemini-ai/">các mô hình Gemini của Google</a> vào cuối năm nay, mang đến cho các doanh nghiệp nhiều tùy chọn hơn để quản lý mô hình AI.</p>
+<p>Nền tảng này cũng mở rộng phạm vi khả dụng trên toàn cầu sang Canada, Vương quốc Anh, Ấn Độ, Nhật Bản và Brazil, với hỗ trợ cho sáu ngôn ngữ bổ sung, bao gồm tiếng Pháp, tiếng Đức, tiếng Tây Ban Nha, tiếng Ý, tiếng Nhật và tiếng Bồ Đào Nha.</p>
+<h2 id="từ-số-không-đến-tác-nhân-ai-các-hành-động-ngành-dựng-sẵn-giúp-tăng-tốc-triển-khai-doanh-nghiệp-như-thế-nào">Từ số không đến tác nhân AI: Các hành động ngành dựng sẵn giúp tăng tốc triển khai doanh nghiệp như thế nào</h2>
+<p>Nhận thấy rằng các doanh nghiệp cần lợi nhuận nhanh hơn từ các khoản đầu tư AI, Salesforce đã xây dựng hơn <a href="https://www.salesforce.com/agentforce/use-cases/">200 hành động ngành được định cấu hình sẵn</a> - với hơn 100 hành động được thêm vào chỉ riêng mùa hè này. Chúng bao gồm từ lên lịch cho bệnh nhân trong lĩnh vực chăm sóc sức khỏe đến tạo đề xuất quảng cáo trong lĩnh vực truyền thông, được thiết kế để giúp các công ty triển khai nhanh chóng các tác nhân AI chức năng thay vì xây dựng từ đầu.</p>
+<p>Kết quả chứng minh sự trưởng thành của nền tảng. Ngoài tỷ lệ chuyển hướng 70% của 1-800Accountant trong mùa thuế, Govindarajan đã trích dẫn các triển khai sản xuất khác: &ldquo;OpenTable nhận thấy 73% tất cả các truy vấn web của nhà hàng được xử lý bởi các tác nhân&rdquo; và Grupo Falabella, một hoạt động dịch vụ khách hàng của Colombia sử dụng WhatsApp, đã giảm 71% lưu lượng cuộc gọi điện thoại chỉ trong ba tuần.</p>
+<p>Công ty cũng giới thiệu giá cả linh hoạt hơn, bao gồm giấy phép sử dụng không giới hạn cho các tác nhân hướng đến nhân viên và giá trên mỗi hành động có thể điều chỉnh theo công việc AI thực tế được thực hiện thay vì chỉ đơn giản là khối lượng cuộc trò chuyện.</p>
+<h2 id="lực-lượng-lao-động-kỹ-thuật-số-mới-việc-áp-dụng-ai-doanh-nghiệp-có-ý-nghĩa-gì-đối-với-hoạt-động-kinh-doanh">Lực lượng lao động kỹ thuật số mới: Việc áp dụng AI doanh nghiệp có ý nghĩa gì đối với hoạt động kinh doanh</h2>
+<p>Khi các doanh nghiệp ngày càng coi các tác nhân AI là nhân viên kỹ thuật số hơn là các công cụ tự động hóa đơn giản, thì rủi ro để triển khai đúng cách chưa bao giờ cao hơn. Các công ty mở rộng quy mô tác nhân AI thành công có được lợi thế cạnh tranh đáng kể, trong khi những công ty gặp khó khăn với quản trị và giám sát có nguy cơ gián đoạn hoạt động.</p>
+<p>Govindarajan nhận thấy những thay đổi cơ bản trong cách tổ chức công việc: Ông nói: &ldquo;Vai trò mới đang nổi lên cho những người quản lý một đội quân tác nhân. Một CIO có thể hỏi, &lsquo;Tôi có bảy tác nhân đang chạy trong doanh nghiệp của mình, điều gì đang xảy ra trên diện rộng?&rsquo; Nhưng người điều hành một tác nhân tiếp thị cụ thể có một góc nhìn khác về cùng một vấn đề.&rdquo;</p>
+<p>Nhìn về phía trước, Lerhaupt định vị thời điểm hiện tại là chuyển đổi: Ông nói: &ldquo;Bạn đã có máy tính cá nhân, sau đó là Internet và bây giờ là đa tác nhân.&rdquo; Ông mô tả sự phát triển từ các triển khai tác nhân đơn lẻ là &ldquo;cuộc cách mạng đa tác nhân và khả năng kết nối các tác nhân với nhau để thực hiện các loại công việc mới vô cùng phức tạp.&rdquo;</p>
+<p>Đối với PepsiCo, sự chuyển đổi vượt ra ngoài những lợi ích về hiệu quả. Kanioura nói: &ldquo;AI và công nghệ đang định hình lại các hoạt động của doanh nghiệp theo những cách mà trước đây không thể tưởng tượng được. Công việc chúng tôi đang thực hiện với Agentforce là một yếu tố trong quá trình chuyển đổi rộng lớn hơn của PepsiCo thành một công ty được kết nối, mở đường cho một tương lai làm việc linh hoạt và thích ứng hơn.&rdquo;</p>
+<p>Bối cảnh cạnh tranh đang trở nên gay gắt khi các công ty công nghệ lớn chạy đua để thiết lập các nền tảng tác nhân AI. Khi được hỏi về sự cạnh tranh từ Microsoft, Google và Amazon, Govindarajan nhấn mạnh những lợi thế tích hợp của Salesforce: Ông nói: &ldquo;Chúng tôi có thể theo dõi toàn bộ chu kỳ công việc trong hệ sinh thái doanh nghiệp. Chúng tôi có thể xác định các luồng và tương tác trong doanh nghiệp, và chúng tôi đã cởi mở và có thể mở rộng trong việc đưa dữ liệu, hành động của bạn vào và điều phối chúng một cách hiệu quả.&rdquo;</p>
+<p>Nền tảng Agentforce 3 hiện đã có sẵn, với một số tính năng bao gồm các mô hình Anthropic được lưu trữ và Trung tâm điều khiển đầy đủ được triển khai đến hết tháng 8. Nhưng có lẽ dấu hiệu rõ ràng nhất về sự sẵn sàng của công nghệ cho doanh nghiệp không nằm ở danh sách tính năng - mà nằm ở sự tự tin của các công ty như PepsiCo để đặt cược quá trình chuyển đổi kỹ thuật số của họ vào các tác nhân AI mà cuối cùng họ có thể thấy, đo lường và kiểm soát.</p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;div class=&quot;image-container&quot;&gt;
+        &lt;img src=&quot;https://venturebeat.com/wp-content/themes/vb-news/brand/img/vb-daily-phone.png&quot; alt=&quot;&quot;&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<p>&lt;img
+class=&ldquo;skip-lazy&rdquo;
+width=&ldquo;750&rdquo;
+height=&ldquo;420&rdquo;
+src=&ldquo;<a href="https://venturebeat.com/wp-content/uploads/2025/06/nuneybits_Vector_art_of_AI_agent_handshake_f856c181-d118-4cfb-a49c-5969b31bb862.webp?w=750%22">https://venturebeat.com/wp-content/uploads/2025/06/nuneybits_Vector_art_of_AI_agent_handshake_f856c181-d118-4cfb-a49c-5969b31bb862.webp?w=750&quot;</a>
+alt=&ldquo;Credit: VentureBeat made with Midjourney&rdquo;</p>
+<blockquote>
+</blockquote>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/salesforce-launches-agentforce-3-with-ai-agent-observability-and-mcp-support/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/24-june-2025/">24 June 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/8eac01/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/self-adapting-language-models.png?w=700&amp;h=350&amp;crop=1" alt="Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-24T00:00:00&#43;00:00">Jun 24, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-22/48e563/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/Locks.jpeg?w=700&amp;h=350&amp;crop=1" alt="Các cuộc tấn công mạng vào bệnh viện tốn 600 nghìn đô la mỗi giờ. Đây là cách AI đang thay đổi phép tính" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-22T00:00:00&#43;00:00">Jun 22, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các cuộc tấn công mạng vào bệnh viện tốn 600 nghìn đô la mỗi giờ. Đây là cách AI đang thay đổi phép tính</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/aa8663/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/nuneybits_Vector_art_of_AI_agent_handshake_f856c181-d118-4cfb-a49c-5969b31bb862.webp?w=700&amp;h=350&amp;crop=1" alt="Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/e9738d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/196_transformers_backend_sglang/thumbnail.jpg" alt="Tích hợp backend Transformers trong SGLang" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tích hợp backend Transformers trong SGLang</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/8eac01/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/self-adapting-language-models.png?w=700&amp;h=350&amp;crop=1" alt="Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-22/48e563/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/Locks.jpeg?w=700&amp;h=350&amp;crop=1" alt="Các cuộc tấn công mạng vào bệnh viện tốn 600 nghìn đô la mỗi giờ. Đây là cách AI đang thay đổi phép tính" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các cuộc tấn công mạng vào bệnh viện tốn 600 nghìn đô la mỗi giờ. Đây là cách AI đang thay đổi phép tính</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-22/4af7d5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/cfr0z3n_close_up_on_tiny_humanoid_robot_standing_triumphantly_w_9c85edea-1a61-4168-a0fd-f100581b5809.png?w=700&amp;h=350&amp;crop=1" alt="Mistral vừa cập nhật mô hình Small mã nguồn mở của mình từ 3.1 lên 3.2- đây là lý do" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mistral vừa cập nhật mô hình Small mã nguồn mở của mình từ 3.1 lên 3.2- đây là lý do</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

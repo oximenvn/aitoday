@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy | AI Today - SkyAI</title>
+
+<meta name="description" content="Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-06-24T00:00:00&#43;00:00">June 24, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://venturebeat.com/wp-content/uploads/2025/06/self-adapting-language-models.png?w=700&amp;h=350&amp;crop=1" alt="Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy">
+        <figcaption class="text-center italic text-xs">Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="vượt-qua-ai-tĩnh-khung-mới-của-mit-cho-phép-các-mô-hình-tự-học">Vượt qua AI tĩnh: Khung mới của MIT cho phép các mô hình tự học</h1>
+<p>Các nhà nghiên cứu tại MIT đã phát triển một khung có tên là Mô hình ngôn ngữ tự thích ứng (SEAL), cho phép các mô hình ngôn ngữ lớn (LLM) liên tục học hỏi và thích ứng bằng cách cập nhật các tham số bên trong của chính chúng. SEAL dạy một LLM tạo ra dữ liệu đào tạo và hướng dẫn cập nhật của riêng nó, cho phép nó hấp thụ vĩnh viễn kiến thức mới và học các tác vụ mới.</p>
+<p>Khung này có thể hữu ích cho các ứng dụng doanh nghiệp, đặc biệt đối với các tác nhân AI hoạt động trong môi trường năng động, nơi chúng phải liên tục xử lý thông tin mới và điều chỉnh hành vi của mình.</p>
+<h2 id="thách-thức-của-việc-điều-chỉnh-llm">Thách thức của việc điều chỉnh LLM</h2>
+<p>Mặc dù các mô hình ngôn ngữ lớn đã thể hiện những khả năng đáng chú ý, nhưng việc điều chỉnh chúng cho các nhiệm vụ cụ thể, tích hợp thông tin mới hoặc nắm vững các kỹ năng suy luận mới vẫn là một trở ngại đáng kể.</p>
+<p>Hiện tại, khi đối mặt với một nhiệm vụ mới, LLM thường học từ dữ liệu &ldquo;nguyên trạng&rdquo; thông qua các phương pháp như tinh chỉnh hoặc học trong ngữ cảnh. Tuy nhiên, dữ liệu được cung cấp không phải lúc nào cũng ở định dạng tối ưu để mô hình học một cách hiệu quả. Các phương pháp tiếp cận hiện có không cho phép mô hình phát triển các chiến lược riêng để chuyển đổi và học hỏi từ thông tin mới một cách tốt nhất.</p>
+<p>Jyo Pari, nghiên cứu sinh tiến sĩ tại MIT và đồng tác giả của bài báo, nói với VentureBeat: “Nhiều trường hợp sử dụng trong doanh nghiệp đòi hỏi nhiều hơn là chỉ nhớ lại dữ kiện — chúng đòi hỏi sự thích ứng sâu sắc, bền bỉ. Ví dụ: một trợ lý viết mã có thể cần nội bộ hóa khung phần mềm cụ thể của một công ty hoặc một mô hình hướng tới khách hàng có thể cần học hành vi hoặc sở thích riêng của người dùng theo thời gian.”</p>
+<p>Trong những trường hợp như vậy, việc truy xuất tạm thời là không đủ và kiến thức cần được &ldquo;nhúng vào&rdquo; trọng số của mô hình để nó ảnh hưởng đến tất cả các phản hồi trong tương lai.</p>
+<h2 id="tạo-ra-các-mô-hình-ngôn-ngữ-tự-thích-ứng">Tạo ra các mô hình ngôn ngữ tự thích ứng</h2>
+<p>Các nhà nghiên cứu MIT tuyên bố trong bài báo của họ: “Như một bước tiến tới khả năng thích ứng có thể mở rộng và hiệu quả của các mô hình ngôn ngữ, chúng tôi đề xuất trang bị cho LLM khả năng tạo ra dữ liệu đào tạo và chỉ thị tinh chỉnh của riêng chúng để sử dụng dữ liệu đó”.</p>
+<p><img src="https://venturebeat.com/wp-content/uploads/2025/06/image_b1ee4c.png?w=800" alt="Tổng quan về khung SEAL (Nguồn: arXiv)"></p>
+<p>Giải pháp của các nhà nghiên cứu là SEAL, viết tắt của Mô hình ngôn ngữ tự thích ứng. Nó sử dụng thuật toán học tăng cường (RL) để đào tạo một LLM tạo ra &ldquo;tự chỉnh sửa&rdquo; —các hướng dẫn bằng ngôn ngữ tự nhiên chỉ định cách mô hình nên cập nhật trọng số của chính nó. Những chỉnh sửa tự động này có thể tái cấu trúc thông tin mới, tạo ra các ví dụ đào tạo tổng hợp hoặc thậm chí xác định các tham số kỹ thuật cho chính quy trình học tập.</p>
+<p>Về trực giác, SEAL dạy một mô hình cách tạo ra hướng dẫn học tập cá nhân của riêng nó. Thay vì chỉ đọc một tài liệu mới (dữ liệu thô), mô hình học cách viết lại và định dạng lại thông tin đó theo một kiểu mà nó có thể dễ dàng hấp thụ và nội bộ hóa hơn. Quá trình này tập hợp một số lĩnh vực nghiên cứu AI quan trọng, bao gồm tạo dữ liệu tổng hợp, học tăng cường và đào tạo thời gian kiểm tra (TTT).</p>
+<p>Khung hoạt động trên hệ thống hai vòng. Trong &ldquo;vòng trong&rdquo;, mô hình sử dụng tính năng tự chỉnh sửa để thực hiện một bản cập nhật nhỏ, tạm thời cho trọng số của nó. Trong &ldquo;vòng ngoài&rdquo;, hệ thống đánh giá xem bản cập nhật đó có cải thiện hiệu suất của mô hình trên một tác vụ mục tiêu hay không. Nếu có, mô hình sẽ nhận được phần thưởng tích cực, củng cố khả năng tạo ra loại tự chỉnh sửa hiệu quả đó trong tương lai. Theo thời gian, LLM trở thành một chuyên gia trong việc tự dạy chính mình.</p>
+<p>Trong nghiên cứu của họ, các nhà nghiên cứu đã sử dụng một mô hình duy nhất cho toàn bộ khung SEAL. Tuy nhiên, họ cũng lưu ý rằng quá trình này có thể được tách thành mô hình &ldquo;giáo viên-học sinh&rdquo;. Một mô hình giáo viên chuyên biệt có thể được đào tạo để tạo ra các chỉnh sửa tự động hiệu quả cho một mô hình học sinh riêng biệt, sau đó sẽ được cập nhật. Cách tiếp cận này có thể cho phép các quy trình điều chỉnh chuyên biệt và hiệu quả hơn trong môi trường doanh nghiệp.</p>
+<h2 id="seal-hoạt-động">SEAL hoạt động</h2>
+<p>Các nhà nghiên cứu đã thử nghiệm SEAL trong hai lĩnh vực chính: kết hợp kiến thức (khả năng tích hợp vĩnh viễn các sự kiện mới) và học tập ít lần (khả năng khái quát hóa từ một số ít ví dụ).</p>
+<p><img src="https://venturebeat.com/wp-content/uploads/2025/06/image_d93126.png?w=800" alt="SEAL trong kết hợp kiến thức (Nguồn: arXiv)"></p>
+<p>Đối với việc kết hợp kiến thức, mục tiêu là xem liệu mô hình có thể trả lời các câu hỏi về một đoạn văn bản mà không cần truy cập vào đoạn văn đó trong khi đặt câu hỏi hay không. Tinh chỉnh Llama-3.2-1B trên văn bản thô chỉ mang lại sự cải thiện không đáng kể so với mô hình cơ sở.</p>
+<p>Tuy nhiên, khi mô hình SEAL tạo ra &ldquo;tự chỉnh sửa&rdquo; bằng cách tạo ra một số &ldquo;hàm ý&rdquo; từ một đoạn văn và được đào tạo trên dữ liệu tổng hợp này, độ chính xác của nó đã tăng lên 47%. Đáng chú ý, điều này vượt trội hơn kết quả từ việc sử dụng dữ liệu tổng hợp do GPT-4.1 lớn hơn nhiều tạo ra, cho thấy mô hình đã học cách tạo ra tài liệu đào tạo vượt trội cho chính nó.</p>
+<p><img src="https://venturebeat.com/wp-content/uploads/2025/06/image_1e87a7.png?w=800" alt="SEAL trong học tập ít lần (Nguồn: arXiv)"></p>
+<p>Đối với học tập ít lần, các nhà nghiên cứu đã thử nghiệm SEAL trên các ví dụ từ Abstract Reasoning Corpus (ARC), nơi mô hình phải giải các câu đố trực quan. Trong giai đoạn tự chỉnh sửa, mô hình phải tạo ra toàn bộ chiến lược điều chỉnh, bao gồm việc sử dụng các công cụ và tăng cường dữ liệu nào và áp dụng tốc độ học tập nào.</p>
+<p>SEAL đạt tỷ lệ thành công 72,5%, một cải thiện đáng kể so với tỷ lệ 20% đạt được khi không có đào tạo RL và tỷ lệ 0% của học tập trong ngữ cảnh tiêu chuẩn.</p>
+<p><img src="https://venturebeat.com/wp-content/uploads/2025/06/image_969ef3.png" alt="SEAL (đường màu đỏ) tiếp tục cải thiện qua các chu kỳ RL (Nguồn: arXiv)"></p>
+<h2 id="hàm-ý-đối-với-doanh-nghiệp">Hàm ý đối với doanh nghiệp</h2>
+<p>Một số chuyên gia dự đoán rằng nguồn cung dữ liệu đào tạo do con người tạo ra chất lượng cao có thể cạn kiệt trong những năm tới. Sự tiến bộ có thể sớm phụ thuộc vào &ldquo;khả năng của một mô hình để tạo ra tín hiệu đào tạo có độ hữu ích cao của riêng nó&rdquo;, như các nhà nghiên cứu đã trình bày. Họ nói thêm, &ldquo;Một bước tự nhiên tiếp theo là siêu đào tạo một mô hình tạo dữ liệu tổng hợp SEAL chuyên dụng, tạo ra các kho văn bản được đào tạo trước mới, cho phép các mô hình trong tương lai mở rộng quy mô và đạt được hiệu quả dữ liệu cao hơn mà không cần dựa vào văn bản bổ sung của con người.&rdquo;</p>
+<p>Ví dụ: các nhà nghiên cứu đề xuất rằng một LLM có thể tiếp nhận các tài liệu phức tạp như các bài báo học thuật hoặc báo cáo tài chính và tự động tạo ra hàng nghìn lời giải thích và hàm ý để làm sâu sắc thêm sự hiểu biết của nó.</p>
+<p>Các nhà nghiên cứu giải thích: “Vòng lặp lặp đi lặp lại của tự thể hiện và tự hoàn thiện có thể cho phép các mô hình tiếp tục cải thiện các chủ đề hiếm hoặc ít được trình bày ngay cả khi không có sự giám sát bên ngoài bổ sung”.</p>
+<p>Khả năng này đặc biệt hứa hẹn để xây dựng các tác nhân AI. Các hệ thống tác nhân phải tăng dần thu thập và giữ lại kiến thức khi chúng tương tác với môi trường của chúng. SEAL cung cấp một cơ chế cho việc này. Sau một tương tác, một tác nhân có thể tổng hợp một chỉnh sửa tự động để kích hoạt cập nhật trọng số, cho phép nó nội bộ hóa các bài học kinh nghiệm. Điều này cho phép tác nhân phát triển theo thời gian, cải thiện hiệu suất của nó dựa trên kinh nghiệm và giảm sự phụ thuộc của nó vào lập trình tĩnh hoặc hướng dẫn lặp đi lặp lại của con người.</p>
+<p>Các nhà nghiên cứu viết: “SEAL chứng minh rằng các mô hình ngôn ngữ lớn không cần phải tĩnh sau khi đào tạo trước”. &ldquo;Bằng cách học cách tạo ra dữ liệu tự chỉnh sửa tổng hợp của riêng chúng và áp dụng nó thông qua các bản cập nhật trọng số nhẹ, chúng có thể tự động kết hợp kiến thức mới và thích ứng với các tác vụ mới.&rdquo;</p>
+<h2 id="hạn-chế-của-seal">Hạn chế của SEAL</h2>
+<p>Tuy nhiên, SEAL không phải là một giải pháp toàn cầu. Ví dụ: nó có thể bị &ldquo;quên thảm khốc&rdquo;, trong đó các chu kỳ đào tạo lại liên tục có thể dẫn đến việc mô hình quên đi kiến thức trước đó của nó.</p>
+<p>Pari nói: “Trong cách triển khai hiện tại của chúng tôi, chúng tôi khuyến khích một cách tiếp cận hỗn hợp. Các doanh nghiệp nên chọn lọc về kiến thức nào đủ quan trọng để tích hợp vĩnh viễn”.</p>
+<p>Dữ liệu thực tế và đang phát triển có thể vẫn còn trong bộ nhớ bên ngoài thông qua RAG, trong khi kiến thức định hình hành vi, tồn tại lâu dài phù hợp hơn cho các bản cập nhật ở cấp độ trọng số thông qua SEAL.</p>
+<p>Ông nói: “Loại chiến lược bộ nhớ hỗn hợp này đảm bảo thông tin phù hợp là bền bỉ mà không làm choáng ngợp mô hình hoặc gây ra tình trạng quên không cần thiết”.</p>
+<p>Cũng cần lưu ý rằng SEAL mất một lượng thời gian không nhỏ để điều chỉnh các ví dụ tự chỉnh sửa và đào tạo mô hình. Điều này làm cho việc chỉnh sửa liên tục, theo thời gian thực trở nên bất khả thi trong hầu hết các cài đặt sản xuất.</p>
+<p>Pari nói: “Chúng tôi hình dung một mô hình triển khai thực tế hơn, trong đó hệ thống thu thập dữ liệu trong một khoảng thời gian—ví dụ: một vài giờ hoặc một ngày—và sau đó thực hiện các chỉnh sửa tự động có mục tiêu trong các khoảng thời gian cập nhật theo lịch trình. Cách tiếp cận này cho phép các doanh nghiệp kiểm soát chi phí thích ứng trong khi vẫn hưởng lợi từ khả năng nội bộ hóa kiến thức mới của SEAL”.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/beyond-static-ai-mits-new-framework-lets-models-teach-themselves/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/24-june-2025/">24 June 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/aa8663/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/nuneybits_Vector_art_of_AI_agent_handshake_f856c181-d118-4cfb-a49c-5969b31bb862.webp?w=700&amp;h=350&amp;crop=1" alt="Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-24T00:00:00&#43;00:00">Jun 24, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-22/48e563/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/Locks.jpeg?w=700&amp;h=350&amp;crop=1" alt="Các cuộc tấn công mạng vào bệnh viện tốn 600 nghìn đô la mỗi giờ. Đây là cách AI đang thay đổi phép tính" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-22T00:00:00&#43;00:00">Jun 22, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các cuộc tấn công mạng vào bệnh viện tốn 600 nghìn đô la mỗi giờ. Đây là cách AI đang thay đổi phép tính</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/aa8663/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/nuneybits_Vector_art_of_AI_agent_handshake_f856c181-d118-4cfb-a49c-5969b31bb862.webp?w=700&amp;h=350&amp;crop=1" alt="Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/e9738d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/196_transformers_backend_sglang/thumbnail.jpg" alt="Tích hợp backend Transformers trong SGLang" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tích hợp backend Transformers trong SGLang</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/8eac01/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/self-adapting-language-models.png?w=700&amp;h=350&amp;crop=1" alt="Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-22/48e563/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/Locks.jpeg?w=700&amp;h=350&amp;crop=1" alt="Các cuộc tấn công mạng vào bệnh viện tốn 600 nghìn đô la mỗi giờ. Đây là cách AI đang thay đổi phép tính" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các cuộc tấn công mạng vào bệnh viện tốn 600 nghìn đô la mỗi giờ. Đây là cách AI đang thay đổi phép tính</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-22/4af7d5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/cfr0z3n_close_up_on_tiny_humanoid_robot_standing_triumphantly_w_9c85edea-1a61-4168-a0fd-f100581b5809.png?w=700&amp;h=350&amp;crop=1" alt="Mistral vừa cập nhật mô hình Small mã nguồn mở của mình từ 3.1 lên 3.2- đây là lý do" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mistral vừa cập nhật mô hình Small mã nguồn mở của mình từ 3.1 lên 3.2- đây là lý do</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
