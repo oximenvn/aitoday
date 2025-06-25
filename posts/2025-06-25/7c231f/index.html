@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AlphaGenome- AI để hiểu rõ hơn về bộ gen | AI Today - SkyAI</title>
+
+<meta name="description" content="Giới thiệu một mô hình trình tự DNA thống nhất mới, giúp dự đoán hiệu quả các biến thể điều chỉnh và hứa hẹn làm sáng tỏ chức năng của bộ gen — hiện có sẵn thông qua API.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">AlphaGenome- AI để hiểu rõ hơn về bộ gen</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Giới thiệu một mô hình trình tự DNA thống nhất mới, giúp dự đoán hiệu quả các biến thể điều chỉnh và hứa hẹn làm sáng tỏ chức năng của bộ gen — hiện có sẵn thông qua API. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-06-25T00:00:00&#43;00:00">June 25, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            13 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/SZkcKUQyLUhSQ06Rq-PJbxAqn1OpMeEa3khkrBVB1MGyHfxyftoqWwEb2aLP9JxX7CjhpLFODcc5zIoMoNdu0bl6ELsZV2nP9fDwZC6SYS36lzAKDw=w400-h225-n-nu" alt="AlphaGenome- AI để hiểu rõ hơn về bộ gen">
+        <figcaption class="text-center italic text-xs">Giới thiệu một mô hình trình tự DNA thống nhất mới, giúp dự đoán hiệu quả các biến thể điều chỉnh và hứa hẹn làm sáng tỏ chức năng của bộ gen — hiện có sẵn thông qua API.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="alphagenome-ai-giúp-hiểu-rõ-hơn-về-bộ-gen">AlphaGenome: AI giúp hiểu rõ hơn về bộ gen</h1>
+<p><strong>Giới thiệu một mô hình trình tự DNA thống nhất, mới, giúp nâng cao khả năng dự đoán tác động của các biến thể điều hòa và hứa hẹn làm sáng tỏ chức năng của bộ gen - hiện đã có sẵn qua API.</strong></p>
+<p>Bộ gen là sổ tay hướng dẫn tế bào của chúng ta. Nó là tập hợp đầy đủ các DNA hướng dẫn gần như mọi bộ phận của một sinh vật sống, từ hình thức và chức năng đến sự tăng trưởng và sinh sản. Các biến thể nhỏ trong trình tự DNA của bộ gen có thể thay đổi phản ứng của một sinh vật đối với môi trường hoặc khả năng mắc bệnh của nó. Nhưng việc giải mã cách các hướng dẫn của bộ gen được đọc ở cấp độ phân tử - và điều gì xảy ra khi một biến thể DNA nhỏ xảy ra - vẫn là một trong những bí ẩn lớn nhất của sinh học.</p>
+<p>Hôm nay, chúng tôi giới thiệu <a href="https://storage.googleapis.com/deepmind-media/papers/alphagenome.pdf">AlphaGenome</a>, một công cụ trí tuệ nhân tạo (AI) mới dự đoán toàn diện và chính xác hơn cách các biến thể hoặc đột biến đơn lẻ trong trình tự DNA của con người tác động đến một loạt các quá trình sinh học điều chỉnh gen. Điều này được thực hiện, bên cạnh các yếu tố khác, nhờ những tiến bộ kỹ thuật cho phép mô hình xử lý các trình tự DNA dài và đưa ra các dự đoán có độ phân giải cao.</p>
+<p>Để thúc đẩy nghiên cứu khoa học, chúng tôi đang cung cấp bản xem trước AlphaGenome thông qua <a href="https://github.com/google-deepmind/alphagenome">API AlphaGenome</a> của chúng tôi cho nghiên cứu phi thương mại và có kế hoạch phát hành mô hình trong tương lai.</p>
+<p>Chúng tôi tin rằng AlphaGenome có thể là một nguồn tài nguyên có giá trị cho cộng đồng khoa học, giúp các nhà khoa học hiểu rõ hơn về chức năng của bộ gen, sinh học bệnh tật và cuối cùng là thúc đẩy những khám phá sinh học mới và sự phát triển của các phương pháp điều trị mới.</p>
+<h2 id="cách-alphagenome-hoạt-động">Cách AlphaGenome hoạt động</h2>
+<p>Mô hình AlphaGenome của chúng tôi lấy một trình tự DNA dài làm đầu vào - tối đa 1 triệu chữ cái, còn được gọi là cặp base - và dự đoán hàng nghìn thuộc tính phân tử đặc trưng cho hoạt động điều hòa của nó. Nó cũng có thể chấm điểm ảnh hưởng của các biến thể hoặc đột biến di truyền bằng cách so sánh các dự đoán của các trình tự bị đột biến với các trình tự không bị đột biến.</p>
+<p>Các thuộc tính được dự đoán bao gồm nơi gen bắt đầu và nơi chúng kết thúc trong các loại tế bào và mô khác nhau, nơi chúng được nối, lượng RNA được tạo ra, và cả những base DNA nào có thể truy cập, gần nhau hoặc liên kết bởi các protein nhất định. Dữ liệu huấn luyện được lấy từ các tập đoàn công lớn bao gồm <a href="http://encodeproject.org/">ENCODE</a>, <a href="https://www.gtexportal.org/">GTEx</a>, <a href="https://4dnucleome.org/">4D Nucleome</a> và <a href="https://fantom.gsc.riken.jp/5/">FANTOM5</a>, nơi đã đo lường bằng thực nghiệm các thuộc tính này bao gồm các phương thức điều chỉnh gen quan trọng trên hàng trăm loại tế bào và mô của người và chuột.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Kiến trúc AlphaGenome sử dụng các lớp tích chập để ban đầu phát hiện các mẫu ngắn trong trình tự bộ gen, các máy biến áp để truyền đạt thông tin trên tất cả các vị trí trong trình tự và một loạt các lớp cuối cùng để biến các mẫu được phát hiện thành dự đoán cho các phương thức khác nhau. Trong quá trình huấn luyện, tính toán này được phân phối trên nhiều Đơn vị xử lý Tensor (TPU) được kết nối với nhau cho một trình tự duy nhất.</p>
+<p>Mô hình này xây dựng dựa trên mô hình bộ gen trước đây của chúng tôi, <a href="https://deepmind.google/discover/blog/predicting-gene-expression-with-ai/">Enformer</a> và bổ sung cho <a href="https://deepmind.google/discover/blog/a-catalogue-of-genetic-mutations-to-help-pinpoint-the-cause-of-diseases/">AlphaMissense</a>, chuyên phân loại tác động của các biến thể trong các vùng mã hóa protein. Các vùng này bao phủ 2% bộ gen. 98% còn lại, được gọi là vùng không mã hóa, rất quan trọng để điều phối hoạt động của gen và chứa nhiều biến thể liên quan đến bệnh tật. AlphaGenome cung cấp một góc nhìn mới để giải thích các trình tự mở rộng này và các biến thể trong chúng.</p>
+<h2 id="các-tính-năng-đặc-biệt-của-alphagenome">Các tính năng đặc biệt của AlphaGenome</h2>
+<p>AlphaGenome cung cấp một số tính năng đặc biệt so với các mô hình trình tự DNA hiện có:</p>
+<h3 id="bối-cảnh-trình-tự-dài-ở-độ-phân-giải-cao">Bối cảnh trình tự dài ở độ phân giải cao</h3>
+<p>Mô hình của chúng tôi phân tích tối đa 1 triệu chữ cái DNA và đưa ra dự đoán ở độ phân giải của các chữ cái riêng lẻ. Bối cảnh trình tự dài rất quan trọng để bao phủ các vùng điều chỉnh gen từ xa và độ phân giải base rất quan trọng để nắm bắt các chi tiết sinh học chi tiết.</p>
+<p>Các mô hình trước đây phải đánh đổi độ dài trình tự và độ phân giải, điều này hạn chế phạm vi các phương thức mà chúng có thể mô hình hóa chung và dự đoán chính xác. Những tiến bộ kỹ thuật của chúng tôi giải quyết hạn chế này mà không làm tăng đáng kể các nguồn lực đào tạo — việc đào tạo một mô hình AlphaGenome duy nhất (không cần chưng cất) mất bốn giờ và yêu cầu một nửa ngân sách tính toán được sử dụng để đào tạo mô hình Enformer ban đầu của chúng tôi.</p>
+<h3 id="dự-đoán-đa-phương-thức-toàn-diện">Dự đoán đa phương thức toàn diện</h3>
+<p>Bằng cách mở khóa dự đoán độ phân giải cao cho các trình tự đầu vào dài, AlphaGenome có thể dự đoán phạm vi phương thức đa dạng nhất. Bằng cách đó, AlphaGenome cung cấp cho các nhà khoa học thông tin toàn diện hơn về các bước phức tạp của điều hòa gen.</p>
+<h3 id="chấm-điểm-biến-thể-hiệu-quả">Chấm điểm biến thể hiệu quả</h3>
+<p>Ngoài việc dự đoán một loạt các thuộc tính phân tử đa dạng, AlphaGenome có thể chấm điểm hiệu quả tác động của một biến thể di truyền đối với tất cả các thuộc tính này trong một giây. Nó thực hiện điều này bằng cách đối chiếu các dự đoán của các trình tự bị đột biến với các trình tự không bị đột biến và tóm tắt hiệu quả sự đối chiếu đó bằng các phương pháp khác nhau cho các phương thức khác nhau.</p>
+<h3 id="mô-hình-hóa-nối-liên-kết-mới">Mô hình hóa nối-liên kết mới</h3>
+<p>Nhiều bệnh di truyền hiếm gặp, chẳng hạn như teo cơ tủy sống và một số dạng xơ nang, có thể do lỗi trong quá trình nối RNA — một quá trình trong đó các phần của phân tử RNA bị loại bỏ, hoặc &ldquo;nối ra&rdquo;, và các đầu còn lại được nối lại. Lần đầu tiên, AlphaGenome có thể mô hình hóa rõ ràng vị trí và mức độ biểu hiện của các mối nối này trực tiếp từ trình tự, đưa ra những hiểu biết sâu sắc hơn về hậu quả của các biến thể di truyền đối với quá trình nối RNA.</p>
+<h2 id="hiệu-suất-hiện-đại-trên-các-điểm-chuẩn">Hiệu suất hiện đại trên các điểm chuẩn</h2>
+<p>AlphaGenome đạt được hiệu suất hiện đại trên một loạt các điểm chuẩn dự đoán bộ gen, chẳng hạn như dự đoán những phần nào của phân tử DNA sẽ ở gần nhau, liệu một biến thể di truyền sẽ làm tăng hay giảm biểu hiện của một gen, hoặc liệu nó sẽ thay đổi kiểu nối của gen.</p>
+<!-- raw HTML omitted -->
+<pre><code>&lt;picture class=&quot;picture&quot;&gt;
+  &lt;source
+  media=&quot;(min-width: 600px)&quot;
+  type=&quot;image/webp&quot;
+  width=&quot;616&quot;
+  height=&quot;355&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/iuiVs77psK_6U926XmCtIHgLADKxY-7IFZzkBbVS-t3igBATakf4GqEILM67MJzj8gpioDcwilbxs1JY_pdmlTvNHXEx2b-rN9QG1Im4GKLznuvimA=w616-rw 1x, https://lh3.googleusercontent.com/iuiVs77psK_6U926XmCtIHgLADKxY-7IFZzkBbVS-t3igBATakf4GqEILM67MJzj8gpioDcwilbxs1JY_pdmlTvNHXEx2b-rN9QG1Im4GKLznuvimA=w1232-rw 2x&quot;
+/&gt;&lt;source
+  
+  type=&quot;image/webp&quot;
+  width=&quot;528&quot;
+  height=&quot;304&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/iuiVs77psK_6U926XmCtIHgLADKxY-7IFZzkBbVS-t3igBATakf4GqEILM67MJzj8gpioDcwilbxs1JY_pdmlTvNHXEx2b-rN9QG1Im4GKLznuvimA=w528-rw 1x, https://lh3.googleusercontent.com/iuiVs77psK_6U926XmCtIHgLADKxY-7IFZzkBbVS-t3igBATakf4GqEILM67MJzj8gpioDcwilbxs1JY_pdmlTvNHXEx2b-rN9QG1Im4GKLznuvimA=w1056-rw 2x&quot;
+/&gt;
+  &lt;img alt=&quot;&quot; class=&quot;picture__image&quot; height=&quot;355&quot; loading=&quot;lazy&quot; src=&quot;https://lh3.googleusercontent.com/iuiVs77psK_6U926XmCtIHgLADKxY-7IFZzkBbVS-t3igBATakf4GqEILM67MJzj8gpioDcwilbxs1JY_pdmlTvNHXEx2b-rN9QG1Im4GKLznuvimA=w616&quot; width=&quot;616&quot;&gt;
+&lt;/picture&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Khi đưa ra dự đoán cho các trình tự DNA đơn lẻ, AlphaGenome hoạt động tốt hơn các mô hình bên ngoài tốt nhất trên 22 trong số 24 đánh giá. Và khi dự đoán tác động điều hòa của một biến thể, nó phù hợp hoặc vượt quá các mô hình bên ngoài hoạt động hàng đầu trên 24 trong số 26 đánh giá.</p>
+<p>So sánh này bao gồm các mô hình chuyên biệt cho các tác vụ riêng lẻ. AlphaGenome là mô hình duy nhất có thể dự đoán chung tất cả các phương thức được đánh giá, làm nổi bật tính tổng quát của nó. Đọc thêm trong <a href="https://storage.googleapis.com/deepmind-media/papers/alphagenome.pdf">bản in trước của chúng tôi</a>.</p>
+<h2 id="lợi-ích-của-một-mô-hình-thống-nhất">Lợi ích của một mô hình thống nhất</h2>
+<p>Tính tổng quát của AlphaGenome cho phép các nhà khoa học đồng thời khám phá tác động của một biến thể đối với một số phương thức chỉ với một lệnh gọi API. Điều này có nghĩa là các nhà khoa học có thể tạo và kiểm tra các giả thuyết nhanh hơn, mà không phải sử dụng nhiều mô hình để điều tra các phương thức khác nhau.</p>
+<p>Hơn nữa, hiệu suất mạnh mẽ của AlphaGenome chỉ ra rằng nó đã học được một biểu diễn tương đối chung của trình tự DNA trong bối cảnh điều hòa gen. Điều này làm cho nó trở thành một nền tảng vững chắc để cộng đồng rộng lớn hơn xây dựng. Sau khi mô hình được phát hành đầy đủ, các nhà khoa học sẽ có thể điều chỉnh và tinh chỉnh nó trên bộ dữ liệu của riêng họ để giải quyết tốt hơn các câu hỏi nghiên cứu độc đáo của họ.</p>
+<p>Cuối cùng, phương pháp này cung cấp một kiến trúc linh hoạt và có thể mở rộng cho tương lai. Bằng cách mở rộng dữ liệu huấn luyện, khả năng của AlphaGenome có thể được mở rộng để mang lại hiệu suất tốt hơn, bao gồm nhiều loài hơn hoặc bao gồm các phương thức bổ sung để làm cho mô hình trở nên toàn diện hơn.</p>
+<!-- raw HTML omitted -->
+<h2 id="một-công-cụ-nghiên-cứu-mạnh-mẽ">Một công cụ nghiên cứu mạnh mẽ</h2>
+<p>Khả năng dự đoán của AlphaGenome có thể giúp một số con đường nghiên cứu:</p>
+<ol>
+<li><strong>Hiểu biết về bệnh tật:</strong> Bằng cách dự đoán chính xác hơn sự gián đoạn di truyền, AlphaGenome có thể giúp các nhà nghiên cứu xác định chính xác hơn các nguyên nhân tiềm ẩn gây ra bệnh tật và giải thích tốt hơn tác động chức năng của các biến thể liên quan đến một số đặc điểm nhất định, có khả năng khám phá ra các mục tiêu điều trị mới. Chúng tôi nghĩ rằng mô hình đặc biệt phù hợp để nghiên cứu các biến thể hiếm gặp với các tác động tiềm năng lớn, chẳng hạn như những biến thể gây ra các rối loạn Mendelian hiếm gặp.</li>
+<li><strong>Sinh học tổng hợp:</strong> Các dự đoán của nó có thể được sử dụng để hướng dẫn thiết kế DNA tổng hợp với chức năng điều hòa cụ thể — ví dụ: chỉ kích hoạt một gen trong các tế bào thần kinh mà không phải trong các tế bào cơ.</li>
+<li><strong>Nghiên cứu cơ bản:</strong> Nó có thể đẩy nhanh sự hiểu biết của chúng ta về bộ gen bằng cách hỗ trợ lập bản đồ các yếu tố chức năng quan trọng của nó và xác định vai trò của chúng, xác định các hướng dẫn DNA thiết yếu nhất để điều chỉnh chức năng của một loại tế bào cụ thể.</li>
+</ol>
+<p>Ví dụ: chúng tôi đã sử dụng AlphaGenome để điều tra cơ chế tiềm năng của một đột biến liên quan đến ung thư. Trong một <a href="https://www.science.org/doi/10.1126/science.1259037">nghiên cứu hiện có về bệnh nhân mắc bệnh bạch cầu lympho cấp tính tế bào T (T-ALL)</a>, các nhà nghiên cứu đã quan sát thấy các đột biến ở các vị trí cụ thể trong bộ gen. Sử dụng AlphaGenome, chúng tôi dự đoán rằng các đột biến sẽ kích hoạt một gen gần đó gọi là <a href="https://alphafold.ebi.ac.uk/entry/P17542">TAL1</a> bằng cách giới thiệu một motif liên kết DNA MYB, bắt chước cơ chế bệnh đã biết và làm nổi bật khả năng của AlphaGenome trong việc liên kết các biến thể không mã hóa cụ thể với các gen gây bệnh.</p>
+<!-- raw HTML omitted -->
+<h2 id="những-hạn-chế-hiện-tại">Những hạn chế hiện tại</h2>
+<p>AlphaGenome đánh dấu một bước tiến quan trọng, nhưng điều quan trọng là phải thừa nhận những hạn chế hiện tại của nó.</p>
+<p>Giống như các mô hình dựa trên trình tự khác, việc nắm bắt chính xác ảnh hưởng của các yếu tố điều hòa rất xa, như những yếu tố cách xa hơn 100.000 chữ cái DNA, vẫn là một thách thức đang diễn ra. Một ưu tiên khác cho công việc trong tương lai là tiếp tục tăng cường khả năng của mô hình để nắm bắt các mẫu cụ thể của tế bào và mô.</p>
+<p>Chúng tôi chưa thiết kế hoặc xác thực AlphaGenome để dự đoán bộ gen cá nhân, một thách thức đã biết đối với các mô hình AI. Thay vào đó, chúng tôi tập trung nhiều hơn vào việc mô tả hiệu suất trên các biến thể di truyền riêng lẻ. Và mặc dù AlphaGenome có thể dự đoán kết quả phân tử, nhưng nó không cung cấp bức tranh đầy đủ về cách các biến thể di truyền dẫn đến các đặc điểm hoặc bệnh tật phức tạp. Chúng thường liên quan đến các quá trình sinh học rộng lớn hơn, như các yếu tố phát triển và môi trường, nằm ngoài phạm vi trực tiếp của mô hình của chúng tôi.</p>
+<p>Chúng tôi tiếp tục cải thiện các mô hình của mình và thu thập phản hồi để giúp chúng tôi giải quyết những khoảng trống này.</p>
+<h2 id="cho-phép-cộng-đồng-mở-khóa-tiềm-năng-của-alphagenome">Cho phép cộng đồng mở khóa tiềm năng của AlphaGenome</h2>
+<p>AlphaGenome hiện có sẵn để sử dụng phi thương mại thông qua <a href="https://github.com/google-deepmind/alphagenome">API AlphaGenome</a> của chúng tôi. Xin lưu ý rằng các dự đoán của mô hình của chúng tôi chỉ dành cho mục đích nghiên cứu và chưa được thiết kế hoặc xác thực cho các mục đích lâm sàng trực tiếp.</p>
+<p>Các nhà nghiên cứu trên toàn thế giới được mời liên hệ với các trường hợp sử dụng tiềm năng cho AlphaGenome và đặt câu hỏi hoặc chia sẻ phản hồi thông qua <a href="https://www.alphagenomecommunity.com/">diễn đàn cộng đồng</a>.</p>
+<p>Chúng tôi hy vọng AlphaGenome sẽ là một công cụ quan trọng để hiểu rõ hơn về bộ gen và chúng tôi cam kết hợp tác cùng với các chuyên gia bên ngoài trên khắp các tổ chức học thuật, ngành công nghiệp và chính phủ để đảm bảo AlphaGenome mang lại lợi ích cho càng nhiều người càng tốt.</p>
+<p>Cùng với những nỗ lực tập thể của cộng đồng khoa học rộng lớn hơn, chúng tôi hy vọng nó sẽ làm sâu sắc thêm sự hiểu biết của chúng ta về các quá trình tế bào phức tạp được mã hóa trong trình tự DNA và tác động của các biến thể, đồng thời thúc đẩy những khám phá mới thú vị trong bộ gen và chăm sóc sức khỏe.</p>
+<h2 id="tìm-hiểu-thêm-về-alphagenome">Tìm hiểu thêm về AlphaGenome</h2>
+<ul>
+<li><a href="https://storage.googleapis.com/deepmind-media/papers/alphagenome.pdf">Đọc bản in trước của chúng tôi</a></li>
+<li><a href="https://github.com/google-deepmind/alphagenome">Sử dụng AlphaGenome API</a></li>
+<li><a href="https://www.alphagenomecommunity.com/">Tham gia diễn đàn cộng đồng</a></li>
+</ul>
+<p><strong>Lời cảm ơn</strong></p>
+<p>Chúng tôi xin cảm ơn Juanita Bawagan, Arielle Bier, Stephanie Booth, Irina Andronic, Armin Senoner, Dhavanthi Hariharan, Rob Ashley, Agata Laydon và Kathryn Tunyasuvunakool vì sự giúp đỡ của họ với văn bản và hình ảnh.</p>
+<p>Công trình này được thực hiện nhờ sự đóng góp của các đồng tác giả AlphaGenome: Žiga Avsec, Natasha Latysheva, Jun Cheng, Guido Novati, Kyle R. Taylor, Tom Ward, Clare Bycroft, Lauren Nicolaisen, Eirini Arvaniti, Joshua Pan, Raina Thomas, Vincent Dutordoir, Matteo Perino, Soham De, Alexander Karollus, Adam Gayoso, Toby Sargeant, Anne Mottram, Lai Hong Wong, Pavol Drotár, Adam Kosiorek, Andrew Senior, Richard Tanburn, Taylor Applebaum, Souradeep Basu, Demis Hassabis và Pushmeet Kohli.</p>
+<p>Chúng tôi cũng xin cảm ơn Dhavanthi Hariharan, Charlie Taylor, Ottavia Bertolli, Yannis Assael, Alex Botev, Anna Trostanetski, Lucas Tenório, Victoria Johnston, Richard Green, Kathryn Tunyasuvunakool, Molly Beck, Uchechi Okereke, Rachael Tremlett, Sarah Chakera, Ibrahim I. Taskiran, Andreea-Alexandra Muşat, Raiyan Khan, Ren Yi và nhóm Google DeepMind lớn hơn vì sự hỗ trợ, giúp đỡ và phản hồi của họ.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://deepmind.google/discover/blog/alphagenome-ai-for-better-understanding-the-genome/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/25-june-2025/">25 June 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/deepmind.google/">Deepmind.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-12/676b6a/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/4emGMNrEdaydebppYDiyQMNhXtgUFr8VvrKhVItMHENrxeWmWO9yqhteSj2fe25lxkiZAu7vOZZcsXPDLg0O-LPSvk6CS1I8E2-GdjtoN_2ViJOY=w400-h225-n-nu" alt="Cách chúng tôi hỗ trợ dự đoán xoáy thuận nhiệt đới tốt hơn bằng AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-12T00:00:00&#43;00:00">Jun 12, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách chúng tôi hỗ trợ dự đoán xoáy thuận nhiệt đới tốt hơn bằng AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chúng tôi đang ra mắt Weather Lab, bao gồm các dự đoán xoáy thuận thử nghiệm của chúng tôi và chúng tôi đang hợp tác với Trung tâm Bão Quốc gia Hoa Kỳ để hỗ trợ các dự báo và cảnh báo của họ trong mùa xoáy thuận này.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-05-21/b0ac86/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Uh_O6Nx1GWznAfODatYYz2sxiDekdb6HWnnSsy-cfmTxfjdUEEleh9w4cBdwUfBnyQBS-t1xW4UZXrMmC-rI6bz31hCrm5nHLt6Cp1FJAT7X9Upv5g=w400-h225-n-nu" alt="Trách nhiệm &amp; An toàn. Nâng cao các biện pháp bảo vệ an ninh của Gemini" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-05-21T00:00:00&#43;00:00">May 21, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Trách nhiệm &amp; An toàn. Nâng cao các biện pháp bảo vệ an ninh của Gemini</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chúng tôi đã biến Gemini 2.5 trở thành dòng mô hình an toàn nhất của chúng tôi cho đến nay.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-25/ec96d0/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/AdobeStock_1325214942.jpeg?w=350&amp;h=175&amp;crop=1" alt="AI bóng tối- Làm thế nào để giảm thiểu những rủi ro tiềm ẩn của AI tạo sinh tại nơi làm việc" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AI bóng tối- Làm thế nào để giảm thiểu những rủi ro tiềm ẩn của AI tạo sinh tại nơi làm việc</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-25/7c231f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/SZkcKUQyLUhSQ06Rq-PJbxAqn1OpMeEa3khkrBVB1MGyHfxyftoqWwEb2aLP9JxX7CjhpLFODcc5zIoMoNdu0bl6ELsZV2nP9fDwZC6SYS36lzAKDw=w400-h225-n-nu" alt="AlphaGenome- AI để hiểu rõ hơn về bộ gen" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AlphaGenome- AI để hiểu rõ hơn về bộ gen</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/aa8663/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/nuneybits_Vector_art_of_AI_agent_handshake_f856c181-d118-4cfb-a49c-5969b31bb862.webp?w=700&amp;h=350&amp;crop=1" alt="Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Salesforce ra mắt Agentforce 3 với khả năng quan sát tác nhân AI và hỗ trợ MCP</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/e9738d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/196_transformers_backend_sglang/thumbnail.jpg" alt="Tích hợp backend Transformers trong SGLang" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tích hợp backend Transformers trong SGLang</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-24/8eac01/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/06/self-adapting-language-models.png?w=700&amp;h=350&amp;crop=1" alt="Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Vượt xa AI tĩnh- Khuôn khổ mới của MIT cho phép các mô hình tự dạy</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
