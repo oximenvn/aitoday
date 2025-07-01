@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Một sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba | AI Today - SkyAI</title>
+
+<meta name="description" content="Một sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Một sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Một sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-01T00:00:00&#43;00:00">July 1, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            16 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/edd06a55a33431380c89c1864a07859edb8065a7-1600x1600.png" alt="Một sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba">
+        <figcaption class="text-center italic text-xs">Một sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="sáng-kiến-mới-để-phát-triển-các-đánh-giá-mô-hình-của-bên-thứ-ba--anthropic">Sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba \ Anthropic</h1>
+<p>Một hệ sinh thái đánh giá mạnh mẽ, của bên thứ ba là rất quan trọng để đánh giá khả năng và rủi ro của AI, nhưng bối cảnh đánh giá hiện tại còn hạn chế. Phát triển các đánh giá chất lượng cao, liên quan đến an toàn vẫn còn nhiều thách thức và nhu cầu đang vượt quá nguồn cung. Để giải quyết vấn đề này, hôm nay chúng tôi giới thiệu một sáng kiến mới để tài trợ cho các đánh giá do các tổ chức bên thứ ba phát triển, những tổ chức có thể đo lường hiệu quả các khả năng nâng cao trong các mô hình AI. Khoản đầu tư của chúng tôi vào các đánh giá này nhằm nâng cao toàn bộ lĩnh vực an toàn AI, cung cấp các công cụ có giá trị mang lại lợi ích cho toàn bộ hệ sinh thái.</p>
+<p>Trong bài đăng này, chúng tôi mô tả sáng kiến của mình để tìm nguồn cung cấp các đánh giá mới nhằm đo lường các khả năng mô hình nâng cao và vạch ra các động lực cũng như các loại đánh giá cụ thể mà chúng tôi đang ưu tiên.</p>
+<p>Nếu bạn có đề xuất, hãy đăng ký thông qua <strong><a href="https://forms.gle/atw9KD3N9RPYeqoh6">mẫu đăng ký</a></strong> của chúng tôi.</p>
+<h2 id="các-lĩnh-vực-trọng-tâm-ưu-tiên-cao-nhất-của-chúng-tôi">Các lĩnh vực trọng tâm ưu tiên cao nhất của chúng tôi</h2>
+<p>Chúng tôi quan tâm đến việc tìm nguồn cung cấp ba lĩnh vực phát triển đánh giá chính, mà chúng tôi sẽ mô tả thêm trong bài đăng:</p>
+<ol>
+<li>Đánh giá Cấp độ An toàn AI</li>
+<li>Các chỉ số về khả năng nâng cao và an toàn</li>
+<li>Cơ sở hạ tầng, công cụ và phương pháp để phát triển đánh giá</li>
+</ol>
+<h3 id="đánh-giá-cấp-độ-an-toàn-ai">Đánh giá Cấp độ An toàn AI</h3>
+<p>Chúng tôi đang tìm kiếm các đánh giá giúp chúng tôi đo lường Cấp độ An toàn AI (ASL) được xác định trong <strong><a href="https://www.anthropic.com/news/anthropics-responsible-scaling-policy">Chính sách Mở rộng Có trách nhiệm</a></strong> của chúng tôi. Các cấp độ này xác định các yêu cầu về an toàn và bảo mật cho các mô hình có khả năng cụ thể. Các đánh giá ASL mạnh mẽ là rất quan trọng để đảm bảo chúng tôi phát triển và triển khai các mô hình của mình một cách có trách nhiệm. Danh mục này bao gồm:</p>
+<ul>
+<li>
+<p><strong>An ninh mạng</strong> — Các đánh giá đánh giá khả năng của các mô hình để hỗ trợ hoặc hành động tự chủ trong các hoạt động trên mạng ở cấp độ của các tác nhân đe dọa tinh vi. Chúng tôi tập trung vào các khía cạnh quan trọng của chuỗi tiêu diệt trên mạng, chẳng hạn như khám phá lỗ hổng, phát triển khai thác và di chuyển ngang. Chúng tôi đặc biệt quan tâm đến các khả năng mà nếu được tự động hóa và mở rộng quy mô, có thể gây ra rủi ro đáng kể cho cơ sở hạ tầng quan trọng và các hệ thống có giá trị kinh tế ở cấp độ tiếp cận các tác nhân đe dọa thường trực nâng cao. Các đánh giá hiệu quả trong lĩnh vực này có thể giống với các thử thách Capture The Flag (CTF) mới lạ mà không có các giải pháp có sẵn công khai. Các đánh giá hiện tại thường không đạt yêu cầu, quá đơn giản hoặc có các giải pháp dễ dàng truy cập trực tuyến.</p>
+</li>
+<li>
+<p><strong>Các rủi ro về hóa chất, sinh học, phóng xạ và hạt nhân (CBRN)</strong> — Chúng tôi đang ưu tiên các đánh giá đánh giá hai khả năng quan trọng: a) tiềm năng của các mô hình để tăng cường đáng kể khả năng của những người không có chuyên môn hoặc chuyên gia trong việc tạo ra các mối đe dọa CBRN và b) khả năng thiết kế các mối đe dọa CBRN mới, gây hại hơn. Một thách thức chính trong lĩnh vực này là đảm bảo rằng các đánh giá đo lường chính xác các rủi ro trong thế giới thực. Các đề xuất nên xem xét cẩn thận cách các đánh giá của họ nhắm mục tiêu vào các nút thắt nâng cấp chính xác hoặc các tiêu chí thiết kế nâng cao có thể dẫn đến các mối đe dọa CBRN thực sự, thảm khốc.</p>
+</li>
+<li>
+<p><strong>Tính tự chủ của mô hình</strong> — Các đánh giá đánh giá khả năng của các mô hình để hoạt động tự chủ, tập trung vào ba lĩnh vực chính:</p>
+<ul>
+<li><strong>Nghiên cứu và phát triển AI:</strong> Đo lường trình độ của các mô hình trong việc thực hiện các tác vụ R&amp;D AI ở cấp độ kỹ sư nghiên cứu cơ sở, trung bình hoặc chuyên gia.</li>
+<li><strong>Các hành vi tự chủ nâng cao:</strong> Để biết thêm thông tin, hãy xem <strong><a href="https://www-cdn.anthropic.com/1adf000c8f675958c2ee23805d91aaade1cd4613/responsible-scaling-policy.pdf">các đánh giá về Khả năng Tự chủ trong Chính sách Mở rộng Có trách nhiệm của chúng tôi</a></strong> và <strong><a href="https://github.com/METR/public-tasks">bộ tác vụ công khai của METR</a>.</strong></li>
+<li><strong>Tự sao chép và thích ứng:</strong> Đánh giá khả năng của các mô hình để có được các nguồn lực tính toán và tài chính hoặc trích xuất trọng số.</li>
+</ul>
+</li>
+<li>
+<p><strong>Các rủi ro an ninh quốc gia khác</strong> — Các hệ thống AI có khả năng tác động đáng kể đến an ninh quốc gia, quốc phòng và các hoạt động tình báo của cả các tác nhân nhà nước và phi nhà nước. Chúng tôi cam kết phát triển một hệ thống cảnh báo sớm để xác định và đánh giá các rủi ro mới nổi phức tạp này. Do tính chất nhạy cảm của lĩnh vực này, chúng tôi mời các bên quan tâm gửi đơn đăng ký kèm theo đề xuất của bạn, bao gồm các điểm sau:</p>
+<ul>
+<li>Xác định các mô hình đe dọa chi tiết và toàn diện về cách lạm dụng có thể được các tác nhân khác nhau tận dụng</li>
+<li>Kết nối các mô hình đe dọa này với các chỉ số đánh giá ngắn gọn, có thể đo lường được</li>
+</ul>
+</li>
+<li>
+<p><strong>Thao túng xã hội</strong> — Các đánh giá đo lường mức độ các mô hình có thể khuếch đại các mối đe dọa liên quan đến thuyết phục, chẳng hạn như thông tin sai lệch và thao túng. Lĩnh vực này đặt ra hai thách thức đáng kể:</p>
+<ul>
+<li>Phát triển một lý thuyết mạnh mẽ về cách các khả năng này leo thang các rủi ro trong thế giới thực vượt quá các đường cơ sở hiện tại</li>
+<li>Cô lập và đánh giá đóng góp duy nhất của mô hình vào các rủi ro này</li>
+</ul>
+</li>
+<li>
+<p><strong>Các rủi ro không tương thích</strong> — Nghiên cứu của chúng tôi cho thấy rằng, trong một số trường hợp, các mô hình AI có thể <strong><a href="https://www.anthropic.com/research/reward-tampering">học các mục tiêu và động cơ nguy hiểm</a></strong>, giữ lại chúng <strong><a href="https://www.anthropic.com/news/sleeper-agents-training-deceptive-llms-that-persist-through-safety-training">ngay cả sau khi huấn luyện an toàn</a></strong> và đánh lừa người dùng về các hành động được thực hiện để theo đuổi chúng. Các khả năng này, kết hợp với khả năng <strong><a href="https://www.anthropic.com/news/measuring-model-persuasiveness">thuyết phục</a></strong> ở cấp độ con người và khả năng trên mạng của các mô hình AI hiện tại, làm tăng mối lo ngại của chúng tôi về các hành động tiềm tàng của các mô hình có khả năng hơn trong tương lai. Ví dụ: các mô hình trong tương lai có thể theo đuổi sự lừa dối tinh vi và khó phát hiện, bỏ qua hoặc phá hoại an ninh của một tổ chức, bằng cách khiến con người thực hiện các hành động mà họ sẽ không thực hiện hoặc trích xuất thông tin nhạy cảm. Chúng tôi đề xuất phát triển các đánh giá để theo dõi các khả năng như vậy.</p>
+</li>
+</ul>
+<h3 id="các-chỉ-số-về-khả-năng-nâng-cao-và-an-toàn">Các chỉ số về khả năng nâng cao và an toàn</h3>
+<p>Ngoài các đánh giá ASL của chúng tôi, chúng tôi muốn phát triển các đánh giá đánh giá các khả năng mô hình nâng cao và các tiêu chí an toàn liên quan. Các chỉ số này sẽ cung cấp một sự hiểu biết toàn diện hơn về các điểm mạnh và rủi ro tiềm tàng của các mô hình của chúng tôi. Danh mục này bao gồm:</p>
+<ul>
+<li>
+<p><strong>Khoa học nâng cao</strong> — Tiềm năng của AI để chuyển đổi nghiên cứu khoa học là rất lớn. Mặc dù các đánh giá như <strong><a href="https://arxiv.org/abs/2311.12022">Google-Proof Q&amp;A (GPQA)</a></strong> cung cấp một nền tảng vững chắc, nhưng chúng tôi tin rằng vẫn còn rất nhiều dư địa để phát triển. Chúng tôi đang tìm cách tài trợ cho sự phát triển của hàng chục nghìn câu hỏi đánh giá mới và các tác vụ đầu cuối sẽ thách thức ngay cả sinh viên tốt nghiệp. Các lĩnh vực trọng tâm của chúng tôi bao gồm:</p>
+<ul>
+<li>Tổng hợp kiến thức (kết hợp thông tin chi tiết từ nhiều công trình)</li>
+<li>Kiến thức ở cấp độ sau đại học vượt ra ngoài dữ liệu huấn luyện hiện có</li>
+<li>Thực hiện dự án nghiên cứu đầu cuối tự chủ</li>
+<li>Tạo giả thuyết và thiết kế mới</li>
+<li>Khắc phục sự cố trong phòng thí nghiệm về các giao thức và quy trình vận hành tiêu chuẩn</li>
+<li>Kiến thức ngầm (loại kiến thức chỉ có thể có được thông qua học việc trong phòng thí nghiệm)</li>
+<li>Các tác vụ dài hạn liên quan đến rất nhiều quyết định để đạt được một kết quả thành công</li>
+<li>Phân tích dữ liệu tự động</li>
+</ul>
+</li>
+<li>
+<p><strong>Tính có hại và từ chối</strong> — Chúng tôi cần tăng cường đánh giá khả năng của các bộ phân loại để chọn lọc phát hiện các đầu ra mô hình có khả năng gây hại, bao gồm:</p>
+<ul>
+<li>Phân biệt giữa thông tin sử dụng kép và không sử dụng kép</li>
+<li>Xác định chính xác các đầu ra liên quan đến CBRN thực sự có hại</li>
+<li>Phát hiện các nỗ lực tự động hóa các sự cố trên mạng</li>
+</ul>
+</li>
+<li>
+<p><strong>Cải thiện các đánh giá đa ngôn ngữ</strong> — Điểm chuẩn khả năng thường không có sẵn trên hầu hết các ngôn ngữ trên thế giới. Chúng tôi muốn hỗ trợ các đánh giá khả năng hỗ trợ nhiều ngôn ngữ.</p>
+</li>
+<li>
+<p><strong>Các tác động xã hội</strong> — Các đánh giá cung cấp các đánh giá phức tạp, sắc thái, vượt ra ngoài các chỉ số bề mặt để tạo ra các đánh giá nghiêm ngặt nhắm mục tiêu vào các khái niệm như thành kiến có hại, phân biệt đối xử, quá phụ thuộc, phụ thuộc, gắn bó, ảnh hưởng tâm lý, tác động kinh tế, đồng nhất hóa và các tác động xã hội rộng lớn khác.</p>
+</li>
+</ul>
+<h3 id="cơ-sở-hạ-tầng-công-cụ-và-phương-pháp-để-phát-triển-các-đánh-giá">Cơ sở hạ tầng, công cụ và phương pháp để phát triển các đánh giá</h3>
+<p>Chúng tôi quan tâm đến việc tài trợ cho các công cụ và cơ sở hạ tầng giúp hợp lý hóa sự phát triển của các đánh giá chất lượng cao. Chúng sẽ rất quan trọng để đạt được thử nghiệm hiệu quả và hiệu quả hơn trên cộng đồng AI. Danh mục này bao gồm:</p>
+<ul>
+<li>
+<p><strong>Nền tảng phát triển đánh giá Mẫu/Không cần mã</strong> — Tạo ra các đánh giá mạnh mẽ đòi hỏi chuyên môn sâu về chủ đề cũng như kinh nghiệm viết mã và AI. Chúng tôi đã phát hiện ra rằng đây là một sự kết hợp kỹ năng thực sự độc đáo. Chúng tôi muốn tài trợ cho sự phát triển của các nền tảng cho phép các chuyên gia về chủ đề không có kỹ năng viết mã phát triển các đánh giá mạnh mẽ có thể được xuất ở các định dạng thích hợp. Đây có thể là các công cụ giúp định dạng một đánh giá theo cấu trúc phù hợp, cũng như các công cụ cho phép lặp lại nhanh chóng và cung cấp phản hồi cho chuyên gia về chủ đề về việc liệu đánh giá mà họ đang phát triển có phải là một đánh giá mạnh mẽ hay không.</p>
+</li>
+<li>
+<p><strong>Các đánh giá để chấm điểm mô hình</strong> — Cải thiện khả năng của các mô hình để xem xét và chấm điểm một cách đáng tin cậy các đầu ra từ các mô hình khác bằng cách sử dụng các tiêu chí phức tạp sẽ mở ra các nút thắt trong hệ sinh thái hiện tại. Thách thức chính hiện tại là có một bộ thử nghiệm đủ đa dạng và phức tạp để đánh giá độ tin cậy của các mô hình với tư cách là người chấm điểm chất lượng cao. Để giải quyết vấn đề này, chúng tôi muốn khám phá sự phát triển của các bộ dữ liệu mở rộng trên các lĩnh vực đa dạng, trong đó mỗi bộ dữ liệu lý tưởng sẽ có các câu hỏi, nhiều câu trả lời mẫu, điểm &ldquo;sự thật cơ bản&rdquo; cho mỗi câu trả lời và tiêu chí theo đó câu trả lời đã được chấm điểm.</p>
+</li>
+<li>
+<p><strong>Thử nghiệm nâng cấp</strong> — Chúng tôi quan tâm đến việc thực hiện các đánh giá đo lường chính xác tác động của mô hình thông qua các thử nghiệm có đối chứng. Các thử nghiệm này sẽ so sánh hiệu suất tác vụ giữa các nhóm có và không có quyền truy cập mô hình. Tầm nhìn của chúng tôi là thường xuyên tiến hành các thử nghiệm quy mô lớn với sự tham gia của hàng nghìn người tham gia, cho phép chúng tôi định lượng cách các mô hình đóng góp vào kết quả nhanh hơn và tốt hơn. Tuy nhiên, có những nút thắt để thực hiện các thử nghiệm như vậy. Chúng tôi muốn hỗ trợ:</p>
+<ul>
+<li>Sự phát triển của các mạng lưới quần thể nghiên cứu chất lượng cao, có động lực để hoàn thành các nhiệm vụ</li>
+<li>Công cụ để dễ dàng chạy và phân tích các thử nghiệm</li>
+</ul>
+</li>
+</ul>
+<h2 id="các-nguyên-tắc-của-đánh-giá-tốt">Các nguyên tắc của đánh giá tốt</h2>
+<p><strong><a href="https://www.anthropic.com/news/evaluating-ai-systems">Phát triển các đánh giá tuyệt vời là khó</a></strong>. Ngay cả một số nhà phát triển có kinh nghiệm nhất cũng rơi vào các cạm bẫy thông thường và ngay cả những đánh giá tốt nhất không phải lúc nào cũng biểu thị các rủi ro mà chúng tuyên bố đo lường. Dưới đây, chúng tôi liệt kê một số đặc điểm của các đánh giá tốt mà chúng tôi đã học được thông qua thử nghiệm và sai sót:</p>
+<ol>
+<li>
+<p><strong>Đủ khó:</strong> Các đánh giá phải phù hợp để đo lường các khả năng được liệt kê cho các cấp độ ASL-3 hoặc ASL-4 trong Chính sách Mở rộng Có trách nhiệm của chúng tôi và/hoặc hành vi ở cấp độ chuyên gia.</p>
+</li>
+<li>
+<p><strong>Không có trong dữ liệu huấn luyện:</strong> Thông thường, các đánh giá kết thúc bằng việc đo lường khả năng ghi nhớ mô hình vì dữ liệu nằm trong bộ huấn luyện của nó. Nếu có thể và hữu ích, hãy đảm bảo mô hình chưa thấy đánh giá. Điều này giúp chỉ ra rằng đánh giá đang nắm bắt hành vi khái quát hóa vượt ra ngoài dữ liệu huấn luyện.</p>
+</li>
+<li>
+<p><strong>Hiệu quả, có thể mở rộng, sẵn sàng sử dụng:</strong> Các đánh giá phải được tối ưu hóa để thực hiện hiệu quả, tận dụng tự động hóa ở những nơi có thể. Chúng phải dễ dàng triển khai bằng cơ sở hạ tầng hiện có với thiết lập tối thiểu.</p>
+</li>
+<li>
+<p><strong>Khối lượng lớn nếu có thể:</strong> Mọi thứ khác đều bình đẳng, các đánh giá có 1.000 hoặc 10.000 tác vụ hoặc câu hỏi được ưu tiên hơn các đánh giá có 100 tác vụ. Tuy nhiên, các đánh giá chất lượng cao, khối lượng thấp cũng có giá trị.</p>
+</li>
+<li>
+<p><strong>Chuyên môn về lĩnh vực:</strong> Nếu đánh giá là về hiệu suất của chuyên gia về một chủ đề cụ thể (ví dụ: khoa học), hãy đảm bảo sử dụng các chuyên gia về chủ đề để phát triển hoặc xem xét đánh giá.</p>
+</li>
+<li>
+<p><strong>Tính đa dạng của các định dạng:</strong> Cân nhắc sử dụng các định dạng vượt ra ngoài nhiều lựa chọn, chẳng hạn như các đánh giá dựa trên tác vụ (ví dụ: xem mã có vượt qua một bài kiểm tra hay một cờ có bị bắt trong CTF hay không), các đánh giá được mô hình chấm điểm hoặc các thử nghiệm trên người.</p>
+</li>
+<li>
+<p><strong>Các đường cơ sở của chuyên gia để so sánh:</strong> Thông thường, rất hữu ích khi so sánh hiệu suất của mô hình với hiệu suất của các chuyên gia về lĩnh vực đó.</p>
+</li>
+<li>
+<p><strong>Tài liệu tốt và khả năng tái tạo:</strong> Chúng tôi khuyên bạn nên ghi lại chính xác cách đánh giá được phát triển và bất kỳ hạn chế hoặc cạm bẫy nào có khả năng xảy ra. Sử dụng các tiêu chuẩn như Inspect hoặc tiêu chuẩn METR nếu có thể.</p>
+</li>
+<li>
+<p><strong>Bắt đầu nhỏ, lặp lại và mở rộng quy mô:</strong> Bắt đầu bằng cách chỉ viết một đến năm câu hỏi hoặc tác vụ, chạy mô hình trên đánh giá và đọc các bản ghi mô hình. Thông thường, bạn sẽ nhận ra đánh giá không nắm bắt được những gì bạn muốn kiểm tra hoặc nó quá dễ.</p>
+</li>
+<li>
+<p><strong>Mô hình hóa mối đe dọa thực tế, liên quan đến an toàn:</strong> Các đánh giá an toàn lý tưởng nên có thuộc tính là nếu một mô hình đạt điểm cao, các chuyên gia sẽ tin rằng một sự cố lớn có thể xảy ra. Hầu hết thời gian, khi các mô hình hoạt động tốt, các chuyên gia đã nhận ra rằng hiệu suất cao trên phiên bản đánh giá đó là không đủ để khiến họ lo lắng.</p>
+</li>
+</ol>
+<h2 id="cách-gửi-đề-xuất">Cách gửi đề xuất</h2>
+<p>Bạn có thể gửi đề xuất trên <strong><a href="https://forms.gle/atw9KD3N9RPYeqoh6">mẫu đăng ký</a></strong> của chúng tôi. Nếu có bất kỳ câu hỏi nào, vui lòng liên hệ với <strong><a href="mailto:eval-initiative@anthropic.com">eval-initiative@anthropic.com</a></strong>.</p>
+<p>Nhóm của chúng tôi sẽ xem xét các bài gửi trên cơ sở luân phiên và theo dõi các đề xuất đã chọn để thảo luận về các bước tiếp theo. Chúng tôi cung cấp một loạt các tùy chọn tài trợ phù hợp với nhu cầu và giai đoạn của từng dự án.</p>
+<p>Kinh nghiệm của chúng tôi đã chỉ ra rằng việc tinh chỉnh một đánh giá thường đòi hỏi nhiều lần lặp lại. Bạn sẽ có cơ hội tương tác trực tiếp với các chuyên gia về lĩnh vực của chúng tôi từ Frontier Red Team, Finetuning, Trust &amp; Safety và các nhóm liên quan khác. Các nhóm của chúng tôi có thể cung cấp hướng dẫn để giúp định hình các đánh giá của bạn để có tác động tối đa.</p>
+<p>Chúng tôi hy vọng sáng kiến này đóng vai trò là chất xúc tác cho sự tiến bộ hướng tới một tương lai nơi đánh giá AI toàn diện là một tiêu chuẩn công nghiệp. Chúng tôi mời bạn tham gia cùng chúng tôi trong công việc quan trọng này và giúp định hình con đường phía trước.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/news/a-new-initiative-for-developing-third-party-model-evaluations">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/01-july-2025/">01 July 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-01/c08787/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/AdobeStock_998146609.jpeg?w=350&amp;h=175&amp;crop=1" alt="Các doanh nghiệp ưu tiên AI- Trường hợp cấp thiết cho các nền tảng AI có thể mở rộng, được kết nối" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-01T00:00:00&#43;00:00">Jul 01, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các doanh nghiệp ưu tiên AI- Trường hợp cấp thiết cho các nền tảng AI có thể mở rộng, được kết nối</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Các doanh nghiệp ưu tiên AI- Trường hợp cấp thiết cho các nền tảng AI có thể mở rộng, được kết nối</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-28/6e94bd/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-28T00:00:00&#43;00:00">Jun 28, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu Chương trình Tương lai Kinh tế Anthropic</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu Chương trình Tương lai Kinh tế Anthropic</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-01/c08787/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/AdobeStock_998146609.jpeg?w=350&amp;h=175&amp;crop=1" alt="Các doanh nghiệp ưu tiên AI- Trường hợp cấp thiết cho các nền tảng AI có thể mở rộng, được kết nối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các doanh nghiệp ưu tiên AI- Trường hợp cấp thiết cho các nền tảng AI có thể mở rộng, được kết nối</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-01/c12f27/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/edd06a55a33431380c89c1864a07859edb8065a7-1600x1600.png" alt="Một sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Một sáng kiến mới để phát triển các đánh giá mô hình của bên thứ ba</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-28/6e94bd/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Chương trình Tương lai Kinh tế Anthropic</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-28/f6e3c8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://scontent.fhan15-1.fna.fbcdn.net/v/t39.2365-6/513299632_1777929793108543_6083053408152212084_n.gif?_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=e280be&amp;_nc_ohc=1OKHgXqaddAQ7kNvwEv1G-W&amp;_nc_oc=AdmRLLDH7nbka6OmLW1-WSFf_fLZOYTWHu4PJf2E6y9_6ea__12BinTp5b-HRwCGxnRpcwfkf502lDBd4SSvDUW5&amp;_nc_zt=14&amp;_nc_ht=scontent.fhan15-1.fna&amp;_nc_gid=O38k3fXjvYehNZexHPz4jA&amp;oh=00_AfPoMbo97j3NvrMYcX5iWiMAQJE2bD8kCB8K1fDPhdeEBQ&amp;oe=68798580" alt="Mô hình hóa động lực hội thoại tự nhiên với Tương tác Liền mạch" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mô hình hóa động lực hội thoại tự nhiên với Tương tác Liền mạch</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-28/c786f2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://qwenlm.github.io/img/logo.png" alt="Qwen VLo- Từ &#34;Hiểu&#34; Thế Giới đến &#34;Miêu Tả&#34; Nó" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Qwen VLo- Từ &#34;Hiểu&#34; Thế Giới đến &#34;Miêu Tả&#34; Nó</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
