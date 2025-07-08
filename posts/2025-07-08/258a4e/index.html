@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quy trình dữ liệu đa phương thức hiệu quả | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này thảo luận về một quy trình dữ liệu đa phương thức hiệu quả.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Quy trình dữ liệu đa phương thức hiệu quả</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này thảo luận về một quy trình dữ liệu đa phương thức hiệu quả. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-08T00:00:00&#43;00:00">July 8, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/mmdp/thumbnail.png" alt="Quy trình dữ liệu đa phương thức hiệu quả">
+        <figcaption class="text-center italic text-xs">Bài viết này thảo luận về một quy trình dữ liệu đa phương thức hiệu quả.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="quy-trình-dữ-liệu-đa-phương-thức-hiệu-quả">Quy trình Dữ liệu Đa phương thức Hiệu quả</h1>
+<p>Bạn đã chuẩn bị mọi thứ - dữ liệu, mô hình, một hệ thống GPU mạnh mẽ. Bạn nhấn &ldquo;run&rdquo; và&hellip; chờ. Và chờ đợi nhiều hơn nữa. GPU của bạn hầu như không hoạt động trong khi ví của bạn ngày càng vơi đi theo giờ.</p>
+<p>Nghe quen thuộc không? Chúng tôi đã từng trải qua điều đó. Sau một số công việc điều tra trên dự án <a href="https://github.com/huggingface/nanovlm">nanoVLM</a> của mình, chúng tôi <a href="https://x.com/andimarafioti/status/1937518080474906641">phát hiện</a> thủ phạm thực sự không phải là mô hình hoặc phần cứng của chúng tôi, mà là quy trình dữ liệu của chúng tôi cực kỳ lãng phí.</p>
+<p>Đây là những gì chúng tôi tìm thấy:</p>
+<ol>
+<li><strong>GPU nhàn rỗi</strong>: Mô hình của chúng tôi thực sự đang chờ dữ liệu xuất hiện.</li>
+<li><strong>Padding quá nhiều</strong>: Mỗi batch chứa đầy các token padding vô dụng, không đóng góp gì vào quá trình huấn luyện.</li>
+</ol>
+<p>Trong bài đăng này, chúng tôi xây dựng một quy trình hiệu quả trong <strong>năm giai đoạn</strong>. Trong mỗi giai đoạn, chúng tôi thêm hoặc loại bỏ khỏi bước trước đó và nhận xét về những gì đã đúng và những gì không.</p>
+<h3 id="mục-lục">Mục lục:</h3>
+<ul>
+<li><a href="#stage-0-preparation">Giai đoạn 0: Chuẩn bị</a></li>
+<li><a href="#stage-1-visualising-the-dataset">Giai đoạn 1: Trực quan hóa Tập dữ liệu</a></li>
+<li><a href="#stage-2-naive-padding">Giai đoạn 2: Padding ngây thơ</a></li>
+<li><a href="#stage-3-constrained-padding">Giai đoạn 3: Padding có ràng buộc</a></li>
+<li><a href="#stage-4-packing-smarter-with-knapsacks">Giai đoạn 4: Đóng gói thông minh hơn với Knapsacks</a></li>
+<li><a href="#stage-5-knapsacks-for-multimodal-data">Giai đoạn 5: Knapsack cho Dữ liệu Đa phương thức</a></li>
+<li><a href="#conclusion">Kết luận</a></li>
+</ul>
+<h2 id="giai-đoạn-0-chuẩn-bị">[Giai đoạn 0] Chuẩn bị</h2>
+<p>Để giúp bạn dễ dàng theo dõi các tác vụ chuẩn bị dữ liệu, chúng tôi đã tạo một kho lưu trữ riêng biệt chỉ tập trung vào quy trình dữ liệu. Chúng tôi hy vọng điều này sẽ dễ hiểu hơn nhiều so với việc đọc mã sau khi tích hợp với kho lưu trữ nanoVLM. Ngoài ra, điều này có thể hữu ích để khởi động các quy trình dữ liệu khác!</p>
+<p>Kho lưu trữ: <a href="https://github.com/ariG23498/mmdp">https://github.com/ariG23498/mmdp</a></p>
+<p>Để làm theo, tất cả những gì bạn cần làm là clone kho lưu trữ. Nó chứa các tác vụ chuẩn bị dữ liệu cuối cùng, nhưng nó được thiết kế để giới thiệu từng bước.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ git clone https://github.com/ariG23498/mmdp.git
+</span></span></code></pre></div><h2 id="giai-đoạn-1-trực-quan-hóa-tập-dữ-liệu">[Giai đoạn 1] Trực quan hóa Tập dữ liệu</h2>
+<p>Trước khi tối ưu hóa bất cứ điều gì, chúng ta cần hiểu những gì chúng ta đang làm việc. Tập dữ liệu đa phương thức của chúng tôi có hình ảnh, lời nhắc văn bản và phản hồi.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ uv run 01_check_dataset.py
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Làm quen với dữ liệu huấn luyện của bạn là rất quan trọng để thành công. Tập lệnh trước hiển thị một mẫu ngẫu nhiên mỗi khi bạn chạy nó; bạn có thể muốn sao chép đoạn mã vào một sổ ghi chép và chạy nó nhiều lần để có cảm giác về dữ liệu.</p>
+<h2 id="giai-đoạn-2-padding-ngây-thơ">[Giai đoạn 2] Padding ngây thơ</h2>
+<p>Nỗ lực huấn luyện đầu tiên của chúng tôi đã sử dụng phương pháp rõ ràng (và rất thường xuyên):</p>
+<ul>
+<li>Token hóa mọi thứ</li>
+<li>Tìm chuỗi dài nhất trong mỗi batch</li>
+<li>Padding mọi thứ khác cho phù hợp</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ uv run 02_naive_pad_dataloader.py
+</span></span></code></pre></div><p>Kết quả thật đau đớn. Hãy nhìn vào hình ảnh trực quan này:</p>
+<!-- raw HTML omitted -->
+<p>Bạn có thấy tất cả màu xám đó không? Đó là padding. Đó là GPU đang xử lý hoàn toàn không có gì trong khi bạn trả tiền cho thời gian tính toán. Chúng tôi đã lãng phí khoảng 60% batch của mình cho các token trống.</p>
+<h2 id="giai-đoạn-3-padding-có-ràng-buộc">[Giai đoạn 3] Padding có ràng buộc</h2>
+<p>Bước tiếp theo của chúng tôi rất đơn giản. Đặt độ dài tối đa toàn cục và tuân thủ nó. Nếu một mẫu quá dài, chúng tôi sẽ loại bỏ nó.</p>
+<!-- raw HTML omitted -->
+<p>Như bạn có thể nhận thấy rằng batch hiện có ít hơn một mẫu. Điều này là do quá trình lọc. Điều này đã giúp, nhưng chúng tôi vẫn đang padding mọi thứ theo cùng một độ dài cố định bất kể nội dung thực tế. Tốt hơn trước, nhưng vẫn lãng phí.</p>
+<h2 id="giai-đoạn-4-đóng-gói-thông-minh-hơn-với-knapsacks">[Giai đoạn 4]: Đóng gói thông minh hơn với Knapsacks</h2>
+<p>Bây giờ chúng ta đã sẵn sàng để suy nghĩ lại về việc tạo batch hoàn toàn. Padding là kẻ thù và chúng ta cần một chiến lược để giảm thiểu nó trong khi tối đa hóa lượng dữ liệu chúng ta có thể đưa vào mỗi batch. Hãy nhập <a href="https://en.wikipedia.org/wiki/Knapsack_problem"><strong>bài toán xếp ba lô</strong></a>, một bài toán cổ điển từ khoa học máy tính, hoàn hảo cho việc này.</p>
+<p>Hãy tưởng tượng bạn đang đóng gói một chiếc ba lô cho một chuyến đi bộ đường dài. Nó chỉ có thể chứa rất nhiều trọng lượng và bạn muốn nhồi nhét càng nhiều vật dụng hữu ích càng tốt. Trong trường hợp của chúng ta:</p>
+<ul>
+<li><strong>Ba lô</strong> là một batch huấn luyện có giới hạn token tối đa (<code>max_length</code>).</li>
+<li>Mỗi <strong>vật dụng</strong> là một chuỗi (một cặp lời nhắc-phản hồi được token hóa) và <strong>trọng lượng</strong> của nó là số lượng token.</li>
+<li>Mục tiêu của chúng tôi là đóng gói càng nhiều chuỗi càng tốt vào batch mà không vượt quá giới hạn token, giảm thiểu không gian lãng phí.</li>
+</ul>
+<p>Để kiểm tra ý tưởng này, chúng tôi bắt đầu với một tập dữ liệu đồ chơi: chỉ một danh sách các số từ 1 đến 25, mỗi số đại diện cho độ dài chuỗi. Điều này cho phép chúng tôi thử nghiệm mà không cần sự phức tạp của hình ảnh và văn bản.</p>
+<h3 id="chuyển-sang-bộ-dữ-liệu-có-thể-lặp-lại">Chuyển sang Bộ dữ liệu có thể lặp lại</h3>
+<p>Hầu hết các bộ dữ liệu PyTorch là <em>kiểu bản đồ</em> (bạn truy cập chúng bằng <code>dataset[i]</code>). Nhưng đối với việc tạo batch động, chúng ta cần thứ gì đó linh hoạt hơn. Vì vậy, chúng tôi đã xây dựng một bộ dữ liệu <em>kiểu có thể lặp lại</em> bằng cách tạo lớp con <code>torch.utils.data.IterableDataset</code>. Điều này cho phép chúng tôi tạo batch nhanh chóng và xử lý các thủ thuật như phân chia dữ liệu trên nhiều worker:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_get_data_range</span>(self):
+</span></span><span style="display:flex;"><span>    worker_info <span style="color:#f92672">=</span> get_worker_info()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> worker_info <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:  <span style="color:#75715e"># single worker, return the entire dataset</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>start, self<span style="color:#f92672">.</span>end
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:  <span style="color:#75715e"># multiple workers, split the data load</span>
+</span></span><span style="display:flex;"><span>        per_worker <span style="color:#f92672">=</span> int(
+</span></span><span style="display:flex;"><span>            math<span style="color:#f92672">.</span>ceil((self<span style="color:#f92672">.</span>end <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>start) <span style="color:#f92672">/</span> worker_info<span style="color:#f92672">.</span>num_workers)
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        worker_id <span style="color:#f92672">=</span> worker_info<span style="color:#f92672">.</span>id
+</span></span><span style="display:flex;"><span>        iter_start <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>start <span style="color:#f92672">+</span> worker_id <span style="color:#f92672">*</span> per_worker
+</span></span><span style="display:flex;"><span>        iter_end <span style="color:#f92672">=</span> min(iter_start <span style="color:#f92672">+</span> per_worker, self<span style="color:#f92672">.</span>end)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> iter_start, iter_end
+</span></span></code></pre></div><h3 id="phép-thuật-nhà-sản-xuất-người-tiêu-dùng">Phép thuật Nhà sản xuất-Người tiêu dùng</h3>
+<p>Đóng gói chuỗi có thể chậm, đặc biệt nếu chúng ta đang sắp xếp hoặc xáo trộn. Để mọi thứ tiếp tục di chuyển, chúng tôi sử dụng mẫu <strong>nhà sản xuất-người tiêu dùng</strong> bằng cách sử dụng <a href="https://docs.python.org/3/library/queue.html">hàng đợi Python</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_producer</span>(self, data_iter, queue, stop_signal):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>strategy <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;greedy&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> pack <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>_greedy_packing(data_iter):
+</span></span><span style="display:flex;"><span>            queue<span style="color:#f92672">.</span>put(pack)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> self<span style="color:#f92672">.</span>strategy <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;binpack&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>            buffer <span style="color:#f92672">=</span> list(itertools<span style="color:#f92672">.</span>islice(data_iter, self<span style="color:#f92672">.</span>buffer_size))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> buffer:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>            knapsacks <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_bin_packing(buffer)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> pack <span style="color:#f92672">in</span> knapsacks:
+</span></span><span style="display:flex;"><span>                queue<span style="color:#f92672">.</span>put(pack)
+</span></span><span style="display:flex;"><span>    queue<span style="color:#f92672">.</span>put(stop_signal)
+</span></span></code></pre></div><p>Luồng nhà sản xuất đóng gói batch và đưa chúng vào hàng đợi, trong khi luồng chính kéo chúng ra khi cần. Sự trùng lặp này giúp quy trình hoạt động trơn tru.</p>
+<h3 id="đóng-gói-tham-lam">Đóng gói tham lam</h3>
+<p>Đầu tiên, chúng ta thử một chiến lược <strong>đóng gói tham lam</strong> đơn giản:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_greedy_packing</span>(self, iterator):
+</span></span><span style="display:flex;"><span>    pack, pack_sum <span style="color:#f92672">=</span> [], <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> iterator:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> item <span style="color:#f92672">&gt;</span> self<span style="color:#f92672">.</span>max_length:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> pack_sum <span style="color:#f92672">+</span> item <span style="color:#f92672">&lt;=</span> self<span style="color:#f92672">.</span>max_length:
+</span></span><span style="display:flex;"><span>            pack<span style="color:#f92672">.</span>append(item)
+</span></span><span style="display:flex;"><span>            pack_sum <span style="color:#f92672">+=</span> item
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">yield</span> pack
+</span></span><span style="display:flex;"><span>            pack <span style="color:#f92672">=</span> [item]
+</span></span><span style="display:flex;"><span>            pack_sum <span style="color:#f92672">=</span> item
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> pack:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> pack
+</span></span></code></pre></div><p>Điều này đi qua dữ liệu tuần tự, thêm các mục vào một gói cho đến khi nó đầy, sau đó bắt đầu một gói mới. Nó nhanh nhưng không hoàn hảo. Đây là những gì batch trông như thế nào:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">===</span> Strategy: GREEDY <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>tensor<span style="color:#f92672">([</span>1<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>2<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>3<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>4<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>5<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>6<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>7<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>8<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>9<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>10<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>11<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>12<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>13<span style="color:#f92672">])]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>tensor<span style="color:#f92672">([</span>14<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>15<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>16<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>17<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>18<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>19<span style="color:#f92672">])]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>tensor<span style="color:#f92672">([</span>20<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>21<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>22<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>23<span style="color:#f92672">])]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>tensor<span style="color:#f92672">([</span>24<span style="color:#f92672">])]</span>
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Bạn có nhận thấy rằng các batch sau trở nên thưa thớt như thế nào không? Chúng ta đang bỏ lại những khoảng trống.</p>
+<h3 id="đóng-gói-bin-để-phù-hợp-hơn">Đóng gói Bin để phù hợp hơn</h3>
+<p>Hãy thử một cách tiếp cận thông minh hơn: <strong>đóng gói bin</strong> (cụ thể là First Fit Decreasing):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_bin_packing</span>(self, buffer: List[int]):
+</span></span><span style="display:flex;"><span>    buffer <span style="color:#f92672">=</span> sorted(buffer, reverse<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    knapsacks <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> buffer:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> pack <span style="color:#f92672">in</span> knapsacks:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> sum(pack) <span style="color:#f92672">+</span> item <span style="color:#f92672">&lt;=</span> self<span style="color:#f92672">.</span>max_length:
+</span></span><span style="display:flex;"><span>                pack<span style="color:#f92672">.</span>append(item)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            knapsacks<span style="color:#f92672">.</span>append([item])
+</span></span></code></pre></div><p>Điều này sắp xếp các chuỗi theo độ dài (dài nhất trước) và cố gắng phù hợp mỗi chuỗi vào gói đầu tiên có chỗ. Nếu không có cái nào phù hợp, nó sẽ bắt đầu một gói mới. Kết quả?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">===</span> Strategy: BINPACK <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>tensor<span style="color:#f92672">([</span>24<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>23<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>22<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>21<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>10<span style="color:#f92672">])]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>tensor<span style="color:#f92672">([</span>20<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>19<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>18<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>17<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>16<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>9<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>1<span style="color:#f92672">])]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>tensor<span style="color:#f92672">([</span>15<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>14<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>13<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>12<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>11<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>8<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>7<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>6<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>5<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>4<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>3<span style="color:#f92672">])</span>, tensor<span style="color:#f92672">([</span>2<span style="color:#f92672">])]</span>
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Các batch này <em>chặt chẽ</em> hơn nhiều, với ít không gian lãng phí hơn. Nó giống như chơi Tetris với dữ liệu của bạn, lắp các mảnh lại với nhau một cách vừa vặn.</p>
+<h2 id="giai-đoạn-5-knapsacks-cho-dữ-liệu-đa-phương-thức">[Giai đoạn 5] Knapsacks cho Dữ liệu Đa phương thức</h2>
+<p>Bây giờ cho thỏa thuận thực sự, áp dụng đóng gói knapsack cho tập dữ liệu <em>đa phương thức</em> của chúng tôi.</p>
+<p>Chúng ta quay lại hình ảnh, lời nhắc và phản hồi, và chúng ta cần đóng gói chúng một cách hiệu quả trong khi vẫn tôn trọng cả giới hạn token <em>và</em> ngân sách hình ảnh. Ngân sách hình ảnh được thực hiện để cân bằng số lượng hình ảnh trên mỗi mẫu. Chúng tôi muốn tránh trường hợp một GPU cần xử lý nhiều hình ảnh hơn GPU khác.</p>
+<p><a href="https://github.com/ariG23498/mmdp/blob/main/src/mmdp/advanced_torch_datasets.py#L13"><code>ConstantLengthDataset</code> mới</a> của chúng tôi xử lý công việc nặng nhọc. Đây là cách nó hoạt động, so với Giai đoạn 4:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Khái niệm</th>
+          <th style="text-align: left">Giai đoạn 4 (Dữ liệu Đồ chơi)</th>
+          <th style="text-align: left">Giai đoạn 5 (Dữ liệu Đa phương thức)</th>
+          <th style="text-align: left">Chức năng</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Vật phẩm</strong></td>
+          <td style="text-align: left">Số nguyên (độ dài chuỗi)</td>
+          <td style="text-align: left">Mẫu đầy đủ (hình ảnh, lời nhắc, phản hồi)</td>
+          <td style="text-align: left"><code>VQADataset.__getitem__</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Trọng lượng</strong></td>
+          <td style="text-align: left">Chính số nguyên đó</td>
+          <td style="text-align: left">Số lượng token (<code>len(input_ids)</code>)</td>
+          <td style="text-align: left">—</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Knapsack</strong></td>
+          <td style="text-align: left">Batch số nguyên ≤ <code>max_length</code></td>
+          <td style="text-align: left">Batch mẫu ≤ <code>seq_length</code> và giới hạn hình ảnh</td>
+          <td style="text-align: left"><code>_balanced_greedy_knapsack</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Chiến lược đóng gói</strong></td>
+          <td style="text-align: left">Tham lam hoặc Binpack</td>
+          <td style="text-align: left">Đóng gói tham lam với token và ràng buộc hình ảnh</td>
+          <td style="text-align: left"><code>_balanced_greedy_knapsack</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Nhà sản xuất-Người tiêu dùng</strong></td>
+          <td style="text-align: left">Nhà sản xuất lấp đầy hàng đợi</td>
+          <td style="text-align: left">Giống như ví dụ đồ chơi, nhưng với các mẫu đa phương thức</td>
+          <td style="text-align: left"><code>_producer</code>, <code>__iter__</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Lọc mẫu</strong></td>
+          <td style="text-align: left">Bỏ qua số nguyên &gt; <code>max_length</code></td>
+          <td style="text-align: left">Bỏ qua các mẫu có quá nhiều token hoặc hình ảnh</td>
+          <td style="text-align: left"><code>_producer</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Phân mảnh</strong></td>
+          <td style="text-align: left">Chia phạm vi số nguyên</td>
+          <td style="text-align: left">Phân mảnh chỉ số tập dữ liệu</td>
+          <td style="text-align: left"><code>make_base_iterator()</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Tạo Batch</strong></td>
+          <td style="text-align: left">Nhóm số nguyên</td>
+          <td style="text-align: left">Nối và căn chỉnh token/hình ảnh</td>
+          <td style="text-align: left"><code>_pack_one_group</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Đầu ra</strong></td>
+          <td style="text-align: left">Danh sách số nguyên</td>
+          <td style="text-align: left">Từ điển với <code>input_ids</code>, <code>labels</code>, <code>attention_mask</code>, <code>images</code></td>
+          <td style="text-align: left"><code>yield</code> từ <code>__iter__</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><code>ConstantLengthDataset</code> thực hiện tất cả:</p>
+<ul>
+<li>Đọc mẫu (hình ảnh và văn bản).</li>
+<li>Lọc ra các mẫu quá dài hoặc có quá nhiều hình ảnh.</li>
+<li>Đóng gói các mẫu vào batch bằng chiến lược knapsack tham lam, cân bằng số lượng token và số lượng hình ảnh.</li>
+<li>Padding các batch cuối cùng đến một độ dài cố định, nhưng với <em>ít</em> padding hơn nhiều so với trước đây.</li>
+</ul>
+<p>Đây là kết quả:</p>
+<!-- raw HTML omitted -->
+<p>Hãy nhìn vào đó! Màu xám (padding) là tối thiểu và các batch dày đặc với dữ liệu hữu ích. Nó giống như đóng gói một chiếc vali rất tốt đến nỗi bạn vẫn có thể kéo khóa nó lên mà không cần ngồi lên nó.</p>
+<p>Hình ảnh có vẻ không trực quan ngay từ cái nhìn đầu tiên, nhưng hãy xem hình ảnh cạnh nhau với padding bị ràng buộc.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Knapsack</th>
+          <th style="text-align: left">Có ràng buộc</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><!-- raw HTML omitted --></td>
+          <td style="text-align: left"><!-- raw HTML omitted --></td>
+      </tr>
+  </tbody>
+</table>
+<p>Ở đây bạn sẽ nhận thấy rằng các mẫu trong knapsack được phân phối đồng đều hơn. Chúng tôi cũng không gặp phải vấn đề có ít mẫu hơn trong batch do lọc.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Những gì bắt đầu như một cuộc điều tra đơn giản &ldquo;tại sao quá trình huấn luyện lại chậm như vậy?&rdquo; đã dẫn đến việc suy nghĩ lại hoàn toàn về cách chúng tôi xử lý dữ liệu đa phương thức.</p>
+<p>Chiến lược knapsack cân bằng cho quy trình dữ liệu đến từ bài báo <a href="https://arxiv.org/abs/2501.14818">Eagle 2: Building Post-Training Data Strategies from Scratch for Frontier Vision-Language Models</a> từ NVIDIA.</p>
+<p><strong>Các bài học quan trọng:</strong></p>
+<ul>
+<li>Padding mọi thứ theo chuỗi dài nhất là một cách tiếp cận tốt đầu tiên (nhưng lãng phí)</li>
+<li>Hãy nghĩ về việc tạo batch như một bài toán đóng gói</li>
+<li>Xem xét tất cả các ràng buộc của bạn (độ dài văn bản, bộ nhớ hình ảnh, v.v.)</li>
+<li>Kiểm tra với dữ liệu đồ chơi trước để xác nhận cách tiếp cận của bạn</li>
+</ul>
+<p>Muốn đào sâu hơn? Kiểm tra:</p>
+<ul>
+<li><a href="https://huggingface.co/blog/nanovlm">Bài đăng trên blog nanoVLM của chúng tôi</a></li>
+<li><a href="https://github.com/huggingface/nanovlm">nanoVLM GitHub</a></li>
+<li><a href="https://github.com/ariG23498/mmdp">Mã của quy trình này</a></li>
+</ul>
+<p><em>Chúc bạn huấn luyện vui vẻ (và cầu mong GPU của bạn luôn bận rộn)!</em></p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/mmdp">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-8-2025/">July 8, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-08/81577a/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/infrastructure-alerting/thumbnail.jpg" alt="Ba cảnh báo mạnh mẽ hỗ trợ cơ sở hạ tầng sản xuất của Hugging Face" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-08T00:00:00&#43;00:00">Jul 08, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Ba cảnh báo mạnh mẽ hỗ trợ cơ sở hạ tầng sản xuất của Hugging Face</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này thảo luận về ba cảnh báo quan trọng giúp hỗ trợ cơ sở hạ tầng sản xuất của Hugging Face.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-06-27/66bf51/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/gemma3n/thumbnail.png" alt="Gemma 3n hoàn toàn khả dụng trong hệ sinh thái mã nguồn mở!" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-06-27T00:00:00&#43;00:00">Jun 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gemma 3n hoàn toàn khả dụng trong hệ sinh thái mã nguồn mở!</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Gemma 3n hiện có sẵn trong hệ sinh thái nguồn mở!</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-08/81577a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/infrastructure-alerting/thumbnail.jpg" alt="Ba cảnh báo mạnh mẽ hỗ trợ cơ sở hạ tầng sản xuất của Hugging Face" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Ba cảnh báo mạnh mẽ hỗ trợ cơ sở hạ tầng sản xuất của Hugging Face</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-07/a0159d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/VBTRANSFORM25-0204-X2.jpg?w=350&amp;h=175&amp;crop=1" alt="Giải quyết tắc nghẽn lưu trữ AI và tăng tốc suy luận ở biên" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giải quyết tắc nghẽn lưu trữ AI và tăng tốc suy luận ở biên</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-08/258a4e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/mmdp/thumbnail.png" alt="Quy trình dữ liệu đa phương thức hiệu quả" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Quy trình dữ liệu đa phương thức hiệu quả</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-08/c42e0f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Sự cần thiết của tính minh bạch trong AI tiên tiến</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-07/06c01d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/VBTRANSFORM25-0364-X3_16d617.jpg?w=700&amp;h=350&amp;crop=1" alt="Cách Capital One xây dựng quy trình AI đa tác tử sản xuất để hỗ trợ các trường hợp sử dụng doanh nghiệp" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Capital One xây dựng quy trình AI đa tác tử sản xuất để hỗ trợ các trường hợp sử dụng doanh nghiệp</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
