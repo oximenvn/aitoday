@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI | AI Today - SkyAI</title>
+
+<meta name="description" content="Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-09T00:00:00&#43;00:00">July 9, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            14 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_digital_brain_storing_conversations_b9763f63-73bf-4f46-931e-72e29f178c88.webp?w=350&amp;h=175&amp;crop=1" alt="Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI">
+        <figcaption class="text-center italic text-xs">Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="các-nhà-nghiên-cứu-trung-quốc-ra-mắt-memos-hệ-điều-hành-bộ-nhớ-đầu-tiên-cung-cấp-khả-năng-thu-hồi-giống-như-con-người-cho-ai">Các nhà nghiên cứu Trung Quốc ra mắt MemOS, &lsquo;hệ điều hành bộ nhớ&rsquo; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI</h1>
+<p>Các nhà nghiên cứu đã tiết lộ MemOS, một &ldquo;hệ điều hành bộ nhớ&rdquo; đột phá dành cho AI, mang lại cải thiện 159% trong các tác vụ lý luận và cho phép bộ nhớ liên tục giữa các phiên.</p>
+<p><em>Bạn muốn có những hiểu biết sâu sắc hơn trong hộp thư đến của mình? Đăng ký nhận bản tin hàng tuần của chúng tôi để chỉ nhận những gì quan trọng đối với các nhà lãnh đạo AI, dữ liệu và bảo mật doanh nghiệp.</em> <a href="https://venturebeat.com/newsletters/"><em>Đăng ký ngay</em></a></p>
+<hr>
+<p>Một nhóm các nhà nghiên cứu từ các tổ chức hàng đầu, bao gồm <a href="https://en.sjtu.edu.cn/">Đại học Giao thông Thượng Hải</a> và <a href="https://www.zju.edu.cn/english/">Đại học Chiết Giang</a>, đã phát triển cái mà họ gọi là &ldquo;hệ điều hành bộ nhớ&rdquo; đầu tiên cho trí tuệ nhân tạo, giải quyết một hạn chế cơ bản đã cản trở các hệ thống AI đạt được bộ nhớ và khả năng học tập liên tục giống như con người.</p>
+<p>Hệ thống này, được gọi là <a href="https://memos.openmem.net/">MemOS</a>, coi bộ nhớ là một tài nguyên tính toán cốt lõi có thể được lên lịch, chia sẻ và phát triển theo thời gian — giống như cách các hệ điều hành truyền thống quản lý CPU và tài nguyên lưu trữ. Nghiên cứu, <a href="https://arxiv.org/abs/2507.03724">được công bố ngày 4 tháng 7 trên arXiv</a>, chứng minh sự cải thiện hiệu suất đáng kể so với các phương pháp hiện có, bao gồm mức tăng 159% trong các tác vụ lý luận tạm thời so với hệ thống bộ nhớ của OpenAI.</p>
+<!-- raw HTML omitted -->
+<p>&ldquo;Các Mô hình Ngôn ngữ Lớn (LLM) đã trở thành một cơ sở hạ tầng thiết yếu cho Trí tuệ Nhân tạo Tổng quát (AGI), nhưng việc thiếu các hệ thống quản lý bộ nhớ được xác định rõ ràng đã cản trở sự phát triển của lý luận theo ngữ cảnh dài, cá nhân hóa liên tục và tính nhất quán của kiến thức&rdquo;, các nhà nghiên cứu viết trong <a href="https://arxiv.org/pdf/2507.03724">bài báo của họ</a>.</p>
+<h2 id="các-hệ-thống-ai-đấu-tranh-với-bộ-nhớ-liên-tục-trên-các-cuộc-hội-thoại">Các hệ thống AI đấu tranh với bộ nhớ liên tục trên các cuộc hội thoại</h2>
+<p>Các hệ thống AI hiện tại phải đối mặt với cái mà các nhà nghiên cứu gọi là vấn đề &ldquo;kho lưu trữ bộ nhớ&rdquo; — một hạn chế kiến trúc cơ bản ngăn cản chúng duy trì các mối quan hệ mạch lạc, dài hạn với người dùng. Về cơ bản, mỗi cuộc trò chuyện hoặc phiên đều bắt đầu lại từ đầu, với các mô hình không thể giữ lại các tùy chọn, kiến thức tích lũy hoặc mô hình hành vi trên các tương tác. Điều này tạo ra trải nghiệm người dùng bực bội, nơi một trợ lý AI có thể quên các hạn chế về chế độ ăn uống của người dùng được đề cập trong một cuộc trò chuyện khi được hỏi về các đề xuất nhà hàng trong cuộc trò chuyện tiếp theo.</p>
+<p>Mặc dù một số giải pháp như <a href="https://cloud.google.com/use-cases/retrieval-augmented-generation?hl=en">Tạo Tăng cường Truy xuất (RAG)</a> cố gắng giải quyết vấn đề này bằng cách kéo thông tin bên ngoài vào trong các cuộc trò chuyện, nhưng các nhà nghiên cứu cho rằng những giải pháp này vẫn là &ldquo;các giải pháp thay thế không trạng thái mà không có kiểm soát vòng đời&rdquo;. Vấn đề còn sâu xa hơn cả việc truy xuất thông tin đơn giản — đó là việc tạo ra các hệ thống thực sự có thể học hỏi và phát triển từ kinh nghiệm, giống như bộ nhớ của con người.</p>
+<p>&ldquo;Các mô hình hiện tại chủ yếu dựa vào các tham số tĩnh và các trạng thái theo ngữ cảnh tồn tại trong thời gian ngắn, hạn chế khả năng theo dõi các tùy chọn của người dùng hoặc cập nhật kiến thức trong các khoảng thời gian dài&rdquo;, nhóm nghiên cứu giải thích. Hạn chế này trở nên đặc biệt rõ ràng trong môi trường doanh nghiệp, nơi các hệ thống AI được kỳ vọng sẽ duy trì ngữ cảnh trên các quy trình làm việc phức tạp, nhiều giai đoạn có thể kéo dài hàng ngày hoặc hàng tuần.</p>
+<h2 id="hệ-thống-mới-mang-lại-những-cải-tiến-đáng-kể-trong-các-tác-vụ-lý-luận-ai">Hệ thống mới mang lại những cải tiến đáng kể trong các tác vụ lý luận AI</h2>
+<p><a href="https://memos.openmem.net/">MemOS</a> giới thiệu một phương pháp khác biệt về cơ bản thông qua cái mà các nhà nghiên cứu gọi là &ldquo;MemCubes&rdquo; — các đơn vị bộ nhớ tiêu chuẩn có thể đóng gói các loại thông tin khác nhau và có thể được cấu thành, di chuyển và phát triển theo thời gian. Chúng bao gồm từ kiến thức dựa trên văn bản rõ ràng đến các điều chỉnh ở cấp độ tham số và trạng thái kích hoạt trong mô hình, tạo ra một khuôn khổ thống nhất để quản lý bộ nhớ mà trước đây không tồn tại.</p>
+<p>Thử nghiệm trên <a href="http://LOCOMO%20benchmark">điểm chuẩn LOCOMO</a>, đánh giá các tác vụ lý luận chuyên sâu về bộ nhớ, MemOS liên tục vượt trội so với các đường cơ sở đã được thiết lập trên tất cả các danh mục. Hệ thống đạt được mức cải thiện tổng thể 38,98% so với việc triển khai bộ nhớ của OpenAI, với những cải thiện đặc biệt mạnh mẽ trong các tình huống lý luận phức tạp, đòi hỏi kết nối thông tin trên nhiều lượt hội thoại.</p>
+<p>&ldquo;MemOS (MemOS-0630) luôn đứng đầu trong tất cả các danh mục, vượt trội hơn các đường cơ sở mạnh mẽ như mem0, LangMem, Zep và OpenAI-Memory, với biên độ đặc biệt lớn trong các cài đặt đầy thách thức như lý luận đa bước và lý luận tạm thời&rdquo;, theo nghiên cứu. Hệ thống cũng mang lại những cải tiến đáng kể về hiệu quả, với mức giảm tới 94% độ trễ thời gian đến mã thông báo đầu tiên trong một số cấu hình nhất định thông qua cơ chế tiêm bộ nhớ KV-cache sáng tạo của nó.</p>
+<p>Những cải tiến về hiệu suất này cho thấy rằng nút thắt cổ chai bộ nhớ là một hạn chế đáng kể hơn so với những gì đã hiểu trước đây. Bằng cách coi bộ nhớ là một tài nguyên tính toán hạng nhất, <a href="https://memos.openmem.net/">MemOS</a> dường như mở ra các khả năng lý luận trước đây bị hạn chế bởi các giới hạn kiến trúc.</p>
+<h2 id="công-nghệ-có-thể-định-hình-lại-cách-các-doanh-nghiệp-triển-khai-trí-tuệ-nhân-tạo">Công nghệ có thể định hình lại cách các doanh nghiệp triển khai trí tuệ nhân tạo</h2>
+<p>Những tác động đối với việc triển khai AI doanh nghiệp có thể mang tính chuyển đổi, đặc biệt khi các doanh nghiệp ngày càng dựa vào các hệ thống AI để có các mối quan hệ phức tạp, liên tục với khách hàng và nhân viên. <a href="https://memos.openmem.net/">MemOS</a> cho phép những gì các nhà nghiên cứu mô tả là &ldquo;di chuyển bộ nhớ đa nền tảng&rdquo;, cho phép bộ nhớ AI có thể di động trên các nền tảng và thiết bị khác nhau, phá vỡ cái mà họ gọi là &ldquo;ốc đảo bộ nhớ&rdquo; hiện đang giữ ngữ cảnh người dùng trong các ứng dụng cụ thể.</p>
+<p>Hãy xem xét sự thất vọng hiện tại mà nhiều người dùng gặp phải khi những hiểu biết sâu sắc được khám phá trong một nền tảng AI không thể chuyển sang một nền tảng khác. Một nhóm tiếp thị có thể phát triển chân dung khách hàng chi tiết thông qua các cuộc trò chuyện với ChatGPT, chỉ để bắt đầu lại từ đầu khi chuyển sang một công cụ AI khác để lập kế hoạch chiến dịch. MemOS giải quyết vấn đề này bằng cách tạo ra một định dạng bộ nhớ tiêu chuẩn có thể di chuyển giữa các hệ thống.</p>
+<p>Nghiên cứu cũng vạch ra tiềm năng cho &ldquo;các mô-đun bộ nhớ trả phí&rdquo;, nơi các chuyên gia trong lĩnh vực có thể đóng gói kiến thức của họ thành các đơn vị bộ nhớ có thể mua được. Các nhà nghiên cứu hình dung ra các kịch bản trong đó &ldquo;một sinh viên y khoa trong quá trình luân phiên lâm sàng có thể muốn nghiên cứu cách quản lý một tình trạng tự miễn dịch hiếm gặp. Một bác sĩ có kinh nghiệm có thể đóng gói các phương pháp chẩn đoán heuristic, đường dẫn đặt câu hỏi và các mẫu trường hợp điển hình vào một bộ nhớ có cấu trúc&rdquo; có thể được cài đặt và sử dụng bởi các hệ thống AI khác.</p>
+<p>Mô hình thị trường này có thể thay đổi cơ bản cách kiến thức chuyên môn được phân phối và kiếm tiền trong các hệ thống AI, tạo ra các cơ hội kinh tế mới cho các chuyên gia đồng thời dân chủ hóa quyền truy cập vào kiến thức lĩnh vực chất lượng cao. Đối với các doanh nghiệp, điều này có thể có nghĩa là triển khai nhanh chóng các hệ thống AI với kiến thức chuyên môn sâu rộng trong các lĩnh vực cụ thể mà không phải chịu chi phí và thời gian liên quan đến đào tạo tùy chỉnh.</p>
+<h2 id="thiết-kế-ba-lớp-phản-ánh-các-hệ-điều-hành-máy-tính-truyền-thống">Thiết kế ba lớp phản ánh các hệ điều hành máy tính truyền thống</h2>
+<p><a href="https://github.com/MemTensor/MemOS?tab=readme-ov-file">Kiến trúc kỹ thuật của MemOS</a> phản ánh hàng thập kỷ học hỏi từ thiết kế hệ điều hành truyền thống, được điều chỉnh cho những thách thức riêng của quản lý bộ nhớ AI. Hệ thống sử dụng kiến trúc ba lớp: một lớp giao diện cho các lệnh gọi API, một lớp hoạt động để lên lịch bộ nhớ và quản lý vòng đời và một lớp cơ sở hạ tầng để lưu trữ và quản trị.</p>
+<p><a href="https://github.com/MemTensor/MemOS?tab=readme-ov-file">Thành phần MemScheduler</a> của hệ thống quản lý động các loại bộ nhớ khác nhau — từ trạng thái kích hoạt tạm thời đến sửa đổi tham số vĩnh viễn — chọn các chiến lược lưu trữ và truy xuất tối ưu dựa trên mô hình sử dụng và yêu cầu tác vụ. Điều này thể hiện một sự khác biệt đáng kể so với các phương pháp hiện tại, thường coi bộ nhớ là hoàn toàn tĩnh (được nhúng trong các tham số mô hình) hoặc hoàn toàn phù du (giới hạn trong ngữ cảnh hội thoại).</p>
+<p>&ldquo;Trọng tâm chuyển từ việc mô hình học được bao nhiêu kiến thức một lần sang việc liệu nó có thể biến kinh nghiệm thành bộ nhớ có cấu trúc và liên tục truy xuất và tái cấu trúc nó hay không&rdquo;, các nhà nghiên cứu lưu ý, mô tả tầm nhìn của họ về cái mà họ gọi là các mô hình &ldquo;Mem-training&rdquo;. Triết lý kiến trúc này gợi ý một cách suy nghĩ lại cơ bản về cách các hệ thống AI nên được thiết kế, chuyển từ mô hình đào tạo trước quy mô lớn hiện tại sang học tập dựa trên kinh nghiệm, năng động hơn.</p>
+<p>Sự tương đồng với phát triển hệ điều hành rất nổi bật. Giống như các máy tính ban đầu yêu cầu các lập trình viên quản lý thủ công việc phân bổ bộ nhớ, các hệ thống AI hiện tại yêu cầu các nhà phát triển điều phối cẩn thận cách thông tin luân chuyển giữa các thành phần khác nhau. <a href="https://memos.openmem.net/">MemOS</a> trừu tượng hóa sự phức tạp này, có khả năng cho phép một thế hệ ứng dụng AI mới có thể được xây dựng trên nền tảng quản lý bộ nhớ phức tạp mà không cần kiến thức chuyên môn sâu.</p>
+<h2 id="các-nhà-nghiên-cứu-phát-hành-mã-nguồn-mở-để-đẩy-nhanh-quá-trình-chấp-nhận">Các nhà nghiên cứu phát hành mã nguồn mở để đẩy nhanh quá trình chấp nhận</h2>
+<p>Nhóm nghiên cứu đã phát hành <a href="https://github.com/MemTensor/MemOS">MemOS</a> dưới dạng một dự án mã nguồn mở, với <a href="https://github.com/MemTensor/MemOS">toàn bộ mã có sẵn trên GitHub</a> và hỗ trợ tích hợp cho các nền tảng AI chính bao gồm HuggingFace, OpenAI và Ollama. Chiến lược mã nguồn mở này dường như được thiết kế để đẩy nhanh quá trình chấp nhận và khuyến khích phát triển cộng đồng, thay vì theo đuổi một phương pháp độc quyền có thể hạn chế việc triển khai rộng rãi.</p>
+<p>&ldquo;Chúng tôi hy vọng MemOS giúp thúc đẩy các hệ thống AI từ các trình tạo tĩnh thành các tác nhân hướng đến bộ nhớ, liên tục phát triển&rdquo;, trưởng dự án Zhiyu Li nhận xét trong kho lưu trữ GitHub. Hệ thống hiện hỗ trợ các nền tảng Linux, với hỗ trợ Windows và macOS được lên kế hoạch, cho thấy nhóm đang ưu tiên việc chấp nhận của doanh nghiệp và nhà phát triển hơn là khả năng tiếp cận của người tiêu dùng ngay lập tức.</p>
+<p>Chiến lược phát hành mã nguồn mở phản ánh một xu hướng rộng lớn hơn trong nghiên cứu AI, trong đó những cải tiến cơ sở hạ tầng nền tảng được chia sẻ công khai để mang lại lợi ích cho toàn bộ hệ sinh thái. Cách tiếp cận này đã đẩy nhanh quá trình đổi mới trong các lĩnh vực như khung học sâu trong lịch sử và có thể có tác dụng tương tự đối với quản lý bộ nhớ trong các hệ thống AI.</p>
+<h2 id="các-gã-khổng-lồ-công-nghệ-chạy-đua-để-giải-quyết-các-giới-hạn-bộ-nhớ-ai">Các gã khổng lồ công nghệ chạy đua để giải quyết các giới hạn bộ nhớ AI</h2>
+<p>Nghiên cứu đến khi các công ty AI lớn phải vật lộn với những hạn chế của các phương pháp bộ nhớ hiện tại, làm nổi bật mức độ cơ bản của thách thức này đối với ngành. OpenAI gần đây đã giới thiệu <a href="https://openai.com/index/memory-and-new-controls-for-chatgpt/">các tính năng bộ nhớ cho ChatGPT</a>, trong khi <a href="https://docs.anthropic.com/en/docs/claude-code/memory">Anthropic</a>, <a href="https://blog.google/feed/gemini-referencing-past-chats/">Google</a> và các nhà cung cấp khác đã thử nghiệm với các hình thức ngữ cảnh liên tục khác nhau. Tuy nhiên, những triển khai này thường bị giới hạn về phạm vi và thường thiếu cách tiếp cận có hệ thống mà <a href="https://memos.openmem.net/">MemOS</a> cung cấp.</p>
+<p>Thời điểm của nghiên cứu này cho thấy rằng quản lý bộ nhớ đã nổi lên như một chiến trường cạnh tranh quan trọng trong phát triển AI. Các công ty có thể giải quyết vấn đề bộ nhớ một cách hiệu quả có thể đạt được lợi thế đáng kể trong việc giữ chân và làm hài lòng người dùng, vì các hệ thống AI của họ sẽ có thể xây dựng các mối quan hệ sâu sắc hơn, hữu ích hơn theo thời gian.</p>
+<p>Những người quan sát trong ngành từ lâu đã dự đoán rằng đột phá lớn tiếp theo trong AI không nhất thiết đến từ các mô hình lớn hơn hoặc nhiều dữ liệu đào tạo hơn mà từ những đổi mới kiến trúc mô phỏng tốt hơn khả năng nhận thức của con người. Quản lý bộ nhớ thể hiện chính xác loại tiến bộ cơ bản này — một tiến bộ có thể mở ra các ứng dụng và trường hợp sử dụng mới mà không thể có với các hệ thống không trạng thái hiện tại.</p>
+<p>Sự phát triển này đại diện cho một phần của sự thay đổi rộng lớn hơn trong nghiên cứu AI theo hướng các hệ thống trạng thái, liên tục hơn có thể tích lũy và phát triển kiến thức theo thời gian — các khả năng được xem là thiết yếu đối với trí tuệ nhân tạo tổng quát. Đối với các nhà lãnh đạo công nghệ doanh nghiệp đánh giá việc triển khai AI, <a href="https://memos.openmem.net/">MemOS</a> có thể đại diện cho một bước tiến đáng kể trong việc xây dựng các hệ thống AI duy trì ngữ cảnh và cải thiện theo thời gian, thay vì coi mỗi tương tác là riêng biệt.</p>
+<p>Nhóm nghiên cứu chỉ ra rằng họ có kế hoạch khám phá việc chia sẻ bộ nhớ giữa các mô hình, các khối bộ nhớ tự phát triển và sự phát triển của một hệ sinh thái &ldquo;thị trường bộ nhớ&rdquo; rộng lớn hơn trong công việc tương lai. Nhưng có lẽ tác động đáng kể nhất của MemOS sẽ không phải là việc triển khai kỹ thuật cụ thể mà là bằng chứng cho thấy việc coi bộ nhớ là một tài nguyên tính toán hạng nhất có thể mở ra những cải tiến đáng kể về khả năng AI. Trong một ngành công nghiệp phần lớn tập trung vào việc mở rộng quy mô kích thước mô hình và dữ liệu đào tạo, MemOS cho thấy rằng đột phá tiếp theo có thể đến từ kiến trúc tốt hơn thay vì máy tính lớn hơn.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/chinese-researchers-unveil-memos-the-first-memory-operating-system-that-gives-ai-human-like-recall/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/09-july-2025/">09 July 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/6a99ca/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_robot_hugging_a__Hugging_Face_emoji_d069265d-d6e4-4708-9ae0-c8dd65452725.webp?w=700&amp;h=350&amp;crop=1" alt="Hugging Face vừa ra mắt một robot trị giá 299 đô la có thể làm gián đoạn toàn bộ ngành công nghiệp robot" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-09T00:00:00&#43;00:00">Jul 09, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Hugging Face vừa ra mắt một robot trị giá 299 đô la có thể làm gián đoạn toàn bộ ngành công nghiệp robot</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hugging Face vừa ra mắt một robot trị giá 299 đô la có thể làm gián đoạn toàn bộ ngành công nghiệp robot.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/d615ec/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/crimedy7_Illustration_of_a_robot_in_a_bank_trying_to_show_an_ID_de0ddfcd-6a0a-4131-8aba-914b133e081c.png?w=700&amp;h=350&amp;crop=1" alt="MCP chưa sẵn sàng cho KYC- Tại sao các lĩnh vực được quản lý lại cảnh giác với các sàn giao dịch đại lý mở" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-09T00:00:00&#43;00:00">Jul 09, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">MCP chưa sẵn sàng cho KYC- Tại sao các lĩnh vực được quản lý lại cảnh giác với các sàn giao dịch đại lý mở</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">MCP chưa sẵn sàng cho KYC- Tại sao các lĩnh vực được quản lý lại cảnh giác với các sàn giao dịch đại lý mở.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/1c968f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_digital_brain_storing_conversations_b9763f63-73bf-4f46-931e-72e29f178c88.webp?w=350&amp;h=175&amp;crop=1" alt="Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/6a99ca/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_robot_hugging_a__Hugging_Face_emoji_d069265d-d6e4-4708-9ae0-c8dd65452725.webp?w=700&amp;h=350&amp;crop=1" alt="Hugging Face vừa ra mắt một robot trị giá 299 đô la có thể làm gián đoạn toàn bộ ngành công nghiệp robot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Hugging Face vừa ra mắt một robot trị giá 299 đô la có thể làm gián đoạn toàn bộ ngành công nghiệp robot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/d615ec/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/crimedy7_Illustration_of_a_robot_in_a_bank_trying_to_show_an_ID_de0ddfcd-6a0a-4131-8aba-914b133e081c.png?w=700&amp;h=350&amp;crop=1" alt="MCP chưa sẵn sàng cho KYC- Tại sao các lĩnh vực được quản lý lại cảnh giác với các sàn giao dịch đại lý mở" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">MCP chưa sẵn sàng cho KYC- Tại sao các lĩnh vực được quản lý lại cảnh giác với các sàn giao dịch đại lý mở</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/321c72/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/upskill-llms-with-gradio-mcp/UpskillThumbnail.png" alt="Nâng cao kỹ năng LLM của bạn với Máy chủ Gradio MCP" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nâng cao kỹ năng LLM của bạn với Máy chủ Gradio MCP</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/7d287d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Phòng thí nghiệm quốc gia Lawrence Livermore mở rộng việc sử dụng Claude cho doanh nghiệp để trao quyền cho các nhà khoa học và nhà nghiên cứu</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
