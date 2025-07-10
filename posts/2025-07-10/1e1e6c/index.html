@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Suy luận Robot không đồng bộ- Tách rời dự đoán hành động và thực thi | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này khám phá lợi ích của việc tách rời dự đoán và thực thi hành động trong suy luận robot.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Suy luận Robot không đồng bộ- Tách rời dự đoán hành động và thực thi</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này khám phá lợi ích của việc tách rời dự đoán và thực thi hành động trong suy luận robot. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-10T00:00:00&#43;00:00">July 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            14 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/async_inference/thumbnail_async_blog.png" alt="Suy luận Robot không đồng bộ- Tách rời dự đoán hành động và thực thi">
+        <figcaption class="text-center italic text-xs">Bài viết này khám phá lợi ích của việc tách rời dự đoán và thực thi hành động trong suy luận robot.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="suy-luận-robot-bất-đồng-bộ-tách-rời-dự-đoán-hành-động-và-thực-thi">Suy Luận Robot Bất Đồng Bộ: Tách Rời Dự Đoán Hành Động và Thực Thi</h1>
+<p><strong>TL;DR</strong>
+Các chính sách robot ngày càng cồng kềnh, và dự đoán các khối hành động trong tương lai thay vì một hành động tiếp theo duy nhất. Điều này dẫn đến việc robot ở trạng thái chờ trong khi chờ đợi các hành động mới để thực hiện, gây ra độ trễ đáng chú ý khi thực hiện và thiếu khả năng phản hồi. Suy luận bất đồng bộ thắt chặt vòng điều khiển, loại bỏ độ trễ khi chạy và dẫn đến kiểm soát thích ứng hơn bằng cách tách rời dự đoán hành động khỏi thực thi hành động. Trong bài đăng trên blog này, chúng ta sẽ đề cập đến những điều cơ bản đằng sau suy luận bất đồng bộ và cách nó có thể được sử dụng để cải thiện hiệu suất của các chính sách robot trong thế giới thực.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#getting-started">Bắt đầu</a></li>
+<li><a href="#async-inference-a-deep-dive">Suy luận bất đồng bộ: một cái nhìn sâu sắc</a></li>
+<li><a href="#1-why-sequential-inference-falls-short">1. Tại sao suy luận tuần tự không hiệu quả</a></li>
+<li><a href="#2-asynchronous-inference-in-a-nutshell">2. Suy luận bất đồng bộ, tóm tắt</a></li>
+<li><a href="#3system-architecture">3. Kiến trúc hệ thống</a>
+<ul>
+<li><a href="#robot-client">Robot Client</a></li>
+<li><a href="#policy-server">Policy Server</a></li>
+</ul>
+</li>
+<li><a href="#4-analyzing-async-inference">4. Phân tích suy luận bất đồng bộ</a></li>
+<li><a href="#5-using-async-in-your-setup">5. Sử dụng bất đồng bộ trong thiết lập của bạn</a></li>
+<li><a href="#conclusions">Kết luận</a></li>
+</ul>
+<h2 id="bắt-đầu">Bắt đầu</h2>
+<p>Bắt đầu với suy luận bất đồng bộ bằng cách làm theo <a href="https://huggingface.co/docs/lerobot/en/async">hướng dẫn của chúng tôi</a>.</p>
+<!-- raw HTML omitted -->
+<p><em>Suy luận tuần tự (đầu tiên) so với suy luận bất đồng bộ (thứ hai)</em>. Cho phép lập kế hoạch lại và vòng điều khiển chặt chẽ hơn, suy luận bất đồng bộ dẫn đến (1) các nỗ lực phục hồi và (2) tăng tốc ~ 2 lần trong việc hoàn thành nhiệm vụ. Suy luận tuần tự tiếp tục thực hiện khối hành động hiện tại ngay cả sau khi không nắm bắt được đối tượng, trong khi suy luận bất đồng bộ có thể lập kế hoạch lại và thực hiện khối hành động mới. Cả hai thiết lập đều sử dụng cùng một chính sách!</p>
+<h2 id="suy-luận-bất-đồng-bộ-một-cái-nhìn-sâu-sắc">Suy luận bất đồng bộ: một cái nhìn sâu sắc</h2>
+<p>Với suy luận bất đồng bộ, chúng ta tách rời thực thi hành động khỏi dự đoán hành động. Điều này đặc biệt phù hợp khi xem xét xu hướng của các mô hình hiện đang phổ biến như [<a href="https://huggingface.co/papers/2304.13705">ACT</a>], [<a href="https://huggingface.co/papers/2406.09246">OpenVLA</a>], [<a href="https://huggingface.co/papers/2410.24164">PI0</a>], và [<a href="https://huggingface.co/papers/2506.01844">SmolVLA</a>] xuất ra các đoạn hành động $a_{t:t+H}$ thay vì các hành động đơn lẻ $a_t$ cho một quan sát $o_t$.
+Hãy tự thuyết phục mình về điều này bằng cách chạy tất cả các mô hình này bằng <a href="https://huggingface.co/lerobot">LeRobot</a>.</p>
+<p>Sử dụng các đoạn tuần tự dẫn đến (1) độ trễ khi chạy, ảnh hưởng đến thời gian thực hiện nhiệm vụ và (2) thiếu khả năng phản hồi, do hành động vòng hở rộng rãi.
+Suy luận bất đồng bộ tránh giảm thiểu cả hai hạn chế này bằng cách <strong>tách rời dự đoán hành động khỏi thực thi hành động</strong>.
+Chúng tôi đã giới thiệu suy luận bất đồng bộ trong SmolVLA và thấy rằng nó dẫn đến tốc độ tăng tốc ~ 2 lần trong thời gian hoàn thành nhiệm vụ với tỷ lệ thành công nhiệm vụ tương đương.</p>
+<p>Đặc biệt, chúng ta thiết kế một hệ thống gồm 2 thành phần, trong đó suy luận chính sách và thực thi hành động được thực hiện trong hai quy trình khác nhau, có thể trên hai máy khác nhau được kết nối thông qua mạng:</p>
+<ul>
+<li>Một <strong><code>PolicyServer</code></strong>, được lưu trữ trên phần cứng tăng tốc và có khả năng chạy suy luận bằng cách sử dụng nhiều tài nguyên tính toán hơn so với các tài nguyên được phân bổ trên một robot thế giới thực.</li>
+<li>Một <strong><code>RobotClient</code></strong> xếp hàng các hành động nhận được và thực hiện chúng trong khi đoạn tiếp theo đang được tính toán.</li>
+</ul>
+<p>Giao tiếp giữa <code>PolicyServer</code> và <code>RobotClient</code> dựa vào <strong>gRPC</strong>, đảm bảo hiệu suất nhanh hơn ~ 5 lần so với API REST có thể so sánh được. Kết quả của tất cả những điều này là một robot <em>không bao giờ</em> chờ đợi suy luận.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="1-tại-sao-suy-luận-tuần-tự-không-hiệu-quả">1. Tại sao suy luận tuần tự không hiệu quả</h2>
+<p>Giả sử một chính sách $\pi$ ánh xạ quan sát hiện tại $o_t$ sang một chuỗi gồm $H$ các hành động trong tương lai.
+Về mặt hình thức, $\pi : \mathcal{O} ;\mapsto; \mathcal{A}, \mathbf{A}<em>t = \begin{pmatrix} a</em>{t}, &amp; a_{t+1}, &amp; \dots &amp; a_{t+H} \end{pmatrix} = \pi(o_t)$.</p>
+<p>Do đó, một vòng điều khiển truyền thống sẽ bao gồm các bước sau:</p>
+<ol>
+<li>Chụp $o_t$.</li>
+<li>Chạy $\pi(o_t)$ để thu được $\mathbf{A}_t = \pi(o_t)$.</li>
+<li>Xếp hàng $\mathbf{A_t}$ và bắt đầu hành động bật các hành động từ hàng đợi.</li>
+<li>Nếu hàng đợi trống, hãy đợi $\mathbf{A}_{t+H}$, nếu không lặp lại bước 3.</li>
+</ol>
+<p>Trong bước 2, robot ở trạng thái <strong>chờ</strong>. Độ trễ tăng lên theo kích thước mô hình (và các mô hình có xu hướng ngày càng cồng kềnh theo thời gian) và có thể nhanh chóng chi phối thời gian tương tác (thường là khoảng 1 / <code>fps</code>), như được hiển thị trong video bên dưới (đến từ <a href="https://discord.com/invite/ttk5CV6tUw">cộng đồng Discord</a> 🤗 của chúng tôi):</p>
+<!-- raw HTML omitted -->
+<p>Điều này trực tiếp dẫn đến (1) giảm hiệu suất về thời gian hoàn thành nhiệm vụ&mdash;robot cần phải chờ đợi đoạn hành động tiếp theo được tính toán&mdash;và (2) giảm khả năng phản hồi, do (2.1) hành động vòng hở rộng rãi trong khi các hành động có sẵn và (2.2) hoàn toàn ở trạng thái chờ trong khi chờ đoạn hành động tiếp theo.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="2-suy-luận-bất-đồng-bộ-tóm-tắt">2. Suy luận bất đồng bộ, tóm tắt</h2>
+<p>Hệ thống của chúng tôi loại bỏ giai đoạn chờ bằng cách chồng chéo tính toán và thực thi:</p>
+<ol>
+<li><code>RobotClient</code> phát trực tuyến quan sát mới nhất tới <code>PolicyServer</code>.</li>
+<li>Trong khi máy chủ thực hiện suy luận, máy khách thực hiện <strong>hàng đợi hiện tại</strong> các hành động.</li>
+<li>Các hành động mới đến, được hợp nhất vào hàng đợi và vòng lặp tiếp tục.</li>
+</ol>
+<p>Ý tưởng chính là robot đã biết phải làm gì cho một vài bước thời gian tiếp theo, vì vậy nó có thể tiếp tục di chuyển trong khi các hành động mới đang được tính toán trên máy chủ.</p>
+<!-- raw HTML omitted -->
+<p>Điều này dẫn đến một vòng điều khiển chặt chẽ hơn và một robot không bao giờ chờ đợi suy luận. Đến lượt nó, điều này dẫn đến tốc độ tăng tốc ~ 2 lần trong thời gian hoàn thành nhiệm vụ với tỷ lệ thành công nhiệm vụ tương đương và kiểm soát thích ứng hơn đến từ một vòng lặp chặt chẽ hơn (xem video bên dưới).</p>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="3-kiến-trúc-hệ-thống">3. Kiến trúc hệ thống</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Thành phần</th>
+          <th style="text-align: left">Vai trò</th>
+          <th style="text-align: left">Công nghệ</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>RobotClient</strong></td>
+          <td style="text-align: left">Chạy trên bo mạch, phát trực tuyến quan sát, duy trì <strong>hàng đợi hành động</strong>, thực hiện hành động</td>
+          <td style="text-align: left">Python, gRPC</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>PolicyServer</strong></td>
+          <td style="text-align: left">Lưu trữ chính sách, thực hiện suy luận hàng loạt, gửi lại các đoạn hành động</td>
+          <td style="text-align: left">Python, gRPC, có thể là phần cứng tăng tốc (GPU/TPU)</td>
+      </tr>
+  </tbody>
+</table>
+<p>Vì gRPC dựa trên HTTP/2 và sử dụng bộ đệm giao thức, nên nó đạt được nhắn tin nhị phân độ trễ thấp và các luồng hai chiều ngay lập tức, đến lượt nó giúp chúng ta duy trì vòng điều khiển chặt chẽ hơn và độ trễ khứ hồi dưới 100ms (trên mạng cục bộ của chúng ta và lưu trữ SmolVLA trên NVIDIA RTX 4090).</p>
+<p><code>RobotClient</code> chạy trên bo mạch và phát trực tuyến các quan sát tới <code>PolicyServer</code> thông qua gRPC. <code>PolicyServer</code> chuẩn bị các quan sát nhận được để suy luận và gửi lại cho <code>RobotClient</code> một đoạn hành động.</p>
+<h3 id="robot-client">Robot Client</h3>
+<!-- raw HTML omitted -->
+<p><code>RobotClient</code> duy trì hàng đợi hành động cục bộ và tuân theo một chiến lược đơn giản nhưng hiệu quả: <strong>gửi một quan sát mới khi độ dài hàng đợi giảm xuống dưới ngưỡng có thể định cấu hình</strong> ((g) trong bài báo SmolVLA, <code>chunk_size_threshold</code> trong mã).
+Giá trị ngưỡng này, được biểu thị dưới dạng một phần của kích thước đoạn tối đa, hoạt động như một điều kiện kích hoạt cân bằng tải tính toán với khả năng phản hồi.</p>
+<!-- raw HTML omitted -->
+<p>Từ góc độ của máy khách, quá trình diễn ra như sau:</p>
+<ol>
+<li><strong>Giám sát hàng đợi</strong>: Máy khách liên tục theo dõi độ dài hàng đợi hành động của nó so với tham số <strong>ngưỡng kích thước đoạn</strong>. Khi hàng đợi giảm xuống dưới ngưỡng này, nó báo hiệu rằng một quan sát mới nên được gửi để xử lý.</li>
+<li><strong>Phát trực tuyến quan sát</strong>: Khi điều kiện ngưỡng được đáp ứng, máy khách chụp quan sát hiện tại và phát trực tuyến nó đến <code>PolicyServer</code> qua gRPC. Điều quan trọng là, <strong>các quan sát được phát trực tuyến thay vì được gửi qua RPC một ngôi</strong> vì chúng thường vượt quá kích thước tin nhắn tối đa là 4MB (nhiều ảnh chụp camera ở độ phân giải cao dẫn đến điều này).</li>
+<li><strong>Tổng hợp đoạn hành động</strong>: Khi một đoạn hành động mới đến từ máy chủ, máy khách sẽ hợp nhất nó với bất kỳ hành động còn lại nào trong hàng đợi hiện tại trên phần chồng chéo. Đây là nơi <strong>bộ tổng hợp tùy chỉnh</strong> phát huy tác dụng, xử lý các phần chồng chéo giữa đoạn hiện tại và đoạn đến khác nhau. Hiện tại, chúng ta hỗ trợ tổng hợp linh hoạt giữa các đoạn thông qua đặc tả của một hàm <code>aggregate_fn(chunk1: torch.Tensor, chunk2: torch.Tensor) -&gt; torch.Tensor</code> tùy chỉnh, được gọi cho mỗi bước thời gian chồng chéo và có thể do người dùng cung cấp.</li>
+</ol>
+<p>Các phần chồng chéo (được hiển thị bằng màu xanh nhạt trong sơ đồ) cần được xử lý cẩn thận. Chúng ta có thể thiết kế các chiến lược tổng hợp khác nhau:</p>
+<ul>
+<li><strong>Thay thế</strong>: Chỉ cần thay thế các hành động chồng chéo bằng các dự đoán mới hơn</li>
+<li><strong>Pha trộn có trọng số</strong>: Kết hợp các hành động chồng chéo bằng cách sử dụng trọng số thời gian (các hành động gần hơn có trọng số cao hơn)</li>
+</ul>
+<p>Hệ thống này có khả năng cấu hình cao, vì ngưỡng kích thước đoạn có thể được điều chỉnh dựa trên độ trễ mạng, thời gian suy luận mô hình và khả năng phản hồi mong muốn.
+Ngưỡng thấp hơn có nghĩa là cập nhật thường xuyên hơn (và chi phí tính toán cao hơn), trong khi ngưỡng cao hơn làm giảm chi phí giao tiếp với chi phí có thể gây ra tình trạng đói hàng đợi.
+Cuối cùng, chúng ta thường nhận các hành động từ <code>PolicyServer</code> trong một luồng và thực hiện chúng trong một luồng khác. Điều này giúp máy khách luôn lắng nghe các đoạn đến trong một luồng riêng biệt, mà không chặn thực thi và luôn tiêu thụ đoạn hiện tại cho đến khi một đoạn mới có sẵn hoàn toàn.</p>
+<h3 id="policy-server">Policy Server</h3>
+<p>Khi nhận được các quan sát từ <code>RobotClient</code>, <code>PolicyServer</code> nhận các quan sát từ <code>RobotClient</code> và thực hiện quá trình làm sạch quan sát cần thiết để làm cho các quan sát nhận được sẵn sàng cho suy luận. Quá trình này được minh họa trong hình ảnh bên dưới:</p>
+<!-- raw HTML omitted -->
+<p>Sau khi quan sát đã được chuẩn bị, nó được so sánh với quan sát cuối cùng được sử dụng để suy luận.
+Điều này tránh sụp đổ thành một vòng lặp, trong đó các quan sát rất giống nhau được xử lý, do đó kích hoạt suy luận không cần thiết và các hành động tương tự đang được thực hiện (đến lượt, dẫn đến các quan sát rất giống nhau được xử lý lại).
+Chúng ta so sánh các quan sát về độ tương đồng không gian khớp của chúng, cung cấp cho chúng ta một cách gần đúng và nhanh chóng để đo lường những thay đổi trong robot. Rõ ràng, số liệu này không thích ứng với những thay đổi động trong môi trường (một đối tượng thay đổi vị trí hoặc các nhiễu loạn được áp dụng), nhưng chúng tôi thấy rằng nó là một sự đánh đổi tốt cho phần lớn các trường hợp và rất hiệu quả trong việc tránh suy luận không cần thiết và sụp đổ trạng thái.
+Điều quan trọng là, <code>RobotClient</code> vẫn giữ quyền kiểm soát việc một quan sát nhất định có phải được xử lý hay không, để tránh bế tắc.
+Các quan sát do máy khách gửi và được gắn thẻ với <code>must_go=True</code> được xử lý bất kể số liệu tương đồng.</p>
+<!-- raw HTML omitted -->
+<p>Cuối cùng, để đảm bảo <code>PolicyServer</code> luôn xử lý quan sát có sẵn mới nhất, chúng ta chặn các quan sát đến cho đến khi quan sát trước đó đã được xử lý thành công. Trong đó, chúng ta tận dụng hàng đợi trên <code>PolicyServer</code> để đảm bảo các quan sát đến không được xếp hàng đợi cho đến khi máy chủ sẵn sàng xử lý chúng (xem bên dưới).</p>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="4-phân-tích-suy-luận-bất-đồng-bộ">4. Phân tích suy luận bất đồng bộ</h2>
+<p>Đối với tất cả các mục đích thực tế, trong suy luận bất đồng bộ, có hai thang thời gian quan trọng:</p>
+<ul>
+<li><strong>Bước môi trường</strong> <code>environment_dt = 1/fps</code>, mô tả robot có thể thực hiện một hành động nhanh như thế nào.</li>
+<li><strong>Độ trễ suy luận</strong> <code>inference_time</code>: chuyển tiếp + khứ hồi mạng. Chúng ta có thể giả định khứ hồi mạng là không đáng kể so với thời gian suy luận chính sách, mặc dù điều này có thể không đúng đối với mọi thiết lập.</li>
+</ul>
+<p>Điều quan trọng là, tỷ lệ
+$c = \frac{\texttt{environment_dt}}{\texttt{inference_time}}$
+dẫn đến các hành vi khác nhau:</p>
+<ul>
+<li>$c \ll 1$: môi trường phát triển nhanh hơn suy luận. Trong kịch bản này, hàng đợi trống nhanh chóng và chúng ta thoái hóa thành điều khiển tuần tự.</li>
+<li>$c \ge 1$: máy chủ theo kịp. Hàng đợi luôn (gần như) đầy.</li>
+</ul>
+<p>Điều quan trọng là, $c$ ảnh hưởng đến số lượng hành động có sẵn trong hàng đợi tại bất kỳ thời điểm nào. Để tránh giới hạn điều khiển tuần tự đã đề cập ở trên, người ta có thể:</p>
+<ol>
+<li><strong>Sử dụng nhiều tính toán hơn cho máy chủ chính sách</strong>, lưu trữ máy chủ trên GPU, giảm <code>inference_time</code> như một hệ quả của việc phân bổ nhiều tài nguyên tính toán hơn.</li>
+<li><strong>Gửi các quan sát đến máy chủ thường xuyên hơn</strong>, gửi một quan sát mới khi độ dài hàng đợi $k$ giảm xuống dưới <strong>phần</strong> $g = k/H$ của kích thước tối đa của nó.
+<ul>
+<li>$g=0$ tái tạo suy luận tuần tự (hàng đợi trống, chờ).</li>
+<li>$g=1$ gửi một quan sát mỗi bước thời gian (tính toán tối đa, độ trễ tối thiểu).</li>
+</ul>
+</li>
+</ol>
+<p>Các thí nghiệm (xem các đồ thị bên dưới) cho thấy rằng $g\approx0.7$ cung cấp một sự đánh đổi tốt khi các quan sát được gửi không được lọc ra (tất cả chúng đều phải đi). Chúng ta khuyên bạn nên đặt $g=0.5$ và làm theo <a href="https://huggingface.co/docs/lerobot/en/async">tài liệu của chúng tôi</a> để điều chỉnh tham số này cho phù hợp với nhu cầu của bạn.</p>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="5-sử-dụng-bất-đồng-bộ-trong-thiết-lập-của-bạn">5. Sử dụng bất đồng bộ trong thiết lập của bạn</h2>
+<p>Suy luận bất đồng bộ là một cách đơn giản nhưng hiệu quả để cải thiện hiệu suất của các chính sách robot. Trong các thí nghiệm của chúng tôi sử dụng SmolVLA, suy luận bất đồng bộ dẫn đến tăng tốc ~ 2 lần trong thời gian hoàn thành nhiệm vụ với tỷ lệ thành công nhiệm vụ tương đương và kiểm soát thích ứng hơn đến từ một vòng lặp chặt chẽ hơn.</p>
+<p>Để chạy chính sách của bạn bằng suy luận bất đồng bộ, bạn chỉ cần làm theo <a href="https://huggingface.co/docs/lerobot/en/async">hướng dẫn của chúng tôi</a> với các tham số tùy chỉnh của riêng bạn (ví dụ: đường dẫn chính sách hoặc ngưỡng kích thước đoạn). Suy luận bất đồng bộ đi kèm với hỗ trợ cho các chính sách hỗ trợ chia đoạn hành động!</p>
+<hr>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Chúng tôi đã giới thiệu suy luận bất đồng bộ, một cách đơn giản nhưng hiệu quả để cải thiện hiệu suất của các chính sách robot. Trong các thí nghiệm của chúng tôi sử dụng SmolVLA, suy luận bất đồng bộ dẫn đến tăng tốc ~ 2 lần trong thời gian hoàn thành nhiệm vụ với tỷ lệ thành công nhiệm vụ tương đương và kiểm soát thích ứng hơn đến từ một vòng lặp chặt chẽ hơn.</p>
+<p>Chúng tôi rất vui mừng chia sẻ công việc này với cộng đồng và xem nó có thể được sử dụng để cải thiện hiệu suất của các chính sách robot như thế nào. Chúng tôi hoan nghênh PR để cải thiện và mở rộng khung suy luận bất đồng bộ tại <a href="https://huggingface.co/lerobot"><code>huggingface/lerobot</code></a> và sẵn sàng thảo luận thêm về điều này trong <a href="https://discord.com/invite/ttk5CV6tUw">cộng đồng Discord</a> của chúng tôi, 🤗.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/async-robot-inference">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-10-2025/">July 10, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-10/69432a/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/screenenv/screenenv.png" alt="ScreenEnv- Triển khai Agent Desktop full stack của bạn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-10T00:00:00&#43;00:00">Jul 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">ScreenEnv- Triển khai Agent Desktop full stack của bạn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này thảo luận về cách sử dụng ScreenEnv để triển khai một tác nhân desktop full stack.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-10/899449/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/building-hf-mcp/building-hf-mcp.png" alt="Xây dựng Máy chủ Hugging Face MCP" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-10T00:00:00&#43;00:00">Jul 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Xây dựng Máy chủ Hugging Face MCP</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này trình bày quá trình xây dựng máy chủ Hugging Face MCP.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-10/7e105c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nâng cao Claude cho giáo dục</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-10/69432a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/screenenv/screenenv.png" alt="ScreenEnv- Triển khai Agent Desktop full stack của bạn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">ScreenEnv- Triển khai Agent Desktop full stack của bạn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-10/1e1e6c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/async_inference/thumbnail_async_blog.png" alt="Suy luận Robot không đồng bộ- Tách rời dự đoán hành động và thực thi" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Suy luận Robot không đồng bộ- Tách rời dự đoán hành động và thực thi</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-10/899449/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/building-hf-mcp/building-hf-mcp.png" alt="Xây dựng Máy chủ Hugging Face MCP" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Xây dựng Máy chủ Hugging Face MCP</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/1c968f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_digital_brain_storing_conversations_b9763f63-73bf-4f46-931e-72e29f178c88.webp?w=350&amp;h=175&amp;crop=1" alt="Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
