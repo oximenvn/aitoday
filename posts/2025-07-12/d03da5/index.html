@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tạo các kernel tùy chỉnh cho AMD MI300 | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Tạo các kernel tùy chỉnh cho AMD MI300</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-12T00:00:00&#43;00:00">July 12, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/mi300kernels/thumbnail.png" alt="Tạo các kernel tùy chỉnh cho AMD MI300">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="tạo-các-kernel-tùy-chỉnh-cho-amd-mi300">Tạo các kernel tùy chỉnh cho AMD MI300</h1>
+<h2 id="kernel-amd">Kernel AMD</h2>
+<p>Hợp tác giữa Hugging Face và AMD để cung cấp hiệu suất cao nhất trên các nền tảng AMD, mang lại lợi ích cho cộng đồng mã nguồn mở. Bài viết này trình bày cách tối ưu hóa hiệu suất cho MI300X và cách mỗi kernel được tinh chỉnh riêng lẻ.</p>
+<p><strong>Giới thiệu</strong></p>
+<p>ChatGPT xử lý hơn một tỷ yêu cầu mỗi ngày, đòi hỏi phải tối ưu hóa mô hình ở mọi cấp độ. Các kernel, thuật toán được thực thi khi thực hiện bất kỳ thao tác nào trong mạng, đóng vai trò quan trọng trong việc suy luận mô hình. Tuy nhiên, các kernel mới thường được tối ưu hóa cho phần cứng Nvidia mới nhất, bỏ qua các thiết bị khác, đặc biệt là GPU AMD. Hugging Face hợp tác với AMD để cung cấp hiệu suất cao nhất trên các nền tảng AMD và mang lại lợi ích cho cộng đồng mã nguồn mở. Sự hợp tác này tập trung vào việc cung cấp các kernel mã nguồn mở được tối ưu hóa để cải thiện hiệu suất của việc phân phối Llama 3.1 405B trong FP8 trên một nút gồm 8 MI300X bằng VLLM.</p>
+<p>Bằng cách kết hợp ba kernel được tối ưu hóa:</p>
+<ul>
+<li>Kernel kết nối lại dư, chuẩn hóa RMS và chuyển đổi FP8 hợp nhất</li>
+<li>Kernel kích hoạt SwiGLU hợp nhất và chuyển đổi FP8</li>
+<li>Kernel GEMM Skinny</li>
+</ul>
+<p>Đã đạt được tốc độ đáng kể khi chạy VLLM trên một nút được cung cấp bởi GPU MI300X.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/mi300kernels/results_figure.png" alt=""></p>
+<p><em>Các phép đo được thực hiện với kích thước đầu vào là 1 và kích thước đầu ra là 128 để bắt chước chế độ giải mã. Đo độ trễ giải mã bằng cách sử dụng giá trị trung bình trên 30 lần lặp.</em></p>
+<p>Các cải thiện về hiệu suất này được đo lường trong VLLM, nhưng bạn cũng có thể sử dụng các kernel riêng biệt.</p>
+<h2 id="cách-sử-dụng-các-kernel-này">Cách sử dụng các kernel này</h2>
+<p>Các kernel này có sẵn trên kho lưu trữ <code>hf-rocm-kernels</code> tại <a href="https://github.com/huggingface/hf-rocm-kernels">đây</a>. Bạn sẽ tìm thấy hướng dẫn về cách cài đặt gói, mã nguồn cho từng kernel, các liên kết Python tương ứng của chúng, các tập lệnh đo điểm chuẩn khác nhau và bộ thử nghiệm.</p>
+<p>Các kernel sẽ sớm được tích hợp vào nhánh AMD của dự án VLLM.</p>
+<h2 id="quy-trình-tối-ưu-hóa">Quy trình tối ưu hóa</h2>
+<ol>
+<li><strong>Tìm hiểu về MI300X:</strong> Xem lại kiến trúc của thiết bị đang làm việc.</li>
+<li><strong>Phân tích hiệu suất ngày 0:</strong> Đánh giá hiệu suất suy luận mô hình ban đầu để xác định các nút thắt.</li>
+<li><strong>Kernel tùy chỉnh:</strong> Tạo các kernel tùy chỉnh để giải quyết các nút thắt và cải thiện hiệu suất tổng thể.</li>
+</ol>
+<h2 id="giới-thiệu-nhanh-về-mi300x">Giới thiệu nhanh về MI300X</h2>
+<p>Để tối ưu hóa mã GPU, cần phải hiểu cách hoạt động của GPU.</p>
+<ul>
+<li><strong>Luồng (Thread):</strong> Đơn vị công việc nhỏ nhất. Mỗi luồng có bộ nhớ riêng, được gọi là thanh ghi (VGPR), chỉ nó mới có thể truy cập.</li>
+<li><strong>Warp:</strong> Bao gồm 64 luồng. Tất cả các luồng trong một warp phải thực thi cùng một lệnh cùng một lúc.</li>
+<li><strong>Đơn vị tính toán (CU):</strong> Các warp được gói lại với nhau thành các khối luồng (thread block), là các trừu tượng phần mềm, nhưng chạy trên một thành phần phần cứng được gọi là đơn vị tính toán (CU). Mỗi đơn vị tính toán có bộ nhớ cache L1 chuyên dụng và bộ nhớ chia sẻ.</li>
+<li><strong>XCD:</strong> Các đơn vị tính toán sau đó được nhóm thành khuôn mạch phức hợp tăng tốc (XCD), mỗi XCD chứa 38 đơn vị tính toán.</li>
+<li><strong>MI300X:</strong> Bằng cách lắp ráp 8 XCD (tổng cộng 304 CU), thêm bộ nhớ cache cấp cuối (bộ nhớ cache vô cực, với 256MB) và một lượng lớn ram video (192GB), chúng ta có được MI300X.</li>
+</ul>
+<p>Khi tối ưu hóa một kernel, luôn có một sự cân bằng giữa thực hiện nhiều thao tác hoặc tải nhiều dữ liệu, nhưng nói chung, bạn muốn truy cập VRAM (thường được gọi là bộ nhớ toàn cục) càng ít càng tốt.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/mi300kernels/mi300x.png" alt=""></p>
+<h2 id="phân-tích-hiệu-suất-ngày-0">Phân tích hiệu suất ngày 0</h2>
+<p>Việc lập hồ sơ công việc là rất quan trọng trước khi viết bất kỳ mã nào. Trong trường hợp này, hãy lập hồ sơ suy luận mô hình trong VLLM để hiểu thời gian mà mỗi thao tác sử dụng.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/mi300kernels/disk_figure.png" alt=""></p>
+<p>Hầu hết độ trễ đến từ GEMM và giao tiếp. Các lệnh gọi đến kernel “chuẩn hóa RMS” khá tốn kém. Cùng với kernel SwiGLU, chúng chiếm 15% tổng độ trễ.</p>
+<h2 id="kernel-chuẩn-hóa-rms">Kernel chuẩn hóa RMS</h2>
+<p>Mỗi khối giải mã có một khối chú ý và một khối MLP. Cả hai đều bắt đầu bằng một kết nối dư giữa trạng thái ẩn hiện tại (x) và phần dư (r). Sau khi chúng được cộng lại với nhau, áp dụng chuẩn hóa Root Mean Square (RMS) theo từng hàng cho x và lượng tử hóa x thành FP8 bằng cách sử dụng tỷ lệ s. Các hoạt động cần thực hiện như sau:</p>
+<pre tabindex="0"><code>x ← x + r
+r ← x
+V = Σ(i=1 đến d) xi^2
+x ← x / √(V + ϵ)
+xq = Q_fp8(s * x * w)
+</code></pre><p>Việc hợp nhất các hoạt động này thành một kernel duy nhất có thể mang lại hiệu suất tốt.</p>
+<p>Khi so sánh với Pytorch, phiên bản barebones của kernel này mang lại tốc độ nhanh hơn 10 lần.</p>
+<h3 id="tối-ưu-hóa-liên-quan-đến-bộ-nhớ">Tối ưu hóa: liên quan đến bộ nhớ</h3>
+<p>Các nguyên tắc để giảm chi phí tải dữ liệu:</p>
+<ul>
+<li><strong>Số lượng:</strong> Tận dụng tối đa lượng dữ liệu mà một luồng có thể tải trong một lệnh.</li>
+<li><strong>Kết hợp:</strong> Đảm bảo truy cập bộ nhớ được kết hợp. Truy xuất dữ liệu liền kề sẽ tối ưu hóa việc tải dữ liệu.</li>
+<li><strong>Giảm số lượng cửa hàng:</strong> Giảm số lượng thao tác lưu trữ bằng cách lưu trữ các phiên bản đã sửa đổi trong bộ nhớ chia sẻ.</li>
+</ul>
+<h3 id="kết-quả">Kết quả</h3>
+<p>Việc áp dụng các tối ưu hóa bộ nhớ sẽ giúp đạt được những kết quả sau:</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/mi300kernels/rms_latency_figure.png" alt=""></p>
+<table>
+  <thead>
+      <tr>
+          <th>Số lượng hàng</th>
+          <th>Torch (μs)</th>
+          <th>VLLM (μs)</th>
+          <th>Của chúng tôi (μs)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>38.8998</td>
+          <td>5.5145</td>
+          <td><strong>4.18138</strong></td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>43.2469</td>
+          <td>5.65645</td>
+          <td><strong>4.36976</strong></td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>41.1304</td>
+          <td>5.6893</td>
+          <td><strong>4.37628</strong></td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>43.8883</td>
+          <td>5.72275</td>
+          <td><strong>4.39081</strong></td>
+      </tr>
+      <tr>
+          <td>16</td>
+          <td>46.8876</td>
+          <td>5.85667</td>
+          <td><strong>4.48165</strong></td>
+      </tr>
+      <tr>
+          <td>32</td>
+          <td>55.2276</td>
+          <td>6.08502</td>
+          <td><strong>4.72017</strong></td>
+      </tr>
+      <tr>
+          <td>64</td>
+          <td>75.6086</td>
+          <td>6.4629</td>
+          <td><strong>5.54214</strong></td>
+      </tr>
+      <tr>
+          <td>128</td>
+          <td>98.1122</td>
+          <td>7.49166</td>
+          <td><strong>6.27341</strong></td>
+      </tr>
+      <tr>
+          <td>256</td>
+          <td>119.727</td>
+          <td>11.8812</td>
+          <td><strong>10.739</strong></td>
+      </tr>
+      <tr>
+          <td>512</td>
+          <td>195.782</td>
+          <td>23.1595</td>
+          <td><strong>18.5549</strong></td>
+      </tr>
+      <tr>
+          <td>1024</td>
+          <td>355.42</td>
+          <td>44.8143</td>
+          <td><strong>34.7204</strong></td>
+      </tr>
+      <tr>
+          <td>2048</td>
+          <td>671.513</td>
+          <td>81.2089</td>
+          <td><strong>73.35</strong></td>
+      </tr>
+  </tbody>
+</table>
+<p>với một tensor đầu vào FP16 có hình dạng [X, 16384].</p>
+<h2 id="kernel-swiglu">Kernel SwiGLU</h2>
+<p>Sau kernel chuẩn hóa RMS, một phép chiếu gọi là phép chiếu “Gate / Up”. Các phép chiếu &ldquo;Gate&rdquo; và &ldquo;Up&rdquo; được kết hợp và sau đó là hàm kích hoạt SwiGLU, được theo sau bởi phép chiếu “Down” ở FP8.</p>
+<pre tabindex="0"><code>y = σ(xG) ⋅ xU
+yQ = Q_FP8(s * y)
+</code></pre><p>Trong đó σ là hàm sigmoid.</p>
+<h3 id="tối-ưu-hóa-liên-quan-đến-tính-toán">Tối ưu hóa: liên quan đến tính toán</h3>
+<p>Hai phương pháp chính để tăng tốc các kernel:</p>
+<ul>
+<li><strong>Tăng khối lượng công việc trên mỗi hướng dẫn:</strong> Sử dụng các lệnh được đóng gói để áp dụng cùng một toán tử cho nhiều phần tử.</li>
+<li><strong>Sử dụng hướng dẫn nhanh hơn:</strong> Thay thế các hướng dẫn tốn kém bằng các hướng dẫn hiệu quả hơn. Ví dụ: thay vì sử dụng hướng dẫn <code>exp</code>, hãy sử dụng hướng dẫn <code>exp2</code> nhanh hơn.</li>
+</ul>
+<h3 id="kết-quả-1">Kết quả</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Số lượng hàng</th>
+          <th>1</th>
+          <th>2</th>
+          <th>4</th>
+          <th>8</th>
+          <th>16</th>
+          <th>32</th>
+          <th>64</th>
+          <th>128</th>
+          <th>256</th>
+          <th>512</th>
+          <th>1024</th>
+          <th>2048</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Torch (μs)</td>
+          <td>40.2731</td>
+          <td>29.923</td>
+          <td>35.305</td>
+          <td>23.5763</td>
+          <td>22.4738</td>
+          <td>25.3445</td>
+          <td>31.5829</td>
+          <td>40.3194</td>
+          <td>53.5369</td>
+          <td>79.8037</td>
+          <td>124.873</td>
+          <td>243.202</td>
+      </tr>
+      <tr>
+          <td>VLLM (μs)</td>
+          <td>3.84116</td>
+          <td>3.86192</td>
+          <td>3.92937</td>
+          <td>3.94151</td>
+          <td>4.01047</td>
+          <td>4.02421</td>
+          <td>4.08943</td>
+          <td>4.20317</td>
+          <td>4.48755</td>
+          <td>7.48465</td>
+          <td>13.7389</td>
+          <td>25.4306</td>
+      </tr>
+      <tr>
+          <td>Của chúng tôi (μs)</td>
+          <td><strong>1.92981</strong></td>
+          <td><strong>1.93904</strong></td>
+          <td><strong>1.93524</strong></td>
+          <td><strong>1.99316</strong></td>
+          <td><strong>2.00415</strong></td>
+          <td><strong>1.91563</strong></td>
+          <td><strong>2.04498</strong></td>
+          <td><strong>2.61763</strong></td>
+          <td><strong>3.57726</strong></td>
+          <td><strong>5.47608</strong></td>
+          <td><strong>10.0482</strong></td>
+          <td><strong>19.8957</strong></td>
+      </tr>
+      <tr>
+          <td>Tăng tốc (VLLM / Của chúng tôi)</td>
+          <td>1.990434291</td>
+          <td>1.991665979</td>
+          <td>2.030430334</td>
+          <td>1.977518112</td>
+          <td>2.001082753</td>
+          <td>2.100724044</td>
+          <td>1.999740829</td>
+          <td>1.605715857</td>
+          <td>1.254465708</td>
+          <td>1.366789747</td>
+          <td>1.367299616</td>
+          <td>1.278195791</td>
+      </tr>
+  </tbody>
+</table>
+<p>Với các tối ưu hóa bộ nhớ và tính toán được điều chỉnh cho MI300X, thu được một kernel nhanh hơn Torch trung bình hơn 14 lần và nhanh hơn từ 27% đến 100% so với kernel VLLM.</p>
+<h2 id="kernel-gemm-skinny">Kernel GEMM Skinny</h2>
+<p>Khoảng 60% độ trễ suy luận của mô hình đến từ các phép chiếu, dựa trên kernel GEMM. Viết một kernel tùy chỉnh hoạt động tốt hơn trong mọi trường hợp là khá khó. Nhưng nếu chúng ta tập trung vào một số trường hợp biên mà có liên quan đến chúng ta và viết một kernel GEMM cho những trường hợp cụ thể đó, thì có một cơ hội là kernel tùy chỉnh của chúng ta có thể nhanh hơn các kernel trong các thư viện chuyên dụng.</p>
+<h3 id="tối-ưu-hóa-chia-tách-k">Tối ưu hóa: chia tách K</h3>
+<p>Vì vấn đề chính của GEMM skinny là chúng ta sử dụng quá ít đơn vị tính toán, điều đầu tiên chúng ta có thể làm là tìm ra một cách để sử dụng nhiều hơn. Để làm điều này, chúng ta có thể khai thác công thức sau:</p>
+<pre tabindex="0"><code>cij = Σ(k=1 đến K) aik bkj = (Σ(k=1 đến K/2) aik bkj) + (Σ(k=1+K/2 đến K) aik bkj)
+</code></pre><p>Nhờ tính kết hợp của tổng, chúng ta có thể chia tách GEMM chính dọc theo trục chia sẻ (thường được gọi là trục K) và thay thế một GEMM bằng một số GEMM con được thực hiện đồng thời.</p>
+<h3 id="tối-ưu-hóa-loại-bỏ-phần-đệm">Tối ưu hóa: loại bỏ phần đệm</h3>
+<p>Để tận dụng tốt nhất tensor core trên MI300X, chúng ta cần điều chỉnh kích thước ma trận đầu vào để phù hợp với yêu cầu của tensor core. Các định dạng tensor core là <code>mfma_MxNxK...</code> trong đó <code>mfma</code> là viết tắt của matrix fused multiply-add, <code>M</code> là số hàng của ma trận bên trái, <code>N</code> là số cột của ma trận bên phải và <code>K</code> là chiều chia sẻ của cả hai.</p>
+<p>Để tận dụng hướng dẫn thưa, chúng ta có thể sử dụng kỹ thuật sau:</p>
+<ol>
+<li><strong>Thêm đệm:</strong> Đảm bảo rằng ma trận đầu vào phù hợp với các yêu cầu về kích thước của hướng dẫn tensor core.</li>
+<li><strong>Áp dụng thủ thuật độ thưa:</strong> Tận dụng lợi thế về cấu trúc độ thưa 4:2 trong các hướng dẫn tensor core thưa.</li>
+</ol>
+<p>Sử dụng thủ thuật này, chúng ta có thể tăng tốc đáng kể GEMM của mình cho bất kỳ đầu vào nào có 8 hàng trở xuống, dẫn đến việc giảm độ trễ trên mỗi mã thông báo cho bất kỳ lô giải mã nào có ít hơn 8 yêu cầu.</p>
+<h3 id="tối-ưu-hóa-chuyên-môn-hóa-warp-và-thực-thi-không-đồng-bộ">Tối ưu hóa: chuyên môn hóa warp và thực thi không đồng bộ</h3>
+<p>Chúng ta có thể sử dụng một kỹ thuật gọi là chuyên môn hóa warp. Thay vì tất cả các warp trong khối luồng thực hiện cùng một hướng dẫn, chúng ta sẽ dành riêng một số warp cho chỉ tải dữ liệu và một số cho chỉ tính toán kết quả. Các warp chịu trách nhiệm tải dữ liệu được gọi là người sản xuất (producer) và những warp tính toán kết quả được gọi là người tiêu dùng (consumer).
+Để làm cho toàn bộ quá trình hoạt động, một hàng đợi sẽ được lưu trữ trong bộ nhớ dùng chung. Khi một người sản xuất hoàn tất việc lưu trữ dữ liệu trong bộ đệm bộ nhớ dùng chung, nó sẽ thay đổi trạng thái của biến hàng đợi thứ i để báo hiệu dữ liệu có sẵn ở đó. Người tiêu dùng đang xem xét điều này và bắt đầu tải dữ liệu sau đó.</p>
+<p>Thông qua chuyên môn hóa warp và công việc không đồng bộ, chúng ta có thể điều chỉnh kernel của mình cho khối lượng công việc cường độ số học thấp, nhưng điều đó có đủ để vượt qua các thư viện như hipBLASLT không?</p>
+<h3 id="kết-quả-2">Kết quả</h3>
+<table>
+  <thead>
+      <tr>
+          <th>M (hàng)</th>
+          <th>N (cột)</th>
+          <th>K (chiều sâu)</th>
+          <th>Thời gian Torch (μs)</th>
+          <th>Thời gian SkG (μs)</th>
+          <th>Tăng tốc</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>2304</td>
+          <td>16384</td>
+          <td>14.938 ± 0.292</td>
+          <td>11.685 ± 0.299</td>
+          <td>127.84 %</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>2304</td>
+          <td>16384</td>
+          <td>16.300 ± 0.282</td>
+          <td>12.342 ± 0.375</td>
+          <td>132.07 %</td>
+      </tr>
+      <tr>
+          <td>16</td>
+          <td>2304</td>
+          <td>16384</td>
+          <td>16.693 ± 0.233</td>
+          <td>13.909 ± 0.295</td>
+          <td>120.02 %</td>
+      </tr>
+      <tr>
+          <td>32</td>
+          <td>2304</td>
+          <td>16384</td>
+          <td>16.817 ± 0.124</td>
+          <td>17.021 ± 0.133</td>
+          <td>98.80 %</td>
+      </tr>
+      <tr>
+          <td>1</td>
+          <td>13312</td>
+          <td>16384</td>
+          <td>77.636 ± 0.364</td>
+          <td>54.717 ± 0.628</td>
+          <td>141.88 %</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>13312</td>
+          <td>16384</td>
+          <td>80.031 ± 0.449</td>
+          <td>58.355 ± 0.612</td>
+          <td>137.15 %</td>
+      </tr>
+      <tr>
+          <td>16</td>
+          <td>13312</td>
+          <td>16384</td>
+          <td>75.236 ± 0.378</td>
+          <td>59.973 ± 1.922</td>
+          <td>125.45 %</td>
+      </tr>
+      <tr>
+          <td>32</td>
+          <td>13312</td>
+          <td>16384</td>
+          <td>82.198 ± 0.590</td>
+          <td>69.483 ± 1.672</td>
+          <td>118.30 %</td>
+      </tr>
+      <tr>
+          <td>1</td>
+          <td>16384</td>
+          <td>6656</td>
+          <td>31.066 ± 0.193</td>
+          <td>27.613 ± 0.218</td>
+          <td>112.51 %</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>16384</td>
+          <td>6656</td>
+          <td>31.559 ± 0.200</td>
+          <td>28.134 ± 0.209</td>
+          <td>112.17 %</td>
+      </tr>
+      <tr>
+          <td>16</td>
+          <td>16384</td>
+          <td>6656</td>
+          <td>31.671 ± 0.250</td>
+          <td>30.233 ± 0.267</td>
+          <td>104.76 %</td>
+      </tr>
+      <tr>
+          <td>32</td>
+          <td>16384</td>
+          <td>6656</td>
+          <td>35.561 ± 0.335</td>
+          <td>35.052 ± 1.365</td>
+          <td>101.45 %</td>
+      </tr>
+  </tbody>
+</table>
+<p>Đối với những chiều mà chúng ta có thể sử dụng thủ thuật độ thưa (M = 1, 8), chúng ta thấy tốc độ tăng tốc đáng kể so với Torch.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Bài viết này chỉ khám phá một số kỹ thuật tối ưu hóa kernel. Repository <strong>hf-rocm-kernels</strong> có thể được sử dụng để thử nghiệm các kỹ thuật.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/mi300kernels">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-9-2025/">July 9, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/321c72/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/upskill-llms-with-gradio-mcp/UpskillThumbnail.png" alt="Nâng cao kỹ năng LLM của bạn với Máy chủ Gradio MCP" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-09T00:00:00&#43;00:00">Jul 09, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Nâng cao kỹ năng LLM của bạn với Máy chủ Gradio MCP</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Nâng cao kỹ năng LLM của bạn với Máy chủ Gradio MCP</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/e2a8fd/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/reachy-mini/thumbnail.jpg" alt="Reachy Mini - Robot mã nguồn mở dành cho những nhà xây dựng AI ngày nay và ngày mai" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-09T00:00:00&#43;00:00">Jul 09, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Reachy Mini - Robot mã nguồn mở dành cho những nhà xây dựng AI ngày nay và ngày mai</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Reachy Mini - Robot mã nguồn mở dành cho những nhà xây dựng AI ngày nay và ngày mai</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/a59e4f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/train-sentence-transformers/st-hf-thumbnail.png" alt="Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/cc255f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smollm3/image.png" alt="SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/d03da5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/mi300kernels/thumbnail.png" alt="Tạo các kernel tùy chỉnh cho AMD MI300" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tạo các kernel tùy chỉnh cho AMD MI300</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/23fd70/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tinh chỉnh Claude 3 Haiku trong Amazon Bedrock</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-10/7e105c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nâng cao Claude cho giáo dục</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

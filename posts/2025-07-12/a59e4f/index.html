@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5 | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-12T00:00:00&#43;00:00">July 12, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            17 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/train-sentence-transformers/st-hf-thumbnail.png" alt="Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="đào-tạo-và-tinh-chỉnh-mô-hình-nhúng-thưa-thớt-với-sentence-transformers-v5">Đào tạo và Tinh chỉnh Mô hình Nhúng Thưa thớt với Sentence Transformers v5</h1>
+<p><a href="https://sbert.net/">Sentence Transformers</a> là một thư viện Python để sử dụng và đào tạo các mô hình nhúng và xếp hạng lại cho một loạt các ứng dụng, chẳng hạn như tạo tăng cường truy xuất, tìm kiếm ngữ nghĩa, tương đồng văn bản ngữ nghĩa, khai thác diễn giải, v.v. Một vài phiên bản chính gần đây đã giới thiệu những cải tiến đáng kể cho việc đào tạo:</p>
+<ul>
+<li>v3.0: (cải tiến) Đào tạo mô hình Sentence Transformer (Nhúng Dày đặc)</li>
+<li>v4.0: (cải tiến) Đào tạo mô hình Cross Encoder (Xếp hạng lại)</li>
+<li>v5.0: (mới) Đào tạo mô hình Nhúng Thưa thớt</li>
+</ul>
+<p>Trong bài đăng trên blog này, tôi sẽ chỉ cho bạn cách sử dụng nó để tinh chỉnh một mô hình mã hóa/nhúng thưa thớt và giải thích lý do bạn có thể muốn làm như vậy. Điều này dẫn đến <a href="https://huggingface.co/sparse-encoder/example-inference-free-splade-distilbert-base-uncased-nq">sparse-encoder/example-inference-free-splade-distilbert-base-uncased-nq</a>, một mô hình rẻ tiền hoạt động đặc biệt tốt trong các tình huống tìm kiếm kết hợp hoặc truy xuất và xếp hạng lại.</p>
+<p>Việc tinh chỉnh các mô hình nhúng thưa thớt bao gồm một số thành phần: mô hình, tập dữ liệu, hàm mất mát, đối số đào tạo, trình đánh giá và lớp huấn luyện. Tôi sẽ xem xét từng thành phần này, kèm theo các ví dụ thực tế về cách chúng có thể được sử dụng để tinh chỉnh các mô hình nhúng thưa thớt mạnh mẽ.</p>
+<p>Ngoài việc đào tạo các mô hình của riêng bạn, bạn có thể chọn từ một loạt các bộ mã hóa thưa thớt được đào tạo trước có sẵn trên <a href="https://huggingface.co/models?library=sentence-transformers&amp;other=sparse">Hugging Face Hub</a>. Để giúp điều hướng không gian ngày càng phát triển này, chúng tôi đã tuyển chọn một <a href="https://huggingface.co/collections/sparse-encoder/splade-models-6862be100374b320d826eeaa">bộ sưu tập Mô hình SPLADE</a> làm nổi bật một số mô hình phù hợp nhất.  Chúng tôi liệt kê những mô hình nổi bật nhất cùng với kết quả điểm chuẩn của chúng trong <a href="https://sbert.net/docs/sparse_encoder/pretrained_models.html">Mô hình được đào tạo trước</a> trong tài liệu.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#what-are-sparse-embedding-models">Mô hình Nhúng Thưa thớt là gì?</a>
+<ul>
+<li><a href="#query-and-document-expansion">Mở rộng Truy vấn và Tài liệu</a></li>
+<li><a href="#why-use-sparse-embedding-models">Tại sao Sử dụng Mô hình Nhúng Thưa thớt?</a></li>
+</ul>
+</li>
+<li><a href="#why-finetune">Tại sao Tinh chỉnh?</a></li>
+<li><a href="#training-components">Thành phần Đào tạo</a></li>
+<li><a href="#model">Mô hình</a>
+<ul>
+<li><a href="#splade">Splade</a></li>
+<li><a href="#inference-free-splade">Splade Không Suy luận</a></li>
+<li><a href="#contrastive-sparse-representation-csr">Biểu diễn Thưa thớt Tương phản (CSR)</a></li>
+<li><a href="#architecture-picker-guide">Hướng dẫn Chọn Kiến trúc</a></li>
+</ul>
+</li>
+<li><a href="#dataset">Tập dữ liệu</a>
+<ul>
+<li><a href="#data-on-the-hugging-face-hub">Dữ liệu trên Hugging Face Hub</a></li>
+<li><a href="#local-data-csv-json-parquet-arrow-sql">Dữ liệu cục bộ (CSV, JSON, Parquet, Arrow, SQL)</a></li>
+<li><a href="#local-data-that-requires-pre-processing">Dữ liệu cục bộ yêu cầu tiền xử lý</a></li>
+<li><a href="#dataset-format">Định dạng Tập dữ liệu</a></li>
+</ul>
+</li>
+<li><a href="#loss-function">Hàm Mất mát</a></li>
+<li><a href="#training-arguments">Đối số Đào tạo</a></li>
+<li><a href="#evaluator">Trình đánh giá</a>
+<ul>
+<li><a href="#sparsenanobeirevaluator">SparseNanoBEIREvaluator</a></li>
+<li><a href="#sparseembeddingsimilarityevaluator-with-stsb">SparseEmbeddingSimilarityEvaluator với STSb</a></li>
+<li><a href="#sparsetripletevaluator-with-allnli">SparseTripletEvaluator với AllNLI</a></li>
+</ul>
+</li>
+<li><a href="#trainer">Huấn luyện viên</a>
+<ul>
+<li><a href="#callbacks">Gọi lại</a></li>
+<li><a href="#multi-dataset-training">Đào tạo Đa Tập dữ liệu</a></li>
+</ul>
+</li>
+<li><a href="#evaluation">Đánh giá</a></li>
+<li><a href="#training-tips">Lời khuyên Đào tạo</a></li>
+<li><a href="#vector-database-integration">Tích hợp Cơ sở dữ liệu Vector</a></li>
+<li><a href="#additional-resources">Tài nguyên Bổ sung</a>
+<ul>
+<li><a href="#training-examples">Ví dụ Đào tạo</a></li>
+<li><a href="#documentation">Tài liệu</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="mô-hình-nhúng-thưa-thớt-là-gì">Mô hình Nhúng Thưa thớt là gì?</h2>
+<p>Thuật ngữ rộng hơn &ldquo;mô hình nhúng&rdquo; dùng để chỉ các mô hình chuyển đổi một số đầu vào, thường là văn bản, thành biểu diễn vector (nhúng) nắm bắt ý nghĩa ngữ nghĩa của đầu vào. Không giống như với các đầu vào thô, bạn có thể thực hiện các phép toán trên các nhúng này, dẫn đến các điểm tương đồng có thể được sử dụng cho các tác vụ khác nhau, chẳng hạn như tìm kiếm, phân cụm hoặc phân loại.</p>
+<p>Với các mô hình nhúng dày đặc, tức là loại phổ biến, các nhúng thường là các vector chiều thấp (ví dụ: 384, 768 hoặc 1024 chiều) trong đó hầu hết các giá trị đều khác không. Mặt khác, các mô hình nhúng thưa thớt tạo ra các vector chiều cao (ví dụ: hơn 30.000 chiều) trong đó hầu hết các giá trị đều bằng không. Thông thường, mỗi chiều hoạt động (tức là chiều có giá trị khác không) trong một nhúng thưa thớt tương ứng với một mã thông báo cụ thể trong từ vựng của mô hình, cho phép diễn giải.</p>
+<p>Hãy xem <a href="https://huggingface.co/naver/splade-v3">naver/splade-v3</a>, một mô hình nhúng thưa thớt hiện đại, làm ví dụ:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SparseEncoder
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tải xuống từ Hub 🤗</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SparseEncoder(<span style="color:#e6db74">&#34;naver/splade-v3&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Chạy suy luận</span>
+</span></span><span style="display:flex;"><span>sentences <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Thời tiết hôm nay thật đẹp.&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Bên ngoài trời nắng quá!&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Anh ấy lái xe đến sân vận động.&#34;</span>,
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>embeddings <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>encode(sentences)
+</span></span><span style="display:flex;"><span>print(embeddings<span style="color:#f92672">.</span>shape)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (3, 30522)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Lấy điểm tương đồng cho các nhúng</span>
+</span></span><span style="display:flex;"><span>similarities <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>similarity(embeddings, embeddings)
+</span></span><span style="display:flex;"><span>print(similarities)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># tensor([[   32.4323,     5.8528,     0.0258],</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#         [    5.8528,    26.6649,     0.0302],</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#         [    0.0258,     0.0302,    24.0839]])</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Hãy giải mã các nhúng của chúng ta để có thể diễn giải chúng</span>
+</span></span><span style="display:flex;"><span>decoded <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>decode(embeddings, top_k<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> decoded, sentence <span style="color:#f92672">in</span> zip(decoded, sentences):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Câu: </span><span style="color:#e6db74">{</span>sentence<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Đã giải mã: </span><span style="color:#e6db74">{</span>decoded<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    print()
+</span></span></code></pre></div><pre tabindex="0"><code>Câu: Thời tiết hôm nay thật đẹp.
+Đã giải mã: [(&#39;weather&#39;, 2.754288673400879), (&#39;today&#39;, 2.610959529876709), (&#39;lovely&#39;, 2.431990623474121), (&#39;currently&#39;, 1.5520408153533936), (&#39;beautiful&#39;, 1.5046082735061646), (&#39;cool&#39;, 1.4664798974990845), (&#39;pretty&#39;, 0.8986214995384216), (&#39;yesterday&#39;, 0.8603134155273438), (&#39;nice&#39;, 0.8322536945343018), (&#39;summer&#39;, 0.7702118158340454)]
+
+Câu: Bên ngoài trời nắng quá!
+Đã giải mã: [(&#39;outside&#39;, 2.6939032077789307), (&#39;sunny&#39;, 2.535827398300171), (&#39;so&#39;, 2.0600898265838623), (&#39;out&#39;, 1.5397940874099731), (&#39;weather&#39;, 1.1198079586029053), (&#39;very&#39;, 0.9873268604278564), (&#39;cool&#39;, 0.9406591057777405), (&#39;it&#39;, 0.9026399254798889), (&#39;summer&#39;, 0.684999406337738), (&#39;sun&#39;, 0.6520509123802185)]
+
+Câu: Anh ấy lái xe đến sân vận động.
+Đã giải mã: [(&#39;stadium&#39;, 2.7872302532196045), (&#39;drove&#39;, 1.8208855390548706), (&#39;driving&#39;, 1.6665740013122559), (&#39;drive&#39;, 1.5565159320831299), (&#39;he&#39;, 1.4721972942352295), (&#39;stadiums&#39;, 1.449463129043579), (&#39;to&#39;, 1.0441515445709229), (&#39;car&#39;, 0.7002660632133484), (&#39;visit&#39;, 0.5118278861045837), (&#39;football&#39;, 0.502326250076294)]
+</code></pre><p>Trong ví dụ này, các nhúng là các vector 30.522 chiều, trong đó mỗi chiều tương ứng với một mã thông báo trong từ vựng của mô hình. Phương thức <code>decode</code> trả về 10 mã thông báo hàng đầu có giá trị cao nhất trong nhúng, cho phép chúng ta diễn giải mã thông báo nào đóng góp nhiều nhất vào nhúng.</p>
+<p>Chúng ta thậm chí có thể xác định giao điểm hoặc chồng chéo giữa các nhúng, rất hữu ích để xác định lý do tại sao hai văn bản được coi là tương tự hoặc khác nhau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Hãy tính toán cả giao điểm/chồng chéo của hai nhúng đầu tiên</span>
+</span></span><span style="display:flex;"><span>intersection_embedding <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>intersection(embeddings[<span style="color:#ae81ff">0</span>], embeddings[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>decoded_intersection <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>decode(intersection_embedding)
+</span></span><span style="display:flex;"><span>print(decoded_intersection)
+</span></span></code></pre></div><pre tabindex="0"><code>Đã giải mã: [(&#39;weather&#39;, 3.0842742919921875), (&#39;cool&#39;, 1.379457712173462), (&#39;summer&#39;, 0.5275946259498596), (&#39;comfort&#39;, 0.3239051103591919), (&#39;sally&#39;, 0.22571465373039246), (&#39;julian&#39;, 0.14787325263023376), (&#39;nature&#39;, 0.08582140505313873), (&#39;beauty&#39;, 0.0588383711874485), (&#39;mood&#39;, 0.018594780936837196), (&#39;nathan&#39;, 0.000752730411477387)]
+</code></pre><h3 id="mở-rộng-truy-vấn-và-tài-liệu">Mở rộng Truy vấn và Tài liệu</h3>
+<p>Một thành phần quan trọng của các mô hình nhúng thưa thớt thần kinh là <strong>mở rộng truy vấn/tài liệu</strong>. Không giống như các phương pháp từ vựng truyền thống như BM25, chỉ khớp các mã thông báo chính xác, các mô hình thưa thớt thần kinh thường tự động mở rộng văn bản gốc với các thuật ngữ liên quan về mặt ngữ nghĩa:</p>
+<ul>
+<li><strong>Truyền thống, Từ vựng (ví dụ: BM25):</strong> Chỉ khớp với các mã thông báo chính xác trong văn bản</li>
+<li><strong>Mô hình Thưa thớt Thần kinh:</strong> Tự động mở rộng với các thuật ngữ liên quan</li>
+</ul>
+<p>Ví dụ: trong đầu ra mã ở trên, câu &ldquo;Thời tiết hôm nay thật đẹp&rdquo; được mở rộng để bao gồm các thuật ngữ như &ldquo;beautiful&rdquo;, &ldquo;cool&rdquo;, &ldquo;pretty&rdquo; và &ldquo;nice&rdquo; không có trong văn bản gốc. Tương tự, &ldquo;Bên ngoài trời nắng quá!&rdquo; được mở rộng để bao gồm &ldquo;weather&rdquo;, &ldquo;summer&rdquo; và &ldquo;sun&rdquo;.</p>
+<p>Việc mở rộng này cho phép các mô hình thưa thớt thần kinh khớp với nội dung hoặc từ đồng nghĩa liên quan về mặt ngữ nghĩa ngay cả khi không có các kết quả khớp mã thông báo chính xác, xử lý các lỗi chính tả và khắc phục các sự cố không khớp từ vựng. Đây là lý do tại sao các mô hình thưa thớt thần kinh như SPLADE thường vượt trội hơn các phương pháp tìm kiếm từ vựng truyền thống trong khi vẫn duy trì các lợi ích về hiệu quả của các biểu diễn thưa thớt.</p>
+<p>Tuy nhiên, việc mở rộng có những rủi ro của nó. Ví dụ: việc mở rộng truy vấn cho &ldquo;Thời tiết vào thứ Ba như thế nào?&rdquo; có thể cũng sẽ mở rộng thành &ldquo;thứ Hai&rdquo;, &ldquo;thứ Tư&rdquo;, v.v., điều này có thể không mong muốn.</p>
+<h3 id="tại-sao-sử-dụng-mô-hình-nhúng-thưa-thớt">Tại sao Sử dụng Mô hình Nhúng Thưa thớt?</h3>
+<p>Tóm lại, các mô hình nhúng thưa thớt thần kinh nằm trong một phân khúc có giá trị giữa các phương pháp từ vựng truyền thống như BM25 và các mô hình nhúng dày đặc như Sentence Transformers. Chúng có những ưu điểm sau:</p>
+<ul>
+<li><strong>Tiềm năng kết hợp:</strong> Kết hợp rất hiệu quả với các mô hình dày đặc, có thể gặp khó khăn với các tìm kiếm trong đó các kết quả khớp từ vựng là quan trọng</li>
+<li><strong>Khả năng diễn giải:</strong> Bạn có thể thấy chính xác các mã thông báo nào đóng góp vào kết quả khớp</li>
+<li><strong>Hiệu suất:</strong> Cạnh tranh hoặc tốt hơn so với các mô hình dày đặc trong nhiều tác vụ truy xuất</li>
+</ul>
+<p>Trong suốt bài đăng trên blog này, tôi sẽ sử dụng &ldquo;mô hình nhúng thưa thớt&rdquo; và &ldquo;mô hình bộ mã hóa thưa thớt&rdquo; thay thế cho nhau.</p>
+<h2 id="tại-sao-tinh-chỉnh">Tại sao Tinh chỉnh?</h2>
+<p>Phần lớn các mô hình nhúng thưa thớt (thần kinh) sử dụng tính năng mở rộng truy vấn/tài liệu đã đề cập ở trên để bạn có thể khớp các văn bản có ý nghĩa gần như giống hệt nhau, ngay cả khi chúng không chia sẻ bất kỳ từ nào. Tóm lại, mô hình phải nhận ra các từ đồng nghĩa để các mã thông báo đó có thể được đặt trong nhúng cuối cùng.</p>
+<p>Hầu hết các mô hình nhúng thưa thớt có sẵn đều dễ dàng nhận ra rằng &ldquo;siêu thị&rdquo;, &ldquo;thực phẩm&rdquo; và &ldquo;chợ&rdquo; là những mở rộng hữu ích của một văn bản có chứa &ldquo;cửa hàng tạp hóa&rdquo;, nhưng ví dụ:</p>
+<ul>
+<li>&ldquo;Bệnh nhân phàn nàn về chứng đau đầu dữ dội.&rdquo;</li>
+</ul>
+<p>mở rộng thành:</p>
+<pre tabindex="0"><code>&#39;##lal&#39;, &#39;severe&#39;, &#39;##pha&#39;, &#39;ce&#39;, &#39;##gia&#39;, &#39;patient&#39;, &#39;complaint&#39;, &#39;patients&#39;, &#39;complained&#39;, &#39;warning&#39;, &#39;suffered&#39;, &#39;had&#39;, &#39;disease&#39;, &#39;complain&#39;, &#39;diagnosis&#39;, &#39;syndrome&#39;, &#39;mild&#39;, &#39;pain&#39;, &#39;hospital&#39;, &#39;injury&#39;
+</code></pre><p>trong khi chúng ta muốn nó mở rộng thành &ldquo;headache&rdquo;, từ thông thường cho &ldquo;cephalalgia&rdquo;. Ví dụ này mở rộng sang nhiều lĩnh vực, ví dụ: không nhận ra rằng &ldquo;Java&rdquo; là một ngôn ngữ lập trình, &ldquo;Audi&rdquo; sản xuất ô tô hoặc &ldquo;NVIDIA&rdquo; là một công ty sản xuất card đồ họa.</p>
+<p>Thông qua quá trình tinh chỉnh, mô hình có thể học cách tập trung độc quyền vào lĩnh vực và/hoặc ngôn ngữ quan trọng đối với bạn.</p>
+<h2 id="thành-phần-đào-tạo">Thành phần Đào tạo</h2>
+<p>Việc đào tạo các mô hình Sentence Transformer bao gồm các thành phần sau:</p>
+<ol>
+<li><a href="#model">Mô hình</a>: Mô hình để đào tạo hoặc tinh chỉnh, có thể là mô hình Sparse Encoder được đào tạo trước hoặc một mô hình cơ sở.</li>
+<li><a href="#dataset">Tập dữ liệu</a>: Dữ liệu được sử dụng để đào tạo và đánh giá.</li>
+<li><a href="#loss-function">Hàm Mất mát</a>: Một hàm định lượng hiệu suất của mô hình và hướng dẫn quá trình tối ưu hóa.</li>
+<li><a href="#training-arguments">Đối số Đào tạo</a> (tùy chọn): Các tham số ảnh hưởng đến hiệu suất đào tạo và theo dõi/gỡ lỗi.</li>
+<li><a href="#evaluator">Trình đánh giá</a> (tùy chọn): Một công cụ để đánh giá mô hình trước, trong hoặc sau khi đào tạo.</li>
+<li><a href="#trainer">Huấn luyện viên</a>: Tập hợp mô hình, tập dữ liệu, hàm mất mát và các thành phần khác để đào tạo.</li>
+</ol>
+<p>Bây giờ, chúng ta hãy đi sâu vào từng thành phần này một cách chi tiết hơn.</p>
+<h2 id="mô-hình">Mô hình</h2>
+<p>Các mô hình Sparse Encoder bao gồm một chuỗi <a href="https://sbert.net/docs/package_reference/sentence_transformer/models.html">Mô-đun</a>, <a href="https://sbert.net/docs/package_reference/sparse_encoder/models.html">Mô-đun dành riêng cho Sparse Encoder</a> hoặc <a href="https://sbert.net/docs/sentence_transformer/usage/custom_models.html#advanced-custom-modules">Mô-đun Tùy chỉnh</a>, cho phép rất nhiều tính linh hoạt. Nếu bạn muốn tinh chỉnh thêm một mô hình Sparse Encoder (ví dụ: nó có một <a href="https://huggingface.co/naver/splade-cocondenser-ensembledistil/blob/main/modules.json">tệp modules.json</a>), thì bạn không phải lo lắng về các mô-đun nào được sử dụng:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SparseEncoder
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SparseEncoder(<span style="color:#e6db74">&#34;naver/splade-cocondenser-ensembledistil&#34;</span>)
+</span></span></code></pre></div><p>Nhưng nếu thay vào đó, bạn muốn đào tạo từ một điểm kiểm tra khác hoặc từ đầu, thì đây là các kiến trúc phổ biến nhất mà bạn có thể sử dụng:</p>
+<h3 id="splade">Splade</h3>
+<p>Các mô hình Splade sử dụng <a href="https://sbert.net/docs/package_reference/sparse_encoder/models.html#sentence_transformers.sparse_encoder.models.MLMTransformer">MLMTransformer</a> theo sau là các mô-đun <a href="https://sbert.net/docs/package_reference/sparse_encoder/models.html#sentence_transformers.sparse_encoder.models.SpladePooling">SpladePooling</a>. Cái trước tải một mô hình <a href="https://huggingface.co/models?pipeline_tag=fill-mask">Masked Language Modeling transformer</a> được đào tạo trước (ví dụ: <a href="https://huggingface.co/google-bert/bert-base-uncased">BERT</a>, <a href="https://huggingface.co/FacebookAI/roberta-base">RoBERTa</a>, <a href="https://huggingface.co/distilbert/distilbert-base-uncased">DistilBERT</a>, <a href="https://huggingface.co/answerdotai/ModernBERT-base">ModernBERT</a>, v.v.) và cái sau gộp đầu ra của MLMHead để tạo ra một nhúng thưa thớt duy nhất có kích thước của từ vựng.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> models, SparseEncoder
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sparse_encoder.models <span style="color:#f92672">import</span> MLMTransformer, SpladePooling
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khởi tạo MLM Transformer (sử dụng mô hình fill-mask)</span>
+</span></span><span style="display:flex;"><span>mlm_transformer <span style="color:#f92672">=</span> MLMTransformer(<span style="color:#e6db74">&#34;google-bert/bert-base-uncased&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khởi tạo mô-đun SpladePooling</span>
+</span></span><span style="display:flex;"><span>splade_pooling <span style="color:#f92672">=</span> SpladePooling(pooling_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;max&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tạo mô hình Splade</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SparseEncoder(modules<span style="color:#f92672">=</span>[mlm_transformer, splade_pooling])
+</span></span></code></pre></div><p>Kiến trúc này là mặc định nếu bạn cung cấp kiến trúc mô hình fill-mask cho SparseEncoder, vì vậy dễ dàng hơn khi sử dụng phím tắt:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SparseEncoder
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SparseEncoder(<span style="color:#e6db74">&#34;google-bert/bert-base-uncased&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SparseEncoder(</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   (0): MLMTransformer({&#39;max_seq_length&#39;: 512, &#39;do_lower_case&#39;: False, &#39;architecture&#39;: &#39;BertForMaskedLM&#39;})</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   (1): SpladePooling({&#39;pooling_strategy&#39;: &#39;max&#39;, &#39;activation_function&#39;: &#39;relu&#39;, &#39;word_embedding_dimension&#39;: None})</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># )</span>
+</span></span></code></pre></div><h3 id="splade-không-suy-luận">Splade Không Suy luận</h3>
+<p>Splade Không Suy luận sử dụng một mô-đun <a href="https://sbert.net/docs/package_reference/sentence_transformer/models.html#sentence_transformers.models.Router">Bộ định tuyến</a> với các mô-đun khác nhau cho các truy vấn và tài liệu. Thông thường đối với loại kiến trúc này, phần tài liệu là kiến trúc Splade truyền thống (một <a href="https://sbert.net/docs/package_reference/sparse_encoder/models.html#sentence_transformers.sparse_encoder.models.MLMTransformer">MLMTransformer</a> theo sau là một mô-đun <a href="https://sbert.net/docs/package_reference/sparse_encoder/models.html#sentence_transformers.sparse_encoder.models.SpladePooling">SpladePooling</a>) và phần truy vấn là một mô-đun <a href="https://sbert.net/docs/package_reference/sparse_encoder/models.html#sentence_transformers.sparse_encoder.models.SparseStaticEmbedding">SparseStaticEmbedding</a>, chỉ trả về một điểm số được tính toán trước cho mỗi mã thông báo trong truy vấn.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SparseEncoder
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.models <span style="color:#f92672">import</span> Router
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sparse_encoder.models <span style="color:#f92672">import</span> SparseStaticEmbedding, MLMTransformer, SpladePooling
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khởi tạo MLM Transformer để mã hóa tài liệu</span>
+</span></span><span style="display:flex;"><span>doc_encoder <span style="color:#f92672">=</span> MLMTransformer(<span style="color:#e6db74">&#34;google-bert/bert-base-uncased&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tạo một mô hình bộ định tuyến với các đường dẫn khác nhau cho các truy vấn và tài liệu</span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> Router<span style="color:#f92672">.</span>for_query_document(
+</span></span><span style="display:flex;"><span>    query_modules<span style="color:#f92672">=</span>[SparseStaticEmbedding(tokenizer<span style="color:#f92672">=</span>doc_encoder<span style="color:#f92672">.</span>tokenizer, frozen<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)],
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Đường dẫn tài liệu: transformer + gộp MLM đầy đủ</span>
+</span></span><span style="display:flex;"><span>    document_modules<span style="color:#f92672">=</span>[doc_encoder, SpladePooling(<span style="color:#e6db74">&#34;max&#34;</span>)],
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tạo mô hình không suy luận</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SparseEncoder(modules<span style="color:#f92672">=</span>[router], similarity_fn_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dot&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SparseEncoder(</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   (0): Router(</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     (query_0_SparseStaticEmbedding): SparseStaticEmbedding ({&#39;frozen&#39;: False}, dim:30522, tokenizer: BertTokenizerFast)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     (document_0_MLMTransformer): MLMTransformer({&#39;max_seq_length&#39;: 512, &#39;do_lower_case&#39;: False, &#39;architecture&#39;: &#39;BertForMaskedLM&#39;})</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#     (document_1_SpladePooling): SpladePooling({&#39;pooling_strategy&#39;: &#39;max&#39;, &#39;activation_function&#39;: &#39;relu&#39;, &#39;word_embedding_dimension&#39;: None})</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   )</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># )</span>
+</span></span></code></pre></div><p>Kiến trúc này cho phép xử lý thời gian truy vấn nhanh chóng bằng cách sử dụng phương pháp SparseStaticEmbedding nhẹ, có thể được đào tạo và xem như các trọng số tuyến tính, trong khi các tài liệu được xử lý bằng transformer và SpladePooling MLM đầy đủ.</p>
+<blockquote>
+<p>[!TIP]
+Splade Không Suy luận đặc biệt hữu ích cho các ứng dụng tìm kiếm trong đó độ trễ của truy vấn là rất quan trọng, vì nó chuyển sự phức tạp về tính toán sang giai đoạn lập chỉ mục tài liệu có thể được thực hiện ngoại tuyến.</p></blockquote>
+<blockquote>
+<p>[!NOTE]
+Khi đào tạo các mô hình với mô-đun <code>Router</code>, bạn phải sử dụng đối số <code>router_mapping</code> trong <code>SparseEncoderTrainingArguments</code> để ánh xạ các cột tập dữ liệu đào tạo đến tuyến đường chính xác (&ldquo;query&rdquo; hoặc &ldquo;document&rdquo;). Ví dụ: nếu tập dữ liệu của bạn có các cột <code>[&quot;question&quot;, &quot;answer&quot;]</code>, thì bạn có thể sử dụng ánh xạ sau:</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>args <span style="color:#f92672">=</span> SparseEncoderTrainingArguments(
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>,
+</span></span><span style="display:flex;"><span>    router_mapping<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;question&#34;</span>: <span style="color:#e6db74">&#34;query&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;answer&#34;</span>: <span style="color:#e6db74">&#34;document&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Ngoài ra, bạn nên sử dụng tốc độ học tập cao hơn nhiều cho mô-đun SparseStaticEmbedding so với phần còn lại của mô hình. Để làm điều này, bạn nên sử dụng đối số <code>learning_rate_mapping</code> trong <code>SparseEncoderTrainingArguments</code> để ánh xạ các mẫu tham số đến tốc độ học tập của chúng. Ví dụ: nếu bạn muốn sử dụng tốc độ học tập <code>1e-3</code> cho mô-đun SparseStaticEmbedding và <code>2e-5</code> cho phần còn lại của mô hình, bạn có thể làm như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>args <span style="color:#f92672">=</span> SparseEncoderTrainingArguments(
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>,
+</span></span><span style="display:flex;"><span>    learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">2e-5</span>,
+</span></span><span style="display:flex;"><span>    learning_rate_mapping<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;SparseStaticEmbedding\.*&#34;</span>: <span style="color:#ae81ff">1e-3</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h3 id="biểu-diễn-thưa-thớt-tương-phản-csr">Biểu diễn Thưa thớt Tương phản (CSR)</h3>
+<p>Các mô hình Biểu diễn Thưa thớt Tương phản (CSR), được giới thiệu trong <a href="https://arxiv.org/pdf/2503.01776">Beyond Matryoshka: Revisiting Sparse Coding for Adaptive Representation</a>, áp dụng một mô-đun <a href="https://sbert.net/docs/package_reference/sparse_encoder/models.html#sentence_transformers.sparse_encoder.models.SparseAutoEncoder">SparseAutoEncoder</a> trên đầu một mô hình Sentence Transformer dày đặc, thường bao gồm một <a href="https://sbert.net/docs/package_reference/sentence_transformer/models.html#sentence_transformers.models.Transformer">Transformer</a> theo sau là một mô-đun <a href="https://sbert.net/docs/package_reference/sentence_transformer/models.html#sentence_transformers.models.Pooling">Pooling</a>. Bạn có thể khởi tạo một mô hình từ đầu như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> models, SparseEncoder
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sparse_encoder.models <span style="color:#f92672">import</span> SparseAutoEncoder
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khởi tạo transformer (có thể là bất kỳ mô hình mã hóa dày đặc nào)</span>
+</span></span><span style="display:flex;"><span>transformer <span style="color:#f92672">=</span> models<span style="color:#f92672">.</span>Transformer(<span style="color:#e6db74">&#34;google-bert/bert-base-uncased&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khởi tạo gộp</span>
+</span></span><span style="display:flex;"><span>pooling <span style="color:#f92672">=</span> models<span style="color:#f92672">.</span>Pooling(transformer<span style="color:#f92672">.</span>get_word_embedding_dimension(), pooling_mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mean&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khởi tạo mô-đun SparseAutoEncoder</span>
+</span></span><span style="display:flex;"><span>sparse_auto_encoder <span style="color:#f92672">=</span> SparseAutoEncoder(
+</span></span><span style="display:flex;"><span>    input_dim<span style="color:#f92672">=</span>transformer<span style="color:#f92672">.</span>get_word_embedding_dimension(),
+</span></span><span style="display:flex;"><span>    hidden_dim<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> transformer<span style="color:#f92672">.</span>get_word_embedding_dimension(),
+</span></span><span style="display:flex;"><span>    k<span style="color:#f92672">=</span><span style="color:#ae81ff">256</span>,  <span style="color:#75715e"># Số lượng giá trị hàng đầu cần giữ lại</span>
+</span></span><span style="display:flex;"><span>    k_aux<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span>,  <span style="color:#75715e"># Số lượng giá trị hàng đầu cho tổn thất phụ trợ</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tạo mô hình CSR</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SparseEncoder(modules<span style="color:#f92672">=</span>[transformer, pooling, sparse_auto_encoder])
+</span></span></code></pre></div><p>Hoặc nếu mô hình cơ sở của bạn là 1) một mô hình Sentence Transformer dày đặc hoặc 2) một mô hình Transformer không phải MLM (những mô hình này được tải làm mô hình Splade theo mặc định), thì phím tắt này sẽ tự động khởi tạo mô hình CSR cho bạn:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SparseEncoder
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SparseEncoder(<span style="color:#e6db74">&#34;mixedbread-ai/mxbai-embed-large-v1&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SparseEncoder(</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   (0): Transformer({&#39;max_seq_length&#39;: 512, &#39;do_lower_case&#39;: False, &#39;architecture&#39;: &#39;BertModel&#39;})</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   (1): Pooling({&#39;word_embedding_dimension&#39;: 1024, &#39;pooling_mode_cls_token&#39;: True, &#39;pooling_mode_mean_tokens&#39;: False, &#39;pooling_mode_max_tokens&#39;: False, &#39;pooling_mode_mean_sqrt_len_tokens&#39;: False, &#39;pooling_mode_weightedmean_tokens&#39;: False, &#39;pooling_mode_lasttoken&#39;: False, &#39;include_prompt&#39;: True})</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   (2): SparseAutoEncoder({&#39;input_dim&#39;: 1024, &#39;hidden_dim&#39;: 4096, &#39;k&#39;: 256, &#39;k_aux&#39;: 512, &#39;normalize&#39;: False, &#39;dead_threshold&#39;: 30})</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># )</span>
+</span></span></code></pre></div><blockquote>
+<p>[!WARNING]
+Không giống như các mô hình Splade (Không Suy luận), các nhúng thưa thớt theo các mô hình CSR không có cùng kích thước với từ vựng của mô hình cơ sở. Điều này có nghĩa là bạn không thể trực tiếp diễn giải những từ nào được kích hoạt trong nhúng của mình như bạn có thể làm với các mô hình Splade, trong đó mỗi chiều tương ứng với một mã thông báo cụ thể trong từ vựng.</p>
+<p>Ngoài ra, các mô hình CSR hiệu quả nhất trên các mô hình bộ mã hóa dày đặc sử dụng các biểu diễn chiều cao (ví dụ: 1024-4096 chiều).</p></blockquote>
+<h3 id="hướng-dẫn-chọn-kiến-trúc">Hướng dẫn Chọn Kiến trúc</h3>
+<p>Nếu bạn không chắc chắn nên sử dụng kiến trúc nào, thì đây là hướng dẫn nhanh:</p>
+<ul>
+<li>Bạn có muốn làm thưa thớt một mô hình Nhúng Dày đặc hiện có không? Nếu có, hãy sử dụng <a href="#contrastive-sparse-representation-csr">CSR</a>.</li>
+<li>Bạn có muốn suy luận truy vấn của mình diễn ra ngay lập tức với chi phí hiệu suất nhỏ không? Nếu có, hãy sử dụng <a href="#inference-free-splade">SPLADE Không Suy luận</a>.</li>
+<li>Nếu không, hãy sử dụng <a href="#splade">SPLADE</a>.</li>
+</ul>
+<h2 id="tập-dữ-liệu">Tập dữ liệu</h2>
+<p><a href="https://sbert.net/docs/package_reference/sparse_encoder/trainer.html#sentence_transformers.sparse_encoder.SparseEncoderTrainer">SparseEncoderTrainer</a> sử dụng các phiên bản <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.Dataset">datasets.Dataset</a> hoặc <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.DatasetDict">datasets.DatasetDict</a> để đào tạo và đánh giá. Bạn có thể tải dữ liệu từ Hugging Face Datasets Hub hoặc sử dụng dữ liệu cục bộ ở nhiều định dạng khác nhau như CSV, JSON, Parquet, Arrow hoặc SQL.</p>
+<p><strong>Lưu ý:</strong> Rất nhiều tập dữ liệu công khai hoạt động ngoài hộp với Sentence Transformers đã được gắn thẻ <code>sentence-transformers</code> trên Hugging Face Hub, vì vậy bạn có thể dễ dàng tìm thấy chúng trên <a href="https://huggingface.co/datasets?other=sentence-transformers">https://huggingface.co/datasets?other=sentence-transformers</a>. Hãy cân nhắc duyệt qua những tập dữ liệu này để tìm các tập dữ liệu sẵn sàng có thể hữu ích cho các tác vụ, lĩnh vực hoặc ngôn ngữ của bạn.</p>
+<h3 id="dữ-liệu-trên-hugging-face-hub">Dữ liệu trên Hugging Face Hub</h3>
+<p>Bạn có thể sử dụng hàm <a href="https://huggingface.co/docs/datasets/main/en/package_reference/loading_methods#datasets.load_dataset">load_dataset</a> để tải dữ liệu từ các tập dữ liệu trong <a href="https://huggingface.co/datasets">Hugging Face Hub</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;sentence-transformers/natural-questions&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(train_dataset)
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Dataset({
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    features: [&#39;query&#39;, &#39;answer&#39;],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    num_rows: 100231
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">})
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><p>Một số tập dữ liệu, như <a href="https://huggingface.co/datasets/nthakur/swim-ir-monolingual">nthakur/swim-ir-monolingual</a>, có nhiều tập hợp con với các định dạng dữ liệu khác nhau. Bạn cần chỉ định tên tập hợp con cùng với tên tập dữ liệu, ví dụ: <code>dataset = load_dataset(&quot;nthakur/swim-ir-monolingual&quot;, &quot;de&quot;, split=&quot;train&quot;)</code>.</p>
+<h3 id="dữ-liệu-cục-bộ-csv-json-parquet-arrow-sql">Dữ liệu cục bộ (CSV, JSON, Parquet, Arrow, SQL)</h3>
+<p>Bạn cũng có thể sử dụng <a href="https://huggingface.co/docs/datasets/main/en/package_reference/loading_methods#datasets.load_dataset">load_dataset</a> để tải dữ liệu cục bộ ở một số định dạng tệp nhất định:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;csv&#34;</span>, data_files<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;my_file.csv&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># hoặc</span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;json&#34;</span>, data_files<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;my_file.json&#34;</span>)
+</span></span></code></pre></div><h3 id="dữ-liệu-cục-bộ-yêu-cầu-tiền-xử-lý">Dữ liệu cục bộ yêu cầu tiền xử lý</h3>
+<p>Bạn có thể sử dụng <a href="https://huggingface.co/docs/datasets/main/en/package_reference/main_classes#datasets.Dataset.from_dict">datasets.Dataset.from_dict</a> nếu dữ liệu cục bộ của bạn yêu cầu tiền xử lý. Điều này cho phép bạn khởi tạo tập dữ liệu của mình bằng một từ điển các danh sách:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> Dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>queries <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>documents <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Mở một tệp, thực hiện tiền xử lý, lọc, làm sạch, v.v.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># và nối vào các danh sách</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> Dataset<span style="color:#f92672">.</span>from_dict({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;query&#34;</span>: queries,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;document&#34;</span>: documents,
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p>Mỗi khóa trong từ điển trở thành một cột trong tập dữ liệu kết quả.</p>
+<h3 id="định-dạng-tập-dữ-liệu">Định dạng Tập dữ liệu</h3>
+<p>Điều quan trọng là phải đảm bảo rằng định dạng tập dữ liệu của bạn khớp với <a href="#loss-function">hàm mất mát</a> bạn đã chọn. Điều này liên quan đến việc kiểm tra hai điều:</p>
+<ol>
+<li>Nếu hàm mất mát của bạn yêu cầu một <em>Nhãn</em> (như được chỉ ra trong bảng <a href="https://sbert.net/docs/sparse_encoder/loss_overview.html">Tổng quan về Mất mát</a>), tập dữ liệu của bạn phải có một cột có tên là <strong>&ldquo;label&rdquo;</strong> hoặc <strong>&ldquo;score&rdquo;</strong>.</li>
+<li>Tất cả các cột khác với <strong>&ldquo;label&rdquo;</strong> hoặc <strong>&ldquo;score&rdquo;</strong> được coi là <em>Đầu vào</em> (như được chỉ ra trong bảng <a href="https://sbert.net/docs/sparse_encoder/loss_overview.html">Tổng quan về Mất mát</a>). Số lượng các cột này phải khớp với số lượng đầu vào hợp lệ cho hàm mất mát bạn đã chọn. Tên của các cột không quan trọng, <strong>chỉ thứ tự của chúng mới quan trọng</strong>.</li>
+</ol>
+<p>Ví dụ: nếu hàm mất mát của bạn chấp nhận các bộ ba <code>(anchor, positive, negative)</code>, thì cột tập dữ liệu thứ nhất, thứ hai và thứ ba của bạn tương ứng với <code>anchor</code>, <code>positive</code> và <code>negative</code>, tương ứng. Điều này có nghĩa là cột thứ nhất và thứ hai của bạn phải chứa các văn bản sẽ nhúng chặt chẽ và cột thứ nhất và thứ ba của bạn phải chứa các văn bản sẽ nhúng cách xa nhau. Đó là lý do tại sao tùy thuộc vào hàm mất mát của bạn, thứ tự cột tập dữ liệu của bạn mới</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/train-sparse-encoder">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-1-2025/">July 1, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/cc255f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smollm3/image.png" alt="SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-12T00:00:00&#43;00:00">Jul 12, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/d03da5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/mi300kernels/thumbnail.png" alt="Tạo các kernel tùy chỉnh cho AMD MI300" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-12T00:00:00&#43;00:00">Jul 12, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Tạo các kernel tùy chỉnh cho AMD MI300</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/a59e4f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/train-sentence-transformers/st-hf-thumbnail.png" alt="Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/cc255f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smollm3/image.png" alt="SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/d03da5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/mi300kernels/thumbnail.png" alt="Tạo các kernel tùy chỉnh cho AMD MI300" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tạo các kernel tùy chỉnh cho AMD MI300</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/23fd70/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tinh chỉnh Claude 3 Haiku trong Amazon Bedrock</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-10/7e105c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nâng cao Claude cho giáo dục</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
