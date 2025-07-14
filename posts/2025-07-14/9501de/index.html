@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Một mô hình mới cho AI- Cách &#39;tư duy như tối ưu hóa&#39; dẫn đến các mô hình đa năng tốt hơn | AI Today - SkyAI</title>
+
+<meta name="description" content="Một mô hình mới cho AI- Làm thế nào &#39;tư duy như tối ưu hóa&#39; dẫn đến các mô hình đa năng tốt hơn.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Một mô hình mới cho AI- Cách &#39;tư duy như tối ưu hóa&#39; dẫn đến các mô hình đa năng tốt hơn</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Một mô hình mới cho AI- Làm thế nào &#39;tư duy như tối ưu hóa&#39; dẫn đến các mô hình đa năng tốt hơn. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-14T00:00:00&#43;00:00">July 14, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://venturebeat.com/wp-content/uploads/2025/07/Energy-based-transformer.png?w=700&amp;h=350&amp;crop=1" alt="Một mô hình mới cho AI- Cách &#39;tư duy như tối ưu hóa&#39; dẫn đến các mô hình đa năng tốt hơn">
+        <figcaption class="text-center italic text-xs">Một mô hình mới cho AI- Làm thế nào &#39;tư duy như tối ưu hóa&#39; dẫn đến các mô hình đa năng tốt hơn.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="một-mô-hình-ai-mới-tư-duy-như-tối-ưu-hóa-dẫn-đến-các-mô-hình-đa-năng-tốt-hơn">Một mô hình AI mới: Tư duy như tối ưu hóa dẫn đến các mô hình đa năng tốt hơn</h1>
+<p>Một mô hình AI mới học cách &ldquo;suy nghĩ&rdquo; lâu hơn về các vấn đề khó, đạt được khả năng suy luận mạnh mẽ hơn và khái quát hóa tốt hơn cho các tác vụ mới, chưa từng thấy.</p>
+<p><em>Bạn muốn có những hiểu biết sâu sắc hơn trong hộp thư đến của mình? Đăng ký bản tin hàng tuần của chúng tôi để chỉ nhận những gì quan trọng đối với các nhà lãnh đạo về AI, dữ liệu và bảo mật doanh nghiệp.</em> <em><a href="https://venturebeat.com/newsletters/">Đăng ký ngay</a></em></p>
+<p>Các nhà nghiên cứu tại Đại học Illinois Urbana-Champaign và Đại học Virginia đã phát triển một kiến trúc mô hình mới có thể dẫn đến các hệ thống AI mạnh mẽ hơn với khả năng suy luận mạnh mẽ hơn.</p>
+<p>Được gọi là <a href="https://github.com/alexiglad/ebt">biến đổi dựa trên năng lượng</a> (EBT), kiến trúc này thể hiện khả năng tự nhiên để sử dụng tỷ lệ suy luận thời gian để giải quyết các vấn đề phức tạp. Đối với doanh nghiệp, điều này có thể chuyển thành các ứng dụng AI hiệu quả về chi phí, có thể khái quát hóa các tình huống mới mà không cần các mô hình tinh chỉnh chuyên dụng.</p>
+<!-- raw HTML omitted -->
+<h2 id="thách-thức-của-tư-duy-hệ-thống-2">Thách thức của tư duy Hệ thống 2</h2>
+<p>Trong tâm lý học, tư duy của con người thường được chia thành hai chế độ: Hệ thống 1, nhanh chóng và trực quan, và <a href="https://venturebeat.com/ai/meta-researchers-distill-system-2-thinking-into-llms-improving-performance-on-complex-reasoning/">Hệ thống 2</a>, chậm, có chủ ý và phân tích. Các mô hình ngôn ngữ lớn (LLM) hiện tại vượt trội trong các tác vụ theo phong cách Hệ thống 1, nhưng ngành công nghiệp AI ngày càng tập trung vào việc cho phép tư duy Hệ thống 2 để giải quyết các thách thức suy luận phức tạp hơn.</p>
+<p>Các mô hình suy luận sử dụng nhiều <a href="https://venturebeat.com/ai/how-test-time-scaling-unlocks-hidden-reasoning-abilities-in-small-language-models-and-allows-them-to-outperform-llms/">kỹ thuật mở rộng thời gian suy luận</a> để cải thiện hiệu suất của chúng trên các vấn đề khó. Một phương pháp phổ biến là học tăng cường (RL), được sử dụng trong các mô hình như <a href="https://venturebeat.com/ai/open-source-deepseek-r1-uses-pure-reinforcement-learning-to-match-openai-o1-at-95-less-cost/">DeepSeek-R1</a> và các mô hình &ldquo;<a href="https://venturebeat.com/ai/five-breakthroughs-that-make-openais-o3-a-turning-point-for-ai-and-one-big-challenge/">o-series</a>&rdquo; của OpenAI, trong đó AI được thưởng vì tạo ra các mã thông báo suy luận cho đến khi nó đạt được câu trả lời chính xác. Một cách tiếp cận khác, thường được gọi là best-of-n, bao gồm việc tạo ra nhiều câu trả lời tiềm năng và sử dụng cơ chế xác minh để chọn ra câu trả lời tốt nhất.</p>
+<p>Tuy nhiên, những phương pháp này có những hạn chế đáng kể. Chúng thường bị giới hạn trong một phạm vi hẹp các vấn đề dễ xác minh, như toán học và mã hóa, và có thể làm giảm hiệu suất trên các tác vụ khác như viết sáng tạo. Hơn nữa, <a href="https://arxiv.org/abs/2504.13837">bằng chứng gần đây</a> cho thấy rằng các phương pháp dựa trên RL có thể không dạy cho các mô hình các kỹ năng suy luận mới, thay vào đó chỉ làm cho chúng có nhiều khả năng sử dụng các mẫu suy luận thành công mà chúng đã biết. Điều này hạn chế khả năng giải quyết các vấn đề đòi hỏi sự khám phá thực sự và vượt ra ngoài chế độ đào tạo của chúng.</p>
+<h2 id="mô-hình-dựa-trên-năng-lượng-ebm">Mô hình dựa trên năng lượng (EBM)</h2>
+<p>Kiến trúc đề xuất một cách tiếp cận khác dựa trên một lớp mô hình được gọi là mô hình dựa trên năng lượng (EBM). Ý tưởng cốt lõi rất đơn giản: Thay vì trực tiếp tạo ra một câu trả lời, mô hình học một &ldquo;hàm năng lượng&rdquo; hoạt động như một công cụ xác minh. Hàm này lấy một đầu vào (như một lời nhắc) và một dự đoán ứng viên và gán một giá trị, hoặc &ldquo;năng lượng&rdquo;, cho nó. Điểm năng lượng thấp cho thấy khả năng tương thích cao, có nghĩa là dự đoán phù hợp tốt với đầu vào, trong khi điểm năng lượng cao biểu thị một kết quả không phù hợp.</p>
+<p>Áp dụng điều này vào suy luận AI, các nhà nghiên cứu đề xuất trong <a href="https://arxiv.org/abs/2507.02092">một bài báo</a> rằng các nhà phát triển nên xem &ldquo;tư duy như một quy trình tối ưu hóa liên quan đến một công cụ xác minh đã học, đánh giá khả năng tương thích (xác suất không chuẩn hóa) giữa đầu vào và dự đoán ứng viên&rdquo;. Quá trình bắt đầu với một dự đoán ngẫu nhiên, sau đó được tinh chỉnh dần dần bằng cách giảm thiểu điểm năng lượng của nó và khám phá không gian của các giải pháp khả thi cho đến khi nó hội tụ vào một câu trả lời tương thích cao. Cách tiếp cận này được xây dựng dựa trên nguyên tắc rằng việc xác minh một giải pháp thường dễ hơn nhiều so với việc tạo ra một giải pháp từ đầu.</p>
+<p><img src="https://venturebeat.com/wp-content/uploads/2025/07/image_b7d491.png?w=800" alt="Kiến trúc EBM"></p>
+<p>Thiết kế &ldquo;lấy người xác minh làm trung tâm&rdquo; này giải quyết ba thách thức chính trong suy luận AI. Đầu tiên, nó cho phép phân bổ tính toán động, có nghĩa là các mô hình có thể &ldquo;suy nghĩ&rdquo; lâu hơn về các vấn đề khó hơn và ngắn hơn về các vấn đề dễ dàng. Thứ hai, EBM có thể tự nhiên xử lý sự không chắc chắn của các vấn đề trong thế giới thực, nơi không có một câu trả lời rõ ràng. Thứ ba, chúng hoạt động như công cụ xác minh của riêng chúng, loại bỏ sự cần thiết của các mô hình bên ngoài.</p>
+<p>Không giống như các hệ thống khác sử dụng các trình tạo và trình xác minh riêng biệt, EBM kết hợp cả hai thành một mô hình thống nhất duy nhất. Một lợi thế chính của sự sắp xếp này là khả năng khái quát hóa tốt hơn. Vì việc xác minh một giải pháp trên dữ liệu mới, ngoài phân phối (OOD) thường dễ hơn so với việc tạo ra một câu trả lời chính xác, nên EBM có thể xử lý các tình huống không quen thuộc tốt hơn.</p>
+<p>Mặc dù đầy hứa hẹn, EBM trong lịch sử đã phải vật lộn với khả năng mở rộng. Để giải quyết vấn đề này, các nhà nghiên cứu giới thiệu EBT, là các <a href="https://bdtechtalks.com/2022/05/02/what-is-the-transformer/">mô hình biến đổi</a> chuyên dụng được thiết kế cho mô hình này. EBT được đào tạo để trước tiên xác minh khả năng tương thích giữa bối cảnh và dự đoán, sau đó tinh chỉnh dự đoán cho đến khi chúng tìm thấy đầu ra năng lượng thấp nhất (tương thích nhất). Quá trình này mô phỏng hiệu quả một quá trình tư duy cho mọi dự đoán. Các nhà nghiên cứu đã phát triển hai biến thể EBT: Mô hình chỉ giải mã lấy cảm hứng từ kiến trúc GPT và mô hình hai chiều tương tự như BERT.</p>
+<p><img src="https://venturebeat.com/wp-content/uploads/2025/07/image_41149a.png?w=800" alt="Kiến trúc EBT"></p>
+<p><em>Biến đổi dựa trên năng lượng (nguồn: GitHub)</em></p>
+<p>Kiến trúc của EBT làm cho chúng trở nên linh hoạt và tương thích với nhiều kỹ thuật mở rộng thời gian suy luận. &ldquo;EBT có thể tạo CoT dài hơn, tự xác minh, thực hiện best-of-N [hoặc] bạn có thể lấy mẫu từ nhiều EBT&rdquo;, Alexi Gladstone, một nghiên cứu sinh tiến sĩ về khoa học máy tính tại Đại học Illinois Urbana-Champaign và là tác giả chính của bài báo, nói với VentureBeat. &ldquo;Điều tuyệt vời nhất là tất cả những khả năng này đều được học trong quá trình đào tạo trước&rdquo;.</p>
+<h2 id="ebt-trong-hành-động">EBT trong hành động</h2>
+<p>Các nhà nghiên cứu đã so sánh EBT với các kiến trúc đã được thiết lập: công thức <a href="https://arxiv.org/abs/2003.04974">transformer++</a> phổ biến để tạo văn bản (phương thức rời rạc) và biến đổi khuếch tán (DiT) cho các tác vụ như dự đoán video và khử nhiễu hình ảnh (phương thức liên tục). Họ đánh giá các mô hình theo hai tiêu chí chính: &ldquo;Khả năng mở rộng học tập&rdquo; hoặc hiệu quả đào tạo của chúng và &ldquo;khả năng mở rộng tư duy&rdquo;, đo lường hiệu suất cải thiện như thế nào khi có nhiều tính toán hơn tại thời điểm suy luận.</p>
+<p>Trong quá trình đào tạo trước, EBT đã chứng minh hiệu quả vượt trội, đạt được tốc độ mở rộng cao hơn tới 35% so với Transformer++ trên dữ liệu, kích thước lô, tham số và tính toán. Điều này có nghĩa là EBT có thể được đào tạo nhanh hơn và rẻ hơn.</p>
+<p>Tại thời điểm suy luận, EBT cũng vượt trội hơn các mô hình hiện có trên các tác vụ suy luận. Bằng cách &ldquo;suy nghĩ lâu hơn&rdquo; (sử dụng nhiều bước tối ưu hóa hơn) và thực hiện &ldquo;tự xác minh&rdquo; (tạo nhiều ứng viên và chọn ứng viên có năng lượng thấp nhất), EBT đã cải thiện hiệu suất mô hình hóa ngôn ngữ hơn 29% so với Transformer++. &ldquo;Điều này phù hợp với tuyên bố của chúng tôi rằng vì các biến đổi chuyển tiếp truyền thống không thể phân bổ động thêm tính toán cho mỗi dự đoán được đưa ra, nên chúng không thể cải thiện hiệu suất cho mỗi mã thông báo bằng cách suy nghĩ lâu hơn&rdquo;, các nhà nghiên cứu viết.</p>
+<p>Đối với việc khử nhiễu hình ảnh, EBT đã đạt được kết quả tốt hơn so với DiT trong khi sử dụng ít hơn 99% số lần chuyển tiếp.</p>
+<p>Điều quan trọng là nghiên cứu đã phát hiện ra rằng EBT khái quát hóa tốt hơn so với các kiến trúc khác. Ngay cả với hiệu suất đào tạo trước giống nhau hoặc tệ hơn, EBT vẫn vượt trội hơn các mô hình hiện có trên các tác vụ hạ nguồn. Mức tăng hiệu suất từ ​​tư duy Hệ thống 2 là đáng kể nhất trên dữ liệu nằm ngoài phân phối (khác với dữ liệu đào tạo), cho thấy rằng EBT đặc biệt mạnh mẽ khi đối mặt với các tác vụ mới và đầy thách thức.</p>
+<p>Các nhà nghiên cứu cho rằng &ldquo;lợi ích của tư duy của EBT không đồng đều trên tất cả dữ liệu mà tăng tỷ lệ thuận với độ lớn của các thay đổi phân phối, làm nổi bật tư duy như một cơ chế quan trọng để khái quát hóa mạnh mẽ vượt ra ngoài các phân phối đào tạo&rdquo;.</p>
+<p>Lợi ích của EBT rất quan trọng vì hai lý do. Đầu tiên, chúng cho thấy rằng ở quy mô lớn của các mô hình nền tảng ngày nay, EBT có thể vượt trội hơn đáng kể so với kiến trúc biến đổi cổ điển được sử dụng trong LLM. Các tác giả lưu ý rằng &ldquo;ở quy mô của các mô hình nền tảng hiện đại được đào tạo trên dữ liệu lớn hơn 1.000 lần với các mô hình lớn hơn 1.000 lần, chúng tôi hy vọng hiệu suất đào tạo trước của EBT sẽ tốt hơn đáng kể so với công thức Transformer++&rdquo;.</p>
+<p>Thứ hai, EBT cho thấy hiệu quả dữ liệu tốt hơn nhiều. Đây là một lợi thế quan trọng trong một kỷ nguyên mà dữ liệu đào tạo chất lượng cao đang trở thành một nút thắt chính để mở rộng quy mô AI. &ldquo;Vì dữ liệu đã trở thành một trong những yếu tố giới hạn chính trong việc mở rộng quy mô hơn nữa, điều này làm cho EBT trở nên đặc biệt hấp dẫn&rdquo;, bài báo kết luận.</p>
+<p>Mặc dù có cơ chế suy luận khác nhau, kiến trúc EBT rất tương thích với biến đổi, giúp có thể sử dụng chúng như một sự thay thế trực tiếp cho LLM hiện tại.</p>
+<p>&ldquo;EBT rất tương thích với các khung phần cứng/suy luận hiện tại&rdquo;, Gladstone cho biết, bao gồm cả việc giải mã suy đoán bằng các mô hình chuyển tiếp trên cả GPU hoặc TPU. Ông cho biết ông cũng tự tin rằng chúng có thể chạy trên các bộ tăng tốc chuyên dụng như LPU và các thuật toán tối ưu hóa như <a href="https://venturebeat.com/ai/flashattention-3-unleashes-the-power-of-h100-gpus-for-llms/">FlashAttention-3</a>, hoặc có thể được triển khai thông qua các khung suy luận phổ biến như vLLM.</p>
+<p>Đối với các nhà phát triển và doanh nghiệp, khả năng suy luận và khái quát hóa mạnh mẽ của EBT có thể khiến chúng trở thành một nền tảng mạnh mẽ và đáng tin cậy để xây dựng thế hệ ứng dụng AI tiếp theo. &ldquo;Suy nghĩ lâu hơn có thể giúp ích rộng rãi cho hầu hết các ứng dụng doanh nghiệp, nhưng tôi nghĩ điều thú vị nhất sẽ là những ứng dụng đòi hỏi các quyết định quan trọng hơn, an toàn hoặc các ứng dụng có dữ liệu hạn chế&rdquo;, Gladstone nói.</p>
+<p><strong>Nhận thông tin chi tiết hàng ngày về các trường hợp sử dụng kinh doanh với VB Daily</strong></p>
+<p>Nếu bạn muốn gây ấn tượng với sếp, VB Daily sẽ giúp bạn. Chúng tôi cung cấp cho bạn thông tin nội bộ về những gì các công ty đang làm với AI tạo sinh, từ các thay đổi quy định đến triển khai thực tế, để bạn có thể chia sẻ thông tin chi tiết để có ROI tối đa.</p>
+<p><a href="#">Đăng ký ngay</a></p>
+<p>Đọc <a href="/terms-of-service/">Chính sách bảo mật</a> của chúng tôi</p>
+<p>Cảm ơn bạn đã đăng ký. Xem thêm <a href="/newsletters/">bản tin VB tại đây</a>.</p>
+<p>Đã xảy ra lỗi.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/a-new-paradigm-for-ai-how-thinking-as-optimization-leads-to-better-general-purpose-models/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/14-july-2025/">14 July 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-14/2a6bc9/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_moonshot_rocket_launch_56741232-1790-42b9-a82d-854c8a8ee05f.webp?w=700&amp;h=350&amp;crop=1" alt="Kimi K2 của Moonshot AI vượt trội hơn GPT-4 trong các điểm chuẩn chính - và nó miễn phí" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-14T00:00:00&#43;00:00">Jul 14, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Kimi K2 của Moonshot AI vượt trội hơn GPT-4 trong các điểm chuẩn chính - và nó miễn phí</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Kimi K2 của Moonshot AI hoạt động tốt hơn GPT-4 trong các tiêu chuẩn quan trọng và nó hoàn toàn miễn phí.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-09/1c968f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_digital_brain_storing_conversations_b9763f63-73bf-4f46-931e-72e29f178c88.webp?w=350&amp;h=175&amp;crop=1" alt="Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-09T00:00:00&#43;00:00">Jul 09, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Các nhà nghiên cứu Trung Quốc công bố MemOS, &#39;hệ điều hành bộ nhớ&#39; đầu tiên cung cấp khả năng thu hồi giống như con người cho AI.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-14/6d5f83/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic và Bộ Quốc phòng hợp tác để thúc đẩy AI có trách nhiệm trong các hoạt động quốc phòng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-14/2a6bc9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_moonshot_rocket_launch_56741232-1790-42b9-a82d-854c8a8ee05f.webp?w=700&amp;h=350&amp;crop=1" alt="Kimi K2 của Moonshot AI vượt trội hơn GPT-4 trong các điểm chuẩn chính - và nó miễn phí" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Kimi K2 của Moonshot AI vượt trội hơn GPT-4 trong các điểm chuẩn chính - và nó miễn phí</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-14/9501de/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/Energy-based-transformer.png?w=700&amp;h=350&amp;crop=1" alt="Một mô hình mới cho AI- Cách &#39;tư duy như tối ưu hóa&#39; dẫn đến các mô hình đa năng tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Một mô hình mới cho AI- Cách &#39;tư duy như tối ưu hóa&#39; dẫn đến các mô hình đa năng tốt hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/a59e4f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/train-sentence-transformers/st-hf-thumbnail.png" alt="Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đào tạo và tinh chỉnh các mô hình nhúng thưa thớt với Sentence Transformers v5</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/cc255f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smollm3/image.png" alt="SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
