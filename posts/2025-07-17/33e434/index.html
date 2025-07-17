@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Di chuyển Hub từ Git LFS sang Xet | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Di chuyển Hub từ Git LFS sang Xet</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-17T00:00:00&#43;00:00">July 17, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/migrating-the-hub-to-xet/thumbnail.png" alt="Di chuyển Hub từ Git LFS sang Xet">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="chuyển-đổi-hub-từ-git-lfs-sang-xet">Chuyển Đổi Hub từ Git LFS sang Xet</h1>
+<p>Vào tháng 1 năm nay, Nhóm Xet của Hugging Face đã triển khai một backend lưu trữ mới và ngay sau đó đã chuyển ~6% lượt tải xuống Hub thông qua cơ sở hạ tầng. Đây là một cột mốc quan trọng, nhưng đó chỉ là sự khởi đầu. Trong 6 tháng, 500.000 kho lưu trữ chứa 20 PB đã tham gia vào việc chuyển sang Xet khi Hub phát triển lớn hơn Git LFS và chuyển sang một hệ thống lưu trữ có thể mở rộng theo khối lượng công việc của những người xây dựng AI.</p>
+<p>Ngày nay, hơn 1 triệu người trên Hub đang sử dụng Xet. Vào tháng 5, nó đã trở thành mặc định trên Hub cho người dùng và tổ chức mới. Với chỉ một vài chục vấn đề trên GitHub, các chủ đề diễn đàn và tin nhắn Discord, đây có lẽ là cuộc di chuyển lớn nhất trong âm thầm.</p>
+<p>Như thế nào? Thứ nhất, nhóm đã chuẩn bị sẵn nhiều năm kinh nghiệm xây dựng và hỗ trợ kho lưu trữ nội dung được định địa chỉ (CAS) và ứng dụng khách Rust, cung cấp nền tảng cho hệ thống. Nếu không có những phần này, Git LFS có thể vẫn là tương lai trên Hub. Tuy nhiên, những anh hùng thầm lặng của cuộc di chuyển này là:</p>
+<ol>
+<li>Một phần không thể thiếu của cơ sở hạ tầng được gọi nội bộ là Cầu Git LFS</li>
+<li>Di chuyển nội dung nền chạy suốt ngày đêm</li>
+</ol>
+<p>Cùng với nhau, các thành phần này đã cho phép chúng tôi tích cực di chuyển PBs trong khoảng thời gian vài ngày mà không phải lo lắng về tác động đến Hub hoặc cộng đồng. Chúng mang lại cho chúng ta sự an tâm để di chuyển nhanh hơn nữa trong những tuần và tháng tới (bỏ qua phần cuối 👇 để xem những gì sắp tới).</p>
+<h2 id="cầu-nối-và-khả-năng-tương-thích-ngược">Cầu nối và khả năng tương thích ngược</h2>
+<p>Trong những ngày đầu lên kế hoạch di chuyển sang Xet, chúng tôi đã đưa ra một vài quyết định thiết kế quan trọng:</p>
+<ul>
+<li>Sẽ không có &ldquo;cắt cứng&rdquo; từ Git LFS sang Xet</li>
+<li>Một kho lưu trữ hỗ trợ Xet sẽ có thể chứa cả tệp Xet và LFS</li>
+<li>Việc di chuyển kho lưu trữ từ LFS sang Xet không yêu cầu &ldquo;khóa&rdquo;; tức là, chúng có thể chạy trong nền mà không làm gián đoạn quá trình tải xuống hoặc tải lên</li>
+</ul>
+<p>Được thúc đẩy bởi cam kết của chúng tôi với cộng đồng, những quyết định có vẻ đơn giản này đã có những tác động đáng kể. Quan trọng nhất, chúng tôi không tin rằng người dùng và nhóm nên phải thay đổi ngay lập tức quy trình làm việc của họ hoặc tải xuống một ứng dụng khách mới để tương tác với kho lưu trữ hỗ trợ Xet.</p>
+<p>Nếu bạn có một ứng dụng khách nhận biết Xet (ví dụ: <code>hf-xet</code>, tích hợp Xet với <code>huggingface_hub</code>), quá trình tải lên và tải xuống sẽ đi qua toàn bộ ngăn xếp Xet. Ứng dụng khách hoặc chia nhỏ các tệp thành các đoạn bằng cách sử dụng phân đoạn được xác định theo nội dung trong khi tải lên hoặc yêu cầu thông tin tái cấu trúc tệp khi tải xuống. Khi tải lên, các đoạn được chuyển đến CAS và được lưu trữ trong S3. Trong quá trình tải xuống, CAS cung cấp các phạm vi đoạn mà ứng dụng khách cần yêu cầu từ S3 để tái cấu trúc tệp cục bộ.</p>
+<p>Đối với các phiên bản cũ hơn của <code>huggingface_hub</code> hoặc huggingface.js, không hỗ trợ chuyển tệp dựa trên đoạn, bạn vẫn có thể tải xuống và tải lên kho lưu trữ Xet, nhưng các byte này đi theo một tuyến đường khác. Khi một tệp được hỗ trợ bởi Xet được yêu cầu từ Hub dọc theo điểm cuối <code>resolve</code>, Cầu Git LFS xây dựng và trả về một URL được ký trước duy nhất, bắt chước giao thức LFS. Sau đó, Cầu thực hiện công việc tái cấu trúc tệp từ nội dung được giữ trong S3 và trả lại cho người yêu cầu.</p>
+<!-- raw HTML omitted -->
+<p>Để xem điều này đang hoạt động, hãy nhấp chuột phải vào hình ảnh trên và mở nó trong một tab mới. URL chuyển hướng từ <code>https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/migrating-the-hub-to-xet/bridge.png</code> sang một URL bắt đầu bằng <code>https://cas-bridge.xethub.hf.co/xet-bridge-us/...</code>. Bạn cũng có thể sử dụng <code>curl -vL</code> trên cùng một URL để xem các chuyển hướng trong thiết bị đầu cuối của bạn.</p>
+<p>Trong khi đó, khi một ứng dụng khách không nhận biết Xet tải lên một tệp, tệp đó sẽ được gửi trước tiên đến bộ nhớ LFS, sau đó được di chuyển sang Xet. &ldquo;Quy trình di chuyển nền&rdquo; này, chỉ được đề cập ngắn gọn trong tài liệu của chúng tôi, cung cấp năng lượng cho cả việc di chuyển sang Xet và khả năng tương thích ngược khi tải lên. Nó đứng sau việc di chuyển hơn chục PBs mô hình và bộ dữ liệu và giữ cho 500.000 kho lưu trữ đồng bộ với bộ nhớ Xet mà không bỏ lỡ một nhịp nào.</p>
+<p>Mỗi khi một tệp cần được di chuyển từ LFS sang Xet, một webhook sẽ được kích hoạt, đẩy sự kiện vào một hàng đợi phân tán nơi nó được xử lý bởi một orchestrator. Orchestrator:</p>
+<ul>
+<li>Bật Xet trên kho lưu trữ nếu sự kiện yêu cầu</li>
+<li>Tìm nạp danh sách các bản sửa đổi LFS cho mọi tệp LFS trong kho lưu trữ</li>
+<li>Gộp các tệp thành các công việc dựa trên kích thước hoặc số lượng tệp; hoặc 1000 tệp hoặc 500MB, tùy theo điều kiện nào đến trước</li>
+<li>Đặt các công việc trên một hàng đợi khác cho các nhóm trình xử lý di chuyển</li>
+</ul>
+<p>Sau đó, các trình xử lý di chuyển này sẽ chọn các công việc và mỗi nhóm:</p>
+<ul>
+<li>Tải xuống các tệp LFS được liệt kê trong lô</li>
+<li>Tải các tệp LFS lên kho lưu trữ nội dung được định địa chỉ Xet bằng cách sử dụng xet-core</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="mở-rộng-quy-mô-di-chuyển">Mở rộng quy mô di chuyển</h2>
+<p>Vào tháng 4, chúng tôi đã kiểm tra giới hạn của hệ thống này bằng cách liên hệ với bartowski và hỏi xem họ có muốn dùng thử Xet không. Với gần 500 TB trên 2.000 kho lưu trữ, việc di chuyển của bartowski đã phát hiện ra một vài liên kết yếu:</p>
+<ul>
+<li>Các tệp phân đoạn tạm thời để khử trùng lặp toàn cầu trước tiên được ghi vào <code>/tmp</code> và sau đó được chuyển vào bộ đệm phân đoạn. Tuy nhiên, trên các nhóm trình xử lý của chúng tôi, <code>/tmp</code> và bộ đệm Xet nằm trên các điểm gắn kết khác nhau. Việc di chuyển không thành công và các tệp phân đoạn không bao giờ bị xóa. Cuối cùng, đĩa đầy, kích hoạt một làn sóng lỗi <code>Không còn dung lượng trên thiết bị</code>.</li>
+<li>Sau khi hỗ trợ ra mắt Llama 4, chúng tôi đã mở rộng quy mô CAS cho các lượt tải xuống bùng nổ, nhưng các trình xử lý di chuyển đã lật ngược kịch bản khi hàng trăm lượt tải lên nhiều gigabyte đã đẩy CAS vượt quá tài nguyên của nó</li>
+<li>Trên giấy tờ, các trình xử lý di chuyển có khả năng thông lượng lớn hơn đáng kể so với những gì đã báo cáo; việc lập hồ sơ các nhóm đã tiết lộ các nút thắt cổ chai I/O mạng và EBS</li>
+</ul>
+<p>Việc sửa chữa con quái vật ba đầu này có nghĩa là chạm vào mọi lớp - vá xet-core, thay đổi kích thước CAS và tăng cường thông số kỹ thuật của nút trình xử lý. May mắn thay, bartowski đã chơi game để làm việc với chúng tôi trong khi mọi kho lưu trữ đều được chuyển sang Xet. Những bài học tương tự này đã thúc đẩy việc di chuyển của những người dùng lưu trữ lớn nhất trên Hub như RichardErkhov (1,7PB và 25.000 kho lưu trữ) và mradermacher (6,1PB và 42.000 kho lưu trữ 🤯).</p>
+<p>Trong khi đó, thông lượng CAS đã tăng lên một bậc độ lớn giữa các cuộc di chuyển quy mô lớn đầu tiên và gần đây nhất:</p>
+<ul>
+<li><strong>Di chuyển Bartowski:</strong> CAS duy trì ~35 Gb/s, với ~5 Gb/s đến từ lưu lượng Hub thông thường.</li>
+<li><strong>Di chuyển mradermacher và RichardErkhov:</strong> CAS đạt đỉnh khoảng ~300 Gb/s, trong khi vẫn phục vụ ~40 Gb/s tải hàng ngày.</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="không-ma-sát-truyền-nhanh-hơn">Không ma sát, truyền nhanh hơn</h2>
+<p>Khi chúng tôi bắt đầu thay thế LFS, chúng tôi có hai mục tiêu trong đầu:</p>
+<ol>
+<li>Không gây hại</li>
+<li>Tạo ra tác động lớn nhất nhanh nhất có thể</li>
+</ol>
+<p>Thiết kế với các ràng buộc ban đầu và các mục tiêu này cho phép chúng tôi:</p>
+<ul>
+<li>Giới thiệu và làm cứng <code>hf-xet</code> trước khi bao gồm nó trong <code>huggingface_hub</code> như một phụ thuộc bắt buộc</li>
+<li>Hỗ trợ cộng đồng tải lên và tải xuống từ kho lưu trữ hỗ trợ Xet thông qua bất kỳ phương tiện nào họ sử dụng ngày nay trong khi cơ sở hạ tầng của chúng tôi xử lý phần còn lại</li>
+<li>Học được những bài học vô giá - từ quy mô đến cách ứng dụng khách của chúng tôi hoạt động trên các hệ thống tệp phân tán - từ việc di chuyển Hub sang Xet một cách gia tăng</li>
+</ul>
+<p>Thay vì chờ tất cả các đường dẫn tải lên trở nên nhận biết Xet, buộc phải cắt cứng hoặc thúc đẩy cộng đồng áp dụng một quy trình làm việc cụ thể, chúng tôi có thể bắt đầu di chuyển Hub sang Xet ngay lập tức với tác động tối thiểu đến người dùng. Tóm lại, hãy để các nhóm giữ quy trình làm việc của họ và chuyển đổi hữu cơ sang Xet với cơ sở hạ tầng hỗ trợ mục tiêu dài hạn của một hệ thống lưu trữ thống nhất.</p>
+<h2 id="xet-cho-mọi-người">Xet cho mọi người</h2>
+<p>Vào tháng 1 và tháng 2, chúng tôi đã giới thiệu người dùng năng lượng để cung cấp phản hồi và kiểm tra áp lực cơ sở hạ tầng. Để nhận phản hồi từ cộng đồng, chúng tôi đã ra mắt danh sách chờ để xem trước kho lưu trữ hỗ trợ Xet. Ngay sau đó, Xet đã trở thành mặc định cho người dùng mới trên Hub.</p>
+<p>Chúng tôi hiện hỗ trợ một số người sáng tạo lớn nhất trên Hub (Meta Llama, Google, OpenAI và Qwen) trong khi cộng đồng vẫn tiếp tục làm việc không bị gián đoạn.</p>
+<p>Tiếp theo là gì?</p>
+<p>Bắt đầu từ tháng này, chúng tôi sẽ mang Xet đến cho mọi người. Hãy theo dõi email cung cấp quyền truy cập vào Xet và khi bạn đã có, hãy cập nhật lên <code>huggingface_hub</code> mới nhất (pip install -U huggingface_hub) để mở khóa việc truyền nhanh hơn ngay lập tức. Điều này cũng có nghĩa là:</p>
+<ul>
+<li>Tất cả các kho lưu trữ hiện có của bạn sẽ di chuyển từ LFS sang Xet</li>
+<li>Tất cả các kho lưu trữ mới được tạo sẽ được bật Xet theo mặc định</li>
+</ul>
+<p>Nếu bạn tải lên hoặc tải xuống từ Hub bằng trình duyệt của mình hoặc sử dụng Git, điều đó là tốt. Hỗ trợ dựa trên đoạn cho cả hai sẽ sớm ra mắt. Trong thời gian chờ đợi, hãy sử dụng bất kỳ quy trình làm việc nào bạn đã có; không có hạn chế.</p>
+<p>Tiếp theo: mở nguồn giao thức Xet và toàn bộ ngăn xếp cơ sở hạ tầng. Tương lai của việc lưu trữ và di chuyển các byte mở rộng quy mô cho khối lượng công việc AI nằm trên Hub và chúng tôi đang hướng đến việc mang nó đến cho mọi người.</p>
+<p>Nếu bạn có bất kỳ câu hỏi nào, hãy gửi cho chúng tôi một dòng trong phần bình luận 👇, mở một cuộc thảo luận trên trang nhóm Xet.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/migrating-the-hub-to-xet">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-15-2025/">July 15, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/26273c/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/ettin/thumbnail.png" alt="Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-17T00:00:00&#43;00:00">Jul 17, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/cc255f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smollm3/image.png" alt="SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-12T00:00:00&#43;00:00">Jul 12, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/abb90d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_AI_cloud_circuit_13578209-3014-49b8-b3e4-ba2d63038e68.webp?w=700&amp;h=350&amp;crop=1" alt="Blaxel huy động được vòng hạt giống 7,3 triệu đô la để xây dựng &#39;AWS cho các tác nhân AI&#39; sau khi xử lý hàng tỷ yêu cầu từ tác nhân" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Blaxel huy động được vòng hạt giống 7,3 triệu đô la để xây dựng &#39;AWS cho các tác nhân AI&#39; sau khi xử lý hàng tỷ yêu cầu từ tác nhân</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/d7e40d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đầu tư vào năng lượng để đảm bảo tương lai AI của Mỹ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/33e434/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/migrating-the-hub-to-xet/thumbnail.png" alt="Di chuyển Hub từ Git LFS sang Xet" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Di chuyển Hub từ Git LFS sang Xet</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/26273c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/ettin/thumbnail.png" alt="Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/811f06/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_magnifying_glass_over_data_streams_7c287f80-9b27-4a0c-8059-231b7a5e469e.webp?w=700&amp;h=350&amp;crop=1" alt="Slack trở nên thông minh hơn- Các công cụ AI mới tóm tắt các cuộc trò chuyện, giải thích biệt ngữ và tự động hóa công việc" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Slack trở nên thông minh hơn- Các công cụ AI mới tóm tắt các cuộc trò chuyện, giải thích biệt ngữ và tự động hóa công việc</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

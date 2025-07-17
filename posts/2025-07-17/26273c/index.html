@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-17T00:00:00&#43;00:00">July 17, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            18 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/ettin/thumbnail.png" alt="Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="ettin-suite-các-bộ-mã-hóa-và-giải-mã-theo-cặp-sota">Ettin Suite: Các Bộ Mã hóa và Giải mã theo Cặp SoTA</h1>
+<p>TL;DR</p>
+<p>Điều gì sẽ xảy ra nếu bạn lấy công thức ModernBERT và áp dụng nó cho một mô hình chỉ giải mã? Hóa ra, một mô hình ngôn ngữ giải mã hiện đại đã đánh bại Llama 3.2 1B và SmolLM2!</p>
+<p>Chúng tôi giới thiệu một công thức đào tạo dữ liệu mở mới để tái tạo mô hình ModernBERT chỉ mã hóa (và thực sự đánh bại nó!). Sau đó, chúng tôi áp dụng chính công thức đó cho các mô hình chỉ giải mã. Lần đầu tiên, chúng tôi có hai mô hình hiện đại được đào tạo trong cùng một thiết lập nhưng với hai mục tiêu đào tạo khác nhau: mô hình hóa ngôn ngữ bị che lấp (MLM) và mô hình hóa ngôn ngữ nhân quả (CLM).</p>
+<p>Bài đăng trên blog này giới thiệu <a href="https://huggingface.co/collections/jhu-clsp/encoders-vs-decoders-the-ettin-suite-686303e16142257eed8e6aeb">Ettin</a>, bộ đầu tiên các <strong>mô hình chỉ mã hóa và chỉ giải mã theo cặp SoTA</strong> (tham số 17M-1B) được đào tạo với dữ liệu giống hệt nhau (2T token), kiến trúc và công thức đào tạo. Ettin cho phép so sánh thực sự giữa các kiến trúc và mang lại <strong>hiệu suất hiện đại cho các mô hình dữ liệu mở</strong> trong cả hai loại. Sau đó, chúng tôi tiếp tục khám phá liệu có thể có được một bộ mã hóa cạnh tranh bắt đầu từ bộ giải mã và ngược lại hay không.</p>
+<p>Nếu bạn quan tâm đến việc dùng thử các mô hình, một số mẫu có sẵn <a href="#usage-examples">ở cuối bài đăng trên blog này!</a></p>
+<p><img src="https://github.com/JHU-CLSP/ettin-encoder-vs-decoder/blob/main/assets/attention_masks.png?raw=true" alt="So sánh các mẫu chú ý giữa các mô hình mã hóa và giải mã"></p>
+<h2 id="bộ-mã-hóa-so-với-bộ-giải-mã-sự-khác-biệt-về-kiến-trúc">Bộ mã hóa so với Bộ giải mã: Sự khác biệt về kiến trúc</h2>
+<p>Cộng đồng LLM phần lớn đã hội tụ vào các mô hình chỉ giải mã như GPT, Llama và Qwen. Khả năng tạo sinh của chúng rất ấn tượng, nhưng sự tập trung này đang làm giảm sự chú ý đến các danh mục khác, chẳng hạn như các mô hình chỉ mã hóa như BERT.</p>
+<p>Tuy nhiên, các mô hình BERT giống bộ mã hóa vẫn là con ngựa thồ của các hệ thống sản xuất cho các tác vụ phân loại, truy xuất và nhúng. Chúng nhanh hơn, tiết kiệm bộ nhớ hơn và thường chính xác hơn cho các tác vụ phân biệt. Sự khác biệt chính nằm ở các mẫu chú ý của chúng:</p>
+<ul>
+<li><strong>Mô hình mã hóa</strong> sử dụng chú ý hai chiều, cho phép mỗi token &ldquo;nhìn thấy&rdquo; tất cả các token khác trong chuỗi (hoàn toàn có thể nhìn thấy)</li>
+<li><strong>Mô hình giải mã</strong> sử dụng chú ý nhân quả, trong đó các token chỉ có thể &ldquo;nhìn thấy&rdquo; các token trước đó để cho phép tạo tự hồi quy</li>
+</ul>
+<p>Trong khi các mô hình giải mã đã chứng kiến sự đổi mới nhanh chóng, thì sự phát triển của mô hình mã hóa đã bị đình trệ - cho đến gần đây, với những nỗ lực như <a href="https://huggingface.co/blog/modernbert">ModernBERT</a> hiện đại hóa chúng. Nhưng kiến trúc nào tốt hơn? Các so sánh trước đây giữa bộ mã hóa và bộ giải mã sử dụng các tập dữ liệu, kiến trúc và công thức đào tạo khác nhau, vì vậy rất khó để biết.</p>
+<p>Được đặt theo tên người khổng lồ hai đầu Bắc Âu, Ettin cung cấp một <strong>so sánh được kiểm soát</strong> bằng cách đào tạo với cả hai kiến trúc trên dữ liệu giống hệt nhau, hình dạng mô hình giống hệt nhau và công thức đào tạo giống hệt nhau. Chúng chỉ khác nhau về mẫu chú ý và mục tiêu đào tạo!</p>
+<h2 id="công-thức-đào-tạo-các-kỹ-thuật-hiện-đại-cho-cả-hai-kiến-trúc">Công thức đào tạo: Các kỹ thuật hiện đại cho cả hai kiến trúc</h2>
+<p>Chúng tôi xây dựng dựa trên công thức ModernBERT, công thức này mượn các kỹ thuật hiện đại từ các mô hình chỉ giải mã và đưa chúng vào đào tạo mã hóa. Điều này cung cấp một cơ sở vững chắc để đào tạo cả hai kiến trúc.</p>
+<h3 id="kích-thước">Kích thước</h3>
+<p>Chúng tôi đào tạo sáu kích thước khác nhau, từ 17M đến 1B tham số. Điều này cho phép chúng tôi kiểm tra tác động của quy mô và cung cấp nhiều mô hình khác nhau để bạn sử dụng! Cho dù bạn cần một mô hình trên thiết bị nhanh chóng hay một mô hình mạnh mẽ nhưng chậm hơn, chúng tôi đều có thể đáp ứng!</p>
+<p><img src="https://github.com/JHU-CLSP/ettin-encoder-vs-decoder/blob/main/assets/sizes_small.png?raw=true" alt="Kích thước của các mô hình Ettin"></p>
+<h3 id="quy-trình-đào-tạo-ba-giai-đoạn">Quy trình đào tạo ba giai đoạn</h3>
+<p>Chúng tôi sử dụng một phương pháp đào tạo ba giai đoạn toàn diện để tối đa hóa hiệu suất:</p>
+<p><strong>Giai đoạn 1 - Đào tạo trước (1.7T token)</strong>: Chúng tôi bắt đầu với một hỗn hợp đa dạng các nguồn dữ liệu chất lượng cao, đào tạo trên các ngữ cảnh ngắn hơn (1024 token) để thiết lập kiến thức nền tảng vững chắc.</p>
+<p><strong>Giai đoạn 2 - Mở rộng ngữ cảnh (250B token)</strong>: Chúng tôi tăng độ dài ngữ cảnh lên 8K token bằng cách sử dụng dữ liệu được lọc chất lượng cao hơn, cho phép các mô hình hiểu các tài liệu dài hơn và các mối quan hệ phức tạp hơn.</p>
+<p><strong>Giai đoạn 3 - Phân rã (100B token)</strong>: Chúng tôi hoàn thành với các nguồn dữ liệu cao cấp bao gồm các bài báo khoa học, sách giáo khoa và nội dung được tuyển chọn đồng thời giảm dần tốc độ học tập.</p>
+<h3 id="các-thành-phần-kiến-trúc-hiện-đại">Các thành phần kiến trúc hiện đại</h3>
+<p>Các mô hình bộ mã hóa của chúng tôi có được tất cả lợi ích về tốc độ của ModernBERT, cho phép chúng nhanh hơn đáng kể so với các thế hệ bộ mã hóa trước.</p>
+<h3 id="nguồn-và-chất-lượng-dữ-liệu">Nguồn và chất lượng dữ liệu</h3>
+<p>Không giống như ModernBERT, <strong>tất cả dữ liệu đào tạo của chúng tôi đều công khai và có thể tái tạo</strong>:</p>
+<p><img src="https://github.com/JHU-CLSP/ettin-encoder-vs-decoder/blob/main/assets/training_data.jpg?raw=true" alt="Dữ liệu được sử dụng để đào tạo các mô hình Ettin"></p>
+<p>Bạn có thể tiếp tục đào tạo các mô hình này trên dữ liệu mới hoặc đề xuất một công thức mới để cải thiện hơn nữa kết quả!</p>
+<h2 id="kết-quả-mã-hóa-đánh-bại-modernbert">Kết quả mã hóa: Đánh bại ModernBERT</h2>
+<p>Các mô hình bộ mã hóa của chúng tôi <strong>vượt trội hơn ModernBERT</strong> trên tất cả các tác vụ và kích thước mô hình, đồng thời sử dụng dữ liệu đào tạo hoàn toàn mở. Vì chúng tôi cung cấp một loạt các kích thước lớn, giờ đây bạn có thể sử dụng các mô hình kiểu ModernBERT ở kích thước nhỏ hơn (tuyệt vời cho các thiết bị trên thiết bị hoặc cho suy luận nhanh) hoặc tăng sức mạnh bằng bộ mã hóa có kích thước 1B đánh bại đối thủ.</p>
+<p><img src="https://github.com/JHU-CLSP/ettin-encoder-vs-decoder/blob/main/assets/encoder_results.jpg?raw=true" alt="So sánh hiệu suất mã hóa cho thấy các mô hình Ettin đánh bại ModernBERT"></p>
+<h2 id="kết-quả-giải-mã-đánh-bại-llama-32-và-smollm2">Kết quả giải mã: Đánh bại Llama 3.2 và SmolLM2</h2>
+<p>Áp dụng cùng một công thức cho các mô hình giải mã mang lại kết quả ấn tượng không kém, với các mô hình của chúng tôi <strong>vượt trội hơn hoặc phù hợp với các đường cơ sở đã thiết lập</strong> như Llama 3.2 và SmolLM2:</p>
+<p><img src="https://github.com/JHU-CLSP/ettin-encoder-vs-decoder/blob/main/assets/decoder_results.jpg?raw=true" alt="So sánh hiệu suất giải mã cho thấy các mô hình Ettin đánh bại Llama 3.2 và SmolLM2"></p>
+<p>Mức tăng đặc biệt mạnh mẽ đối với các tác vụ chuyên sâu về kiến thức như SciQ, phản ánh lợi ích của hỗn hợp dữ liệu đào tạo chất lượng cao của chúng tôi. Những kết quả này chứng minh rằng công thức đào tạo của chúng tôi tạo ra các mô hình thực sự mạnh mẽ trong cả hai mô hình kiến trúc.</p>
+<h2 id="cuộc-chiến-công-bằng-bộ-mã-hóa-so-với-bộ-giải-mã-trên-cơ-sở-bình-đẳng">Cuộc chiến công bằng: Bộ mã hóa so với Bộ giải mã trên cơ sở bình đẳng</h2>
+<p>Lần đầu tiên, chúng ta có thể so sánh công bằng các kiến trúc bộ mã hóa và bộ giải mã được đào tạo với dữ liệu và công thức giống hệt nhau. Các kết quả cho thấy những lợi thế kiến trúc cơ bản vẫn tồn tại ngay cả khi tất cả các yếu tố khác được kiểm soát:</p>
+<p><img src="https://github.com/JHU-CLSP/ettin-encoder-vs-decoder/blob/main/assets/enc_vs_dec.jpg?raw=true" alt="So sánh bộ mã hóa so với bộ giải mã trên các kích thước và tác vụ của mô hình"></p>
+<h3 id="những-lợi-thế-cụ-thể-về-kiến-trúc-vẫn-tồn-tại">Những lợi thế cụ thể về kiến trúc vẫn tồn tại</h3>
+<p>Kết quả cho thấy các mẫu rõ ràng:</p>
+<p><strong>Bộ mã hóa chiếm ưu thế trong phân loại và truy xuất</strong>: Trên phân loại MNLI, ngay cả bộ mã hóa 150M (89,2) cũng vượt trội hơn bộ giải mã 400M (88,2). Đối với các tác vụ truy xuất, khoảng cách nhỏ hơn nhưng vẫn đáng chú ý - đặc biệt khi bộ giải mã không được đào tạo với MNTP.</p>
+<p><strong>Bộ giải mã vượt trội trong tạo sinh</strong>: Trên các tác vụ tạo sinh, bộ giải mã duy trì những lợi thế nhất quán, với khoảng cách hiệu suất thực tế mở rộng ở kích thước mô hình lớn hơn.</p>
+<p><strong>Kích thước không phải lúc nào cũng quan trọng</strong>: Bộ mã hóa 400M đánh bại bộ giải mã 1B trên các tác vụ phân loại, trong khi bộ giải mã 400M đánh bại bộ mã hóa 1B trên các tác vụ tạo sinh.</p>
+<h3 id="đào-tạo-mục-tiêu-chéo-không-thành-công">Đào tạo mục tiêu chéo không thành công</h3>
+<p>Do thiếu các mô hình bộ mã hóa mới, các công trình như <a href="https://arxiv.org/abs/2404.05961">LLM2Vec</a> đã đề xuất tiếp tục đào tạo trước các bộ giải mã bằng MLM. Bây giờ chúng ta có thể kiểm tra tính hiệu quả của chiến lược này!</p>
+<p>Chúng tôi đã chuyển đổi mục tiêu và tiếp tục đào tạo các mô hình của mình với mục tiêu ngược lại cho 50B token bổ sung. Đây là những gì chúng tôi tìm thấy:</p>
+<ul>
+<li><strong>Bộ mã hóa từ bộ giải mã</strong>: Vẫn thường đi sau bộ mã hóa gốc trên phân loại/truy xuất</li>
+<li><strong>Bộ giải mã từ bộ mã hóa</strong>: Tệ hơn đáng kể so với bộ giải mã gốc, đặc biệt là ở quy mô lớn hơn. Điều này có thể là do bộ mã hóa được đào tạo bằng MLM thay vì MNTP (dự đoán token tiếp theo bị che khuất) như đề xuất bởi LLM2Vec (và được sử dụng trong công thức bộ mã hóa từ bộ giải mã của chúng tôi).</li>
+</ul>
+<p>Điều này cho thấy sự lựa chọn kiến trúc quan trọng về cơ bản, không chỉ mục tiêu đào tạo.</p>
+<h2 id="vượt-xa-hiệu-suất-hiểu-hành-vi-của-mô-hình">Vượt xa hiệu suất: Hiểu hành vi của mô hình</h2>
+<p>Với dữ liệu đào tạo giống hệt nhau, chúng ta có thể nghiên cứu cách các mục tiêu khác nhau ảnh hưởng đến việc học. Ví dụ: phân tích độ lệch giới tính bằng cách sử dụng chuẩn WinoGender cho thấy:</p>
+<ul>
+<li><strong>Mô hình mã hóa</strong> thích các đại từ trung tính về giới tính thường xuyên hơn (60%+ trung tính so với 30%+ cho bộ giải mã)</li>
+<li><strong>Cả hai kiến trúc</strong> đều cho thấy độ lệch nam, nhưng bộ giải mã hơi nhiều hơn</li>
+<li><strong>Đào tạo mục tiêu chéo</strong> ảnh hưởng đến các mẫu độ lệch theo những cách có thể đo lường được</li>
+</ul>
+<p>Điều này mở ra cánh cửa cho các nghiên cứu có hệ thống về cách các mục tiêu đào tạo ảnh hưởng đến hành vi của mô hình vượt ra ngoài các số liệu chính xác.</p>
+<h2 id="ví-dụ-sử-dụng">Ví dụ sử dụng</h2>
+<p>Bạn có thể sử dụng các mô hình này chỉ với một vài dòng mã!</p>
+<h3 id="bộ-mã-hóa">Bộ mã hóa</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoTokenizer, AutoModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tải bộ mã hóa để phân loại/nhúng</span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;jhu-clsp/ettin-encoder-150m&#34;</span>)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModel<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;jhu-clsp/ettin-encoder-150m&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict_masked_token</span>(text):
+</span></span><span style="display:flex;"><span>    inputs <span style="color:#f92672">=</span> tokenizer(text, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        outputs <span style="color:#f92672">=</span> model(<span style="color:#f92672">**</span>inputs)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Nhận dự đoán cho token [MASK]</span>
+</span></span><span style="display:flex;"><span>    mask_indices <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>where(inputs[<span style="color:#e6db74">&#34;input_ids&#34;</span>] <span style="color:#f92672">==</span> tokenizer<span style="color:#f92672">.</span>mask_token_id)
+</span></span><span style="display:flex;"><span>    predictions <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>logits[mask_indices]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Nhận 5 dự đoán hàng đầu</span>
+</span></span><span style="display:flex;"><span>    top_tokens <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>topk(predictions, <span style="color:#ae81ff">5</span>, dim<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [tokenizer<span style="color:#f92672">.</span>decode(token) <span style="color:#66d9ef">for</span> token <span style="color:#f92672">in</span> top_tokens<span style="color:#f92672">.</span>indices[<span style="color:#ae81ff">0</span>]]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ví dụ</span>
+</span></span><span style="display:flex;"><span>masked_text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Thủ đô của Pháp là [MASK].&#34;</span>
+</span></span><span style="display:flex;"><span>predictions <span style="color:#f92672">=</span> predict_masked_token(masked_text)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Dự đoán: </span><span style="color:#e6db74">{</span>predictions<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p><strong>Đối với các tác vụ phân loại và truy xuất, hãy sử dụng các mô hình bộ mã hóa:</strong> Bạn cũng có thể muốn sử dụng phiên bản đã được tinh chỉnh cho các tác vụ này.</p>
+<h3 id="bộ-giải-mã">Bộ giải mã</h3>
+<p><strong>Đối với các tác vụ tạo văn bản, hãy sử dụng các mô hình giải mã:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoTokenizer, AutoModelForCausalLM
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tải bộ giải mã để tạo</span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;jhu-clsp/ettin-decoder-150m&#34;</span>)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;jhu-clsp/ettin-decoder-150m&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tạo văn bản</span>
+</span></span><span style="display:flex;"><span>prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Tương lai của trí tuệ nhân tạo là&#34;</span>
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> tokenizer(prompt, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>)
+</span></span><span style="display:flex;"><span>outputs <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(inputs<span style="color:#f92672">.</span>input_ids, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>, temperature<span style="color:#f92672">=</span><span style="color:#ae81ff">0.7</span>)
+</span></span><span style="display:flex;"><span>generated_text <span style="color:#f92672">=</span> tokenizer<span style="color:#f92672">.</span>decode(outputs[<span style="color:#ae81ff">0</span>], skip_special_tokens<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><h2 id="ví-dụ-tinh-chỉnh">Ví dụ tinh chỉnh</h2>
+<h3 id="bộ-mã-hóa-1">Bộ mã hóa</h3>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> argparse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    SentenceTransformer,
+</span></span><span style="display:flex;"><span>    SentenceTransformerTrainer,
+</span></span><span style="display:flex;"><span>    SentenceTransformerTrainingArguments,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.evaluation <span style="color:#f92672">import</span> TripletEvaluator
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.losses <span style="color:#f92672">import</span> CachedMultipleNegativesRankingLoss
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.training_args <span style="color:#f92672">import</span> BatchSamplers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># phân tích cú pháp lr &amp; tên mô hình</span>
+</span></span><span style="display:flex;"><span>    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser()
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--lr&#34;</span>, type<span style="color:#f92672">=</span>float, default<span style="color:#f92672">=</span><span style="color:#ae81ff">8e-5</span>)
+</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--model_name&#34;</span>, type<span style="color:#f92672">=</span>str, default<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;jhu-clsp/ettin-encoder-150m&#34;</span>)
+</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
+</span></span><span style="display:flex;"><span>    lr <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span>lr
+</span></span><span style="display:flex;"><span>    model_name <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span>model_name
+</span></span><span style="display:flex;"><span>    model_shortname <span style="color:#f92672">=</span> model_name<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;/&#34;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1. Tải mô hình để tinh chỉnh</span>
+</span></span><span style="display:flex;"><span>    model <span style="color:#f92672">=</span> SentenceTransformer(model_name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2. Tải một tập dữ liệu để tinh chỉnh</span>
+</span></span><span style="display:flex;"><span>    dataset <span style="color:#f92672">=</span> load_dataset(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;sentence-transformers/msmarco-co-condenser-margin-mse-sym-mnrl-mean-v1&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;triplet-hard&#34;</span>,
+</span></span><span style="display:flex;"><span>        split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    dataset_dict <span style="color:#f92672">=</span> dataset<span style="color:#f92672">.</span>train_test_split(test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1_000</span>, seed<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>)
+</span></span><span style="display:flex;"><span>    train_dataset <span style="color:#f92672">=</span> dataset_dict[<span style="color:#e6db74">&#34;train&#34;</span>]<span style="color:#f92672">.</span>select(range(<span style="color:#ae81ff">1_250_000</span>))
+</span></span><span style="display:flex;"><span>    eval_dataset <span style="color:#f92672">=</span> dataset_dict[<span style="color:#e6db74">&#34;test&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. Xác định hàm mất mát</span>
+</span></span><span style="display:flex;"><span>    loss <span style="color:#f92672">=</span> CachedMultipleNegativesRankingLoss(model, mini_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>)  <span style="color:#75715e"># Tăng mini_batch_size nếu bạn có đủ VRAM</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    run_name <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>model_shortname<span style="color:#e6db74">}</span><span style="color:#e6db74">-DPR-</span><span style="color:#e6db74">{</span>lr<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4. (Tùy chọn) Chỉ định đối số đào tạo</span>
+</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> SentenceTransformerTrainingArguments(
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Tham số bắt buộc:</span>
+</span></span><span style="display:flex;"><span>        output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;output/</span><span style="color:#e6db74">{</span>model_shortname<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Tham số đào tạo tùy chọn:</span>
+</span></span><span style="display:flex;"><span>        num_train_epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        per_device_train_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span>,
+</span></span><span style="display:flex;"><span>        per_device_eval_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span>,
+</span></span><span style="display:flex;"><span>        warmup_ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>,
+</span></span><span style="display:flex;"><span>        fp16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,  <span style="color:#75715e"># Đặt thành False nếu GPU không thể xử lý FP16</span>
+</span></span><span style="display:flex;"><span>        bf16<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,  <span style="color:#75715e"># Đặt thành True nếu GPU hỗ trợ BF16</span>
+</span></span><span style="display:flex;"><span>        batch_sampler<span style="color:#f92672">=</span>BatchSamplers<span style="color:#f92672">.</span>NO_DUPLICATES,  <span style="color:#75715e"># (Cached) MultipleNegativesRankingLoss được hưởng lợi từ việc không có bản sao</span>
+</span></span><span style="display:flex;"><span>        learning_rate<span style="color:#f92672">=</span>lr,
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Các tham số theo dõi/gỡ lỗi tùy chọn:</span>
+</span></span><span style="display:flex;"><span>        save_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>        save_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>        save_total_limit<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>        logging_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>        run_name<span style="color:#f92672">=</span>run_name,  <span style="color:#75715e"># Được sử dụng trong `wandb`, `tensorboard`, `neptune`, v.v. nếu được cài đặt</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 5. (Tùy chọn) Tạo bộ đánh giá &amp; đánh giá mô hình cơ sở</span>
+</span></span><span style="display:flex;"><span>    dev_evaluator <span style="color:#f92672">=</span> TripletEvaluator(
+</span></span><span style="display:flex;"><span>        anchors<span style="color:#f92672">=</span>eval_dataset[<span style="color:#e6db74">&#34;query&#34;</span>],
+</span></span><span style="display:flex;"><span>        positives<span style="color:#f92672">=</span>eval_dataset[<span style="color:#e6db74">&#34;positive&#34;</span>],
+</span></span><span style="display:flex;"><span>        negatives<span style="color:#f92672">=</span>eval_dataset[<span style="color:#e6db74">&#34;negative&#34;</span>],
+</span></span><span style="display:flex;"><span>        name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;msmarco-co-condenser-dev&#34;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    dev_evaluator(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 6. Tạo một trình đào tạo &amp; đào tạo</span>
+</span></span><span style="display:flex;"><span>    trainer <span style="color:#f92672">=</span> SentenceTransformerTrainer(
+</span></span><span style="display:flex;"><span>        model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>        args<span style="color:#f92672">=</span>args,
+</span></span><span style="display:flex;"><span>        train_dataset<span style="color:#f92672">=</span>train_dataset,
+</span></span><span style="display:flex;"><span>        eval_dataset<span style="color:#f92672">=</span>eval_dataset,
+</span></span><span style="display:flex;"><span>        loss<span style="color:#f92672">=</span>loss,
+</span></span><span style="display:flex;"><span>        evaluator<span style="color:#f92672">=</span>dev_evaluator,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    trainer<span style="color:#f92672">.</span>train()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 7. (Tùy chọn) Đánh giá mô hình đã đào tạo trên bộ đánh giá sau khi đào tạo</span>
+</span></span><span style="display:flex;"><span>    dev_evaluator(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 8. Lưu mô hình</span>
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">.</span>save_pretrained(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;output/</span><span style="color:#e6db74">{</span>model_shortname<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">/final&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 9. (Tùy chọn) Đẩy nó lên Hugging Face Hub</span>
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">.</span>push_to_hub(run_name, private<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pylate <span style="color:#f92672">import</span> losses, models, utils
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    SentenceTransformerTrainer,
+</span></span><span style="display:flex;"><span>    SentenceTransformerTrainingArguments,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Tải tập dữ liệu cần thiết cho việc chắt lọc kiến thức (đào tạo, truy vấn, tài liệu)</span>
+</span></span><span style="display:flex;"><span>    train <span style="color:#f92672">=</span> load_dataset(
+</span></span><span style="display:flex;"><span>        path<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;lightonai/ms-marco-en-bge&#34;</span>,
+</span></span><span style="display:flex;"><span>        name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    queries <span style="color:#f92672">=</span> load_dataset(
+</span></span><span style="display:flex;"><span>        path<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;lightonai/ms-marco-en-bge&#34;</span>,
+</span></span><span style="display:flex;"><span>        name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;queries&#34;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    documents <span style="color:#f92672">=</span> load_dataset(
+</span></span><span style="display:flex;"><span>        path<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;lightonai/ms-marco-en-bge&#34;</span>,
+</span></span><span style="display:flex;"><span>        name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;documents&#34;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Đặt biến đổi để tải văn bản tài liệu/truy vấn bằng cách sử dụng các id tương ứng một cách nhanh chóng</span>
+</span></span><span style="display:flex;"><span>    train<span style="color:#f92672">.</span>set_transform(
+</span></span><span style="display:flex;"><span>        utils<span style="color:#f92672">.</span>KDProcessing(queries<span style="color:#f92672">=</span>queries, documents<span style="color:#f92672">=</span>documents)<span style="color:#f92672">.</span>transform,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Xác định mô hình cơ sở, tham số đào tạo và thư mục đầu ra</span>
+</span></span><span style="display:flex;"><span>    num_train_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">8e-5</span>
+</span></span><span style="display:flex;"><span>    batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">16</span>
+</span></span><span style="display:flex;"><span>    accum_steps <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    model_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;jhu-clsp/ettin-encoder-150m&#34;</span>
+</span></span><span style="display:flex;"><span>    model_shortname <span style="color:#f92672">=</span> model_name<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;/&#34;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Đặt tên chạy cho ghi nhật ký và thư mục đầu ra</span>
+</span></span><span style="display:flex;"><span>    run_name <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>model_shortname<span style="color:#e6db74">}</span><span style="color:#e6db74">-colbert-KD-</span><span style="color:#e6db74">{</span>lr<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    output_dir <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;output/</span><span style="color:#e6db74">{</span>model_shortname<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Khởi tạo mô hình ColBERT từ mô hình cơ sở</span>
+</span></span><span style="display:flex;"><span>    model <span style="color:#f92672">=</span> models<span style="color:#f92672">.</span>ColBERT(model_name_or_path<span style="color:#f92672">=</span>model_name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Định cấu hình các đối số đào tạo (ví dụ: số kỷ nguyên, kích thước lô, tốc độ học)</span>
+</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> SentenceTransformerTrainingArguments(
+</span></span><span style="display:flex;"><span>        output_dir<span style="color:#f92672">=</span>output_dir,
+</span></span><span style="display:flex;"><span>        num_train_epochs<span style="color:#f92672">=</span>num_train_epochs,
+</span></span><span style="display:flex;"><span>        per_device_train_batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>        fp16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,  <span style="color:#75715e"># Đặt thành False nếu bạn gặp lỗi rằng GPU của bạn không thể chạy trên FP16</span>
+</span></span><span style="display:flex;"><span>        bf16<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,  <span style="color:#75715e"># Đặt thành True nếu bạn có GPU hỗ trợ BF16</span>
+</span></span><span style="display:flex;"><span>        run_name<span style="color:#f92672">=</span>run_name,
+</span></span><span style="display:flex;"><span>        logging_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>        learning_rate<span style="color:#f92672">=</span>lr,
+</span></span><span style="display:flex;"><span>        gradient_accumulation_steps<span style="color:#f92672">=</span>accum_steps,
+</span></span><span style="display:flex;"><span>        warmup_ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Sử dụng hàm mất mát Distillation để đào tạo</span>
+</span></span><span style="display:flex;"><span>    train_loss <span style="color:#f92672">=</span> losses<span style="color:#f92672">.</span>Distillation(model<span style="color:#f92672">=</span>model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Khởi tạo trình đào tạo</span>
+</span></span><span style="display:flex;"><span>    trainer <span style="color:#f92672">=</span> SentenceTransformerTrainer(
+</span></span><span style="display:flex;"><span>        model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>        args<span style="color:#f92672">=</span>args,
+</span></span><span style="display:flex;"><span>        train_dataset<span style="color:#f92672">=</span>train,
+</span></span><span style="display:flex;"><span>        loss<span style="color:#f92672">=</span>train_loss,
+</span></span><span style="display:flex;"><span>        data_collator<span style="color:#f92672">=</span>utils<span style="color:#f92672">.</span>ColBERTCollator(tokenize_fn<span style="color:#f92672">=</span>model<span style="color:#f92672">.</span>tokenize),
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Bắt đầu quá trình đào tạo</span>
+</span></span><span style="display:flex;"><span>    trainer<span style="color:#f92672">.</span>train()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">.</span>save_pretrained(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>output_dir<span style="color:#e6db74">}</span><span style="color:#e6db74">/final&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    SparseEncoder,
+</span></span><span style="display:flex;"><span>    SparseEncoderModelCardData,
+</span></span><span style="display:flex;"><span>    SparseEncoderTrainer,
+</span></span><span style="display:flex;"><span>    SparseEncoderTrainingArguments,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sparse_encoder.evaluation <span style="color:#f92672">import</span> SparseNanoBEIREvaluator
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sparse_encoder.losses <span style="color:#f92672">import</span> SparseMultipleNegativesRankingLoss, SpladeLoss
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.training_args <span style="color:#f92672">import</span> BatchSamplers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>logging<span style="color:#f92672">.</span>basicConfig(format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%(asctime)s</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">%(message)s</span><span style="color:#e6db74">&#34;</span>, datefmt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#34;</span>, level<span style="color:#f92672">=</span>logging<span style="color:#f92672">.</span>INFO)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Tải một mô hình để tinh chỉnh với 2. (Tùy chọn) dữ liệu thẻ mô hình</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SparseEncoder(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;jhu-clsp/ettin-encoder-150m&#34;</span>,
+</span></span><span style="display:flex;"><span>    model_card_data<span style="color:#f92672">=</span>SparseEncoderModelCardData(
+</span></span><span style="display:flex;"><span>        language<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>,
+</span></span><span style="display:flex;"><span>        license<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;apache-2.0&#34;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Tải một tập dữ liệu để tinh chỉnh</span>
+</span></span><span style="display:flex;"><span>full_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;sentence-transformers/natural-questions&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)<span style="color:#f92672">.</span>select(range(<span style="color:#ae81ff">100_000</span>))
+</span></span><span style="display:flex;"><span>dataset_dict <span style="color:#f92672">=</span> full_dataset<span style="color:#f92672">.</span>train_test_split(test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1_000</span>, seed<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>)
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> dataset_dict[<span style="color:#e6db74">&#34;train&#34;</span>]
+</span></span><span style="display:flex;"><span>eval_dataset <span style="color:#f92672">=</span> dataset_dict[<span style="color:#e6db74">&#34;test&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Xác định hàm mất mát</span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> SpladeLoss(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>    loss<span style="color:#f92672">=</span>SparseMultipleNegativesRankingLoss(model<span style="color:#f92672">=</span>model),
+</span></span><span style="display:flex;"><span>    query_regularizer_weight<span style="color:#f92672">=</span><span style="color:#ae81ff">5e-5</span>,
+</span></span><span style="display:flex;"><span>    document_regularizer_weight<span style="color:#f92672">=</span><span style="color:#ae81ff">3e-5</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. (Tùy chọn) Chỉ định đối số đào tạo</span>
+</span></span><span style="display:flex;"><span>run_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;splade-distilbert-base-uncased-nq&#34;</span>
+</span></span><span style="display:flex;"><span>args <span style="color:#f92672">=</span> SparseEncoderTrainingArguments(
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Tham số bắt buộc:</span>
+</span></span><span style="display:flex;"><span>    output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;models/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Tham số đào tạo tùy chọn:</span>
+</span></span><span style="display:flex;"><span>    num_train_epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    per_device_train_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>,
+</span></span><span style="display:flex;"><span>    per_device_eval_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>,
+</span></span><span style="display:flex;"><span>    learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">2e-5</span>,
+</span></span><span style="display:flex;"><span>    warmup_ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>    fp16<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,  <span style="color:#75715e"># Đặt thành False nếu bạn gặp lỗi rằng GPU của bạn không thể chạy trên FP16</span>
+</span></span><span style="display:flex;"><span>    bf16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,  <span style="color:#75715e"># Đặt thành True nếu bạn có GPU hỗ trợ BF16</span>
+</span></span><span style="display:flex;"><span>    batch_sampler<span style="color:#f92672">=</span>BatchSamplers<span style="color:#f92672">.</span>NO_DUPLICATES,  <span style="color:#75715e"># MultipleNegativesRankingLoss được hưởng lợi từ việc không có mẫu trùng lặp trong một lô</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Các tham số theo dõi/gỡ lỗi tùy chọn:</span>
+</span></span><span style="display:flex;"><span>    eval_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>    eval_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>    save_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>    save_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>    save_total_limit<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    logging_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>,
+</span></span><span style="display:flex;"><span>    run_name<span style="color:#f92672">=</span>run_name,  <span style="color:#75715e"># Sẽ được sử dụng trong W&amp;B nếu `wandb` được cài đặt</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 6. (Tùy chọn) Tạo bộ đánh giá &amp; đánh giá mô hình cơ sở</span>
+</span></span><span style="display:flex;"><span>dev_evaluator <span style="color:#f92672">=</span> SparseNanoBEIREvaluator(dataset_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;msmarco&#34;</span>, <span style="color:#e6db74">&#34;nfcorpus&#34;</span>, <span style="color:#e6db74">&#34;nq&#34;</span>], batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 7. Tạo một trình đào tạo &amp; đào tạo</span>
+</span></span><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> SparseEncoderTrainer(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>    args<span style="color:#f92672">=</span>args,
+</span></span><span style="display:flex;"><span>    train_dataset<span style="color:#f92672">=</span>train_dataset,
+</span></span><span style="display:flex;"><span>    eval_dataset<span style="color:#f92672">=</span>eval_dataset,
+</span></span><span style="display:flex;"><span>    loss<span style="color:#f92672">=</span>loss,
+</span></span><span style="display:flex;"><span>    evaluator<span style="color:#f92672">=</span>dev_evaluator,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>trainer<span style="color:#f92672">.</span>train()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 8. Đánh giá lại hiệu suất của mô hình sau khi đào tạo</span>
+</span></span><span style="display:flex;"><span>dev_evaluator(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 9. Lưu mô hình đã đào tạo</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>save_pretrained(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;models/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">/final&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 10. (Tùy chọn) Đẩy nó lên Hugging Face Hub</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>push_to_hub(run_name)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> traceback
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SentenceTransformer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder <span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    CrossEncoder,
+</span></span><span style="display:flex;"><span>    CrossEncoderModelCardData,
+</span></span><span style="display:flex;"><span>    CrossEncoderTrainer,
+</span></span><span style="display:flex;"><span>    CrossEncoderTrainingArguments,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder.evaluation <span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    CrossEncoderNanoBEIREvaluator,
+</span></span><span style="display:flex;"><span>    CrossEncoderRerankingEvaluator,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder.losses <span style="color:#f92672">import</span> BinaryCrossEntropyLoss
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.evaluation <span style="color:#f92672">import</span> SequentialEvaluator
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.util <span style="color:#f92672">import</span> mine_hard_negatives
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Đặt mức nhật ký thành INFO để nhận thêm thông tin</span>
+</span></span><span style="display:flex;"><span>logging<span style="color:#f92672">.</span>basicConfig(format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%(asctime)s</span><span style="color:#e6db74"> - </span><span style="color:#e6db74">%(message)s</span><span style="color:#e6db74">&#34;</span>, datefmt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#34;</span>, level<span style="color:#f92672">=</span>logging<span style="color:#f92672">.</span>INFO)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    model_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;jhu-clsp/ettin-encoder-150m&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    train_batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
+</span></span><span style="display:flex;"><span>    num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    num_hard_negatives <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>  <span style="color:#75715e"># Cần khai thác bao nhiêu số âm cứng cho mỗi cặp câu hỏi-trả lời</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 1a. Tải một mô hình để tinh chỉnh với 1b. (Tùy chọn) dữ liệu thẻ mô hình</span>
+</span></span><span style="display:flex;"><span>    model <span style="color:#f92672">=</span> CrossEncoder(
+</span></span><span style="display:flex;"><span>        model_name,
+</span></span><span style="display:flex;"><span>        model_card_data<span style="color:#f92672">=</span>CrossEncoderModelCardData(
+</span></span><span style="display:flex;"><span>            language<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>,
+</span></span><span style="display:flex;"><span>            license<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;apache-2.0&#34;</span>,
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Độ dài tối đa của mô hình:&#34;</span>, model<span style="color:#f92672">.</span>max_length)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Số nhãn của mô hình:&#34;</span>, model<span style="color:#f92672">.</span>num_labels)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2a. Tải tập dữ liệu GooAQ: https://huggingface.co/datasets/sentence-transformers/gooaq</span>
+</span></span><span style="display:flex;"><span>    logging<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;Đọc tập dữ liệu đào tạo gooaq&#34;</span>)
+</span></span><span style="display:flex;"><span>    full_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;sentence-transformers/gooaq&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)<span style="color:#f92672">.</span>select(range(<span style="color:#ae81ff">100_000</span>))
+</span></span><span style="display:flex;"><span>    dataset_dict <span style="color:#f92672">=</span> full_dataset<span style="color:#f92672">.</span>train_test_split(test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1_000</span>, seed<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>)
+</span></span><span style="display:flex;"><span>    train_dataset <span style="color:#f92672">=</span> dataset_dict[<span style="color:#e6db74">&#34;train&#34;</span>]
+</span></span><span style="display:flex;"><span>    eval_dataset <span style="color:#f92672">=</span> dataset_dict[<span style="color:#e6db74">&#34;test&#34;</span>]
+</span></span><span style="display:flex;"><span>    logging<span style="color:#f92672">.</span>info(train_dataset)
+</span></span><span style="display:flex;"><span>    logging<span style="color:#f92672">.</span>info(eval_dataset)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2b. Sửa đổi tập dữ liệu đào tạo của chúng tôi để bao gồm các số âm cứng bằng cách sử dụng mô hình nhúng rất hiệu quả</span>
+</span></span><span style="display:flex;"><span>    embedding_model <span style="color:#f92672">=</span> SentenceTransformer(<span style="color:#e6db74">&#34;sentence-transformers/static-retrieval-mrl-en-v1&#34;</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cpu&#34;</span>)
+</span></span><span style="display:flex;"><span>    hard_train_dataset <span style="color:#f92672">=</span> mine_hard_negatives(
+</span></span><span style="display:flex;"><span>        train_dataset,
+</span></span><span style="display:flex;"><span>        embedding_model,
+</span></span><span style="display:flex;"><span>        num_negatives<span style="color:#f92672">=</span>num_hard_negatives,  <span style="color:#75715e"># Bao nhiêu số âm trên mỗi cặp câu hỏi-trả lời</span>
+</span></span><span style="display:flex;"><span>        margin<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>,  <span style="color:#75715e"># Độ tương đồng giữa truy vấn và mẫu âm phải thấp hơn độ tương đồng truy vấn-dương</span>
+</span></span><span style="display:flex;"><span>        range_min<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>,  <span style="color:#75715e"># Bỏ qua x mẫu tương tự nhất</span>
+</span></span><span style="display:flex;"><span>        range_max<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>,  <span style="color:#75715e"># Chỉ xem xét x mẫu tương tự nhất</span>
+</span></span><span style="display:flex;"><span>        sampling_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;top&#34;</span>,  <span style="color:#75715e"># Lấy mẫu các số âm hàng đầu từ phạm vi</span>
+</span></span><span style="display:flex;"><span>        batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>,  <span style="color:#75715e"># Sử dụng kích thước lô là 4096 cho mô hình nhúng</span>
+</span></span><span style="display:flex;"><span>        output_format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;labeled-pair&#34;</span>,  <span style="color:#75715e"># Định dạng đầu ra là (truy vấn, đoạn văn, nhãn), như BinaryCrossEntropyLoss yêu cầu</span>
+</span></span><span style="display:flex;"><span>        use_faiss<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    logging<span style="color:#f92672">.</span>info(hard_train_dataset)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 2c. (Tùy chọn) Lưu tập dữ liệu đào tạo cứng vào đĩa</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># hard_train_dataset.save_to_disk(&#34;gooaq-hard-train&#34;)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Tải lại với:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># hard_train_dataset = load_from_disk(&#34;gooaq-hard-train&#34;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 3. Xác định mất mát đào tạo của chúng tôi.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Nên đặt pos_weight là tỷ lệ giữa số dương với số âm, a.k.a. `num_hard_negatives`</span>
+</span></span><span style="display:flex;"><span>    loss <span style="color:#f92672">=</span> BinaryCrossEntropyLoss(model<span style="color:#f92672">=</span>model, pos_weight<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>tensor(num_hard_negatives))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4a. Xác định bộ đánh giá. Chúng tôi sử dụng CrossEncoderNanoBEIREvaluator, là một bộ đánh giá nhẹ cho việc xếp hạng lại tiếng Anh</span>
+</span></span><span style="display:flex;"><span>    nano_beir_evaluator <span style="color:#f92672">=</span> CrossEncoderNanoBEIREvaluator(
+</span></span><span style="display:flex;"><span>        dataset_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;msmarco&#34;</span>, <span style="color:#e6db74">&#34;nfcorpus&#34;</span>, <span style="color:#e6db74">&#34;nq&#34;</span>],
+</span></span><span style="display:flex;"><span>        batch_size<span style="color:#f92672">=</span>train_batch_size,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4b. Xác định một trình đánh giá xếp hạng lại bằng cách khai thác các số âm cứng cho các cặp câu hỏi-trả lời</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Chúng tôi bao gồm câu trả lời tích cực trong danh sách các số âm, để bộ đánh giá có thể sử dụng hiệu suất của</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># mô hình nhúng làm đường cơ sở.</span>
+</span></span><span style="display:flex;"><span>    hard_eval_dataset <span style="color:#f92672">=</span> mine_hard_negatives(
+</span></span><span style="display:flex;"><span>        eval_dataset,
+</span></span><span style="display:flex;"><span>        embedding_model,
+</span></span><span style="display:flex;"><span>        corpus<span style="color:#f92672">=</span>full_dataset[<span style="color:#e6db74">&#34;answer&#34;</span>],  <span style="color:#75715e"># Sử dụng toàn bộ tập dữ liệu làm ngữ liệu</span>
+</span></span><span style="display:flex;"><span>        num_negatives<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>,  <span style="color:#75715e"># Cần xếp hạng lại bao nhiêu tài liệu</span>
+</span></span><span style="display:flex;"><span>        batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>,
+</span></span><span style="display:flex;"><span>        include_positives<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        output_format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;n-tuple&#34;</span>,
+</span></span><span style="display:flex;"><span>        use_faiss<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    logging<span style="color:#f92672">.</span>info(hard_eval_dataset)
+</span></span><span style="display:flex;"><span>    reranking_evaluator <span style="color:#f92672">=</span> CrossEncoderRerankingEvaluator(
+</span></span><span style="display:flex;"><span>        samples<span style="color:#f92672">=</span>[
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;query&#34;</span>: sample[<span style="color:#e6db74">&#34;question&#34;</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;positive&#34;</span>: [sample[<span style="color:#e6db74">&#34;answer&#34;</span>]],
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;documents&#34;</span>: [sample[column_name] <span style="color:#66d9ef">for</span> column_name <span style="color:#f92672">in</span> hard_eval_dataset<span style="color:#f92672">.</span>column_names[<span style="color:#ae81ff">2</span>:]],
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> sample <span style="color:#f92672">in</span> hard_eval_dataset
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        batch_size<span style="color:#f92672">=</span>train_batch_size,
+</span></span><span style="display:flex;"><span>        name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gooaq-dev&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Cài đặt thực tế: chỉ xếp hạng lại các số dương mà trình truy xuất đã tìm thấy</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Đặt thành True để xếp hạng lại *tất cả* các số dương</span>
+</span></span><span style="display:flex;"><span>        always_rerank_positives<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4c. Kết hợp bộ đánh giá &amp; chạy mô hình cơ sở trên chúng</span>
+</span></span><span style="display:flex;"><span>    evaluator <span style="color:#f92672">=</span> SequentialEvaluator([reranking_evaluator, nano_beir_evaluator])
+</span></span><span style="display:flex;"><span>    evaluator(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 5. Xác định các đối số đào tạo</span>
+</span></span><span style="display:flex;"><span>    short_model_name <span style="color:#f92672">=</span> model_name <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> model_name <span style="color:#66d9ef">else</span> model_name<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;/&#34;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>    run_name <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;reranker-</span><span style="color:#e6db74">{</span>short_model_name<span style="color:#e6db74">}</span><span style="color:#e6db74">-gooaq-bce&#34;</span>
+</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> CrossEncoderTrainingArguments(
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Tham số bắt buộc:</span>
+</span></span><span style="display:flex;"><span>        output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;models/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Tham số đào tạo tùy chọn:</span>
+</span></span><span style="display:flex;"><span>        num_train_epochs<span style="color:#f92672">=</span>num_epochs,
+</span></span><span style="display:flex;"><span>        per_device_train_batch_size<span style="color:#f92672">=</span>train_batch_size,
+</span></span><span style="display:flex;"><span>        per_device_eval_batch_size<span style="color:#f92672">=</span>train_batch_size,
+</span></span><span style="display:flex;"><span>        learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">2e-5</span>,
+</span></span><span style="display:flex;"><span>        warmup_ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>        fp16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,  <span style="color:#75715e"># Đặt thành False nếu bạn gặp lỗi rằng GPU của bạn không thể chạy trên FP16</span>
+</span></span><span style="display:flex;"><span>        bf16<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,  <span style="color:#75715e"># Đặt thành True nếu bạn có GPU hỗ trợ BF16</span>
+</span></span><span style="display:flex;"><span>        dataloader_num_workers<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>        load_best_model_at_end<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        metric_for_best_model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;eval_gooaq-dev_ndcg@10&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Các tham số theo dõi/gỡ lỗi tùy chọn:</span>
+</span></span><span style="display:flex;"><span>        eval_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>        eval_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>        save_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>        save_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>        save_total_limit<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>        logging_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>,
+</span></span><span style="display:flex;"><span>        logging_first_step<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        run_name<span style="color:#f92672">=</span>run_name,  <span style="color:#75715e"># Sẽ được sử dụng trong W&amp;B nếu `wandb` được cài đặt</span>
+</span></span><span style="display:flex;"><span>        seed<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 6. Tạo trình đào tạo &amp; bắt đầu đào tạo</span>
+</span></span><span style="display:flex;"><span>    trainer <span style="color:#f92672">=</span> CrossEncoderTrainer(
+</span></span><span style="display:flex;"><span>        model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>        args<span style="color:#f92672">=</span>args,
+</span></span><span style="display:flex;"><span>        train_dataset<span style="color:#f92672">=</span>hard_train_dataset,
+</span></span><span style="display:flex;"><span>        loss<span style="color:#f92672">=</span>loss,
+</span></span><span style="display:flex;"><span>        evaluator<span style="color:#f92672">=</span>evaluator,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    trainer<span style="color:#f92672">.</span>train()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 7. Đánh giá mô hình cuối cùng, hữu ích để bao gồm các mô hình này trong thẻ mô hình</span>
+</span></span><span style="display:flex;"><span>    evaluator(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 8. Lưu mô hình cuối cùng</span>
+</span></span><span style="display:flex;"><span>    final_output_dir <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;models/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">/final&#34;</span>
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">.</span>save_pretrained(final_output_dir)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 9. (Tùy chọn) lưu mô hình vào Hugging Face Hub!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Nên chạy `huggingface-cli login` để đăng nhập vào tài khoản Hugging Face của bạn trước</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        model<span style="color:#f92672">.</span>push_to_hub(run_name)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span>:
+</span></span><span style="display:flex;"><span>        logging<span style="color:#f92672">.</span>error(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Lỗi tải lên mô hình lên Hugging Face Hub:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">{</span>t
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">###</span> [Link bài viết gốc](https:<span style="color:#f92672">//</span>huggingface<span style="color:#f92672">.</span>co<span style="color:#f92672">/</span>blog<span style="color:#f92672">/</span>ettin)
+</span></span></code></pre></div>
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-16-2025/">July 16, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/33e434/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/migrating-the-hub-to-xet/thumbnail.png" alt="Di chuyển Hub từ Git LFS sang Xet" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-17T00:00:00&#43;00:00">Jul 17, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Di chuyển Hub từ Git LFS sang Xet</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-12/cc255f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smollm3/image.png" alt="SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-12T00:00:00&#43;00:00">Jul 12, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">SmolLM3- smol, đa ngôn ngữ, lý luận theo ngữ cảnh dài</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/abb90d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_AI_cloud_circuit_13578209-3014-49b8-b3e4-ba2d63038e68.webp?w=700&amp;h=350&amp;crop=1" alt="Blaxel huy động được vòng hạt giống 7,3 triệu đô la để xây dựng &#39;AWS cho các tác nhân AI&#39; sau khi xử lý hàng tỷ yêu cầu từ tác nhân" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Blaxel huy động được vòng hạt giống 7,3 triệu đô la để xây dựng &#39;AWS cho các tác nhân AI&#39; sau khi xử lý hàng tỷ yêu cầu từ tác nhân</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/d7e40d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đầu tư vào năng lượng để đảm bảo tương lai AI của Mỹ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/33e434/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/migrating-the-hub-to-xet/thumbnail.png" alt="Di chuyển Hub từ Git LFS sang Xet" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Di chuyển Hub từ Git LFS sang Xet</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/26273c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/ettin/thumbnail.png" alt="Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Seq vs Seq- Bộ Ettin gồm các bộ mã hóa và giải mã ghép nối</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-17/811f06/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_magnifying_glass_over_data_streams_7c287f80-9b27-4a0c-8059-231b7a5e469e.webp?w=700&amp;h=350&amp;crop=1" alt="Slack trở nên thông minh hơn- Các công cụ AI mới tóm tắt các cuộc trò chuyện, giải thích biệt ngữ và tự động hóa công việc" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Slack trở nên thông minh hơn- Các công cụ AI mới tóm tắt các cuộc trò chuyện, giải thích biệt ngữ và tự động hóa công việc</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
