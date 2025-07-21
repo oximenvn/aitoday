@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dệt nên thực tế hay bóp méo nó? Cái bẫy cá nhân hóa trong các hệ thống AI | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết thảo luận về việc các hệ thống AI có thể tạo ra các cái bẫy cá nhân hóa.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Dệt nên thực tế hay bóp méo nó? Cái bẫy cá nhân hóa trong các hệ thống AI</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết thảo luận về việc các hệ thống AI có thể tạo ra các cái bẫy cá nhân hóa. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-21T00:00:00&#43;00:00">July 21, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            15 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://venturebeat.com/wp-content/uploads/2025/07/My-Truth-Weaving-Cover-Image.jpg?w=700&amp;h=350&amp;crop=1" alt="Dệt nên thực tế hay bóp méo nó? Cái bẫy cá nhân hóa trong các hệ thống AI">
+        <figcaption class="text-center italic text-xs">Bài viết thảo luận về việc các hệ thống AI có thể tạo ra các cái bẫy cá nhân hóa.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="dệt-nên-thực-tế-hay-bóp-méo-nó-bẫy-cá-nhân-hóa-trong-các-hệ-thống-ai">Dệt nên thực tế hay bóp méo nó? Bẫy cá nhân hóa trong các hệ thống AI</h1>
+<p>Mỗi phiên bản thực tế của chúng ta đang thay đổi với AI. Điều này có thể xói mòn khả năng thống nhất về những sự thật cơ bản hoặc vượt qua những thách thức chung.</p>
+<p>AI thể hiện sự giảm tải nhận thức lớn nhất trong <a href="https://venturebeat.com/ai/the-human-harbor-navigating-identity-and-meaning-in-the-ai-age/">lịch sử nhân loại</a>. Chúng ta đã từng giảm tải trí nhớ cho việc viết, số học cho máy tính và điều hướng cho GPS. Giờ đây, chúng ta bắt đầu giảm tải khả năng phán đoán, tổng hợp và thậm chí tạo ý nghĩa cho các hệ thống nói ngôn ngữ của chúng ta, học thói quen của chúng ta và điều chỉnh sự thật của chúng ta.</p>
+<p>Các hệ thống AI ngày càng trở nên điêu luyện trong việc nhận ra sở thích, thành kiến và thậm chí cả những thói quen xấu của chúng ta. Giống như những người hầu chu đáo trong một trường hợp hoặc những kẻ thao túng tinh vi trong một trường hợp khác, chúng điều chỉnh phản ứng của mình để làm hài lòng, thuyết phục, hỗ trợ hoặc đơn giản là giữ sự chú ý của chúng ta.</p>
+<!-- raw HTML omitted -->
+<p>Mặc dù những ảnh hưởng tức thời có vẻ vô hại, nhưng trong sự điều chỉnh thầm lặng và vô hình này nằm một sự thay đổi sâu sắc: Phiên bản thực tế mà mỗi chúng ta nhận được ngày càng được điều chỉnh riêng biệt hơn. Thông qua quá trình này, theo thời gian, mỗi người ngày càng trở thành hòn đảo của riêng mình. Sự khác biệt này có thể đe dọa tính mạch lạc và ổn định của chính xã hội, xói mòn khả năng thống nhất về những sự thật cơ bản hoặc vượt qua những thách thức chung.</p>
+<p>Cá nhân hóa AI không chỉ phục vụ nhu cầu của chúng ta; nó bắt đầu định hình lại chúng. Kết quả của việc định hình lại này là một loại trôi dạt tri thức. Mỗi người bắt đầu di chuyển, từng chút một, ra khỏi nền tảng chung của kiến thức, câu chuyện và sự thật được chia sẻ, và tiến xa hơn vào thực tế của riêng họ.</p>
+<p>Đây không chỉ đơn thuần là vấn đề về các nguồn cấp tin tức khác nhau. Đó là sự khác biệt chậm chạp về thực tế đạo đức, chính trị và giữa các cá nhân. Bằng cách này, chúng ta có thể đang chứng kiến ​​sự tháo gỡ sự hiểu biết chung. Đó là một hậu quả không mong muốn, nhưng lại vô cùng quan trọng chính xác vì nó không lường trước được. Nhưng sự phân mảnh này, mặc dù hiện nay được AI đẩy nhanh, đã bắt đầu từ rất lâu trước khi các thuật toán định hình nguồn cấp dữ liệu của chúng ta.</p>
+<h2 id="sự-tháo-gỡ">Sự tháo gỡ</h2>
+<p>Sự tháo gỡ này không bắt đầu với AI. Như David Brooks đã suy ngẫm trên <em>The Atlantic</em>, dựa trên công trình của nhà triết học Alasdair MacIntyre, xã hội của chúng ta đã trôi dạt khỏi các khuôn khổ đạo đức và tri thức chung trong nhiều thế kỷ. Kể từ thời Khai sáng, chúng ta đã dần thay thế các vai trò kế thừa, các câu chuyện cộng đồng và các truyền thống đạo đức được chia sẻ bằng quyền tự chủ cá nhân và sở thích cá nhân.</p>
+<p>Những gì bắt đầu như sự giải phóng khỏi các hệ thống niềm tin áp đặt, theo thời gian, đã xói mòn chính những cấu trúc từng gắn kết chúng ta với mục đích chung và ý nghĩa cá nhân. AI không tạo ra sự phân mảnh này. Nhưng nó đang mang lại hình thức và tốc độ mới cho nó, tùy chỉnh không chỉ những gì chúng ta thấy mà còn cả cách chúng ta giải thích và tin tưởng.</p>
+<p>Nó không giống như câu chuyện Kinh thánh về Babel. Một nhân loại thống nhất đã từng có chung một ngôn ngữ duy nhất, chỉ để bị chia cắt, bối rối và phân tán bởi một hành động khiến sự hiểu biết lẫn nhau trở nên gần như không thể. Ngày nay, chúng ta không xây dựng một tòa tháp bằng đá. Chúng ta đang xây dựng một tòa tháp bằng chính ngôn ngữ. Một lần nữa, chúng ta có nguy cơ sụp đổ.</p>
+<h2 id="mối-liên-kết-giữa-người-và-máy">Mối liên kết giữa người và máy</h2>
+<p>Ban đầu, cá nhân hóa là một cách để cải thiện &ldquo;độ dính&rdquo; bằng cách giữ cho người dùng tương tác lâu hơn, quay lại thường xuyên hơn và tương tác sâu hơn với một trang web hoặc dịch vụ. Các công cụ đề xuất, quảng cáo được điều chỉnh và nguồn cấp dữ liệu được tuyển chọn đều được thiết kế để giữ sự chú ý của chúng ta lâu hơn một chút, có lẽ để giải trí nhưng thường là để thúc đẩy chúng ta mua một sản phẩm. Nhưng theo thời gian, mục tiêu đã được mở rộng. Cá nhân hóa không còn chỉ là những gì giữ chúng ta lại. Đó là những gì nó biết về mỗi người chúng ta, đồ thị động về sở thích, niềm tin và hành vi của chúng ta trở nên tinh tế hơn theo mỗi tương tác.</p>
+<p><a href="https://venturebeat.com/ai/5-key-questions-your-developers-should-be-asking-about-mcp/">Các hệ thống AI</a> ngày nay không chỉ dự đoán sở thích của chúng ta. Họ nhắm đến việc tạo ra một mối liên kết thông qua các tương tác và phản hồi được cá nhân hóa cao, tạo ra cảm giác rằng hệ thống AI hiểu và quan tâm đến người dùng và hỗ trợ sự độc đáo của họ. Giọng điệu của chatbot, tốc độ trả lời và giá trị cảm xúc của một đề xuất được hiệu chỉnh không chỉ để đạt hiệu quả mà còn để cộng hưởng, hướng tới một kỷ nguyên hữu ích hơn của công nghệ. Không có gì ngạc nhiên khi một số người thậm chí đã yêu và <a href="https://www.theguardian.com/tv-and-radio/2025/jul/12/i-felt-pure-unconditional-love-the-people-who-marry-their-ai-chatbots">kết hôn với bot của họ</a>.</p>
+<p>Máy thích ứng không chỉ với những gì chúng ta nhấp vào, mà còn với những gì chúng ta dường như là. Nó phản ánh chúng ta trở lại chính chúng ta theo những cách cảm thấy thân mật, thậm chí là đồng cảm. Một bài báo nghiên cứu gần đây được trích dẫn trên <em>Nature</em> gọi đây là &ldquo;sự liên kết về mặt xã hội&rdquo;, quá trình mà một hệ thống AI tham gia vào một hệ sinh thái xã hội và tâm lý được đồng sáng tạo, nơi sở thích và nhận thức phát triển thông qua ảnh hưởng lẫn nhau.</p>
+<p>Đây không phải là một sự phát triển trung lập. Khi mọi tương tác đều được điều chỉnh để tâng bốc hoặc khẳng định, khi các hệ thống phản ánh chúng ta quá tốt, chúng làm mờ ranh giới giữa những gì cộng hưởng và những gì là thật. Chúng ta không chỉ ở lại nền tảng lâu hơn; chúng ta đang hình thành một mối quan hệ. Chúng ta đang từ từ và có lẽ không thể lay chuyển hợp nhất với một phiên bản thực tế do AI làm trung gian, một phiên bản ngày càng được định hình bởi các quyết định vô hình về những gì chúng ta nên tin, muốn hoặc tin tưởng.</p>
+<p>Quá trình này không phải là khoa học viễn tưởng; kiến ​​trúc của nó được xây dựng trên sự chú ý, học tăng cường với phản hồi của con người (RLHF) và các công cụ cá nhân hóa. Nó cũng đang xảy ra mà nhiều người trong chúng ta - có lẽ là hầu hết chúng ta - thậm chí không biết. Trong quá trình này, chúng ta có được &ldquo;bạn bè&rdquo; AI, nhưng với giá nào? Chúng ta mất gì, đặc biệt là về ý chí tự do và tác nhân?</p>
+<p>Tác giả và nhà bình luận tài chính Kyla Scanlon đã nói trên podcast của Ezra Klein về việc sự dễ dàng không ma sát của thế giới kỹ thuật số có thể phải trả giá bằng ý nghĩa. Như cô ấy đã nói: &ldquo;Khi mọi thứ quá dễ dàng, thật khó để tìm thấy ý nghĩa trong đó&hellip; Nếu bạn có thể nằm dài, xem màn hình trên chiếc ghế nhỏ của mình và được giao đồ uống sinh tố đến cho bạn - thật khó để tìm thấy ý nghĩa trong kiểu <a href="https://www.imdb.com/title/tt0910970/">WALL-E</a> như vậy vì mọi thứ đều hơi quá đơn giản.&rdquo;</p>
+<h2 id="cá-nhân-hóa-sự-thật">Cá nhân hóa sự thật</h2>
+<p>Khi <a href="https://venturebeat.com/ai/building-voice-ai-that-listens-to-everyone-transfer-learning-and-synthetic-speech-in-action/">các hệ thống AI</a> phản hồi chúng ta với sự trôi chảy ngày càng lớn, chúng cũng tiến tới tính chọn lọc ngày càng tăng. Hai người dùng đặt cùng một câu hỏi ngày nay có thể nhận được các câu trả lời tương tự, phần lớn được phân biệt bởi bản chất xác suất của AI tạo sinh. Tuy nhiên, đây chỉ là sự khởi đầu. Các hệ thống AI mới nổi được thiết kế rõ ràng để điều chỉnh phản ứng của chúng theo các mẫu cá nhân, dần dần điều chỉnh câu trả lời, giọng điệu và thậm chí cả kết luận để cộng hưởng mạnh mẽ nhất với mỗi người dùng.</p>
+<p>Cá nhân hóa không vốn dĩ là thao túng. Nhưng nó trở nên rủi ro khi nó vô hình, không thể giải trình hoặc được thiết kế nhiều hơn để thuyết phục hơn là cung cấp thông tin. Trong những trường hợp như vậy, nó không chỉ phản ánh chúng ta là ai; nó điều khiển cách chúng ta giải thích thế giới xung quanh.</p>
+<p>Như Trung tâm Nghiên cứu về Các Mô hình Nền tảng của Stanford đã lưu ý trong <a href="https://crfm.stanford.edu/assets/report.pdf">chỉ số minh bạch</a> năm 2024 của mình, ít mô hình hàng đầu tiết lộ liệu đầu ra của chúng có khác nhau theo danh tính, lịch sử hoặc nhân khẩu học của người dùng hay không, mặc dù giàn giáo kỹ thuật cho cá nhân hóa như vậy ngày càng được thiết lập và chỉ mới bắt đầu được xem xét. Mặc dù chưa được thực hiện đầy đủ trên các nền tảng công cộng, nhưng tiềm năng này để định hình phản hồi dựa trên hồ sơ người dùng suy luận, dẫn đến các thế giới thông tin ngày càng được điều chỉnh, thể hiện một sự thay đổi sâu sắc đã được tạo mẫu và tích cực theo đuổi bởi các công ty hàng đầu.</p>
+<p>Cá nhân hóa này có thể có lợi và chắc chắn đó là hy vọng của những người xây dựng các hệ thống này. Dạy kèm được cá nhân hóa cho thấy hứa hẹn trong việc giúp người học tiến bộ theo tốc độ của riêng họ. Các ứng dụng sức khỏe tâm thần ngày càng điều chỉnh các phản hồi để hỗ trợ nhu cầu cá nhân và các công cụ trợ năng điều chỉnh nội dung để đáp ứng một loạt các khác biệt về nhận thức và cảm giác. Đây là những lợi ích thực sự.</p>
+<p>Nhưng nếu các phương pháp thích ứng tương tự trở nên phổ biến trên các nền tảng thông tin, giải trí và liên lạc, thì một sự thay đổi sâu sắc hơn, đáng lo ngại hơn đang đến gần: Một sự chuyển đổi từ sự hiểu biết chung sang thực tế cá nhân, được điều chỉnh. Khi bản thân sự thật bắt đầu thích ứng với người quan sát, nó trở nên mong manh và ngày càng có thể hoán đổi cho nhau. Thay vì những bất đồng chủ yếu dựa trên các giá trị hoặc cách giải thích khác nhau, chúng ta có thể sớm thấy mình phải vật lộn chỉ để sống trong cùng một thế giới thực tế.</p>
+<h2 id="thực-tế-được-hòa-giải">Thực tế được hòa giải</h2>
+<p>Tất nhiên, sự thật luôn được hòa giải. Trong các thời đại trước, nó đã thông qua bàn tay của các giáo sĩ, học giả, nhà xuất bản và người dẫn chương trình tin tức buổi tối, những người đóng vai trò là người gác cổng, định hình sự hiểu biết của công chúng thông qua lăng kính thể chế. Những nhân vật này chắc chắn không thoát khỏi thành kiến ​​hoặc chương trình nghị sự, nhưng họ hoạt động trong các khuôn khổ được chia sẻ rộng rãi.</p>
+<p>Mô hình mới nổi ngày nay hứa hẹn một điều gì đó khác biệt về chất: sự thật do AI làm trung gian thông qua suy luận được cá nhân hóa, định hình, lọc và trình bày thông tin, định hình những gì người dùng tin tưởng. Nhưng không giống như những người hòa giải trong quá khứ, những người, mặc dù có những thiếu sót, nhưng hoạt động trong các tổ chức có thể nhìn thấy công khai, những người phân xử mới này là thương mại mờ ám, không được bầu và liên tục thích ứng, thường là không tiết lộ. Thành kiến ​​của họ không phải là giáo lý mà được mã hóa thông qua dữ liệu đào tạo, kiến ​​trúc và các ưu đãi của nhà phát triển không được kiểm tra.</p>
+<p>Sự thay đổi là sâu sắc, từ một câu chuyện chung được lọc thông qua <a href="https://venturebeat.com/ai/like-humans-ai-is-forcing-institutions-to-rethink-their-purpose/">các tổ chức có thẩm quyền</a> đến các câu chuyện có khả năng bị phá vỡ phản ánh một cơ sở hạ tầng hiểu biết mới, được điều chỉnh bởi các thuật toán theo sở thích, thói quen và niềm tin suy luận của mỗi người dùng. Nếu Babel đại diện cho sự sụp đổ của một ngôn ngữ được chia sẻ, thì bây giờ chúng ta có thể đứng trước ngưỡng cửa của sự sụp đổ của sự hòa giải chung.</p>
+<p>Nếu cá nhân hóa là chất nền tri thức mới, thì cơ sở hạ tầng sự thật có thể trông như thế nào trong một thế giới không có người hòa giải cố định? Một khả năng là tạo ra các quỹ tín thác công cộng AI, được lấy cảm hứng từ một <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2675270">đề xuất</a> từ học giả luật Jack Balkin, người lập luận rằng các thực thể xử lý dữ liệu người dùng và định hình nhận thức nên tuân theo các tiêu chuẩn ủy thác về lòng trung thành, sự quan tâm và minh bạch.</p>
+<p>Các mô hình AI có thể được quản lý bởi các hội đồng minh bạch, được đào tạo trên các tập dữ liệu do nhà nước tài trợ và được yêu cầu hiển thị các bước lý luận, quan điểm thay thế hoặc mức độ tin cậy. Những &ldquo;người ủy thác thông tin&rdquo; này sẽ không loại bỏ thành kiến, nhưng họ có thể neo giữ niềm tin vào quá trình hơn là hoàn toàn vào cá nhân hóa. Người xây dựng có thể bắt đầu bằng cách áp dụng các &ldquo;hiến pháp&rdquo; minh bạch xác định rõ ràng hành vi của mô hình và bằng cách cung cấp các giải thích về chuỗi lý luận cho phép người dùng xem cách các kết luận được định hình. Đây không phải là những viên đạn bạc, nhưng chúng là những công cụ giúp giữ cho cơ quan tri thức có trách nhiệm và có thể theo dõi được.</p>
+<p>Những người xây dựng AI phải đối mặt với một bước ngoặt chiến lược và dân sự. Họ không chỉ tối ưu hóa hiệu suất; họ cũng đang đối mặt với rủi ro rằng tối ưu hóa được cá nhân hóa có thể làm phân mảnh thực tế được chia sẻ. Điều này đòi hỏi một loại trách nhiệm mới đối với người dùng: Thiết kế các hệ thống tôn trọng không chỉ sở thích của họ mà còn cả vai trò của họ như những người học hỏi và tin tưởng.</p>
+<h2 id="tháo-gỡ-và-dệt-lại">Tháo gỡ và dệt lại</h2>
+<p>Những gì chúng ta có thể mất không chỉ đơn giản là khái niệm về sự thật, mà còn là con đường mà qua đó chúng ta từng nhận ra nó. Trong quá khứ, sự thật được hòa giải - mặc dù không hoàn hảo và thiên vị - vẫn được neo giữ trong phán đoán của con người và thường chỉ một hoặc hai lớp cách xa trải nghiệm sống của những người khác mà bạn biết hoặc ít nhất có thể liên hệ được.</p>
+<p>Ngày nay, sự hòa giải đó là mờ ám và được thúc đẩy bởi logic thuật toán. Và, mặc dù tác nhân của con người từ lâu đã trượt dốc, nhưng giờ đây chúng ta có nguy cơ phải đối mặt với điều gì đó sâu sắc hơn, sự mất mát của chiếc la bàn đã từng cho chúng ta biết khi chúng ta đi sai hướng. Nguy hiểm không chỉ là chúng ta sẽ tin những gì máy nói với chúng ta. Đó là chúng ta sẽ quên cách chúng ta từng tự mình khám phá ra sự thật. Những gì chúng ta có nguy cơ mất không chỉ là tính mạch lạc, mà là ý chí tìm kiếm nó. Và với điều đó, một mất mát sâu sắc hơn: Những thói quen phân biệt, bất đồng và cân nhắc mà trước đây đã gắn kết các xã hội đa nguyên lại với nhau.</p>
+<p>Nếu Babel đánh dấu sự tan vỡ của một ngôn ngữ chung, thì thời điểm của chúng ta có nguy cơ làm phai nhạt sự thật được chia sẻ. Tuy nhiên, có những cách để làm chậm hoặc thậm chí chống lại sự trôi dạt. Một mô hình giải thích lý luận của nó hoặc tiết lộ ranh giới thiết kế của nó có thể làm được nhiều hơn là làm rõ đầu ra. Nó có thể giúp khôi phục các điều kiện cho cuộc điều tra chung. Đây không phải là một giải pháp kỹ thuật; đó là một lập trường văn hóa. Xét cho cùng, sự thật luôn phụ thuộc không chỉ vào câu trả lời, mà còn vào cách chúng ta cùng nhau đạt được chúng.</p>
+<!-- raw HTML omitted -->
+<pre><code>						&lt;div class=&quot;image-container&quot;&gt;
+				&lt;img src=&quot;https://venturebeat.com/wp-content/themes/vb-news/brand/img/vb-daily-phone.png&quot; alt=&quot;&quot;&gt;
+			&lt;/div&gt;
+		
+	&lt;/div&gt;
+</code></pre>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/weaving-reality-or-warping-it-the-personalization-trap-in-ai-systems/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/21-th%C3%A1ng-7-n%C4%83m-2025/">21 Tháng 7 Năm 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-21/a885c5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/cfr0z3n_vibrant_expressionist_blocky_messy_simple_shapes_minima_63d1b56e-29a6-4cf4-a7a8-58e9fbfbe030.png?w=700&amp;h=350&amp;crop=1" alt="5 câu hỏi quan trọng mà nhà phát triển của bạn nên hỏi về MCP" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-21T00:00:00&#43;00:00">Jul 21, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">5 câu hỏi quan trọng mà nhà phát triển của bạn nên hỏi về MCP</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết thảo luận về 5 câu hỏi quan trọng mà các nhà phát triển nên hỏi về MCP (Marketplace Connect Platform) để hiểu rõ hơn về nền tảng này và cách tận dụng nó một cách hiệu quả.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-19/d87067/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/hero-image.jpg?w=624&amp;h=340&amp;crop=1" alt="Làm thế nào đội đỏ của OpenAI biến tác nhân ChatGPT thành một pháo đài AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-19T00:00:00&#43;00:00">Jul 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Làm thế nào đội đỏ của OpenAI biến tác nhân ChatGPT thành một pháo đài AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Đội đỏ của OpenAI có kế hoạch biến tác nhân ChatGPT thành một pháo đài AI.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-21/a885c5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/cfr0z3n_vibrant_expressionist_blocky_messy_simple_shapes_minima_63d1b56e-29a6-4cf4-a7a8-58e9fbfbe030.png?w=700&amp;h=350&amp;crop=1" alt="5 câu hỏi quan trọng mà nhà phát triển của bạn nên hỏi về MCP" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">5 câu hỏi quan trọng mà nhà phát triển của bạn nên hỏi về MCP</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-21/ad49b7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.comKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh%20minh%20h%e1%bb%8da" alt="Anthropic ký kết Quy tắc ứng xử của EU" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic ký kết Quy tắc ứng xử của EU</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-21/23831/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/My-Truth-Weaving-Cover-Image.jpg?w=700&amp;h=350&amp;crop=1" alt="Dệt nên thực tế hay bóp méo nó? Cái bẫy cá nhân hóa trong các hệ thống AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dệt nên thực tế hay bóp méo nó? Cái bẫy cá nhân hóa trong các hệ thống AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-20/5ee102/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/virtual-cell-challenge/thumbnail.png" alt="Thử thách ô ảo Arc- Sơ cấp" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thử thách ô ảo Arc- Sơ cấp</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-19/39aba8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/consilium-multi-llm/thumbnail.png" alt="Consilium- Khi Nhiều LLM Cộng Tác" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Consilium- Khi Nhiều LLM Cộng Tác</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
