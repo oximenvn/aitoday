@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sự cố mạng lớn của Crowdstrike sau 1 năm- những bài học mà doanh nghiệp có thể học để cải thiện bảo mật | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết thảo luận về những bài học mà các doanh nghiệp có thể học hỏi từ sự cố mạng lớn của Crowdstrike để cải thiện bảo mật.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Sự cố mạng lớn của Crowdstrike sau 1 năm- những bài học mà doanh nghiệp có thể học để cải thiện bảo mật</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết thảo luận về những bài học mà các doanh nghiệp có thể học hỏi từ sự cố mạng lớn của Crowdstrike để cải thiện bảo mật. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-22T00:00:00&#43;00:00">July 22, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://venturebeat.com/wp-content/uploads/2025/07/OUTAGE.png?w=700&amp;h=350&amp;crop=1" alt="Sự cố mạng lớn của Crowdstrike sau 1 năm- những bài học mà doanh nghiệp có thể học để cải thiện bảo mật">
+        <figcaption class="text-center italic text-xs">Bài viết thảo luận về những bài học mà các doanh nghiệp có thể học hỏi từ sự cố mạng lớn của Crowdstrike để cải thiện bảo mật.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="sự-cố-mạng-lớn-của-crowdstrike-một-năm-sau-các-bài-học-mà-doanh-nghiệp-có-thể-học-để-cải-thiện-bảo-mật">Sự cố mạng lớn của Crowdstrike một năm sau: Các bài học mà doanh nghiệp có thể học để cải thiện bảo mật</h1>
+<p><em>Bạn muốn những thông tin chi tiết thông minh hơn trong hộp thư đến của mình? Đăng ký nhận bản tin hàng tuần của chúng tôi để chỉ nhận những gì quan trọng đối với các nhà lãnh đạo AI, dữ liệu và bảo mật doanh nghiệp.</em> <em><a href="https://venturebeat.com/newsletters/">Đăng ký ngay</a></em></p>
+<p>Như chúng tôi đã viết trong <a href="https://venturebeat.com/ai/crowdstrikes-it-outage-makes-it-clear-why-cyber-resilience-matters/">phân tích ban đầu về sự cố của CrowdStrike</a>, sự cố ngày 19 tháng 7 năm 2024 là một lời nhắc nhở rõ ràng về tầm quan trọng của khả năng phục hồi trên không gian mạng. Giờ đây, một năm sau, cả <a href="https://www.crowdstrike.com/en-us/">CrowdStrike</a> và ngành công nghiệp đã trải qua sự chuyển đổi đáng kể, với chất xúc tác được thúc đẩy bởi 78 phút đã thay đổi mọi thứ.</p>
+<p>&ldquo;Kỷ niệm một năm ngày 19 tháng 7 đánh dấu một khoảnh khắc tác động sâu sắc đến khách hàng và đối tác của chúng tôi và trở thành một trong những chương xác định nhất trong lịch sử của CrowdStrike,&rdquo; Chủ tịch của CrowdStrike, Mike Sentonas đã viết trong một <a href="https://www.crowdstrike.com/en-us/blog/reflecting-on-building-resilience-by-design/">bài đăng trên blog</a> mô tả chi tiết hành trình kéo dài một năm của công ty hướng tới khả năng phục hồi nâng cao.</p>
+<!-- raw HTML omitted -->
+<h2 id="sự-cố-làm-rung-chuyển-cơ-sở-hạ-tầng-toàn-cầu"><strong>Sự cố làm rung chuyển cơ sở hạ tầng toàn cầu</strong></h2>
+<p>Các con số vẫn còn đáng lo ngại: Bản cập nhật Channel File 291 bị lỗi, được triển khai lúc 04:09 UTC và được hoàn nguyên chỉ 78 phút sau đó, đã làm hỏng 8,5 triệu hệ thống Windows trên toàn thế giới. Các ước tính bảo hiểm cho thấy thiệt hại lên tới 5,4 tỷ đô la chỉ tính riêng cho 500 công ty hàng đầu của Hoa Kỳ, với ngành hàng không bị ảnh hưởng đặc biệt nghiêm trọng với 5.078 chuyến bay bị hủy trên toàn cầu.</p>
+<p>Steffen Schreier, phó chủ tịch cấp cao về sản phẩm và danh mục đầu tư tại <a href="https://www.telesign.com/">Telesign</a>, một công ty toàn cầu của Proximus, đã nắm bắt lý do tại sao sự cố này vẫn gây tiếng vang một năm sau đó: &ldquo;Một năm sau, sự cố của CrowdStrike không chỉ được nhớ đến, mà còn không thể quên. Một bản cập nhật phần mềm thông thường, được triển khai mà không có ý định xấu và được thu hồi chỉ trong 78 phút, vẫn quản lý để hạ gục cơ sở hạ tầng quan trọng trên toàn thế giới. Không có vi phạm. Không có cuộc tấn công. Chỉ một lỗi nội bộ với hậu quả toàn cầu.&rdquo;</p>
+<p>Phân tích kỹ thuật của ông tiết lộ những sự thật khó chịu về cơ sở hạ tầng hiện đại: &ldquo;Đó là lời cảnh tỉnh thực sự: ngay cả các công ty có các hoạt động mạnh mẽ, triển khai theo giai đoạn, khôi phục nhanh chóng, cũng không thể vượt qua các rủi ro do chính cơ sở hạ tầng cho phép phân phối nhanh chóng, gốc đám mây gây ra. Vận tốc tương tự cho phép chúng ta vận chuyển nhanh hơn cũng làm tăng tốc bán kính nổ khi có điều gì đó không ổn.&rdquo;</p>
+<h2 id="hiểu-những-gì-đã-xảy-ra"><strong>Hiểu những gì đã xảy ra</strong></h2>
+<p>Phân tích nguyên nhân gốc rễ của CrowdStrike đã tiết lộ một loạt các lỗi kỹ thuật: sự không phù hợp giữa các trường đầu vào trong Loại mẫu IPC của họ, thiếu kiểm tra giới hạn mảng thời gian chạy và lỗi logic trong Trình xác thực nội dung của họ. Đây không phải là trường hợp cá biệt mà là những lỗ hổng kiểm soát chất lượng cơ bản.</p>
+<p>Merritt Baer, ​​Giám đốc an ninh sắp tới tại <a href="https://www.enkryptai.com/">Enkrypt AI</a> và cố vấn cho các công ty bao gồm Andesite, cung cấp bối cảnh quan trọng: &ldquo;Sự cố của CrowdStrike thật đáng xấu hổ; nó nhắc nhở chúng ta rằng ngay cả những cửa hàng thực sự lớn, trưởng thành đôi khi cũng mắc sai lầm trong quy trình. Kết quả cụ thể này là một sự trùng hợp ở một mức độ nào đó, nhưng nó lẽ ra không bao giờ có thể xảy ra. Nó chứng tỏ rằng họ đã không thiết lập một số giao thức CI/CD cơ bản.&rdquo;</p>
+<p>Đánh giá của cô ấy rất trực tiếp nhưng công bằng: &ldquo;Nếu CrowdStrike triển khai bản cập nhật trong sandbox và chỉ gửi nó vào sản xuất theo gia số như là cách làm tốt nhất, thì nó sẽ ít thảm khốc hơn, nếu có.&rdquo;</p>
+<p>Tuy nhiên, Baer cũng nhận ra phản ứng của CrowdStrike: &ldquo;Chiến lược truyền thông của CrowdStrike đã thể hiện quyền sở hữu điều hành tốt. Các giám đốc điều hành phải luôn chịu trách nhiệm—đó không phải là lỗi của thực tập sinh. Nếu người vận hành cấp dưới của bạn có thể làm sai, thì đó là lỗi của tôi. Đó là lỗi của chúng ta với tư cách là một công ty.&rdquo;</p>
+<h2 id="trách-nhiệm-giải-trình-của-lãnh-đạo"><strong>Trách nhiệm giải trình của lãnh đạo</strong></h2>
+<p>George Kurtz, người sáng lập và Giám đốc điều hành của CrowdStrike, đã minh họa nguyên tắc sở hữu này. Trong một <a href="https://www.linkedin.com/posts/georgekurtz_one-year-ago-we-faced-a-moment-that-tested-activity-7350608295700684804-jrOH">bài đăng trên LinkedIn</a> phản ánh về ngày kỷ niệm, Kurtz đã viết: &ldquo;Một năm trước, chúng tôi đã đối mặt với một khoảnh khắc thử thách mọi thứ: công nghệ, hoạt động và sự tin tưởng mà những người khác đã đặt vào chúng tôi. Với tư cách là người sáng lập và Giám đốc điều hành, tôi đã tự mình chịu trách nhiệm đó. Tôi luôn có và sẽ luôn như vậy.&rdquo;</p>
+<p>Góc nhìn của ông tiết lộ cách công ty chuyển cuộc khủng hoảng thành sự chuyển đổi: &ldquo;Điều xác định chúng tôi không phải là khoảnh khắc đó; mà là mọi thứ diễn ra sau đó. Ngay từ đầu, trọng tâm của chúng tôi đã rõ ràng: xây dựng một CrowdStrike thậm chí còn mạnh mẽ hơn, dựa trên khả năng phục hồi, tính minh bạch và thực thi không ngừng. Ngôi sao phương Bắc của chúng tôi luôn là khách hàng của chúng tôi.&rdquo;</p>
+<h2 id="crowdstrike-dồn-hết-sức-vào-một-khuôn-khổ-resilient-by-design-mới"><strong>CrowdStrike dồn hết sức vào một khuôn khổ Resilient by Design mới</strong></h2>
+<p>Phản ứng của CrowdStrike tập trung vào khuôn khổ Resilient by Design của họ, mà Sentonas mô tả là vượt ra ngoài &ldquo;các bản sửa lỗi nhanh chóng hoặc các cải tiến trên bề mặt.&rdquo; Ba trụ cột của khuôn khổ, bao gồm các thành phần Nền tảng, Thích ứng và Liên tục, đại diện cho một cách suy nghĩ toàn diện về cách các nền tảng bảo mật nên hoạt động.</p>
+<p>Việc triển khai chính bao gồm:</p>
+<ul>
+<li><strong>Tự phục hồi cảm biến</strong>: Tự động phát hiện các vòng lặp sự cố và chuyển sang chế độ an toàn</li>
+<li><strong>Hệ thống phân phối nội dung mới</strong>: Triển khai dựa trên vòng với các biện pháp bảo vệ tự động</li>
+<li><strong>Kiểm soát khách hàng nâng cao</strong>: Quản lý cập nhật chi tiết và khả năng ghim nội dung</li>
+<li><strong>Trung tâm điều hành kỹ thuật số</strong>: Cơ sở được xây dựng có mục đích để giám sát cơ sở hạ tầng toàn cầu</li>
+<li><strong>Falcon Super Lab</strong>: Thử nghiệm hàng ngàn tổ hợp OS, kernel và phần cứng</li>
+</ul>
+<p>&ldquo;Chúng tôi không chỉ thêm một vài tùy chọn cấu hình nội dung,&rdquo; Sentonas nhấn mạnh trong blog của mình. &ldquo;Chúng tôi đã suy nghĩ lại một cách cơ bản về cách khách hàng có thể tương tác và kiểm soát các nền tảng bảo mật doanh nghiệp.&rdquo;</p>
+<h2 id="cuộc-thức-tỉnh-chuỗi-cung-ứng-trên-toàn-ngành"><strong>Cuộc thức tỉnh chuỗi cung ứng trên toàn ngành</strong></h2>
+<p>Sự cố này đã buộc phải đánh giá rộng hơn về sự phụ thuộc vào nhà cung cấp. Baer trình bày bài học một cách rõ ràng: &ldquo;Một bài học thực tế lớn là các nhà cung cấp của bạn là một phần của chuỗi cung ứng của bạn. Vì vậy, với tư cách là CISO, bạn nên kiểm tra rủi ro để nhận biết nó, nhưng nói một cách đơn giản, vấn đề này thuộc về phía nhà cung cấp của mô hình trách nhiệm chung. Khách hàng sẽ không kiểm soát được nó.&rdquo;</p>
+<p>Sự cố của CrowdStrike đã thay đổi vĩnh viễn việc đánh giá nhà cung cấp: &ldquo;Tôi thấy các CISO và CSO hiệu quả rút ra bài học từ điều này, xung quanh các công ty mà họ muốn làm việc cùng và bảo mật mà họ nhận được khi kinh doanh cùng nhau. Tôi sẽ chỉ làm việc với những công ty mà tôi tôn trọng từ góc độ tư thế an ninh. Họ không cần phải hoàn hảo, nhưng tôi muốn biết rằng họ đang thực hiện đúng quy trình, theo thời gian.&rdquo;</p>
+<p>Sam Curry, CISO tại <a href="https://www.zscaler.com/">Zscaler,</a> cho biết thêm, &ldquo;Những gì đã xảy ra với CrowdStrike là không may, nhưng nó có thể đã xảy ra với nhiều người, vì vậy có lẽ chúng ta không đổ lỗi cho họ với lợi ích của việc nhìn lại. Điều tôi sẽ nói là thế giới đã sử dụng điều này để tập trung lại và đã đặt nhiều sự chú ý hơn vào khả năng phục hồi, và đó là một chiến thắng cho tất cả mọi người, vì mục tiêu chung của chúng ta là làm cho internet an toàn hơn và bảo mật hơn cho tất cả.&rdquo;</p>
+<h2 id="nhấn-mạnh-sự-cần-thiết-của-một-mô-hình-bảo-mật-mới"><strong>Nhấn mạnh sự cần thiết của một mô hình bảo mật mới</strong></h2>
+<p>Phân tích của Schreier mở rộng ra ngoài CrowdStrike đến kiến trúc bảo mật cơ bản: &ldquo;Tốc độ ở quy mô phải trả giá. Mọi bản cập nhật thông thường hiện mang gánh nặng của sự cố hệ thống tiềm ẩn. Điều đó có nghĩa là nhiều hơn là kiểm tra, nó có nghĩa là các biện pháp bảo vệ được xây dựng để có khả năng phục hồi: các lớp phòng thủ, đường dẫn khôi phục tự động và các biện pháp an toàn thất bại giả định rằng đo từ xa có thể biến mất chính xác khi bạn cần nó nhất.&rdquo;</p>
+<p>Thông tin chi tiết quan trọng nhất của ông đề cập đến một kịch bản mà nhiều người chưa xem xét: &ldquo;Và khi đo từ xa tắt, bạn cần các biện pháp an toàn thất bại giả định rằng khả năng hiển thị có thể biến mất.&rdquo;</p>
+<p>Điều này thể hiện một sự thay đổi mô hình. Như Schreier kết luận: &ldquo;Bởi vì bảo mật ngày nay không chỉ là ngăn chặn kẻ tấn công—mà còn là đảm bảo tuyệt đối rằng hệ thống của riêng bạn không bao giờ trở thành điểm thất bại duy nhất.&rdquo;</p>
+<h2 id="hướng-tới-tương-lai-ai-và-những-thách-thức-trong-tương-lai"><strong>Hướng tới tương lai: AI và những thách thức trong tương lai</strong></h2>
+<p>Baer thấy sự phát triển tiếp theo đã xuất hiện: &ldquo;Kể từ khi đám mây cho phép chúng tôi xây dựng bằng cách sử dụng cơ sở hạ tầng làm mã, nhưng đặc biệt là bây giờ AI đang cho phép chúng tôi thực hiện bảo mật khác nhau, tôi đang xem xét cách các quyết định cơ sở hạ tầng được phân lớp với quyền tự chủ từ con người và AI. Chúng ta có thể và nên phân lớp trên lý luận cũng như giảm thiểu rủi ro hiệu quả cho các quy trình như cập nhật bắt buộc, đặc biệt là ở cấp độ đặc quyền cao.&rdquo;</p>
+<p>Các sáng kiến ​​hướng tới tương lai của CrowdStrike bao gồm:</p>
+<ul>
+<li>Tuyển dụng một Giám đốc khả năng phục hồi báo cáo trực tiếp cho Giám đốc điều hành</li>
+<li>Dự án Ascent, khám phá các khả năng vượt ra ngoài không gian kernel</li>
+<li>Hợp tác với Microsoft trên Nền tảng bảo mật điểm cuối Windows</li>
+<li>Chứng nhận ISO 22301 cho quản lý tính liên tục kinh doanh</li>
+</ul>
+<h2 id="một-hệ-sinh-thái-mạnh-mẽ-hơn"><strong>Một hệ sinh thái mạnh mẽ hơn</strong></h2>
+<p>Một năm sau, sự chuyển đổi là rõ ràng. Kurtz phản ánh: &ldquo;Chúng tôi là một công ty mạnh mẽ hơn ngày hôm nay so với một năm trước. Công việc vẫn tiếp tục. Sứ mệnh vẫn tiếp tục. Và chúng tôi đang tiến lên: mạnh mẽ hơn, thông minh hơn và thậm chí cam kết hơn bao giờ hết.&rdquo;</p>
+<p>Để ghi nhận công lao của mình, Kurtz cũng thừa nhận những người đã sát cánh cùng công ty: &ldquo;Đối với mọi khách hàng đã ở lại với chúng tôi, ngay cả khi điều đó khó khăn, cảm ơn bạn vì sự tin tưởng lâu dài của bạn. Đối với các đối tác đáng kinh ngạc của chúng tôi, những người đã sát cánh cùng chúng tôi và xắn tay áo lên, cảm ơn bạn vì đã là gia đình mở rộng của chúng tôi.&rdquo;</p>
+<p>Di sản của sự cố vượt ra ngoài CrowdStrike. Các tổ chức hiện thực hiện triển khai theo giai đoạn, duy trì khả năng ghi đè thủ công và—quan trọng nhất—lên kế hoạch cho khi chính các công cụ bảo mật có thể bị lỗi. Mối quan hệ với nhà cung cấp được đánh giá với sự chặt chẽ mới, nhận ra rằng trong cơ sở hạ tầng kết nối với nhau của chúng ta, mọi thành phần đều rất quan trọng.</p>
+<p>Như Sentonas thừa nhận: &ldquo;Công việc này chưa hoàn thành và sẽ không bao giờ hoàn thành. Khả năng phục hồi không phải là một cột mốc; đó là một kỷ luật đòi hỏi sự cam kết và phát triển liên tục.&rdquo; Sự cố CrowdStrike ngày 19 tháng 7 năm 2024 sẽ được ghi nhớ không chỉ vì sự gián đoạn mà nó gây ra mà còn vì đã xúc tác một sự phát triển trên toàn ngành hướng tới khả năng phục hồi thực sự.</p>
+<p>Khi đối mặt với thách thức lớn nhất của mình, CrowdStrike và hệ sinh thái bảo mật rộng lớn hơn đã nổi lên với sự hiểu biết sâu sắc hơn: bảo vệ chống lại các mối đe dọa có nghĩa là đảm bảo rằng chính những người bảo vệ không thể gây hại. Bài học đó, được học qua 78 phút khó khăn và một năm chuyển đổi, có thể chứng tỏ là di sản quý giá nhất của sự cố.</p>
+<p><img src="https://venturebeat.com/wp-content/uploads/2025/07/OUTAGE.png?w=750" alt="One Year After CrowdStrike How a 78-Minute Outage Reshaped Enterprise Cybersecurity">
+<em>Được tạo bằng Imagen</em></p>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/security/how-crowdstrikes-78-minute-outage-reshaped-enterprise-cybersecurity/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/22-july-2025/">22 July 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/c67375/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_robot_winning_medal_5be7ef30-62b2-4f25-bd3c-9480201df4b7.webp?w=700&amp;h=350&amp;crop=1" alt="Google DeepMind làm nên lịch sử AI với chiến thắng huy chương vàng tại cuộc thi toán khó khăn nhất thế giới" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-22T00:00:00&#43;00:00">Jul 22, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Google DeepMind làm nên lịch sử AI với chiến thắng huy chương vàng tại cuộc thi toán khó khăn nhất thế giới</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết mô tả Google DeepMind làm nên lịch sử AI với chiến thắng huy chương vàng tại cuộc thi toán khó khăn nhất thế giới.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-21/a885c5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/cfr0z3n_vibrant_expressionist_blocky_messy_simple_shapes_minima_63d1b56e-29a6-4cf4-a7a8-58e9fbfbe030.png?w=700&amp;h=350&amp;crop=1" alt="5 câu hỏi quan trọng mà nhà phát triển của bạn nên hỏi về MCP" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-21T00:00:00&#43;00:00">Jul 21, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">5 câu hỏi quan trọng mà nhà phát triển của bạn nên hỏi về MCP</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết thảo luận về 5 câu hỏi quan trọng mà các nhà phát triển nên hỏi về MCP (Marketplace Connect Platform) để hiểu rõ hơn về nền tảng này và cách tận dụng nó một cách hiệu quả.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/c67375/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_robot_winning_medal_5be7ef30-62b2-4f25-bd3c-9480201df4b7.webp?w=700&amp;h=350&amp;crop=1" alt="Google DeepMind làm nên lịch sử AI với chiến thắng huy chương vàng tại cuộc thi toán khó khăn nhất thế giới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Google DeepMind làm nên lịch sử AI với chiến thắng huy chương vàng tại cuộc thi toán khó khăn nhất thế giới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/162d0b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Sx0q14oEP6Ir8EEX0E4vyJGUFAAhycWqppr5x-2edL8Dz0OwB7ylqPIkRd9TefuQ9TaYxe-1aFMmmdH3aSJeFJ09YrqA16V2V-Dv7M0XJcbLyzZsvWE=w400-h225-n-nu" alt="Khám phá bối cảnh của hình ảnh trực tuyến với Backstory" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Khám phá bối cảnh của hình ảnh trực tuyến với Backstory</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/3a29b4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Tu0v56OLL1Jy30PUoBzm_P8bZiFi3QhmKuxKF95j8ojB0B8uhHmG1QBRhLF09T5VWtIcIilGO-DXKTHDtGX11BB9OOiYr_w1tFs8bWVpqhIi3_isjg=w400-h225-n-nu" alt="Phiên bản nâng cao của Gemini với Deep Think chính thức đạt tiêu chuẩn huy chương vàng tại Olympic Toán học Quốc tế" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Phiên bản nâng cao của Gemini với Deep Think chính thức đạt tiêu chuẩn huy chương vàng tại Olympic Toán học Quốc tế</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/9903a3/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/OUTAGE.png?w=700&amp;h=350&amp;crop=1" alt="Sự cố mạng lớn của Crowdstrike sau 1 năm- những bài học mà doanh nghiệp có thể học để cải thiện bảo mật" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Sự cố mạng lớn của Crowdstrike sau 1 năm- những bài học mà doanh nghiệp có thể học để cải thiện bảo mật</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/aa07d7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Xây dựng AI ở Mỹ</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
