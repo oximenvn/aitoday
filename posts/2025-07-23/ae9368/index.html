@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aeneas biến đổi cách các nhà sử học kết nối quá khứ | AI Today - SkyAI</title>
+
+<meta name="description" content="Chúng tôi đang xuất bản một bài báo trên tạp chí Nature giới thiệu Aeneas, mô hình AI đầu tiên để đưa các dòng chữ cổ vào ngữ cảnh.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Aeneas biến đổi cách các nhà sử học kết nối quá khứ</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Chúng tôi đang xuất bản một bài báo trên tạp chí Nature giới thiệu Aeneas, mô hình AI đầu tiên để đưa các dòng chữ cổ vào ngữ cảnh. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-23T00:00:00&#43;00:00">July 23, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/eMe8bNk3nHJU_unVGcgIUKuPiI-it3NstOK0wixMnl_EwVI5RudgU2W6ktg0RMLsEovZyA8ckoMg2t9_ARQKev-HZhTgFzKTQtU4UC6dr6hektPG=w400-h225-n-nu" alt="Aeneas biến đổi cách các nhà sử học kết nối quá khứ">
+        <figcaption class="text-center italic text-xs">Chúng tôi đang xuất bản một bài báo trên tạp chí Nature giới thiệu Aeneas, mô hình AI đầu tiên để đưa các dòng chữ cổ vào ngữ cảnh.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="aeneas-biến-đổi-cách-các-nhà-sử-học-kết-nối-quá-khứ">Aeneas biến đổi cách các nhà sử học kết nối quá khứ</h1>
+<p>Bài viết ở mục <strong>Nghiên cứu</strong> được xuất bản ngày 23 tháng 7 năm 2025 bởi nhóm Aeneas.</p>
+<p>Viết lách đã có mặt ở khắp mọi nơi trong thế giới La Mã - được khắc trên mọi thứ, từ các tượng đài của đế chế đến các vật dụng hàng ngày. Từ graffiti chính trị, thơ tình và văn bia đến các giao dịch kinh doanh, thiệp mời sinh nhật và bùa phép, các dòng chữ mang đến cho các nhà sử học hiện đại những hiểu biết sâu sắc về sự đa dạng của cuộc sống hàng ngày trên khắp thế giới La Mã.</p>
+<p>Thông thường, những văn bản này bị rời rạc, phong hóa hoặc cố tình làm xấu. Việc khôi phục, xác định niên đại và định vị chúng là gần như không thể nếu không có thông tin theo ngữ cảnh, đặc biệt là khi so sánh các dòng chữ tương tự.</p>
+<p>Hôm nay, chúng tôi đang công bố một bài báo trên tạp chí Nature giới thiệu Aeneas, mô hình trí tuệ nhân tạo (AI) đầu tiên để đưa các dòng chữ cổ vào ngữ cảnh.</p>
+<p>Khi làm việc với các dòng chữ cổ, các nhà sử học theo truyền thống dựa vào chuyên môn và các nguồn tài nguyên chuyên biệt của họ để xác định &ldquo;sự tương đồng&rdquo; - đó là các văn bản có chung sự tương đồng về cách diễn đạt, cú pháp, công thức tiêu chuẩn hoặc nguồn gốc.</p>
+<p>Aeneas đẩy nhanh đáng kể công việc phức tạp và tốn thời gian này. Nó suy luận trên hàng nghìn dòng chữ Latinh, truy xuất các điểm tương đồng về văn bản và ngữ cảnh trong vài giây, cho phép các nhà sử học diễn giải và xây dựng dựa trên những phát hiện của mô hình.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Mô hình của chúng tôi cũng có thể được điều chỉnh cho các ngôn ngữ, chữ viết và phương tiện cổ đại khác, từ giấy cói đến tiền xu, mở rộng khả năng giúp kết nối trên một loạt các bằng chứng lịch sử rộng hơn.</p>
+<p>Chúng tôi đã cùng phát triển Aeneas với Đại học Nottingham, và hợp tác với các nhà nghiên cứu tại các trường Đại học Warwick, Oxford và Đại học Kinh tế và Kinh doanh Athens (AUEB). Công việc này là một phần của nỗ lực rộng lớn hơn để khám phá cách AI tạo sinh có thể giúp các nhà sử học xác định và diễn giải sự tương đồng ở quy mô lớn tốt hơn.</p>
+<p>Chúng tôi muốn nghiên cứu này mang lại lợi ích cho càng nhiều người càng tốt, vì vậy chúng tôi đang cung cấp miễn phí phiên bản tương tác của Aeneas cho các nhà nghiên cứu, sinh viên, nhà giáo dục, chuyên gia bảo tàng và nhiều người khác tại predictingthepast.com. Để hỗ trợ nghiên cứu sâu hơn, chúng tôi cũng đang mở mã nguồn mã và bộ dữ liệu của mình.</p>
+<h2 id="khả-năng-nâng-cao-của-aeneas">Khả năng nâng cao của Aeneas</h2>
+<p>Được đặt theo tên người anh hùng lang thang trong thần thoại Hy Lạp-La Mã, Aeneas xây dựng dựa trên Ithaca, công trình trước đây của chúng tôi sử dụng AI để khôi phục, xác định niên đại và định vị các dòng chữ Hy Lạp cổ đại.</p>
+<p>Aeneas tiến thêm một bước nữa, giúp các nhà sử học diễn giải và đưa một văn bản vào ngữ cảnh, mang lại ý nghĩa cho các đoạn rời rạc, đưa ra các kết luận phong phú hơn và ghép lại với nhau một sự hiểu biết tốt hơn về lịch sử cổ đại.</p>
+<p>Các khả năng nâng cao của mô hình của chúng tôi bao gồm:</p>
+<ul>
+<li><strong>Tìm kiếm sự tương đồng:</strong> Nó tìm kiếm sự tương đồng trên một bộ sưu tập lớn các dòng chữ Latinh. Bằng cách biến mỗi văn bản thành một loại dấu vân tay lịch sử, Aeneas xác định các kết nối sâu sắc có thể giúp các nhà sử học định vị các dòng chữ trong bối cảnh lịch sử rộng lớn hơn của chúng.</li>
+<li><strong>Xử lý đầu vào đa phương thức:</strong> Aeneas là mô hình đầu tiên xác định nguồn gốc địa lý của một văn bản bằng cách sử dụng đầu vào đa phương thức. Nó phân tích cả văn bản và thông tin trực quan, như hình ảnh của một dòng chữ.</li>
+<li><strong>Khôi phục các khoảng trống có độ dài không xác định:</strong> Lần đầu tiên, Aeneas có thể khôi phục các khoảng trống trong văn bản mà độ dài bị thiếu là không xác định. Điều này làm cho nó trở thành một công cụ linh hoạt hơn cho các nhà sử học đối phó với tài liệu bị hư hỏng nặng.</li>
+<li><strong>Hiệu suất hiện đại:</strong> Aeneas đặt ra một chuẩn mực hiện đại mới trong việc khôi phục các văn bản bị hư hỏng và dự đoán thời gian và địa điểm chúng được viết.</li>
+</ul>
+<!-- raw HTML omitted -->
+<pre><code>&lt;picture class=&quot;picture&quot;&gt;
+  &lt;source
+  media=&quot;(min-width: 600px)&quot;
+  type=&quot;image/webp&quot;
+  width=&quot;616&quot;
+  height=&quot;346&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/SlzbQR4C-DgeJQ7AF85q5HFAJRvs-lxUdox3BL3VpJ2RqCGR7K287xDNefGPFWJsWqT90bwwZBYmjpl6HBQYuA8UvB6wTC9H4OxIx7F9JLmUdgk2=w616-rw 1x, https://lh3.googleusercontent.com/SlzbQR4C-DgeJQ7AF85q5HFAJRvs-lxUdox3BL3VpJ2RqCGR7K287xDNefGPFWJsWqT90bwwZBYmjpl6HBQYuA8UvB6wTC9H4OxIx7F9JLmUdgk2=w1232-rw 2x&quot;
+/&gt;&lt;source
+  
+  type=&quot;image/webp&quot;
+  width=&quot;528&quot;
+  height=&quot;297&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/SlzbQR4C-DgeJQ7AF85q5HFAJRvs-lxUdox3BL3VpJ2RqCGR7K287xDNefGPFWJsWqT90bwwZBYmjpl6HBQYuA8UvB6wTC9H4OxIx7F9JLmUdgk2=w528-rw 1x, https://lh3.googleusercontent.com/SlzbQR4C-DgeJQ7AF85q5HFAJRvs-lxUdox3BL3VpJ2RqCGR7K287xDNefGPFWJsWqT90bwwZBYmjpl6HBQYuA8UvB6wTC9H4OxIx7F9JLmUdgk2=w1056-rw 2x&quot;
+/&gt;
+  &lt;img alt=&quot;&quot; class=&quot;picture__image&quot; height=&quot;346&quot; loading=&quot;lazy&quot; src=&quot;https://lh3.googleusercontent.com/SlzbQR4C-DgeJQ7AF85q5HFAJRvs-lxUdox3BL3VpJ2RqCGR7K287xDNefGPFWJsWqT90bwwZBYmjpl6HBQYuA8UvB6wTC9H4OxIx7F9JLmUdgk2=w616&quot; width=&quot;616&quot;&gt;
+&lt;/picture&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="cách-thức-hoạt-động-của-aeneas">Cách thức hoạt động của Aeneas</h2>
+<p>Aeneas là một mạng nơ-ron tạo sinh đa phương thức, lấy văn bản và hình ảnh của một dòng chữ làm đầu vào. Để đào tạo Aeneas, chúng tôi đã tuyển chọn một tập dữ liệu lớn và đáng tin cậy, lấy từ nhiều thập kỷ làm việc của các nhà sử học để tạo ra các bộ sưu tập kỹ thuật số, đặc biệt là Cơ sở dữ liệu Epigraphic Roma (EDR), Cơ sở dữ liệu Epigraphic Heidelberg (EDH) và Cơ sở dữ liệu Epigraphic Clauss Slaby (EDCS-ELT).</p>
+<p>Chúng tôi đã làm sạch, hài hòa hóa và liên kết các bản ghi này thành một tập dữ liệu có thể hành động trên máy duy nhất mà chúng tôi gọi là Tập dữ liệu Epigraphic Latinh (LED), bao gồm hơn 176.000 dòng chữ Latinh từ khắp thế giới La Mã cổ đại.</p>
+<p>Mô hình của chúng tôi sử dụng bộ giải mã dựa trên bộ chuyển đổi để xử lý đầu vào văn bản của một dòng chữ. Các mạng chuyên dụng xử lý việc khôi phục ký tự và xác định niên đại bằng cách sử dụng văn bản, trong khi thuộc tính địa lý cũng sử dụng hình ảnh của các dòng chữ làm đầu vào. Bộ giải mã truy xuất các dòng chữ tương tự từ LED, được xếp hạng theo mức độ liên quan.</p>
+<p>Đối với mỗi dòng chữ, cơ chế ngữ cảnh hóa của Aeneas truy xuất danh sách các điểm tương đồng bằng cách sử dụng một kỹ thuật gọi là &ldquo;nhúng&rdquo; - mã hóa thông tin văn bản và ngữ cảnh của mỗi dòng chữ thành một loại dấu vân tay lịch sử chứa các chi tiết về nội dung văn bản, ngôn ngữ của nó, thời gian và địa điểm xuất xứ và mối quan hệ của nó với các dòng chữ khác.</p>
+<!-- raw HTML omitted -->
+<pre><code>&lt;picture class=&quot;picture&quot;&gt;
+  &lt;source
+  media=&quot;(min-width: 600px)&quot;
+  type=&quot;image/webp&quot;
+  width=&quot;616&quot;
+  height=&quot;387&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/V55EG8T5SJIr5Mbsh7JK7rjK1Dp7ISpfnFL3tL46f8wmQak5TAv9h_KxHD55ZrHK113Z3aXaHweAllOKg52W3m6VfnB-cpEUBkn7H5GN6NTkFhsdCA=w616-rw 1x, https://lh3.googleusercontent.com/V55EG8T5SJIr5Mbsh7JK7rjK1Dp7ISpfnFL3tL46f8wmQak5TAv9h_KxHD55ZrHK113Z3aXaHweAllOKg52W3m6VfnB-cpEUBkn7H5GN6NTkFhsdCA=w1232-rw 2x&quot;
+/&gt;&lt;source
+  
+  type=&quot;image/webp&quot;
+  width=&quot;528&quot;
+  height=&quot;332&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/V55EG8T5SJIr5Mbsh7JK7rjK1Dp7ISpfnFL3tL46f8wmQak5TAv9h_KxHD55ZrHK113Z3aXaHweAllOKg52W3m6VfnB-cpEUBkn7H5GN6NTkFhsdCA=w528-rw 1x, https://lh3.googleusercontent.com/V55EG8T5SJIr5Mbsh7JK7rjK1Dp7ISpfnFL3tL46f8wmQak5TAv9h_KxHD55ZrHK113Z3aXaHweAllOKg52W3m6VfnB-cpEUBkn7H5GN6NTkFhsdCA=w1056-rw 2x&quot;
+/&gt;
+  &lt;img alt=&quot;&quot; class=&quot;picture__image&quot; height=&quot;387&quot; loading=&quot;lazy&quot; src=&quot;https://lh3.googleusercontent.com/V55EG8T5SJIr5Mbsh7JK7rjK1Dp7ISpfnFL3tL46f8wmQak5TAv9h_KxHD55ZrHK113Z3aXaHweAllOKg52W3m6VfnB-cpEUBkn7H5GN6NTkFhsdCA=w616&quot; width=&quot;616&quot;&gt;
+&lt;/picture&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="hiệu-suất-hiện-đại">Hiệu suất hiện đại</h2>
+<p>Aeneas nhóm các dòng chữ theo ngày viết rõ ràng hơn nhiều so với các mô hình đa năng khác cũng được đào tạo trên tiếng Latinh, như được hiển thị trong hình ảnh trực quan bên dưới.</p>
+<!-- raw HTML omitted -->
+<pre><code>&lt;picture class=&quot;picture&quot;&gt;
+  &lt;source
+  media=&quot;(min-width: 600px)&quot;
+  type=&quot;image/webp&quot;
+  width=&quot;616&quot;
+  height=&quot;357&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/slwPj5FC_Uh68Ie2-hudEi_qjLxuQTkjJyMmP6mwN3QwvNPXZT3nOpMwQyiujBdgmnGucWsIs8kfGrkMC7bGY0-QotSeYcrnXTWG6wuMUV3n-rtvoeU=w616-rw 1x, https://lh3.googleusercontent.com/slwPj5FC_Uh68Ie2-hudEi_qjLxuQTkjJyMmP6mwN3QwvNPXZT3nOpMwQyiujBdgmnGucWsIs8kfGrkMC7bGY0-QotSeYcrnXTWG6wuMUV3n-rtvoeU=w1232-rw 2x&quot;
+/&gt;&lt;source
+  
+  type=&quot;image/webp&quot;
+  width=&quot;528&quot;
+  height=&quot;306&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/slwPj5FC_Uh68Ie2-hudEi_qjLxuQTkjJyMmP6mwN3QwvNPXZT3nOpMwQyiujBdgmnGucWsIs8kfGrkMC7bGY0-QotSeYcrnXTWG6wuMUV3n-rtvoeU=w528-rw 1x, https://lh3.googleusercontent.com/slwPj5FC_Uh68Ie2-hudEi_qjLxuQTkjJyMmP6mwN3QwvNPXZT3nOpMwQyiujBdgmnGucWsIs8kfGrkMC7bGY0-QotSeYcrnXTWG6wuMUV3n-rtvoeU=w1056-rw 2x&quot;
+/&gt;
+  &lt;img alt=&quot;&quot; class=&quot;picture__image&quot; height=&quot;357&quot; loading=&quot;lazy&quot; src=&quot;https://lh3.googleusercontent.com/slwPj5FC_Uh68Ie2-hudEi_qjLxuQTkjJyMmP6mwN3QwvNPXZT3nOpMwQyiujBdgmnGucWsIs8kfGrkMC7bGY0-QotSeYcrnXTWG6wuMUV3n-rtvoeU=w616&quot; width=&quot;616&quot;&gt;
+&lt;/picture&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Aeneas khôi phục các dòng chữ bị hư hỏng với độ chính xác Top-20 là 73% trong các khoảng trống lên đến mười ký tự. Điều này chỉ giảm xuống 58% khi độ dài phục hồi không xác định - bản thân nó là một nhiệm vụ vô cùng khó khăn. Nó cũng hiển thị lý luận của mình theo cách có thể giải thích được, cung cấp các bản đồ nổi bật làm nổi bật những phần nào của đầu vào đã ảnh hưởng đến các dự đoán của nó. Nhờ sử dụng dữ liệu trực quan, mô hình của chúng tôi có thể gán một dòng chữ cho một trong 62 tỉnh La Mã cổ đại với độ chính xác 72%. Để xác định niên đại, Aeneas đặt một văn bản trong vòng 13 năm so với phạm vi ngày tháng do các nhà sử học cung cấp.</p>
+<h2 id="một-lăng-kính-mới-về-các-cuộc-tranh-luận-lịch-sử">Một lăng kính mới về các cuộc tranh luận lịch sử</h2>
+<p>Để kiểm tra khả năng của Aeneas về một cuộc tranh luận nghiên cứu đang diễn ra, chúng tôi đã đưa cho nó một trong những dòng chữ La Mã nổi tiếng nhất: Res Gestae Divi Augusti, tài khoản ngôi thứ nhất của Hoàng đế Augustus về những thành tựu của ông.</p>
+<p>Các nhà sử học từ lâu đã tranh luận về niên đại của dòng chữ này. Thay vì dự đoán một ngày cố định duy nhất, Aeneas đã tạo ra một phân phối chi tiết về các ngày có thể, cho thấy hai đỉnh riêng biệt, với một đỉnh nhỏ hơn vào khoảng 10-1 BCE và một đỉnh lớn hơn, tự tin hơn trong khoảng 10-20 CE. Những kết quả này đã nắm bắt cả hai giả thuyết xác định niên đại phổ biến theo cách định lượng.</p>
+<!-- raw HTML omitted -->
+<pre><code>&lt;picture class=&quot;picture&quot;&gt;
+  &lt;source
+  media=&quot;(min-width: 600px)&quot;
+  type=&quot;image/webp&quot;
+  width=&quot;616&quot;
+  height=&quot;357&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/Vxcoz7-tGIdSV8LG2rhXtNpl1psefyfkMpeUsBirpUbnMFuhjPcYO14d7fTu04mqDgRTG3O8uYcS4ih0vevRvu_C7XZ3Gwt2pNa5c5b1gC-LIosf8pQ=w616-rw 1x, https://lh3.googleusercontent.com/Vxcoz7-tGIdSV8LG2rhXtNpl1psefyfkMpeUsBirpUbnMFuhjPcYO14d7fTu04mqDgRTG3O8uYcS4ih0vevRvu_C7XZ3Gwt2pNa5c5b1gC-LIosf8pQ=w1232-rw 2x&quot;
+/&gt;&lt;source
+  
+  type=&quot;image/webp&quot;
+  width=&quot;528&quot;
+  height=&quot;306&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/Vxcoz7-tGIdSV8LG2rhXtNpl1psefyfkMpeUsBirpUbnMFuhjPcYO14d7fTu04mqDgRTG3O8uYcS4ih0vevRvu_C7XZ3Gwt2pNa5c5b1gC-LIosf8pQ=w528-rw 1x, https://lh3.googleusercontent.com/Vxcoz7-tGIdSV8LG2rhXtNpl1psefyfkMpeUsBirpUbnMFuhjPcYO14d7fTu04mqDgRTG3O8uYcS4ih0vevRvu_C7XZ3Gwt2pNa5c5b1gC-LIosf8pQ=w1056-rw 2x&quot;
+/&gt;
+  &lt;img alt=&quot;&quot; class=&quot;picture__image&quot; height=&quot;357&quot; loading=&quot;lazy&quot; src=&quot;https://lh3.googleusercontent.com/Vxcoz7-tGIdSV8LG2rhXtNpl1psefyfkMpeUsBirpUbnMFuhjPcYO14d7fTu04mqDgRTG3O8uYcS4ih0vevRvu_C7XZ3Gwt2pNa5c5b1gC-LIosf8pQ=w616&quot; width=&quot;616&quot;&gt;
+&lt;/picture&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Aeneas dựa trên các dự đoán của mình về các đặc điểm ngôn ngữ tinh tế và các dấu hiệu lịch sử như các chức danh và tượng đài chính thức được đề cập trong văn bản. Bằng cách biến câu hỏi xác định niên đại thành một ước tính xác suất dựa trên dữ liệu ngôn ngữ và ngữ cảnh, mô hình của chúng tôi cung cấp một cách định lượng mới để tham gia vào các cuộc tranh luận lịch sử lâu đời.</p>
+<p>Quan trọng nhất, Aeneas cũng truy xuất nhiều điểm tương đồng có liên quan từ các văn bản pháp luật của đế chế gắn liền với di sản của Augustus, làm nổi bật cách thức hệ tư tưởng của đế chế được tái tạo trên các phương tiện truyền thông và địa lý.</p>
+<h2 id="thúc-đẩy-nghiên-cứu-lịch-sử-một-cách-hợp-tác">Thúc đẩy nghiên cứu lịch sử một cách hợp tác</h2>
+<p>Để đánh giá tác động của Aeneas như một công cụ hỗ trợ nghiên cứu, chúng tôi đã thực hiện một nghiên cứu hợp tác quy mô lớn giữa nhà sử học và AI. Chúng tôi đã mời hai mươi ba nhà sử học thường xuyên làm việc với các dòng chữ để khôi phục, xác định niên đại và định vị một tập hợp các văn bản bằng Aeneas.</p>
+<p>Đánh giá của chúng tôi, được tóm tắt trong bảng bên dưới, cho thấy kết quả hiệu quả nhất đã đạt được khi các nhà sử học sử dụng thông tin ngữ cảnh của Aeneas cùng với các dự đoán của nó để khôi phục và gán các dòng chữ La Mã.</p>
+<!-- raw HTML omitted -->
+<pre><code>&lt;picture class=&quot;picture&quot;&gt;
+  &lt;source
+  media=&quot;(min-width: 600px)&quot;
+  type=&quot;image/webp&quot;
+  width=&quot;616&quot;
+  height=&quot;187&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/p76BRavne7qhGIty6p5Ojhbyn9fvbWHQXZsm-pA43frq64atbs9yKSy1vf6tE9If-94R5iuDJ2bZ-ZvhiWT7uoUBNHsxGVipG8DLIJhML77V_XAhDws=w616-rw 1x, https://lh3.googleusercontent.com/p76BRavne7qhGIty6p5Ojhbyn9fvbWHQXZsm-pA43frq64atbs9yKSy1vf6tE9If-94R5iuDJ2bZ-ZvhiWT7uoUBNHsxGVipG8DLIJhML77V_XAhDws=w1232-rw 2x&quot;
+/&gt;&lt;source
+  
+  type=&quot;image/webp&quot;
+  width=&quot;528&quot;
+  height=&quot;160&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/p76BRavne7qhGIty6p5Ojhbyn9fvbWHQXZsm-pA43frq64atbs9yKSy1vf6tE9If-94R5iuDJ2bZ-ZvhiWT7uoUBNHsxGVipG8DLIJhML77V_XAhDws=w528-rw 1x, https://lh3.googleusercontent.com/p76BRavne7qhGIty6p5Ojhbyn9fvbWHQXZsm-pA43frq64atbs9yKSy1vf6tE9If-94R5iuDJ2bZ-ZvhiWT7uoUBNHsxGVipG8DLIJhML77V_XAhDws=w1056-rw 2x&quot;
+/&gt;
+  &lt;img alt=&quot;&quot; class=&quot;picture__image&quot; height=&quot;187&quot; loading=&quot;lazy&quot; src=&quot;https://lh3.googleusercontent.com/p76BRavne7qhGIty6p5Ojhbyn9fvbWHQXZsm-pA43frq64atbs9yKSy1vf6tE9If-94R5iuDJ2bZ-ZvhiWT7uoUBNHsxGVipG8DLIJhML77V_XAhDws=w616&quot; width=&quot;616&quot;&gt;
+&lt;/picture&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Aeneas đã giúp các nhà sử học trong nghiên cứu của chúng tôi xác định các điểm tương đồng mới và tăng cường sự tự tin của họ khi giải quyết các nhiệm vụ epigraphic phức tạp. Các nhà sử học liên tục nhấn mạnh giá trị của Aeneas trong việc tăng tốc công việc của họ và mở rộng phạm vi của các dòng chữ song song có liên quan nhất.</p>
+<!-- raw HTML omitted -->
+<h2 id="chia-sẻ-các-công-cụ-định-hình-tương-lai">Chia sẻ các công cụ, định hình tương lai</h2>
+<p>Aeneas được thiết kế để tích hợp trong quy trình làm việc nghiên cứu hiện có của các nhà sử học. Bằng cách kết hợp kiến thức chuyên môn với máy học, nó mở ra một quy trình hợp tác, đưa ra các đề xuất có thể giải thích được, đóng vai trò là điểm khởi đầu có giá trị cho nghiên cứu lịch sử.</p>
+<p>Là một phần của bản phát hành ngày hôm nay, chúng tôi đang nâng cấp Ithaca, mô hình Hy Lạp cổ đại của chúng tôi, để được cung cấp bởi Aeneas và bao gồm chức năng ngữ cảnh hóa, khôi phục độ dài không xác định và hiệu suất tốt hơn nói chung.</p>
+<p>Chúng tôi cũng đã đồng thiết kế một giáo trình giảng dạy mới để kết nối các kỹ năng kỹ thuật với tư duy lịch sử trong lớp học. Giáo trình này phù hợp với các sáng kiến về kiến thức về AI, bao gồm Khung năng lực kỹ thuật số cho công dân của Ủy ban Châu Âu (DigComp 2.2), Khung năng lực AI cho sinh viên của UNESCO và bản xem trước của Ủy ban Châu Âu và Tổ chức Hợp tác và Phát triển Kinh tế (OECD) AILit Framework.</p>
+<p>Nhóm Aeneas đang tiếp tục hợp tác với các chuyên gia về chủ đề đa dạng, sử dụng Aeneas để giúp làm sáng tỏ quá khứ cổ đại của chúng ta - với nhiều điều sắp tới.</p>
+<h2 id="tìm-hiểu-thêm-về-aeneas">Tìm hiểu thêm về Aeneas</h2>
+<ul>
+<li><a href="https://www.nature.com/articles/s41586-025-09292-5">Đọc bài báo của chúng tôi</a></li>
+<li><a href="http://predictingthepast.com/">Dùng thử Aeneas</a></li>
+<li><a href="http://github.com/google-deepmind/predictingthepast">Tải mã và tập dữ liệu</a></li>
+<li><a href="https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/aeneas-transforms-how-historians-connect-the-past/aeneas-transforms-how-historians-connect-the-past-italian-version.pdf">Đọc blog của chúng tôi bằng tiếng Ý</a></li>
+<li><a href="https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/aeneas-transforms-how-historians-connect-the-past/aeneas-transforms-how-historians-connect-the-past-greek-version.pdf">Đọc blog của chúng tôi bằng tiếng Hy Lạp</a></li>
+</ul>
+<h2 id="lời-cảm-ơn">Lời cảm ơn</h2>
+<p>Nghiên cứu được đồng dẫn dắt bởi Yannis Assael và Thea Sommerschield.</p>
+<p>Các cộng tác viên bao gồm: Alison Cooley, Brendan Shillingford, John Pavlopoulos, Priyanka Suresh, Bailey Herms, Jonathan Prag, Alex Mullen và Shakir Mohamed. Giao diện web Aeneas được phát triển bởi Justin Grayston, Benjamin Maynard và Nicholas Dietrich và được cung cấp bởi Google Cloud.</p>
+<p>Giáo trình được phát triển bởi Robbe Wulgaert, Sint-Lievenscollege, Ghent, Bỉ.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://deepmind.google/discover/blog/aeneas-transforms-how-historians-connect-the-past/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/23-july-2025/">23 July 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/deepmind.google/">Deepmind.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/162d0b/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Sx0q14oEP6Ir8EEX0E4vyJGUFAAhycWqppr5x-2edL8Dz0OwB7ylqPIkRd9TefuQ9TaYxe-1aFMmmdH3aSJeFJ09YrqA16V2V-Dv7M0XJcbLyzZsvWE=w400-h225-n-nu" alt="Khám phá bối cảnh của hình ảnh trực tuyến với Backstory" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-22T00:00:00&#43;00:00">Jul 22, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Khám phá bối cảnh của hình ảnh trực tuyến với Backstory</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Công cụ AI thử nghiệm mới giúp mọi người khám phá bối cảnh và nguồn gốc của hình ảnh được thấy trực tuyến.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/3a29b4/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/Tu0v56OLL1Jy30PUoBzm_P8bZiFi3QhmKuxKF95j8ojB0B8uhHmG1QBRhLF09T5VWtIcIilGO-DXKTHDtGX11BB9OOiYr_w1tFs8bWVpqhIi3_isjg=w400-h225-n-nu" alt="Phiên bản nâng cao của Gemini với Deep Think chính thức đạt tiêu chuẩn huy chương vàng tại Olympic Toán học Quốc tế" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-22T00:00:00&#43;00:00">Jul 22, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Phiên bản nâng cao của Gemini với Deep Think chính thức đạt tiêu chuẩn huy chương vàng tại Olympic Toán học Quốc tế</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Mô hình tiên tiến của chúng tôi chính thức đạt được thành tích ở mức huy chương vàng trong các bài toán từ Olympic Toán học Quốc tế (IMO), cuộc thi uy tín nhất thế giới dành cho giới trẻ...</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-23/ae9368/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/eMe8bNk3nHJU_unVGcgIUKuPiI-it3NstOK0wixMnl_EwVI5RudgU2W6ktg0RMLsEovZyA8ckoMg2t9_ARQKev-HZhTgFzKTQtU4UC6dr6hektPG=w400-h225-n-nu" alt="Aeneas biến đổi cách các nhà sử học kết nối quá khứ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Aeneas biến đổi cách các nhà sử học kết nối quá khứ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-23/5890000000000000000000000000000000000/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic hợp tác với Viện Becker Friedman của Đại học Chicago về nghiên cứu kinh tế AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-23/2d6d37/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://qwenlm.github.io/img/logo.png" alt="Qwen3-Coder- Mã hóa Agentic trên thế giới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Qwen3-Coder- Mã hóa Agentic trên thế giới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-23/a642f0/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lora-fast/thumbnail.png" alt="Suy luận LoRA nhanh cho Flux với Diffusers và PEFT" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Suy luận LoRA nhanh cho Flux với Diffusers và PEFT</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-22/c67375/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/nuneybits_Vector_art_of_robot_winning_medal_5be7ef30-62b2-4f25-bd3c-9480201df4b7.webp?w=700&amp;h=350&amp;crop=1" alt="Google DeepMind làm nên lịch sử AI với chiến thắng huy chương vàng tại cuộc thi toán khó khăn nhất thế giới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Google DeepMind làm nên lịch sử AI với chiến thắng huy chương vàng tại cuộc thi toán khó khăn nhất thế giới</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
