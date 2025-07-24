@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu? | AI Today - SkyAI</title>
+
+<meta name="description" content="Tìm hiểu về TimeScope, một chuẩn đánh giá mới để đánh giá khả năng của các mô hình đa phương thức lớn trong việc hiểu và lý luận về video dài.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu?</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Tìm hiểu về TimeScope, một chuẩn đánh giá mới để đánh giá khả năng của các mô hình đa phương thức lớn trong việc hiểu và lý luận về video dài. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-24T00:00:00&#43;00:00">July 24, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/timescope/thumbnail.png" alt="TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu?">
+        <figcaption class="text-center italic text-xs">Tìm hiểu về TimeScope, một chuẩn đánh giá mới để đánh giá khả năng của các mô hình đa phương thức lớn trong việc hiểu và lý luận về video dài.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="timescope-mô-hình-đa-phương-thức-lớn-về-video-của-bạn-có-thể-đi-được-bao-xa">TimeScope: Mô hình Đa phương thức Lớn về Video của Bạn Có Thể Đi Được Bao Xa?</h1>
+<p><a href="/blog">Quay lại các bài viết</a></p>
+<h1 id="timescope-mô-hình-đa-phương-thức-lớn-về-video-của-bạn-có-thể-đi-được-bao-xa-1">TimeScope: Mô hình Đa phương thức Lớn về Video của Bạn Có Thể Đi Được Bao Xa?</h1>
+<p>Được xuất bản ngày 23 tháng 7 năm 2025</p>
+<p><a href="https://github.com/huggingface/blog/blob/main/timescope-video-lmm-benchmark.md">Cập nhật trên GitHub</a></p>
+<h2 id="tóm-tắt">Tóm tắt</h2>
+<p><em>TimeScope</em> là một chuẩn mở được thiết kế để đo lường mức độ hiểu video dài của các mô hình ngôn ngữ thị giác. Bằng cách thêm các clip &ldquo;kim&rdquo; ngắn vào các video có độ dài từ 1 phút đến 8 giờ, nó đánh giá ba kỹ năng:</p>
+<ul>
+<li>Tìm kiếm có định vị</li>
+<li>Tổng hợp thông tin</li>
+<li>Nhận thức tạm thời chi tiết</li>
+</ul>
+<p>TimeScope tiết lộ rằng nhiều mô hình hiện đại vẫn đang vật lộn với sự hiểu biết tạm thời thực sự.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#why-timescope-motivating-a-better-benchmark-for-video">Tại sao TimeScope?</a></li>
+<li><a href="#benchmark-design">Thiết kế Benchmark</a></li>
+<li><a href="#evaluations--leaderboard">Đánh giá &amp; Bảng xếp hạng</a></li>
+<li><a href="#conclusion--lets-raise-the-bar-for-long-video-ai">Mã nguồn mở</a></li>
+</ul>
+<p>Những tiến bộ gần đây trong AI đa phương thức đã tạo ra các mô hình tuyên bố hiểu được các video dài hàng giờ. Xu hướng này phản ánh sự tiến bộ trong các mô hình ngôn ngữ dài, vượt trội trong việc lý luận dựa trên văn bản dài. Tiếp theo đó, các hệ thống ngôn ngữ thị giác hiện quảng cáo các cửa sổ ngữ cảnh có thể xử lý hàng nghìn khung hình. Nhưng những tuyên bố này đòi hỏi phải xem xét kỹ hơn: liệu các mô hình này có thực sự chứng minh sự hiểu biết về chuỗi các sự kiện hay không? Chúng có bị giới hạn ở việc tìm kiếm/nhận dạng cấp độ bề mặt không? Điều quan trọng là phải hỏi liệu khả năng của chúng có đang bị phóng đại hay không.</p>
+<p>Các chuẩn văn bản như <strong>HELM</strong> và <strong>RULER</strong> đã vạch trần sự mong manh của các tuyên bố về ngữ cảnh dài, cho thấy rằng các mô hình thường gặp khó khăn khi các nhiệm vụ đòi hỏi nhiều hơn là tìm kiếm đơn giản, như lý luận hoặc tổng hợp ở độ dài ngữ cảnh dài. Tuy nhiên, trong lĩnh vực video, chúng ta vẫn đang bắt kịp. Thử nghiệm phổ biến nhất, <strong>Video Needle in a Haystack (VideoNIAH)</strong>, chèn các <em>hình ảnh</em> tĩnh làm &ldquo;kim&rdquo; vào video, đo lường hiệu quả việc tìm kiếm trực quan hơn là động lực tạm thời thực sự. Do đó, ngay cả các mô hình hàng đầu quảng cáo dung lượng khung hình lớn hiếm khi được đào tạo vượt quá ~256 khung hình và chứng kiến ​​sự sụt giảm mạnh trên các chuẩn như <strong>Video-MME</strong> khi bị đẩy xa hơn.</p>
+<p>Khoảng cách đo lường này khiến chúng ta tự hỏi: &ldquo;Hiểu&rdquo; video dài thực sự có nghĩa là gì đối với một mô hình? Để giải quyết vấn đề này, chúng tôi rất vui mừng giới thiệu <strong>TimeScope</strong>, một chuẩn mã nguồn mở mới được lưu trữ trên Hugging Face. TimeScope thăm dò giới hạn của khả năng video dài bằng cách chèn một số đoạn <em>video clip</em> ngắn (~5-10 giây) - &ldquo;kim&rdquo; của chúng tôi - vào các video gốc có độ dài từ 1 phút đến 8 giờ. Với ba loại nhiệm vụ riêng biệt, nó đánh giá không chỉ khả năng tìm kiếm mà còn cả khả năng tổng hợp, định vị và phân tích chuyển động chi tiết, cung cấp một cái nhìn toàn diện hơn về sự hiểu biết tạm thời.</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="tại-sao-timescope-thúc-đẩy-một-benchmark-tốt-hơn-cho-video">Tại sao TimeScope? Thúc đẩy một Benchmark Tốt hơn cho Video</h2>
+<p>Lời hứa của AI video dài là có tính chuyển đổi - cho phép các tác nhân tóm tắt hàng giờ cảnh quay, phát hiện các điểm bất thường tinh tế và trả lời các câu hỏi phức tạp về các tường thuật mở rộng. Được tích hợp vào robot, các mô hình này có thể phân tích các hoạt động kéo dài, thích ứng trong thời gian thực và thúc đẩy việc ra quyết định tự chủ. Cũng mạnh mẽ như vậy là tầm nhìn về một trợ lý cá nhân hiểu cuộc sống hàng ngày và đưa ra phản hồi liên tục, có thể hành động.</p>
+<p>Trong thực tế, điều này dẫn đến những khả năng phóng đại. Các mô hình có thể tuyên bố xử lý hơn 10.000 khung hình, nhưng dữ liệu đào tạo thường giới hạn ở 256 khung hình trên mỗi clip, dẫn đến hiệu suất giảm trên các đầu vào dài hơn. Chúng ta đã thấy điều này trong các đánh giá, nơi việc tăng tốc độ lấy mẫu khung hình làm giảm độ chính xác đối với các tác vụ đòi hỏi cái nhìn sâu sắc về thời gian.</p>
+<p>TimeScope lật lại kịch bản bằng cách nhấn mạnh ba trụ cột của sự hiểu biết video dài:</p>
+<ol>
+<li><strong>Tìm kiếm có định vị</strong>: Mô hình có thể phát hiện và trả lời các câu hỏi về một đoạn ngắn cụ thể trong một video rộng lớn không?</li>
+<li><strong>Tổng hợp thông tin</strong>: Nó có thể thu thập và sắp xếp các chi tiết từ nhiều điểm khác nhau trên dòng thời gian không?</li>
+<li><strong>Nhận thức tạm thời chi tiết</strong>: Nó có thể phân tích chuyển động và các sự kiện trong kim đòi hỏi lấy mẫu dày đặc, đa khung hình không?</li>
+</ol>
+<h2 id="thiết-kế-benchmark">Thiết kế Benchmark</h2>
+<p>Ý tưởng chính của TimeScope là sử dụng các đoạn video ngắn làm &ldquo;kim&rdquo;, và thay vì chỉ phát hiện ra kim, nó thúc đẩy các mô hình hiểu sâu sắc toàn bộ video. Chúng tôi bắt đầu với một video gốc dài (ví dụ: phim tài liệu, bài giảng hoặc cảnh quay xung quanh) và chèn một hoặc nhiều kim video ngắn được tuyển chọn thủ công (mỗi kim dài 5-10 giây) ở các vị trí ngẫu nhiên. Các kim này chứa thông tin chính cần thiết để giải quyết nhiệm vụ, buộc các mô hình phải xử lý toàn bộ đầu vào mà không cần các phím tắt như lấy mẫu thưa thớt.</p>
+<p><img src="https://huggingface.co/spaces/Apollo-LMMs/TimeScope/resolve/main/overview.png" alt="Benchmark Design Diagram"></p>
+<p><em>Hình 1: Tổng quan về quy trình chèn kim của TimeScope. Một video gốc dài (1 phút đến 8 giờ) đóng vai trò là đống cỏ khô, trong đó chúng ta ghép các kim video ngắn (~5-10 giây). Các tác vụ yêu cầu phát hiện, tổng hợp hoặc phân tích nội dung từ các kim này, được nhúng ở các độ sâu khác nhau.</em></p>
+<p>Chúng tôi đánh giá trên ba loại kim, mỗi loại nhắm mục tiêu đến một khía cạnh khác nhau của sự hiểu biết video dài:</p>
+<h4 id="1-tìm-kiếm-có-định-vị">1. Tìm kiếm có định vị</h4>
+<p>Điều này kiểm tra khả năng tìm kiếm và hiểu cơ bản về một sự kiện được định vị. Các câu hỏi được đặt ra sao cho việc lấy mẫu một khung hình có liên quan từ kim sẽ là đủ - giống như hỏi về một phần ngắn hơn trong một video dài hơn.</p>
+<p>Ví dụ:</p>
+<p>Phương tiện di chuyển nào được hiển thị trong video?</p>
+<!-- raw HTML omitted -->
+<h4 id="2-tổng-hợp-thông-tin">2. Tổng hợp thông tin</h4>
+<p>Ở đây, chúng tôi nhúng nhiều kim dựa trên văn bản (ví dụ: 2-4 đoạn clip ngắn hiển thị &ldquo;các từ bí mật&rdquo; thông qua văn bản trên màn hình) ở các điểm khác nhau trong video. Mô hình phải xác định tất cả các từ và báo cáo chúng theo thứ tự thời gian, mô phỏng các tác vụ như trích xuất dấu thời gian hoặc các sự kiện chính từ các cảnh phân tán. Điều này đòi hỏi phải quét toàn bộ dòng thời gian và hiểu vị trí tương đối.</p>
+<h4 id="3-nhận-thức-tạm-thời-chi-tiết">3. Nhận thức tạm thời chi tiết</h4>
+<p>Đối với các câu hỏi tập trung vào chuyển động hoặc các chuỗi trong một clip ngắn, việc lấy mẫu một khung hình sẽ không đủ - mô hình cần cảm nhận động lực trên các khung hình. Điều này thăm dò xem việc xử lý ngữ cảnh dài có bảo toàn độ trung thực tạm thời hay không.</p>
+<p>Ví dụ:</p>
+<p>Người đàn ông vung rìu của mình bao nhiêu lần? (a) một (b) hai (c) ba (d) bốn (e) năm (f) sáu</p>
+<!-- raw HTML omitted -->
+<p>Với các độ dài video khác nhau và vị trí kim khác nhau, TimeScope đo lường lượng video mà một mô hình thực sự có thể xử lý - và cho thấy hiệu suất giảm khi video dài hơn.</p>
+<h2 id="đánh-giá--bảng-xếp-hạng">Đánh giá &amp; Bảng xếp hạng</h2>
+<p>Để khởi động mọi thứ, chúng tôi đã chạy TimeScope trên một bộ các mô hình ngôn ngữ thị giác hàng đầu, từ các mục yêu thích mã nguồn mở đến các juggernaut như Gemini 2.5-Pro. Các kết quả nhấn mạnh giá trị của điểm chuẩn: ngay cả các mô hình tuyên bố xử lý tốt video dài vẫn gặp khó khăn với các tác vụ video dài thực sự. Những phát hiện này tiết lộ các mô hình rõ ràng - các vách đá hiệu suất xung quanh các thời lượng nhất định, điểm mạnh trong việc tìm kiếm tĩnh so với điểm yếu trong phân tích chuyển động - và mở đường cho những cải tiến có mục tiêu trong đào tạo mô hình. Để biết kết quả và hình ảnh trực quan chi tiết, hãy xem Hugging Face Space được nhúng ở trên của chúng tôi.</p>
+<h3 id="chúng-ta-đã-học-được-gì">Chúng ta đã học được gì?</h3>
+<p><strong>Kích thước mô hình không phải là tất cả.</strong> Qwen 2.5-VL 3B và 7B, cũng như các mô hình InternVL 2.5 ở thông số 2B, 4B và 8B, thể hiện các đường cong video dài gần như không thể phân biệt được so với các đối tác nhỏ hơn của chúng. Tất cả chúng đều đạt đến cao nguyên ở độ dài ngữ cảnh gần như nhau, cho thấy rằng chỉ cần mở rộng các thông số không tự động cấp một đường chân trời thời gian dài hơn.</p>
+<p><strong>Gemini 2.5-Pro ở một đẳng cấp riêng.</strong> Đây là mô hình duy nhất duy trì độ chính xác cao trên các video dài hơn một giờ.</p>
+<p><strong>Sự đánh đổi giữa các nhiệm vụ quan trọng.</strong> Qwen 2.5-VL tỏa sáng trong nhiệm vụ Tổng hợp thông tin (OCR) - xác định và sắp xếp các đoạn văn bản phân tán - nhưng lại tụt hậu trong Nhận thức tạm thời chi tiết, nơi yêu cầu đếm chuyển động chính xác.</p>
+<h2 id="kết-luận---hãy-nâng-cao-tiêu-chuẩn-cho-ai-video-dài">Kết luận - Hãy nâng cao tiêu chuẩn cho AI Video Dài</h2>
+<p>TimeScope chứng minh rằng &ldquo;hiểu video dài hàng giờ&rdquo; vẫn chỉ là một khẩu hiệu hơn là thực tế. Bằng cách tiết lộ nơi ngay cả các mô hình hiện đại nhất cũng vấp ngã về lý luận thời gian, tổng hợp thông tin và nhận thức chuyển động, điểm chuẩn mời chúng ta xem xét lại cách chúng ta đào tạo và đánh giá các hệ thống đa phương thức.</p>
+<ol>
+<li><strong>Chạy Demo</strong> - Khám phá Space công khai: <a href="https://huggingface.co/spaces/Apollo-LMMs/TimeScope">https://huggingface.co/spaces/Apollo-LMMs/TimeScope</a></li>
+<li><strong>Benchmark cục bộ</strong> - Đánh giá bất kỳ mô hình nào bằng hai lệnh nhanh:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install git+https://github.com/EvolvingLMMs-Lab/lmms-eval.git
+</span></span><span style="display:flex;"><span>python -m lmms_eval --model-path &lt;your-model&gt; --benchmark timescope
+</span></span></code></pre></div><ol start="3">
+<li><strong>Tham gia Bảng xếp hạng</strong> - Gửi điểm số của bạn và xem mô hình của bạn so sánh như thế nào.</li>
+</ol>
+<p>Chúng tôi hy vọng điểm chuẩn này sẽ giúp cộng đồng đạt được tiến bộ ổn định, có thể đo lường được đối với các mô hình hiểu video tốt hơn theo thời gian.</p>
+<p>Chúng tôi đang mở nguồn tất cả các thành phần của TimeScope:</p>
+<ul>
+<li><strong>Bộ dữ liệu</strong>: <a href="https://huggingface.co/datasets/Apollo-LMMs/TimeScope">Apollo-LMMs/TimeScope</a></li>
+<li><strong>Bảng xếp hạng</strong>: <a href="https://huggingface.co/spaces/Apollo-LMMs/TimeScope">Apollo-LMMs/TimeScope</a></li>
+<li><strong>Framework đánh giá</strong>: <a href="https://github.com/EvolvingLMMs-Lab/lmms-eval">lmms-eval</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/timescope-video-lmm-benchmark">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-23-2025/">July 23, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-23/a642f0/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lora-fast/thumbnail.png" alt="Suy luận LoRA nhanh cho Flux với Diffusers và PEFT" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-23T00:00:00&#43;00:00">Jul 23, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Suy luận LoRA nhanh cho Flux với Diffusers và PEFT</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Suy luận LoRA nhanh cho Flux với Diffusers và PEFT</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-20/5ee102/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/virtual-cell-challenge/thumbnail.png" alt="Thử thách ô ảo Arc- Sơ cấp" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-20T00:00:00&#43;00:00">Jul 20, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Thử thách ô ảo Arc- Sơ cấp</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này cung cấp một cái nhìn tổng quan về Thử thách Ô ảo Arc, một cuộc thi nhằm mục đích phát triển các tác nhân AI có thể điều khiển một ô ảo để đạt được mục tiêu phức tạp.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/989779/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/cfr0z3n_graphic_novel_style_epic_cover_image_close_up_on_a_ru_5a524519-637a-42b2-84c6-70411fa162a3_1.png?w=700&amp;h=350&amp;crop=1" alt="SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/b1bd4e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Suy nghĩ về Kế hoạch Hành động AI của Mỹ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Suy nghĩ về Kế hoạch Hành động AI của Mỹ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/ddd6d2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/timescope/thumbnail.png" alt="TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu?" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu?</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-23/ae9368/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/eMe8bNk3nHJU_unVGcgIUKuPiI-it3NstOK0wixMnl_EwVI5RudgU2W6ktg0RMLsEovZyA8ckoMg2t9_ARQKev-HZhTgFzKTQtU4UC6dr6hektPG=w400-h225-n-nu" alt="Aeneas biến đổi cách các nhà sử học kết nối quá khứ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Aeneas biến đổi cách các nhà sử học kết nối quá khứ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-23/5890000000000000000000000000000000000/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic hợp tác với Viện Becker Friedman của Đại học Chicago về nghiên cứu kinh tế AI</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
