@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nghiên cứu điển hình- Các nhóm Anthropic sử dụng Mã Claude | AI Today - SkyAI</title>
+
+<meta name="description" content="Nghiên cứu điển hình về cách các nhóm Anthropic sử dụng Claude Code.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Nghiên cứu điển hình- Các nhóm Anthropic sử dụng Mã Claude</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Nghiên cứu điển hình về cách các nhóm Anthropic sử dụng Claude Code. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-25T00:00:00&#43;00:00">July 25, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            33 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/4c3dc5494aacbe877b3b7783ea0f3d731f37e38e-1000x1000.svg" alt="Nghiên cứu điển hình- Các nhóm Anthropic sử dụng Mã Claude">
+        <figcaption class="text-center italic text-xs">Nghiên cứu điển hình về cách các nhóm Anthropic sử dụng Claude Code.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="cách-các-nhóm-anthropic-sử-dụng-claude-code">Cách các nhóm Anthropic sử dụng Claude Code</h1>
+<p>Các nhóm nội bộ của Anthropic đang chuyển đổi quy trình làm việc của họ bằng <a href="https://www.anthropic.com/claude-code">Claude Code</a>, cho phép các nhà phát triển và nhân viên không chuyên về kỹ thuật giải quyết các dự án phức tạp, tự động hóa các tác vụ và thu hẹp khoảng cách về kỹ năng vốn hạn chế năng suất của họ trước đây.</p>
+<p>Để tìm hiểu thêm, chúng tôi đã nói chuyện với các nhóm sau:</p>
+<ul>
+<li>Cơ sở hạ tầng dữ liệu</li>
+<li>Phát triển sản phẩm</li>
+<li>Kỹ thuật bảo mật</li>
+<li>Suy luận</li>
+<li>Khoa học dữ liệu và trực quan hóa</li>
+<li>Kỹ thuật sản phẩm</li>
+<li>Tiếp thị tăng trưởng</li>
+<li>Thiết kế sản phẩm</li>
+<li>Kỹ thuật học tăng cường (RL)</li>
+<li>Pháp lý</li>
+</ul>
+<p>Thông qua các cuộc phỏng vấn này, chúng tôi đã thu thập thông tin chi tiết về cách các bộ phận khác nhau sử dụng Claude Code, tác động của nó đối với công việc của họ và các mẹo cho các tổ chức khác đang cân nhắc áp dụng.</p>
+<h2 id="claude-code-cho-cơ-sở-hạ-tầng-dữ-liệu">Claude Code cho cơ sở hạ tầng dữ liệu</h2>
+<p>Nhóm Cơ sở hạ tầng dữ liệu tổ chức tất cả dữ liệu kinh doanh cho các nhóm trên toàn công ty. Họ sử dụng Claude Code để tự động hóa các tác vụ kỹ thuật dữ liệu thông thường, khắc phục sự cố các vấn đề cơ sở hạ tầng phức tạp và tạo quy trình làm việc được ghi lại để các thành viên nhóm kỹ thuật và không chuyên về kỹ thuật có thể truy cập và thao tác dữ liệu một cách độc lập.</p>
+<h3 id="các-trường-hợp-sử-dụng-claude-code-chính">Các trường hợp sử dụng Claude Code chính</h3>
+<p><strong>Gỡ lỗi Kubernetes bằng ảnh chụp màn hình</strong></p>
+<p>Khi các cụm Kubernetes bị sập và không lên lịch các pod mới, nhóm đã sử dụng Claude Code để chẩn đoán sự cố. Họ đưa ảnh chụp màn hình của bảng điều khiển vào Claude Code, hướng dẫn họ qua menu Google Cloud từng menu cho đến khi họ tìm thấy cảnh báo cho biết cạn kiệt địa chỉ IP pod. Sau đó, Claude Code cung cấp các lệnh chính xác để tạo một nhóm IP mới và thêm nó vào cụm, bỏ qua nhu cầu liên quan đến các chuyên gia về mạng.</p>
+<p><strong>Quy trình làm việc bằng văn bản thuần túy cho nhóm tài chính</strong></p>
+<p>Các kỹ sư đã chỉ cho các thành viên nhóm Tài chính cách viết các tệp văn bản thuần túy mô tả quy trình làm việc dữ liệu của họ, sau đó tải chúng vào Claude Code để có được quá trình thực thi hoàn toàn tự động. Nhân viên không có kinh nghiệm viết mã có thể mô tả các bước như &ldquo;truy vấn trang tổng quan này, lấy thông tin, chạy các truy vấn này, tạo đầu ra Excel&rdquo; và Claude Code sẽ thực hiện toàn bộ quy trình làm việc, bao gồm cả việc yêu cầu các đầu vào bắt buộc như ngày tháng.</p>
+<p><strong>Điều hướng cơ sở mã cho nhân viên mới</strong></p>
+<p>Khi các nhà khoa học dữ liệu mới gia nhập nhóm, họ được hướng dẫn sử dụng Claude Code để điều hướng cơ sở mã khổng lồ của họ. Claude Code đọc các tệp Claude.md của họ (tài liệu), xác định các tệp liên quan cho các tác vụ cụ thể, giải thích sự phụ thuộc của quy trình dữ liệu và giúp người mới hiểu những nguồn ngược dòng nào cung cấp dữ liệu cho trang tổng quan. Điều này thay thế các danh mục dữ liệu và công cụ khám phá truyền thống.</p>
+<p><strong>Cập nhật tài liệu cuối phiên</strong></p>
+<p>Nhóm yêu cầu Claude Code tóm tắt các phiên làm việc đã hoàn thành và đề xuất các cải tiến vào cuối mỗi tác vụ. Điều này tạo ra một vòng lặp cải tiến liên tục, trong đó Claude Code giúp tinh chỉnh tài liệu Claude.md và hướng dẫn quy trình làm việc dựa trên mức sử dụng thực tế, làm cho các lần lặp lại tiếp theo hiệu quả hơn.</p>
+<p><strong>Quản lý tác vụ song song trên nhiều phiên bản</strong></p>
+<p>Khi làm việc trên các tác vụ dữ liệu chạy dài, nhóm sẽ mở nhiều phiên bản Claude Code trong các kho lưu trữ khác nhau cho các dự án khác nhau. Mỗi phiên bản duy trì đầy đủ ngữ cảnh, vì vậy khi họ chuyển đổi trở lại sau vài giờ hoặc vài ngày, Claude Code sẽ nhớ chính xác những gì họ đang làm và nơi họ đã dừng lại, cho phép quản lý quy trình làm việc song song thực sự mà không làm mất ngữ cảnh.</p>
+<h3 id="tác-động-của-nhóm">Tác động của nhóm</h3>
+<p><strong>Giải quyết các vấn đề về cơ sở hạ tầng mà không cần chuyên môn hóa</strong></p>
+<p>Giải quyết các vấn đề về cụm Kubernetes mà thông thường sẽ yêu cầu kéo các thành viên nhóm hệ thống hoặc mạng vào, sử dụng Claude Code để chẩn đoán các vấn đề và cung cấp các bản sửa lỗi chính xác.</p>
+<p><strong>Tăng tốc quá trình làm quen</strong></p>
+<p>Các nhà phân tích dữ liệu và thành viên nhóm mới có thể nhanh chóng hiểu các hệ thống phức tạp và đóng góp ý nghĩa mà không cần hướng dẫn mở rộng.</p>
+<p><strong>Quy trình làm việc hỗ trợ nâng cao</strong></p>
+<p>Claude Code có thể xử lý khối lượng dữ liệu lớn hơn nhiều và xác định các điểm bất thường (như giám sát 200 bảng điều khiển) mà con người không thể xem xét thủ công.</p>
+<p><strong>Cho phép tự phục vụ giữa các nhóm</strong></p>
+<p>Các nhóm tài chính không có kinh nghiệm viết mã giờ đây có thể thực hiện các quy trình làm việc dữ liệu phức tạp một cách độc lập.</p>
+<h3 id="lời-khuyên-hàng-đầu-từ-nhóm-cơ-sở-hạ-tầng-dữ-liệu">Lời khuyên hàng đầu từ nhóm Cơ sở hạ tầng dữ liệu</h3>
+<p><strong>Viết các tệp Claude.md chi tiết</strong></p>
+<p>Theo nhóm, bạn càng ghi lại quy trình làm việc, công cụ và kỳ vọng của mình trong các tệp Claude.md, Claude Code sẽ hoạt động càng tốt. Điều này làm cho Claude Code vượt trội trong các tác vụ thông thường như thiết lập các quy trình dữ liệu mới khi bạn có các mẫu thiết kế hiện có.</p>
+<p><strong>Sử dụng máy chủ MCP thay vì CLI cho dữ liệu nhạy cảm</strong></p>
+<p>Họ khuyên bạn nên sử dụng máy chủ MCP thay vì BigQuery CLI để duy trì khả năng kiểm soát bảo mật tốt hơn đối với những gì Claude Code có thể truy cập, đặc biệt là để xử lý dữ liệu nhạy cảm cần ghi nhật ký hoặc có khả năng gây ra các vấn đề về quyền riêng tư.</p>
+<p><strong>Chia sẻ các phiên sử dụng nhóm</strong></p>
+<p>Nhóm đã tổ chức các phiên mà các thành viên trình diễn quy trình làm việc Claude Code của họ cho nhau. Điều này giúp lan truyền các phương pháp hay nhất và cho thấy những cách khác nhau để sử dụng công cụ mà họ có thể không tự mình khám phá ra.</p>
+<h2 id="claude-code-cho-phát-triển-sản-phẩm">Claude Code cho phát triển sản phẩm</h2>
+<p>Nhóm Phát triển Sản phẩm Claude Code sử dụng sản phẩm của riêng họ để xây dựng các bản cập nhật cho Claude Code, mở rộng khả năng doanh nghiệp và chức năng vòng lặp của tác nhân của sản phẩm.</p>
+<h3 id="các-trường-hợp-sử-dụng-claude-code-chính-1">Các trường hợp sử dụng Claude Code chính</h3>
+<p><strong>Tạo mẫu nhanh với chế độ tự động chấp nhận</strong></p>
+<p>Các kỹ sư sử dụng Claude Code để tạo mẫu nhanh bằng cách bật &ldquo;chế độ tự động chấp nhận&rdquo; (shift+tab) và thiết lập các vòng lặp tự động, trong đó Claude viết mã, chạy thử nghiệm và lặp lại liên tục. Họ đưa cho Claude những vấn đề trừu tượng mà họ không quen thuộc, để nó hoạt động tự động, sau đó xem xét giải pháp đã hoàn thành 80% trước khi tiếp quản để tinh chỉnh lần cuối. Nhóm gợi ý bắt đầu từ trạng thái git sạch và cam kết các điểm kiểm tra thường xuyên để họ có thể dễ dàng hoàn nguyên bất kỳ thay đổi không chính xác nào nếu Claude đi sai hướng.</p>
+<p><strong>Mã hóa đồng bộ cho các tính năng cốt lõi</strong></p>
+<p>Đối với các tính năng quan trọng hơn chạm vào logic nghiệp vụ của ứng dụng, nhóm sẽ làm việc đồng bộ với Claude Code, đưa ra các lời nhắc chi tiết với các hướng dẫn triển khai cụ thể. Họ theo dõi quá trình trong thời gian thực để đảm bảo chất lượng mã, tuân thủ hướng dẫn kiểu và kiến trúc phù hợp, đồng thời cho phép Claude xử lý công việc viết mã lặp đi lặp lại.</p>
+<p><strong>Xây dựng chế độ Vim</strong></p>
+<p>Một trong những dự án không đồng bộ thành công nhất của họ là triển khai các liên kết phím Vim cho Claude Code. Họ yêu cầu Claude xây dựng toàn bộ tính năng và khoảng 70% quá trình triển khai cuối cùng đến từ công việc tự động của Claude, chỉ yêu cầu một vài lần lặp lại để hoàn thành.</p>
+<p><strong>Tạo thử nghiệm và sửa lỗi</strong></p>
+<p>Nhóm sử dụng Claude Code để viết các thử nghiệm toàn diện sau khi triển khai các tính năng và xử lý các bản sửa lỗi đơn giản được xác định trong các bài đánh giá yêu cầu kéo. Họ cũng sử dụng GitHub Actions để Claude tự động giải quyết các nhận xét Yêu cầu kéo như các vấn đề về định dạng hoặc đổi tên hàm.</p>
+<p><strong>Khám phá cơ sở mã</strong></p>
+<p>Khi làm việc với các cơ sở mã không quen thuộc (như monorepo hoặc phía API), nhóm sử dụng Claude Code để nhanh chóng hiểu cách hệ thống hoạt động. Thay vì chờ đợi các phản hồi trên Slack, họ hỏi trực tiếp Claude để được giải thích và tham khảo mã, tiết kiệm đáng kể thời gian chuyển đổi ngữ cảnh.</p>
+<h3 id="tác-động-của-nhóm-1">Tác động của nhóm</h3>
+<p><strong>Triển khai tính năng nhanh hơn</strong></p>
+<p>Claude Code đã triển khai thành công các tính năng phức tạp như chế độ Vim với 70% mã được viết tự động bởi Claude.</p>
+<p><strong>Cải thiện tốc độ phát triển</strong></p>
+<p>Công cụ này nhanh chóng tạo mẫu các tính năng và lặp lại các ý tưởng mà không bị sa lầy vào các chi tiết triển khai.</p>
+<p><strong>Nâng cao chất lượng mã thông qua thử nghiệm tự động</strong></p>
+<p>Claude tạo ra các thử nghiệm toàn diện và xử lý các bản sửa lỗi thông thường, duy trì các tiêu chuẩn cao đồng thời giảm nỗ lực thủ công.</p>
+<p><strong>Khám phá cơ sở mã tốt hơn</strong></p>
+<p>Các thành viên nhóm nhanh chóng nắm bắt các phần không quen thuộc của monorepo mà không cần chờ đợi phản hồi của đồng nghiệp.</p>
+<h3 id="lời-khuyên-hàng-đầu-từ-nhóm-claude-code">Lời khuyên hàng đầu từ nhóm Claude Code</h3>
+<p><strong>Tạo các vòng lặp tự cung tự cấp</strong></p>
+<p>Thiết lập Claude để xác minh công việc của chính nó bằng cách tự động chạy các bản dựng, thử nghiệm và lint. Điều này cho phép Claude hoạt động tự động lâu hơn và bắt lỗi của chính mình, đặc biệt hiệu quả khi bạn yêu cầu Claude tạo thử nghiệm trước khi viết mã.</p>
+<p><strong>Phát triển trực giác phân loại tác vụ</strong></p>
+<p>Học cách phân biệt giữa các tác vụ hoạt động tốt không đồng bộ (các tính năng ngoại vi, tạo mẫu) so với những tác vụ cần giám sát đồng bộ (logic nghiệp vụ cốt lõi, bản sửa lỗi quan trọng). Các tác vụ trừu tượng ở rìa sản phẩm có thể được xử lý bằng &ldquo;chế độ tự động chấp nhận&rdquo;, trong khi chức năng cốt lõi yêu cầu giám sát chặt chẽ hơn.</p>
+<p><strong>Hình thành các lời nhắc rõ ràng, chi tiết</strong></p>
+<p>Khi các thành phần có tên hoặc chức năng tương tự nhau, hãy cực kỳ cụ thể trong các yêu cầu của bạn. Lời nhắc của bạn càng tốt và chi tiết, bạn càng có thể tin tưởng Claude làm việc độc lập mà không có những thay đổi bất ngờ đối với các phần sai của cơ sở mã.</p>
+<h2 id="claude-code-cho-kỹ-thuật-bảo-mật">Claude Code cho kỹ thuật bảo mật</h2>
+<p>Nhóm Kỹ thuật Bảo mật tập trung vào việc bảo mật vòng đời phát triển phần mềm, bảo mật chuỗi cung ứng và bảo mật môi trường phát triển. Họ sử dụng Claude Code rộng rãi để viết và gỡ lỗi mã.</p>
+<h3 id="các-trường-hợp-sử-dụng-claude-code-chính-2">Các trường hợp sử dụng Claude Code chính</h3>
+<p><strong>Gỡ lỗi cơ sở hạ tầng phức tạp</strong></p>
+<p>Khi làm việc trên các sự cố, họ đưa Claude Code các dấu vết ngăn xếp và tài liệu, yêu cầu nó theo dõi luồng điều khiển thông qua cơ sở mã. Điều này làm giảm đáng kể thời gian giải quyết các vấn đề sản xuất, cho phép họ hiểu các vấn đề mà thông thường sẽ mất 10-15 phút quét mã thủ công trong khoảng 5 phút.</p>
+<p><strong>Đánh giá và phân tích mã Terraform</strong></p>
+<p>Đối với các thay đổi cơ sở hạ tầng yêu cầu phê duyệt bảo mật, nhóm sẽ sao chép các kế hoạch Terraform vào Claude Code để hỏi &ldquo;điều này sẽ làm gì? Tôi có hối tiếc về điều này không?&rdquo; Điều này tạo ra các vòng phản hồi chặt chẽ hơn và giúp nhóm bảo mật dễ dàng xem xét và phê duyệt các thay đổi cơ sở hạ tầng một cách nhanh chóng, giảm tắc nghẽn trong quá trình phát triển.</p>
+<p><strong>Tổng hợp tài liệu và sổ tay chạy</strong></p>
+<p>Claude Code tiếp nhận nhiều nguồn tài liệu và tạo sổ tay chạy markdown, hướng dẫn khắc phục sự cố và tổng quan. Nhóm sử dụng các tài liệu cô đọng này làm ngữ cảnh để gỡ lỗi các vấn đề thực tế, tạo ra một quy trình làm việc hiệu quả hơn so với việc tìm kiếm thông qua toàn bộ cơ sở kiến thức.</p>
+<p><strong>Quy trình làm việc phát triển theo hướng thử nghiệm</strong></p>
+<p>Thay vì mẫu &ldquo;tài liệu thiết kế → mã janky → tái cấu trúc → từ bỏ thử nghiệm&rdquo; trước đây của họ, giờ đây họ yêu cầu Claude Code mã giả, hướng dẫn nó thông qua quá trình phát triển theo hướng thử nghiệm và định kỳ kiểm tra để điều khiển nó khi gặp khó khăn, dẫn đến mã đáng tin cậy và có thể kiểm tra hơn.</p>
+<p><strong>Chuyển đổi ngữ cảnh và làm quen dự án</strong></p>
+<p>Khi đóng góp cho các dự án hiện có như &ldquo;dependant&rdquo; (một ứng dụng web cho quy trình phê duyệt bảo mật), họ sử dụng Claude Code để viết, xem xét và thực thi các thông số kỹ thuật được viết bằng markdown và được lưu trữ trong cơ sở mã, cho phép các đóng góp có ý nghĩa trong vòng vài ngày thay vì vài tuần.</p>
+<h3 id="tác-động-của-nhóm-2">Tác động của nhóm</h3>
+<p><strong>Giảm thời gian giải quyết sự cố</strong></p>
+<p>Việc gỡ lỗi cơ sở hạ tầng mà thông thường mất 10-15 phút quét mã thủ công giờ đây chỉ mất khoảng 5 phút.</p>
+<p><strong>Cải thiện chu kỳ đánh giá bảo mật</strong></p>
+<p>Các bài đánh giá mã Terraform để phê duyệt bảo mật diễn ra nhanh hơn nhiều, loại bỏ các khối nhà phát triển trong khi chờ phê duyệt của nhóm bảo mật.</p>
+<p><strong>Đóng góp đa chức năng nâng cao</strong></p>
+<p>Các thành viên nhóm có thể đóng góp có ý nghĩa cho các dự án trong vòng vài ngày thay vì vài tuần xây dựng ngữ cảnh.</p>
+<p><strong>Quy trình làm việc tài liệu tốt hơn</strong></p>
+<p>Các hướng dẫn khắc phục sự cố tổng hợp và sổ tay chạy từ nhiều nguồn tạo ra các quy trình gỡ lỗi hiệu quả hơn.</p>
+<h3 id="lời-khuyên-hàng-đầu-từ-nhóm-kỹ-thuật-bảo-mật">Lời khuyên hàng đầu từ nhóm Kỹ thuật Bảo mật</h3>
+<p><strong>Sử dụng rộng rãi các lệnh dấu gạch chéo tùy chỉnh</strong></p>
+<p>Kỹ thuật bảo mật sử dụng 50% tất cả các triển khai lệnh dấu gạch chéo tùy chỉnh trong toàn bộ monorepo. Các lệnh tùy chỉnh này hợp lý hóa các quy trình làm việc cụ thể và tăng tốc các tác vụ lặp đi lặp lại.</p>
+<p><strong>Hãy để Claude nói trước</strong></p>
+<p>Thay vì đặt các câu hỏi có mục tiêu để tạo các đoạn mã, giờ đây họ yêu cầu Claude Code &ldquo;cam kết công việc của bạn khi bạn thực hiện&rdquo; và để nó hoạt động tự động với các lần kiểm tra định kỳ, dẫn đến các giải pháp toàn diện hơn.</p>
+<p><strong>Tận dụng nó để làm tài liệu</strong></p>
+<p>Ngoài việc viết mã, Claude Code còn vượt trội trong việc tổng hợp tài liệu và tạo ra các đầu ra có cấu trúc. Nhóm cung cấp các mẫu viết và tùy chọn định dạng để nhận các tài liệu mà họ có thể sử dụng ngay lập tức trong Slack, Google Docs và các công cụ khác để tránh mệt mỏi khi chuyển đổi giao diện.</p>
+<h2 id="claude-code-cho-suy-luận">Claude Code cho suy luận</h2>
+<p>Nhóm Suy luận quản lý hệ thống bộ nhớ lưu trữ thông tin trong khi Claude đọc lời nhắc của bạn và tạo ra phản hồi của nó. Các thành viên trong nhóm, đặc biệt là những người mới làm quen với học máy, có thể sử dụng Claude Code rộng rãi để thu hẹp khoảng cách kiến thức đó và tăng tốc công việc của họ.</p>
+<h3 id="các-trường-hợp-sử-dụng-claude-code-chính-3">Các trường hợp sử dụng Claude Code chính</h3>
+<p><strong>Hiểu và làm quen cơ sở mã</strong></p>
+<p>Nhóm dựa rất nhiều vào Claude Code để nhanh chóng hiểu kiến trúc khi tham gia một cơ sở mã phức tạp. Thay vì tìm kiếm thủ công các kho lưu trữ GitHub, họ yêu cầu Claude tìm các tệp nào gọi các chức năng cụ thể, nhận kết quả trong vài giây thay vì hỏi đồng nghiệp hoặc tìm kiếm thủ công.</p>
+<p><strong>Tạo thử nghiệm đơn vị với phạm vi bao phủ trường hợp biên</strong></p>
+<p>Sau khi viết chức năng cốt lõi, họ yêu cầu Claude viết các thử nghiệm đơn vị toàn diện. Claude tự động bao gồm các trường hợp biên bị bỏ lỡ, hoàn thành những gì thông thường sẽ mất một lượng thời gian và năng lượng tinh thần đáng kể trong vài phút, hoạt động như một trợ lý viết mã mà họ có thể xem xét.</p>
+<p><strong>Giải thích khái niệm học máy</strong></p>
+<p>Các thành viên nhóm không có nền tảng về học máy dựa vào Claude để giải thích các chức năng và cài đặt cụ thể của mô hình. Những gì sẽ yêu cầu một giờ tìm kiếm trên Google và đọc tài liệu giờ đây chỉ mất 10-20 phút, giảm 80% thời gian nghiên cứu.</p>
+<p><strong>Dịch mã đa ngôn ngữ</strong></p>
+<p>Khi kiểm tra chức năng bằng các ngôn ngữ lập trình khác nhau, nhóm giải thích những gì họ muốn kiểm tra và Claude viết logic bằng ngôn ngữ cần thiết (như Rust), loại bỏ nhu cầu học các ngôn ngữ mới chỉ cho mục đích kiểm tra.</p>
+<p><strong>Thu hồi lệnh và quản lý Kubernetes</strong></p>
+<p>Thay vì ghi nhớ các lệnh Kubernetes phức tạp, họ yêu cầu Claude cú pháp chính xác, như &ldquo;làm cách nào để lấy tất cả các pod hoặc trạng thái triển khai&rdquo; và nhận các lệnh chính xác cần thiết cho công việc cơ sở hạ tầng của họ.</p>
+<h3 id="tác-động-của-nhóm-3">Tác động của nhóm</h3>
+<p><strong>Tăng tốc học khái niệm ML</strong></p>
+<p>Với Claude Code, thời gian nghiên cứu của họ giảm 80% và những gì trước đây mất một giờ tìm kiếm trên Google giờ đây chỉ mất 10-20 phút.</p>
+<p><strong>Điều hướng cơ sở mã nhanh hơn</strong></p>
+<p>Công cụ này có thể giúp các thành viên nhóm tìm các tệp liên quan và hiểu kiến trúc hệ thống trong vài giây thay vì phải dựa vào đồng nghiệp để chia sẻ kiến thức, thường là trong vài ngày.</p>
+<p><strong>Phạm vi bao phủ thử nghiệm toàn diện</strong></p>
+<p>Claude tự động tạo ra các thử nghiệm đơn vị với các trường hợp biên, giảm bớt gánh nặng tinh thần đồng thời duy trì chất lượng mã.</p>
+<p><strong>Loại bỏ rào cản ngôn ngữ</strong></p>
+<p>Nhóm có thể triển khai chức năng bằng các ngôn ngữ không quen thuộc như Rust mà không cần phải học nó.</p>
+<h3 id="lời-khuyên-hàng-đầu-từ-nhóm-suy-luận">Lời khuyên hàng đầu từ nhóm Suy luận</h3>
+<p><strong>Kiểm tra chức năng cơ sở kiến thức trước</strong></p>
+<p>Hãy thử đặt nhiều câu hỏi khác nhau để xem Claude có thể trả lời nhanh hơn tìm kiếm trên Google không. Nếu nhanh hơn và chính xác hơn, thì đó là một công cụ tiết kiệm thời gian có giá trị cho quy trình làm việc của bạn.</p>
+<p><strong>Bắt đầu với việc tạo mã</strong></p>
+<p>Đưa cho Claude các hướng dẫn cụ thể và yêu cầu nó viết logic, sau đó xác minh tính chính xác. Điều này giúp xây dựng niềm tin vào khả năng của công cụ trước khi sử dụng nó cho các tác vụ phức tạp hơn.</p>
+<p><strong>Sử dụng nó để viết thử nghiệm</strong></p>
+<p>Việc Claude viết các thử nghiệm đơn vị giúp giảm bớt áp lực đáng kể từ công việc phát triển hàng ngày. Sử dụng tính năng này để duy trì chất lượng mã mà không tốn thời gian suy nghĩ thông qua tất cả các trường hợp thử nghiệm một cách thủ công.</p>
+<h2 id="claude-code-cho-khoa-học-dữ-liệu-và-kỹ-thuật-ml">Claude Code cho khoa học dữ liệu và kỹ thuật ML</h2>
+<p>Các nhóm Khoa học Dữ liệu và Kỹ thuật ML cần các công cụ trực quan hóa phức tạp để hiểu hiệu suất mô hình, nhưng việc xây dựng các công cụ này thường đòi hỏi chuyên môn về các ngôn ngữ và khung không quen thuộc. Claude Code cho phép các nhóm này xây dựng bảng điều khiển phân tích chất lượng sản xuất mà không trở thành nhà phát triển full-stack.</p>
+<h3 id="các-trường-hợp-sử-dụng-claude-code-chính-4">Các trường hợp sử dụng Claude Code chính</h3>
+<p><strong>Xây dựng các ứng dụng bảng điều khiển JavaScript/TypeScript</strong></p>
+<p>Mặc dù biết &ldquo;rất ít JavaScript và TypeScript&rdquo;, nhóm sử dụng Claude Code để xây dựng toàn bộ các ứng dụng React để trực quan hóa hiệu suất mô hình Học tăng cường (RL) và dữ liệu huấn luyện. Họ cho phép Claude kiểm soát để viết các ứng dụng đầy đủ từ đầu, như một ứng dụng TypeScript 5.000 dòng, mà không cần phải hiểu mã. Điều này rất quan trọng vì các ứng dụng trực quan hóa có ngữ cảnh tương đối thấp và không yêu cầu hiểu toàn bộ monorepo, cho phép tạo mẫu nhanh các công cụ để hiểu hiệu suất mô hình trong quá trình huấn luyện và đánh giá.</p>
+<p><strong>Xử lý các tác vụ tái cấu trúc lặp đi lặp lại</strong></p>
+<p>Khi đối mặt với các xung đột hợp nhất hoặc tái cấu trúc tệp bán phức tạp quá phức tạp đối với macro trình chỉnh sửa nhưng không đủ lớn cho nỗ lực phát triển lớn, họ sử dụng Claude Code như một &ldquo;máy đánh bạc&rdquo; - cam kết trạng thái của họ, để Claude hoạt động tự động trong 30 phút và chấp nhận giải pháp hoặc khởi động lại mới nếu nó không hoạt động.</p>
+<p><strong>Tạo các công cụ phân tích liên tục thay vì các sổ ghi chú dùng một lần</strong></p>
+<p>Thay vì xây dựng các sổ ghi chú Jupyter một lần bị loại bỏ, nhóm giờ đây có Claude xây dựng các bảng điều khiển React vĩnh viễn có thể được sử dụng lại trên các đánh giá mô hình trong tương lai. Điều này rất quan trọng vì việc hiểu hiệu suất của Claude là &ldquo;một trong những điều quan trọng nhất đối với nhóm&rdquo; - họ cần hiểu cách các mô hình hoạt động trong quá trình huấn luyện và đánh giá, điều này &ldquo;thực sự không tầm thường và các công cụ đơn giản không thể nhận được quá nhiều tín hiệu từ việc nhìn vào một con số duy nhất tăng lên.&rdquo;</p>
+<p><strong>Ủy quyền tác vụ không phụ thuộc</strong></p>
+<p>Đối với các tác vụ trong các cơ sở mã hoặc ngôn ngữ hoàn toàn không quen thuộc, họ ủy quyền toàn bộ quá trình triển khai cho Claude Code, tận dụng khả năng của nó để thu thập ngữ cảnh từ monorepo và thực hiện các tác vụ mà không cần sự tham gia của họ vào quá trình viết mã thực tế. Điều này cho phép năng suất trong các lĩnh vực bên ngoài chuyên môn của họ thay vì tốn thời gian học các công nghệ mới.</p>
+<h3 id="tác-động-của-nhóm-4">Tác động của nhóm</h3>
+<p><strong>Tiết kiệm thời gian gấp 2-4 lần</strong></p>
+<p>Các tác vụ tái cấu trúc thông thường mà trước đây tẻ nhạt nhưng có thể quản lý được theo cách thủ công giờ đây được hoàn thành nhanh hơn nhiều.</p>
+<p><strong>Xây dựng các ứng dụng phức tạp bằng các ngôn ngữ không quen thuộc</strong></p>
+<p>Đã tạo các ứng dụng TypeScript 5.000 dòng mặc dù có kinh nghiệm JavaScript/TypeScript tối thiểu.</p>
+<p><strong>Chuyển đổi từ các công cụ dùng một lần sang các công cụ liên tục</strong></p>
+<p>Thay vì các sổ ghi chú Jupyter dùng một lần, giờ đây xây dựng các bảng điều khiển React có thể tái sử dụng để phân tích mô hình.</p>
+<p><strong>Thông tin chi tiết cải thiện mô hình trực tiếp</strong></p>
+<p>Kinh nghiệm Claude Code trực tiếp thông báo cho việc phát triển các hệ thống bộ nhớ tốt hơn và các cải tiến UX cho các lần lặp lại mô hình trong tương lai.</p>
+<p><strong>Cho phép đưa ra quyết định dựa trên hình dung</strong></p>
+<p>Hiểu rõ hơn về hiệu suất của Claude trong quá trình huấn luyện và đánh giá thông qua các công cụ trực quan hóa dữ liệu nâng cao.</p>
+<h3 id="lời-khuyên-hàng-đầu-từ-các-nhóm-khoa-học-dữ-liệu-và-kỹ-thuật-ml">Lời khuyên hàng đầu từ các nhóm Khoa học Dữ liệu và Kỹ thuật ML</h3>
+<p><strong>Đối xử với nó như một máy đánh bạc</strong></p>
+<p>Lưu trạng thái của bạn trước khi để Claude hoạt động, để nó chạy trong 30 phút, sau đó chấp nhận kết quả hoặc bắt đầu lại mới thay vì cố gắng vật lộn với các chỉnh sửa. Bắt đầu lại thường có tỷ lệ thành công cao hơn so với việc cố gắng sửa chữa các lỗi của Claude.</p>
+<p><strong>Ngắt để đơn giản khi cần thiết</strong></p>
+<p>Trong khi giám sát, đừng ngần ngại dừng Claude và hỏi &ldquo;tại sao bạn lại làm điều này? Hãy thử một cái gì đó đơn giản hơn.&rdquo; Mô hình có xu hướng các giải pháp phức tạp hơn theo mặc định nhưng phản hồi tốt với các yêu cầu về các phương pháp tiếp cận đơn giản hơn.</p>
+<h2 id="claude-code-cho-kỹ-thuật-sản-phẩm">Claude Code cho kỹ thuật sản phẩm</h2>
+<p>Nhóm Kỹ thuật Sản phẩm làm việc trên các tính năng như hỗ trợ PDF, trích dẫn và tìm kiếm trên web để đưa thêm kiến thức vào cửa sổ ngữ cảnh của Claude. Làm việc trên các cơ sở mã lớn, phức tạp có nghĩa là liên tục gặp phải các phần mã không quen thuộc, dành nhiều thời gian để hiểu những tệp nào cần kiểm tra cho bất kỳ tác vụ nào và xây dựng ngữ cảnh trước khi thực hiện thay đổi. Claude Code cải thiện trải nghiệm này bằng cách đóng vai trò là hướng dẫn có thể giúp họ hiểu kiến trúc hệ thống, xác định các tệp liên quan và giải thích các tương tác phức tạp.</p>
+<h3 id="các-trường-hợp-sử-dụng-claude-code-chính-5">Các trường hợp sử dụng Claude Code chính</h3>
+<p><strong>Lập kế hoạch quy trình làm việc bước đầu tiên</strong></p>
+<p>Nhóm sử dụng Claude Code làm &ldquo;điểm dừng đầu tiên&rdquo; của họ cho bất kỳ tác vụ nào, yêu cầu nó xác định những tệp nào cần kiểm tra để sửa lỗi, phát triển tính năng hoặc phân tích. Điều này thay thế quy trình tốn thời gian truyền thống là điều hướng thủ công cơ sở mã và thu thập ngữ cảnh trước khi bắt đầu công việc.</p>
+<p><strong>Gỡ lỗi độc lập trên các cơ sở mã</strong></p>
+<p>Nhóm giờ đây tự tin giải quyết các lỗi trong các phần không quen thuộc của cơ sở mã thay vì yêu cầu người khác giúp đỡ. Họ có thể hỏi Claude &ldquo;bạn có nghĩ rằng bạn có thể sửa lỗi này không? Đây là hành vi tôi đang thấy&rdquo; và thường đạt được tiến bộ ngay lập tức, điều mà trước đây không khả thi do yêu cầu đầu tư thời gian.</p>
+<p><strong>Kiểm tra lặp lại mô hình thông qua dogfooding</strong></p>
+<p>Claude Code tự động sử dụng các ảnh chụp nhanh mô hình nghiên cứu mới nhất, biến nó trở thành cách chính để họ trải nghiệm các thay đổi của mô hình. Điều này cung cấp cho nhóm phản hồi trực tiếp về những thay đổi về hành vi của mô hình trong các chu kỳ phát triển, điều mà họ chưa từng trải qua trong các lần ra mắt trước đây.</p>
+<p><strong>Loại bỏ chi phí chuyển đổi ngữ cảnh</strong></p>
+<p>Thay vì sao chép các đoạn mã và kéo các tệp vào Claude.ai trong khi giải thích các vấn đề một cách rộng rãi, họ có thể đặt câu hỏi trực tiếp trong Claude Code mà không cần thu thập thêm ngữ cảnh, giảm đáng kể chi phí tinh thần.</p>
+<h3 id="tác-động-của-nhóm-5">Tác động của nhóm</h3>
+<p><strong>Tăng sự tự tin trong việc giải quyết các lĩnh vực không quen thuộc</strong></p>
+<p>Các thành viên nhóm có thể độc lập gỡ lỗi và điều tra các sự cố trong các cơ sở mã không quen thuộc.</p>
+<p><strong>Tiết kiệm đáng kể thời gian thu thập ngữ cảnh</strong></p>
+<p>Claude Code đã loại bỏ chi phí sao chép các đoạn mã và kéo các tệp vào Claude.ai, giảm gánh nặng chuyển đổi ngữ cảnh tinh thần.</p>
+<p><strong>Làm quen luân phiên nhanh hơn</strong></p>
+<p>Các kỹ sư luân phiên đến các nhóm mới có thể nhanh chóng điều hướng các cơ sở mã không quen thuộc và đóng góp ý nghĩa mà không cần tư vấn rộng rãi với đồng nghiệp.</p>
+<p><strong>Nâng cao hạnh phúc của nhà phát triển</strong></p>
+<p>Nhóm báo cáo cảm thấy hạnh phúc hơn và làm việc hiệu quả hơn với ít ma sát hơn trong quy trình làm việc hàng ngày của họ.</p>
+<h3 id="lời-khuyên-hàng-đầu-từ-nhóm-kỹ-thuật-sản-phẩm">Lời khuyên hàng đầu từ nhóm Kỹ thuật Sản phẩm</h3>
+<p><strong>Đối xử với nó như một đối tác lặp đi lặp lại, không phải là một giải pháp một lần</strong></p>
+<p>Thay vì mong đợi Claude giải quyết các vấn đề ngay lập tức, hãy tiếp cận nó như một cộng tác viên mà bạn lặp lại cùng. Điều này hoạt động tốt hơn là cố gắng đạt được các giải pháp hoàn hảo ngay lần thử đầu tiên.</p>
+<p><strong>Sử dụng nó để xây dựng sự tự tin trong các lĩnh vực không quen thuộc</strong></p>
+<p>Đừng ngần ngại giải quyết các lỗi hoặc điều tra các sự cố bên ngoài chuyên môn của bạn. Claude Code giúp bạn có thể làm việc độc lập trong các lĩnh vực mà thông thường sẽ yêu cầu xây dựng ngữ cảnh mở rộng.</p>
+<p><strong>Bắt đầu với thông tin tối thiểu</strong></p>
+<p>Bắt đầu chỉ với những thứ tối thiểu bạn cần và để Claude hướng dẫn bạn qua quy trình, thay vì tải trước các giải thích mở rộng.</p>
+<h2 id="claude-code-cho-tiếp-thị-tăng-trưởng">Claude Code cho tiếp thị tăng trưởng</h2>
+<p>Nhóm Tiếp thị Tăng trưởng tập trung vào việc xây dựng các kênh tiếp thị hiệu suất trên các kênh tìm kiếm có trả phí, mạng xã hội có trả phí, cửa hàng ứng dụng di động, tiếp thị qua email và SEO. Là một nhóm không chuyên về kỹ thuật gồm một người, họ sử dụng Claude Code để tự động hóa các tác vụ tiếp thị lặp đi lặp lại và tạo ra các quy trình làm việc của tác nhân mà thông thường sẽ yêu cầu các nguồn lực kỹ thuật đáng kể.</p>
+<h3 id="các-trường-hợp-sử-dụng-claude-code-chính-6">Các trường hợp sử dụng Claude Code chính</h3>
+<p><strong>Tạo quảng cáo Google tự động</strong></p>
+<p>Nhóm đã xây dựng một quy trình làm việc của tác nhân xử lý các tệp CSV chứa hàng trăm quảng cáo hiện có với các số liệu hiệu suất, xác định các quảng cáo hoạt động kém để lặp lại và tạo ra các biến thể mới đáp ứng các giới hạn ký tự nghiêm ngặt (30 ký tự cho tiêu đề, 90 cho mô tả). Sử dụng hai tác nhân phụ chuyên biệt (một cho tiêu đề, một cho mô tả), hệ thống có thể tạo ra hàng trăm quảng cáo mới trong vài phút thay vì yêu cầu tạo thủ công trên nhiều chiến dịch. Điều này đã cho phép họ kiểm tra và lặp lại ở quy mô lớn, điều mà trước đây sẽ mất một lượng thời gian đáng kể để đạt được.</p>
+<p><strong>Plugin Figma để sản xuất hàng loạt sáng tạo</strong></p>
+<p>Thay vì sao chép và chỉnh sửa thủ công các hình ảnh tĩnh cho quảng cáo trên mạng xã hội có trả phí, họ đã phát triển một plugin Figma xác định các khung và tạo theo chương trình tối đa 100 biến thể quảng cáo bằng cách hoán đổi tiêu đề và mô tả, giảm những gì sẽ mất hàng giờ sao chép và dán xuống còn nửa giây cho mỗi lô. Điều này cho phép đầu ra sáng tạo gấp 10 lần, cho phép nhóm kiểm tra nhiều biến thể sáng tạo hơn trên các kênh xã hội chính.</p>
+<p><strong>Máy chủ Meta Ads MCP để phân tích chiến dịch</strong></p>
+<p>Họ đã tạo một máy chủ MCP được tích hợp với Meta Ads API để truy vấn hiệu suất chiến dịch, dữ liệu chi tiêu và hiệu quả quảng cáo trực tiếp trong ứng dụng Claude Desktop, loại bỏ nhu cầu chuyển đổi giữa các nền tảng để phân tích hiệu suất, tiết kiệm thời gian quan trọng, trong đó mọi mức tăng hiệu quả đều chuyển thành ROI tốt hơn.</p>
+<p><strong>Kỹ thuật lời nhắc nâng cao với hệ thống bộ nhớ</strong></p>
+<p>Họ đã triển khai một hệ thống bộ nhớ sơ khai ghi lại các giả thuyết và thử nghiệm trên các lần lặp lại quảng cáo, cho phép hệ thống kéo các kết quả kiểm tra trước đó vào ngữ cảnh khi tạo các biến thể mới, tạo ra một khung kiểm tra tự cải thiện. Điều này cho phép thử nghiệm có hệ thống mà không thể theo dõi thủ công.</p>
+<h3 id="tác-động-của-nhóm-6">Tác động của nhóm</h3>
+<p><strong>Tiết kiệm thời gian đáng kể cho các tác vụ lặp đi lặp lại</strong></p>
+<p>Claude Code đã giảm thời gian tạo bản sao quảng cáo từ 2 giờ xuống còn 15 phút, giải phóng nhóm cho công việc chiến lược hơn.</p>
+<p><strong>Tăng 10 lần đầu ra sáng tạo</strong></p>
+<p>Nhóm giờ đây có thể kiểm tra nhiều biến thể quảng cáo hơn trên các kênh với khả năng tạo quảng cáo tự động và tích hợp Figma để tìm nguồn các yếu tố thiết kế hình ảnh cập nhật.</p>
+<p><strong>Hoạt động như một nhóm lớn hơn</strong></p>
+<p>Nhóm có thể xử lý các tác vụ phát triển lớn mà theo truyền thống sẽ yêu cầu các nguồn lực kỹ thuật chuyên dụng.</p>
+<p><strong>Thay đổi trọng tâm chiến lược</strong></p>
+<p>Nhóm có thể dành nhiều thời gian hơn cho chiến lược tổng thể và xây dựng tự động hóa tác nhân thay vì thực hiện thủ công.</p>
+<h3 id="lời-khuyên-hàng-đầu-từ-nhóm-tiếp-thị-tăng-trưởng">Lời khuyên hàng đầu từ nhóm Tiếp thị Tăng trưởng</h3>
+<p><strong>Xác định các tác vụ lặp đi lặp lại được bật API</strong></p>
+<p>Tìm kiếm các quy trình làm việc liên quan đến các hành động lặp đi lặp lại với các công cụ có API (như nền tảng quảng cáo, công cụ thiết kế, nền tảng phân tích). Đây là những ứng cử viên hàng đầu để tự động hóa và là nơi Claude Code cung cấp nhiều giá trị nhất.</p>
+<p><strong>Chia nhỏ các quy trình làm việc phức tạp thành các tác nhân phụ chuyên biệt</strong></p>
+<p>Thay vì cố gắng xử lý mọi thứ trong một lời nhắc hoặc quy trình làm việc, hãy tạo các tác nhân riêng biệt cho các tác vụ cụ thể (như tác nhân tiêu đề so với tác nhân mô tả). Điều này giúp gỡ lỗi dễ dàng hơn và cải thiện chất lượng đầu ra khi xử lý các yêu cầu phức tạp.</p>
+<p><strong>Động não kỹ lưỡng và lên kế hoạch lời nhắc trước khi viết mã</strong></p>
+<p>Dành nhiều thời gian trả trước bằng cách sử dụng Claude.ai để suy nghĩ thông qua toàn bộ quy trình làm việc của bạn, sau đó yêu cầu Claude.ai tạo cấu trúc lời nhắc và mã toàn diện để Claude Code tham khảo. Ngoài ra, hãy làm việc từng bước thay vì yêu cầu các giải pháp một lần để tránh Claude bị choáng ngợp bởi các tác vụ phức tạp.</p>
+<h2 id="claude-code-cho-thiết-kế-sản-phẩm">Claude Code cho thiết kế sản phẩm</h2>
+<p>Nhóm Thiết kế Sản phẩm hỗ trợ Claude Code, Claude.ai và Anthropic API, chuyên xây dựng các sản phẩm AI. Ngay cả những người không phải là nhà phát triển cũng có thể sử dụng Claude Code để thu hẹp khoảng cách truyền thống giữa thiết kế và kỹ thuật, cho phép triển khai trực tiếp tầm nhìn thiết kế của họ mà không cần lặp lại rộng rãi với các kỹ sư.</p>
+<h3 id="các-trường-hợp-sử-dụng-claude-code-chính-7">Các trường hợp sử dụng Claude Code chính</h3>
+<p><strong>Thay đổi trạng thái và đánh bóng giao diện người dùng</strong></p>
+<p>Thay vì tạo tài liệu thiết kế mở rộng và trải qua nhiều vòng phản hồi với các kỹ sư cho các chỉnh sửa trực quan (kiểu chữ, màu sắc, khoảng cách), nhóm triển khai trực tiếp các thay đổi này bằng Claude Code. Các kỹ sư lưu ý rằng họ đang thực hiện &ldquo;những thay đổi lớn về quản lý trạng thái mà bạn thường không thấy một nhà thiết kế thực hiện&rdquo;, cho phép họ đạt được chất lượng chính xác như họ hình dung.</p>
+<p><strong>Hệ thống tạo vé tự động GitHub Actions</strong></p>
+<p>Sử dụng tích hợp GitHub của Claude Code, họ chỉ cần nộp các vấn đề/vé mô tả các thay đổi cần thiết và Claude tự động đề xuất các giải pháp mã mà không cần mở Claude Code, tạo ra một quy trình sửa lỗi và tinh chỉnh tính năng liền mạch cho danh sách tồn đọng các tác vụ đánh bóng liên tục của họ.</p>
+<p><strong>Tạo mẫu tương tác nhanh chóng</strong></p>
+<p>Bằng cách dán hình ảnh mô phỏng vào Claude Code, họ tạo ra các nguyên mẫu hoạt động đầy đủ mà các kỹ sư có thể hiểu và lặp lại ngay lập tức, thay thế chu kỳ thiết kế Figma tĩnh truyền thống yêu cầu giải thích và chuyển đổi mở rộng sang mã hoạt động.</p>
+<p><strong>Khám phá trường hợp biên và hiểu kiến trúc hệ thống</strong></p>
+<p>Nhóm sử dụng Claude Code để lập bản đồ các trạng thái lỗi, luồng logic và các trạng thái hệ thống khác nhau, cho phép họ xác định các trường hợp biên trong quá trình thiết kế thay vì khám phá chúng sau này trong quá trình phát triển, cải thiện đáng kể chất lượng thiết kế ban đầu của họ.</p>
+<p><strong>Thay đổi bản sao phức tạp và tuân thủ pháp lý</strong></p>
+<p>Đối với các tác vụ như xóa thông báo &ldquo;xem trước nghiên cứu&rdquo; trên toàn bộ cơ sở mã, họ sử dụng Claude Code để tìm tất cả các phiên bản, xem xét bản sao xung quanh, điều phối các thay đổi với pháp lý trong thời gian thực và triển khai các bản cập nhật, một quy trình mất hai cuộc gọi 30 phút thay vì một tuần phối hợp qua lại.</p>
+<h3 id="tác-động-của-nhóm-7">Tác động của nhóm</h3>
+<p><strong>Chuyển đổi quy trình làm việc cốt lõi</strong></p>
+<p>Claude Code đã trở thành một công cụ thiết kế chính, với Figma và Claude Code mở 80% thời gian.</p>
+<p><strong>Thực hiện nhanh hơn gấp 2-3 lần</strong></p>
+<p>Các thay đổi về quản lý hình ảnh và trạng thái mà trước đây yêu cầu trao đổi qua lại rộng rãi với các kỹ sư giờ đây được triển khai trực tiếp.</p>
+<p><strong>Thời gian chu kỳ từ tuần đến giờ</strong></p>
+<p>Các dự án phức tạp như thông báo ra mắt Google Analytics mà thông thường sẽ mất một tuần phối hợp giờ đây được hoàn thành trong hai cuộc gọi 30 phút.</p>
+<p><strong>Hai trải nghiệm người dùng khác biệt</strong></p>
+<p>Các nhà phát triển có được một &ldquo;quy trình làm việc tăng cường&rdquo; (thực hiện nhanh hơn), trong khi những người dùng không chuyên về kỹ thuật có được một &ldquo;quy trình làm việc chết tiệt, tôi là nhà phát triển”.</p>
+<p><strong>Cải thiện sự hợp tác thiết kế-kỹ thuật</strong></p>
+<p>Claude Code cho phép cải thiện giao tiếp và giải quyết vấn đề nhanh hơn vì các nhà thiết kế hiểu các ràng buộc và khả năng của hệ thống mà không cần phải làm việc chặt chẽ với các kỹ sư.</p>
+<h3 id="lời-khuyên-hàng-đầu-từ-nhóm-thiết-kế-sản-phẩm">Lời khuyên hàng đầu từ nhóm Thiết kế Sản phẩm</h3>
+<p><strong>Nhận trợ giúp thiết lập phù hợp từ các kỹ sư</strong></p>
+<p>Yêu cầu đồng đội kỹ thuật trợ giúp với thiết lập và quyền</p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/news/how-anthropic-teams-use-claude-code">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/24-july-2025/">24 July 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/989779/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/cfr0z3n_graphic_novel_style_epic_cover_image_close_up_on_a_ru_5a524519-637a-42b2-84c6-70411fa162a3_1.png?w=700&amp;h=350&amp;crop=1" alt="SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-24T00:00:00&#43;00:00">Jul 24, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/b1bd4e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Suy nghĩ về Kế hoạch Hành động AI của Mỹ" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-24T00:00:00&#43;00:00">Jul 24, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Suy nghĩ về Kế hoạch Hành động AI của Mỹ</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này thảo luận về kế hoạch hành động AI của Mỹ.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-25/2eb8fd/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/4c3dc5494aacbe877b3b7783ea0f3d731f37e38e-1000x1000.svg" alt="Nghiên cứu điển hình- Các nhóm Anthropic sử dụng Mã Claude" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nghiên cứu điển hình- Các nhóm Anthropic sử dụng Mã Claude</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-25/755c1f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://qwenlm.github.io" alt="Qwen-MT- Nơi Tốc Độ Gặp Gỡ Dịch Thuật Thông Minh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Qwen-MT- Nơi Tốc Độ Gặp Gỡ Dịch Thuật Thông Minh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/989779/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/cfr0z3n_graphic_novel_style_epic_cover_image_close_up_on_a_ru_5a524519-637a-42b2-84c6-70411fa162a3_1.png?w=700&amp;h=350&amp;crop=1" alt="SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/b1bd4e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Suy nghĩ về Kế hoạch Hành động AI của Mỹ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Suy nghĩ về Kế hoạch Hành động AI của Mỹ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/ddd6d2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/timescope/thumbnail.png" alt="TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu?" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu?</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
