@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Phân đoạn nội dung dựa trên Parquet | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Phân đoạn nội dung dựa trên Parquet</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-07-26T00:00:00&#43;00:00">July 26, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/parquet-cdc/thumbnail.png" alt="Phân đoạn nội dung dựa trên Parquet">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="phân-đoạn-nội-dung-định-nghĩa-trong-parquet">Phân đoạn Nội dung Định nghĩa trong Parquet</h1>
+<p>Giảm thời gian tải lên và tải xuống tệp Parquet trên Hugging Face Hub bằng cách tận dụng lớp lưu trữ Xet mới và tính năng Phân đoạn Nội dung Định nghĩa (CDC) của Apache Arrow, cho phép quy trình làm việc dữ liệu hiệu quả và có khả năng mở rộng hơn.</p>
+<p><strong>TL;DR:</strong> Phân đoạn Nội dung Định nghĩa (CDC) trong Parquet hiện đã có sẵn trong PyArrow và Pandas, cho phép loại bỏ trùng lặp hiệu quả các tệp Parquet trên các hệ thống lưu trữ có thể định địa chỉ nội dung như lớp lưu trữ Xet của Hugging Face. CDC giảm đáng kể chi phí lưu trữ và truyền dữ liệu bằng cách chỉ tải lên hoặc tải xuống các phân đoạn dữ liệu đã thay đổi. Bật CDC bằng cách truyền đối số <code>use_content_defined_chunking</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pyarrow.parquet <span style="color:#66d9ef">as</span> pq
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df<span style="color:#f92672">.</span>to_parquet(<span style="color:#e6db74">&#34;hf://datasets/</span><span style="color:#e6db74">{user}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">{repo}</span><span style="color:#e6db74">/path.parquet&#34;</span>, use_content_defined_chunking<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>pq<span style="color:#f92672">.</span>write_table(table, <span style="color:#e6db74">&#34;hf://datasets/</span><span style="color:#e6db74">{user}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">{repo}</span><span style="color:#e6db74">/path.parquet&#34;</span>, use_content_defined_chunking<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#introduction">Giới thiệu</a></li>
+<li><a href="#data-preparation">Chuẩn bị dữ liệu</a></li>
+<li><a href="#different-use-cases-for-parquet-deduplication">Các trường hợp sử dụng khác nhau để loại bỏ trùng lặp Parquet</a>
+<ul>
+<li><a href="#1-re-uploading-an-exact-copies-of-the-table">1. Tải lại các bản sao chính xác của bảng</a></li>
+<li><a href="#2-adding-and-removing-columns-from-the-table">2. Thêm và Xóa các cột khỏi bảng</a></li>
+<li><a href="#3-changing-column-types-in-the-table">3. Thay đổi các kiểu cột trong bảng</a></li>
+<li><a href="#4-appending-new-rows-and-concatenating-tables">4. Nối thêm các hàng mới và nối các bảng</a></li>
+<li><a href="#5-inserting--deleting-rows-in-the-table">5. Chèn / Xóa các hàng trong bảng</a></li>
+<li><a href="#6-using-different-row-group-sizes">6. Sử dụng các kích thước nhóm hàng khác nhau</a></li>
+<li><a href="#7-using-varying-file-level-splits">7. Sử dụng các phân chia cấp tệp khác nhau</a></li>
+</ul>
+</li>
+<li><a href="#using-parquet-cdc-feature-with-pandas">Sử dụng tính năng Parquet CDC với Pandas</a></li>
+<li><a href="#references">Tài liệu tham khảo</a></li>
+<li><a href="#conclusion">Kết luận</a></li>
+</ul>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Apache Parquet là một định dạng lưu trữ theo cột được sử dụng rộng rãi trong cộng đồng kỹ thuật dữ liệu.</p>
+<p>Tính đến thời điểm hiện tại, Hugging Face lưu trữ gần 21 PB tập dữ liệu, trong đó riêng các tệp Parquet chiếm hơn 4 PB dung lượng lưu trữ đó. Do đó, tối ưu hóa lưu trữ Parquet là một ưu tiên cao. Hugging Face đã giới thiệu một lớp lưu trữ mới gọi là <a href="https://huggingface.co/blog/xet-on-the-hub">Xet</a> tận dụng phân đoạn nội dung được xác định để loại bỏ hiệu quả các đoạn dữ liệu trùng lặp, giảm chi phí lưu trữ và cải thiện tốc độ tải xuống/tải lên.</p>
+<p>Mặc dù Xet không phụ thuộc vào định dạng, nhưng bố cục của Parquet và nén dựa trên phân đoạn cột (trang dữ liệu) có thể tạo ra các biểu diễn cấp byte hoàn toàn khác nhau cho dữ liệu có các thay đổi nhỏ, dẫn đến hiệu suất loại bỏ trùng lặp không tối ưu. Để giải quyết vấn đề này, các tệp Parquet nên được viết theo cách giảm thiểu sự khác biệt ở cấp byte giữa các dữ liệu tương tự, đó là nơi phân đoạn nội dung được xác định (CDC) phát huy tác dụng.</p>
+<p>Hãy cùng khám phá những lợi ích về hiệu suất của tính năng Parquet CDC mới được sử dụng cùng với lớp lưu trữ Xet của Hugging Face.</p>
+<h2 id="chuẩn-bị-dữ-liệu">Chuẩn bị dữ liệu</h2>
+<p>Để minh họa, chúng ta sẽ sử dụng một tập hợp con có kích thước có thể quản lý của tập dữ liệu <a href="https://huggingface.co/datasets/Open-Orca/OpenOrca">OpenOrca</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pyarrow <span style="color:#66d9ef">as</span> pa
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pyarrow.compute <span style="color:#66d9ef">as</span> pc
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pyarrow.parquet <span style="color:#66d9ef">as</span> pq
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> huggingface_hub <span style="color:#f92672">import</span> hf_hub_download
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">shuffle_table</span>(table, seed<span style="color:#f92672">=</span><span style="color:#ae81ff">40</span>):
+</span></span><span style="display:flex;"><span>    rng <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>default_rng(seed)
+</span></span><span style="display:flex;"><span>    indices <span style="color:#f92672">=</span> rng<span style="color:#f92672">.</span>permutation(len(table))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> table<span style="color:#f92672">.</span>take(indices)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># download the dataset from Hugging Face Hub into local cache</span>
+</span></span><span style="display:flex;"><span>path <span style="color:#f92672">=</span> hf_hub_download(
+</span></span><span style="display:flex;"><span>    repo_id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Open-Orca/OpenOrca&#34;</span>, 
+</span></span><span style="display:flex;"><span>    filename<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;3_5M-GPT3_5-Augmented.parquet&#34;</span>, 
+</span></span><span style="display:flex;"><span>    repo_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dataset&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># read the cached parquet file into a PyArrow table </span>
+</span></span><span style="display:flex;"><span>orca <span style="color:#f92672">=</span> pq<span style="color:#f92672">.</span>read_table(path, schema<span style="color:#f92672">=</span>pa<span style="color:#f92672">.</span>schema([
+</span></span><span style="display:flex;"><span>    pa<span style="color:#f92672">.</span>field(<span style="color:#e6db74">&#34;id&#34;</span>, pa<span style="color:#f92672">.</span>string()),
+</span></span><span style="display:flex;"><span>    pa<span style="color:#f92672">.</span>field(<span style="color:#e6db74">&#34;system_prompt&#34;</span>, pa<span style="color:#f92672">.</span>string()),
+</span></span><span style="display:flex;"><span>    pa<span style="color:#f92672">.</span>field(<span style="color:#e6db74">&#34;question&#34;</span>, pa<span style="color:#f92672">.</span>large_string()),
+</span></span><span style="display:flex;"><span>    pa<span style="color:#f92672">.</span>field(<span style="color:#e6db74">&#34;response&#34;</span>, pa<span style="color:#f92672">.</span>large_string()),
+</span></span><span style="display:flex;"><span>]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># augment the table with some additional columns</span>
+</span></span><span style="display:flex;"><span>orca <span style="color:#f92672">=</span> orca<span style="color:#f92672">.</span>add_column(
+</span></span><span style="display:flex;"><span>    orca<span style="color:#f92672">.</span>schema<span style="color:#f92672">.</span>get_field_index(<span style="color:#e6db74">&#34;question&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;question_length&#34;</span>,
+</span></span><span style="display:flex;"><span>    pc<span style="color:#f92672">.</span>utf8_length(orca[<span style="color:#e6db74">&#34;question&#34;</span>])
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>orca <span style="color:#f92672">=</span> orca<span style="color:#f92672">.</span>add_column(
+</span></span><span style="display:flex;"><span>    orca<span style="color:#f92672">.</span>schema<span style="color:#f92672">.</span>get_field_index(<span style="color:#e6db74">&#34;response&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;response_length&#34;</span>,
+</span></span><span style="display:flex;"><span>    pc<span style="color:#f92672">.</span>utf8_length(orca[<span style="color:#e6db74">&#34;response&#34;</span>])
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># shuffle the table to make it unique to the Xet storage</span>
+</span></span><span style="display:flex;"><span>orca <span style="color:#f92672">=</span> shuffle_table(orca)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># limit the table to the first 100,000 rows </span>
+</span></span><span style="display:flex;"><span>table <span style="color:#f92672">=</span> orca[:<span style="color:#ae81ff">100_000</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># take a look at the first 3 rows of the table</span>
+</span></span><span style="display:flex;"><span>table[:<span style="color:#ae81ff">3</span>]<span style="color:#f92672">.</span>to_pandas()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<h3 id="tải-bảng-lên-dưới-dạng-tệp-parquet-lên-hugging-face-hub">Tải bảng lên dưới dạng tệp Parquet lên Hugging Face Hub</h3>
+<p>Kể từ <a href="https://github.com/apache/arrow/pull/45089"><code>pyarrow&gt;=21.0.0</code></a>, chúng ta có thể sử dụng URI Hugging Face trong các hàm <code>pyarrow</code> để trực tiếp đọc và ghi các tệp parquet (và các định dạng tệp khác) vào Hub bằng lược đồ URI <code>hf://</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#ae81ff">100</span><span style="color:#f92672">%|</span><span style="color:#960050;background-color:#1e0010">███████████████████████████████████████████████</span><span style="color:#f92672">|</span> <span style="color:#ae81ff">96.1</span>MB <span style="color:#f92672">/</span> <span style="color:#ae81ff">96.1</span>MB, <span style="color:#ae81ff">48.0</span>kB<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">96.1</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">96.1</span>M
+</span></span></code></pre></div><p>Chúng ta có thể thấy rằng bảng đã được tải lên hoàn toàn (tổng số byte == tổng số chuyển) dưới dạng dữ liệu mới vì nó chưa được biết đến lớp lưu trữ Xet. Bây giờ, hãy đọc lại nó dưới dạng bảng <code>pyarrow</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>downloaded_table <span style="color:#f92672">=</span> pq<span style="color:#f92672">.</span>read_table(<span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">assert</span> downloaded_table<span style="color:#f92672">.</span>equals(table)
+</span></span></code></pre></div><p>Lưu ý rằng tất cả các hàm <code>pyarrow</code> chấp nhận đường dẫn tệp cũng chấp nhận URI Hugging Face, như <a href="https://arrow.apache.org/docs/python/dataset.html">tập dữ liệu pyarrow</a>, <a href="https://arrow.apache.org/docs/python/generated/pyarrow.csv.read_csv.html">hàm CSV</a>, <a href="https://arrow.apache.org/docs/python/generated/pyarrow.parquet.ParquetWriter.html">trình ghi Parquet gia tăng</a> hoặc chỉ đọc siêu dữ liệu parquet:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pq<span style="color:#f92672">.</span>read_metadata(<span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca.parquet&#34;</span>)
+</span></span></code></pre></div><pre tabindex="0"><code>&lt;pyarrow._parquet.FileMetaData object at 0x16ebfa980&gt;
+  created_by: parquet-cpp-arrow version 21.0.0-SNAPSHOT
+  num_columns: 6
+  num_rows: 100000
+  num_row_groups: 1
+  format_version: 2.6
+  serialized_size: 4143
+</code></pre><h2 id="các-trường-hợp-sử-dụng-khác-nhau-để-loại-bỏ-trùng-lặp-parquet">Các trường hợp sử dụng khác nhau để loại bỏ trùng lặp Parquet</h2>
+<p>Để chứng minh hiệu quả của tính năng phân đoạn nội dung được xác định, chúng ta sẽ thử nghiệm xem nó hoạt động như thế nào trong trường hợp:</p>
+<ol>
+<li>Tải lại các bản sao chính xác của bảng</li>
+<li>Thêm/xóa các cột khỏi bảng</li>
+<li>Thay đổi các kiểu cột trong bảng</li>
+<li>Nối thêm các hàng mới và nối các bảng</li>
+<li>Chèn / Xóa các hàng trong bảng</li>
+<li>Thay đổi kích thước nhóm hàng của bảng</li>
+<li>Sử dụng các phân chia cấp tệp khác nhau</li>
+</ol>
+<h3 id="1-tải-lại-các-bản-sao-chính-xác-của-bảng">1. Tải lại các bản sao chính xác của bảng</h3>
+<p>Mặc dù trường hợp sử dụng này nghe có vẻ tầm thường, nhưng các hệ thống tệp truyền thống không loại bỏ trùng lặp các tệp, dẫn đến việc tải lại và tải xuống lại toàn bộ dữ liệu. Ngược lại, một hệ thống sử dụng phân đoạn nội dung được xác định có thể nhận ra rằng nội dung tệp là giống hệt nhau và tránh truyền dữ liệu không cần thiết.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca-copy.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#f92672">|</span>                                                   <span style="color:#f92672">|</span> <span style="color:#ae81ff">0.00</span>B <span style="color:#f92672">/</span> <span style="color:#ae81ff">0.00</span>B, <span style="color:#ae81ff">0.00</span>B<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">96.1</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">0.00</span>
+</span></span></code></pre></div><p>Chúng ta có thể thấy rằng không có dữ liệu mới nào được tải lên và thao tác diễn ra ngay lập tức. Bây giờ, hãy xem điều gì xảy ra nếu chúng ta tải lên lại cùng một tệp nhưng vào một kho lưu trữ khác:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq-copy/orca-copy-again.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#f92672">|</span>                                                   <span style="color:#f92672">|</span> <span style="color:#ae81ff">0.00</span>B <span style="color:#f92672">/</span> <span style="color:#ae81ff">0.00</span>B, <span style="color:#ae81ff">0.00</span>B<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">96.1</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">0.00</span>
+</span></span></code></pre></div><p>Việc tải lên lại diễn ra ngay lập tức vì việc loại bỏ trùng lặp cũng hoạt động trên các kho lưu trữ. Đây là một tính năng quan trọng của lớp lưu trữ Xet, cho phép chia sẻ và cộng tác dữ liệu hiệu quả. Bạn có thể đọc thêm về các chi tiết và thách thức mở rộng quy mô trong bài đăng trên blog <a href="https://huggingface.co/blog/from-chunks-to-blocks">Từ Phân đoạn đến Khối: Tăng tốc Tải lên và Tải xuống trên Hub</a>.</p>
+<h3 id="2-thêm-và-xóa-các-cột-khỏi-bảng">2. Thêm và Xóa các cột khỏi bảng</h3>
+<p>Trước tiên, hãy ghi các bảng gốc và đã thay đổi vào các tệp parquet cục bộ để xem kích thước của chúng:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>table_with_new_columns <span style="color:#f92672">=</span> table<span style="color:#f92672">.</span>add_column(
+</span></span><span style="display:flex;"><span>    table<span style="color:#f92672">.</span>schema<span style="color:#f92672">.</span>get_field_index(<span style="color:#e6db74">&#34;response&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;response_short&#34;</span>,
+</span></span><span style="display:flex;"><span>    pc<span style="color:#f92672">.</span>utf8_slice_codeunits(table[<span style="color:#e6db74">&#34;response&#34;</span>], <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>table_with_removed_columns <span style="color:#f92672">=</span> table<span style="color:#f92672">.</span>drop([<span style="color:#e6db74">&#34;response&#34;</span>])
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>pq<span style="color:#f92672">.</span>write_table(table, <span style="color:#e6db74">&#34;/tmp/original.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>pq<span style="color:#f92672">.</span>write_table(table_with_new_columns, <span style="color:#e6db74">&#34;/tmp/with-new-columns.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>pq<span style="color:#f92672">.</span>write_table(table_with_removed_columns, <span style="color:#e6db74">&#34;/tmp/with-removed-columns.parquet&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">!</span>ls <span style="color:#f92672">-</span>lah <span style="color:#f92672">/</span>tmp<span style="color:#f92672">/*.</span>parquet
+</span></span></code></pre></div><pre tabindex="0"><code>-rw-r--r--  1 kszucs  wheel    92M Jul 22 14:47 /tmp/original.parquet
+-rw-r--r--  1 kszucs  wheel    92M Jul 22 14:47 /tmp/with-new-columns.parquet
+-rw-r--r--  1 kszucs  wheel    67M Jul 22 14:47 /tmp/with-removed-columns.parquet
+</code></pre><p>Bây giờ, hãy tải chúng lên Hugging Face để xem dữ liệu nào thực sự được truyền:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table_with_new_columns, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca-added-columns.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#ae81ff">100</span><span style="color:#f92672">%|</span><span style="color:#960050;background-color:#1e0010">███████████████████████████████████████████████</span><span style="color:#f92672">|</span>  <span style="color:#ae81ff">575</span>kB <span style="color:#f92672">/</span>  <span style="color:#ae81ff">575</span>kB,  <span style="color:#ae81ff">288</span>kB<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">96.6</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">575</span>k
+</span></span></code></pre></div><p>Chúng ta có thể thấy rằng chỉ các cột mới và siêu dữ liệu parquet mới được đặt trong chân trang của tệp được tải lên, trong khi dữ liệu gốc không được truyền lại. Đây là một lợi ích rất lớn của lớp lưu trữ Xet, vì nó cho phép chúng ta thêm các cột mới một cách hiệu quả mà không cần truyền lại toàn bộ tập dữ liệu.</p>
+<p>Điều tương tự cũng áp dụng cho việc xóa các cột, như chúng ta có thể thấy bên dưới:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table_with_removed_columns, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca-removed-columns.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#ae81ff">100</span><span style="color:#f92672">%|</span><span style="color:#960050;background-color:#1e0010">███████████████████████████████████████████████</span><span style="color:#f92672">|</span> <span style="color:#ae81ff">37.7</span>kB <span style="color:#f92672">/</span> <span style="color:#ae81ff">37.7</span>kB, <span style="color:#ae81ff">27.0</span>kB<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">70.6</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">37.7</span>k
+</span></span></code></pre></div><p>Để hiểu rõ hơn về những gì đã được tải lên, chúng ta có thể hình dung sự khác biệt giữa hai tệp parquet bằng công cụ <a href="https://github.com/huggingface/dataset-dedupe-estimator">ước tính loại bỏ trùng lặp tập dữ liệu</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> de <span style="color:#f92672">import</span> visualize
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>visualize(table, table_with_new_columns, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;With New Columns&#34;</span>, prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;orca&#34;</span>)
+</span></span></code></pre></div><h4 id="với-các-cột-mới">Với các cột mới</h4>
+<!-- raw HTML omitted -->
+<p>Việc thêm hai cột mới có nghĩa là chúng ta có các trang dữ liệu chưa thấy phải được truyền (được đánh dấu màu đỏ), nhưng phần còn lại của dữ liệu vẫn không thay đổi (được đánh dấu màu xanh lá cây), do đó nó không được truyền lại. Lưu ý khu vực màu đỏ nhỏ trong siêu dữ liệu chân trang, khu vực này gần như luôn thay đổi khi chúng ta sửa đổi tệp parquet. Các số liệu thống kê dedup hiển thị <code>&lt;kích thước đã loại bỏ trùng lặp&gt; / &lt;tổng kích thước&gt; = &lt;tỷ lệ loại bỏ trùng lặp&gt;</code>, trong đó tỷ lệ nhỏ hơn có nghĩa là hiệu suất loại bỏ trùng lặp cao hơn.</p>
+<p>Ngoài ra, hãy hình dung sự khác biệt sau khi xóa một cột:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>visualize(table, table_with_removed_columns, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;With Removed Columns&#34;</span>, prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;orca&#34;</span>)
+</span></span></code></pre></div><h4 id="với-các-cột-đã-xóa">Với các cột đã xóa</h4>
+<!-- raw HTML omitted -->
+<p>Vì chúng ta đang xóa toàn bộ các cột nên chúng ta chỉ có thể thấy những thay đổi trong siêu dữ liệu chân trang, tất cả các cột khác vẫn không thay đổi và đã tồn tại trong lớp lưu trữ, do đó chúng không được truyền lại.</p>
+<h3 id="3-thay-đổi-các-kiểu-cột-trong-bảng">3. Thay đổi các kiểu cột trong bảng</h3>
+<p>Một trường hợp sử dụng phổ biến khác là thay đổi các kiểu cột trong bảng, ví dụ: để giảm kích thước lưu trữ hoặc để tối ưu hóa dữ liệu cho các truy vấn cụ thể. Hãy thay đổi cột <code>question_length</code> từ kiểu dữ liệu <code>int64</code> thành <code>int32</code> và xem có bao nhiêu dữ liệu được truyền:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># first make the table much smaller by removing the large string columns</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># to highlight the differences better</span>
+</span></span><span style="display:flex;"><span>table_without_text <span style="color:#f92672">=</span> table_with_new_columns<span style="color:#f92672">.</span>drop([<span style="color:#e6db74">&#34;question&#34;</span>, <span style="color:#e6db74">&#34;response&#34;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># cast the question_length column to int64</span>
+</span></span><span style="display:flex;"><span>table_with_casted_column <span style="color:#f92672">=</span> table_without_text<span style="color:#f92672">.</span>set_column(
+</span></span><span style="display:flex;"><span>    table_without_text<span style="color:#f92672">.</span>schema<span style="color:#f92672">.</span>get_field_index(<span style="color:#e6db74">&#34;question_length&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;question_length&#34;</span>,
+</span></span><span style="display:flex;"><span>    table_without_text[<span style="color:#e6db74">&#34;question_length&#34;</span>]<span style="color:#f92672">.</span>cast(<span style="color:#e6db74">&#34;int32&#34;</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table_with_casted_column, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca-casted-column.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#ae81ff">100</span><span style="color:#f92672">%|</span><span style="color:#960050;background-color:#1e0010">███████████████████████████████████████████████</span><span style="color:#f92672">|</span>  <span style="color:#ae81ff">181</span>kB <span style="color:#f92672">/</span>  <span style="color:#ae81ff">181</span>kB,  <span style="color:#ae81ff">113</span>kB<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">1.80</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">181</span>k
+</span></span></code></pre></div><p>Một lần nữa, chúng ta có thể thấy rằng chỉ cột mới và siêu dữ liệu parquet được cập nhật đã được tải lên. Bây giờ, hãy hình dung bản đồ nhiệt loại bỏ trùng lặp:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>visualize(table_without_text, table_with_casted_column, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;With Casted Column&#34;</span>, prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;orca&#34;</span>)
+</span></span></code></pre></div><h4 id="với-cột-đã-truyền">Với cột đã truyền</h4>
+<!-- raw HTML omitted -->
+<p>Vùng màu đỏ đầu tiên cho biết cột mới đã được thêm vào, trong khi vùng màu đỏ thứ hai cho biết siêu dữ liệu đã được cập nhật trong chân trang. Phần còn lại của dữ liệu vẫn không thay đổi và không được truyền lại.</p>
+<h3 id="4-nối-thêm-các-hàng-mới-và-nối-các-bảng">4. Nối thêm các hàng mới và nối các bảng</h3>
+<p>Chúng ta sẽ nối thêm các hàng mới bằng cách nối một lát cắt khác của tập dữ liệu gốc vào bảng.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>table <span style="color:#f92672">=</span> orca[:<span style="color:#ae81ff">100_000</span>]
+</span></span><span style="display:flex;"><span>next_10k_rows <span style="color:#f92672">=</span> orca[<span style="color:#ae81ff">100_000</span>:<span style="color:#ae81ff">110_000</span>]
+</span></span><span style="display:flex;"><span>table_with_appended_rows <span style="color:#f92672">=</span> pa<span style="color:#f92672">.</span>concat_tables([table, next_10k_rows])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">assert</span> len(table_with_appended_rows) <span style="color:#f92672">==</span> <span style="color:#ae81ff">110_000</span>
+</span></span></code></pre></div><p>Bây giờ, hãy kiểm tra xem chỉ các hàng mới đang được tải lên vì dữ liệu gốc đã được biết đến lớp lưu trữ Xet:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table_with_appended_rows, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca-appended-rows.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#ae81ff">100</span><span style="color:#f92672">%|</span><span style="color:#960050;background-color:#1e0010">███████████████████████████████████████████████</span><span style="color:#f92672">|</span> <span style="color:#ae81ff">10.3</span>MB <span style="color:#f92672">/</span> <span style="color:#ae81ff">10.3</span>MB, <span style="color:#ae81ff">1.36</span>MB<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">106</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">10.3</span>M
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>visualize(table, table_with_appended_rows, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;With Appended Rows&#34;</span>, prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;orca&#34;</span>)
+</span></span></code></pre></div><h4 id="với-các-hàng-đã-nối">Với các hàng đã nối</h4>
+<!-- raw HTML omitted -->
+<p>Vì mỗi cột nhận dữ liệu mới nên chúng ta có thể thấy nhiều vùng màu đỏ. Điều này là do đặc tả tệp parquet thực tế, nơi toàn bộ các cột được bố trí sau nhau (trong mỗi nhóm hàng).</p>
+<h3 id="5-chèn--xóa-các-hàng-trong-bảng">5. Chèn / Xóa các hàng trong bảng</h3>
+<p>Đây là phần khó khăn vì các thao tác chèn và xóa đang chuyển các hàng hiện có, dẫn đến các khối cột hoặc trang dữ liệu khác nhau trong danh pháp parquet. Vì mỗi trang dữ liệu được nén riêng biệt, nên ngay cả một thao tác chèn hoặc xóa một hàng cũng có thể dẫn đến một biểu diễn cấp byte hoàn toàn khác nhau bắt đầu từ (các) hàng đã chỉnh sửa đến cuối tệp parquet.</p>
+<p>Vấn đề cụ thể của parquet này không thể được giải quyết chỉ bằng lớp lưu trữ Xet, bản thân tệp parquet cần được viết theo cách giảm thiểu sự khác biệt giữa các trang dữ liệu ngay cả khi có các hàng được chèn hoặc xóa.</p>
+<p>Hãy thử sử dụng cơ chế hiện có và xem nó hoạt động như thế nào.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>table <span style="color:#f92672">=</span> orca[:<span style="color:#ae81ff">100_000</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># remove 4k rows from two places </span>
+</span></span><span style="display:flex;"><span>table_with_deleted_rows <span style="color:#f92672">=</span> pa<span style="color:#f92672">.</span>concat_tables([
+</span></span><span style="display:flex;"><span>    orca[:<span style="color:#ae81ff">15_000</span>], 
+</span></span><span style="display:flex;"><span>    orca[<span style="color:#ae81ff">18_000</span>:<span style="color:#ae81ff">60_000</span>],
+</span></span><span style="display:flex;"><span>    orca[<span style="color:#ae81ff">61_000</span>:<span style="color:#ae81ff">100_000</span>]
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># add 1k rows at the first third of the table</span>
+</span></span><span style="display:flex;"><span>table_with_inserted_rows <span style="color:#f92672">=</span> pa<span style="color:#f92672">.</span>concat_tables([
+</span></span><span style="display:flex;"><span>    orca[:<span style="color:#ae81ff">10_000</span>],
+</span></span><span style="display:flex;"><span>    orca[<span style="color:#ae81ff">100_000</span>:<span style="color:#ae81ff">101_000</span>],
+</span></span><span style="display:flex;"><span>    orca[<span style="color:#ae81ff">10_000</span>:<span style="color:#ae81ff">50_000</span>],
+</span></span><span style="display:flex;"><span>    orca[<span style="color:#ae81ff">101_000</span>:<span style="color:#ae81ff">103_000</span>],
+</span></span><span style="display:flex;"><span>    orca[<span style="color:#ae81ff">50_000</span>:<span style="color:#ae81ff">100_000</span>],
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">assert</span> len(table) <span style="color:#f92672">==</span> <span style="color:#ae81ff">100_000</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">assert</span> len(table_with_deleted_rows) <span style="color:#f92672">==</span> <span style="color:#ae81ff">96_000</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">assert</span> len(table_with_inserted_rows) <span style="color:#f92672">==</span> <span style="color:#ae81ff">103_000</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table_with_inserted_rows, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca-inserted-rows.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#ae81ff">100</span><span style="color:#f92672">%|</span><span style="color:#960050;background-color:#1e0010">███████████████████████████████████████████████</span><span style="color:#f92672">|</span> <span style="color:#ae81ff">89.8</span>MB <span style="color:#f92672">/</span> <span style="color:#ae81ff">89.8</span>MB, <span style="color:#ae81ff">42.7</span>kB<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">99.1</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">89.8</span>M
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pq<span style="color:#f92672">.</span>write_table(table_with_deleted_rows, <span style="color:#e6db74">&#34;hf://datasets/kszucs/pq/orca-deleted-rows.parquet&#34;</span>)
+</span></span><span style="display:flex;"><span>New Data Upload: <span style="color:#ae81ff">100</span><span style="color:#f92672">%|</span><span style="color:#960050;background-color:#1e0010">███████████████████████████████████████████████</span><span style="color:#f92672">|</span> <span style="color:#ae81ff">78.2</span>MB <span style="color:#f92672">/</span> <span style="color:#ae81ff">78.2</span>MB, <span style="color:#ae81ff">46.5</span>kB<span style="color:#f92672">/</span>s  
+</span></span><span style="display:flex;"><span>Total Bytes:  <span style="color:#ae81ff">92.2</span>M
+</span></span><span style="display:flex;"><span>Total Transfer:  <span style="color:#ae81ff">78.2</span>M
+</span></span></code></pre></div><p>Ngoài ra, hãy hình dung cả hai trường hợp để xem sự khác biệt:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>visualize(table, table_with_deleted_rows, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Deleted Rows&#34;</span>, prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;orca&#34;</span>)
+</span></span><span style="display:flex;"><span>visualize(table, table_with_inserted_rows, title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Inserted Rows&#34;</span>, prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;orca&#34;</span>)
+</span></span></code></pre></div><h4 id="các-hàng-đã-xóa">Các hàng đã xóa</h4>
+<!-- raw HTML omitted -->
+<h4 id="các-hàng-đã-chèn">Các hàng đã chèn</h4>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/parquet-cdc">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-25-2025/">July 25, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-26/d29191/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/hf-cli-thumbnail.png" alt="Chào `hf`- CLI Hugging Face nhanh hơn, thân thiện hơn ✨" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-26T00:00:00&#43;00:00">Jul 26, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào `hf`- CLI Hugging Face nhanh hơn, thân thiện hơn ✨</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu một CLI mới cho Hugging Face nhanh hơn và thân thiện hơn.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/ddd6d2/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/timescope/thumbnail.png" alt="TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu?" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-07-24T00:00:00&#43;00:00">Jul 24, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">TimeScope- Mô hình đa phương thức lớn cho video của bạn có thể đi được bao lâu?</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tìm hiểu về TimeScope, một chuẩn đánh giá mới để đánh giá khả năng của các mô hình đa phương thức lớn trong việc hiểu và lý luận về video dài.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-26/d29191/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/hf-cli-thumbnail.png" alt="Chào `hf`- CLI Hugging Face nhanh hơn, thân thiện hơn ✨" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chào `hf`- CLI Hugging Face nhanh hơn, thân thiện hơn ✨</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-26/941007/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/parquet-cdc/thumbnail.png" alt="Phân đoạn nội dung dựa trên Parquet" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Phân đoạn nội dung dựa trên Parquet</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-25/2eb8fd/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/4c3dc5494aacbe877b3b7783ea0f3d731f37e38e-1000x1000.svg" alt="Nghiên cứu điển hình- Các nhóm Anthropic sử dụng Mã Claude" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nghiên cứu điển hình- Các nhóm Anthropic sử dụng Mã Claude</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-25/755c1f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://qwenlm.github.io" alt="Qwen-MT- Nơi Tốc Độ Gặp Gỡ Dịch Thuật Thông Minh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Qwen-MT- Nơi Tốc Độ Gặp Gỡ Dịch Thuật Thông Minh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-07-24/989779/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/07/cfr0z3n_graphic_novel_style_epic_cover_image_close_up_on_a_ru_5a524519-637a-42b2-84c6-70411fa162a3_1.png?w=700&amp;h=350&amp;crop=1" alt="SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SecurityPal kết hợp AI và các chuyên gia ở Nepal để tăng tốc bảng câu hỏi bảo mật doanh nghiệp lên 87 lần trở lên</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
