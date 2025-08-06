@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>OpenAI quay trở lại nguồn gốc mã nguồn mở với các mô hình mới gpt-oss-120b và gpt-oss-20b | AI Today - SkyAI</title>
+
+<meta name="description" content="OpenAI tái khẳng định cam kết của mình với mã nguồn mở bằng cách phát hành các mô hình ngôn ngữ lớn mới.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">OpenAI quay trở lại nguồn gốc mã nguồn mở với các mô hình mới gpt-oss-120b và gpt-oss-20b</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">OpenAI tái khẳng định cam kết của mình với mã nguồn mở bằng cách phát hành các mô hình ngôn ngữ lớn mới. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-08-06T00:00:00&#43;00:00">August 6, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            20 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://venturebeat.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-5-2025-11_33_09-AM.png?w=700&amp;h=350&amp;crop=1" alt="OpenAI quay trở lại nguồn gốc mã nguồn mở với các mô hình mới gpt-oss-120b và gpt-oss-20b">
+        <figcaption class="text-center italic text-xs">OpenAI tái khẳng định cam kết của mình với mã nguồn mở bằng cách phát hành các mô hình ngôn ngữ lớn mới.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="openai-trở-lại-nguồn-gốc-mã-nguồn-mở-với-các-mô-hình-mới-gpt-oss-120b-và-gpt-oss-20b">OpenAI trở lại nguồn gốc mã nguồn mở với các mô hình mới gpt-oss-120b và gpt-oss-20b</h1>
+<p>Các doanh nghiệp có thể sử dụng LLM OpenAI mạnh mẽ, gần như hàng đầu trên phần cứng của họ một cách hoàn toàn riêng tư và an toàn, mà không cần gửi dữ liệu lên đám mây.</p>
+<p><!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Tín dụng: VentureBeat được tạo bằng ChatGPT<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>OpenAI đang <strong>trở lại nguồn gốc là một công ty AI mã nguồn mở</strong> với <a href="https://openai.com/open-models/">thông báo hôm nay</a> và phát hành hai mô hình ngôn ngữ lớn (LLM) biên giới, mã nguồn mở mới: <strong>gpt-oss-120b và gpt-oss-20b.</strong></p>
+<p>Mô hình trước là mô hình 120 tỷ tham số như tên gọi của nó, có khả năng chạy trên một đơn vị xử lý đồ họa (GPU) Nvidia H100 duy nhất và mô hình sau chỉ có 20 tỷ, <strong>đủ nhỏ để chạy cục bộ trên máy tính xách tay hoặc máy tính để bàn của người tiêu dùng.</strong></p>
+<!-- raw HTML omitted -->
+<p>Cả hai đều là <strong>các mô hình ngôn ngữ chỉ dựa trên văn bản</strong>, <a href="https://venturebeat.com/ai/chatgpt-goes-multimodal-now-supports-voice-image-uploads/">có nghĩa là không giống như AI đa phương thức</a> mà chúng ta đã có trong gần hai năm cho phép người dùng tải lên tệp và hình ảnh và để AI phân tích chúng, người dùng sẽ chỉ bị giới hạn ở việc nhập tin nhắn văn bản vào các mô hình và nhận lại văn bản.</p>
+<p>Tuy nhiên, tất nhiên, chúng vẫn có thể viết mã và cung cấp các bài toán và số liệu, và về hiệu suất của chúng trên các tác vụ, chúng <strong>xếp hạng trên một số mô hình trả phí của OpenAI</strong> và phần lớn các đối thủ cạnh tranh trên toàn cầu.</p>
+<!-- raw HTML omitted -->
+<p><strong>Loạt tác động AI trở lại San Francisco - Ngày 5 tháng 8</strong></p>
+<p>Giai đoạn tiếp theo của AI đã ở đây - bạn đã sẵn sàng chưa? Hãy tham gia cùng các nhà lãnh đạo từ Block, GSK và SAP để có một cái nhìn độc đáo về cách các tác nhân tự trị đang định hình lại quy trình làm việc của doanh nghiệp - từ việc ra quyết định theo thời gian thực đến tự động hóa đầu cuối.</p>
+<p>Đảm bảo vị trí của bạn ngay bây giờ - không gian có hạn: <a href="https://bit.ly/3GuuPLF">https://bit.ly/3GuuPLF</a></p>
+<!-- raw HTML omitted -->
+<p>Chúng cũng có thể được kết nối với các công cụ bên ngoài bao gồm <strong>tìm kiếm trên web</strong> để thực hiện nghiên cứu thay mặt người dùng. Thông tin thêm về điều này bên dưới.</p>
+<p>Quan trọng nhất: <strong>chúng miễn phí,</strong> chúng <strong>có sẵn cho các doanh nghiệp và nhà phát triển độc lập để tải xuống mã và sử dụng ngay bây giờ</strong>, sửa đổi theo nhu cầu của họ và <strong>có thể chạy cục bộ mà không cần kết nối web</strong>, đảm bảo <strong>tính riêng tư tối đa,</strong> không giống như các mô hình OpenAI hàng đầu khác và các mô hình từ các đối thủ cạnh tranh hàng đầu có trụ sở tại Hoa Kỳ là Google và Anthropic.</p>
+<p>Các mô hình có thể được tải xuống ngay hôm nay với đầy đủ trọng số (các cài đặt hướng dẫn hành vi của chúng) trên cộng đồng chia sẻ mã AI <a href="https://huggingface.co/openai">Hugging Face</a> và <a href="https://github.com/openai/gpt-oss">GitHub</a>.</p>
+<h2 id="điểm-chuẩn-cao">Điểm chuẩn cao</h2>
+<p>Theo OpenAI, gpt-oss-120b phù hợp hoặc vượt quá mô hình <strong>o4-mini</strong> độc quyền của mình về khả năng lý luận và các chuẩn sử dụng công cụ, bao gồm <strong>toán học cạnh tranh (AIME 2024 &amp; 2025)</strong>, <strong>giải quyết vấn đề chung (MMLU và HLE)</strong>, <strong>đánh giá tác nhân (TauBench)</strong> và <strong>đánh giá cụ thể về sức khỏe (HealthBench)</strong>. <strong>Mô hình gpt-oss-20b nhỏ hơn có thể so sánh với o3-mini và thậm chí vượt qua nó</strong> trong một số điểm chuẩn.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Các mô hình này đa ngôn ngữ và hoạt động tốt trên nhiều ngôn ngữ không phải tiếng Anh, mặc dù OpenAI từ chối chỉ định ngôn ngữ nào và số lượng ngôn ngữ.</p>
+<p>Mặc dù các khả năng này có sẵn ngay lập tức, OpenAI lưu ý rằng tinh chỉnh cục bộ — chẳng hạn như sự hợp tác đang diễn ra với chính phủ Thụy Điển để tạo ra một phiên bản được tinh chỉnh trên ngôn ngữ của quốc gia — vẫn có thể cải thiện đáng kể hiệu suất cho các bối cảnh ngôn ngữ hoặc khu vực cụ thể.</p>
+<h2 id="giấy-phép-có-lợi-thế-lớn-cho-các-doanh-nghiệp-và-người-dùng-quan-tâm-đến-quyền-riêng-tư">Giấy phép có lợi thế lớn cho các doanh nghiệp và người dùng quan tâm đến quyền riêng tư</h2>
+<p>Nhưng <strong>tính năng lớn nhất là các điều khoản cấp phép cho cả hai: <a href="https://huggingface.co/datasets/choosealicense/licenses/blob/main/markdown/apache-2.0.md">Apache 2.0,</a></strong> giống như <a href="https://www.linkedin.com/pulse/open-source-summer-venturebeat-fkkge/">làn sóng mô hình mã nguồn mở của Trung Quốc đã được phát hành trong vài tuần qua</a>, và <strong>giấy phép thân thiện với doanh nghiệp hơn giấy phép Llama mở hơn phức tạp và sắc thái hơn của Meta</strong>, yêu cầu người dùng vận hành dịch vụ có hơn 700 triệu người dùng hoạt động hàng tháng phải có giấy phép trả phí để tiếp tục sử dụng gia đình LLM của công ty.</p>
+<p>Ngược lại, dòng gpt-oss mới của OpenAI không đưa ra bất kỳ hạn chế nào như vậy. Phù hợp với các đối thủ cạnh tranh và đối tác Trung Quốc, bất kỳ người tiêu dùng, nhà phát triển, doanh nhân độc lập hoặc doanh nghiệp lớn nhỏ nào đều được trao quyền bởi giấy phép Apache 2.0 để có thể tải xuống các mô hình gpt-oss mới theo ý muốn, tinh chỉnh và thay đổi chúng để phù hợp với nhu cầu cụ thể của họ, đồng thời sử dụng chúng để tạo doanh thu hoặc vận hành các dịch vụ trả phí, <strong>tất cả mà không phải trả cho OpenAI một xu nào (hoặc bất cứ điều gì!).</strong></p>
+<p>Điều này cũng có nghĩa là các doanh nghiệp có thể <strong>sử dụng một mô hình OpenAI mạnh mẽ, gần như hàng đầu trên phần cứng của riêng họ một cách hoàn toàn riêng tư và an toàn, mà không cần gửi bất kỳ dữ liệu nào lên đám mây, trên các máy chủ web hoặc bất kỳ nơi nào khác</strong>. Đối với các ngành công nghiệp được quản lý chặt chẽ như tài chính, chăm sóc sức khỏe và dịch vụ pháp lý, chưa kể đến các tổ chức trong quân đội, tình báo và chính phủ, đây có thể là một yêu cầu.</p>
+<p>Trước ngày hôm nay, bất kỳ ai sử dụng ChatGPT hoặc giao diện lập trình ứng dụng (API) của nó — dịch vụ hoạt động như một bảng chuyển mạch và cho phép các nhà phát triển phần mềm bên thứ ba kết nối các ứng dụng và dịch vụ của riêng họ với các mô hình độc quyền/trả phí của OpenAI như GPT-4o và o3 — <strong>đã gửi dữ liệu lên các máy chủ OpenAI về mặt kỹ thuật có thể bị các cơ quan chính phủ trát đòi và truy cập</strong> mà người dùng không hề hay biết. Điều đó vẫn đúng đối với bất kỳ ai sử dụng ChatGPT hoặc API trong tương lai, vì <strong><a href="https://techcrunch.com/2025/07/25/sam-altman-warns-theres-no-legal-confidentiality-when-using-chatgpt-as-a-therapist/">người đồng sáng lập và Giám đốc điều hành của OpenAI, Sam Altman, gần đây đã cảnh báo.</a></strong></p>
+<p>Và mặc dù việc chạy các mô hình gpt-oss mới cục bộ trên phần cứng của riêng người dùng, ngắt kết nối khỏi web sẽ cho phép tính riêng tư tối đa, nhưng ngay khi người dùng quyết định kết nối nó với tìm kiếm web bên ngoài hoặc các công cụ hỗ trợ web khác, một số rủi ro và vấn đề về quyền riêng tư tương tự sau đó sẽ phát sinh — thông qua bất kỳ dịch vụ web bên thứ ba nào mà người dùng hoặc nhà phát triển đã dựa vào khi kết nối các mô hình với các công cụ đó.</p>
+<h2 id="mô-hình-ngôn-ngữ-mã-nguồn-mở-openai-cuối-cùng-đã-được-phát-hành-hơn-sáu-năm-trước">Mô hình ngôn ngữ mã nguồn mở OpenAI cuối cùng đã được phát hành hơn sáu năm trước</h2>
+<p><strong>&ldquo;Đây là lần đầu tiên chúng tôi phát hành một mô hình ngôn ngữ trọng lượng mở trong một thời gian dài&hellip; Chúng tôi xem đây là bổ sung cho các sản phẩm khác của chúng tôi&rdquo;, người đồng sáng lập và chủ tịch OpenAI Greg Brockman cho biết</strong> trong một cuộc gọi video báo chí bị cấm vận với VentureBeat và các nhà báo khác đêm qua.</p>
+<p><strong>Lần cuối cùng OpenAI phát hành một mô hình ngôn ngữ mã nguồn mở hoàn toàn là <a href="https://openai.com/index/better-language-models/">GPT-2 vào năm 2019</a>, hơn sáu năm trước và ba năm trước khi ChatGPT được phát hành.</strong></p>
+<p>Thực tế này đã <strong>gây ra sự phẫn nộ của</strong> — và dẫn đến <a href="https://venturebeat.com/ai/elon-musk-sues-openai-again-alleging-shakespearean-betrayal-of-ai-mission/">một số vụ kiện từ</a> — <strong>người đồng sáng lập và nhà tài trợ trước đây của OpenAI, Elon Musk, người đã trở thành đối thủ cạnh tranh</strong>, người mà cùng với nhiều nhà phê bình khác, đã dành vài năm qua để <strong>buộc tội OpenAI phản bội sứ mệnh</strong> và các nguyên tắc sáng lập của nó, và tên tuổi của nó <strong>bằng cách né tránh các bản phát hành AI mã nguồn mở để ủng hộ các mô hình độc quyền trả phí</strong> chỉ dành cho khách hàng của API của OpenAI hoặc người đăng ký ChatGPT trả phí (mặc dù có một cấp miễn phí cho phiên bản sau).</p>
+<p><strong>Người đồng sáng lập và Giám đốc điều hành của OpenAI, Sam Altman, đã bày tỏ sự hối tiếc</strong> về việc ở &quot; <a href="https://venturebeat.com/ai/sam-altman-admits-openai-was-on-the-wrong-side-of-history-in-open-source-debate/">phía sai của lịch sử</a>&quot; bằng cách không phát hành thêm AI mã nguồn mở sớm hơn trong <a href="https://www.reddit.com/r/OpenAI/comments/1ieonxv/ama_with_openais_sam_altman_mark_chen_kevin_weil/">một Reddit AMA (hỏi tôi bất cứ điều gì) Hỏi &amp; Đáp với người dùng</a> vào tháng Hai năm nay, và <a href="https://venturebeat.com/ai/openai-to-release-open-source-model-as-ai-economics-force-strategic-shift/">Altman đã cam kết phát hành một mô hình mã nguồn mở mới vào tháng Ba</a>, nhưng cuối cùng công ty <a href="https://techcrunch.com/2025/07/11/openai-delays-the-release-of-its-open-model-again/">đã trì hoãn việc phát hành từ ngày dự kiến vào tháng Bảy cho đến bây giờ</a>.</p>
+<p>Bây giờ <strong>OpenAI đang quay trở lại mã nguồn mở, và câu hỏi là, tại sao</strong>?</p>
+<h2 id="tại-sao-openai-lại-phát-hành-một-bộ-mô-hình-mã-nguồn-mở-miễn-phí-mà-nó-không-kiếm-được-tiền-từ-đó">Tại sao OpenAI lại phát hành một bộ mô hình mã nguồn mở miễn phí mà nó không kiếm được tiền từ đó?</h2>
+<p>Để diễn giải <a href="https://www.instagram.com/reel/C5wNhBpMBkI/">dòng đáng nhớ của nhân vật Jesse Plemons</a> từ bộ phim <em>Game Night</em>: &ldquo;Làm thế nào điều đó có thể có lợi cho OpenAI?&rdquo;</p>
+<!-- raw HTML omitted -->
+<p>Rốt cuộc, hoạt động kinh doanh cho các sản phẩm trả phí của OpenAI dường như đang bùng nổ.</p>
+<p><strong>Doanh thu đã tăng vọt cùng với sự mở rộng nhanh chóng của cơ sở người dùng ChatGPT</strong>, <strong>hiện ở mức 700 triệu người dùng hoạt động hàng tuần</strong>. Tính đến tháng 8 năm 2025, <a href="">OpenAI báo cáo 13 tỷ đô la doanh thu định kỳ hàng năm,</a>, tăng từ 10 tỷ đô la vào tháng 6. <strong>Sự tăng trưởng đó được thúc đẩy bởi sự gia tăng mạnh mẽ về số lượng khách hàng doanh nghiệp trả tiền — hiện là 5 triệu, tăng từ 3 triệu chỉ hai tháng trước</strong> — và sự tham gia hàng ngày tăng vọt, với hơn 3 tỷ tin nhắn người dùng được gửi mỗi ngày.</p>
+<p>Động lực tài chính theo sau vòng tài trợ 8,3 tỷ đô la, định giá OpenAI ở mức 300 tỷ đô la và cung cấp nền tảng cho sự mở rộng cơ sở hạ tầng và tham vọng toàn cầu tích cực của công ty.</p>
+<p>So sánh điều đó với <strong>doanh thu định kỳ hàng năm được báo cáo là 5 tỷ đô la của công ty khởi nghiệp AI đối thủ khép kín/độc quyền Anthropic</strong>, nhưng điều thú vị là, <strong>Anthropic được cho là kiếm được nhiều tiền hơn từ API của mình, 3,1 tỷ đô la doanh thu so với 2,9 tỷ đô la của OpenAI</strong>, theo <em><a href="https://www.theinformation.com/articles/anthropic-revenue-pace-nears-5-billion-run-mega-round">The Information</a></em>.</p>
+<!-- raw HTML omitted -->
+<p>Vì vậy, với việc <em>hoạt động kinh doanh AI trả phí đang hoạt động tốt</em>, chiến lược kinh doanh đằng sau các dịch vụ mã nguồn mở này ít rõ ràng hơn — đặc biệt là vì <strong>các mô hình gpt-oss OpenAI mới gần như chắc chắn sẽ cắt giảm một số (có lẽ rất nhiều) việc sử dụng các mô hình trả phí của OpenAI.</strong> Tại sao lại quay lại cung cấp LLM mã nguồn mở ngay bây giờ khi có quá nhiều tiền đang đổ vào trả phí và không có khoản nào, do chính ý định của nó, sẽ trực tiếp hướng tới các mô hình mã nguồn mở?</p>
+<p>Nói một cách đơn giản: bởi vì <strong>các đối thủ cạnh tranh mã nguồn mở,</strong> bắt đầu với <a href="https://venturebeat.com/ai/why-everyone-in-ai-is-freaking-out-about-deepseek/">việc phát hành <strong>DeepSeek R1</strong> hiệu quả ấn tượng bởi bộ phận AI Trung Quốc có cùng tên vào tháng 1 năm 2025</a>, đang <strong>cung cấp gần ngang bằng về các chuẩn hiệu suất so với các mô hình độc quyền trả phí</strong>, <strong>miễn phí</strong>, <strong>với ít hạn chế hơn (về cơ bản là không có)</strong> về việc triển khai cho các doanh nghiệp và người dùng cuối. Và ngày càng có nhiều <strong>doanh nghiệp đang áp dụng các mô hình mã nguồn mở này</strong> trong sản xuất.</p>
+<p>Như <strong>các giám đốc điều hành và thành viên nhóm OpenAI đã tiết lộ</strong> cho VentureBeat và nhiều nhà báo khác trong một cuộc gọi video bị cấm vận đêm qua về các mô hình mới mà khi nói đến <strong>API của OpenAI</strong>, <strong>đa số khách hàng đang sử dụng kết hợp các mô hình OpenAI trả phí <em>và các mô hình mã nguồn mở từ các nhà cung cấp khác</em>.</strong> (Tôi đã hỏi, nhưng OpenAI từ chối chỉ định tỷ lệ phần trăm hoặc tổng số khách hàng API đang sử dụng các mô hình mã nguồn mở và mô hình nào).</p>
+<p>Ít nhất là cho đến bây giờ. <strong>OpenAI rõ ràng hy vọng những dịch vụ gpt-oss mới này sẽ khiến nhiều người dùng chuyển từ các dịch vụ mã nguồn mở cạnh tranh và quay trở lại hệ sinh thái của OpenAI</strong>, ngay cả khi OpenAI không thấy bất kỳ doanh thu hoặc dữ liệu trực tiếp nào từ việc sử dụng đó.</p>
+<p>Ở quy mô lớn hơn, dường như <strong>OpenAI muốn trở thành một dịch vụ AI toàn diện, toàn ngăn xếp, một cửa</strong> cho <em>tất cả nhu cầu về trí tuệ máy móc của một doanh nghiệp, nhà phát triển độc lập hoặc người tiêu dùng thông thường</em> — từ giao diện chatbot sạch sẽ đến API để xây dựng các dịch vụ và ứng dụng trên đầu trang đến các khung tác nhân để xây dựng các tác nhân AI thông qua API nói trên đến <a href="https://venturebeat.com/ai/insane-openai-introduces-gpt-4o-native-image-generation-and-its-already-wowing-users/">mô hình tạo hình ảnh (gpt-4o tạo hình ảnh gốc)</a>, <a href="https://venturebeat.com/ai/open-ai-sora-launches/">mô hình video (Sora)</a>, <a href="https://venturebeat.com/ai/openais-new-voice-ai-models-gpt-4o-transcribe-let-you-add-speech-to-your-existing-text-apps-in-seconds/">mô hình phiên âm âm thanh (gpt-4o-transcribe)</a>, và bây giờ, các dịch vụ mã nguồn mở. Liệu một mô hình tạo nhạc và &ldquo;mô hình thế giới&rdquo; có thể ở xa phía sau không?</p>
+<p><strong>OpenAI tìm cách bao trùm thị trường AI, độc quyền và mã nguồn mở</strong>, ngay cả khi phiên bản sau không có giá trị gì về mặt đô la và xu trực tiếp thực tế.</p>
+<h2 id="đào-tạo-và-kiến-trúc">Đào tạo và kiến trúc</h2>
+<p>Phản hồi từ các nhà phát triển đã trực tiếp ảnh hưởng đến thiết kế của gpt-oss. OpenAI cho biết yêu cầu hàng đầu là một giấy phép cho phép, điều này dẫn đến việc áp dụng Apache 2.0 cho cả hai mô hình. Cả hai mô hình đều sử dụng kiến trúc <strong>Mixture-of-Experts (MoE)</strong> với <strong>xương sống Transformer</strong>.</p>
+<p>gpt-oss-120b lớn hơn kích hoạt 5,1 tỷ tham số trên mỗi mã thông báo (trong tổng số 117 tỷ), và gpt-oss-20b kích hoạt 3,6 tỷ (trong tổng số 21 tỷ).</p>
+<p>Cả hai đều hỗ trợ <strong>độ dài ngữ cảnh 128.000 mã thông báo</strong> (khoảng 300-400 trang văn bản đáng giá của một cuốn tiểu thuyết mà người dùng có thể tải lên cùng một lúc) và sử dụng <strong>sự chú ý thưa thớt có băng tần cục bộ</strong> và sử dụng <strong>Nhúng vị trí quay</strong> để mã hóa.</p>
+<p>Trình mã hóa thông báo — chương trình chuyển đổi các từ và các đoạn từ thành các mã thông báo số mà LLM có thể hiểu, được đặt tên là <strong>&ldquo;o200k_harmony&rdquo;</strong> — cũng đang được mở nguồn.</p>
+<p>Các nhà phát triển có thể chọn giữa các cài đặt <strong>nỗ lực lý luận thấp, trung bình hoặc cao</strong> dựa trên nhu cầu về độ trễ và hiệu suất. Mặc dù các mô hình này có thể lý luận trên các tác vụ tác nhân phức tạp, OpenAI nhấn mạnh rằng chúng không được đào tạo với <strong>sự giám sát trực tiếp của các đầu ra CoT</strong>, để bảo toàn khả năng quan sát hành vi lý luận — một phương pháp mà OpenAI coi là quan trọng để giám sát an toàn.</p>
+<p>Một <strong>yêu cầu phổ biến khác từ cộng đồng nhà phát triển của OpenAI là hỗ trợ mạnh mẽ cho việc gọi hàm, đặc biệt là cho khối lượng công việc của tác nhân</strong>, mà OpenAI tin rằng gpt-oss hiện đang cung cấp.</p>
+<p>Các mô hình được thiết kế cho <strong>lý luận chuỗi tư duy</strong>, <strong>sử dụng công cụ</strong> và <strong>gọi hàm ít lần</strong>, và tương thích với <a href="https://venturebeat.com/programming-development/openai-unveils-responses-api-open-source-agents-sdk-letting-developers-build-their-own-deep-research-and-operator/"><strong>API Phản hồi</strong> của OpenAI</a> được giới thiệu vào tháng Ba, cho phép các nhà phát triển tăng cường ứng dụng của họ bằng cách kết nối LLM OpenAI mà họ chọn với ba công cụ tích hợp mạnh mẽ — <strong>tìm kiếm trên web</strong>, <strong>tìm kiếm tệp</strong> và <strong>sử dụng máy tính</strong> — trong một lệnh gọi API duy nhất.</p>
+<p><strong>Nhưng đối với các mô hình gpt-oss mới, khả năng sử dụng công cụ — bao gồm tìm kiếm trên web và thực thi mã — không bị ràng buộc với cơ sở hạ tầng của OpenAI.</strong> OpenAI cung cấp các lược đồ và ví dụ được sử dụng trong quá trình đào tạo, chẳng hạn như triển khai trình duyệt cơ bản bằng API Exa và trình thông dịch Python hoạt động trong vùng chứa Docker.</p>
+<p><strong>Tùy thuộc vào các nhà cung cấp suy luận hoặc nhà phát triển cá nhân để xác định cách các công cụ được triển khai.</strong> Ví dụ: các nhà cung cấp như vLLM cho phép người dùng định cấu hình máy chủ MCP (Model-Controller-Proxy) của riêng họ để chỉ định phần phụ trợ trình duyệt.</p>
+<p>Mặc dù các mô hình này có thể lý luận trên các tác vụ tác nhân phức tạp, OpenAI nhấn mạnh rằng chúng không được đào tạo với <strong>sự giám sát trực tiếp của các đầu ra CoT</strong>, để bảo tồn khả năng quan sát hành vi lý luận — một phương pháp mà OpenAI coi là quan trọng để giám sát an toàn.</p>
+<h2 id="đánh-giá-và-biện-pháp-an-toàn">Đánh giá và biện pháp an toàn</h2>
+<p>OpenAI đã tiến hành đào tạo an toàn bằng cách sử dụng <a href="https://openai.com/index/updating-our-preparedness-framework/"><strong>Khung chuẩn bị</strong> của mình</a>, một tài liệu phác thảo các cam kết về thủ tục, tiêu chí đánh giá rủi ro, danh mục khả năng, ngưỡng, đánh giá và cơ chế quản trị mà OpenAI sử dụng để theo dõi, đánh giá và giảm thiểu rủi ro AI biên giới.</p>
+<p>Chúng bao gồm <strong>lọc dữ liệu liên quan đến mối đe dọa hóa học, sinh học, phóng xạ và hạt nhân (CBRN)</strong> ra trong quá trình tiền đào tạo và áp dụng các phương pháp an toàn sau đào tạo nâng cao như <strong>căn chỉnh có chủ ý</strong> và <strong>hệ thống phân cấp hướng dẫn</strong> để thực thi hành vi từ chối trên các lời nhắc có hại.</p>
+<p>Để kiểm tra khả năng sử dụng sai mục đích trong trường hợp xấu nhất, OpenAI đã tinh chỉnh một cách đối kháng gpt-oss-120b trên dữ liệu sinh học và an ninh mạng nhạy cảm bằng cách sử dụng ngăn xếp đào tạo RL nội bộ của mình. Các kịch bản <strong>tinh chỉnh độc hại (MFT)</strong> này — một trong những đánh giá tinh vi nhất thuộc loại này cho đến nay — bao gồm bật duyệt web và tắt hành vi từ chối, mô phỏng khả năng tấn công trong thế giới thực.</p>
+<p>Các mô hình kết quả đã được đánh giá so với cả LLM mở và độc quyền, bao gồm DeepSeek R1-0528, Qwen 3 Thinking, Kimi K2 và o3 của OpenAI. Mặc dù được tăng cường khả năng truy cập vào các công cụ và đào tạo có mục tiêu, OpenAI nhận thấy rằng ngay cả các mô hình gpt-oss được tinh chỉnh cũng vẫn <strong>dưới ngưỡng khả năng &ldquo;Cao&rdquo;</strong> đối với các lĩnh vực rủi ro biên giới như rủi ro sinh học và an ninh mạng. Những kết luận này đã được xem xét bởi <strong>ba nhóm chuyên gia độc lập</strong>, có các khuyến nghị đã được đưa vào phương pháp luận cuối cùng.</p>
+<p>Song song đó, OpenAI đã hợp tác với <strong>SecureBio</strong> để chạy các đánh giá bên ngoài trên các điểm chuẩn tập trung vào sinh học như <strong>Kiểm tra khả năng mầm bệnh ở người (HPCT)</strong>, <strong>Kiểm tra khả năng sinh học phân tử (MBCT)</strong> và các kiểm tra khác. Kết quả cho thấy các mô hình được tinh chỉnh của gpt-oss hoạt động gần với mô hình o3 của OpenAI, mô hình này không được phân loại là biên giới cao theo định nghĩa an toàn của OpenAI.</p>
+<p>Theo OpenAI, những phát hiện này đã đóng góp trực tiếp vào quyết định phát hành gpt-oss một cách công khai. Bản phát hành này cũng nhằm mục đích hỗ trợ nghiên cứu an toàn, đặc biệt là xung quanh việc theo dõi và kiểm soát các mô hình trọng lượng mở trong các lĩnh vực phức tạp.</p>
+<h2 id="tính-khả-dụng-và-hỗ-trợ-hệ-sinh-thái">Tính khả dụng và hỗ trợ hệ sinh thái</h2>
+<p>Các mô hình gpt-oss hiện có sẵn trên Hugging Face, với hỗ trợ dựng sẵn thông qua các nền tảng triển khai chính bao gồm <strong>Azure</strong>, <strong>AWS</strong>, <strong>Databricks</strong>, <strong>Cloudflare</strong>, <strong>Vercel</strong>, <strong>Together AI</strong>, <strong>OpenRouter</strong> và các nền tảng khác. Các đối tác phần cứng bao gồm <strong>NVIDIA</strong>, <strong>AMD</strong> và <strong>Cerebras</strong>, và Microsoft đang cung cấp các bản dựng được tối ưu hóa bằng GPU trên <strong>Windows thông qua ONNX Runtime</strong>.</p>
+<p>OpenAI cũng đã công bố <strong>Thử thách Red Teaming trị giá 500.000 đô la</strong> được tổ chức trên Kaggle, mời các nhà nghiên cứu và nhà phát triển khám phá giới hạn của gpt-oss và xác định các con đường lạm dụng mới. Một báo cáo công khai và một bộ dữ liệu đánh giá mã nguồn mở sẽ được theo dõi, nhằm mục đích đẩy nhanh nghiên cứu an toàn mô hình mở trong cộng đồng AI.</p>
+<p>Những người áp dụng sớm như <strong>AI Sweden</strong>, <strong>Orange</strong> và <strong>Snowflake</strong> đã hợp tác với OpenAI để khám phá các triển khai khác nhau, từ tinh chỉnh cục bộ đến các trường hợp sử dụng tại chỗ an toàn. OpenAI mô tả việc ra mắt này là một lời mời các nhà phát triển, doanh nghiệp và chính phủ chạy các mô hình ngôn ngữ hiện đại theo các điều khoản của riêng họ.</p>
+<p>Mặc dù OpenAI chưa cam kết một nhịp điệu cố định cho các bản phát hành trọng lượng mở trong tương lai, nhưng nó báo hiệu rằng gpt-oss đại diện cho một sự mở rộng chiến lược trong phương pháp tiếp cận của nó — cân bằng giữa tính mở với các phương pháp luận an toàn được liên kết để định hình cách các mô hình lớn được chia sẻ và quản lý trong những năm tới.</p>
+<h2 id="câu-hỏi-lớn-với-rất-nhiều-sự-cạnh-tranh-trong-ai-mã-nguồn-mở-liệu-những-nỗ-lực-của-openai-có-được-đền-đáp">Câu hỏi lớn: với rất nhiều sự cạnh tranh trong AI mã nguồn mở, liệu những nỗ lực của OpenAI có được đền đáp?</h2>
+<p>OpenAI tham gia lại thị trường mô hình mã nguồn mở trong <strong>thời điểm cạnh tranh nhất</strong> từ trước đến nay.</p>
+<p>Đứng đầu bảng xếp hạng chuẩn AI công khai, các mô hình biên giới của Hoa Kỳ vẫn là <strong>độc quyền</strong> — <strong>OpenAI</strong> (GPT-4o/o3), <strong>Google</strong> (Gemini) và <strong>Anthropic</strong> (Claude).</p>
+<p>Nhưng giờ đây, họ cạnh tranh trực tiếp với một làn sóng các đối thủ cạnh tranh <strong>trọng lượng mở</strong>. Từ Trung Quốc: <a href="https://venturebeat.com/ai/deepseek-r1-0528-arrives-in-powerful-open-source-challenge-to-openai-o3-and-google-gemini-2-5-pro/"><strong>DeepSeek-R1</strong></a>(mã nguồn mở, MIT) và <strong>DeepSeek-V3 (trọng lượng mở theo Giấy phép mô hình DeepSeek cho phép sử dụng thương mại)</strong>; <a href="https://venturebeat.com/ai/alibaba-launches-open-source-qwen3-model-that-surpasses-openai-o1-and-deepseek-r1/"><strong>Qwen 3 của Alibaba</strong></a>(trọng lượng mở, Apache-2.0); <a href="https://venturebeat.com/ai/moonshot-ais-kimi-k2-outperforms-gpt-4-in-key-benchmarks-and-its-free/"><strong>Kimi K2 của MoonshotAI</strong></a>(trọng lượng mở; kho lưu trữ công khai và thẻ mô hình); và <a href="https://venturebeat.com/ai/chinese-startup-z-ai-launches-powerful-open-source-glm-4-5-model-family-with-powerpoint-creation/"><strong>GLM-4.5 của Z.ai</strong></a>(cũng được cấp phép Apache 2.0).</p>
+<p><strong>Mistral của Châu Âu (Mixtral/Mistral, trọng lượng mở, Apache-2.0)</strong> neo giữ sự thúc đẩy của EU; <strong>Falcon 2/3</strong> của UAE xuất bản <strong>trọng lượng mở</strong> theo giấy phép dựa trên Apache của TII. Trong trại trọng lượng mở của Hoa Kỳ, <strong>Llama 3.1 của Meta</strong> được vận chuyển theo <strong>giấy phép cộng đồng (có sẵn nguồn)</strong>, <strong>Gemma của Google</strong> theo <strong>điều khoản Gemma</strong> (trọng lượng mở với các hạn chế sử dụng) và <strong>Phi-3.5 của Microsoft</strong> theo <strong>MIT</strong>.</p>
+<p><strong>Sự kéo của nhà phát triển phản ánh sự phân chia đó.</strong> Trên Hugging Face, <strong>Qwen2.5-7B-Instruct (trọng lượng mở, Apache-2.0)</strong> nằm gần đầu theo &ldquo;lượt tải xuống tháng trước&rdquo;, trong khi <strong>DeepSeek-R1 (MIT)</strong> và <strong>DeepSeek-V3 (trọng lượng mở được cấp phép mô hình)</strong> cũng đăng lực kéo lớn. Những người trung thành với trọng lượng mở <strong>Mistral-7B / Mixtral</strong> (Apache-2.0), <strong>Llama-3.1-8B/70B</strong> (giấy phép cộng đồng Meta), <strong>Gemma-2</strong> (điều khoản Gemma), <strong>Phi-3.5</strong> (MIT), <strong>GLM-4.5</strong> (trọng lượng mở) và **Falco</p>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/openai-returns-to-open-source-roots-with-new-models-gpt-oss-120b-and-gpt-oss-20b/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/06-august-2025/">06 August 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-06/8b43b3/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/nuneybits_Vector_art_of_a_computer_code_on_a_retro_computer_scr_10aa7803-f75d-474e-b8a1-fdf54a6773f8.webp?w=700&amp;h=350&amp;crop=1" alt="Anthropic ra mắt Claude 4.1 mới thống trị các bài kiểm tra mã hóa vài ngày trước khi GPT-5 ra mắt" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-06T00:00:00&#43;00:00">Aug 06, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic ra mắt Claude 4.1 mới thống trị các bài kiểm tra mã hóa vài ngày trước khi GPT-5 ra mắt</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Claude 4.1 mới của Anthropic vượt trội trong các bài kiểm tra mã hóa trước khi GPT-5 ra mắt.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-05/bf8a74/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/nuneybits_Vector_art_of_rocket-powered_chatbot_in_pastel_colors_e8db99b7-6d3c-46a0-b5a9-ff993bb585aa.webp?w=700&amp;h=350&amp;crop=1" alt="ChatGPT tăng vọt lên 700 triệu người dùng hàng tuần trước khi ra mắt GPT-5 với siêu năng lực suy luận" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-05T00:00:00&#43;00:00">Aug 05, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">ChatGPT tăng vọt lên 700 triệu người dùng hàng tuần trước khi ra mắt GPT-5 với siêu năng lực suy luận</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-06/8b43b3/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/nuneybits_Vector_art_of_a_computer_code_on_a_retro_computer_scr_10aa7803-f75d-474e-b8a1-fdf54a6773f8.webp?w=700&amp;h=350&amp;crop=1" alt="Anthropic ra mắt Claude 4.1 mới thống trị các bài kiểm tra mã hóa vài ngày trước khi GPT-5 ra mắt" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic ra mắt Claude 4.1 mới thống trị các bài kiểm tra mã hóa vài ngày trước khi GPT-5 ra mắt</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-06/8575c4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/pXnO9nBpgw0RnwPCDrcbdFqO0cHkaIsQYNuOyXd7L3iFrp0Mr_yLMROiWzz3EqG8W-qq-QzGPTEAs1pr75kX7SzVC-y4jnON7b7P9Bwqd19Nl-bkJYc=w400-h225-n-nu" alt="Genie 3- Một chân trời mới cho các mô hình thế giới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Genie 3- Một chân trời mới cho các mô hình thế giới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-06/5857fa/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/ChatGPT-Image-Aug-5-2025-11_33_09-AM.png?w=700&amp;h=350&amp;crop=1" alt="OpenAI quay trở lại nguồn gốc mã nguồn mở với các mô hình mới gpt-oss-120b và gpt-oss-20b" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">OpenAI quay trở lại nguồn gốc mã nguồn mở với các mô hình mới gpt-oss-120b và gpt-oss-20b</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-05/bf8a74/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/nuneybits_Vector_art_of_rocket-powered_chatbot_in_pastel_colors_e8db99b7-6d3c-46a0-b5a9-ff993bb585aa.webp?w=700&amp;h=350&amp;crop=1" alt="ChatGPT tăng vọt lên 700 triệu người dùng hàng tuần trước khi ra mắt GPT-5 với siêu năng lực suy luận" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">ChatGPT tăng vọt lên 700 triệu người dùng hàng tuần trước khi ra mắt GPT-5 với siêu năng lực suy luận</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-05/c4c090/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/4c3dc5494aacbe877b3b7783ea0f3d731f37e38e-1000x1000.svg" alt="Khuôn khổ của chúng tôi để phát triển các tác nhân an toàn và đáng tin cậy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Khuôn khổ của chúng tôi để phát triển các tác nhân an toàn và đáng tin cậy</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
