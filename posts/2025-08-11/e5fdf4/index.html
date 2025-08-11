@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tăng tốc ND-Parallel- Hướng dẫn đào tạo đa GPU hiệu quả | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Tăng tốc ND-Parallel- Hướng dẫn đào tạo đa GPU hiệu quả</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-08-11T00:00:00&#43;00:00">August 11, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            13 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/accelerate-nd-parallel/thumbnail.png" alt="Tăng tốc ND-Parallel- Hướng dẫn đào tạo đa GPU hiệu quả">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="accelerate-nd-parallel-hướng-dẫn-huấn-luyện-multi-gpu-hiệu-quả">Accelerate ND-Parallel: Hướng dẫn huấn luyện Multi-GPU hiệu quả</h1>
+<p>Việc huấn luyện các mô hình lớn trên nhiều GPU có thể gặp nhiều thách thức do sự phức tạp của các chiến lược song song khác nhau. Trong Accelerate, cùng với <a href="https://github.com/axolotl-ai-cloud/axolotl/">Axolotl</a>, chúng tôi đã tích hợp một cách nhanh chóng và dễ dàng để sử dụng bất kỳ sự kết hợp nào của các chiến lược song song trong script huấn luyện của bạn!</p>
+<p>Đây là cách thêm nó vào script huấn luyện của bạn:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoModelForCausalLM
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> accelerate <span style="color:#f92672">import</span> Accelerator
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> accelerate.parallelism_config <span style="color:#f92672">import</span> ParallelismConfig
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> accelerate.utils <span style="color:#f92672">import</span> FullyShardedDataParallelPlugin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># cấu hình các parallelisms mong muốn của bạn tại đây - cấu hình cụ thể này yêu cầu ít nhất 2 nodes với 8 GPUs mỗi node.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># đặt bất kỳ bậc parallelism nào thành 1 sẽ tắt nó, ví dụ: dp_replicate_size=1 tắt DP.</span>
+</span></span><span style="display:flex;"><span>pc <span style="color:#f92672">=</span> ParallelismConfig(
+</span></span><span style="display:flex;"><span>    dp_shard_size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,  <span style="color:#75715e"># Bậc Fully Sharded Data Parallel</span>
+</span></span><span style="display:flex;"><span>    dp_replicate_size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,  <span style="color:#75715e"># Bậc Data Parallel</span>
+</span></span><span style="display:flex;"><span>    cp_size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,  <span style="color:#75715e"># Bậc Context Parallel</span>
+</span></span><span style="display:flex;"><span>    tp_size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,  <span style="color:#75715e"># Bậc Tensor Parallel</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fsdp_plugin <span style="color:#f92672">=</span> FullyShardedDataParallelPlugin(
+</span></span><span style="display:flex;"><span>    fsdp_version<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    auto_wrap_policy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;transformer_based_wrap&#34;</span>,
+</span></span><span style="display:flex;"><span>    transformer_cls_names_to_wrap<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;LlamaDecoderLayer&#34;</span>],
+</span></span><span style="display:flex;"><span>    state_dict_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SHARDED_STATE_DICT&#34;</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>accelerator <span style="color:#f92672">=</span> Accelerator(
+</span></span><span style="display:flex;"><span>    parallelism_config<span style="color:#f92672">=</span>pc,
+</span></span><span style="display:flex;"><span>    fsdp_plugin<span style="color:#f92672">=</span>fsdp_plugin
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;NousResearch/Hermes-3-Llama-3.1-8B&#34;</span>,
+</span></span><span style="display:flex;"><span>    device_mesh<span style="color:#f92672">=</span>accelerator<span style="color:#f92672">.</span>torch_device_mesh
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> accelerator<span style="color:#f92672">.</span>prepare(model)
+</span></span></code></pre></div><p>Chúng tôi cũng đã bao gồm một <a href="https://github.com/huggingface/accelerate/blob/main/examples/fsdp2/nd_parallel.py">script huấn luyện</a> toàn diện hơn từ đầu đến cuối trong Accelerate repo, script này trình bày cách thiết lập dataloader, optimizer và training loop của bạn, đồng thời cách lưu mô hình của bạn sau khi huấn luyện.</p>
+<p>Để hợp lý hóa hơn nữa các mô hình tinh chỉnh ở quy mô lớn và kết hợp các chiến lược song song với nhiều kỹ thuật tinh chỉnh, chúng tôi cũng đã tích hợp kỹ thuật này vào Axolotl. Để giúp bạn bắt đầu ngay lập tức, chúng tôi đã thử nghiệm một số <a href="https://github.com/axolotl-ai-cloud/axolotl/tree/main/examples/distributed-parallel">cấu hình ví dụ</a> mà bạn có thể sửa đổi cho phù hợp với nhu cầu của mình - hãy thử một cấu hình với:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># lưu ý: điều này yêu cầu kích thước world tối thiểu là 16</span>
+</span></span><span style="display:flex;"><span>axolotl train examples/distributed-parallel/llama-3_1-8b-hsdp-tp.yaml
+</span></span></code></pre></div><p>Bạn cũng có thể xem <a href="https://docs.axolotl.ai/docs/nd_parallelism.html">tài liệu Axolotl ND-Parallelism</a> để biết thêm chi tiết - việc thêm các kỹ thuật song song ND vào các cấu hình hiện có của bạn rất đơn giản, chỉ cần thêm một hoặc nhiều trường sau vào tệp cấu hình Axolotl của bạn:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># Bậc Fully Sharded Data Parallel (lưu ý: cũng yêu cầu trường fsdp_config)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># xem https://docs.axolotl.ai/docs/multi-gpu.html#sec-fsdp để biết thêm chi tiết</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">dp_shard_size</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Bậc Data Parallel</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">dp_replicate_size</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Bậc Context Parallel</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">context_parallel_size</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Bậc Tensor Parallel</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">tensor_parallel_size</span>: <span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><p>Chúng tôi đã giúp bạn dễ dàng định cấu hình các bậc của các chiến lược song song khác nhau và cách chúng được kết hợp thông qua lớp <a href="https://github.com/huggingface/accelerate/blob/v1.10.0/src/accelerate/parallelism_config.py"><code>ParallelismConfig</code></a> trong Accelerate hoặc thông qua các trường cấu hình trong Axolotl, nhưng làm cách nào để chúng ta biết cấu hình nào sẽ hoạt động tốt nhất cho trường hợp sử dụng của chúng ta? Khi chúng ta mở rộng quy mô để huấn luyện các mô hình với hàng chục hoặc thậm chí hàng trăm tỷ tham số, thách thức chính đến từ việc hiểu các chiến lược song song khác nhau và cách chúng tương tác để giảm thiểu chi phí truyền thông trên các thiết bị. Trong bài đăng này, chúng ta sẽ xem xét cách các chiến lược song song khác nhau hoạt động, đồng thời khi nào và cách bạn có thể muốn kết hợp chúng.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#data-parallelism">Data Parallelism</a></li>
+<li><a href="#fully-sharded-data-parallelism">Fully Sharded Data Parallelism</a></li>
+<li><a href="#tensor-parallelism">Tensor Parallelism</a></li>
+<li><a href="#context-parallelism">Context Parallelism</a></li>
+<li><a href="#nd-parallelisms">ND Parallelisms</a>
+<ul>
+<li><a href="#hybrid-sharded-data-parallelism">Hybrid Sharded Data Parallelism</a></li>
+<li><a href="#fully-sharded-data-parallelism--tensor-parallelism">Fully Sharded Data Parallelism + Tensor Parallelism</a></li>
+<li><a href="#fully-sharded-data-parallelism--context-parallelism">Fully Sharded Data Parallelism + Context Parallelism</a></li>
+<li><a href="#hybrid-sharded-data-parallelism--tensor-parallelism">Hybrid Sharded Data Parallelism + Tensor Parallelism</a></li>
+</ul>
+</li>
+<li><a href="#usage-notes">Usage Notes</a></li>
+</ul>
+<h2 id="data-parallelism">Data Parallelism</h2>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/accelerate-nd-parallel/dp.png" alt="Diagram for Data Parallel">
+<em>Hình: Distributed Data Parallel sao chép toàn bộ mô hình trên mỗi thiết bị và chia đều dữ liệu thành các lô con cho mỗi thiết bị. (<a href="https://martynassubonis.substack.com/p/tensor-and-fully-sharded-data-parallelism">Nguồn: Martynas Šubonis</a>).</em></p>
+<p>Data parallelism (DP) là kỹ thuật phổ biến nhất để huấn luyện các mô hình trên nhiều GPU và bao gồm việc sao chép mô hình, gradient và trạng thái optimizer trên mỗi thiết bị, đồng thời phân phối đều các lô dữ liệu giữa các GPU và đồng bộ hóa gradient trên các thiết bị trước khi cập nhật các tham số. Điều này có thể làm tăng đáng kể thông lượng so với huấn luyện trên một thiết bị, nhưng yêu cầu mô hình của bạn có thể phù hợp trên một thiết bị duy nhất.</p>
+<p>Chúng ta có thể kiểm soát số lượng bản sao của mô hình bằng tham số <code>dp_replicate_size</code> trong <code>ParallelismConfig</code> của Accelerate hoặc trường cấu hình trong Axolotl. Điều đáng chú ý là DP là một chiến lược song song <em>cấp cao nhất</em>, có nghĩa là nếu chúng ta sử dụng <code>dp_replicate_size=2</code> và chúng ta kết hợp nó với các chiến lược song song khác, sẽ có 2 bản sao của mô hình, mỗi bản cũng bị ảnh hưởng bởi các chiến lược song song khác. Ví dụ: nếu chúng ta sử dụng <code>dp_replicate_size=2</code> và <code>tp_size=2</code>, chúng ta sẽ có 2 bản sao của mô hình, mỗi bản có 2 shards tensor parallel.</p>
+<blockquote>
+<p>Chúng tôi sử dụng thuật ngữ <em>shard</em> để mô tả dữ liệu trên một thiết bị duy nhất là một phân vùng của một phần dữ liệu lớn hơn.</p></blockquote>
+<h2 id="fully-sharded-data-parallelism">Fully Sharded Data Parallelism</h2>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/accelerate-nd-parallel/fsdp.png" alt="Diagram for Fully Sharded Data Parallel">
+<em>Hình: Fully Sharded Data Parallel chia đều từng tham số của mô hình trên mỗi thiết bị và, giống như DDP, chia đều dữ liệu thành các lô con cho mỗi thiết bị. Để hoàn thành một lượt forward và backward, FSDP phải <em>thu thập</em> trọng số của từng tham số trước lượt forward/backward để mỗi thiết bị có được một bản sao đầy đủ của tham số. (<a href="https://martynassubonis.substack.com/p/tensor-and-fully-sharded-data-parallelism">Nguồn: Martynas Šubonis</a>).</em></p>
+<p>Điều gì sẽ xảy ra nếu mô hình của chúng ta quá lớn để phù hợp trên một thiết bị duy nhất? Fully sharded data parallel (FSDP) giải quyết vấn đề này bằng cách sharding (phân phối đều) trọng số, gradient và trạng thái optimizer của mô hình trên các GPU (điều này được lấy cảm hứng từ ZeRO-3 của DeepSpeed), trong khi mỗi thiết bị vẫn nhận được phần lô dữ liệu đầy đủ của nó. Như bạn có thể nhận thấy từ sơ đồ trên, thay vì yêu cầu một bản sao đầy đủ của toàn bộ mô hình trên mỗi thiết bị, chúng ta chỉ thu thập trọng số cho một lớp duy nhất tại một thời điểm trước lượt forward, sau đó trọng số có thể được sharded lại.</p>
+<p>Theo cách này, chúng ta đánh đổi việc sử dụng bộ nhớ để lấy chi phí truyền thông của việc thu thập các tham số sharded trước mỗi lượt forward và backward, đồng thời giảm phân tán gradient cục bộ. Chúng ta có thể kiểm soát sự đánh đổi này trong FSDP bằng cách điều chỉnh độ chi tiết mà tại đó các tham số được thu thập. Ở một thái cực, chúng ta có thể thu thập và re-shard mọi lớp của mô hình, điều này sẽ dẫn đến việc sử dụng bộ nhớ đỉnh thấp nhất, nhưng phát sinh chi phí truyền thông cao nhất. Trong thực tế, một cách tiếp cận phổ biến là thu thập trọng số cho toàn bộ khối giải mã transformer tại một thời điểm.</p>
+<p>Mặc dù chúng ta có thể thực hiện thêm các giao dịch đánh đổi giữa bộ nhớ và tính toán và chuyển các tham số và gradient mô hình sang CPU để huấn luyện các mô hình lớn hơn, nhưng điều này có thể chậm một cách cấm đoán. Thay vào đó, hãy xem xét cách chúng ta có thể sử dụng hiệu quả nhiều thiết bị hơn nữa để huấn luyện các mô hình lớn hơn trong khi vẫn duy trì thông lượng dữ liệu cao.</p>
+<p>Chúng tôi sử dụng thuật ngữ <em>node</em> để chỉ một máy duy nhất lưu trữ nhiều GPU (tối đa là 8), với các kênh truyền thông trong node nhanh chóng sử dụng, ví dụ: NVLink giữa các GPU. Khi sử dụng nhiều node để huấn luyện, chúng ta dựa vào các kênh truyền thông giữa các node tương đối chậm hơn giữa các máy sử dụng, ví dụ: Infiniband. Chúng tôi cũng đề cập đến tổng số thiết bị trong nhóm quy trình là kích thước world - ví dụ: một node duy nhất có 8 GPU thể hiện kích thước world là 8 và 4 node sẽ thể hiện kích thước world là 32.</p>
+<p>Khi sử dụng FSDP trên nhiều node, chúng ta coi toàn bộ tập hợp các thiết bị trên các node như thể chúng ta đang huấn luyện trên một node duy nhất. Ví dụ: với 4 node chứa 8 GPU mỗi node, chúng ta thực hiện sharding trên 32 thiết bị và thực hiện các hoạt động all-reduce và reduce-scatter tập thể của chúng ta bằng cách sử dụng cả các backend truyền thông giữa và trong node. Bằng cách này, chỉ riêng FSDP đã có thể mở rộng quy mô lên một số lượng GPU đáng kể với kích thước lô toàn cầu lớn để tăng thông lượng dữ liệu. Tuy nhiên, đến một điểm mà một số thách thức phát sinh có thể yêu cầu kết hợp FSDP với các kỹ thuật song song khác. Chúng ta thường cố gắng tránh thực hiện FSDP trên nhiều hơn một node đầy đủ, vì chi phí truyền thông có thể trở nên quá cao, chúng ta sẽ nói về cách giải quyết vấn đề này trong phần về <a href="#hybrid-sharded-data-parallelism">Hybrid Sharded Data Parallelism</a>.</p>
+<blockquote>
+<p>Bạn có thể sử dụng tham số <code>dp_shard_size</code> trong <code>ParallelismConfig</code> của Accelerate cùng với <a href="https://huggingface.co/docs/accelerate/v1.10.0/en/package_reference/utilities#accelerate.FullyShardedDataParallelPlugin"><code>FullyShardedDataParallelPlugin</code></a> đã chuẩn bị hoặc đặt trường cấu hình <code>dp_shard_size</code> trong Axolotl để đặt mức độ FSDP được áp dụng cho mô hình của bạn.</p></blockquote>
+<h2 id="tensor-parallelism">Tensor Parallelism</h2>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/accelerate-nd-parallel/tp.png" alt="Diagram for Tensor Parallel">
+<em>Hình: Tensor Parallelism chia các lớp tuyến tính lớn trên các thiết bị, thường sử dụng sharding theo cột cho lớp đầu tiên và sharding theo hàng cho lớp tiếp theo. Phương pháp này chỉ yêu cầu một hoạt động truyền thông AllReduce duy nhất để kết hợp các đầu ra sharded, giảm thiểu chi phí truyền thông trong khi phân phối cả bộ nhớ và tính toán trên các thiết bị trong một node.</em></p>
+<p>Tensor Parallel (TP) là một loại kỹ thuật model parallelism, trong đó các shards của mô hình thường trú trên các thiết bị riêng biệt và trái ngược với các kỹ thuật data parallel, mỗi thiết bị nhận được một lô dữ liệu giống hệt nhau. TP hoạt động bằng cách phân phối tính toán của các lớp tuyến tính trên các thiết bị, do đó mỗi thiết bị chỉ tính toán một phần của phép nhân ma trận. Kỹ thuật này hoạt động tốt nhất khi có các lớp tuyến tính lớn, chẳng hạn như các lớp feed-forward trong các mô hình transformer, có thể được chia trên các thiết bị. Chúng ta cũng có thể sử dụng TP trên từng phép chiếu query, key, value và output trong các lớp attention mà hầu như không tốn thêm chi phí truyền thông.</p>
+<p>Để đạt được hiệu suất tốt nhất, các tham số của các lớp liên tiếp có thể được phân phối theo một cách cụ thể, giảm thiểu truyền thông cần thiết. Khi làm việc với các cặp lớp tuyến tính, chúng ta có thể chia lớp đầu tiên theo cột và lớp tiếp theo theo hàng, cho phép chúng ta tính toán đầu ra chỉ với một hoạt động all-reduce duy nhất để kết hợp các đầu ra sharded.</p>
+<p>Không giống như hành vi sharding động của FSDP, TP tạo ra các phân vùng bộ nhớ tĩnh, dẫn đến giảm sử dụng bộ nhớ không đổi tỷ lệ với kích thước nhóm TP. Điều này trở nên quan trọng đối với các mô hình lớn, trong đó ngay cả một lớp giải mã duy nhất cũng quá lớn để phù hợp với bộ nhớ trong quá trình all-gather FSDP (hãy nhớ lại rằng thực hành phổ biến trong FSDP là thu thập trọng số của toàn bộ lớp giải mã tại một thời điểm). Tuy nhiên, không giống như FSDP mở rộng quy mô tương đối tuyến tính trên các node (cho đến một điểm - ~512 GPU trên một cụm đồng nhất, ít hơn đáng kể trên các kết nối băng thông thấp hơn), TP chỉ hiệu quả trong phạm vi một node duy nhất. TP yêu cầu đồng bộ hóa kích hoạt thường xuyên giữa các thiết bị trong quá trình tính toán, vì mỗi thiết bị chỉ tính toán một phần của đầu ra, yêu cầu các đầu ra từ các thiết bị khác phải được truyền đạt trước khi tiếp tục lượt forward. Do đó, nếu chúng ta muốn sử dụng TP trong thiết lập nhiều node, chúng ta phải xem xét việc kết hợp TP với các kỹ thuật song song khác, trong khi chỉ giữ TP trong một node duy nhất. Do chi phí truyền thông lớn, TP không được khuyến nghị cho các GPU được liên kết PCIe.</p>
+<blockquote>
+<p>Trong Accelerate, kích thước TP được định cấu hình thông qua <code>tp_size</code> trong <code>ParallelismConfig</code>, trong khi trong Axolotl, bạn có thể sử dụng trường cấu hình <code>tensor_parallel_size</code>.</p></blockquote>
+<h2 id="context-parallelism">Context Parallelism</h2>
+<p>Gần đây, khả năng suy luận trong LLM đã dẫn đến độ dài chuỗi tăng vọt khi các mô hình sử dụng ngày càng nhiều token để giải quyết các tác vụ phức tạp. Để đạt được hành vi này thông qua tinh chỉnh, chúng ta cần một cách để huấn luyện các mô hình trên độ dài chuỗi rất lớn - đôi khi có thể đạt tới một triệu token!</p>
+<p>Vì hoạt động attention trong transformers mở rộng quy mô theo bậc hai với độ dài ngữ cảnh, điều này trở nên không thể trên một GPU duy nhất. Ví dụ: khi tinh chỉnh một mô hình tương đối nhỏ như Mistral-7B (sử dụng 32 đầu attention), nếu chúng ta sử dụng độ dài chuỗi là 128k, một ma trận attention duy nhất sẽ sử dụng 128k * 128k * 2 bytes * <code>num_heads=32</code> = ~32GB * 32 = ~1TB bộ nhớ kích hoạt! Mặc dù ví dụ này không thực tế khi sử dụng các triển khai attention được tối ưu hóa như FlashAttention, nhưng nó giúp minh họa sự tăng trưởng về yêu cầu bộ nhớ từ việc tăng độ dài ngữ cảnh.</p>
+<p>Với context parallelism (CP), chúng ta có thể shard các đầu vào theo chiều chuỗi, dẫn đến mỗi thiết bị chỉ xử lý một phần của ngữ cảnh đầy đủ và tính toán một phần nhỏ hơn của ma trận attention đầy đủ, lớn đến mức cấm đoán. Để xem cách thức hoạt động của điều này, hãy nhớ lại rằng tính toán attention được mô tả bằng phương trình:
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Attention<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->softmax<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> \text{Attention}(Q, K, V) = \text{softmax}(QK^T)V <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Attention<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->softmax<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+Trong đó <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> Q <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->, <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> K <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->, và <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> V <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> là các ma trận query, key và value tương ứng. Mỗi vector query (hàng hoặc nhúng đầu vào) của <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> Q <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> phải tính toán điểm attention với <em>mọi</em> vector key của <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> K <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> trong toàn bộ chuỗi để áp dụng chính xác phép chuẩn hóa softmax. Các điểm attention này sau đó được trọng số với <em>tất cả</em> các vector value trong <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> V <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->.</p>
+<p>Chi tiết quan trọng ở đây nằm ở chỗ mỗi hàng trong <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> Q <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> có thể tính toán điểm attention của nó một cách độc lập với nhau, nhưng mỗi vector query vẫn yêu cầu các ma trận <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> K <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> và <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> V <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> đầy đủ. Nói cách khác, với một đầu vào có độ dài chuỗi $n$, chúng ta có thể mở rộng phương trình attention ở trên của mình như sau:</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Attention<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->softmax<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Attention<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->2<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->softmax<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->2<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->⋮<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Attention<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->softmax<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+\begin{align}
+\text{Attention}(Q, K, V)_1 &amp;= \text{softmax}(Q_1 K^T) V \
+\text{Attention}(Q, K, V)_2 &amp;= \text{softmax}(Q_2 K^T) V \
+&amp;\vdots \
+\text{Attention}(Q, K, V)_n &amp;= \text{softmax}(Q_n K^T) V
+\end{align}
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Attention<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Attention<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->2<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Attention<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->K<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->V<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->&lt;span class=&ldquo;pstrut&rdquo; style=&ldquo;hei</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/accelerate-nd-parallel">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/august-8-2025/">August 8, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-11/523b4c/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/aisheets/aisheets-thumb.gif" alt="Giới thiệu AI Sheets- một công cụ để làm việc với các bộ dữ liệu bằng cách sử dụng các mô hình AI mở!" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-11T00:00:00&#43;00:00">Aug 11, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu AI Sheets- một công cụ để làm việc với các bộ dữ liệu bằng cách sử dụng các mô hình AI mở!</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-07/6e53fb/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/trl_vlm/thumbnail.png" alt="Căn chỉnh Mô hình Ngôn ngữ Thị giác trong TRL ⚡️" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-07T00:00:00&#43;00:00">Aug 07, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Căn chỉnh Mô hình Ngôn ngữ Thị giác trong TRL ⚡️</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-11/44de11/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic bổ nhiệm Hidetoshi Tojo làm Giám đốc Nhật Bản và công bố kế hoạch tuyển dụng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-11/523b4c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/aisheets/aisheets-thumb.gif" alt="Giới thiệu AI Sheets- một công cụ để làm việc với các bộ dữ liệu bằng cách sử dụng các mô hình AI mở!" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu AI Sheets- một công cụ để làm việc với các bộ dữ liệu bằng cách sử dụng các mô hình AI mở!</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-11/e5fdf4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/accelerate-nd-parallel/thumbnail.png" alt="Tăng tốc ND-Parallel- Hướng dẫn đào tạo đa GPU hiệu quả" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tăng tốc ND-Parallel- Hướng dẫn đào tạo đa GPU hiệu quả</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-11/19350000/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/d054ca3bfb455c4a5dfeea44512bb3641793274a-1680x1260.png" alt="Tự động hóa các đánh giá bảo mật với Claude Code" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tự động hóa các đánh giá bảo mật với Claude Code</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-07/4f83d3/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/model-behavior.jpg?w=700&amp;h=350&amp;crop=1" alt="Các &#39;vector nhân vật&#39; mới từ Anthropic cho phép bạn giải mã và điều khiển tính cách của một LLM" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các &#39;vector nhân vật&#39; mới từ Anthropic cho phép bạn giải mã và điều khiển tính cách của một LLM</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
