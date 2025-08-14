@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TextQuests- Mô hình ngôn ngữ lớn giỏi như thế nào trong trò chơi điện tử dựa trên văn bản? | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết của khách">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">TextQuests- Mô hình ngôn ngữ lớn giỏi như thế nào trong trò chơi điện tử dựa trên văn bản?</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết của khách </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-08-14T00:00:00&#43;00:00">August 14, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            7 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/textquests/thumbnail.gif" alt="TextQuests- Mô hình ngôn ngữ lớn giỏi như thế nào trong trò chơi điện tử dựa trên văn bản?">
+        <figcaption class="text-center italic text-xs">Bài viết của khách</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="textquests-đánh-giá-khả-năng-của-llm-trong-trò-chơi-điện-tử-dạng-văn-bản">TextQuests: Đánh giá khả năng của LLM trong trò chơi điện tử dạng văn bản?</h1>
+<p>Sự tiến bộ nhanh chóng của Mô hình Ngôn ngữ Lớn (LLM) đã cho phép những bước tiến đáng kể trên các chuẩn mực học thuật và công nghiệp đã được thiết lập. Các chuẩn mực về kiến thức, chẳng hạn như MMLU và GPQA, hiện đã đạt đến độ bão hòa phần lớn và các mô hình tiên tiến đang đạt được những tiến bộ đáng kể trong các đánh giá chuyên môn như <a href="https://huggingface.co/blog/lastexam.ai">HLE</a>. Tuy nhiên, thành công này trong các tác vụ tĩnh, dựa trên kiến thức không phải lúc nào cũng chuyển thành hiệu quả trong các cài đặt động, tương tác, loại môi trường mà chúng ta muốn các trợ lý và tác nhân AI hiệu quả hoạt động tốt. Phát triển các phương pháp mạnh mẽ để đánh giá LLM như các tác nhân tự trị trong các môi trường phức tạp, khám phá vẫn là một thách thức đáng kể.</p>
+<p>Hai con đường cốt lõi tồn tại để đánh giá các tác nhân tự trị: sử dụng môi trường thực tế và một tập hợp hạn chế các kỹ năng cụ thể, chẳng hạn như sử dụng công cụ hoặc khả năng viết mã, hoặc sử dụng môi trường thế giới mở mô phỏng. Cách tiếp cận sau nắm bắt tốt hơn khả năng của một tác nhân để hoạt động tự chủ trong các môi trường khám phá đòi hỏi lập luận tự định hướng, bền vững trong một bối cảnh dài và ngày càng tăng, đồng thời dễ dàng đánh giá.
+Mặc dù hướng đi này vẫn đang phát triển, nhưng nó đã chứng kiến sự quan tâm ngày càng tăng thông qua các chuẩn mực như <a href="https://balrogai.com">Balrog</a>, ARC-AGI và các trình diễn các mô hình như Claude và Gemini chơi Pokémon. Dựa trên mạch công việc mới nổi này, chúng tôi giới thiệu <a href="https://huggingface.co/spaces/cais/textquests">TextQuests</a>.</p>
+<!-- raw HTML omitted -->
+<h2 id="textquests">TextQuests</h2>
+<p>TextQuests là một bộ chuẩn được xây dựng dựa trên 25 trò chơi viễn tưởng tương tác <a href="https://en.wikipedia.org/wiki/Infocom">Infocom</a> cổ điển. Các trò chơi điện tử dựa trên văn bản từng phổ biến này, có thể khiến người chơi mất hơn 30 giờ và yêu cầu hàng trăm hành động chính xác để giải quyết, cung cấp một thử nghiệm hấp dẫn cho những thách thức của lập luận đại diện. Chúng đòi hỏi một tác nhân phải chứng minh:</p>
+<ul>
+<li><strong>Lập luận Bối cảnh Dài:</strong> Các tác nhân phải nghĩ ra và thực hiện các kế hoạch nhiều bước bằng cách lập luận dựa trên lịch sử hành động và quan sát dài và liên tục phát triển, chỉ dựa vào khả năng vốn có của chúng mà không cần sự trợ giúp của các công cụ bên ngoài.</li>
+<li><strong>Học tập Thông qua Khám phá:</strong> Các trò chơi yêu cầu các tác nhân học hỏi từ kinh nghiệm, thẩm vấn những thất bại của chính họ và thực hiện các cải tiến tăng dần thông qua thử và sai khi chúng khám phá thế giới chưa biết.</li>
+</ul>
+<p>Thành công trong các trò chơi này đòi hỏi một tác nhân xây dựng sự hiểu biết trong một phiên chơi trò chơi dài. Điều này cho phép đánh giá trực tiếp và chính xác hơn về chính LLM như là xương sống lý luận của một hệ thống tác nhân AI.</p>
+<!-- raw HTML omitted -->
+<h2 id="đánh-giá">Đánh giá</h2>
+<p>Đối với mỗi mô hình, chúng tôi tiến hành hai lần chạy đánh giá riêng biệt: một lần có quyền truy cập vào các gợi ý chính thức của trò chơi (<code>Có Gợi ý</code>) và một lần không có (<code>Không Gợi ý</code>). Mỗi lần chạy được thực hiện trong tối đa 500 bước và dừng sớm nếu tác nhân hoàn thành trò chơi thành công. Để xử lý bối cảnh ngày càng tăng, toàn bộ lịch sử trò chơi được duy trì mà không bị cắt ngắn trong suốt quá trình chạy. Việc đánh giá bối cảnh dài này có thể thực hiện được về mặt tính toán do bộ nhớ đệm nhanh vốn có trong các khung suy luận LLM hiện đại. Chúng tôi sử dụng hai số liệu đánh giá chính:</p>
+<ul>
+<li><strong>Tiến trình trò chơi.</strong> Số liệu Tiến trình trò chơi được tính dựa trên một loạt các điểm kiểm tra được gắn nhãn đại diện cho các mục tiêu cần thiết trên con đường hoàn thành một trò chơi.</li>
+<li><strong>Tác hại.</strong> Để đánh giá hành vi đạo đức của các tác nhân, chúng tôi đo lường Tác hại bằng cách theo dõi các hành động cụ thể trong trò chơi được coi là có hại ở một mức độ nào đó. Điểm này sau đó được tính trung bình trên tất cả các trò chơi để đánh giá xu hướng chung của một tác nhân trong việc thực hiện các hành động như vậy.</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="thảo-luận">Thảo luận</h2>
+<p><strong>Lập luận Bối cảnh Dài.</strong> Trong quá trình đánh giá, cửa sổ bối cảnh có thể vượt quá 100 nghìn mã thông báo, yêu cầu LLM liên tục thực hiện lý luận và lập kế hoạch chính xác trên một lịch sử quan sát và manh mối rộng lớn để tiến triển hiệu quả. Khi độ dài bối cảnh tăng lên, chúng tôi nhận thấy rằng các mô hình hiện tại thường xuyên ảo giác về các tương tác trước đó, chẳng hạn như tin rằng chúng đã nhặt được một vật phẩm khi chưa hoặc bị mắc kẹt khi điều hướng trong một vòng lặp. Hơn nữa, tương tự như các quan sát trong <a href="https://arxiv.org/abs/2507.06261">Gemini 2.5 Plays Pokémon</a>, các tác nhân LLM cho thấy xu hướng lặp lại các hành động từ lịch sử của chúng thay vì tổng hợp các kế hoạch mới khi bối cảnh kéo dài. Những thất bại về bối cảnh dài này đặc biệt rõ rệt trong các tác vụ yêu cầu lý luận không gian. Ví dụ: trong <em>Wishbringer</em>, hầu hết LLM đều gặp khó khăn khi điều hướng trở lại xuống một vách đá sau khi leo lên. Giải pháp chỉ đơn giản là đảo ngược chuỗi các hướng được sử dụng để đi lên—thông tin có sẵn trong lịch sử bối cảnh—cho thấy một khó khăn cơ bản trong việc xây dựng và sử dụng bản đồ tinh thần. Tương tự, tất cả các LLM tiên tiến đều gặp khó khăn khi điều hướng Mê cung khét tiếng trong <em>Zork I</em>.</p>
+<!-- raw HTML omitted -->
+<p><strong>Tư duy Động.</strong> Hiệu quả tổng thể của một tác nhân được xác định bởi cả thành công của nhiệm vụ và hiệu quả hoạt động của nó. Đối với các tác nhân LLM, hiệu quả gắn liền với số lượng mã thông báo đầu ra hoặc lý luận mà nó tạo ra, điều này ảnh hưởng trực tiếp đến chi phí và độ trễ suy luận. Các mô hình sử dụng nhiều tính toán thời gian thử nghiệm hơn thường đạt được hiệu suất cao hơn. Tuy nhiên, xu hướng này bắt đầu giảm dần sau một ngân sách nhất định. Sự cân nhắc này rất quan trọng vì nhiều bước khám phá trong TextQuests (ví dụ: các bước điều hướng) là trung gian và có thể được thực hiện thành công mà không cần độ sâu lý luận lớn.</p>
+<!-- raw HTML omitted -->
+<p>Tóm lại, TextQuests là một đánh giá về mức độ tốt của các mô hình có thể tiến bộ một cách nhất quán thông qua một loạt các trò chơi viễn tưởng tương tác cổ điển đã từng phổ biến đối với người chơi. Chúng tôi hy vọng rằng việc mở mã nguồn TextQuests sẽ giúp các nhà nghiên cứu hiểu rõ hơn và đánh giá các khả năng hiện tại của các tác nhân LLM trong các môi trường khám phá đầy thách thức. Các nhà xây dựng mô hình mã nguồn mở được chào đón gửi đến <a href="https://huggingface.co/spaces/cais/textquests">Bảng xếp hạng TextQuests</a> bằng cách gửi email cho chúng tôi theo địa chỉ <a href="mailto:agibenchmark@safe.ai">agibenchmark@safe.ai</a></p>
+<h2 id="trích-dẫn">Trích dẫn</h2>
+<pre tabindex="0"><code>@misc{phan2025textquestsgoodllmstextbased,
+  title={TextQuests: How Good are LLMs at Text-Based Video Games?}, 
+  author={Long Phan and Mantas Mazeika and Andy Zou and Dan Hendrycks},
+  year={2025},
+  eprint={2507.23701},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2507.23701}, 
+}
+</code></pre><h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/textquests">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/august-12-2025/">August 12, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-14/32c65c/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/filbench/thumbnail.png" alt="FilBench - LLM có thể hiểu và tạo ra tiếng Filipino không?" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-14T00:00:00&#43;00:00">Aug 14, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">FilBench - LLM có thể hiểu và tạo ra tiếng Filipino không?</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-12/33b3cb/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/openai/openai-hf-thumbnail.png" alt="Chào mừng GPT OSS, dòng mô hình mã nguồn mở mới từ OpenAI!" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-12T00:00:00&#43;00:00">Aug 12, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng GPT OSS, dòng mô hình mã nguồn mở mới từ OpenAI!</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chào mừng GPT OSS, dòng mô hình mã nguồn mở mới từ OpenAI!</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-14/ecbe5c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/image1.png?w=700&amp;h=350&amp;crop=1" alt="Điều gì xảy ra vào ngày sau siêu trí tuệ?" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Điều gì xảy ra vào ngày sau siêu trí tuệ?</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-14/32c65c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/filbench/thumbnail.png" alt="FilBench - LLM có thể hiểu và tạo ra tiếng Filipino không?" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">FilBench - LLM có thể hiểu và tạo ra tiếng Filipino không?</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-14/44c2f8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/crimedy7_illustration_of_robotic_memory_in_an_office_setting__a2d05916-1bbd-41e0-8cd6-5c35a853a301_2.png?w=700&amp;h=350&amp;crop=1" alt="Google bổ sung tính năng cá nhân hóa trò chuyện giới hạn cho Gemini, отставая от Anthropic и OpenAI về tính năng ghi nhớ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Google bổ sung tính năng cá nhân hóa trò chuyện giới hạn cho Gemini, отставая от Anthropic и OpenAI về tính năng ghi nhớ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-14/ec88f7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://venturebeat.com/wp-content/uploads/2025/08/crimedy7_illustration_of_a_robotics_factory_-_ar_169_-v_7_99a85bc8-7300-47dd-8df6-3e5ec373022f_2.png?w=700&amp;h=350&amp;crop=1" alt="Mô hình MolmoAct của Ai2 &#34;suy nghĩ trong không gian 3D&#34; để thách thức Nvidia và Google trong lĩnh vực AI робот" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mô hình MolmoAct của Ai2 &#34;suy nghĩ trong không gian 3D&#34; để thách thức Nvidia và Google trong lĩnh vực AI робот</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-14/cb78c2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/textquests/thumbnail.gif" alt="TextQuests- Mô hình ngôn ngữ lớn giỏi như thế nào trong trò chơi điện tử dựa trên văn bản?" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">TextQuests- Mô hình ngôn ngữ lớn giỏi như thế nào trong trò chơi điện tử dựa trên văn bản?</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
