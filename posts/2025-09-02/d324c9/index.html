@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tối ưu hóa không gian ZeroGPU của bạn với việc biên dịch trước thời hạn PyTorch | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này hướng dẫn cách tối ưu hóa không gian ZeroGPU bằng cách sử dụng việc biên dịch trước thời hạn của PyTorch.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Tối ưu hóa không gian ZeroGPU của bạn với việc biên dịch trước thời hạn PyTorch</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này hướng dẫn cách tối ưu hóa không gian ZeroGPU bằng cách sử dụng việc biên dịch trước thời hạn của PyTorch. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-09-02T00:00:00&#43;00:00">September 2, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            16 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/zerogpu-aoti/thumbnail.png" alt="Tối ưu hóa không gian ZeroGPU của bạn với việc biên dịch trước thời hạn PyTorch">
+        <figcaption class="text-center italic text-xs">Bài viết này hướng dẫn cách tối ưu hóa không gian ZeroGPU bằng cách sử dụng việc biên dịch trước thời hạn của PyTorch.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="tăng-tốc-độ-spaces-zerogpu-của-bạn-với-biên-dịch-trước-thời-gian-ahead-of-time">Tăng tốc độ Spaces ZeroGPU của bạn với biên dịch trước thời gian (Ahead-of-Time)</h1>
+<p><strong>Đăng ngày:</strong> 2 tháng 9, 2025</p>
+<p><a href="https://github.com/huggingface/blog/blob/main/zerogpu-aoti.md">Cập nhật trên GitHub</a></p>
+<!-- raw HTML omitted -->
+<p>ZeroGPU cho phép bất cứ ai khởi chạy phần cứng <strong>Nvidia H200</strong> mạnh mẽ trong Hugging Face Spaces mà không cần khóa GPU cho lưu lượng truy cập nhàn rỗi. Nó hiệu quả, linh hoạt và lý tưởng cho các bản demo, nhưng nó không phải lúc nào cũng tận dụng tối đa mọi thứ mà GPU và bộ CUDA có thể cung cấp. Việc tạo ảnh hoặc video có thể mất nhiều thời gian đáng kể. Khả năng khai thác hiệu suất cao hơn, tận dụng phần cứng H200, rất quan trọng trong trường hợp này.</p>
+<p>Đây là lúc biên dịch trước thời gian (AoT) của PyTorch phát huy tác dụng. Thay vì biên dịch mô hình khi cần (điều này không hoạt động tốt với các tiến trình ngắn hạn của ZeroGPU), AoT cho phép bạn tối ưu hóa một lần và tải lại ngay lập tức.</p>
+<p><strong>Kết quả:</strong> các bản demo nhanh hơn và trải nghiệm mượt mà hơn, với tốc độ tăng từ <strong>1.3×–1.8×</strong> trên các mô hình như Flux, Wan và LTX 🔥</p>
+<p>Trong bài viết này, chúng ta sẽ chỉ cách kết nối biên dịch trước thời gian (AoT) trong Spaces ZeroGPU. Chúng ta sẽ khám phá các thủ thuật nâng cao như lượng tử hóa FP8 và hình dạng động, và chia sẻ các bản demo hoạt động mà bạn có thể thử ngay lập tức. Nếu bạn không thể chờ đợi, chúng tôi mời bạn xem một số bản demo được hỗ trợ bởi ZeroGPU trên tổ chức <a href="https://huggingface.co/zerogpu-aoti">zerogpu-aoti</a>.</p>
+<blockquote>
+<p>Người dùng <a href="https://huggingface.co/pro">Pro</a> và thành viên tổ chức <a href="https://huggingface.co/enterprise">Team/Enterprise</a> có thể tạo Spaces ZeroGPU, trong khi bất kỳ ai cũng có thể sử dụng chúng một cách tự do (người dùng Pro, Team và Enterprise có hạn ngạch ZeroGPU nhiều hơn <strong>8x</strong>)</p></blockquote>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#what-is-zerogpu">ZeroGPU là gì</a></li>
+<li><a href="#pytorch-compilation">Biên dịch PyTorch</a></li>
+<li><a href="#ahead-of-time-compilation-on-zerogpu">Biên dịch trước thời gian trên ZeroGPU</a>
+<ul>
+<li><a href="#1-getting-example-inputs">1. Lấy ví dụ đầu vào</a></li>
+<li><a href="#2-exporting-the-model">2. Xuất mô hình</a></li>
+<li><a href="#3-compiling-the-exported-model">3. Biên dịch mô hình đã xuất</a></li>
+<li><a href="#4-using-the-compiled-model-in-the-pipeline">4. Sử dụng mô hình đã biên dịch trong pipeline</a></li>
+<li><a href="#5-wrapping-it-all-together">5. Kết hợp tất cả lại với nhau</a></li>
+</ul>
+</li>
+<li><a href="#gotchas">Những điểm cần lưu ý</a>
+<ul>
+<li><a href="#quantization">Lượng tử hóa</a></li>
+<li><a href="#dynamic-shapes">Hình dạng động</a></li>
+<li><a href="#multi-compile--shared-weights">Biên dịch nhiều/chia sẻ trọng số</a></li>
+<li><a href="#flashattention-3">FlashAttention-3</a></li>
+</ul>
+</li>
+<li><a href="#aot-compiled-zerogpu-spaces-demos">Các bản demo Spaces ZeroGPU đã được biên dịch AoT</a>
+<ul>
+<li><a href="#speedup-comparison">So sánh tốc độ</a></li>
+<li><a href="#featured-aoti-spaces">Các Spaces AoTI nổi bật</a></li>
+</ul>
+</li>
+<li><a href="#conclusion">Kết luận</a></li>
+<li><a href="#resources">Tài nguyên</a></li>
+</ul>
+<h2 id="zerogpu-là-gì">ZeroGPU là gì</h2>
+<p><a href="https://huggingface.co/spaces">Spaces</a> là một nền tảng do Hugging Face cung cấp, cho phép các chuyên gia ML dễ dàng xuất bản các ứng dụng demo.</p>
+<p>Các ứng dụng demo điển hình trên Spaces trông như thế này:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> gradio <span style="color:#66d9ef">as</span> gr
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers <span style="color:#f92672">import</span> DiffusionPipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipe <span style="color:#f92672">=</span> DiffusionPipeline<span style="color:#f92672">.</span>from_pretrained(<span style="color:#f92672">...</span>)<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#39;cuda&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate</span>(prompt):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> pipe(prompt)<span style="color:#f92672">.</span>images
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>gr<span style="color:#f92672">.</span>Interface(generate, <span style="color:#e6db74">&#34;text&#34;</span>, <span style="color:#e6db74">&#34;gallery&#34;</span>)<span style="color:#f92672">.</span>launch()
+</span></span></code></pre></div><p>Điều này hoạt động rất tốt, nhưng kết thúc việc dành riêng một GPU cho Space trong suốt vòng đời của nó - ngay cả khi không có hoạt động của người dùng.</p>
+<p>Khi thực thi <code>.to('cuda')</code> trên dòng này:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pipe <span style="color:#f92672">=</span> DiffusionPipeline<span style="color:#f92672">.</span>from_pretrained(<span style="color:#f92672">...</span>)<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#39;cuda&#39;</span>)
+</span></span></code></pre></div><p>PyTorch khởi tạo trình điều khiển NVIDIA, thiết lập quy trình trên CUDA mãi mãi. Điều này không hiệu quả về tài nguyên, vì lưu lượng truy cập ứng dụng không hoàn toàn mượt mà, mà khá thưa thớt và đột biến.</p>
+<p>ZeroGPU sử dụng phương pháp đúng lúc để khởi tạo GPU. Thay vì thiết lập quy trình chính trên CUDA, nó tự động phân nhánh quy trình, thiết lập nó trên CUDA, chạy các tác vụ GPU và cuối cùng xóa nhánh khi cần giải phóng GPU.</p>
+<p>Điều này có nghĩa là:</p>
+<ul>
+<li>Khi ứng dụng không nhận được lưu lượng truy cập, nó không sử dụng bất kỳ GPU nào</li>
+<li>Khi nó thực sự đang thực hiện một tác vụ, nó sẽ sử dụng một GPU</li>
+<li>Nó có thể sử dụng nhiều GPU khi cần để thực hiện các tác vụ đồng thời</li>
+</ul>
+<p>Nhờ gói <code>spaces</code> của Python, thay đổi mã duy nhất cần thiết để có được hành vi này như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>  import gradio as gr
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ import spaces
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>  from diffusers import DiffusionPipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  pipe = DiffusionPipeline.from_pretrained(...).to(&#39;cuda&#39;)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ @spaces.GPU
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>  def generate(prompt):
+</span></span><span style="display:flex;"><span>      return pipe(prompt).images
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  gr.Interface(generate, &#34;text&#34;, &#34;gallery&#34;).launch()
+</span></span></code></pre></div><p>Bằng cách nhập <code>spaces</code> và thêm trình trang trí <code>@spaces.GPU</code>, chúng ta:</p>
+<ul>
+<li>Chặn các cuộc gọi API PyTorch để hoãn các thao tác CUDA</li>
+<li>Làm cho hàm được trang trí chạy trong một nhánh khi được gọi sau đó</li>
+<li>(Gọi API bên trong để làm cho thiết bị phù hợp hiển thị với nhánh nhưng điều này không nằm trong phạm vi của bài đăng trên blog này)</li>
+</ul>
+<blockquote>
+<p>ZeroGPU hiện đang phân bổ một lát cắt MIG của H200 (mục tiêu <code>3g.71gb</code>). Các kích thước MIG bổ sung bao gồm lát cắt đầy đủ (mục tiêu <code>7g.141gb</code>) sẽ có vào cuối năm 2025.</p></blockquote>
+<h2 id="biên-dịch-pytorch">Biên dịch PyTorch</h2>
+<p>Các framework ML hiện đại như PyTorch và JAX có khái niệm <em>biên dịch</em> có thể được sử dụng để tối ưu hóa độ trễ mô hình hoặc thời gian suy luận.  Bên dưới, biên dịch áp dụng một loạt các bước tối ưu hóa (thường phụ thuộc vào phần cứng) như hợp nhất toán tử, gập hằng số, v.v.</p>
+<p>PyTorch (từ phiên bản 2.0 trở đi) hiện có hai giao diện chính để biên dịch:</p>
+<ul>
+<li>Ngay lập tức với <code>torch.compile</code></li>
+<li>Trước thời gian với <code>torch.export</code> + <code>AOTInductor</code></li>
+</ul>
+<p><a href="https://docs.pytorch.org/tutorials/intermediate/torch_compile_tutorial.html"> <code>torch.compile</code></a> hoạt động tốt trong các môi trường tiêu chuẩn: nó biên dịch mô hình của bạn lần đầu tiên nó chạy và sử dụng lại phiên bản được tối ưu hóa cho các cuộc gọi tiếp theo.</p>
+<p>Tuy nhiên, trên ZeroGPU, vì quy trình được khởi chạy mới cho (gần như) mọi tác vụ GPU, điều đó có nghĩa là <code>torch.compile</code> không thể sử dụng lại hiệu quả việc biên dịch và do đó buộc phải dựa vào <a href="https://docs.pytorch.org/tutorials/recipes/torch_compile_caching_tutorial.html#modular-caching-of-torchdynamo-torchinductor-and-triton">bộ nhớ cache hệ thống tệp</a> để khôi phục các mô hình đã biên dịch. Tùy thuộc vào mô hình đang được biên dịch, quá trình này mất từ vài chục giây đến vài phút, điều này quá nhiều đối với các tác vụ GPU thực tế trong Spaces.</p>
+<blockquote>
+<p>Trong ví dụ trên, chúng ta chỉ biên dịch bộ chuyển đổi vì trong các mô hình tạo này, bộ chuyển đổi (hoặc tổng quát hơn là bộ khử nhiễu) là thành phần nặng về tính toán nhất.</p></blockquote>
+<p>Đây là lúc <strong>biên dịch trước thời gian (AoT)</strong> tỏa sáng.</p>
+<p>Với AoT, chúng ta có thể xuất một mô hình đã biên dịch một lần, lưu nó và sau đó tải lại ngay lập tức trong bất kỳ quy trình nào, đó chính xác là những gì chúng ta cần cho ZeroGPU. Điều này giúp chúng ta giảm chi phí sử dụng framework và cũng loại bỏ thời gian khởi động lạnh thường xảy ra trong biên dịch đúng lúc.</p>
+<p>Nhưng làm thế nào chúng ta có thể biên dịch trước thời gian trên ZeroGPU? Hãy cùng tìm hiểu.</p>
+<h2 id="biên-dịch-trước-thời-gian-trên-zerogpu">Biên dịch trước thời gian trên ZeroGPU</h2>
+<p>Hãy quay lại ví dụ cơ sở ZeroGPU của chúng ta và giải nén những gì chúng ta cần để đưa biên dịch AoT vào. Vì mục đích của bản demo này, chúng ta sẽ sử dụng mô hình <code>black-forest-labs/FLUX.1-dev</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> gradio <span style="color:#66d9ef">as</span> gr
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> spaces
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> diffusers <span style="color:#f92672">import</span> DiffusionPipeline
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MODEL_ID <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;black-forest-labs/FLUX.1-dev&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pipe <span style="color:#f92672">=</span> DiffusionPipeline<span style="color:#f92672">.</span>from_pretrained(MODEL_ID, torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16)
+</span></span><span style="display:flex;"><span>pipe<span style="color:#f92672">.</span>to(<span style="color:#e6db74">&#39;cuda&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@spaces.GPU</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate</span>(prompt):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> pipe(prompt)<span style="color:#f92672">.</span>images
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>gr<span style="color:#f92672">.</span>Interface(generate, <span style="color:#e6db74">&#34;text&#34;</span>, <span style="color:#e6db74">&#34;gallery&#34;</span>)<span style="color:#f92672">.</span>launch()
+</span></span></code></pre></div><p>Việc biên dịch mô hình trước thời gian với PyTorch liên quan đến nhiều bước:</p>
+<h3 id="1-lấy-ví-dụ-đầu-vào">1. Lấy ví dụ đầu vào</h3>
+<p>Hãy nhớ rằng chúng ta sẽ biên dịch mô hình <em>trước</em> thời gian. Do đó, chúng ta cần lấy ví dụ đầu vào cho mô hình. Lưu ý rằng đây là cùng loại đầu vào mà chúng ta mong đợi thấy trong các lần chạy thực tế. Để ghi lại các đầu vào đó, chúng ta sẽ sử dụng trình trợ giúp <code>spaces.aoti_capture</code> từ gói <code>spaces</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">with</span> spaces<span style="color:#f92672">.</span>aoti_capture(pipe<span style="color:#f92672">.</span>transformer) <span style="color:#66d9ef">as</span> call:
+</span></span><span style="display:flex;"><span>    pipe(<span style="color:#e6db74">&#34;arbitrary example prompt&#34;</span>)
+</span></span></code></pre></div><p>Khi được sử dụng như một trình quản lý ngữ cảnh như vậy, nó cho phép ghi lại cuộc gọi của bất kỳ hàm gọi được nào ( <code>pipe.transformer</code>, trong trường hợp của chúng ta), hủy bỏ nó và đặt các giá trị đầu vào đã ghi lại bên trong <code>call.args</code> và <code>call.kwargs</code>.</p>
+<h3 id="2-xuất-mô-hình">2. Xuất mô hình</h3>
+<p>Bây giờ chúng ta đã có các đối số và từ khóa ví dụ cho thành phần bộ chuyển đổi của mình, chúng ta có thể xuất nó thành một <a href="https://docs.pytorch.org/docs/stable/export.html#torch.export.ExportedProgram"> <code>ExportedProgram</code></a> của PyTorch bằng cách sử dụng tiện ích <a href="https://docs.pytorch.org/docs/stable/export.html#torch.export.export"> <code>torch.export.export</code></a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>exported_transformer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>export<span style="color:#f92672">.</span>export(
+</span></span><span style="display:flex;"><span>    pipe<span style="color:#f92672">.</span>transformer,
+</span></span><span style="display:flex;"><span>    args<span style="color:#f92672">=</span>call<span style="color:#f92672">.</span>args,
+</span></span><span style="display:flex;"><span>    kwargs<span style="color:#f92672">=</span>call<span style="color:#f92672">.</span>kwargs,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Một chương trình PyTorch được xuất là một biểu đồ tính toán thể hiện các phép tính tensor cùng với các giá trị tham số mô hình ban đầu.</p>
+<h3 id="3-biên-dịch-mô-hình-đã-xuất">3. Biên dịch mô hình đã xuất</h3>
+<p>Sau khi mô hình được xuất, việc biên dịch nó khá đơn giản.</p>
+<p>Việc biên dịch AoT truyền thống trong PyTorch thường yêu cầu lưu mô hình trên đĩa để nó có thể được tải lại sau này. Trong trường hợp của chúng ta, chúng ta sẽ sử dụng một hàm trợ giúp thuộc gói <code>spaces</code>: <code>spaces.aoti_compile</code>. Nó là một trình bao bọc nhỏ quanh <code>torch._inductor.aot_compile</code> quản lý việc lưu và tải mô hình lười biếng khi cần. Nó được thiết kế để được sử dụng như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>compiled_transformer <span style="color:#f92672">=</span> spaces<span style="color:#f92672">.</span>aoti_compile(exported_transformer)
+</span></span></code></pre></div><p><code>compiled_transformer</code> này giờ đây là một nhị phân đã được biên dịch AoT, sẵn sàng được sử dụng để suy luận.</p>
+<h3 id="4-sử-dụng-mô-hình-đã-biên-dịch-trong-pipeline">4. Sử dụng mô hình đã biên dịch trong pipeline</h3>
+<p>Bây giờ chúng ta cần liên kết bộ chuyển đổi đã biên dịch của mình với pipeline gốc, tức là <code>pipeline</code>.</p>
+<p>Một phương pháp ngây thơ và gần như hoạt động là chỉ cần vá pipeline của chúng ta như <code>pipe.transformer = compiled_transformer</code>. Thật không may, phương pháp này không hoạt động vì nó xóa các thuộc tính quan trọng như <code>dtype</code>, <code>config</code>, v.v. Chỉ vá phương pháp <code>forward</code> cũng không hoạt động tốt vì sau đó chúng ta đang giữ các tham số mô hình gốc trong bộ nhớ, thường dẫn đến lỗi OOM khi chạy.</p>
+<p>Gói <code>spaces</code> cũng cung cấp một tiện ích cho điều này - <code>spaces.aoti_apply</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>spaces<span style="color:#f92672">.</span>aoti_apply(compiled_transformer, pipe<span style="color:#f92672">.</span>transformer)
+</span></span></code></pre></div><p>Et voilà! Nó sẽ đảm nhiệm việc vá <code>pipe.transformer.forward</code> bằng mô hình đã biên dịch của chúng ta, cũng như <a href="https://pypi-browser.org/package/spaces/spaces-0.40.1-py3-none-any.whl/spaces/zero/torch/aoti.py#L87">xóa các tham số mô hình cũ khỏi bộ nhớ</a>.</p>
+<h3 id="5-kết-hợp-tất-cả-lại-với-nhau">5. Kết hợp tất cả lại với nhau</h3>
+<p>Để thực hiện ba bước đầu tiên (chặn các ví dụ đầu vào, xuất mô hình và biên dịch nó bằng PyTorch inductor), chúng ta cần một GPU thực tế. Mô phỏng CUDA mà bạn nhận được bên ngoài hàm <code>@spaces.GPU</code> là không đủ vì việc biên dịch thực sự phụ thuộc vào phần cứng, ví dụ, dựa trên các lần chạy điểm chuẩn vi mô để điều chỉnh mã được tạo. Đó là lý do tại sao chúng ta cần gói gọn tất cả mọi thứ bên trong một hàm <code>@spaces.GPU</code> và sau đó lấy mô hình đã biên dịch của mình trở lại gốc của ứng dụng. Bắt đầu từ mã demo ban đầu của chúng ta, điều này cho ra:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>  import gradio as gr
+</span></span><span style="display:flex;"><span>  import spaces
+</span></span><span style="display:flex;"><span>  import torch
+</span></span><span style="display:flex;"><span>  from diffusers import DiffusionPipeline
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  MODEL_ID = &#39;black-forest-labs/FLUX.1-dev&#39;
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  pipe = DiffusionPipeline.from_pretrained(MODEL_ID, torch_dtype=torch.bfloat16)
+</span></span><span style="display:flex;"><span>  pipe.to(&#39;cuda&#39;)
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ @spaces.GPU(duration=1500) # thời gian tối đa được phép trong khi khởi động
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ def compile_transformer():
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+     with spaces.aoti_capture(pipe.transformer) as call:
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+         pipe(&#34;arbitrary example prompt&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ 
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+     exported = torch.export.export(
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+         pipe.transformer,
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+         args=call.args,
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+         kwargs=call.kwargs,
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+     )
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+     return spaces.aoti_compile(exported)
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ 
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ compiled_transformer = compile_transformer()
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ spaces.aoti_apply(compiled_transformer, pipe.transformer)
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>  
+</span></span><span style="display:flex;"><span>  @spaces.GPU
+</span></span><span style="display:flex;"><span>  def generate(prompt):
+</span></span><span style="display:flex;"><span>      return pipe(prompt).images
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  gr.Interface(generate, &#34;text&#34;, &#34;gallery&#34;).launch()
+</span></span></code></pre></div><p>Chỉ với một tá dòng mã bổ sung, chúng ta đã thành công trong việc làm cho bản demo của mình nhanh hơn đáng kể (nhanh hơn <strong>1.7x</strong> trong trường hợp của FLUX.1-dev).</p>
+<p>Nếu bạn muốn tìm hiểu thêm về biên dịch AoT, bạn có thể đọc <a href="https://docs.pytorch.org/tutorials/recipes/torch_export_aoti_python.html">hướng dẫn AOTInductor</a> của PyTorch</p>
+<h2 id="những-điểm-cần-lưu-ý">Những điểm cần lưu ý</h2>
+<p>Bây giờ chúng ta đã chứng minh được tốc độ tăng mà người ta có thể nhận ra trong các ràng buộc hoạt động với ZeroGPU, chúng ta sẽ thảo luận về một vài điểm cần lưu ý đã xuất hiện khi làm việc với thiết lập này.</p>
+<h3 id="lượng-tử-hóa">Lượng tử hóa</h3>
+<p>AoT có thể được kết hợp với lượng tử hóa để mang lại tốc độ tăng thậm chí còn lớn hơn.</p>
+<p>Đối với việc tạo ảnh và video, các lược đồ lượng tử hóa động sau đào tạo FP8 mang lại sự cân bằng tốt giữa tốc độ và chất lượng.</p>
+<p>Tuy nhiên, FP8 yêu cầu khả năng tính toán CUDA ít nhất là 9.0 để hoạt động.</p>
+<p>May mắn thay, đối với ZeroGPU, vì chúng dựa trên H200, chúng ta đã có thể tận dụng các lược đồ lượng tử hóa FP8.</p>
+<p>Để bật lượng tử hóa FP8 trong quy trình làm việc biên dịch AoT của chúng ta, chúng ta có thể sử dụng các API do <a href="https://github.com/pytorch/ao"> <code>torchao</code></a> cung cấp như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="color:#a6e22e">+ from torchao.quantization import quantize_, Float8DynamicActivationFloat8WeightConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ # Lượng tử hóa bộ chuyển đổi ngay trước bước xuất.
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">+ quantize_(pipe.transformer, Float8DynamicActivationFloat8WeightConfig())
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span>
+</span></span><span style="display:flex;"><span>exported_transformer = torch.export.export(
+</span></span><span style="display:flex;"><span>    pipe.transformer,
+</span></span><span style="display:flex;"><span>    args=call.args,
+</span></span><span style="display:flex;"><span>    kwargs=call.kwargs,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>(Bạn có thể tìm thêm chi tiết về TorchAO <a href="https://docs.pytorch.org/ao/stable/index.html">ở đây</a>.)</p>
+<p>Và sau đó chúng ta có thể tiếp tục với các bước còn lại như đã nêu ở trên. Việc sử dụng lượng tử hóa mang lại thêm <strong>1.2x</strong> tốc độ tăng.</p>
+<h3 id="hình-dạng-động">Hình dạng động</h3>
+<p>Hình ảnh và video có thể có nhiều hình dạng và kích thước khác nhau. Do đó, điều quan trọng là cũng phải tính đến tính năng động của hình dạng khi thực hiện biên dịch AoT. Các nguyên hàm do <code>torch.export.export</code> cung cấp giúp dễ dàng cấu hình để cung cấp đầu vào nào nên được xử lý tương ứng cho các hình dạng động, như được hiển thị bên dưới.</p>
+<p>Đối với trường hợp của bộ chuyển đổi Flux.1-Dev, sự thay đổi độ phân giải hình ảnh sẽ ảnh hưởng đến hai đối số <code>forward</code> của nó:</p>
+<ul>
+<li><code>hidden_states</code>: Các latent đầu vào nhiễu, mà bộ chuyển đổi được cho là sẽ khử nhiễu. Đó là một tensor 3D, đại diện cho <code>batch_size, flattened_latent_dim, embed_dim</code>. Khi kích thước batch cố định, đó là <code>flattened_latent_dim</code> sẽ thay đổi đối với bất kỳ thay đổi nào được thực hiện đối với độ phân giải hình ảnh.</li>
+<li><code>img_ids</code>: Một mảng 2D của các tọa độ pixel được mã hóa có hình dạng <code>height * width, 3</code>. Trong trường hợp này, chúng ta muốn làm cho <code>height * width</code> trở nên động.</li>
+</ul>
+<p>Chúng ta bắt đầu bằng cách định nghĩa một phạm vi mà chúng ta muốn cho phép độ phân giải hình ảnh (ẩn) thay đổi.
+Để lấy các phạm vi giá trị này, chúng ta đã kiểm tra hình dạng của <a href="https://github.com/huggingface/diffusers/blob/0ff1aa910cf3d87193af79ec1ae4487be542e872/src/diffusers/pipelines/flux/pipeline_flux.py#L920"> <code>hidden_states</code></a> trong pipeline đối với các độ phân giải hình ảnh khác nhau. Các giá trị chính xác phụ thuộc vào mô hình và yêu cầu kiểm tra thủ công và một số trực giác. Đối với Flux.1-Dev, chúng ta đã kết thúc với:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>transformer_hidden_dim <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>export<span style="color:#f92672">.</span>Dim(<span style="color:#e6db74">&#39;hidden&#39;</span>, min<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>, max<span style="color:#f92672">=</span><span style="color:#ae81ff">8212</span>)
+</span></span></code></pre></div><p>Sau đó, chúng ta định nghĩa một bản đồ tên đối số và các chiều nào trong các giá trị đầu vào của chúng ta dự kiến sẽ có tính năng động:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>transformer_dynamic_shapes <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;hidden_dim&#34;</span>: {<span style="color:#ae81ff">1</span>: transformer_hidden_dim}, 
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;img_ids&#34;</span>, {<span style="color:#ae81ff">0</span>: transformer_hidden_dim},
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Sau đó, chúng ta cần làm cho đối tượng hình dạng động của mình sao chép cấu trúc của các đầu vào ví dụ của chúng ta. Các đầu vào không cần hình dạng động phải được đặt thành <code>None</code>. Điều này có thể được thực hiện rất dễ dàng với tiện ích <a href="https://github.com/pytorch/pytorch/blob/2f0de0ff9361ca4f2b1e6f9edbc600b5fb6abcd6/torch/utils/_pytree.py#L1341-L1373"> <code>tree_map</code></a> của PyTorch:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pytorch.utils._pytree <span style="color:#f92672">import</span> tree_map
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dynamic_shapes <span style="color:#f92672">=</span> tree_map(<span style="color:#66d9ef">lambda</span> v: <span style="color:#66d9ef">None</span>, call<span style="color:#f92672">.</span>kwargs)
+</span></span><span style="display:flex;"><span>dynamic_shapes <span style="color:#f92672">|=</span> transformer_dynamic_shapes
+</span></span></code></pre></div><p>Bây giờ, khi thực hiện bước xuất, chúng ta chỉ cần cung cấp <code>transformer_dynamic_shapes</code> cho <code>torch.export.export</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>exported_transformer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>export<span style="color:#f92672">.</span>export(
+</span></span><span style="display:flex;"><span>    pipe<span style="color:#f92672">.</span>transformer,
+</span></span><span style="display:flex;"><span>    args<span style="color:#f92672">=</span>call<span style="color:#f92672">.</span>args,
+</span></span><span style="display:flex;"><span>    kwargs<span style="color:#f92672">=</span>call<span style="color:#f92672">.</span>kwargs,
+</span></span><span style="display:flex;"><span>    dynamic_shapes<span style="color:#f92672">=</span>dynamic_shapes,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><blockquote>
+<p>Hãy xem <a href="https://huggingface.co/spaces/zerogpu-aoti/FLUX.1-Kontext-Dev-fp8-dynamic">Space này</a> cho thấy cách sử dụng cả lượng tử hóa và hình dạng động trong bước xuất.</p></blockquote>
+<h3 id="biên-dịch-nhiềuchia-sẻ-trọng-số">Biên dịch nhiều/chia sẻ trọng số</h3>
+<p>Hình dạng động đôi khi là không đủ khi tính năng động quá quan trọng.</p>
+<p>Ví dụ, đây là trường hợp của họ mô hình tạo video Wan nếu bạn muốn mô hình đã biên dịch của bạn tạo ra các độ phân giải khác nhau.</p>
+<p>Một điều có thể được thực hiện trong trường hợp này: biên dịch một mô hình cho mỗi độ phân giải trong khi giữ cho các tham số mô hình được chia sẻ và phân phối đúng mô hình khi chạy.</p>
+<p>Đây là một ví dụ tối thiểu về phương pháp này: <a href="https://gist.github.com/cbensimon/8dc0ffcd7ee024d91333f6df01907916">zerogpu-aoti-multi.py</a>. Bạn cũng có thể thấy một triển khai đầy đủ hoạt động của mô hình này trong <a href="https://huggingface.co/spaces/zerogpu-aoti/wan2-2-fp8da-aoti-faster/blob/main/optimization.py">Space Wan 2.2</a>.</p>
+<h3 id="flashattention-3">FlashAttention-3</h3>
+<p>Vì phần cứng ZeroGPU và trình điều khiển CUDA hoàn toàn tương thích với Flash-Attention 3 (FA3), nên chúng ta có thể sử dụng nó trong Spaces ZeroGPU của mình để tăng tốc mọi thứ hơn nữa. FA3 hoạt động với biên dịch trước thời gian. Vì vậy, điều này rất lý tưởng cho trường hợp của chúng ta.</p>
+<p>Việc biên dịch và xây dựng FA3 từ nguồn có thể mất vài phút và quá trình này phụ thuộc vào phần cứng. Là người dùng, chúng ta sẽ không muốn mất những giờ tính toán ZeroGPU quý báu. Đây là lúc thư viện <a href="https://github.com/huggingface/kernels"> <code>kernels</code></a> của Hugging Face đến để giải cứu. Nó cung cấp quyền truy cập vào các kernel được xây dựng sẵn, tương thích với phần cứng đã cho. Ví dụ: khi chúng ta cố gắng chạy:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> kernels <span style="color:#f92672">import</span> get_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vllm_flash_attn3 <span style="color:#f92672">=</span> get_kernel(<span style="color:#e6db74">&#34;kernels-community/vllm-flash-attn3&#34;</span>)
+</span></span></code></pre></div><p>Nó cố gắng tải một kernel từ kho lưu trữ <a href="https://huggingface.co/kernels-community/vllm-flash-attn3"> <code>kernels-community/vllm-flash-attn3</code></a>, tương thích với thiết lập hiện tại. Nếu không, nó sẽ báo lỗi do sự cố không tương thích. May mắn thay, điều này hoạt động liền mạch trên Spaces ZeroGPU. Điều này có nghĩa là chúng ta có thể tận dụng sức mạnh của FA3 trên ZeroGPU, sử dụng thư viện <code>kernels</code>.</p>
+<p>Đây là <a href="https://gist.github.com/sayakpaul/ff715f979793d4d44beb68e5e08ee067#file-fa3_qwen-py">ví dụ đầy đủ hoạt động của bộ xử lý chú ý FA3</a> cho mô hình Qwen-Image.</p>
+<h2 id="các-bản-demo-spaces-zerogpu-đã-được-biên-dịch-aot">Các bản demo Spaces ZeroGPU đã được biên dịch AoT</h2>
+<h3 id="so-sánh-tốc-độ">So sánh tốc độ</h3>
+<ul>
+<li><a href="https://huggingface.co/spaces/zerogpu-aoti/FLUX.1-dev-base">FLUX.1-dev không có AoTI</a></li>
+<li><a href="https://huggingface.co/spaces/zerogpu-aoti/FLUX.1-dev-fa3-aoti">FLUX.1-dev có AoTI và FA3</a> (tốc độ tăng <strong>1.75x</strong>)</li>
+</ul>
+<h3 id="các-spaces-aoti-nổi-bật">Các Spaces AoTI nổi bật</h3>
+<ul>
+<li><a href="https://huggingface.co/spaces/zerogpu-aoti/FLUX.1-Kontext-Dev">FLUX.1 Kontext</a></li>
+<li><a href="https://huggingface.co/spaces/multimodalart/Qwen-Image-Edit-Fast">QwenImage Edit</a></li>
+<li><a href="https://huggingface.co/spaces/zerogpu-aoti/wan2-2-fp8da-aoti-faster">Wan 2.2</a></li>
+<li><a href="https://huggingface.co/spaces/zerogpu-aoti/ltx-dev-fast">LTX Video</a></li>
+</ul>
+<h2 id="kết-luận">Kết luận</h2>
+<p>ZeroGPU trong Hugging Face Spaces là một tính năng mạnh mẽ cho phép các nhà xây dựng AI bằng cách cung cấp quyền truy cập vào khả năng tính toán mạnh mẽ. Trong bài đăng này, chúng tôi đã chỉ ra cách người dùng có thể hưởng lợi từ các kỹ thuật biên dịch trước thời gian của PyTorch để tăng tốc các ứng dụng của họ sử dụng ZeroGPU.</p>
+<p>Chúng tôi chứng minh tốc độ tăng với Flux.1-Dev, nhưng các kỹ thuật này không chỉ giới hạn ở mô hình này. Do đó, chúng tôi khuyến khích bạn hãy thử các kỹ thuật này và cung cấp cho chúng tôi phản hồi trong <a href="https://huggingface.co/spaces/zerogpu-aoti/README/discussions/1">cuộc thảo luận cộng đồng này</a>.</p>
+<h2 id="tài-nguyên">Tài nguyên</h2>
+<ul>
+<li>Truy cập <a href="https://huggingface.co/zerogpu-aoti">tổ chức ZeroGPU-AOTI của chúng tôi trên Hub</a> để tham khảo bộ sưu tập các bản demo sử dụng các kỹ thuật được thảo luận trong bài đăng này.</li>
+<li>Duyệt qua các API <code>spaces.aoti_*</code> <a href="https://pypi-browser.org/package/spaces/spaces-0.40.1-py3-none-any.whl/spaces/zero/torch/aoti.py">mã nguồn</a> để tìm hiểu thêm về giao diện.</li>
+<li>Kiểm tra <a href="https://huggingface.co/kernels-community">tổ chức Kernels Community trên hub</a></li>
+<li>Nâng cấp lên <a href="https://huggingface.co/pro">Pro</a> trên Hugging Face để tạo Spaces ZeroGPU của riêng bạn (và nhận được 25 phút sử dụng H200 mỗi ngày)</li>
+</ul>
+<p><em>Lời cảm ơn: Cảm ơn ChunTe Lee đã tạo hình thu nhỏ tuyệt vời cho bài đăng này. Cảm ơn Pedro và Vaibhav đã cung cấp phản hồi về bài đăng.</em></p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/zerogpu-aoti">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/september-2-2025/">September 2, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-19/79f6ca/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/claude-and-mcp/thumbnail.png" alt="Tạo ảnh với Claude và Hugging Face" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-19T00:00:00&#43;00:00">Aug 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Tạo ảnh với Claude và Hugging Face</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này hướng dẫn cách tạo hình ảnh bằng cách sử dụng Claude và Hugging Face.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-14/32c65c/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/filbench/thumbnail.png" alt="FilBench - LLM có thể hiểu và tạo ra tiếng Filipino không?" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-14T00:00:00&#43;00:00">Aug 14, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">FilBench - LLM có thể hiểu và tạo ra tiếng Filipino không?</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-02/d324c9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/zerogpu-aoti/thumbnail.png" alt="Tối ưu hóa không gian ZeroGPU của bạn với việc biên dịch trước thời hạn PyTorch" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tối ưu hóa không gian ZeroGPU của bạn với việc biên dịch trước thời hạn PyTorch</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-27/2a0574/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Giới thiệu Hội đồng Tư vấn An ninh Quốc gia và Khu vực Công Anthropic" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Hội đồng Tư vấn An ninh Quốc gia và Khu vực Công Anthropic</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-27/dc7275/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/faffa5377164658980f804e5bee648fe07370268-2401x1261.png" alt="Phát hiện và chống lại việc sử dụng AI sai mục đích- Tháng 8 năm 2025" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Phát hiện và chống lại việc sử dụng AI sai mục đích- Tháng 8 năm 2025</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-26/9dfd1f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/4c3dc5494aacbe877b3b7783ea0f3d731f37e38e-1000x1000.svg" alt="Báo cáo Giáo dục của Anthropic- Cách các nhà giáo dục sử dụng Claude" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Báo cáo Giáo dục của Anthropic- Cách các nhà giáo dục sử dụng Claude</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-26/a1cdbe/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/cLRIrkIKPzIxhXcYyPa1IC5drSF9qmchYRfinvFIThOpxlQtQrE1_7WHky6eJ3KLQvZ8BJ-kn5kHA-XHPQwLYdjn96ldMtPN_D6X0WrcrpeI0fpzWCk=w400-h225-n-nu" alt="Chỉnh sửa hình ảnh trong Gemini vừa được nâng cấp đáng kể" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chỉnh sửa hình ảnh trong Gemini vừa được nâng cấp đáng kể</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
