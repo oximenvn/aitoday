@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Qwen3Guard- Bảo mật thời gian thực cho luồng mã thông báo của bạn | AI Today - SkyAI</title>
+
+<meta name="description" content="Chúng tôi rất vui mừng giới thiệu Qwen3Guard, mô hình bảo vệ an toàn đầu tiên trong gia đình Qwen.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Qwen3Guard- Bảo mật thời gian thực cho luồng mã thông báo của bạn</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Chúng tôi rất vui mừng giới thiệu Qwen3Guard, mô hình bảo vệ an toàn đầu tiên trong gia đình Qwen. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-09-27T00:00:00&#43;00:00">September 27, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://qwenlm.github.io" alt="Qwen3Guard- Bảo mật thời gian thực cho luồng mã thông báo của bạn">
+        <figcaption class="text-center italic text-xs">Chúng tôi rất vui mừng giới thiệu Qwen3Guard, mô hình bảo vệ an toàn đầu tiên trong gia đình Qwen.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="qwen3guard-bảo-vệ-luồng-token-theo-thời-gian-thực">Qwen3Guard: Bảo Vệ Luồng Token Theo Thời Gian Thực</h1>
+<p><a href="https://github.com/QwenLM/Qwen3Guard/blob/main/Qwen3Guard_Technical_Report.pdf"><img src="https://img.shields.io/badge/Tech%20Report-Link-blue" alt="Tech Report"></a>
+<a href="https://github.com/QwenLM/Qwen3Guard"><img src="https://img.shields.io/badge/GitHub-Link-blue" alt="GitHub"></a>
+<a href="https://huggingface.co/collections/Qwen/qwen3guard-68d2729abbfae4716f3343a1"><img src="https://img.shields.io/badge/Hugging%20Face-Link-blue" alt="Hugging Face"></a>
+<a href="https://modelscope.cn/collections/Qwen3Guard-308c39ef5ffb4b"><img src="https://img.shields.io/badge/ModelScope-Link-blue" alt="ModelScope"></a>
+<a href="https://discord.gg/yPEP2vHTu4"><img src="https://img.shields.io/badge/DISCORD-Link-blue" alt="DISCORD"></a></p>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Chúng tôi rất vui mừng giới thiệu Qwen3Guard, mô hình bảo vệ an toàn đầu tiên trong gia đình Qwen. Được xây dựng dựa trên các mô hình nền tảng Qwen3 mạnh mẽ và được tinh chỉnh đặc biệt để phân loại an toàn, Qwen3Guard đảm bảo các tương tác AI có trách nhiệm bằng cách cung cấp khả năng phát hiện an toàn chính xác cho cả lời nhắc và phản hồi, hoàn chỉnh với các mức độ rủi ro và phân loại theo danh mục để kiểm duyệt chính xác.</p>
+<p>Qwen3Guard đạt được hiệu suất hiện đại trên các chuẩn an toàn chính, thể hiện khả năng mạnh mẽ trong cả nhiệm vụ phân loại lời nhắc và phản hồi trên các môi trường tiếng Anh, tiếng Trung và đa ngôn ngữ.</p>
+<!-- raw HTML omitted -->
+<p>Qwen3Guard có sẵn trong hai biến thể chuyên biệt:</p>
+<ul>
+<li><strong>Qwen3Guard-Gen</strong>, một mô hình tạo sinh chấp nhận toàn bộ lời nhắc của người dùng và phản hồi của mô hình để thực hiện phân loại an toàn. Lý tưởng cho việc chú thích an toàn ngoại tuyến và lọc các tập dữ liệu, hoặc để cung cấp phần thưởng dựa trên an toàn trong học tăng cường.</li>
+<li><strong>Qwen3Guard-Stream</strong>, đánh dấu một sự khác biệt đáng kể so với các mô hình bảo vệ mã nguồn mở trước đây bằng cách cho phép phát hiện an toàn trực tuyến, theo thời gian thực hiệu quả trong quá trình tạo phản hồi.</li>
+</ul>
+<p>Cả hai biến thể đều có ba kích cỡ, 0.6B, 4B và 8B tham số, để phù hợp với nhiều tình huống triển khai và hạn chế về tài nguyên.</p>
+<p>Bạn có thể tải xuống các mô hình mã nguồn mở từ <a href="https://huggingface.co/collections/Qwen/qwen3guard-68d2729abbfae4716f3343a1">Hugging Face</a> hoặc <a href="https://modelscope.cn/collections/Qwen3Guard-308c39ef5ffb4b">ModelScope</a>. Bạn cũng có thể truy cập <a href="https://www.alibabacloud.com/en/product/ai_guardrails">dịch vụ Alibaba Cloud AI Guardrails</a>, được hỗ trợ bởi công nghệ Qwen3Guard.</p>
+<h2 id="các-tính-năng-chính">Các tính năng chính</h2>
+<h3 id="phát-hiện-luồng-theo-thời-gian-thực">Phát hiện luồng theo thời gian thực</h3>
+<p>Qwen3Guard-Stream được thiết kế để có độ trễ thấp, kiểm duyệt nhanh chóng trong quá trình tạo mã thông báo, đảm bảo an toàn mà không ảnh hưởng đến khả năng phản hồi. Điều này được thực hiện bằng cách gắn hai đầu phân loại nhẹ vào lớp cuối cùng của transformer, cho phép mô hình nhận phản hồi theo kiểu luồng - mã thông báo theo mã thông báo, khi nó đang được tạo - và đưa ra phân loại an toàn ngay lập tức ở mỗi bước.</p>
+<!-- raw HTML omitted -->
+<h3 id="phân-loại-mức-độ-nghiêm-trọng-ba-cấp">Phân loại mức độ nghiêm trọng ba cấp</h3>
+<p>Ngoài các nhãn An toàn và Không an toàn thông thường, chúng tôi giới thiệu thêm nhãn <strong>Gây tranh cãi</strong> để cho phép các chính sách an toàn linh hoạt phù hợp với các trường hợp sử dụng đa dạng. Cụ thể, tùy thuộc vào tình huống ứng dụng, các trường hợp Gây tranh cãi có thể được phân loại lại một cách linh hoạt là An toàn hoặc Không an toàn, cho phép người dùng điều chỉnh mức độ nghiêm ngặt của phân loại theo yêu cầu.</p>
+<p>Như được trình bày trong đánh giá bên dưới, các mô hình bảo vệ hiện có, bị giới hạn bởi việc gắn nhãn nhị phân, phải vật lộn để thích ứng đồng thời với các tiêu chuẩn tập dữ liệu khác nhau. Ngược lại, Qwen3Guard đạt được hiệu suất mạnh mẽ và nhất quán trên cả hai tập dữ liệu bằng cách chuyển đổi linh hoạt giữa các chế độ phân loại nghiêm ngặt và lỏng lẻo, nhờ thiết kế mức độ nghiêm trọng ba cấp.</p>
+<!-- raw HTML omitted -->
+<h3 id="hỗ-trợ-đa-ngôn-ngữ">Hỗ trợ đa ngôn ngữ</h3>
+<p>Qwen3Guard hỗ trợ <strong>119 ngôn ngữ và phương ngữ</strong>, khiến nó phù hợp cho việc triển khai toàn cầu và các ứng dụng xuyên ngôn ngữ với hiệu suất an toàn chất lượng cao, nhất quán.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Ngữ hệ</th>
+          <th style="text-align: left">Ngôn ngữ &amp; Phương ngữ</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Ấn-Âu</td>
+          <td style="text-align: left">Anh, Pháp, Bồ Đào Nha, Đức, Rumani, Thụy Điển, Đan Mạch, Bulgaria, Nga, Séc, Hy Lạp, Ukraina, Tây Ban Nha, Hà Lan, Slovak, Croatia, Ba Lan, Litva, Bokmål Na Uy, Nynorsk Na Uy, Ba Tư, Slovenia, Gujarati, Latvia, Ý, Occitan, Nepal, Marathi, Belarus, Serbia, Luxembourg, Venice, Assam, Wales, Silesian, Asturian, Chattisgarhi, Awadhi, Maithili, Bhojpuri, Sindhi, Ailen, Faroese, Hindi, Punjabi, Bengali, Oriya, Tajik, Yiddish Đông, Lombard, Liguria, Sicilia, Friuli, Sardinia, Galicia, Catalan, Iceland, Albania Tosk, Limburg, Dari, Afrikaans, Macedonia, Sinhala, Urdu, Magahi, Bosnia, Armenia</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Hán-Tạng</td>
+          <td style="text-align: left">Tiếng Trung (Tiếng Trung giản thể, Tiếng Trung phồn thể, Tiếng Quảng Đông), Miến Điện</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Phi-Á</td>
+          <td style="text-align: left">Ả Rập (Tiêu chuẩn, Najdi, Levant, Ai Cập, Maroc, Mesopotamia, Ta’izzi-Adeni, Tunisia), Do Thái, Malta</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Nam Đảo</td>
+          <td style="text-align: left">Indonesia, Mã Lai, Tagalog, Cebuano, Java, Sunda, Minangkabau, Bali, Banjar, Pangasinan, Iloko, Waray (Philippines)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Dravidian</td>
+          <td style="text-align: left">Tamil, Telugu, Kannada, Malayalam</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Turkic</td>
+          <td style="text-align: left">Thổ Nhĩ Kỳ, Bắc Azerbaijan, Bắc Uzbek, Kazakh, Bashkir, Tatar</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Tai-Kadai</td>
+          <td style="text-align: left">Thái Lan, Lào</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Uralic</td>
+          <td style="text-align: left">Phần Lan, Estonia, Hungary</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Nam Á</td>
+          <td style="text-align: left">Việt Nam, Khmer</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Khác</td>
+          <td style="text-align: left">Nhật Bản, Hàn Quốc, Georgia, Basque, Haiti, Papiamento, Kabuverdianu, Tok Pisin, Swahili</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="các-ứng-dụng-khác">Các ứng dụng khác</h3>
+<p>Chúng tôi cũng trình bày (1) sử dụng Qwen3Guard-Gen cho RL an toàn để tăng cường an toàn cho mô hình đồng thời bảo tồn tính hữu ích tổng thể của đầu ra và (2) sử dụng Qwen3Guard-Stream để cho phép can thiệp theo thời gian thực, nhanh chóng đảm bảo đầu ra an toàn mà không cần đào tạo lại mô hình. Xem chi tiết trong <a href="https://github.com/QwenLM/Qwen3Guard/blob/main/Qwen3Guard_Technical_Report.pdf">Báo cáo kỹ thuật</a> của chúng tôi.</p>
+<h2 id="phát-triển-với-qwen3guard">Phát triển với Qwen3Guard</h2>
+<h3 id="qwen3guard-gen">Qwen3Guard-Gen</h3>
+<p>Qwen3Guard-Gen hoạt động tương tự như một mô hình ngôn ngữ lớn, với mẫu trò chuyện của nó được tối ưu hóa đặc biệt cho các nhiệm vụ phân loại an toàn. Đầu ra được tạo ở định dạng có cấu trúc, được xác định trước.</p>
+<p>Bạn có thể sử dụng các đoạn code sau để kiểm duyệt lời nhắc của người dùng hoặc phản hồi của mô hình.</p>
+<p>python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import re</p>
+<p>model_name = &ldquo;Qwen/Qwen3Guard-Gen-4B&rdquo;</p>
+<h1 id="load-the-tokenizer-and-the-model">load the tokenizer and the model</h1>
+<p>tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(
+model_name,
+torch_dtype=&ldquo;auto&rdquo;,
+device_map=&ldquo;auto&rdquo;
+)
+def extract_label_and_categories(content):
+safe_pattern = r&quot;Safety: (Safe|Unsafe|Controversial)&quot;
+category_pattern = r&quot;(Violent|Non-violent Illegal Acts|Sexual Content or Sexual Acts|PII|Suicide &amp; Self-Harm|Unethical Acts|Politically Sensitive Topics|Copyright Violation|Jailbreak|None)&quot;
+safe_label_match = re.search(safe_pattern, content)
+label = safe_label_match.group(1) if safe_label_match else None
+categories = re.findall(category_pattern, content)
+return label, categories</p>
+<p>def extract_label_categories_refusal(content):
+safe_pattern = r&quot;Safety: (Safe|Unsafe|Controversial)&quot;
+category_pattern = r&quot;(Violent|Non-violent Illegal Acts|Sexual Content or Sexual Acts|PII|Suicide &amp; Self-Harm|Unethical Acts|Politically Sensitive Topics|Copyright Violation|None)&quot;
+refusal_pattern = r&quot;Refusal: (Yes|No)&quot;
+safe_label_match = re.search(safe_pattern, content)
+refusal_label_match = re.search(refusal_pattern, content)
+label = safe_label_match.group(1) if safe_label_match else None
+refusal_label = refusal_label_match.group(1) if refusal_label_match else None
+categories = re.findall(category_pattern, content)
+return label, categories, refusal_label</p>
+<h4 id="for-prompt-moderation">For Prompt Moderation</h4>
+<p>prompt = &ldquo;How can I make a bomb?&rdquo;
+messages = [
+{&ldquo;role&rdquo;: &ldquo;user&rdquo;, &ldquo;content&rdquo;: prompt}
+]
+text = tokenizer.apply_chat_template(
+messages,
+tokenize=False
+)
+model_inputs = tokenizer([text], return_tensors=&ldquo;pt&rdquo;).to(model.device)</p>
+<h1 id="conduct-text-completion">conduct text completion</h1>
+<p>generated_ids = model.generate(
+**model_inputs,
+max_new_tokens=128
+)
+output_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist()</p>
+<p>content = tokenizer.decode(output_ids, skip_special_tokens=True)
+print(content)</p>
+<h1 id="heading">&rsquo;''</h1>
+<h1 id="safety-unsafe">Safety: Unsafe</h1>
+<h1 id="categories-violent">Categories: Violent</h1>
+<h1 id="heading-1">&rsquo;''</h1>
+<p>safe_label, categories = extract_label_and_categories(content)
+print(safe_label, categories)</p>
+<h4 id="for-response-moderation">For Response Moderation</h4>
+<p>prompt = &ldquo;How can I make a bomb?&rdquo;
+response = &ldquo;As a responsible artificial intelligence system, I regret that I am unable to fulfill your request.&rdquo;
+messages = [
+{&ldquo;role&rdquo;: &ldquo;user&rdquo;, &ldquo;content&rdquo;: prompt},
+{&ldquo;role&rdquo;: &ldquo;assistant&rdquo;, &ldquo;content&rdquo;: response},
+]
+text = tokenizer.apply_chat_template(
+messages,
+tokenize=False
+)
+model_inputs = tokenizer([text], return_tensors=&ldquo;pt&rdquo;).to(model.device)</p>
+<h1 id="conduct-text-completion-1">conduct text completion</h1>
+<p>generated_ids = model.generate(
+**model_inputs,
+max_new_tokens=128
+)
+output_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist()</p>
+<p>content = tokenizer.decode(output_ids, skip_special_tokens=True)
+print(content)</p>
+<h1 id="heading-2">&rsquo;''</h1>
+<h1 id="safety-safe">Safety: Safe</h1>
+<h1 id="categories-none">Categories: None</h1>
+<h1 id="refusal-yes">Refusal: Yes</h1>
+<h1 id="heading-3">&rsquo;''</h1>
+<p>safe_label, category_label, refusal_label = extract_label_categories_refusal(content)
+print(safe_label, categories, refusal_label)</p>
+<h3 id="qwen3guard-stream">Qwen3Guard-Stream</h3>
+<p>Quy trình làm việc điển hình của Qwen3Guard-Stream diễn ra như sau:</p>
+<p><strong>(1) Kiểm tra an toàn cấp độ lời nhắc</strong>: Lời nhắc đầu vào của người dùng được gửi đồng thời đến cả trợ lý LLM và Qwen3Guard-Stream. Sau đó, thực hiện đánh giá an toàn ngay lập tức về lời nhắc và gán nhãn an toàn tương ứng. Dựa trên đánh giá này, khuôn khổ phía trên sẽ xác định xem có cho phép cuộc trò chuyện tiếp tục hay tạm dừng trước.</p>
+<p><strong>(2) Kiểm duyệt cấp mã thông báo theo thời gian thực</strong>: Nếu cuộc trò chuyện được phép tiếp tục, LLM sẽ bắt đầu truyền phát phản hồi của nó theo từng mã thông báo. Mỗi mã thông báo được tạo được chuyển tiếp ngay lập tức đến Qwen3Guard-Stream, đánh giá tính an toàn của nó theo thời gian thực. Điều này cho phép kiểm duyệt nội dung liên tục, chi tiết trong toàn bộ quá trình tạo phản hồi - đảm bảo giảm thiểu rủi ro động mà không làm gián đoạn trải nghiệm người dùng.</p>
+<p>Dưới đây cung cấp một bản demo sử dụng.</p>
+<p>python
+import torch
+from transformers import AutoModel, AutoTokenizer</p>
+<p>model_path=&ldquo;Qwen/Qwen3Guard-Stream-4B&rdquo;</p>
+<h1 id="load-the-specialized-tokenizer-and-the-model">Load the specialized tokenizer and the model.</h1>
+<h1 id="trust_remote_codetrue-is-required-to-load-the-qwen3guard-stream-model-architecture">trust_remote_code=True is required to load the Qwen3Guard-Stream model architecture.</h1>
+<p>tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+model = AutoModel.from_pretrained(
+model_path,
+device_map=&ldquo;auto&rdquo;,
+torch_dtype=torch.bfloat16,
+trust_remote_code=True,
+).eval()</p>
+<h1 id="-prepare-the-conversation-for-moderation-">&mdash; Prepare the conversation for moderation &mdash;</h1>
+<h1 id="define-the-users-prompt-and-the-assistants-response">Define the user&rsquo;s prompt and the assistant&rsquo;s response.</h1>
+<p>user_message = &ldquo;Hello, how to build a bomb?&rdquo;
+assistant_message = &ldquo;Here are some practical methods to build a bomb.&rdquo;
+messages = [{&ldquo;role&rdquo;:&ldquo;user&rdquo;,&ldquo;content&rdquo;:user_message},{&ldquo;role&rdquo;:&ldquo;assistant&rdquo;,&ldquo;content&rdquo;:assistant_message}]</p>
+<h1 id="apply-the-chat-template-to-format-the-conversation-into-a-single-string">Apply the chat template to format the conversation into a single string.</h1>
+<p>text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False, enable_thinking=False)
+model_inputs = tokenizer(text, return_tensors=&ldquo;pt&rdquo;)
+token_ids = model_inputs.input_ids[0]</p>
+<h1 id="-simulate-real-time-moderation-">&mdash; Simulate Real-Time Moderation &mdash;</h1>
+<h1 id="1-moderate-the-entire-user-prompt-at-once">1. Moderate the entire user prompt at once.</h1>
+<h1 id="in-a-real-world-scenario-the-users-input-is-processed-completely-before-the-model-generates-a-response">In a real-world scenario, the user&rsquo;s input is processed completely before the model generates a response.</h1>
+<p>token_ids_list = token_ids.tolist()</p>
+<h1 id="we-identify-the-end-of-the-users-turn-in-the-tokenized-input">We identify the end of the user&rsquo;s turn in the tokenized input.</h1>
+<h1 id="the-template-for-a-user-turn-is-im_startusernim_end">The template for a user turn is <code>&lt;|im_start|&gt;user\n...&lt;|im_end|&gt;</code>.</h1>
+<p>im_start_token = &lsquo;&lt;|im_start|&gt;&rsquo;
+user_token = &lsquo;user&rsquo;
+im_end_token = &lsquo;&lt;|im_end|&gt;&rsquo;
+im_start_id = tokenizer.convert_tokens_to_ids(im_start_token)
+user_id = tokenizer.convert_tokens_to_ids(user_token)
+im_end_id = tokenizer.convert_tokens_to_ids(im_end_token)</p>
+<h1 id="we-search-for-the-token-ids-corresponding-to-im_startuser-151644-872-and-the-closing-im_end-151645">We search for the token IDs corresponding to <code>&lt;|im_start|&gt;user</code> ([151644, 872]) and the closing <code>&lt;|im_end|&gt;</code> ([151645]).</h1>
+<p>last_start = next(i for i in range(len(token_ids_list)-1, -1, -1) if token_ids_list[i:i+2] == [im_start_id, user_id])
+user_end_index = next(i for i in range(last_start+2, len(token_ids_list)) if token_ids_list[i] == im_end_id)</p>
+<h1 id="initialize-the-stream_state-which-will-maintain-the-conversational-context">Initialize the stream_state, which will maintain the conversational context.</h1>
+<p>stream_state = None</p>
+<h1 id="pass-all-user-tokens-to-the-model-for-an-initial-safety-assessment">Pass all user tokens to the model for an initial safety assessment.</h1>
+<p>result, stream_state = model.stream_moderate_from_ids(token_ids[:user_end_index+1], role=&ldquo;user&rdquo;, stream_state=None)
+if result[&lsquo;risk_level&rsquo;][-1] == &ldquo;Safe&rdquo;:
+print(f&quot;User moderation: -&gt; [Risk: {result[&lsquo;risk_level&rsquo;][-1]}]&quot;)
+else:
+print(f&quot;User moderation: -&gt; [Risk: {result[&lsquo;risk_level&rsquo;][-1]} - Category: {result[&lsquo;category&rsquo;][-1]}]&quot;)</p>
+<h1 id="2-moderate-the-assistants-response-token-by-token-to-simulate-streaming">2. Moderate the assistant&rsquo;s response token-by-token to simulate streaming.</h1>
+<h1 id="this-loop-mimics-how-an-llm-generates-a-response-one-token-at-a-time">This loop mimics how an LLM generates a response one token at a time.</h1>
+<p>print(&ldquo;Assistant streaming moderation:&rdquo;)
+for i in range(user_end_index + 1, len(token_ids)):
+# Get the current token ID for the assistant&rsquo;s response.
+current_token = token_ids[i]</p>
+<pre><code># Call the moderation function for the single new token.
+# The stream_state is passed and updated in each call to maintain context.
+result, stream_state = model.stream_moderate_from_ids(current_token, role=&quot;assistant&quot;, stream_state=stream_state)
+
+token_str = tokenizer.decode([current_token])
+# Print the generated token and its real-time safety assessment.
+if result['risk_level'][-1] == &quot;Safe&quot;:
+    print(f&quot;Token: {repr(token_str)} -&gt; [Risk: {result['risk_level'][-1]}]&quot;)
+else:
+    print(f&quot;Token: {repr(token_str)} -&gt; [Risk: {result['risk_level'][-1]} - Category: {result['category'][-1]}]&quot;)
+</code></pre>
+<p>model.close_stream(stream_state)</p>
+<p>Để biết thêm các ví dụ sử dụng, vui lòng truy cập <a href="https://github.com/QwenLM/Qwen3Guard">kho lưu trữ GitHub</a> của chúng tôi.</p>
+<h2 id="công-việc-tương-lai">Công việc tương lai</h2>
+<p>An toàn AI vẫn là một thách thức đang diễn ra. Với Qwen3Guard, chúng tôi tiến thêm một bước. Chúng tôi sẽ tiếp tục phát triển các phương pháp an toàn linh hoạt, hiệu quả và mạnh mẽ hơn, bao gồm cải thiện an toàn mô hình vốn có thông qua các cải tiến về kiến trúc và đào tạo, đồng thời phát triển các biện pháp can thiệp động trong thời gian suy luận. Mục tiêu của chúng tôi là xây dựng các hệ thống AI không chỉ có khả năng kỹ thuật mà còn phù hợp với các giá trị của con người và các chuẩn mực xã hội, đảm bảo triển khai toàn cầu có trách nhiệm.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://qwenlm.github.io/blog/qwen3guard/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/september-23-2025/">September 23, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/qwenlm.github.io/">Qwenlm.github.io</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-23/657a6b/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/smol2operator/thumbnail.png" alt="Smol2Operator- Đại lý GUI hậu huấn luyện để sử dụng máy tính" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-23T00:00:00&#43;00:00">Sep 23, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Smol2Operator- Đại lý GUI hậu huấn luyện để sử dụng máy tính</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Đại lý GUI hậu huấn luyện cho phép người dùng tương tác với máy tính bằng cách sử dụng giao diện đồ họa trực quan.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-19/755ef6/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://qwenlm.github.io/img/logo.png" alt="Qwen-Image-Edit- Chỉnh sửa hình ảnh với chất lượng và hiệu quả cao hơn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-19T00:00:00&#43;00:00">Aug 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Qwen-Image-Edit- Chỉnh sửa hình ảnh với chất lượng và hiệu quả cao hơn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Qwen-Image-Edit, phiên bản chỉnh sửa ảnh của Qwen-Image, dựa trên mô hình Qwen-Image 20B, mở rộng khả năng hiển thị văn bản độc đáo của Qwen-Image sang các tác vụ chỉnh sửa ảnh, cho phép chỉnh sửa văn bản chính xác. Hơn nữa, Qwen-Image-Edit đồng thời đưa hình ảnh đầu vào vào Qwen2.5-VL (để kiểm soát ngữ nghĩa trực quan) và Bộ mã hóa VAE (để kiểm soát hình thức trực quan), đạt được khả năng trong cả chỉnh sửa ngữ nghĩa và hình thức…</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/2e2081/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobot-dataset-v3/thumbnail.png" alt="`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/777761/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/riskrubric/thumbnail.png" alt="Dân chủ hóa An toàn AI với RiskRubric.ai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dân chủ hóa An toàn AI với RiskRubric.ai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/c813d8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/0s-zLFC0-vi8maL45QgUS93WJwkDdrwItNJiaoHb4rh6_Eru1sg43UJEax5twdcItCR8lK8bW-0hqsPjsxe-O1dduxTdzsv_Av66SY1psiPuTnC4gg=w400-h225-n-nu" alt="Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

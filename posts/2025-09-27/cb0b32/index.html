@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>mmBERT- ModernBERT trở nên đa ngôn ngữ | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">mmBERT- ModernBERT trở nên đa ngôn ngữ</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-09-27T00:00:00&#43;00:00">September 27, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            18 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/mmbert/thumbnail.png" alt="mmBERT- ModernBERT trở nên đa ngôn ngữ">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="mmbert-modernbert-vươn-mình-ra-đa-ngôn-ngữ">mmBERT: ModernBERT vươn mình ra Đa ngôn ngữ</h1>
+<p>Bài viết này giới thiệu <a href="https://huggingface.co/collections/jhu-clsp/mmbert-a-modern-multilingual-encoder-68b725831d7c6e3acc435ed4">mmBERT</a>, một mô hình mã hóa đa ngôn ngữ lớn hiện đại, được huấn luyện trên hơn 3 nghìn tỷ token văn bản ở hơn 1800 ngôn ngữ. Nó cho thấy sự cải thiện đáng kể về hiệu suất và tốc độ so với các mô hình đa ngôn ngữ trước đây, là mô hình đầu tiên cải thiện XLM-R, đồng thời phát triển các chiến lược mới để học hiệu quả các ngôn ngữ ít tài nguyên. mmBERT xây dựng dựa trên ModernBERT cho một kiến trúc cực nhanh và thêm các thành phần mới để cho phép học đa ngôn ngữ hiệu quả.</p>
+<p>Nếu bạn quan tâm đến việc tự mình thử các mô hình, một số boilerplate ví dụ có sẵn <a href="#usage-examples">ở cuối bài đăng trên blog này!</a></p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>mmBERT là một mô hình mã hóa đa ngôn ngữ hiện đại, được huấn luyện trên hơn 3 nghìn tỷ token ở hơn 1800 ngôn ngữ.</li>
+<li>mmBERT cho thấy sự cải thiện đáng kể về hiệu suất và tốc độ so với các mô hình đa ngôn ngữ trước đây.</li>
+<li>mmBERT phát triển các chiến lược mới để học hiệu quả các ngôn ngữ ít tài nguyên.</li>
+</ul>
+<h2 id="dữ-liệu-huấn-luyện">Dữ liệu huấn luyện</h2>
+<!-- raw HTML omitted -->
+<p>mmBERT được huấn luyện trên một tập dữ liệu đa ngôn ngữ được tuyển chọn cẩn thận với tổng cộng hơn 3T token qua ba giai đoạn huấn luyện riêng biệt. Nền tảng của dữ liệu huấn luyện của chúng tôi bao gồm ba lần thu thập dữ liệu web nguồn mở và chất lượng cao chính, cho phép cả độ bao phủ đa ngôn ngữ và chất lượng dữ liệu:</p>
+<p><strong>DCLM và DCLM được lọc</strong> cung cấp nội dung tiếng Anh chất lượng cao nhất hiện có, đóng vai trò là xương sống cho hiệu suất tiếng Anh mạnh mẽ (với dữ liệu được lọc đến từ <a href="https://huggingface.co/datasets/allenai/dolmino-mix-1124">Dolmino</a>). Tập dữ liệu này thể hiện các kỹ thuật lọc web hiện đại và tạo thành một thành phần quan trọng. Do chất lượng cao của dữ liệu này, chúng tôi sử dụng tỷ lệ tiếng Anh cao hơn đáng kể so với các mô hình mã hóa đa ngôn ngữ thế hệ trước (lên đến 18%).</p>
+<p><strong>FineWeb2</strong> cung cấp nội dung web đa ngôn ngữ rộng lớn <a href="https://huggingface.co/datasets/HuggingFaceFW/fineweb-2">multilingual web content</a> bao gồm hơn 1.800 ngôn ngữ. Tập dữ liệu này cho phép độ bao phủ đa ngôn ngữ mở rộng của chúng tôi trong khi vẫn duy trì các tiêu chuẩn chất lượng hợp lý trên các họ ngôn ngữ và bảng chữ cái đa dạng.</p>
+<p><strong>FineWeb2-HQ</strong> bao gồm một <a href="https://huggingface.co/datasets/epfml/FineWeb2-HQ">filtered subset of FineWeb2</a> tập trung vào 20 ngôn ngữ có nhiều tài nguyên. Phiên bản được lọc này cung cấp nội dung đa ngôn ngữ chất lượng cao hơn, thu hẹp khoảng cách giữa dữ liệu được lọc chỉ bằng tiếng Anh và độ bao phủ đa ngôn ngữ rộng rãi.</p>
+<p>Dữ liệu huấn luyện cũng kết hợp các kho ngữ liệu chuyên dụng từ <a href="https://arxiv.org/abs/2402.00159">Dolma</a>, <a href="https://arxiv.org/abs/2508.03828">MegaWika v2</a>, <a href="https://arxiv.org/abs/2410.02660">ProLong</a> và hơn thế nữa: kho mã (StarCoder, ProLong), nội dung học thuật (ArXiv, PeS2o), tài liệu tham khảo (Wikipedia, sách giáo khoa) và thảo luận cộng đồng (StackExchange), cùng với hướng dẫn và tập dữ liệu toán học.</p>
+<p>Đổi mới quan trọng trong phương pháp tiếp cận dữ liệu của chúng tôi là <strong>chiến lược bao gồm ngôn ngữ lũy tiến</strong> được hiển thị trong <a href="#figure1">Hình 1</a>. Ở mỗi giai đoạn, chúng tôi lấy mẫu dần dần từ phân phối <em>phẳng hơn</em> (tức là gần với đồng nhất hơn), đồng thời thêm các ngôn ngữ mới. Điều này có nghĩa là các ngôn ngữ có nhiều tài nguyên như tiếng Nga bắt đầu với tỷ lệ dữ liệu cao (tức là 9%) và sau đó trong giai đoạn huấn luyện cuối cùng kết thúc khoảng một nửa tỷ lệ đó. Chúng tôi bắt đầu với 60 ngôn ngữ có nhiều tài nguyên trong quá trình huấn luyện trước, mở rộng lên 110 ngôn ngữ trong quá trình huấn luyện giữa và cuối cùng bao gồm tất cả 1.833 ngôn ngữ từ FineWeb2 trong giai đoạn phân rã. Điều này cho phép chúng tôi tối đa hóa tác động của dữ liệu ngôn ngữ ít tài nguyên hạn chế mà không cần lặp lại quá mức và đồng thời duy trì chất lượng dữ liệu tổng thể cao.</p>
+<h2 id="công-thức-huấn-luyện-và-các-thành-phần-mới">Công thức huấn luyện và các thành phần mới</h2>
+<p>mmBERT xây dựng dựa trên kiến trúc <a href="https://huggingface.co/blog/modernbert">ModernBERT</a> nhưng giới thiệu một số đổi mới chính để học đa ngôn ngữ:</p>
+<h3 id="kiến-trúc">Kiến trúc</h3>
+<p>Chúng tôi sử dụng cùng một kiến trúc cốt lõi với ModernBERT-base với 22 lớp và 1152 kích thước trung gian, nhưng chuyển sang bộ mã hóa thông báo Gemma 2 để xử lý văn bản đa ngôn ngữ tốt hơn. Mô hình cơ sở có 110 triệu tham số không nhúng (tổng cộng 307 triệu do từ vựng lớn hơn), trong khi biến thể nhỏ có 42 triệu tham số không nhúng (tổng cộng 140 triệu).</p>
+<h3 id="phương-pháp-huấn-luyện-ba-giai-đoạn">Phương pháp huấn luyện ba giai đoạn</h3>
+<p>Quá trình huấn luyện của chúng tôi tuân theo một lịch trình ba giai đoạn được thiết kế cẩn thận:</p>
+<ol>
+<li><strong>Huấn luyện trước (2,3T token)</strong>: Khởi động và giai đoạn tốc độ học ổn định sử dụng 60 ngôn ngữ với tỷ lệ che phủ 30%</li>
+<li><strong>Huấn luyện giữa (600B token)</strong>: Mở rộng ngữ cảnh lên 8192 token, dữ liệu chất lượng cao hơn, mở rộng lên 110 ngôn ngữ với tỷ lệ che phủ 15%</li>
+<li><strong>Giai đoạn phân rã (100B token)</strong>: Phân rã tốc độ học căn bậc hai nghịch đảo, bao gồm tất cả 1.833 ngôn ngữ với tỷ lệ che phủ 5%</li>
+</ol>
+<h3 id="kỹ-thuật-huấn-luyện-mới">Kỹ thuật huấn luyện mới</h3>
+<p><strong>Lịch trình Tỷ lệ Che phủ Nghịch đảo</strong>: Thay vì sử dụng tỷ lệ che phủ cố định, chúng tôi giảm dần tỷ lệ che phủ từ 30% → 15% → 5% trong các giai đoạn huấn luyện. Điều này cho phép mô hình học các biểu diễn cơ bản với độ che phủ cao hơn sớm hơn, sau đó tập trung vào sự hiểu biết sắc thái hơn với tỷ lệ che phủ thấp hơn.</p>
+<p><strong>Học Ngôn ngữ Tôi luyện</strong>: Chúng tôi điều chỉnh động nhiệt độ để lấy mẫu dữ liệu đa ngôn ngữ từ τ=0,7 → 0,5 → 0,3. Điều này tạo ra một sự tiến triển từ độ lệch ngôn ngữ tài nguyên cao sang lấy mẫu đồng đều hơn, cho phép mô hình xây dựng nền tảng đa ngôn ngữ mạnh mẽ trước khi học các ngôn ngữ ít tài nguyên.</p>
+<p><strong>Bổ sung Ngôn ngữ Lũy tiến</strong>: Thay vì huấn luyện trên tất cả các ngôn ngữ đồng thời, chúng tôi thêm một cách chiến lược các ngôn ngữ ở mỗi giai đoạn (60 → 110 → 1.833). Điều này tối đa hóa hiệu quả học tập bằng cách tránh các kỷ nguyên quá mức trên dữ liệu ít tài nguyên hạn chế trong khi vẫn đạt được hiệu suất mạnh mẽ.</p>
+<p><strong>Hợp nhất Mô hình</strong>: Chúng tôi huấn luyện ba biến thể khác nhau trong giai đoạn phân rã (tập trung vào tiếng Anh, 110 ngôn ngữ và tất cả ngôn ngữ) và sử dụng hợp nhất TIES để kết hợp các điểm mạnh của chúng vào mô hình cuối cùng.</p>
+<h2 id="kết-quả">Kết quả</h2>
+<h3 id="hiểu-ngôn-ngữ-tự-nhiên-nlu">Hiểu Ngôn ngữ Tự nhiên (NLU)</h3>
+<!-- raw HTML omitted -->
+<p><strong>Hiệu suất Tiếng Anh</strong>: Trên điểm chuẩn GLUE tiếng Anh (Bảng 1), mmBERT base đạt được hiệu suất mạnh mẽ, vượt trội đáng kể so với các mô hình đa ngôn ngữ khác như XLM-R (đa ngôn ngữ RoBERTa) base và mGTE base, đồng thời vẫn cạnh tranh với các mô hình chỉ bằng tiếng Anh mặc dù ít hơn 25% dữ liệu huấn luyện mmBERT là tiếng Anh.</p>
+<!-- raw HTML omitted -->
+<p><strong>Hiệu suất Đa ngôn ngữ</strong>: mmBERT cho thấy những cải thiện đáng kể trên điểm chuẩn XTREME so với XLM-R như được chứng minh trong Bảng 2. Những lợi ích đáng chú ý bao gồm hiệu suất mạnh mẽ trên phân loại XNLI, những cải thiện đáng kể trong các nhiệm vụ trả lời câu hỏi như TyDiQA và kết quả cạnh tranh trên PAWS-X và XCOPA để hiểu đa ngôn ngữ.</p>
+<p>Mô hình hoạt động tốt trên hầu hết các danh mục, ngoại trừ một số nhiệm vụ dự đoán có cấu trúc như NER và gắn thẻ POS, có thể là do sự khác biệt về bộ mã hóa thông báo ảnh hưởng đến việc phát hiện ranh giới từ. Trên các danh mục này, nó hoạt động tương tự như thế hệ trước, nhưng có thể được áp dụng cho nhiều ngôn ngữ hơn.</p>
+<h3 id="hiệu-suất-truy-xuất">Hiệu suất truy xuất</h3>
+<!-- raw HTML omitted -->
+<p><strong>Truy xuất Tiếng Anh</strong>: Mặc dù mmBERT được thiết kế cho các cài đặt đa ngôn ngữ lớn, nhưng trong điểm chuẩn MTEB v2 tiếng Anh (Bảng 3), mmBERT cho thấy những lợi ích đáng kể so với các mô hình đa ngôn ngữ trước đây và thậm chí ngang bằng với khả năng của các mô hình chỉ bằng tiếng Anh như ModernBERT!</p>
+<!-- raw HTML omitted -->
+<p><strong>Truy xuất Đa ngôn ngữ</strong>: mmBERT cho thấy những cải thiện nhất quán trên điểm chuẩn MTEB v2 đa ngôn ngữ so với các mô hình khác (Bảng 4).</p>
+<!-- raw HTML omitted -->
+<p><strong>Truy xuất Mã</strong>: Do bộ mã hóa thông báo hiện đại (dựa trên Gemma 2), mmBERT cũng cho thấy hiệu suất mã hóa mạnh mẽ (Bảng 5), khiến mmBERT phù hợp với bất kỳ loại dữ liệu văn bản nào. Mô hình duy nhất hoạt động tốt hơn nó là EuroBERT, có thể sử dụng tập dữ liệu Stack v2 không thể truy cập công khai.</p>
+<h2 id="học-ngôn-ngữ-trong-giai-đoạn-phân-rã">Học ngôn ngữ trong giai đoạn phân rã</h2>
+<p>Một trong những tính năng mới quan trọng nhất của mmBERT là chứng minh rằng các ngôn ngữ ít tài nguyên có thể được học hiệu quả trong giai đoạn phân rã ngắn của quá trình huấn luyện. Chúng tôi đã xác nhận phương pháp này bằng cách kiểm tra trên các ngôn ngữ chỉ được giới thiệu trong giai đoạn phân rã 100B token cuối cùng.</p>
+<!-- raw HTML omitted -->
+<p><strong>Lợi ích Hiệu suất Đáng kể</strong>: Kiểm tra trên TiQuaD (Tigrinya) và FoQA (Faroese), chúng tôi quan sát thấy những cải thiện đáng kể khi các ngôn ngữ này được bao gồm trong giai đoạn phân rã, như được hiển thị trong Hình 2. Kết quả chứng minh tính hiệu quả của phương pháp học ngôn ngữ lũy tiến của chúng tôi.</p>
+<p><strong>Cạnh tranh với các Mô hình Lớn</strong>: Mặc dù chỉ nhìn thấy các ngôn ngữ này trong giai đoạn huấn luyện cuối cùng, mmBERT đạt được mức hiệu suất vượt quá các mô hình lớn hơn nhiều. Về câu trả lời câu hỏi Faroese, nơi LLM đã được đánh giá, mmBERT hoạt động tốt hơn Google Gemini 2.5 Pro và OpenAI o3.</p>
+<p><strong>Cơ chế Học Tập Nhanh chóng</strong>: Sự thành công của việc học ngôn ngữ trong giai đoạn phân rã xuất phát từ khả năng của mô hình tận dụng nền tảng đa ngôn ngữ mạnh mẽ của nó được xây dựng trong các giai đoạn trước đó. Khi tiếp xúc với các ngôn ngữ mới, mô hình có thể nhanh chóng điều chỉnh các biểu diễn đa ngôn ngữ hiện có thay vì học từ đầu.</p>
+<p><strong>Lợi ích Hợp nhất Mô hình</strong>: Các mô hình mmBERT cuối cùng giữ lại thành công hầu hết các cải tiến trong giai đoạn phân rã trong khi được hưởng lợi từ các biến thể tập trung vào tiếng Anh và tài nguyên cao thông qua hợp nhất TIES.</p>
+<h2 id="cải-thiện-hiệu-quả">Cải thiện hiệu quả</h2>
+<p>mmBERT mang lại những cải thiện đáng kể về hiệu quả so với các mô hình mã hóa đa ngôn ngữ trước đó thông qua những cải tiến kiến trúc được kế thừa từ ModernBERT:</p>
+<!-- raw HTML omitted -->
+<p><strong>Hiệu suất Thông lượng</strong>: mmBERT xử lý văn bản nhanh hơn đáng kể so với các mô hình đa ngôn ngữ hiện có trên các độ dài chuỗi khác nhau, như được chứng minh trong Hình 3. Cả mô hình nhỏ và mô hình cơ sở đều cho thấy những cải thiện đáng kể về tốc độ so với bộ mã hóa đa ngôn ngữ trước đây.</p>
+<p><strong>Lợi ích của Kiến trúc Hiện đại</strong>: Các lợi ích về hiệu quả đến từ hai cải tiến kỹ thuật chính:</p>
+<ul>
+<li><strong>Flash Attention 2</strong>: Tính toán chú ý được tối ưu hóa để sử dụng bộ nhớ và tốc độ tốt hơn</li>
+<li><strong>Kỹ thuật bỏ đệm</strong>: Loại bỏ các mã thông báo đệm không cần thiết trong quá trình xử lý</li>
+</ul>
+<p><strong>Tỷ lệ Độ dài Chuỗi</strong>: Không giống như các mô hình cũ hơn giới hạn ở 512 token, mmBERT xử lý hiệu quả tới 8.192 token trong khi vẫn duy trì thông lượng cao. Điều này làm cho nó phù hợp với các tác vụ xử lý tài liệu dài hơn ngày càng phổ biến trong các ứng dụng đa ngôn ngữ.</p>
+<p><strong>Hiệu quả Năng lượng</strong>: Sự kết hợp giữa thông lượng tốt hơn và kiến trúc hiện đại dẫn đến chi phí tính toán thấp hơn cho suy luận, làm cho mmBERT thiết thực hơn cho các triển khai sản xuất nơi cần hỗ trợ đa ngôn ngữ ở quy mô lớn.</p>
+<p>Những cải thiện về hiệu quả này làm cho mmBERT không chỉ chính xác hơn bộ mã hóa đa ngôn ngữ trước đây, mà còn thiết thực hơn đáng kể cho việc sử dụng thực tế.</p>
+<h2 id="ví-dụ-sử-dụng">Ví dụ sử dụng</h2>
+<p>Bạn có thể sử dụng các mô hình này chỉ với một vài dòng mã!</p>
+<p>python
+from transformers import AutoTokenizer, AutoModelForMaskedLM
+import torch</p>
+<p>tokenizer = AutoTokenizer.from_pretrained(&ldquo;jhu-clsp/mmBERT-base&rdquo;)
+model = AutoModelForMaskedLM.from_pretrained(&ldquo;jhu-clsp/mmBERT-base&rdquo;)</p>
+<p>def predict_masked_token(text):
+inputs = tokenizer(text, return_tensors=&ldquo;pt&rdquo;)
+with torch.no_grad():
+outputs = model(**inputs)
+mask_indices = torch.where(inputs[&ldquo;input_ids&rdquo;] == tokenizer.mask_token_id)
+predictions = outputs.logits[mask_indices]
+top_tokens, top_indices = torch.topk(predictions, 5, dim=-1)
+return [tokenizer.decode(token) for token in top_indices[0]]</p>
+<h1 id="hoạt-động-trên-các-ngôn-ngữ">Hoạt động trên các ngôn ngữ</h1>
+<p>texts = [
+&ldquo;The capital of France is <!-- raw HTML omitted -->.&rdquo;,
+&ldquo;La capital de España es <!-- raw HTML omitted -->.&rdquo;,
+&ldquo;Die Hauptstadt von Deutschland ist <!-- raw HTML omitted -->.&rdquo;,
+]</p>
+<p>for text in texts:
+predictions = predict_masked_token(text)
+print(f&quot;Text: {text}&quot;)
+print(f&quot;Predictions: {predictions}\n&quot;)</p>
+<h2 id="ví-dụ-tinh-chỉnh">Ví dụ tinh chỉnh</h2>
+<h3 id="bộ-mã-hóa">Bộ mã hóa</h3>
+<!-- raw HTML omitted -->
+<p>python
+import argparse</p>
+<p>from datasets import load_dataset
+from sentence_transformers import (
+SentenceTransformer,
+SentenceTransformerTrainer,
+SentenceTransformerTrainingArguments,
+)
+from sentence_transformers.evaluation import TripletEvaluator
+from sentence_transformers.losses import CachedMultipleNegativesRankingLoss
+from sentence_transformers.training_args import BatchSamplers</p>
+<p>def main():
+# phân tích cú pháp lr &amp; tên mô hình
+parser = argparse.ArgumentParser()
+parser.add_argument(&quot;&ndash;lr&quot;, type=float, default=8e-5)
+parser.add_argument(&quot;&ndash;model_name&quot;, type=str, default=&ldquo;jhu-clsp/mmBERT-small&rdquo;)
+args = parser.parse_args()
+lr = args.lr
+model_name = args.model_name
+model_shortname = model_name.split(&quot;/&quot;)[-1]</p>
+<pre><code># 1. Tải một mô hình để tinh chỉnh
+model = SentenceTransformer(model_name)
+
+# 2. Tải một tập dữ liệu để tinh chỉnh trên
+dataset = load_dataset(
+    &quot;sentence-transformers/msmarco-co-condenser-margin-mse-sym-mnrl-mean-v1&quot;,
+    &quot;triplet-hard&quot;,
+    split=&quot;train&quot;,
+)
+dataset_dict = dataset.train_test_split(test_size=1_000, seed=12)
+train_dataset = dataset_dict[&quot;train&quot;].select(range(1_250_000))
+eval_dataset = dataset_dict[&quot;test&quot;]
+
+# 3. Xác định một hàm mất mát
+loss = CachedMultipleNegativesRankingLoss(model, mini_batch_size=16)  # Tăng mini_batch_size nếu bạn có đủ VRAM
+
+run_name = f&quot;{model_shortname}-DPR-{lr}&quot;
+# 4. (Tùy chọn) Chỉ định các đối số huấn luyện
+args = SentenceTransformerTrainingArguments(
+    # Tham số bắt buộc:
+    output_dir=f&quot;output/{model_shortname}/{run_name}&quot;,
+    # Các tham số huấn luyện tùy chọn:
+    num_train_epochs=1,
+    per_device_train_batch_size=512,
+    per_device_eval_batch_size=512,
+    warmup_ratio=0.05,
+    fp16=False,  # Đặt thành False nếu GPU không thể xử lý FP16
+    bf16=True,  # Đặt thành True nếu GPU hỗ trợ BF16
+    batch_sampler=BatchSamplers.NO_DUPLICATES,  # (Cached) MultipleNegativesRankingLoss hưởng lợi từ việc không có bản sao
+    learning_rate=lr,
+    # Các tham số theo dõi/gỡ lỗi tùy chọn:
+    save_strategy=&quot;steps&quot;,
+    save_steps=500,
+    save_total_limit=2,
+    logging_steps=500,
+    run_name=run_name,  # Được sử dụng trong `wandb`, `tensorboard`, `neptune`, v.v. nếu được cài đặt
+)
+
+# 5. (Tùy chọn) Tạo một trình đánh giá &amp; đánh giá mô hình cơ sở
+dev_evaluator = TripletEvaluator(
+    anchors=eval_dataset[&quot;query&quot;],
+    positives=eval_dataset[&quot;positive&quot;],
+    negatives=eval_dataset[&quot;negative&quot;],
+    name=&quot;msmarco-co-condenser-dev&quot;,
+)
+dev_evaluator(model)
+
+# 6. Tạo một trình huấn luyện &amp; huấn luyện
+trainer = SentenceTransformerTrainer(
+    model=model,
+    args=args,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,
+    loss=loss,
+    evaluator=dev_evaluator,
+)
+trainer.train()
+
+# 7. (Tùy chọn) Đánh giá mô hình được huấn luyện trên trình đánh giá sau khi huấn luyện
+dev_evaluator(model)
+
+# 8. Lưu mô hình
+model.save_pretrained(f&quot;output/{model_shortname}/{run_name}/final&quot;)
+
+# 9. (Tùy chọn) Đẩy nó lên Hugging Face Hub
+model.push_to_hub(run_name, private=False)
+</code></pre>
+<p>if <strong>name</strong> == &ldquo;<strong>main</strong>&rdquo;:
+main()</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>python
+from datasets import load_dataset
+from pylate import losses, models, utils
+from sentence_transformers import (
+SentenceTransformerTrainer,
+SentenceTransformerTrainingArguments,
+)</p>
+<p>def main():
+# Tải các tập dữ liệu cần thiết cho chưng cất kiến thức (huấn luyện, truy vấn, tài liệu)
+train = load_dataset(
+path=&ldquo;lightonai/ms-marco-en-bge&rdquo;,
+name=&ldquo;train&rdquo;,
+)</p>
+<pre><code>queries = load_dataset(
+    path=&quot;lightonai/ms-marco-en-bge&quot;,
+    name=&quot;queries&quot;,
+)
+
+documents = load_dataset(
+    path=&quot;lightonai/ms-marco-en-bge&quot;,
+    name=&quot;documents&quot;,
+)
+
+# Đặt biến đổi để tải các văn bản tài liệu/truy vấn bằng cách sử dụng các id tương ứng một cách nhanh chóng
+train.set_transform(
+    utils.KDProcessing(queries=queries, documents=documents).transform,
+)
+
+# Xác định mô hình cơ sở, các tham số huấn luyện và thư mục đầu ra
+num_train_epochs = 1
+lr = 8e-5
+batch_size = 16
+accum_steps = 1
+model_name = &quot;jhu-clsp/mmBERT-small&quot;
+model_shortname = model_name.split(&quot;/&quot;)[-1]
+
+# Đặt tên chạy cho mục đích ghi nhật ký và thư mục đầu ra
+run_name = f&quot;{model_shortname}-colbert-KD-{lr}&quot;
+output_dir = f&quot;output/{model_shortname}/{run_name}&quot;
+
+# Khởi tạo mô hình ColBERT từ mô hình cơ sở
+model = models.ColBERT(model_name_or_path=model_name)
+
+# Định cấu hình các đối số huấn luyện (ví dụ: số epoch, kích thước lô, tốc độ học)
+args = SentenceTransformerTrainingArguments(
+    output_dir=output_dir,
+    num_train_epochs=num_train_epochs,
+    per_device_train_batch_size=batch_size,
+    fp16=False,  # Đặt thành False nếu bạn gặp lỗi rằng GPU của bạn không thể chạy trên FP16
+    bf16=True,  # Đặt thành True nếu bạn có GPU hỗ trợ BF16
+    run_name=run_name,
+    logging_steps=10,
+    learning_rate=lr,
+    gradient_accumulation_steps=accum_steps,
+    warmup_ratio=0.05,
+)
+
+# Sử dụng hàm mất mát Chưng cất cho huấn luyện
+train_loss = losses.Distillation(model=model)
+
+# Khởi tạo trình huấn luyện
+trainer = SentenceTransformerTrainer(
+    model=model,
+    args=args,
+    train_dataset=train,
+    loss=train_loss,
+    data_collator=utils.ColBERTCollator(tokenize_fn=model.tokenize),
+)
+
+# Bắt đầu quá trình huấn luyện
+trainer.train()
+
+model.save_pretrained(f&quot;{output_dir}/final&quot;)
+</code></pre>
+<p>if <strong>name</strong> == &ldquo;<strong>main</strong>&rdquo;:
+main()</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>python
+import logging</p>
+<p>from datasets import load_dataset</p>
+<p>from sentence_transformers import (
+SparseEncoder,
+SparseEncoderModelCardData,
+SparseEncoderTrainer,
+SparseEncoderTrainingArguments,
+)
+from sentence_transformers.sparse_encoder.evaluation import SparseNanoBEIREvaluator
+from sentence_transformers.sparse_encoder.losses import SparseMultipleNegativesRankingLoss, SpladeLoss
+from sentence_transformers.training_args import BatchSamplers</p>
+<p>logging.basicConfig(format=&quot;%(asctime)s - %(message)s&quot;, datefmt=&quot;%Y-%m-%d %H:%M:%S&quot;, level=logging.INFO)</p>
+<h1 id="1-tải-một-mô-hình-để-tinh-chỉnh-với-2-tùy-chọn-dữ-liệu-thẻ-mô-hình">1. Tải một mô hình để tinh chỉnh với 2. (Tùy chọn) dữ liệu thẻ mô hình</h1>
+<p>model = SparseEncoder(
+&ldquo;jhu-clsp/mmBERT-small&rdquo;,
+model_card_data=SparseEncoderModelCardData(
+language=&ldquo;en&rdquo;,
+license=&ldquo;apache-2.0&rdquo;,
+)
+)</p>
+<h1 id="3-tải-một-tập-dữ-liệu-để-tinh-chỉnh-trên">3. Tải một tập dữ liệu để tinh chỉnh trên</h1>
+<p>full_dataset = load_dataset(&ldquo;sentence-transformers/natural-questions&rdquo;, split=&ldquo;train&rdquo;).select(range(100_000))
+dataset_dict = full_dataset.train_test_split(test_size=1_000, seed=12)
+train_dataset = dataset_dict[&ldquo;train&rdquo;]
+eval_dataset = dataset_dict[&ldquo;test&rdquo;]</p>
+<h1 id="4-xác-định-một-hàm-mất-mát">4. Xác định một hàm mất mát</h1>
+<p>loss = SpladeLoss(
+model=model,
+loss=SparseMultipleNegativesRankingLoss(model=model),
+query_regularizer_weight=5e-5,
+document_regularizer_weight=3e-5,
+)</p>
+<h1 id="5-tùy-chọn-chỉ-định-các-đối-số-huấn-luyện">5. (Tùy chọn) Chỉ định các đối số huấn luyện</h1>
+<p>run_name = &ldquo;splade-distilbert-base-uncased-nq&rdquo;
+args = SparseEncoderTrainingArguments(
+# Tham số bắt buộc:
+output_dir=f&quot;models/{run_name}&quot;,
+# Các tham số huấn luyện tùy chọn:
+num_train_epochs=1,
+per_device_train_batch_size=16,
+per_device_eval_batch_size=16,
+learning_rate=2e-5,
+warmup_ratio=0.1,
+fp16=True,  # Đặt thành False nếu bạn gặp lỗi rằng GPU của bạn không thể chạy trên FP16
+bf16=False,  # Đặt thành True nếu bạn có GPU hỗ trợ BF16
+batch_sampler=BatchSamplers.NO_DUPLICATES,  # MultipleNegativesRankingLoss hưởng lợi từ việc không có các mẫu trùng lặp trong một lô
+# Các tham số theo dõi/gỡ lỗi tùy chọn:
+eval_strategy=&ldquo;steps&rdquo;,
+eval_steps=1000,
+save_strategy=&ldquo;steps&rdquo;,
+save_steps=1000,
+save_total_limit=2,
+logging_steps=200,
+run_name=run_name,  # Sẽ được sử dụng trong W&amp;B nếu <code>wandb</code> được cài đặt
+)</p>
+<h1 id="6-tùy-chọn-tạo-một-trình-đánh-giá--đánh-giá-mô-hình-cơ-sở">6. (Tùy chọn) Tạo một trình đánh giá &amp; đánh giá mô hình cơ sở</h1>
+<p>dev_evaluator = SparseNanoBEIREvaluator(dataset_names=[&ldquo;msmarco&rdquo;, &ldquo;nfcorpus&rdquo;, &ldquo;nq&rdquo;], batch_size=16)</p>
+<h1 id="7-tạo-một-trình-huấn-luyện--huấn-luyện">7. Tạo một trình huấn luyện &amp; huấn luyện</h1>
+<p>trainer = SparseEncoderTrainer(
+model=model,
+args=args,
+train_dataset=train_dataset,
+eval_dataset=eval_dataset,
+loss=loss,
+evaluator=dev_evaluator,
+)
+trainer.train()</p>
+<h1 id="8-đánh-giá-lại-hiệu-suất-mô-hình-sau-khi-huấn-luyện">8. Đánh giá lại hiệu suất mô hình sau khi huấn luyện</h1>
+<p>dev_evaluator(model)</p>
+<h1 id="9-lưu-mô-hình-đã-huấn-luyện">9. Lưu mô hình đã huấn luyện</h1>
+<p>model.save_pretrained(f&quot;models/{run_name}/final&quot;)</p>
+<h1 id="10-tùy-chọn-đẩy-nó-lên-hugging-face-hub">10. (Tùy chọn) Đẩy nó lên Hugging Face Hub</h1>
+<p>model.push_to_hub(run_name)</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>python
+import logging
+import traceback</p>
+<p>import torch
+from datasets import load_dataset</p>
+<p>from sentence_transformers import SentenceTransformer
+from sentence_transformers.cross_encoder import (
+CrossEncoder,
+CrossEncoderModelCardData,
+CrossEncoderTrainer,
+CrossEncoderTrainingArguments,
+)
+from sentence_transformers.cross_encoder.evaluation import (
+CrossEncoderNanoBEIREvaluator,
+CrossEncoderRerankingEvaluator,
+)
+from sentence_transformers.cross_encoder.losses import BinaryCrossEntropyLoss
+from sentence_transformers.evaluation import SequentialEvaluator
+from sentence_transformers.util import mine_hard_negatives</p>
+<h1 id="đặt-mức-ghi-nhật-ký-thành-info-để-có-thêm-thông-tin">Đặt mức ghi nhật ký thành INFO để có thêm thông tin</h1>
+<p>logging.basicConfig(format=&quot;%(asctime)s - %(message)s&quot;, datefmt=&quot;%Y-%m-%d %H:%M:%S&quot;, level=logging.INFO)</p>
+<p>def main():
+model_name = &ldquo;jhu-clsp/mmBERT-small&rdquo;</p>
+<pre><code>train_batch_size = 64
+num_epochs = 1
+num_hard_negatives = 5  # Có bao nhiêu số âm khó nên được khai thác cho mỗi cặp câu hỏi-trả lời
+
+# 1a. Tải một mô hình để tinh chỉnh với 1b. (Tùy chọn) dữ liệu thẻ mô hình
+model = CrossEncoder(
+    model_name,
+    model_card_data=CrossEncoderModelCardData(
+        language=&quot;en&quot;,
+        license=&quot;apache-2.0&quot;,
+    ),
+)
+print(&quot;Model max length:&quot;, model.max_length)
+print(&quot;Model num labels:&quot;, model.num_labels)
+
+# 2a. Tải tập dữ liệu GooAQ: https://huggingface.co/datasets/sentence-transformers/gooaq
+logging.info(&quot;Đọc tập dữ liệu huấn luyện gooaq&quot;)
+full_dataset = load_dataset(&quot;sentence-transformers/gooaq&quot;, split=&quot;train&quot;).select(range(100_000))
+dataset_dict = full_dataset.train_test_split(test_size=1_000, seed=12)
+train_dataset = dataset_dict[&quot;train&quot;]
+eval_dataset = dataset_dict[&quot;test&quot;]
+logging.info(train_dataset)
+logging.info(eval_dataset)
+
+# 2b. Sửa đổi tập dữ liệu huấn luyện của chúng tôi để bao gồm các số âm khó bằng cách sử dụng một mô hình nhúng rất hiệu quả
+embedding_model = SentenceTransformer(&quot;sentence-transformers/static-retrieval-mrl-en-v1&quot;, device=&quot;cpu&quot;)
+hard_train_dataset = mine_hard_negatives(
+    train_dataset,
+    embedding_model,
+    num_negatives=num_hard_negatives,  # Có bao nhiêu số âm trên mỗi cặp câu hỏi-trả lời
+    margin=0,  # Mức độ tương đồng giữa truy vấn và các mẫu âm nên thấp hơn x so với mức độ tương đồng giữa truy vấn-dương
+    range_min=0,  # Bỏ qua x mẫu tương tự nhất
+    range_max=100,  # Chỉ xem xét x mẫu tương tự nhất
+    sampling_strategy=&quot;top&quot;,  # Lấy mẫu các số âm hàng đầu từ phạm vi
+    batch_size=4096,  # Sử dụng kích thước lô là 4096 cho mô hình nhúng
+    output_format=&quot;labeled-pair&quot;,  # Định dạng đầu ra là (truy vấn, đoạn văn, nhãn), như được yêu cầu bởi BinaryCrossEntropyLoss
+    use_faiss=True,
+)
+logging.info(hard_train_dataset)
+
+# 2c. (Tùy chọn) Lưu tập dữ liệu huấn luyện khó vào đĩa
+# hard_train_dataset.save_to_disk(&quot;gooaq-hard-train&quot;)
+# Tải lại với:
+# hard_train_dataset = load_from_disk(&quot;gooaq-hard-train&quot;)
+
+# 3. Xác định hàm mất mát huấn luyện của chúng tôi.
+# pos_weight được khuyến nghị đặt làm tỷ lệ giữa dương tính và âm tính, hay còn gọi là `num_hard_negatives`
+loss = BinaryCrossEntropyLoss(model=model, pos_weight=torch.tensor(num_hard_negatives))
+
+# 4a. Xác định trình đánh giá. Chúng tôi sử dụng CrossEncoderNanoBEIREvaluator, đây là một trình đánh giá nhẹ cho việc xếp hạng lại tiếng Anh
+nano_beir_evaluator = CrossEncoderNanoBEIREvaluator(
+    dataset_names=[&quot;msmarco&quot;, &quot;nfcorpus&quot;, &quot;nq&quot;],
+    batch_size=train_batch_size,
+)
+
+# 4b. Xác định một trình đánh giá xếp hạng lại bằng cách khai thác các số âm khó cho các cặp câu hỏi-trả lời
+# Chúng tôi bao gồm câu trả lời dương tính trong danh sách các số âm, vì vậy trình đánh giá có thể sử dụng hiệu suất của
+# mô hình nhúng làm đường cơ sở.
+hard_eval
+</code></pre>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/mmbert">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/september-9-2025/">September 9, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/2e2081/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobot-dataset-v3/thumbnail.png" alt="`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/777761/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/riskrubric/thumbnail.png" alt="Dân chủ hóa An toàn AI với RiskRubric.ai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dân chủ hóa An toàn AI với RiskRubric.ai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/c813d8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/0s-zLFC0-vi8maL45QgUS93WJwkDdrwItNJiaoHb4rh6_Eru1sg43UJEax5twdcItCR8lK8bW-0hqsPjsxe-O1dduxTdzsv_Av66SY1psiPuTnC4gg=w400-h225-n-nu" alt="Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

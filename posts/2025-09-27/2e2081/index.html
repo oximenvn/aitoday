@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-09-27T00:00:00&#43;00:00">September 27, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            13 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/lerobot-dataset-v3/thumbnail.png" alt="`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="lerobotdatasetv30-mang-đến-bộ-dữ-liệu-quy-mô-lớn-cho-lerobot"><code>LeRobotDataset:v3.0</code>: Mang đến bộ dữ liệu quy mô lớn cho <code>lerobot</code></h1>
+<p><strong>TL;DR</strong> Hôm nay, chúng tôi phát hành <code>LeRobotDataset:v3</code>! Trong bản phát hành <code>LeRobotDataset:v2</code> trước đây, chúng tôi lưu trữ một episode (tập) cho mỗi tệp, gặp phải các giới hạn của hệ thống tệp khi mở rộng bộ dữ liệu lên hàng triệu episode. <code>LeRobotDataset:v3</code> đóng gói nhiều episode trong một tệp duy nhất, sử dụng siêu dữ liệu quan hệ để truy xuất thông tin ở cấp độ episode riêng lẻ từ các tệp đa episode. Định dạng mới cũng hỗ trợ truy cập bộ dữ liệu ở chế độ streaming, cho phép xử lý các bộ dữ liệu lớn một cách nhanh chóng. Chúng tôi cung cấp một tiện ích dòng lệnh để chuyển đổi tất cả các bộ dữ liệu ở định dạng LeRobotDataset sang định dạng mới và rất vui được chia sẻ cột mốc quan trọng này với cộng đồng trước bản phát hành ổn định tiếp theo của chúng tôi!</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#install-lerobot-and-record-a-dataset">Cài đặt <code>lerobot</code> và ghi lại một bộ dữ liệu</a></li>
+<li><a href="#the-new-format-design">Thiết kế định dạng (mới)</a></li>
+<li><a href="#acknowledgements">Lời cảm ơn</a></li>
+<li><a href="#convert-your-dataset-to-v30">Chuyển đổi bộ dữ liệu của bạn sang v3.0</a></li>
+<li><a href="#code-example-using-lerobotdataset-with-torchutilsdatadataloader">Ví dụ mã: Sử dụng <code>LeRobotDataset</code> với <code>torch.utils.data.DataLoader</code></a></li>
+<li><a href="#wrapping-up">Tóm lại</a></li>
+</ul>
+<h2 id="lerobotdataset-v30">LeRobotDataset, v3.0</h2>
+<p><code>LeRobotDataset</code> là một định dạng bộ dữ liệu tiêu chuẩn được thiết kế để giải quyết các nhu cầu cụ thể của học máy robot và nó cung cấp khả năng truy cập thống nhất và thuận tiện vào dữ liệu robot trên các phương thức, bao gồm các chỉ số cảm biến, nhiều nguồn cấp dữ liệu camera và trạng thái điều khiển từ xa.
+Định dạng bộ dữ liệu của chúng tôi cũng lưu trữ thông tin chung về cách dữ liệu được thu thập (<em>siêu dữ liệu</em>), bao gồm mô tả bằng văn bản về tác vụ đang được thực hiện, loại robot được sử dụng và chi tiết đo lường như số khung hình trên giây mà cả hình ảnh và các luồng trạng thái robot được lấy mẫu.
+Siêu dữ liệu rất hữu ích để lập chỉ mục và tìm kiếm trên các bộ dữ liệu robot trên Hugging Face Hub!</p>
+<p>Trong <code>lerobot</code>, thư viện robot mà chúng tôi đang phát triển tại Hugging Face, <code>LeRobotDataset</code> cung cấp một giao diện thống nhất để làm việc với dữ liệu chuỗi thời gian đa phương thức và nó tích hợp liền mạch với cả hệ sinh thái Hugging Face và Pytorch.
+Định dạng bộ dữ liệu được thiết kế để dễ dàng mở rộng và tùy chỉnh và đã hỗ trợ các bộ dữ liệu có sẵn công khai từ một loạt các hiện thân—bao gồm các nền tảng điều khiển như cánh tay SO-100 và thiết lập ALOHA-2, dữ liệu hình người thực tế, bộ dữ liệu mô phỏng và thậm chí cả dữ liệu xe tự lái!
+Bạn có thể khám phá các bộ dữ liệu hiện tại do cộng đồng đóng góp bằng cách sử dụng <a href="https://huggingface.co/spaces/lerobot/visualize_dataset">công cụ trực quan hóa bộ dữ liệu</a>! 🔗</p>
+<p>Ngoài quy mô, bản phát hành mới này của <code>LeRobotDataset</code> cũng cho phép hỗ trợ chức năng <em>streaming</em>, cho phép xử lý các lô dữ liệu từ các bộ dữ liệu lớn một cách nhanh chóng, mà không cần phải tải xuống các bộ sưu tập dữ liệu lớn một cách cấm đoán vào đĩa.
+Bạn có thể truy cập và sử dụng bất kỳ bộ dữ liệu nào trong <code>v3.0</code> ở chế độ streaming bằng cách sử dụng giao diện <code>StreamingLeRobotDataset</code> chuyên dụng!
+Bộ dữ liệu streaming là một cột mốc quan trọng hướng tới học máy robot dễ tiếp cận hơn và chúng tôi rất vui được chia sẻ nó với cộng đồng 🤗</p>
+<!-- raw HTML omitted -->
+<h2 id="cài-đặt-lerobot-và-ghi-lại-một-bộ-dữ-liệu">Cài đặt <code>lerobot</code> và ghi lại một bộ dữ liệu</h2>
+<p><a href="https://github.com/huggingface/lerobot"><code>lerobot</code></a> là thư viện robot end-to-end được phát triển tại Hugging Face, hỗ trợ robot thực tế cũng như các thuật toán học máy robot hiện đại.
+Thư viện cho phép ghi lại các bộ dữ liệu cục bộ trực tiếp trên các robot thực tế và lưu trữ các bộ dữ liệu trên Hugging Face Hub.
+Bạn có thể đọc thêm về các robot mà chúng tôi hiện đang hỗ trợ <a href="https://huggingface.co/docs/lerobot/">tại đây</a>!</p>
+<p><code>LeRobotDataset:v3</code> sẽ là một phần của thư viện <code>lerobot</code> bắt đầu từ <code>lerobot-v0.4.0</code> và chúng tôi rất vui được chia sẻ nó sớm với cộng đồng. Bạn có thể cài đặt <code>lerobot-v0.3.x</code> mới nhất hỗ trợ định dạng bộ dữ liệu mới này trực tiếp từ PyPI bằng cách sử dụng:</p>
+<p>bash
+pip install &ldquo;<a href="https://github.com/huggingface/lerobot/archive/33cad37054c2b594ceba57463e8f11ee374fa93c.zip%22">https://github.com/huggingface/lerobot/archive/33cad37054c2b594ceba57463e8f11ee374fa93c.zip&quot;</a>  # this will affect your local lerobot installation!</p>
+<p>Theo dõi tiến trình của cộng đồng hướng tới bản phát hành ổn định của thư viện <a href="https://github.com/huggingface/lerobot/issues/1654">tại đây</a> 🤗</p>
+<p>Sau khi bạn đã cài đặt một phiên bản lerobot hỗ trợ định dạng bộ dữ liệu mới, bạn có thể ghi lại một bộ dữ liệu bằng cánh tay robot đặc trưng của chúng tôi, SO-101, bằng cách sử dụng điều khiển từ xa cùng với các hướng dẫn sau:</p>
+<p>bash
+lerobot-record <br>
+&ndash;robot.type=so101_follower <br>
+&ndash;robot.port=/dev/tty.usbmodem585A0076841 <br>
+&ndash;robot.id=my_awesome_follower_arm <br>
+&ndash;robot.cameras=&rdquo;{ front: {type: opencv, index_or_path: 0, width: 1920, height: 1080, fps: 30}}&quot; <br>
+&ndash;teleop.type=so101_leader <br>
+&ndash;teleop.port=/dev/tty.usbmodem58760431551 <br>
+&ndash;teleop.id=my_awesome_leader_arm <br>
+&ndash;display_data=true <br>
+&ndash;dataset.repo_id=${HF_USER}/record-test <br>
+&ndash;dataset.num_episodes=5 <br>
+&ndash;dataset.single_task=&ldquo;Grab the black cube&rdquo;</p>
+<p>Truy cập <a href="https://huggingface.co/docs/lerobot/en/il_robots?record=Command#record-a-dataset">tài liệu chính thức</a> để xem cách ghi lại một bộ dữ liệu cho trường hợp sử dụng của bạn.</p>
+<h1 id="thiết-kế-định-dạng-mới">Thiết kế định dạng (mới)</h1>
+<p>Một lựa chọn thiết kế cốt lõi đằng sau <code>LeRobotDataset</code> là tách biệt bộ nhớ dữ liệu cơ bản khỏi API hướng đến người dùng.
+Điều này cho phép tuần tự hóa và lưu trữ hiệu quả trong khi trình bày dữ liệu ở định dạng trực quan, sẵn sàng sử dụng. Các bộ dữ liệu được tổ chức thành ba thành phần chính:</p>
+<ol>
+<li><strong>Dữ liệu dạng bảng</strong>: Dữ liệu tần số cao, chiều thấp như trạng thái khớp và hành động được lưu trữ trong các tệp <a href="https://parquet.apache.org/">Apache Parquet</a> hiệu quả và thường được chuyển sang thư viện <code>datasets</code> trưởng thành hơn, cung cấp quyền truy cập nhanh, được ánh xạ bộ nhớ hoặc truy cập dựa trên streaming.</li>
+<li><strong>Dữ liệu trực quan</strong>: Để xử lý khối lượng lớn dữ liệu camera, các khung hình được nối và mã hóa thành các tệp MP4. Các khung hình từ cùng một episode luôn được nhóm lại với nhau trong cùng một video và nhiều video được nhóm lại với nhau theo camera. Để giảm áp lực lên hệ thống tệp, các nhóm video cho cùng một chế độ xem camera cũng được chia thành nhiều thư mục con.</li>
+<li><strong>Siêu dữ liệu</strong>: Một tập hợp các tệp JSON mô tả cấu trúc của bộ dữ liệu về siêu dữ liệu của nó, đóng vai trò là đối tác quan hệ với cả chiều dữ liệu dạng bảng và trực quan. Siêu dữ liệu bao gồm các lược đồ tính năng khác nhau, tốc độ khung hình, số liệu thống kê chuẩn hóa và ranh giới episode.</li>
+</ol>
+<!-- raw HTML omitted -->
+<p>Để hỗ trợ các bộ dữ liệu có khả năng hàng triệu episode (dẫn đến hàng trăm triệu/tỷ khung hình riêng lẻ), chúng tôi hợp nhất dữ liệu từ các episode khác nhau vào cùng một cấu trúc cấp cao.
+Cụ thể, điều này có nghĩa là bất kỳ tập hợp dạng bảng và video đã cho nào sẽ không chỉ chứa thông tin về một episode, mà là sự nối kết của thông tin có sẵn trong nhiều episode.
+Điều này giúp áp lực lên hệ thống tệp có thể quản lý được, cả cục bộ và trên các nhà cung cấp bộ nhớ từ xa như Hugging Face.
+Sau đó, chúng tôi có thể tận dụng siêu dữ liệu để thu thập thông tin cụ thể về episode, ví dụ: dấu thời gian mà một episode nhất định bắt đầu hoặc kết thúc trong một video nhất định.</p>
+<p>Các bộ dữ liệu được tổ chức dưới dạng kho lưu trữ chứa:</p>
+<ul>
+<li><strong><code>meta/info.json</code></strong>: Đây là tệp siêu dữ liệu trung tâm. Nó chứa lược đồ bộ dữ liệu hoàn chỉnh, xác định tất cả các tính năng (ví dụ: <code>observation.state</code>, <code>action</code>), hình dạng và kiểu dữ liệu của chúng. Nó cũng lưu trữ thông tin quan trọng như số khung hình trên giây của bộ dữ liệu (<code>fps</code>), phiên bản codebase và các mẫu đường dẫn được sử dụng để xác định vị trí dữ liệu và tệp video.</li>
+<li><strong><code>meta/stats.json</code></strong>: Tệp này lưu trữ các số liệu thống kê tổng hợp (mean, std, min, max) cho từng tính năng trên toàn bộ bộ dữ liệu. Chúng được sử dụng để chuẩn hóa dữ liệu và có thể truy cập thông qua <code>dataset.meta.stats</code>.</li>
+<li><strong><code>meta/tasks.jsonl</code></strong>: Chứa ánh xạ từ các mô tả tác vụ bằng ngôn ngữ tự nhiên sang các chỉ số tác vụ số nguyên, được sử dụng để đào tạo chính sách có điều kiện tác vụ.</li>
+<li><strong><code>meta/episodes/</code></strong>: Thư mục này chứa siêu dữ liệu về từng episode riêng lẻ, chẳng hạn như độ dài, tác vụ tương ứng và các con trỏ đến nơi dữ liệu của nó được lưu trữ. Để có khả năng mở rộng, thông tin này được lưu trữ trong các tệp Parquet được phân đoạn thay vì một tệp JSON lớn duy nhất.</li>
+<li><strong><code>data/</code></strong>: Chứa dữ liệu dạng bảng từng khung hình cốt lõi trong các tệp Parquet. Để cải thiện hiệu suất và xử lý các bộ dữ liệu lớn, dữ liệu từ <strong>nhiều episode được nối vào các tệp lớn hơn</strong>. Các tệp này được tổ chức thành các thư mục con được phân đoạn để giữ cho kích thước tệp có thể quản lý được. Do đó, một tệp duy nhất thường chứa dữ liệu cho nhiều episode.</li>
+<li><strong><code>videos/</code></strong>: Chứa các tệp video MP4 cho tất cả các luồng quan sát trực quan. Tương tự như thư mục <code>data/</code>, cảnh quay video từ <strong>nhiều episode được nối vào các tệp MP4 duy nhất</strong>. Chiến lược này làm giảm đáng kể số lượng tệp trong bộ dữ liệu, hiệu quả hơn cho các hệ thống tệp hiện đại. Cấu trúc đường dẫn (<code>/videos/&lt;camera_key&gt;/&lt;chunk&gt;/file_...mp4</code>) cho phép trình tải dữ liệu xác định vị trí tệp video chính xác và sau đó tìm kiếm dấu thời gian chính xác cho một khung hình nhất định.</li>
+</ul>
+<h2 id="chuyển-đổi-bộ-dữ-liệu-v21-của-bạn-sang-v30">Chuyển đổi bộ dữ liệu <code>v2.1</code> của bạn sang <code>v3.0</code></h2>
+<p><code>LeRobotDataset:v3.0</code> sẽ được phát hành cùng với <code>lerobot-v0.4.0</code>, cùng với khả năng dễ dàng chuyển đổi bất kỳ bộ dữ liệu nào hiện đang được lưu trữ trên Hugging Face Hub sang <code>v3.0</code> mới bằng cách sử dụng:</p>
+<p>bash
+python -m lerobot.datasets.v30.convert_dataset_v21_to_v30&ndash;repo-id=&lt;HFUSER/DATASET_ID&gt;</p>
+<p>Chúng tôi rất vui được chia sẻ định dạng mới này sớm với cộng đồng! Trong khi chúng tôi phát triển <code>lerobot-v0.4.0</code>, bạn vẫn có thể chuyển đổi bộ dữ liệu của mình sang phiên bản mới được cập nhật bằng cách sử dụng <code>lerobot-v0.3.x</code> mới nhất hỗ trợ định dạng bộ dữ liệu mới này trực tiếp từ PyPI bằng cách sử dụng:</p>
+<p>bash
+pip install &ldquo;<a href="https://github.com/huggingface/lerobot/archive/33cad37054c2b594ceba57463e8f11ee374fa93c.zip%22">https://github.com/huggingface/lerobot/archive/33cad37054c2b594ceba57463e8f11ee374fa93c.zip&quot;</a>  # this will affect your lerobot installation!
+python -m lerobot.datasets.v30.convert_dataset_v21_to_v30 &ndash;repo-id=&lt;HFUSER/DATASET_ID&gt;</p>
+<p>Lưu ý rằng đây là một phiên bản tiền phát hành và thường không ổn định. Bạn có thể theo dõi trạng thái phát triển của bản phát hành ổn định tiếp theo của chúng tôi <a href="https://github.com/huggingface/lerobot/issues/1654">tại đây</a>!</p>
+<p>Tập lệnh chuyển đổi <code>convert_dataset_v21_to_v30.py</code> tổng hợp nhiều episode <code>episode-0000.mp4, episode-0001.mp4, episode-0002.mp4, ...</code>/<code>episode-0000.parquet, episode-0001.parquet, episode-0002.parquet, episode-0003.parquet, ...</code> vào các tệp đơn <code>file-0000.mp4</code>/<code>file-0000.parquet</code> và cập nhật siêu dữ liệu tương ứng, để có thể truy xuất thông tin cụ thể về episode từ các tệp cấp cao hơn.</p>
+<h3 id="ví-dụ-mã-sử-dụng-lerobotdataset-với-torchutilsdatadataloader">Ví dụ mã: Sử dụng <code>LeRobotDataset</code> với <code>torch.utils.data.DataLoader</code></h3>
+<p>Mọi bộ dữ liệu trên Hugging Face Hub chứa ba trụ cột chính được trình bày ở trên (Dữ liệu dạng bảng và trực quan, cũng như Siêu dữ liệu quan hệ) và có thể được truy cập bằng một dòng duy nhất.</p>
+<p>Hầu hết các thuật toán học robot, dựa trên học tăng cường (RL) hoặc nhân bản hành vi (BC), có xu hướng hoạt động trên một ngăn xếp các quan sát và hành động.
+Ví dụ, các thuật toán RL thường sử dụng lịch sử các quan sát trước đó <code>o_{t-H_o:t}</code> và
+các thuật toán BC thay vào đó thường được đào tạo để hồi quy các đoạn hành động.
+Để đáp ứng các đặc thù của đào tạo học robot, <code>LeRobotDataset</code> cung cấp một hoạt động tạo cửa sổ gốc, theo đó chúng ta có thể sử dụng <em>giây</em> trước và sau bất kỳ quan sát nhất định nào bằng cách sử dụng đối số <code>delta_timestamps</code>.</p>
+<p>Một cách thuận tiện, bằng cách sử dụng <code>LeRobotDataset</code> với PyTorch <code>DataLoader</code>, người ta có thể tự động đối chiếu các từ điển mẫu riêng lẻ từ bộ dữ liệu thành một từ điển duy nhất gồm các tensor theo lô.</p>
+<p>python
+from lerobot.datasets.lerobot_dataset import LeRobotDataset</p>
+<p>repo_id = &ldquo;yaak-ai/L2D-v3&rdquo;</p>
+<h1 id="load-from-the-hugging-face-hub-will-be-cached-locally">Load from the Hugging Face Hub (will be cached locally)</h1>
+<p>dataset = LeRobotDataset(repo_id)</p>
+<h1 id="get-the-100th-frame-in-the-dataset-by-index">Get the 100th frame in the dataset by index</h1>
+<p>sample = dataset[100]
+print(sample)</p>
+<h1 id="the-sample-is-a-dictionary-of-tensors">The sample is a dictionary of tensors</h1>
+<h1 id="heading">{</h1>
+<h1 id="observationstate-tensor">&lsquo;observation.state&rsquo;: tensor([&hellip;]),</h1>
+<h1 id="action-tensor">&lsquo;action&rsquo;: tensor([&hellip;]),</h1>
+<h1 id="observationimages-front_left-tensorc-h-w">&lsquo;observation.images. front_left&rsquo;: tensor([C, H, W]),</h1>
+<h1 id="timestamp-tensor1234">&rsquo;timestamp&rsquo;: tensor(1.234),</h1>
+<h1 id="heading-1">&hellip;</h1>
+<h1 id="heading-2">}</h1>
+<p>delta_timestamps = {
+&ldquo;observation.images.front_left&rdquo;: [-0.2, -0.1, 0.0]  # 0.2 and 0.1 seconds <em>before</em> any observation
+}
+dataset = LeRobotDataset(
+repo_id
+delta_timestamps=delta_timestamps
+)</p>
+<h1 id="accessing-an-index-now-returns-a-stack-of-frames-for-the-specified-key">Accessing an index now returns a stack of frames for the specified key</h1>
+<p>sample = dataset[100]</p>
+<h1 id="the-image-tensor-will-now-have-a-time-dimension">The image tensor will now have a time dimension</h1>
+<h1 id="observationimageswrist_camera-has-shape-t-c-h-w-where-t3">&lsquo;observation.images.wrist_camera&rsquo; has shape [T, C, H, W], where T=3</h1>
+<p>print(sample[&lsquo;observation.images.front_left&rsquo;].shape)</p>
+<p>batch_size=16</p>
+<h1 id="wrap-the-dataset-in-a-dataloader-to-process-it-in-batches-for-training-purposes">Wrap the dataset in a DataLoader to process it in batches for training purposes</h1>
+<p>data_loader = torch.utils.data.DataLoader(
+dataset,
+batch_size=batch_size
+)</p>
+<h1 id="3-iterate-over-the-dataloader-in-a-training-loop">3. Iterate over the DataLoader in a training loop</h1>
+<p>num_epochs = 1
+device = &ldquo;cuda&rdquo; if torch.cuda.is_available() else &ldquo;cpu&rdquo;</p>
+<p>for epoch in range(num_epochs):
+for batch in data_loader:
+# &lsquo;batch&rsquo; is a dictionary where each value is a batch of tensors.
+# For example, batch[&lsquo;action&rsquo;] will have a shape of [32, action_dim].</p>
+<pre><code>    # If using delta_timestamps, a batched image tensor might have a
+    # shape of [32, T, C, H, W].
+
+    # Move data to the appropriate device (e.g., GPU)
+    observations = batch['observation.state.vehicle'].to(device)
+    actions = batch['action.continuous'].to(device)
+    images = batch['observation.images.front_left'].to(device)
+
+    # Next do amazing_model.forward(batch)
+    ...
+</code></pre>
+<h2 id="streaming">Streaming</h2>
+<p>Bạn cũng có thể sử dụng bất kỳ bộ dữ liệu nào ở định dạng <code>v3.0</code> ở chế độ streaming, mà không cần tải xuống cục bộ, bằng cách sử dụng lớp <code>StreamingLeRobotDataset</code>.</p>
+<p>python
+from lerobot.datasets.streaming_dataset import StreamingLeRobotDataset</p>
+<h1 id="streams-directly-from-the-hugging-face-hub-without-downloading-the-dataset-into-disk-or-loading-into-memory">Streams directly from the Hugging Face Hub, without downloading the dataset into disk or loading into memory</h1>
+<p>repo_id = &ldquo;yaak-ai/L2D-v3&rdquo;
+dataset = StreamingLeRobotDataset(repo_id)</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p><code>LeRobotDataset v3.0</code> là một bước tiến hướng tới việc mở rộng quy mô các bộ dữ liệu robot được hỗ trợ trong LeRobot. Bằng cách cung cấp một định dạng để lưu trữ và truy cập các bộ sưu tập dữ liệu robot lớn, chúng tôi đang tiến bộ hướng tới việc dân chủ hóa robot, cho phép cộng đồng đào tạo có thể hàng triệu episode mà thậm chí không cần tải xuống chính dữ liệu!</p>
+<p>Bạn có thể thử định dạng bộ dữ liệu mới bằng cách cài đặt <code>lerobot-v0.3.x</code> mới nhất và chia sẻ bất kỳ phản hồi nào <a href="https://github.com/huggingface/lerobot/issues">trên GitHub</a> hoặc trên <a href="https://discord.gg/ttk5CV6tUw">máy chủ Discord</a> của chúng tôi! 🤗</p>
+<h2 id="lời-cảm-ơn">Lời cảm ơn</h2>
+<p>Chúng tôi cảm ơn đội ngũ <a href="https://www.yaak.ai/">yaak.ai</a> tuyệt vời vì sự hỗ trợ và phản hồi quý giá của họ trong khi phát triển LeRobotDataset:v3.
+Hãy <a href="https://huggingface.co/yaak-ai">theo dõi tổ chức của họ</a> trên Hugging Face Hub!
+Chúng tôi luôn tìm kiếm cơ hội hợp tác với cộng đồng và chia sẻ các tính năng sớm. <a href="mailto:francesco.capuano@huggingface.co">Hãy liên hệ</a> nếu bạn muốn hợp tác 😊</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/lerobot-datasets-v3">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/september-16-2025/">September 16, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/2e2081/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobot-dataset-v3/thumbnail.png" alt="`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/777761/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/riskrubric/thumbnail.png" alt="Dân chủ hóa An toàn AI với RiskRubric.ai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dân chủ hóa An toàn AI với RiskRubric.ai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/c813d8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/0s-zLFC0-vi8maL45QgUS93WJwkDdrwItNJiaoHb4rh6_Eru1sg43UJEax5twdcItCR8lK8bW-0hqsPjsxe-O1dduxTdzsv_Av66SY1psiPuTnC4gg=w400-h225-n-nu" alt="Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

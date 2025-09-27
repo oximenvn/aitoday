@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-09-27T00:00:00&#43;00:00">September 27, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            19 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="chào-mừng-embeddinggemma-mô-hình-embedding-hiệu-quả-mới-của-google">Chào mừng EmbeddingGemma, mô hình embedding hiệu quả mới của Google</h1>
+<p><strong>TL;DR</strong></p>
+<p>Hôm nay, Google phát hành <a href="https://huggingface.co/collections/google/embeddinggemma-68b9ae3a72a82f0562a80dc4">EmbeddingGemma</a>, một mô hình embedding đa ngôn ngữ hiện đại, hoàn hảo cho các trường hợp sử dụng trên thiết bị. Được thiết kế để đạt tốc độ và hiệu quả, mô hình có kích thước nhỏ gọn <strong>308 triệu tham số</strong> và <strong>cửa sổ ngữ cảnh 2K</strong>, mở ra những khả năng mới cho các quy trình RAG trên thiết bị di động, các tác nhân và hơn thế nữa. EmbeddingGemma được đào tạo để hỗ trợ hơn <strong>100 ngôn ngữ</strong> và là mô hình embedding chỉ văn bản đa ngôn ngữ xếp hạng cao nhất dưới 500M trên Điểm chuẩn Embedding Văn bản Lớn (MTEB) tại thời điểm viết bài.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#introduction">Giới thiệu</a></li>
+<li><a href="#evaluation">Đánh giá</a></li>
+<li><a href="#demo">Demo</a></li>
+<li><a href="#usage">Cách sử dụng</a>
+<ul>
+<li><a href="#sentence-transformers">Sentence Transformers</a>
+<ul>
+<li><a href="#retrieval">Truy xuất</a></li>
+</ul>
+</li>
+<li><a href="#langchain">LangChain</a></li>
+<li><a href="#llamaindex">LlamaIndex</a></li>
+<li><a href="#haystack">Haystack</a></li>
+<li><a href="#txtai">txtai</a></li>
+<li><a href="#transformersjs">Transformers.js</a></li>
+<li><a href="#text-embeddings-inference">Suy luận Embedding Văn bản</a></li>
+<li><a href="#onnx-runtime">ONNX Runtime</a></li>
+</ul>
+</li>
+<li><a href="#finetuning">Tinh chỉnh</a>
+<ul>
+<li><a href="#full-finetuning-script">Tập lệnh tinh chỉnh hoàn chỉnh</a></li>
+<li><a href="#training">Đào tạo</a></li>
+<li><a href="#finetuned-evaluation">Đánh giá tinh chỉnh</a></li>
+</ul>
+</li>
+<li><a href="#further-reading">Đọc thêm</a></li>
+</ul>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p><a href="https://sbert.net/">Văn bản nhúng</a> đã trở thành xương sống của các ứng dụng ngôn ngữ tự nhiên hiện đại, biến các từ, câu và tài liệu thành các vectơ dày đặc nắm bắt ý nghĩa, tình cảm và ý định. Các vectơ này cho phép tìm kiếm tương tự nhanh chóng, phân cụm, phân loại và truy xuất trên các văn bản lớn, hỗ trợ mọi thứ từ các công cụ đề xuất và tìm kiếm ngữ nghĩa đến tạo văn bản tăng cường khả năng truy xuất và các công cụ tìm kiếm mã. Mô hình Embedding được sử dụng rộng rãi để tính toán các embedding này, với hơn <a href="https://huggingface.co/models?library=sentence-transformers&amp;sort=downloads">200 triệu lượt tải xuống hàng tháng trên Hugging Face</a>.</p>
+<p>Dựa trên nền tảng này, <strong>EmbeddingGemma</strong> của Google DeepMind xuất hiện như là mô hình embedding đa ngôn ngữ nhỏ, có khả năng nhất từ trước đến nay. Với chỉ 308M tham số, cửa sổ ngữ cảnh 2k và hỗ trợ hơn 100 ngôn ngữ, EmbeddingGemma mang lại hiệu suất hiện đại trên Điểm chuẩn Embedding Văn bản Đa ngôn ngữ Lớn (MMTEB) trong khi vẫn dưới 200 MB RAM khi được lượng tử hóa.</p>
+<p>Các lựa chọn thiết kế khác nhau dẫn đến một công cụ mã nguồn mở rất thiết thực để tính toán các embedding đa ngôn ngữ chất lượng cao trên các thiết bị hàng ngày.</p>
+<p>Trong bài đăng trên blog này, chúng tôi mô tả kiến trúc và đào tạo EmbeddingGemma, đồng thời chỉ cho bạn cách sử dụng mô hình với nhiều framework khác nhau như Sentence Transformers, LangChain, LlamaIndex, Haystack, txtai, Transformers.js, Text Embedding Inference và ONNX.</p>
+<p>Sau đó, chúng tôi sẽ trình bày cách tinh chỉnh EmbeddingGemma trên miền của bạn để có hiệu suất thậm chí còn mạnh mẽ hơn. Trong ví dụ của chúng tôi, chúng tôi tinh chỉnh EmbeddingGemma trên Tập dữ liệu Truy xuất và Hướng dẫn Y tế (MIRIAD). Mô hình kết quả, <a href="https://huggingface.co/sentence-transformers/embeddinggemma-300m-medical">sentence-transformers/embeddinggemma-300m-medical</a>, đạt được hiệu suất hiện đại trên nhiệm vụ của chúng tôi: truy xuất các đoạn văn bản của các bài báo y học khoa học để trả lời các câu hỏi y tế chi tiết. Nó thậm chí còn <a href="#finetuned-evaluation">vượt trội hơn các mô hình lớn gấp đôi</a> trong nhiệm vụ này.</p>
+<h2 id="kiến-trúc">Kiến trúc</h2>
+<p>EmbeddingGemma được xây dựng dựa trên nền tảng bộ chuyển đổi <a href="https://huggingface.co/blog/gemma3">Gemma3</a>, nhưng được sửa đổi để sử dụng attention hai chiều thay vì attention nhân quả (một chiều). Điều này có nghĩa là các token trước đó trong chuỗi có thể tham gia vào các token sau, biến kiến trúc từ một bộ giải mã thành một bộ mã hóa. Các mô hình mã hóa có thể vượt trội hơn LLM, là bộ giải mã, trong các nhiệm vụ embedding như truy xuất (<a href="https://arxiv.org/abs/2507.11412">Weller et al., 2025</a>). Với nền tảng này, mô hình có thể xử lý đồng thời 2048 token đáng kể, đủ cho các đầu vào truy xuất điển hình, đặc biệt là khi đầu vào lớn hơn thường dẫn đến mất thông tin trong các embedding văn bản.</p>
+<p>Ngoài nền tảng bộ mã hóa dựa trên Gemma3 mới, tạo ra các embedding token, một lớp gộp trung bình sẽ chuyển đổi các embedding token này thành embedding văn bản. Cuối cùng, hai lớp dày đặc chuyển đổi các embedding văn bản thành dạng cuối cùng của chúng, một vectơ 768 chiều.</p>
+<p>Mô hình EmbeddingGemma đã được đào tạo bằng <a href="https://huggingface.co/blog/matryoshka">Học biểu diễn Matryoshka (MRL)</a>, cho phép bạn cắt ngắn đầu ra 768 chiều thành 512, 256 hoặc 128 chiều theo yêu cầu. Điều này dẫn đến xử lý hạ nguồn nhanh hơn và sử dụng ít bộ nhớ và dung lượng đĩa hơn. Xem <a href="#sentence-transformers">Cách sử dụng Sentence Transformers</a> để biết đoạn mã hiển thị cách thực hiện việc cắt ngắn này.</p>
+<p>Mô hình đã được đào tạo bằng cách sử dụng một kho văn bản đa ngôn ngữ được tuyển chọn cẩn thận với tổng số khoảng 320 tỷ token. Tập dữ liệu độc quyền là sự kết hợp của văn bản web có sẵn công khai, mã và tài liệu kỹ thuật, và các ví dụ tổng hợp dành riêng cho nhiệm vụ. Nó đã được lọc để tránh Tài liệu Lạm dụng Tình dục Trẻ em (CSAM), dữ liệu nhạy cảm và nội dung chất lượng thấp hoặc không an toàn.</p>
+<h2 id="đánh-giá">Đánh giá</h2>
+<p>EmbeddingGemma đã được đánh giá trên bộ MMTEB (Đa ngôn ngữ, v2) và MTEB (Tiếng Anh, v2), bao gồm một loạt các nhiệm vụ, miền và ngôn ngữ. Mặc dù có kích thước tham số 308M khiêm tốn, mô hình này liên tục đánh bại các đường cơ sở so sánh được trong khi vẫn giữ một dấu chân bộ nhớ rất nhỏ.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Hiệu suất MTEB (Đa ngôn ngữ, v2)</th>
+          <th style="text-align: left">Hiệu suất MTEB (Tiếng Anh, v2)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/embeddinggemma/embeddinggemma-300m-mteb-multilingual.png" alt=""></td>
+          <td style="text-align: left"><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/embeddinggemma/embeddinggemma-300m-mteb-eng.png" alt=""></td>
+      </tr>
+  </tbody>
+</table>
+<p>Kết quả sẽ được liệt kê trên <a href="https://huggingface.co/spaces/mteb/leaderboard">Bảng xếp hạng MTEB</a> chính thức. Chúng tôi loại trừ bất kỳ mô hình nào đã được đào tạo trên hơn 20% dữ liệu MTEB, để giảm thiểu khả năng trang bị quá mức.</p>
+<h2 id="bản-trình-diễn">Bản trình diễn</h2>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="cách-sử-dụng">Cách sử dụng</h2>
+<p>EmbeddingGemma được tích hợp với nhiều công cụ phổ biến, giúp bạn dễ dàng kết hợp vào các quy trình làm việc và ứng dụng hiện có của mình. Mô hình đã được tích hợp trong Sentence Transformers, và do đó cũng trong các dự án sử dụng Sentence Transformers ở chế độ nền, chẳng hạn như LangChain, LlamaIndex, Haystack và txtai. Xem các ví dụ bên dưới để bắt đầu với framework ưa thích của bạn.</p>
+<p>Đối với việc triển khai sản xuất, bạn có thể sử dụng <a href="https://huggingface.co/docs/text-embeddings-inference/en/index">Suy luận Embedding Văn bản</a> (TEI) để phục vụ mô hình một cách hiệu quả trên các cấu hình phần cứng khác nhau và bạn có thể sử dụng <a href="https://huggingface.co/docs/transformers.js/index">Transformers.js</a> để sử dụng trong các ứng dụng web.</p>
+<p>Bất kể bạn chọn framework nào, bạn nên lưu ý đến <strong>các lời nhắc</strong>. Đối với các mô hình embedding, các lời nhắc được thêm vào văn bản đầu vào để cho phép mô hình phân biệt giữa các nhiệm vụ khác nhau. EmbeddingGemma đã được đào tạo với các tên và lời nhắc này, vì vậy chúng cũng nên được bao gồm khi sử dụng mô hình:</p>
+<ul>
+<li><code>query</code>: <code>&quot;task: search result | query: &quot;</code></li>
+<li><code>document</code>: <code>&quot;title: none | text: &quot;</code></li>
+<li><code>BitextMining</code>: <code>&quot;task: search result | query: &quot;</code></li>
+<li><code>Clustering</code>: <code>&quot;task: clustering | query: &quot;</code></li>
+<li><code>Classification</code>: <code>&quot;task: classification | query: &quot;</code></li>
+<li><code>InstructionRetrieval</code>: <code>&quot;task: code retrieval | query: &quot;</code></li>
+<li><code>MultilabelClassification</code>: <code>&quot;task: classification | query: &quot;</code></li>
+<li><code>PairClassification</code>: <code>&quot;task: sentence similarity | query: &quot;</code></li>
+<li><code>Reranking</code>: <code>&quot;task: search result | query: &quot;</code></li>
+<li><code>Retrieval-query</code>: <code>&quot;task: search result | query: &quot;</code></li>
+<li><code>Retrieval-document</code>: <code>&quot;title: none | text: &quot;</code></li>
+<li><code>STS</code>: <code>&quot;task: sentence similarity | query: &quot;</code></li>
+<li><code>Summarization</code>: <code>&quot;task: summarization | query: &quot;</code></li>
+</ul>
+<p>Trong Sentence Transformers, các lời nhắc <code>query</code> và <code>document</code> được sử dụng tự động khi gọi <code>model.encode_query</code> và <code>model.encode_document</code>, nhưng đối với các framework khác, bạn có thể phải: $</p>
+<ol>
+<li>chỉ định tên lời nhắc (ví dụ: &ldquo;Reranking&rdquo;),</li>
+<li>chỉ định chuỗi lời nhắc (ví dụ: &ldquo;task: search result | query: &ldquo;), hoặc</li>
+<li>thêm thủ công các lời nhắc vào văn bản đầu vào của bạn.</li>
+</ol>
+<p>Các tập lệnh ví dụ sau sẽ trình bày điều này với nhiều framework khác nhau.</p>
+<h3 id="sentence-transformers">Sentence Transformers</h3>
+<p>Bạn sẽ cần cài đặt các gói sau:</p>
+<p>shell
+pip install git+https://github.com/huggingface/transformers@v4.56.0-Embedding-Gemma-preview
+pip install sentence-transformers&gt;=5.0.0</p>
+<h4 id="truy-xuất">Truy xuất</h4>
+<p>Suy luận bằng Sentence Transformers khá đơn giản, hãy xem ví dụ này để tìm kiếm ngữ nghĩa:</p>
+<p>py
+from sentence_transformers import SentenceTransformer</p>
+<h1 id="tải-xuống-từ--hub">Tải xuống từ 🤗 Hub</h1>
+<p>model = SentenceTransformer(&ldquo;google/embeddinggemma-300m&rdquo;)</p>
+<h1 id="chạy-suy-luận-với-các-truy-vấn-và-tài-liệu">Chạy suy luận với các truy vấn và tài liệu</h1>
+<p>query = &ldquo;Hành tinh nào được gọi là Hành tinh Đỏ?&rdquo;
+documents = [
+&ldquo;Sao Kim thường được gọi là song sinh của Trái Đất vì kích thước và khoảng cách tương tự.&rdquo;,
+&ldquo;Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ.&rdquo;,
+&ldquo;Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật.&rdquo;,
+&ldquo;Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ.&rdquo;
+]
+query_embeddings = model.encode_query(query)
+document_embeddings = model.encode_document(documents)
+print(query_embeddings.shape, document_embeddings.shape)</p>
+<h1 id="768-4-768">(768,) (4, 768)</h1>
+<h1 id="tính-toán-sự-tương-đồng-để-xác-định-thứ-hạng">Tính toán sự tương đồng để xác định thứ hạng</h1>
+<p>similarities = model.similarity(query_embeddings, document_embeddings)
+print(similarities)</p>
+<h1 id="tensor03011-06359-04930-04889">tensor([[0.3011, 0.6359, 0.4930, 0.4889]])</h1>
+<h1 id="chuyển-đổi-sự-tương-đồng-thành-thứ-hạng">Chuyển đổi sự tương đồng thành thứ hạng</h1>
+<p>ranking = similarities.argsort(descending=True)[0]
+print(ranking)</p>
+<h1 id="tensor1-2-3-0">tensor([1, 2, 3, 0])</h1>
+<ul>
+<li><a href="https://sbert.net/docs/package_reference/sentence_transformer/SentenceTransformer.html#sentence_transformers.SentenceTransformer.encode_query">Tài liệu về phương thức <code>encode_query</code> của Sentence Transformers</a></li>
+<li><a href="https://sbert.net/docs/package_reference/sentence_transformer/SentenceTransformer.html#sentence_transformers.SentenceTransformer.encode_document">Tài liệu về phương thức <code>encode_document</code> của Sentence Transformers</a></li>
+<li><a href="https://sbert.net/docs/package_reference/sentence_transformer/SentenceTransformer.html#sentence_transformers.SentenceTransformer.similarity">Tài liệu về phương thức <code>similarity</code> của Sentence Transformers</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<p>Nếu bạn không tìm cách sử dụng mô hình này để Truy xuất Thông tin, thì có lẽ bạn nên sử dụng phương thức <code>encode</code> chung nhất cùng với lời nhắc mô hình mô tả tốt nhất nhiệm vụ hạ nguồn của bạn trong số các tùy chọn sau:</p>
+<ul>
+<li><code>BitextMining</code>: Tìm các cặp câu đã dịch bằng hai ngôn ngữ.</li>
+<li><code>Clustering</code>: Tìm các văn bản tương tự để nhóm chúng lại với nhau.</li>
+<li><code>Classification</code>: Gán nhãn được xác định trước cho văn bản.</li>
+<li><code>InstructionRetrieval</code>: Truy xuất các đoạn mã liên quan dựa trên hướng dẫn bằng ngôn ngữ tự nhiên.</li>
+<li><code>MultilabelClassification</code>: Gán nhiều nhãn cho văn bản.</li>
+<li><code>PairClassification</code>: Gán nhãn được xác định trước cho văn bản.</li>
+<li><code>Reranking</code>: Sắp xếp lại kết quả tìm kiếm dựa trên mức độ liên quan.</li>
+<li><code>Retrieval-query</code>: Truy xuất tài liệu dựa trên truy vấn.</li>
+<li><code>Retrieval-document</code>: Truy xuất tài liệu dựa trên nội dung của chúng.</li>
+<li><code>STS</code>: Tính toán sự tương đồng văn bản ngữ nghĩa giữa các văn bản.</li>
+<li><code>Summarization</code>: Tạo tóm tắt ngắn gọn về văn bản.</li>
+</ul>
+<p>python
+from sentence_transformers import SentenceTransformer</p>
+<h1 id="tải-xuống-từ--hub-1">Tải xuống từ 🤗 Hub</h1>
+<p>model = SentenceTransformer(&ldquo;google/embeddinggemma-300m&rdquo;)</p>
+<h1 id="hãy-kiểm-tra-các-lời-nhắc-đã-được-cấu-hình">Hãy kiểm tra các lời nhắc đã được cấu hình</h1>
+<p>print(model.prompts)</p>
+<h1 id="heading">{</h1>
+<h1 id="query-task-search-result--query-">&ldquo;query&rdquo;: &ldquo;task: search result | query: &ldquo;,</h1>
+<h1 id="document-title-none--text-">&ldquo;document&rdquo;: &ldquo;title: none | text: &ldquo;,</h1>
+<h1 id="bitextmining-task-search-result--query-">&ldquo;BitextMining&rdquo;: &ldquo;task: search result | query: &ldquo;,</h1>
+<h1 id="clustering-task-clustering--query-">&ldquo;Clustering&rdquo;: &ldquo;task: clustering | query: &ldquo;,</h1>
+<h1 id="classification-task-classification--query-">&ldquo;Classification&rdquo;: &ldquo;task: classification | query: &ldquo;,</h1>
+<h1 id="instructionretrieval-task-code-retrieval--query-">&ldquo;InstructionRetrieval&rdquo;: &ldquo;task: code retrieval | query: &ldquo;,</h1>
+<h1 id="multilabelclassification-task-classification--query-">&ldquo;MultilabelClassification&rdquo;: &ldquo;task: classification | query: &ldquo;,</h1>
+<h1 id="pairclassification-task-sentence-similarity--query-">&ldquo;PairClassification&rdquo;: &ldquo;task: sentence similarity | query: &ldquo;,</h1>
+<h1 id="reranking-task-search-result--query-">&ldquo;Reranking&rdquo;: &ldquo;task: search result | query: &ldquo;,</h1>
+<h1 id="retrieval-query-task-search-result--query-">&ldquo;Retrieval-query&rdquo;: &ldquo;task: search result | query: &ldquo;,</h1>
+<h1 id="retrieval-document-title-none--text-">&ldquo;Retrieval-document&rdquo;: &ldquo;title: none | text: &ldquo;,</h1>
+<h1 id="sts-task-sentence-similarity--query-">&ldquo;STS&rdquo;: &ldquo;task: sentence similarity | query: &ldquo;,</h1>
+<h1 id="summarization-task-summarization--query-">&ldquo;Summarization&rdquo;: &ldquo;task: summarization | query: &ldquo;,</h1>
+<h1 id="heading-1">}</h1>
+<h1 id="tính-toán-sự-tương-đồng-văn-bản-ngữ-nghĩa-bằng-cách-sử-dụng-văn-bản-vì-vậy-hãy-sử-dụng-lời-nhắc-sts">Tính toán sự tương đồng văn bản ngữ nghĩa bằng cách sử dụng văn bản, vì vậy hãy sử dụng lời nhắc STS</h1>
+<p>texts = [
+&ldquo;Thời tiết hôm nay rất đẹp.&rdquo;,
+&ldquo;Ngoài trời là một ngày tuyệt vời.&rdquo;,
+&ldquo;Thị trường chứng khoán đã sụp đổ ngày hôm qua.&rdquo;,
+&ldquo;Tôi thích lập trình với Python.&rdquo;
+]
+embeddings = model.encode(texts, prompt_name=&ldquo;STS&rdquo;)
+print(embeddings.shape)</p>
+<h1 id="4-768">(4, 768)</h1>
+<h1 id="tính-toán-sự-tương-đồng">Tính toán sự tương đồng</h1>
+<p>similarities = model.similarity(embeddings, embeddings)
+print(similarities)
+&quot;&rdquo;&rdquo;
+tensor([[1.0000, 0.9305, 0.4660, 0.4326],
+[0.9305, 1.0000, 0.4227, 0.4434],
+[0.4660, 0.4227, 1.0000, 0.2638],
+[0.4326, 0.4434, 0.2638, 1.0000]])
+&quot;&rdquo;&rdquo;</p>
+<ul>
+<li><a href="https://sbert.net/docs/package_reference/sentence_transformer/SentenceTransformer.html#sentence_transformers.SentenceTransformer.encode">Tài liệu về phương thức <code>encode</code> của Sentence Transformers</a></li>
+<li><a href="https://sbert.net/docs/package_reference/sentence_transformer/SentenceTransformer.html#sentence_transformers.SentenceTransformer.similarity">Tài liệu về phương thức <code>similarity</code> của Sentence Transformers</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Vì <code>google/embeddinggemma-300m</code> được đào tạo bằng MRL, nên các embedding được tạo bởi mô hình này có thể bị cắt ngắn thành các chiều thấp hơn mà không ảnh hưởng đáng kể đến hiệu suất đánh giá. Các embedding có chiều thấp hơn vừa rẻ hơn để lưu trữ trên đĩa và trong bộ nhớ, vừa nhanh hơn cho các nhiệm vụ hạ nguồn như truy xuất, phân cụm hoặc phân loại.</p>
+<p>Trong Sentence Transformers, bạn có thể đặt chiều thấp hơn bằng cách sử dụng tham số <code>truncate_dim</code> khi khởi tạo <code>SentenceTransformer</code> hoặc khi gọi <code>model.encode</code>/<code>model.encode_query</code>/<code>model.encode_document</code>:</p>
+<p>python
+from sentence_transformers import SentenceTransformer</p>
+<h1 id="tải-xuống-từ--hub-2">Tải xuống từ 🤗 Hub</h1>
+<p>model = SentenceTransformer(&ldquo;google/embeddinggemma-300m&rdquo;, truncate_dim=256)</p>
+<h1 id="chạy-suy-luận-với-các-truy-vấn-và-tài-liệu-1">Chạy suy luận với các truy vấn và tài liệu</h1>
+<p>query = &ldquo;Hành tinh nào được gọi là Hành tinh Đỏ?&rdquo;
+documents = [
+&ldquo;Sao Kim thường được gọi là song sinh của Trái Đất vì kích thước và khoảng cách tương tự.&rdquo;,
+&ldquo;Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ.&rdquo;,
+&ldquo;Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật.&rdquo;,
+&ldquo;Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ.&rdquo;
+]
+query_embeddings = model.encode_query(query)
+document_embeddings = model.encode_document(documents)
+print(query_embeddings.shape, document_embeddings.shape)</p>
+<h1 id="256-4-256">(256,) (4, 256)</h1>
+<h1 id="tính-toán-sự-tương-đồng-để-xác-định-thứ-hạng-1">Tính toán sự tương đồng để xác định thứ hạng</h1>
+<p>similarities = model.similarity(query_embeddings, document_embeddings)
+print(similarities)</p>
+<h1 id="tensor04016-06715-05283-05261">tensor([[0.4016, 0.6715, 0.5283, 0.5261]])</h1>
+<h1 id="chuyển-đổi-sự-tương-đồng-thành-thứ-hạng-1">Chuyển đổi sự tương đồng thành thứ hạng</h1>
+<p>ranking = similarities.argsort(descending=True)[0]
+print(ranking)</p>
+<h1 id="tensor1-2-3-0-1">tensor([1, 2, 3, 0])</h1>
+<p>Lưu ý rằng thứ hạng được giữ nguyên mặc dù sử dụng embedding nhỏ hơn 3 lần so với embedding có kích thước đầy đủ.</p>
+<ul>
+<li><a href="https://sbert.net/examples/sentence_transformer/training/matryoshka/README.html">Tài liệu về Embedding Matryoshka của Sentence Transformers</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="langchain">LangChain</h3>
+<p>Nếu bạn thích, bạn cũng có thể sử dụng <code>HuggingFaceEmbeddings</code> của LangChain, sử dụng Sentence Transformers ở chế độ nền. Lưu ý rằng bạn sẽ phải yêu cầu LangChain sử dụng các lời nhắc có tên &ldquo;query&rdquo; và &ldquo;document&rdquo; cho các truy vấn và tài liệu, tương ứng. Ví dụ này liên quan đến một thiết lập truy xuất thông tin đơn giản, nhưng mô hình embedding tương tự có thể được sử dụng trong các kịch bản phức tạp hơn.</p>
+<p>Bạn sẽ cần cài đặt các gói sau:</p>
+<p>pip install git+https://github.com/huggingface/transformers@v4.56.0-Embedding-Gemma-preview
+pip install sentence-transformers
+pip install langchain
+pip install langchain-community
+pip install langchain-huggingface
+pip install faiss-cpu</p>
+<p>python
+from langchain.docstore.document import Document
+from langchain_community.vectorstores import FAISS
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings</p>
+<h1 id="tải-xuống-mô-hình-từ--hub-ngoài-ra-hãy-chỉ-định-sử-dụng-các-lời-nhắc-query-và-document">Tải xuống mô hình từ 🤗 Hub. Ngoài ra, hãy chỉ định sử dụng các lời nhắc &ldquo;query&rdquo; và &ldquo;document&rdquo;</h1>
+<h1 id="như-được-xác-định-trong-cấu-hình-mô-hình-vì-langchain-không-tự-động-sử-dụng-chúng">như được xác định trong cấu hình mô hình, vì LangChain không tự động sử dụng chúng.</h1>
+<h1 id="xem">Xem <a href="https://huggingface.co/google/embeddinggemma-300m/blob/main/config_sentence_transformers.json">https://huggingface.co/google/embeddinggemma-300m/blob/main/config_sentence_transformers.json</a></h1>
+<p>embedder = HuggingFaceEmbeddings(
+model_name=&ldquo;google/embeddinggemma-300m&rdquo;,
+query_encode_kwargs={&ldquo;prompt_name&rdquo;: &ldquo;query&rdquo;},
+encode_kwargs={&ldquo;prompt_name&rdquo;: &ldquo;document&rdquo;}
+)</p>
+<p>data = [
+&ldquo;Sao Kim thường được gọi là song sinh của Trái Đất vì kích thước và khoảng cách tương tự.&rdquo;,
+&ldquo;Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ.&rdquo;,
+&ldquo;Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật.&rdquo;,
+&ldquo;Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ.&rdquo;
+]</p>
+<h1 id="tạo-tài-liệu-cho-kho-vectơ">Tạo tài liệu cho kho vectơ</h1>
+<p>documents = [Document(page_content=text, metadata={&ldquo;id&rdquo;: i}) for i, text in enumerate(data)]</p>
+<h1 id="tạo-kho-vectơ-bằng-faiss-đặt-distance_strategy-thành-max_inner_product-sử-dụng">Tạo kho vectơ bằng FAISS. Đặt distance_strategy thành &ldquo;MAX_INNER_PRODUCT&rdquo; sử dụng</h1>
+<h1 id="flatindexip-của-faiss-ở-chế-độ-nền-được-tối-ưu-hóa-cho-tìm-kiếm-tích-bên-trong-điều-này">FlatIndexIP của FAISS ở chế độ nền, được tối ưu hóa cho tìm kiếm tích bên trong. Điều này</h1>
+<h1 id="là-những-gì-mô-hình-được-đào-tạo-cho">là những gì mô hình được đào tạo cho</h1>
+<p>vector_store = FAISS.from_documents(documents, embedder, distance_strategy=&ldquo;MAX_INNER_PRODUCT&rdquo;)</p>
+<h1 id="tìm-kiếm-3-tài-liệu-tương-tự-hàng-đầu">Tìm kiếm 3 tài liệu tương tự hàng đầu</h1>
+<p>query = &ldquo;Hành tinh nào được gọi là Hành tinh Đỏ?&rdquo;
+results = vector_store.similarity_search_with_score(query, k=3)</p>
+<h1 id="in-kết-quả">In kết quả</h1>
+<p>for doc, score in results:
+print(f&quot;Văn bản: {doc.page_content} (điểm số: {score:.4f})&rdquo;)
+&quot;&rdquo;&rdquo;
+Văn bản: Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ. (điểm số: 0.6359)
+Văn bản: Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật. (điểm số: 0.4930)
+Văn bản: Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ. (điểm số: 0.4889)
+&quot;&rdquo;&rdquo;</p>
+<ul>
+<li><a href="https://python.langchain.com/api_reference/huggingface/embeddings/langchain_huggingface.embeddings.huggingface.HuggingFaceEmbeddings.html">Tài liệu về HuggingFaceEmbeddings của LangChain</a></li>
+</ul>
+<h3 id="llamaindex">LlamaIndex</h3>
+<p>EmbeddingGemma cũng được hỗ trợ trong LlamaIndex vì nó sử dụng Sentence Transformers ở chế độ nền. Để có hành vi chính xác, bạn cần chỉ định các lời nhắc truy vấn và tài liệu như được xác định trong cấu hình mô hình. Nếu không, hiệu suất của bạn sẽ không tối ưu. Tập lệnh này cho thấy một ví dụ sơ khai về cách sử dụng EmbeddingGemma với LlamaIndex, nhưng bạn cũng có thể sử dụng lớp <code>HuggingFaceEmbedding</code> trong các cài đặt khó hơn.</p>
+<p>Bạn sẽ cần cài đặt các gói sau:</p>
+<p>pip install git+https://github.com/huggingface/transformers@v4.56.0-Embedding-Gemma-preview
+pip install sentence-transformers
+pip install llama-index
+pip install llama-index-embeddings-huggingface
+pip install llama-index-vector-stores-faiss</p>
+<p>python
+import faiss
+from llama_index.core.schema import TextNode
+from llama_index.core.vector_stores import VectorStoreQuery
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.vector_stores.faiss import FaissVectorStore</p>
+<h1 id="tải-xuống-từ--hub-ngoài-ra-hãy-chỉ-định-các-lời-nhắc-truy-vấn-và-tài-liệu-như">Tải xuống từ 🤗 Hub. Ngoài ra, hãy chỉ định các lời nhắc truy vấn và tài liệu như</h1>
+<h1 id="được-xác-định-trong-cấu-hình-mô-hình-vì-llamaindex-không-tự-động-tải-chúng">được xác định trong cấu hình mô hình, vì LlamaIndex không tự động tải chúng.</h1>
+<h1 id="xem-1">Xem <a href="https://huggingface.co/google/embeddinggemma-300m/blob/main/config_sentence_transformers.json">https://huggingface.co/google/embeddinggemma-300m/blob/main/config_sentence_transformers.json</a></h1>
+<p>embeddings = HuggingFaceEmbedding(
+model_name=&ldquo;google/embeddinggemma-300m&rdquo;,
+query_instruction=&ldquo;task: search result | query: &ldquo;,
+text_instruction=&ldquo;title: none | text: &ldquo;,
+)</p>
+<p>data = [
+&ldquo;Sao Kim thường được gọi là song sinh của Trái Đất vì kích thước và khoảng cách tương tự.&rdquo;,
+&ldquo;Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ.&rdquo;,
+&ldquo;Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật.&rdquo;,
+&ldquo;Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ.&rdquo;
+]</p>
+<h1 id="tạo-một-kho-vectơ-mẫu">Tạo một kho vectơ mẫu</h1>
+<p>store = FaissVectorStore(faiss_index=faiss.IndexFlatIP(768))
+store.add([TextNode(id=i, text=text, embedding=embeddings.get_text_embedding(text)) for i, text in enumerate(data)])</p>
+<h1 id="tìm-kiếm-k-tài-liệu-tương-tự-hàng-đầu">Tìm kiếm k tài liệu tương tự hàng đầu</h1>
+<p>query = &ldquo;Hành tinh nào được gọi là Hành tinh Đỏ?&rdquo;
+query_embedding = embeddings.get_query_embedding(query)
+results = store.query(VectorStoreQuery(query_embedding=query_embedding, similarity_top_k=3))</p>
+<h1 id="in-kết-quả-1">In kết quả</h1>
+<p>for idx, score in zip(results.ids, results.similarities):
+print(f&quot;Văn bản: {data[int(idx)]} (điểm số: {score:.4f})&rdquo;)
+&quot;&rdquo;&rdquo;
+Văn bản: Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ. (điểm số: 0.6359)
+Văn bản: Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật. (điểm số: 0.4930)
+Văn bản: Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ. (điểm số: 0.4889)
+&quot;&rdquo;&rdquo;</p>
+<ul>
+<li><a href="https://docs.llamaindex.ai/en/stable/examples/embeddings/huggingface/">Tài liệu về HuggingFaceEmbedding của LlamaIndex</a></li>
+</ul>
+<h3 id="haystack">Haystack</h3>
+<p>EmbeddingGemma cũng có thể được sử dụng với Haystack, một framework để xây dựng các ứng dụng ngôn ngữ và tìm kiếm sẵn sàng cho sản xuất. Giống như LangChain và LlamaIndex, Haystack sử dụng Sentence Transformers ở chế độ nền và yêu cầu bạn chỉ định các lời nhắc thích hợp. Ví dụ sau đây cho thấy cách thiết lập một quy trình truy xuất cơ bản bằng EmbeddingGemma với Haystack.</p>
+<p>Bạn sẽ cần cài đặt các gói sau:</p>
+<p>pip install git+https://github.com/huggingface/transformers@v4.56.0-Embedding-Gemma-preview
+pip install sentence-transformers
+pip install haystack-ai</p>
+<p>python
+from haystack import Document, Pipeline
+from haystack.components.embedders import SentenceTransformersDocumentEmbedder, SentenceTransformersTextEmbedder
+from haystack.components.retrievers import InMemoryEmbeddingRetriever
+from haystack.document_stores.in_memory import InMemoryDocumentStore</p>
+<h1 id="khởi-tạo-kho-tài-liệu">Khởi tạo kho tài liệu</h1>
+<p>document_store = InMemoryDocumentStore()</p>
+<h1 id="khởi-tạo-các-embedder-tài-liệu-và-truy-vấn">Khởi tạo các embedder tài liệu và truy vấn</h1>
+<p>document_embedder = SentenceTransformersDocumentEmbedder(
+model=&ldquo;google/embeddinggemma-300m&rdquo;, encode_kwargs={&ldquo;prompt_name&rdquo;: &ldquo;document&rdquo;}
+)
+query_embedder = SentenceTransformersTextEmbedder(
+model=&ldquo;google/embeddinggemma-300m&rdquo;, encode_kwargs={&ldquo;prompt_name&rdquo;: &ldquo;query&rdquo;}
+)
+document_embedder.warm_up()
+query_embedder.warm_up()</p>
+<p>data = [
+&ldquo;Sao Kim thường được gọi là song sinh của Trái Đất vì kích thước và khoảng cách tương tự.&rdquo;,
+&ldquo;Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ.&rdquo;,
+&ldquo;Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật.&rdquo;,
+&ldquo;Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ.&rdquo;,
+]</p>
+<h1 id="chuyển-đổi-thành-tài-liệu-haystack-và-ghi-vào-kho-tài-liệu">Chuyển đổi thành tài liệu Haystack và ghi vào kho tài liệu</h1>
+<p>documents = [Document(content=text, id=str(i)) for i, text in enumerate(data)]
+documents_with_embeddings = document_embedder.run(documents=documents)[&ldquo;documents&rdquo;]
+document_store.write_documents(documents_with_embeddings)</p>
+<h1 id="tạo-một-quy-trình-truy-vấn-bằng-cách-sử-dụng-embedder-truy-vấn-và-trình-truy-xuất-tương-thích">Tạo một quy trình truy vấn bằng cách sử dụng embedder truy vấn và trình truy xuất tương thích</h1>
+<p>query_pipeline = Pipeline()
+query_pipeline.add_component(&ldquo;text_embedder&rdquo;, query_embedder)
+query_pipeline.add_component(&ldquo;retriever&rdquo;, InMemoryEmbeddingRetriever(document_store=document_store, top_k=3))
+query_pipeline.connect(&ldquo;text_embedder.embedding&rdquo;, &ldquo;retriever.query_embedding&rdquo;)</p>
+<h1 id="tìm-kiếm-3-tài-liệu-tương-tự-hàng-đầu-1">Tìm kiếm 3 tài liệu tương tự hàng đầu</h1>
+<p>query = &ldquo;Hành tinh nào được gọi là Hành tinh Đỏ?&rdquo;
+results = query_pipeline.run({&ldquo;text_embedder&rdquo;: {&ldquo;text&rdquo;: query}})</p>
+<h1 id="in-kết-quả-2">In kết quả</h1>
+<p>for document in results[&ldquo;retriever&rdquo;][&ldquo;documents&rdquo;]:
+print(f&quot;Văn bản: {document.content} (điểm số: {document.score:.4f})&rdquo;)
+&quot;&rdquo;&rdquo;
+Văn bản: Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ. (điểm số: 0.6359)
+Văn bản: Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật. (điểm số: 0.4930)
+Văn bản: Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ. (điểm số: 0.4889)
+&quot;&rdquo;&rdquo;</p>
+<ul>
+<li><a href="https://docs.haystack.deepset.ai/docs/inmemoryembeddingretriever">Tài liệu về InMemoryEmbeddingRetriever của Haystack</a></li>
+</ul>
+<h3 id="txtai">txtai</h3>
+<p>txtai cũng tương thích với EmbeddingGemma. Giống như các framework khác, txtai sử dụng Sentence Transformers ở chế độ nền và cần các lời nhắc thích hợp để có hiệu suất tối ưu với EmbeddingGemma. Ví dụ sau đây trình bày cách thiết lập một hệ thống truy xuất cơ bản với txtai.</p>
+<p>Bạn sẽ cần cài đặt các gói sau:</p>
+<p>pip install git+https://github.com/huggingface/transformers@v4.56.0-Embedding-Gemma-preview
+pip install sentence-transformers
+pip install txtai</p>
+<p>python
+from txtai import Embeddings</p>
+<h1 id="tải-xuống-từ--hub-ngoài-ra-hãy-chỉ-định-các-lời-nhắc-truy-vấn-và-tài-liệu-như-1">Tải xuống từ 🤗 Hub. Ngoài ra, hãy chỉ định các lời nhắc truy vấn và tài liệu như</h1>
+<h1 id="được-xác-định-trong-cấu-hình-mô-hình-vì-txtai-không-tự-động-tải-chúng">được xác định trong cấu hình mô hình, vì txtai không tự động tải chúng.</h1>
+<h1 id="xem-2">Xem <a href="https://huggingface.co/google/embeddinggemma-300m/blob/main/config_sentence_transformers.json">https://huggingface.co/google/embeddinggemma-300m/blob/main/config_sentence_transformers.json</a></h1>
+<p>embeddings = Embeddings(
+path=&ldquo;google/embeddinggemma-300m&rdquo;,
+method=&ldquo;sentence-transformers&rdquo;,
+instructions={
+&ldquo;query&rdquo;: &ldquo;task: search result | query: &ldquo;,
+&ldquo;data&rdquo;: &ldquo;title: none | text: &ldquo;,
+}
+)</p>
+<p>data = [
+&ldquo;Sao Kim thường được gọi là song sinh của Trái Đất vì kích thước và khoảng cách tương tự.&rdquo;,
+&ldquo;Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ.&rdquo;,
+&ldquo;Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật.&rdquo;,
+&ldquo;Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ.&rdquo;,
+]</p>
+<h1 id="tạo-một-kho-vectơ-mẫu-1">Tạo một kho vectơ mẫu</h1>
+<p>embeddings.index(data)</p>
+<h1 id="tìm-kiếm-k-tài-liệu-tương-tự-hàng-đầu-1">Tìm kiếm k tài liệu tương tự hàng đầu</h1>
+<p>query = &ldquo;Hành tinh nào được gọi là Hành tinh Đỏ?&rdquo;
+results = embeddings.search(query, 3)</p>
+<h1 id="in-kết-quả-3">In kết quả</h1>
+<p>for idx, score in results:
+print(f&quot;Văn bản: {data[int(idx)]} (điểm số: {score:.4f})&rdquo;)
+&quot;&rdquo;&rdquo;
+Văn bản: Sao Hỏa, được biết đến với vẻ ngoài hơi đỏ, thường được gọi là Hành tinh Đỏ. (điểm số: 0.6359)
+Văn bản: Sao Mộc, hành tinh lớn nhất trong hệ mặt trời của chúng ta, có một vết đỏ nổi bật. (điểm số: 0.4930)
+Văn bản: Sao Thổ, nổi tiếng với các vành đai, đôi khi bị nhầm với Hành tinh Đỏ. (điểm số: 0.4889)
+&quot;&rdquo;&rdquo;</p>
+<ul>
+<li><a href="https://docs.haystack.deepset.ai/docs/inmemoryembeddingretriever">Tài liệu về InMemoryEmbeddingRetriever của Haystack</a></li>
+</ul>
+<h3 id="transformersjs">Transformers.js</h3>
+<p>Bạn thậm chí có thể chạy EmbeddingGemma cục bộ 100% trong trình duyệt của bạn với <a href="https://huggingface.co/docs/transformers.js/en/index">Transformers.js</a>! Nếu bạn chưa có, bạn có thể cài đặt thư viện từ <a href="https://www.npmjs.com/package/@huggingface/transformers">NPM</a> bằng</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/embeddinggemma">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/september-4-2025/">September 4, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/777761/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/riskrubric/thumbnail.png" alt="Dân chủ hóa An toàn AI với RiskRubric.ai" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Dân chủ hóa An toàn AI với RiskRubric.ai</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/2e2081/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobot-dataset-v3/thumbnail.png" alt="`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/777761/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/riskrubric/thumbnail.png" alt="Dân chủ hóa An toàn AI với RiskRubric.ai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dân chủ hóa An toàn AI với RiskRubric.ai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/c813d8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/0s-zLFC0-vi8maL45QgUS93WJwkDdrwItNJiaoHb4rh6_Eru1sg43UJEax5twdcItCR8lK8bW-0hqsPjsxe-O1dduxTdzsv_Av66SY1psiPuTnC4gg=w400-h225-n-nu" alt="Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

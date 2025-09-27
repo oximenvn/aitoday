@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-09-27T00:00:00&#43;00:00">September 27, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            17 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="thủ-thuật-từ-openai-gpt-oss-mọi-người--có-thể-sử-dụng-với-transformers">Thủ thuật từ OpenAI gpt-oss MỌI NGƯỜI 🫵 có thể sử dụng với transformers</h1>
+<p>OpenAI gần đây đã phát hành <a href="https://huggingface.co/collections/openai/gpt-oss-68911959590a1634ba11c7a4">bộ mô hình GPT-OSS</a>. Các mô hình này có một số kỹ thuật mới như lượng tử hóa MXFP4, kernel hiệu quả, định dạng chat hoàn toàn mới và hơn thế nữa. Để cho phép phát hành gpt-oss thông qua <code>transformers</code>, chúng tôi đã nâng cấp đáng kể <a href="https://github.com/huggingface/transformers/">thư viện</a>. Các bản cập nhật giúp việc <strong>tải</strong>, <strong>chạy</strong> và <strong>tinh chỉnh</strong> các mô hình trở nên rất hiệu quả.</p>
+<p>Trong bài đăng trên blog này, chúng ta sẽ nói về tất cả các nâng cấp một cách chuyên sâu và cách chúng trở thành một phần của bộ công cụ transformers để các mô hình khác (hiện tại và tương lai) có thể hưởng lợi từ chúng. Cung cấp các triển khai rõ ràng về các phương pháp mới trong transformers cũng cho phép cộng đồng nhanh chóng hiểu và áp dụng chúng. Các framework như <a href="https://github.com/ml-explore/mlx-lm/pull/354"><code>MLX</code></a>, <a href="https://github.com/ggml-org/llama.cpp/discussions/15396"><code>llama.cpp</code></a> hoặc <a href="https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html"><code>vLLM</code></a> có thể sử dụng mã transformers làm tài liệu tham khảo để xây dựng các triển khai của riêng họ.</p>
+<p>Đối với bản phát hành này, chúng tôi đã làm việc trên:</p>
+<ul>
+<li><a href="#zero-build-kernels-downloadable-from-the-hub">Kernel không cần build, có thể tải xuống từ Hub</a></li>
+<li><a href="#mxfp4-quantization">Lượng tử hóa MXFP4</a></li>
+<li><a href="#tensor-parallelism">Song song hóa Tensor</a></li>
+<li><a href="#expert-parallelism">Song song hóa Expert</a></li>
+<li><a href="#dynamic-sliding-window-layer--cache">Lớp Cửa sổ Trượt Động &amp; Bộ nhớ Cache</a></li>
+<li><a href="#continuous-batching--paged-attention">Batching liên tục &amp; Chú ý theo Trang</a></li>
+<li><a href="#load-larger-models-faster">Tải các mô hình lớn hơn nhanh hơn</a></li>
+</ul>
+<blockquote>
+<p>Phần hay nhất: Hầu hết các tính năng này sẽ hoạt động trên tất cả các mô hình chính trong <code>transformers</code>!</p></blockquote>
+<h2 id="kernel-không-cần-build-có-thể-tải-xuống-từ-hub">Kernel không cần build, có thể tải xuống từ Hub</h2>
+<p>Kernel là một chương trình <em>chuyên dụng</em>, nhỏ gọn chạy trên các bộ tăng tốc để thực hiện các tác vụ như nhân ma trận, kích hoạt hoặc chuẩn hóa. Trong PyTorch eager, các hoạt động kích hoạt các kernel riêng lẻ một cách tuần tự, điều này rất đơn giản nhưng có thể phát sinh thêm các chuyển bộ nhớ và chi phí khởi chạy. <code>torch.compile</code> của PyTorch 2.0 với các backend như <code>TorchInductor</code> giải quyết vấn đề này bằng cách tự động hợp nhất và tối ưu hóa các kernel, mang lại hiệu suất tăng từ <code>2–10×</code>.</p>
+<p>Ngoài ra, cộng đồng đã tạo ra các kernel tùy chỉnh cho các kết hợp hoạt động thường xuyên, <em>không chỉ các op PyTorch riêng lẻ như matmul</em>. Ví dụ: Flash Attention được tạo ra để tối ưu hóa khối attention quan trọng xác định kiến trúc transformers và có mặt trong nhiều mô hình, bao gồm hầu hết LLM. Bằng cách kết hợp cẩn thận tất cả các hoạt động attention bên trong một kernel duy nhất, các chuyển bộ nhớ được giảm thiểu, việc sử dụng bộ nhớ được giảm và có thể đạt được tăng tốc.</p>
+<p>Vấn đề là tất cả các kernel khác nhau này đều có sẵn trong các thư viện riêng biệt, điều này tạo ra sự phình to về dependency nếu chúng được thêm vào thư viện transformers. Hơn nữa, các kernel này không chỉ là mã Python, chúng bao gồm mã cuda cấp thấp, được gắn lại với C++ và được hiển thị thông qua một lớp Python. Điều này có nghĩa là chúng phải được biên dịch trong hệ thống đích, do đó yêu cầu bất kỳ hệ thống build nào được yêu cầu bởi mỗi thư viện kernel.</p>
+<p><a href="https://huggingface.co/blog/hello-hf-kernels">Gói kernels</a> giải quyết vấn đề này bằng cách tải xuống các binary được build sẵn của các kernel được hỗ trợ từ Hub. Bạn chỉ cần chỉ ra kernel bạn muốn sử dụng và <code>kernels</code> sẽ tìm kiếm một phiên bản tương thích với hệ thống của bạn và tải xuống khi sử dụng lần đầu.</p>
+<h3 id="kernel-tùy-chỉnh-cho-gpt-oss">Kernel tùy chỉnh cho GPT-OSS</h3>
+<p><a href="https://github.com/huggingface/transformers/blob/0f1b128d3359a26bd18be99c26d7f04fb3cba914/src/transformers/models/gpt_oss/modeling_gpt_oss.py">GPT-OSS</a>, một mô hình Mixture of Experts (MoE), là một người dùng lớn của Kernel từ Hub. Nó tận dụng một số kernel tùy chỉnh:</p>
+<ol>
+<li>Liger RMSNorm, được sử dụng làm <a href="https://github.com/huggingface/transformers/blob/0f1b128d3359a26bd18be99c26d7f04fb3cba914/src/transformers/models/gpt_oss/modeling_gpt_oss.py#L46"><code>@use_kernel_forward_from_hub(&quot;RMSNorm&quot;)</code></a></li>
+<li>Kernel Megablocks MoE: <a href="https://github.com/huggingface/transformers/blob/0f1b128d3359a26bd18be99c26d7f04fb3cba914/src/transformers/models/gpt_oss/modular_gpt_oss.py#L160"><code>@use_kernel_forward_from_hub(&quot;MegaBlocksMoeMLP&quot;)</code></a></li>
+<li>Flash Attention 3 với <a href="https://huggingface.co/kernels-community/vllm-flash-attn3">hỗ trợ cho attention sinks</a>.</li>
+<li>Kernel triton MXFP4 (được đề cập <a href="#mxfp4-in-transformers">sau</a>)</li>
+</ol>
+<p>Hãy xem hai kernel đầu tiên.</p>
+<p>Đằng sau hậu trường, các decorator (1 và 2) chỉ đơn giản là trỏ đến các kernel do cộng đồng đóng góp. Ví dụ: <code>RMSNorm</code> đến từ <a href="https://huggingface.co/kernels-community/liger_kernels"><code>liger_kernels</code></a>, trong khi kernel <code>MegaBlocksMoeMLP</code> đến từ <a href="https://huggingface.co/kernels-community/megablocks"><code>megablocks</code></a>. Tùy thuộc vào thiết bị của bạn (CUDA hoặc ROCm) và bạn đang huấn luyện hay chạy suy luận, kernel phù hợp sẽ được kéo vào tự động.</p>
+<p>Thiết kế này vừa <strong>cụ thể vừa tổng quát</strong>: các kernel RMSNorm liger đã được sử dụng lại trên nhiều mô hình và kernel MoE cũng có thể được áp dụng cho MoE trong tương lai.</p>
+<p>Vì <code>kernels</code> kéo mã từ Hub, bạn phải chọn tham gia tính năng này bằng cách chuyển <code>use_kernels=True</code> trong khởi tạo mô hình của bạn, như được hiển thị bên dưới. Chúng tôi bật ghi log <code>INFO</code> trong ví dụ để bạn có thể dễ dàng xác minh rằng các kernel có thể tải xuống đang được sử dụng.</p>
+<blockquote>
+<p>Các kernel này không tương thích với <code>mxfp4</code>, vì vậy suy luận sẽ xảy ra trong <code>bfloat16</code> nếu bạn sử dụng chúng. Vui lòng benchmark hệ thống của bạn để có sự kết hợp tốt nhất về bộ nhớ và thông lượng phù hợp với dự án của bạn!</p></blockquote>
+<p>python
+from transformers import AutoTokenizer, AutoModelForCausalLM</p>
+<p>import logging
+logging.basicConfig(level=logging.INFO)</p>
+<p>model_id = &ldquo;openai/gpt-oss-20b&rdquo;
+tokenizer = AutoTokenizer.from_pretrained(model_id)</p>
+<p>model = AutoModelForCausalLM.from_pretrained(
+model_id,
+dtype=&ldquo;auto&rdquo;,
+device_map=&ldquo;auto&rdquo;,
+use_kernels=True,
+)</p>
+<p>Chạy một thế hệ nhanh chóng tạo ra các thông báo log như</p>
+<p>shell
+INFO:root:Using layer <code>LigerRMSNorm</code> from repo <code>kernels-community/liger_kernels</code>
+INFO:root:Using layer <code>MegaBlocksMoeMLP</code> from repo <code>kernels-community/megablocks</code></p>
+<p><strong>Hình 1</strong> cho thấy rằng, trong hệ thống chúng tôi đã thử nghiệm, các kernel này hoạt động tốt nhất cho các batch size lớn hơn. Chúng tôi luôn khuyên bạn nên benchmark bất kỳ thay đổi nào liên quan đến hiệu suất càng gần với điều kiện sản xuất của bạn càng tốt.</p>
+<!-- raw HTML omitted -->
+<blockquote>
+<p>Bạn có thể khám phá và chơi với script benchmark <a href="https://huggingface.co/datasets/ariG23498/faster-transformers-scripts/blob/main/benchmark-kernels-with-without.py">tại đây</a></p></blockquote>
+<h3 id="flash-attention-3">Flash Attention 3</h3>
+<p>Các mô hình OpenAI gpt-oss sử dụng <em>attention sinks</em>, giúp cải thiện chất lượng và tạo điều kiện thuận lợi cho việc sử dụng các ngữ cảnh dài hơn. Nhóm vLLM đã thêm tính năng này vào phiên bản Flash Attention mới nhất (Flash Attention 3) và kernel tùy chỉnh kết quả có sẵn <a href="https://huggingface.co/kernels-community/vllm-flash-attn3">trên Hub</a>. Hiện tại, kernel này tương thích với kiến trúc Hopper. Nếu bạn có một kiến trúc, đây là cách để bật nó:</p>
+<p>diff
+model = AutoModelForCausalLM.from_pretrained(
+model_id,
+dtype=&ldquo;auto&rdquo;,
+device_map=&ldquo;auto&rdquo;,</p>
+<ul>
+<li>
+<h1 id="flash-attention-with-sinks">Flash Attention with Sinks</h1>
+</li>
+<li>attn_implementation=&ldquo;kernels-community/vllm-flash-attn3&rdquo;,
+)</li>
+</ul>
+<h2 id="lượng-tử-hóa-mxfp4">Lượng tử hóa MXFP4</h2>
+<p>Các mô hình ngôn ngữ lớn rất tốn bộ nhớ. Lượng tử hóa làm giảm footprint bộ nhớ bằng cách lưu trữ weights (và đôi khi là activations) ở các định dạng có độ chính xác thấp hơn. Để tham khảo, <code>FP32</code> sử dụng 32 bit cho mỗi số và <code>BF16</code> sử dụng 16. Bằng cách giảm độ rộng bit, chúng ta đánh đổi một số độ chính xác để có các mô hình nhỏ hơn và di chuyển bộ nhớ nhanh hơn.</p>
+<p>Nếu bạn muốn có một primer trực quan về các trade-off lượng tử hóa, bài viết của <a href="https://huggingface.co/MaartenGr">Maarten Grootendorst</a> là tuyệt vời: <a href="https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-quantization"><em>Hướng dẫn trực quan về lượng tử hóa</em></a>.</p>
+<h3 id="mxfp4-là-gì">MXFP4 là gì</h3>
+<!-- raw HTML omitted -->
+<p><code>MXFP4</code> là một định dạng dấu phẩy động 4-bit với bố cục E2M1: 1 bit dấu, 2 bit số mũ và 1 bit phần định trị, như được hiển thị trong <strong>Hình 2</strong>. Bản thân E2M1 rất thô. MXFP4 bù đắp bằng <strong>scaling theo khối</strong>:</p>
+<ul>
+<li>Các vector được nhóm thành các khối gồm 32 phần tử.</li>
+<li>Mỗi khối lưu trữ một scale được chia sẻ khôi phục phạm vi động khi dequantizing.</li>
+<li>Bên trong mỗi khối, các giá trị 4-bit đại diện cho các số liên quan đến scale đó.</li>
+</ul>
+<p>Lược đồ theo khối này cho phép <code>MXFP4</code> giữ phạm vi trong khi sử dụng rất ít bit. Trong thực tế, GPT-OSS 20B phù hợp với khoảng <code>16 GB</code> VRAM và GPT-OSS 120B phù hợp với khoảng <code>80 GB</code> khi <code>MXFP4</code> hoạt động, đó là sự khác biệt giữa &ldquo;không thể tải&rdquo; và &ldquo;có thể chạy trên một GPU duy nhất&rdquo;. Vấn đề là các phép nhân ma trận hiện phải tôn trọng các scale khối. Làm điều này một cách hiệu quả ở quy mô lớn đòi hỏi các kernel chuyên dụng.</p>
+<h3 id="mxfp4-trong-transformers">MXFP4 trong <code>transformers</code></h3>
+<p><code>transformers</code> hiện bao gồm hỗ trợ gốc cho MXFP4, tận dụng các kernel <code>triton</code> (MXFP4) được tối ưu hóa để tăng cường hiệu suất. Điều này xây dựng trên phân phối kernel do cộng đồng điều khiển <a href="#zero-build-kernels-downloadable-from-the-hub">được thảo luận trước đó</a>, sử dụng các kernel được biên dịch trước từ Hub để đơn giản hóa việc triển khai.</p>
+<p>Chi tiết triển khai chính:</p>
+<ul>
+<li>Logic quantizer: Được tìm thấy trong <a href="https://github.com/huggingface/transformers/blob/0997c2f2ab08c32c8e2f90aaad06e29a7108535b/src/transformers/quantizers/quantizer_mxfp4.py">tệp quantizer MXFP4</a>, điều này xử lý quá trình lượng tử hóa cốt lõi cho MXFP4.</li>
+<li>Integration hooks: <a href="https://github.com/huggingface/transformers/blob/0997c2f2ab08c32c8e2f90aaad06e29a7108535b/src/transformers/integrations/mxfp4.py">Tệp tích hợp MXFP4</a> cho phép sử dụng MXFP4 liền mạch trong framework transformers.</li>
+</ul>
+<p>Để kiểm tra xem một mô hình có hỗ trợ <code>MXFP4</code> hay không, hãy kiểm tra cấu hình của nó:</p>
+<p>py
+from transformers import GptOssConfig</p>
+<p>model_id = &ldquo;openai/gpt-oss-120b&rdquo;
+cfg = GptOssConfig.from_pretrained(model_id)
+print(cfg.quantization_config)</p>
+<h1 id="ví-dụ-đầu-ra">Ví dụ đầu ra:</h1>
+<h1 id="heading">{</h1>
+<h1 id="modules_to_not_convert-">&lsquo;modules_to_not_convert&rsquo;: [</h1>
+<h1 id="modellayersself_attn">&lsquo;model.layers.*.self_attn&rsquo;,</h1>
+<h1 id="modellayersmlprouter">&lsquo;model.layers.*.mlp.router&rsquo;,</h1>
+<h1 id="modelembed_tokens">&lsquo;model.embed_tokens&rsquo;,</h1>
+<h1 id="lm_head">&rsquo;lm_head&rsquo;</h1>
+<h1 id="heading-1">],</h1>
+<h1 id="quant_method-mxfp4">&lsquo;quant_method&rsquo;: &lsquo;mxfp4&rsquo;</h1>
+<h1 id="heading-2">}</h1>
+<p>Nếu có <code>'quant_method': 'mxfp4'</code>, mô hình sẽ tự động sử dụng đường dẫn MXFP4 với kernel Triton khi được hỗ trợ.</p>
+<blockquote>
+<p>Nhờ <a href="https://github.com/huggingface/transformers/pull/40176">pull request</a> này, bạn có thể tinh chỉnh các mô hình gpt-oss và lưu chúng trực tiếp vào Hub ở định dạng MXFP4, hợp lý hóa việc triển khai với hiệu suất được tối ưu hóa.</p></blockquote>
+<h3 id="yêu-cầu-và-dự-phòng">Yêu cầu và dự phòng</h3>
+<p>Để chạy <code>MXFP4</code> trên GPU, bạn cần:</p>
+<ol>
+<li><code>accelerate</code>, <code>kernels</code> và <code>triton&gt;=3.4</code> đã được cài đặt. Lưu ý rằng <code>Pytorch 2.8</code> đã đi kèm với <code>triton 3.4</code>, vì vậy bạn chỉ cần cài đặt thủ công triton nếu sử dụng <code>Pytorch 2.7</code>.</li>
+<li>GPU NVIDIA với compute capability <code>≥ 7.5</code>. Điều này quay trở lại Tesla, vì vậy bạn có thể chạy <code>gpt-oss-20b</code> trên các tầng miễn phí của Google Colab và Kaggle, và trên nhiều GPU tiêu dùng.</li>
+</ol>
+<p>Nếu các ràng buộc này không được đáp ứng, <code>transformers</code> sẽ quay trở lại đường dẫn có độ chính xác cao hơn (<code>bfloat16</code> được sử dụng theo mặc định), yêu cầu khoảng 4 lần bộ nhớ của MXFP4.</p>
+<p><a href="https://huggingface.co/datasets/ariG23498/faster-transformers-scripts/blob/main/memory-requirements-quantized-vs-dequantized.py">Snippet</a> tải GPT-OSS hai lần trên CUDA: một lần với <code>Mxfp4Config(dequantize=True)</code> (tốn nhiều bộ nhớ) và một lần trong đường dẫn lượng tử hóa mặc định (hiệu quả bộ nhớ). <strong>Hình 3</strong> hiển thị lượng VRAM được sử dụng sau mỗi lần tải để bạn có thể hình dung các khoản tiết kiệm.</p>
+<!-- raw HTML omitted -->
+<h3 id="kernel-cho-mxfp4">Kernel cho MXFP4</h3>
+<p><code>MXFP4</code> hiệu quả yêu cầu các kernel hiểu các khối 32 phần tử và scale của chúng trong quá trình GEMM và fused ops. Đây là nơi <strong>Kernel từ Hub</strong> xuất hiện trở lại. <code>transformers</code> tự động kéo vào kernel Triton nhận biết <code>MXFP4</code> từ kho lưu trữ cộng đồng khi bạn tải một mô hình cần chúng. Kho lưu trữ sẽ xuất hiện trong bộ nhớ cache cục bộ của bạn và sẽ được sử dụng trong quá trình chuyển tiếp. Đối với các kernel <code>MXFP4</code>, người ta không cần sử dụng tham số <code>use_kernels=True</code> như trước đây, nó được đặt thành mặc định trong <code>transformers</code>.</p>
+<p>Kiểm tra nhanh chóng với CLI bộ nhớ cache Hugging Face, sau khi chạy <code>gpt-oss-20b</code> trên một GPU tương thích với kernel MXFP4 triton:</p>
+<p>shell
+hf cache scan</p>
+<p>Đầu ra mẫu:</p>
+<p>shell
+REPO ID                          REPO TYPE SIZE ON DISK</p>
+<hr>
+<p>kernels-community/triton_kernels model           536.2K
+openai/gpt-oss-20b               model            13.8G</p>
+<p>Điều này chỉ ra rằng các kernel MXFP4 đã được tìm nạp và có sẵn để thực thi.</p>
+<p>Hãy chạy một số benchmark và xem kernel MXFP4 hoạt động tốt như thế nào. Trong <strong>Hình 4</strong>, chúng ta thấy rằng các kernel <code>MXFP4</code> thậm chí còn tốt hơn các kernel MoE và RMSNorm tùy chỉnh cho các batch lớn hơn.</p>
+<!-- raw HTML omitted -->
+<blockquote>
+<p>Bạn có thể khám phá và chơi với script benchmark <a href="https://huggingface.co/datasets/ariG23498/faster-transformers-scripts/blob/main/benchmark-mxfp4-kernels.py">tại đây</a></p></blockquote>
+<h2 id="song-song-hóa-tensor">Song song hóa Tensor</h2>
+<!-- raw HTML omitted -->
+<p>Song song hóa Tensor (TP) chia <strong>các tensor bên trong một lớp</strong> trên nhiều GPU (như được hiển thị trong <strong>Hình 5</strong>). Mỗi GPU nhân shard của nó song song, và sau đó các kết quả một phần được thu thập bằng cách sử dụng các hoạt động all-gather hoặc all-reduce.
+Điều này làm giảm bộ nhớ trên mỗi GPU và giữ cho tất cả các GPU hoạt động trên <strong>cùng một lớp</strong>, điều này cải thiện thông lượng khi độ dài chuỗi hoặc batch size tăng lên. TP tốn nhiều giao tiếp và thường hoạt động tốt nhất trên <strong>một máy duy nhất với các liên kết intra-node nhanh</strong>.</p>
+<h3 id="điều-này-cho-phép-điều-gì-trong-transformers">Điều này cho phép điều gì trong <code>transformers</code></h3>
+<p><code>transformers</code> triển khai TP trực tiếp trong <code>from_pretrained</code>. Bạn có thể bắt đầu với plan được xác định trước:</p>
+<p>python</p>
+<h1 id="chạy-với-torchrun-nproc-per-node-4-tp_gpt_osspy">chạy với: torchrun &ndash;nproc-per-node 4 tp_gpt_oss.py</h1>
+<p>import torch
+from transformers import PreTrainedTokenizerFast, GptOssForCausalLM
+from transformers.distributed import DistributedConfig</p>
+<p>model_id = &ldquo;openai/gpt-oss-120b&rdquo;
+tokenizer = PreTrainedTokenizerFast.from_pretrained(model_id)
+model = GptOssForCausalLM.from_pretrained(
+model_id,
+tp_plan=&ldquo;auto&rdquo;, # built in TP support
+dtype=&ldquo;auto&rdquo;,
+).eval()</p>
+<p>messages = [
+{&ldquo;role&rdquo;: &ldquo;system&rdquo;, &ldquo;content&rdquo;: &ldquo;Be concise.&rdquo;},
+{&ldquo;role&rdquo;: &ldquo;user&rdquo;, &ldquo;content&rdquo;: &ldquo;Explain KV caching briefly.&rdquo;},
+]
+inputs = tokenizer.apply_chat_template(
+messages,
+add_generation_prompt=True,
+return_tensors=&ldquo;pt&rdquo;,
+return_dict=True,
+reasoning_effort=&ldquo;low&rdquo;,
+).to(model.device)</p>
+<p>with torch.inference_mode():
+generations = model.generate(**inputs, max_new_tokens=128)</p>
+<p>print(tokenizer.decode(generations[0][inputs[&ldquo;input_ids&rdquo;].shape[-1]:]))</p>
+<p>Nếu bạn không có cơ sở hạ tầng để chạy đoạn mã trên, bạn chỉ cần tạo một process trên GPU của chúng tôi bằng cách sử dụng <a href="https://huggingface.co/docs/huggingface_hub/en/guides/jobs">Hugging Face Jobs</a>!</p>
+<p>bash
+hf jobs run &ndash;detach &ndash;flavor l4x4 ghcr.io/astral-sh/uv:debian /bin/bash -c <br>
+&ldquo;uv venv .venv &ndash;python 3.12 &amp;&amp; <br>
+source .venv/bin/activate &amp;&amp; <br>
+uv pip install &ndash;upgrade torch numpy transformers accelerate triton kernels &amp;&amp; <br>
+wget <a href="https://huggingface.co/datasets/ariG23498/distributed/raw/main/tp_gpt_oss.py">https://huggingface.co/datasets/ariG23498/distributed/raw/main/tp_gpt_oss.py</a> &amp;&amp; <br>
+torchrun &ndash;nproc-per-node=4 tp_gpt_oss.py&rdquo;</p>
+<blockquote>
+<p><a href="https://huggingface.co/docs/huggingface_hub/guides/jobs"><code>hf jobs</code></a> có sẵn cho tất cả người dùng Hugging Face PRO &amp; Enterprise.</p></blockquote>
+<p>Bên dưới, <code>tp_plan=&quot;auto&quot;</code> chọn một công thức sharding được xác định trước cho mỗi lớp và kết nối các <a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook?section=a0:_parallel_programming_crash_course">tập hợp</a> cần thiết. Bạn có thể kiểm tra plan đang hoạt động bằng <code>print(model._tp_plan)</code> nếu bạn muốn xác minh những gì đang được sharded.</p>
+<h3 id="khi-nào-nên-sử-dụng-tp">Khi nào nên sử dụng TP</h3>
+<p>Sử dụng TP khi mô hình quá lớn đối với một GPU và bạn muốn <strong>tính toán song song</strong>, không chỉ vị trí bộ nhớ. TP có xu hướng scale thông lượng với nhiều GPU hơn, đặc biệt đối với các chuỗi dài hoặc các batch lớn hơn.</p>
+<blockquote>
+<p>Nếu bạn tò mò về cách TP khác với <code>device_map=&quot;auto&quot;</code> (vị trí bộ nhớ), <a href="https://stackoverflow.com/questions/78852192/choose-available-gpu-devices-with-device-map">câu trả lời Stack Overflow</a> ngắn gọn này giải thích sự khác biệt và khi nào nên sử dụng mỗi loại.</p></blockquote>
+<p>Để tìm hiểu thêm về TP, đây là hai tài nguyên phải đọc:</p>
+<ul>
+<li><a href="https://huggingface.co/docs/transformers/en/perf_infer_gpu_multi">Hướng dẫn <code>transformers</code></a>: Song song hóa Tensor, các mô hình được hỗ trợ, plan và các điểm mở rộng.</li>
+<li><a href="https://huggingface.co/spaces/nanotron/ultrascale-playbook?section=tensor_parallelism">Sổ tay Ultra-Scale</a>: background về TP và mối quan hệ của nó với các chế độ song song hóa khác.</li>
+</ul>
+<h2 id="song-song-hóa-expert">Song song hóa Expert</h2>
+<p>Expert Parallelism (EP) shard <strong>các expert bên trong các lớp MoE</strong> trên các GPU. Mỗi token được định tuyến đến một hoặc một vài expert, vì vậy chỉ các expert đó chạy feed-forward pass của chúng. Vì các expert là các MLP độc lập, chúng ta có thể đặt các expert khác nhau trên các rank khác nhau và chỉ trao đổi các trạng thái ẩn cho các token được định tuyến. Điều này giữ cho các phép nhân ma trận còn nguyên vẹn trên mỗi rank và thay thế slicing tensor bằng định tuyến và tập hợp.</p>
+<p>Chạy với nhiều process bằng <code>torchrun</code>. EP được bật thông qua cấu hình phân tán và hoạt động với các lớp GPT-OSS MoE ngay lập tức trong transformers.</p>
+<p>python</p>
+<h1 id="chạy-với-torchrun-nproc-per-node-4-ep_gpt_osspy">chạy với: torchrun &ndash;nproc-per-node 4 ep_gpt_oss.py</h1>
+<p>import torch
+from transformers import PreTrainedTokenizerFast, GptOssForCausalLM
+from transformers.distributed import DistributedConfig</p>
+<p>model_id = &ldquo;openai/gpt-oss-120b&rdquo;
+tokenizer = PreTrainedTokenizerFast.from_pretrained(model_id)
+model = GptOssForCausalLM.from_pretrained(
+model_id,
+distributed_config=DistributedConfig(enable_expert_parallel=True), # enabling EP
+dtype=&ldquo;auto&rdquo;,
+).eval()</p>
+<p>messages = [
+{&ldquo;role&rdquo;: &ldquo;system&rdquo;, &ldquo;content&rdquo;: &ldquo;Be concise.&rdquo;},
+{&ldquo;role&rdquo;: &ldquo;user&rdquo;, &ldquo;content&rdquo;: &ldquo;Explain KV caching briefly.&rdquo;},
+]
+inputs = tokenizer.apply_chat_template(
+messages,
+add_generation_prompt=True,
+return_tensors=&ldquo;pt&rdquo;,
+return_dict=True,
+reasoning_effort=&ldquo;low&rdquo;,
+).to(model.device)</p>
+<p>with torch.inference_mode():
+generations = model.generate(**inputs, max_new_tokens=128)</p>
+<p>print(tokenizer.decode(generations[0][inputs[&ldquo;input_ids&rdquo;].shape[-1]:]))</p>
+<p>Đây là cách bạn sẽ chạy bằng <code>hf jobs</code></p>
+<p>bash
+hf jobs run &ndash;detach &ndash;flavor l4x4 ghcr.io/astral-sh/uv:debian /bin/bash -c <br>
+&ldquo;uv venv .venv &ndash;python 3.12 &amp;&amp; <br>
+source .venv/bin/activate &amp;&amp; <br>
+uv pip install &ndash;upgrade torch numpy transformers accelerate triton kernels &amp;&amp; <br>
+wget <a href="https://huggingface.co/datasets/ariG23498/distributed/raw/main/ep_gpt_oss.py">https://huggingface.co/datasets/ariG23498/distributed/raw/main/ep_gpt_oss.py</a> &amp;&amp; <br>
+torchrun &ndash;nproc-per-node=4 ep_gpt_oss.py&rdquo;</p>
+<blockquote>
+<p>Khi bạn bật Expert Parallelism, Tensor Parallelism cũng được kích hoạt. Điều này có nghĩa là bạn tận hưởng những điều tốt nhất của cả hai thế giới!</p></blockquote>
+<h2 id="lớp-cửa-sổ-trượt-động--bộ-nhớ-cache">Lớp Cửa sổ Trượt Động &amp; Bộ nhớ Cache</h2>
+<p>Nhiều LLM gần đây sử dụng attention <em>cửa sổ trượt</em>, hoặc sự kết hợp của các lớp attention trượt và toàn cục, như một phương tiện để tiết kiệm bộ nhớ và giảm các matmul bậc hai tốn kém phát triển theo độ dài chuỗi. Tuy nhiên, việc triển khai bộ nhớ cache KV động trong transformers vẫn tiếp tục phân bổ không gian theo độ dài chuỗi, mà không xem xét các lớp attention riêng lẻ. Bạn luôn có thể tối ưu hóa bộ nhớ bằng cách sử dụng biên dịch (nghĩa là, các hình dạng cố định), nhưng đó là một kịch bản riêng biệt.</p>
+<p><code>transformers</code> hiện có một <a href="https://github.com/huggingface/transformers/blob/64ae6e6b1de2c6822a53be46aba9db68f75ec595/src/transformers/cache_utils.py#L165"><code>DynamicSlidingWindowLayer</code></a> và một <a href="https://github.com/huggingface/transformers/blob/64ae6e6b1de2c6822a53be46aba9db68f75ec595/src/transformers/cache_utils.py#L959"><code>DynamicCache</code></a> nhận biết <em>cấu hình</em>. Nếu cấu hình mô hình khai báo attention cửa sổ trượt hoặc attention kết hợp (cả các lớp attention trượt và toàn cục đều được sử dụng), bộ nhớ cache sẽ <strong>ngừng phát triển vượt quá cửa sổ</strong> cho các lớp trượt. Nếu bạn không chuyển cấu hình, hành vi vẫn như trước (KV đầy đủ, luôn phát triển khi độ dài chuỗi tăng lên).</p>
+<p>Đối với các mô hình chỉ sử dụng các lớp cửa sổ trượt, chẳng hạn như Mistral 7B, bộ nhớ cache ngừng phát triển khi chuỗi đạt đến kích thước cửa sổ (4096, trong trường hợp này). Điều này có ý nghĩa, vì các lớp trượt không thể nhìn xa hơn 4K token trước đó.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>OpenAI gpt-oss luân phiên giữa các lớp attention trượt và toàn cục, dẫn đến tổng bộ nhớ cache KV <em>giảm một nửa</em>, như chúng ta sẽ thấy, khi độ dài chuỗi tăng lên.
+Điều này cung cấp cho chúng ta:</p>
+<ul>
+<li><strong>Bộ nhớ KV-cache thấp hơn nhiều</strong> cho các mô hình có attention trượt hoặc kết hợp (ví dụ: GPT-OSS). Tốc độ tăng trưởng bộ nhớ cache ổn định sau khi đạt đến cửa sổ (ví dụ: 4K cho Mistral; 128 cho các lớp trượt GPT-OSS), thay vì scale tuyến tính với tổng số token được tạo. (<a href="https://github.com/huggingface/transformers/pull/40039">GitHub</a>, <a href="https://huggingface.co/docs/transformers/en/model_doc/mistral">Transformers</a>)</li>
+<li><strong>Chiến thắng về tốc độ/độ trễ</strong> trên các prompt dài/thế hệ dài: các tensor KV nhỏ hơn có nghĩa là đọc/ghi attention nhẹ hơn và ít áp lực băng thông bộ nhớ hơn, đặc biệt là sau khi đạt đến cửa sổ. (Đây là động lực trung tâm đằng sau LLM cửa sổ trượt/kết hợp.) (<a href="https://www.ai21.com/blog/rise-of-hybrid-llms/">AI21</a>, <a href="https://blog.vllm.ai/2025/08/05/gpt-oss.html">Blog vLLM</a>)</li>
+</ul>
+<h3 id="cách-sử-dụng-nó">Cách sử dụng nó</h3>
+<p>Bộ nhớ cache được tối ưu hóa được đặt theo mặc định, điều đó có nghĩa là <strong>bạn không phải thực hiện bất kỳ thay đổi nào</strong> đối với mã hiện có của mình. Nếu bạn muốn tạo <code>DynamicCache</code> một cách rõ ràng, đây là cách bạn sẽ làm:</p>
+<p>python
+from transformers import AutoModelForCausalLM, AutoTokenizer, DynamicCache</p>
+<p>model_id = &ldquo;openai/gpt-oss-20b&rdquo;</p>
+<p>tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(
+model_id,
+dtype=&ldquo;auto&rdquo;,
+device_map=&ldquo;auto&rdquo;,
+).eval()</p>
+<p>messages = [
+{&ldquo;role&rdquo;: &ldquo;system&rdquo;, &ldquo;content&rdquo;: &ldquo;Always respond in riddles&rdquo;},
+{&ldquo;role&rdquo;: &ldquo;user&rdquo;, &ldquo;content&rdquo;: &ldquo;What is the weather like in Madrid?&rdquo;},
+]</p>
+<p>inputs = tokenizer.apply_chat_template(
+messages,
+add_generation_prompt=True,
+return_tensors=&ldquo;pt&rdquo;,
+return_dict=True,
+reasoning_effort=&ldquo;low&rdquo;,
+).to(model.device)</p>
+<p>cache = DynamicCache(config=model.config) # tạo bộ nhớ cache với cấu hình của mô hình</p>
+<p>generated = model.generate(
+**inputs,
+max_new_tokens=500,
+past_key_values=cache
+)
+print(tokenizer.decode(generated[0][inputs[&ldquo;input_ids&rdquo;].shape[-1]:]))</p>
+<p><strong>Hình 6</strong> cho thấy sự khác biệt lớn như thế nào đối với chúng ta khi sử dụng Dynamic KV Cache với attention cửa sổ trượt.</p>
+<!-- raw HTML omitted -->
+<h2 id="batching-liên-tục--chú-ý-theo-trang">Batching liên tục &amp; Chú ý theo Trang</h2>
+<p>Một quá trình tạo tự hồi quy điển hình trông giống như <strong>Hình 7</strong>. Bạn nhập các token prefill và mô hình dự đoán từng token mới một sau một cho đến khi nó dự đoán token EOS (End of Sequence).</p>
+<!-- raw HTML omitted -->
+<p>Hãy xem quá trình tạo trông như thế nào khi chúng ta chuyển một <strong>batch</strong> các đầu vào. Trong <strong>Hình 8</strong>, bạn nhận thấy rằng một số thế hệ kết thúc sớm hơn những thế hệ khác. Sự không phù</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/faster-transformers">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/september-11-2025/">September 11, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/777761/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/riskrubric/thumbnail.png" alt="Dân chủ hóa An toàn AI với RiskRubric.ai" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Dân chủ hóa An toàn AI với RiskRubric.ai</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/2e2081/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobot-dataset-v3/thumbnail.png" alt="`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/777761/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/riskrubric/thumbnail.png" alt="Dân chủ hóa An toàn AI với RiskRubric.ai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dân chủ hóa An toàn AI với RiskRubric.ai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/c813d8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/0s-zLFC0-vi8maL45QgUS93WJwkDdrwItNJiaoHb4rh6_Eru1sg43UJEax5twdcItCR8lK8bW-0hqsPjsxe-O1dduxTdzsv_Av66SY1psiPuTnC4gg=w400-h225-n-nu" alt="Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

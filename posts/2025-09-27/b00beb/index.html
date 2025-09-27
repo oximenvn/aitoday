@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Từ Zero đến GPU- Hướng dẫn xây dựng và mở rộng quy mô CUDA Kernels sẵn sàng cho sản xuất | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Từ Zero đến GPU- Hướng dẫn xây dựng và mở rộng quy mô CUDA Kernels sẵn sàng cho sản xuất</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-09-27T00:00:00&#43;00:00">September 27, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            20 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/kernel-builder/kernel-builder.png" alt="Từ Zero đến GPU- Hướng dẫn xây dựng và mở rộng quy mô CUDA Kernels sẵn sàng cho sản xuất">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="từ-zero-đến-gpu-hướng-dẫn-xây-dựng-và-mở-rộng-kernel-cuda-sẵn-sàng-cho-sản-xuất">Từ Zero đến GPU: Hướng dẫn Xây dựng và Mở rộng Kernel CUDA Sẵn sàng cho Sản xuất</h1>
+<p>Kernel CUDA tùy chỉnh mang lại lợi thế hiệu suất nghiêm trọng cho các mô hình của bạn, nhưng việc xây dựng chúng cho thế giới thực có thể gây nản lòng. Làm thế nào để bạn vượt ra khỏi một hàm GPU đơn giản để tạo ra một hệ thống mạnh mẽ, có thể mở rộng mà không bị sa lầy vào thời gian xây dựng vô tận và những cơn ác mộng về sự phụ thuộc?</p>
+<p>Chúng tôi đã tạo ra thư viện <a href="https://github.com/huggingface/kernel-builder"><code>kernel-builder</code></a> cho mục đích này. Bạn có thể phát triển một kernel tùy chỉnh cục bộ, sau đó xây dựng nó cho nhiều kiến trúc và cung cấp cho thế giới sử dụng.</p>
+<p>Trong hướng dẫn này, chúng tôi sẽ chỉ cho bạn cách xây dựng một kernel CUDA hoàn chỉnh, hiện đại từ đầu. Sau đó, chúng ta sẽ giải quyết những thách thức khó khăn về sản xuất và triển khai, dựa trên các chiến lược kỹ thuật thực tế để chỉ cho bạn cách xây dựng các hệ thống không chỉ nhanh mà còn hiệu quả và dễ bảo trì.</p>
+<h2 id="bạn-sẽ-học-được-gì">Bạn sẽ học được gì</h2>
+<p>Khi bạn hoàn thành, các nhà phát triển khác sẽ có thể sử dụng các kernel của bạn trực tiếp từ hub như sau:</p>
+<p>python
+import torch</p>
+<p>from kernels import get_kernel</p>
+<h1 id="tải-xuống-kernel-tùy-chỉnh-từ-hugging-face-hub">Tải xuống kernel tùy chỉnh từ Hugging Face Hub</h1>
+<p>optimized_kernel = get_kernel(&ldquo;your-username/optimized-kernel&rdquo;)</p>
+<h1 id="một-tensor-đầu-vào-mẫu">Một tensor đầu vào mẫu</h1>
+<p>some_input = torch.randn((10, 10), device=&ldquo;cuda&rdquo;)</p>
+<h1 id="chạy-kernel">Chạy kernel</h1>
+<p>out = optimized_kernel.my_kernel_function(some_input)</p>
+<p>print(out)</p>
+<p>Thích xem video hơn? Xem <a href="https://youtu.be/HS5Pp_NLVWg?si=WP1aJ98q52lJn6F-&amp;t=0">video trên YouTube</a> đi kèm với hướng dẫn này.</p>
+<p>Hãy bắt đầu! 🚀</p>
+<h2 id="phần-1-giải-phẫu-của-một-kernel-cuda-hiện-đại">Phần 1: Giải phẫu của một Kernel CUDA Hiện đại</h2>
+<p>Hãy xây dựng một kernel thiết thực chuyển đổi một hình ảnh từ RGB sang thang độ xám. Ví dụ này sử dụng API C++ hiện đại của PyTorch để đăng ký hàm của chúng ta như một toán tử gốc, hạng nhất.</p>
+<h3 id="bước-1-cấu-trúc-dự-án">Bước 1: Cấu trúc dự án</h3>
+<p>Một cấu trúc sạch sẽ, có thể dự đoán được là nền tảng của một dự án tốt. Hugging Face Kernel Builder mong đợi các tệp của bạn được tổ chức như sau:</p>
+<p>bash
+img2gray/
+├── build.toml
+├── csrc
+│   └── img2gray.cu
+├── flake.nix
+└── torch-ext
+├── torch_binding.cpp
+├── torch_binding.h
+└── img2gray
+└── <strong>init</strong>.py</p>
+<ul>
+<li><strong><code>build.toml</code></strong>: Bản kê khai dự án; nó là bộ não của quy trình xây dựng.</li>
+<li><strong><code>csrc/</code></strong>: Mã nguồn CUDA thô của bạn, nơi điều kỳ diệu của GPU diễn ra.</li>
+<li><strong><code>flake.nix</code></strong>: Chìa khóa để có một môi trường xây dựng có thể tái tạo hoàn hảo*.</li>
+<li><strong><code>torch-ext/img2gray/</code></strong>: Trình bao bọc Python cho các toán tử PyTorch thô.</li>
+</ul>
+<h3 id="bước-2-bản-kê-khai-buildtoml">Bước 2: Bản kê khai <code>build.toml</code></h3>
+<p>Tệp này điều phối toàn bộ bản dựng. Nó cho <code>kernel-builder</code> biết những gì cần biên dịch và cách mọi thứ kết nối.</p>
+<p>toml</p>
+<h1 id="buildtoml">build.toml</h1>
+<p>[general]
+name = &ldquo;img2gray&rdquo;
+universal = false</p>
+<h1 id="xác-định-các-tệp-c-liên-kết-với-pytorch">Xác định các tệp C++ liên kết với PyTorch</h1>
+<p>[torch]
+src = [
+&ldquo;torch-ext/torch_binding.cpp&rdquo;,
+&ldquo;torch-ext/torch_binding.h&rdquo;
+]</p>
+<h1 id="xác-định-kernel-cuda">Xác định kernel CUDA</h1>
+<p>[kernel.img2gray]
+backend = &ldquo;cuda&rdquo;
+depends = [&ldquo;torch&rdquo;] # Kernel này phụ thuộc vào thư viện Torch cho lớp <code>Tensor</code>.
+src = [
+&ldquo;csrc/img2gray.cu&rdquo;,
+]</p>
+<h3 id="bước-3-tệp-tái-tạo-flakenix">Bước 3: Tệp tái tạo <code>flake.nix</code></h3>
+<p>Để đảm bảo bất kỳ ai cũng có thể xây dựng kernel của bạn trên bất kỳ máy nào, chúng ta sử dụng tệp <code>flake.nix</code>. Nó khóa chính xác phiên bản của <code>kernel-builder</code> và các phụ thuộc của nó, loại bỏ các sự cố &ldquo;nó hoạt động trên máy của tôi&rdquo;.</p>
+<p>nix</p>
+<h1 id="flakenix">flake.nix</h1>
+<p>{
+description = &ldquo;Flake for img2gray kernel&rdquo;;</p>
+<p>inputs = {
+kernel-builder.url = &ldquo;github:huggingface/kernel-builder&rdquo;;
+};</p>
+<p>outputs =
+{
+self,
+kernel-builder,
+}:
+kernel-builder.lib.genFlakeOutputs {
+path = ./.;
+rev = self.shortRev or self.dirtyShortRev or self.lastModifiedDate;
+};
+}</p>
+<h3 id="bước-4-viết-kernel-cuda">Bước 4: Viết Kernel CUDA</h3>
+<p>Bây giờ đến mã GPU. Bên trong <code>csrc/img2gray.cu</code>, chúng ta sẽ xác định một kernel sử dụng lưới 2D các luồng — một sự phù hợp tự nhiên và hiệu quả để xử lý hình ảnh.</p>
+<p>cpp
+// csrc/img2gray.cu
+#include <!-- raw HTML omitted -->
+#include &lt;torch/torch.h&gt;</p>
+<p>// Kernel này chạy trên GPU, với mỗi luồng xử lý một pixel
+<strong>global</strong> void img2gray_kernel(const uint8_t* input, uint8_t* output, int width, int height) {
+int x = blockIdx.x * blockDim.x + threadIdx.x;
+int y = blockIdx.y * blockDim.y + threadIdx.y;</p>
+<pre><code>if (x &lt; width &amp;&amp; y &lt; height) {
+    int idx = (y * width + x) * 3; // 3 kênh cho RGB
+    uint8_t r = input[idx];
+    uint8_t g = input[idx + 1];
+    uint8_t b = input[idx + 2];
+
+    // Chuyển đổi độ chói
+    uint8_t gray = static_cast&lt;uint8_t&gt;(0.21f * r + 0.72f * g + 0.07f * b);
+    output[y * width + x] = gray;
+}
+</code></pre>
+<p>}</p>
+<p>// Hàm C++ này khởi chạy kernel CUDA của chúng ta
+void img2gray_cuda(torch::Tensor const &amp;input, torch::Tensor &amp;output) {
+const int width = input.size(1);
+const int height = input.size(0);</p>
+<pre><code>// Xác định kích thước khối và lưới 2D để xử lý ảnh
+const dim3 blockSize(16, 16);
+const dim3 gridSize((width + blockSize.x - 1) / blockSize.x, (height + blockSize.y - 1) / blockSize.y);
+
+img2gray_kernel&lt;&lt;&lt;gridSize, blockSize&gt;&gt;&gt;(
+    input.data_ptr&lt;uint8_t&gt;(),
+    output.data_ptr&lt;uint8_t&gt;(),
+    width,
+    height
+);
+</code></pre>
+<p>}</p>
+<h3 id="bước-5-đăng-ký-toán-tử-pytorch-gốc">Bước 5: Đăng ký Toán tử PyTorch Gốc</h3>
+<p>Đây là bước quan trọng nhất. Chúng ta không chỉ liên kết với Python; chúng ta đang đăng ký hàm của mình như một toán tử PyTorch gốc. Điều này làm cho nó trở thành một thành viên hạng nhất trong hệ sinh thái PyTorch, hiển thị dưới không gian tên <code>torch.ops</code>.</p>
+<p>Tệp <code>torch-ext/torch_binding.cpp</code> xử lý việc đăng ký này.</p>
+<p>cpp
+// torch-ext/torch_binding.cpp
+#include &lt;torch/library.h&gt;
+#include &ldquo;registration.h&rdquo; // included in the build
+#include &ldquo;torch_binding.h&rdquo; // Khai báo hàm img2gray_cuda của chúng ta</p>
+<p>TORCH_LIBRARY_EXPAND(TORCH_EXTENSION_NAME, ops) {
+ops.def(&ldquo;img2gray(Tensor input, Tensor! output) -&gt; ()&rdquo;);
+ops.impl(&ldquo;img2gray&rdquo;, torch::kCUDA, &amp;img2gray_cuda);
+}</p>
+<p>REGISTER_EXTENSION(TORCH_EXTENSION_NAME)</p>
+<p>Nói một cách đơn giản, <code>TORCH_LIBRARY_EXPAND</code> cho phép chúng ta xác định toán tử của mình theo cách có thể dễ dàng mở rộng hoặc sửa đổi trong tương lai.</p>
+<h4 id="tại-sao-điều-này-lại-quan-trọng">Tại sao điều này lại quan trọng</h4>
+<p>Cách tiếp cận này rất quan trọng vì hai lý do chính:</p>
+<ul>
+<li><strong>Khả năng tương thích với <code>torch.compile</code></strong>: Bằng cách đăng ký kernel của chúng ta theo cách này, <code>torch.compile</code> có thể &ldquo;nhìn thấy&rdquo; nó. Điều này cho phép PyTorch hợp nhất toán tử tùy chỉnh của bạn vào các đồ thị tính toán lớn hơn, giảm thiểu chi phí và tối đa hóa hiệu suất. Đây là chìa khóa để làm cho mã tùy chỉnh của bạn hoạt động liền mạch với hệ sinh thái hiệu suất rộng lớn hơn của PyTorch.</li>
+<li><strong>Triển khai dành riêng cho phần cứng</strong>: Hệ thống này cho phép bạn cung cấp các backend khác nhau cho cùng một toán tử. Bạn có thể thêm một khối <code>TORCH_LIBRARY_IMPL(img2gray, CPU, ...)</code> khác trỏ đến một hàm CPU C++. Bộ điều phối của PyTorch sau đó sẽ tự động gọi triển khai chính xác (CUDA hoặc CPU) dựa trên thiết bị của tensor đầu vào, làm cho mã của bạn trở nên mạnh mẽ và di động.</li>
+</ul>
+<p><strong>Thiết lập trình bao bọc <code>__init__.py</code></strong></p>
+<p>Trong <code>torch-ext/img2gray/</code>, chúng ta cần một tệp <code>__init__.py</code> để làm cho thư mục này trở thành một gói Python và để hiển thị toán tử tùy chỉnh của chúng ta một cách thân thiện với người dùng.</p>
+<blockquote>
+<p>Mô-đun <code>_ops</code> được tự động tạo bởi kernel-builder từ một <a href="https://github.com/huggingface/kernel-builder/blob/main/build2cmake/src/templates/_ops.py">mẫu</a> để cung cấp một không gian tên tiêu chuẩn cho các hàm C++ đã đăng ký của bạn.</p></blockquote>
+<p>python</p>
+<h1 id="torch-extimg2grayinitpy">torch-ext/img2gray/<strong>init</strong>.py</h1>
+<p>import torch</p>
+<p>from ._ops import ops</p>
+<p>def img2gray(input: torch.Tensor) -&gt; torch.Tensor:
+# chúng ta mong đợi đầu vào ở định dạng CHW
+height, width, channels = input.shape
+assert channels == 3, &ldquo;Hình ảnh đầu vào phải có 3 kênh (RGB)&rdquo;</p>
+<pre><code>output = torch.empty((height, width), device=input.device, dtype=input.dtype)
+ops.img2gray(input, output)
+
+return output
+</code></pre>
+<h3 id="bước-6-xây-dựng-kernel">Bước 6: Xây dựng Kernel</h3>
+<p>Bây giờ kernel và các liên kết của nó đã sẵn sàng, đã đến lúc xây dựng chúng. Công cụ <code>kernel-builder</code> đơn giản hóa quá trình này.</p>
+<p>Bạn có thể xây dựng kernel của mình bằng một lệnh duy nhất, <code>nix build . -L</code>; tuy nhiên, với tư cách là nhà phát triển, chúng ta sẽ muốn một quy trình làm việc nhanh hơn, lặp đi lặp lại hơn. Đối với điều đó, chúng ta sẽ sử dụng lệnh <code>nix develop</code> để vào một shell phát triển với tất cả các phụ thuộc cần thiết đã được cài đặt sẵn.</p>
+<p>Cụ thể hơn, chúng ta có thể chọn chính xác các phiên bản CUDA và PyTorch mà chúng ta muốn sử dụng. Ví dụ: để xây dựng kernel của chúng ta cho PyTorch 2.7 với CUDA 12.6, chúng ta có thể sử dụng lệnh sau:</p>
+<h4 id="vào-nix-shell">Vào Nix Shell</h4>
+<p>bash</p>
+<h1 id="vào-nix-shell-một-sandbox-biệt-lập-với-tất-cả-các-phụ-thuộc">Vào Nix shell (một sandbox biệt lập với tất cả các phụ thuộc)</h1>
+<p>nix develop .#devShells.torch28-cxx11-cu128-x86_64-linux</p>
+<p>Lưu ý rằng tên <code>devShell</code> ở trên có thể được giải mã như sau:</p>
+<p>nix
+nix develop .#devShells.torch27-cxx11-cu126-x86_64-linux
+│       │         │       │
+│       │         │       └─── Kiến trúc: x86_64 (Linux)
+│       │         └────────── Phiên bản CUDA: 12.6
+│       └──────────────────── ABI C++: cxx11
+└──────────────────────────── Phiên bản Torch: 2.7</p>
+<p>Tại thời điểm này, chúng ta sẽ ở bên trong Nix shell với tất cả các phụ thuộc đã được cài đặt. Bây giờ chúng ta có thể xây dựng kernel cho kiến trúc cụ thể này và kiểm tra nó. Sau này, chúng ta sẽ xử lý nhiều kiến trúc trước khi phân phối phiên bản cuối cùng của kernel.</p>
+<h4 id="thiết-lập-artifacts-bản-dựng">Thiết lập Artifacts Bản dựng</h4>
+<p>bash
+build2cmake generate-torch build.toml</p>
+<h1 id="thao-tác-này-tạo-torch-extimg2gray_opspy-pyprojecttoml-torch-extregistrationh-setuppy-cmakehipifypy-cmakeutilscmake-cmakeliststxt">thao tác này tạo: torch-ext/img2gray/_ops.py, pyproject.toml, torch-ext/registration.h, setup.py, cmake/hipify.py, cmake/utils.cmake, CMakeLists.txt</h1>
+<p>Lệnh này tạo một số tệp được sử dụng để xây dựng kernel: <code>CMakeLists.txt</code>, <code>pyproject.toml</code>, <code>setup.py</code> và một thư mục <code>cmake</code>. Tệp <code>CMakeLists.txt</code> là điểm vào chính để CMake xây dựng kernel.</p>
+<h4 id="tạo-môi-trường-ảo-python">Tạo Môi trường Ảo Python</h4>
+<p>bash
+python -m venv .venv
+source .venv/bin/activate</p>
+<p>Bây giờ bạn có thể cài đặt kernel ở chế độ có thể chỉnh sửa.</p>
+<h4 id="biên-dịch-kernel-và-cài-đặt-gói-python">Biên dịch Kernel và Cài đặt Gói Python</h4>
+<p>bash
+pip install &ndash;no-build-isolation -e .</p>
+<p>🙌 Tuyệt vời! Bây giờ chúng ta có một kernel được xây dựng tùy chỉnh tuân theo các phương pháp hay nhất cho các liên kết PyTorch, với một quy trình xây dựng hoàn toàn có thể tái tạo.</p>
+<h4 id="chu-kỳ-phát-triển">Chu kỳ Phát triển</h4>
+<p>Để đảm bảo mọi thứ hoạt động chính xác, chúng ta có thể chạy một thử nghiệm đơn giản để kiểm tra xem kernel đã được đăng ký và nó hoạt động như mong đợi hay không. Nếu không, bạn có thể lặp lại bằng cách chỉnh sửa các tệp nguồn và lặp lại bản dựng, sử dụng lại môi trường nix mà bạn đã tạo.</p>
+<p>python</p>
+<h1 id="scriptssanitypy">scripts/sanity.py</h1>
+<p>import torch
+import img2gray</p>
+<p>from PIL import Image
+import numpy as np</p>
+<p>print(dir(img2gray))</p>
+<p>img = Image.open(&ldquo;kernel-builder-logo-color.png&rdquo;).convert(&ldquo;RGB&rdquo;)
+img = np.array(img)
+img_tensor = torch.from_numpy(img).cuda()
+print(img_tensor.shape)  # HWC</p>
+<p>gray_tensor = img2gray.img2gray(img_tensor).squeeze()
+print(gray_tensor.shape)  # HW</p>
+<h1 id="lưu-hình-ảnh-đầu-ra">lưu hình ảnh đầu ra</h1>
+<p>gray_img = Image.fromarray(gray_tensor.cpu().numpy().astype(np.uint8), mode=&ldquo;L&rdquo;)
+gray_img.save(&ldquo;kernel-builder-logo-gray.png&rdquo;)</p>
+<h3 id="bước-7-chia-sẻ-với-thế-giới">Bước 7: Chia sẻ với Thế giới</h3>
+<p>Bây giờ chúng ta đã có một kernel hoạt động, đã đến lúc chia sẻ nó với các nhà phát triển khác và thế giới!</p>
+<p>Một điều nhỏ mà chúng ta sẽ muốn làm trước khi chia sẻ là dọn dẹp tất cả các artifact phát triển đã được tạo trong quá trình xây dựng để tránh tải lên các tệp không cần thiết.</p>
+<p>bash
+build2cmake clean build.toml</p>
+<h4 id="xây-dựng-kernel-cho-tất-cả-các-phiên-bản-pytorch-và-cuda">Xây dựng Kernel cho Tất cả các Phiên bản PyTorch và CUDA</h4>
+<p>Trước đó, chúng ta đã xây dựng kernel cho một phiên bản PyTorch và CUDA cụ thể. Tuy nhiên, để cung cấp cho một lượng khán giả rộng hơn, chúng ta cần xây dựng nó cho tất cả các phiên bản được hỗ trợ. Công cụ <code>kernel-builder</code> có thể giúp chúng ta việc đó.</p>
+<p>Đây cũng là nơi khái niệm về <code>kernel tuân thủ</code> phát huy tác dụng. Một kernel tuân thủ là một kernel có thể được xây dựng và chạy cho tất cả các phiên bản PyTorch và CUDA được hỗ trợ. Nói chung, điều này đòi hỏi cấu hình tùy chỉnh; tuy nhiên, trong trường hợp của chúng ta, công cụ <code>kernel-builder</code> sẽ tự động hóa quá trình này.</p>
+<p>bash</p>
+<h1 id="bên-ngoài-dev-shell-hãy-chạy-lệnh-sau">Bên ngoài dev shell, hãy chạy lệnh sau</h1>
+<h1 id="nếu-bạn-ở-bên-trong-sandbox-bạn-có-thể-rời-đi-bằng-exit">nếu bạn ở bên trong sandbox, bạn có thể rời đi bằng <code>exit</code></h1>
+<p>nix build . -L</p>
+<blockquote>
+<p>Quá trình này có thể mất một thời gian, vì nó sẽ xây dựng kernel cho tất cả các phiên bản PyTorch và CUDA được hỗ trợ. Đầu ra sẽ nằm trong thư mục <code>result</code>.</p></blockquote>
+<blockquote>
+<p>Nhóm kernel-builder tích cực duy trì <a href="https://github.com/huggingface/kernel-builder/blob/main/docs/build-variants.md#build-variants">các biến thể bản dựng được hỗ trợ</a>, giữ cho chúng luôn cập nhật với các bản phát hành PyTorch và CUDA mới nhất, đồng thời hỗ trợ các phiên bản trailing để có khả năng tương thích rộng hơn.</p></blockquote>
+<p>Bước cuối cùng là di chuyển kết quả vào thư mục <code>build</code> dự kiến (đây là nơi thư viện <code>kernels</code> sẽ tìm kiếm chúng).</p>
+<p>bash
+mkdir -p build
+rsync -av &ndash;delete &ndash;chmod=Du+w,Fu+w result/ build/</p>
+<h4 id="đẩy-lên-hugging-face-hub">Đẩy lên Hugging Face Hub</h4>
+<p>Đẩy artifact xây dựng lên Hub sẽ giúp các nhà phát triển khác sử dụng kernel của bạn một cách đơn giản, như chúng ta đã thấy trong <a href="https://huggingface.co/blog/hello-hf-kernels">bài đăng trước của chúng ta</a>.</p>
+<p>Đầu tiên, tạo một repo mới:</p>
+<p>bash
+hf repo create img2gray</p>
+<blockquote>
+<p>Đảm bảo bạn đã đăng nhập vào Hugging Face Hub bằng <code>huggingface-cli login</code>.</p></blockquote>
+<p>Bây giờ, trong thư mục dự án của bạn, hãy kết nối dự án của bạn với kho lưu trữ mới và đẩy mã của bạn:</p>
+<p>bash</p>
+<h1 id="khởi-tạo-git-và-kết-nối-với-hugging-face-hub">Khởi tạo git và kết nối với Hugging Face Hub</h1>
+<p>git init
+git remote add origin <a href="https://huggingface.co/">https://huggingface.co/</a><!-- raw HTML omitted -->/img2gray</p>
+<h1 id="kéo-các-thay-đổi-chỉ-tệp-gitattributes-mặc-định">Kéo các thay đổi (chỉ tệp .gitattributes mặc định)</h1>
+<p>git pull origin main
+git lfs install
+git checkout -b main</p>
+<h1 id="cập-nhật-để-sử-dụng-lfs-cho-các-tệp-nhị-phân">Cập nhật để sử dụng LFS cho các tệp nhị phân</h1>
+<p>git lfs track &ldquo;*.so&rdquo;</p>
+<h1 id="thêm-và-cam-kết-các-thay-đổi-của-bạn-cẩn-thận-chỉ-bao-gồm-các-tệp-cần-thiết">Thêm và cam kết các thay đổi của bạn. (cẩn thận chỉ bao gồm các tệp cần thiết</h1>
+<h1 id="vì-lệnh-build2cmake-của-chúng-ta-đã-tạo-ra-rất-nhiều-tệp-dành-riêng-cho-dev">vì lệnh build2cmake của chúng ta đã tạo ra rất nhiều tệp dành riêng cho dev)</h1>
+<p>git add <br>
+build/ csrc/ <br>
+torch-ext/torch_binding.cpp torch-ext/torch_binding.h torch-ext/img2gray <br>
+flake.nix flake.lock build.toml</p>
+<p>git commit -m &ldquo;feat: Đã tạo kernel img2gray tuân thủ&rdquo;
+git push -u origin main</p>
+<p>Tuyệt vời! Kernel của bạn hiện đang ở trên Hugging Face Hub, sẵn sàng cho những người khác sử dụng và hoàn toàn tương thích với thư viện <code>kernels</code>. Kernel của chúng ta và tất cả các biến thể xây dựng của nó hiện có tại <a href="https://huggingface.co/drbh/img2gray/tree/main/build">drbh/img2gray</a>.</p>
+<h3 id="bước-8-tải-và-kiểm-tra-toán-tử-tùy-chỉnh-của-bạn">Bước 8: Tải và Kiểm tra Toán tử Tùy chỉnh của Bạn</h3>
+<p>Với thư viện <code>kernels</code>, bạn không &ldquo;cài đặt&rdquo; kernel theo nghĩa truyền thống. Bạn tải nó trực tiếp từ kho lưu trữ Hub của nó, kho này sẽ tự động đăng ký toán tử mới.</p>
+<p>python</p>
+<h1 id="-script">/// script</h1>
+<h1 id="requires-python--310">requires-python = &ldquo;==3.10&rdquo;</h1>
+<h1 id="dependencies--">dependencies = [</h1>
+<h1 id="kernels">&ldquo;kernels&rdquo;,</h1>
+<h1 id="numpy">&ldquo;numpy&rdquo;,</h1>
+<h1 id="pillow">&ldquo;pillow&rdquo;,</h1>
+<h1 id="torch">&ldquo;torch&rdquo;,</h1>
+<h1 id="heading">]</h1>
+<h1 id="heading-1">///</h1>
+<p>import torch
+from PIL import Image
+import numpy as np
+from kernels import get_kernel</p>
+<h1 id="thao-tác-này-tải-xuống-lưu-vào-bộ-nhớ-cache-và-tải-thư-viện-kernel">Thao tác này tải xuống, lưu vào bộ nhớ cache và tải thư viện kernel</h1>
+<h1 id="và-làm-cho-op-tùy-chỉnh-có-sẵn-trong-torchops">và làm cho op tùy chỉnh có sẵn trong torch.ops</h1>
+<p>img2gray_lib = get_kernel(&ldquo;drbh/img2gray&rdquo;)</p>
+<p>img = Image.open(&ldquo;kernel-builder-logo-color.png&rdquo;).convert(&ldquo;RGB&rdquo;)
+img = np.array(img)
+img_tensor = torch.from_numpy(img).cuda()
+print(img_tensor.shape)  # HWC</p>
+<p>gray_tensor = img2gray_lib.img2gray(img_tensor).squeeze()
+print(gray_tensor.shape)  # HW</p>
+<h1 id="lưu-hình-ảnh-đầu-ra-1">lưu hình ảnh đầu ra</h1>
+<p>gray_img = Image.fromarray(gray_tensor.cpu().numpy().astype(np.uint8), mode=&ldquo;L&rdquo;)
+gray_img.save(&ldquo;kernel-builder-logo-gray2.png&rdquo;)</p>
+<hr>
+<h2 id="phần-2-từ-một-kernel-đến-nhiều-giải-quyết-các-thách-thức-sản-xuất">Phần 2: Từ một Kernel đến Nhiều: Giải quyết các Thách thức Sản xuất</h2>
+<p>Khi bạn đã có một kernel sẵn sàng sử dụng, có một số điều bạn có thể làm để giúp bạn triển khai kernel dễ dàng hơn. Chúng ta sẽ thảo luận về việc sử dụng kiểm soát phiên bản như một công cụ để thực hiện các thay đổi API mà không làm phá vỡ việc sử dụng kernel ở hạ nguồn. Sau đó, chúng ta sẽ kết thúc bằng cách chỉ ra cách bạn có thể tạo bánh xe Python cho kernel của mình.</p>
+<h3 id="phiên-bản-kernel">Phiên bản Kernel</h3>
+<p>Bạn có thể quyết định cập nhật kernel của mình sau một thời gian. Có thể bạn đã tìm thấy những cách mới để cải thiện hiệu suất hoặc có thể bạn muốn mở rộng chức năng của kernel. Một số thay đổi sẽ yêu cầu bạn thay đổi API của kernel của mình. Ví dụ: một phiên bản mới hơn có thể thêm một đối số bắt buộc mới vào một trong các hàm công khai. Điều này có thể gây bất tiện cho người dùng ở hạ nguồn, vì mã của họ sẽ bị hỏng cho đến khi họ thêm đối số mới này.</p>
+<p>Người dùng ở hạ nguồn của kernel có thể tránh sự cố này bằng cách ghim kernel mà họ sử dụng vào một bản sửa đổi cụ thể. Ví dụ: vì mỗi kho lưu trữ Hub cũng là một kho lưu trữ Git, nên họ có thể sử dụng git commit shorthash để ghim kernel vào một bản sửa đổi:</p>
+<p>python
+from kernels import get_kernel
+img2gray_lib = get_kernel(&ldquo;drbh/img2gray&rdquo;, revision=&ldquo;4148918&rdquo;)</p>
+<p>Sử dụng Git shorthash sẽ làm giảm khả năng xảy ra sự cố; tuy nhiên, nó rất khó giải thích và không cho phép nâng cấp duyên dáng trong một phạm vi phiên bản. Do đó, chúng tôi khuyên bạn nên sử dụng hệ thống <a href="https://semver.org/">kiểm soát phiên bản ngữ nghĩa</a> quen thuộc cho các kernel Hub. Việc thêm một phiên bản vào kernel rất dễ dàng: bạn chỉ cần thêm một thẻ Git có dạng <code>vx.y.z</code> trong đó <em>x.y.z</em> là phiên bản. Ví dụ: nếu phiên bản hiện tại của kernel là 1.1.2, bạn có thể gắn thẻ nó là <code>v1.1.2</code>. Sau đó, bạn có thể lấy phiên bản đó bằng <code>get_kernel</code>:</p>
+<p>python
+from kernels import get_kernel
+img2gray_lib = get_kernel(&ldquo;drbh/img2gray&rdquo;, revision=&ldquo;v1.1.2&rdquo;)</p>
+<p>Kiểm soát phiên bản thậm chí còn mạnh mẽ hơn với các ràng buộc phiên bản. Trong kiểm soát phiên bản ngữ nghĩa, phiên bản <code>1.y.z</code> không được có các thay đổi không tương thích ngược trong API công khai cho mỗi <code>x</code> và <code>y</code> kế tiếp. Vì vậy, nếu phiên bản của kernel là <code>1.1.2</code> vào thời điểm viết mã của bạn, bạn có thể yêu cầu phiên bản phải ít nhất là <code>1.1.2</code>, nhưng nhỏ hơn <code>2.0.0</code>:</p>
+<p>python
+from kernels import get_kernel
+img2gray_lib = get_kernel(&ldquo;drbh/img2gray&rdquo;, version=&quot;&gt;=1.1.2,&lt;2&quot;)</p>
+<p>Điều này sẽ đảm bảo rằng mã sẽ luôn tìm nạp kernel mới nhất từ ​​sê-ri <code>1.y.z</code>. Ràng buộc phiên bản có thể là kiểu Python <a href="https://packaging.pypa.io/en/stable/specifiers.html">chỉ định phiên bản</a>.</p>
+<p>Bạn có thể <a href="https://huggingface.co/docs/huggingface_hub/en/guides/cli#tag-a-model">gắn thẻ</a> một phiên bản bằng <code>huggingface-cli</code>:</p>
+<p>bash
+$ huggingface-cli tag drbh/img2gray v1.1.2</p>
+<h4 id="khóa-kernel">Khóa Kernel</h4>
+<p>Trong các dự án lớn, bạn có thể muốn điều phối các phiên bản kernel trên toàn cầu thay vì trong mỗi lệnh gọi <code>get_kernel</code>. Hơn nữa, thường hữu ích khi khóa kernel, để tất cả người dùng của bạn có cùng phiên bản kernel, điều này giúp xử lý các báo cáo lỗi.</p>
+<p>Thư viện <code>kernels</code> cung cấp một cách hay để quản lý kernel ở cấp dự án. Để thực hiện việc này, hãy thêm gói <code>kernels</code> vào các yêu cầu của hệ thống xây dựng của dự án bạn, trong tệp <code>pyproject.toml</code>. Sau khi thực hiện việc này, bạn có thể chỉ định các yêu cầu kernel của dự án bạn trong phần <code>tools.kernels</code>:</p>
+<p>toml
+[build-system]
+requires = [&ldquo;kernels&rdquo;, &ldquo;setuptools&rdquo;]
+build-backend = &ldquo;setuptools.build_meta&rdquo;</p>
+<p>[tool.kernels.dependencies]
+&ldquo;drbh/img2gray&rdquo; = &ldquo;&gt;=0.1.2,&lt;0.2.0&rdquo;</p>
+<p>Phiên bản có thể được chỉ định với cùng loại chỉ định phiên bản như các phụ thuộc Python. Đây là một nơi khác mà các thẻ phiên bản (<code>va.b.c</code>) trở nên hữu ích - <code>kernels</code> sẽ sử dụng các thẻ phiên bản của kho lưu trữ để truy vấn những phiên bản nào có sẵn. Sau khi chỉ định một kernel trong <code>pyproject.toml</code>, bạn có thể khóa nó vào một phiên bản cụ thể bằng tiện ích dòng lệnh <code>kernels</code>. Tiện ích này là một phần của gói Python <code>kernels</code>:</p>
+<p>bash
+$ kernels lock .</p>
+<p>Thao tác này tạo ra một tệp <code>kernels.lock</code> với các phiên bản kernel mới nhất tương thích với các ràng buộc được chỉ định trong <code>pyproject.toml</code>. <code>kernels.lock</code> phải được cam kết vào kho lưu trữ Git của dự án của bạn, để mọi người dùng của dự án sẽ nhận được các phiên bản kernel đã khóa. Khi các phiên bản kernel mới hơn được phát hành, bạn có thể chạy lại <code>kernels lock</code> để cập nhật tệp khóa.</p>
+<p>Bạn cần một bit cuối cùng để triển khai đầy đủ các kernel đã khóa trong một dự án. <code>get_locked_kernel</code> là đối tác với <code>get_kernel</code> sử dụng các kernel đã khóa. Vì vậy, để sử dụng các kernel đã khóa, hãy thay thế mọi lần xuất hiện của <code>get_kernel</code> bằng <code>get_locked_kernel</code>:</p>
+<p>python
+from kernels import get_kernel
+img2gray_lib = get_locked_kernel(&ldquo;drbh/img2gray&rdquo;)</p>
+<p>Thế thôi! Mọi lệnh gọi <code>get_locked_kernel(&quot;drbh/img2gray&quot;)</code> trong dự án bây giờ sẽ sử dụng phiên bản được chỉ định trong <code>kernels.lock</code>.</p>
+<h3 id="tải-trước-các-kernel-đã-khóa">Tải trước các Kernel Đã khóa</h3>
+<p>Hàm <code>get_locked_kernel</code> sẽ tải xuống kernel khi nó không có sẵn trong bộ nhớ cache Hub cục bộ. Điều này không lý tưởng cho các ứng dụng mà bạn không muốn tải xuống các tệp nhị phân tại thời gian chạy. Ví dụ: khi bạn đang xây dựng một hình ảnh Docker cho một ứng dụng, bạn thường muốn các kernel được lưu trữ trong hình ảnh cùng với ứng dụng. Điều này có thể được thực hiện trong hai bước đơn giản.</p>
+<p>Đầu tiên, sử dụng hàm <code>load_kernel</code> thay cho <code>get_locked_kernel</code>:</p>
+<p>python
+from kernels import get_kernel
+img2gray_lib = load_kernel(&ldquo;drbh/img2gray&rdquo;)</p>
+<p>Như tên cho thấy, hàm này sẽ chỉ tải một kernel, nó sẽ <em>không bao giờ</em> cố gắng tải xuống kernel từ Hub. <code>load_kernel</code> sẽ đưa ra một ngoại lệ nếu kernel không có sẵn cục bộ. Vậy, làm cách nào để bạn làm cho các kernel có sẵn cục bộ? Tiện ích <code>kernels</code> đã giúp bạn! Chạy <code>kernels download .</code> sẽ tải xuống các kernel được chỉ định trong <code>kernels.lock</code>. Vì vậy, ví dụ: trong một vùng chứa Docker, bạn có thể thêm một bước:</p>
+<p>dockerfile
+RUN kernels download /path/to/your/project</p>
+<p>và các kernel sẽ được đưa vào hình ảnh Docker của bạn.</p>
+<blockquote>
+<p>Kernel sử dụng bộ nhớ cache Hugging Face tiêu chuẩn, vì vậy tất cả các quy tắc bộ nhớ cache <a href="https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables#hfhome">HF_HOME</a> đều được áp dụng.</p></blockquote>
+<h3 id="tạo-bánh-xe-python-kế-thừa">Tạo Bánh xe Python Kế thừa</h3>
+<p>Chúng tôi đặc biệt khuyên bạn nên tải xuống kernel từ Hub bằng gói <code>kernels</code>. Điều này có nhiều lợi ích:</p>
+<ul>
+<li><code>kernels</code> hỗ trợ tải nhiều phiên bản kernel của cùng một kernel trong một quy trình Python.</li>
+<li><code>kernels</code> sẽ tự động tải một phiên bản của kernel tương thích với các phiên bản CUDA và Torch của môi trường của bạn.</li>
+<li>Bạn sẽ nhận được tất cả những lợi ích của Hub: phân tích, theo dõi sự cố, yêu cầu kéo, các nhánh, v.v.</li>
+<li>Hub và <code>kernel-builder</code> cung cấp nguồn gốc và khả năng tái tạo, người dùng có thể xem lịch sử nguồn của kernel và xây dựng lại nó trong cùng một môi trường xây dựng để xác minh.</li>
+</ul>
+<p>Điều đó có nghĩa là, một số dự án có thể yêu cầu triển khai kernel dưới dạng bánh xe. Tiện ích <code>kernels</code> cung cấp một giải pháp đơn giản cho việc này. Bạn có thể chuyển đổi bất kỳ kernel Hub nào thành một tập hợp các bánh xe bằng một lệnh duy nhất:</p>
+<p>bash
+$ kernels to-wheel drbh/img2grey 1.1.2
+☸ img2grey-1.1.2+torch27cu128cxx11-cp39-abi3-manylinux_2_28_x86_64.whl
+☸ img2grey-1.1.2+torch26cu124cxx11-cp39-abi3-manylinux_2_28_x86_64.whl
+☸ img2grey-1.1.2+torch26cu126cxx11-cp39-abi3-manylinux_2_28_x86_64.whl
+☸ img2grey-1.1.2+torch27cu126cxx11-cp39-abi3-manylinux_2_28_x86_64.whl
+☸ img2grey-1.1.2+torch26cu126cxx98-cp39-abi3-manylinux_2_28_x86_64.whl
+☸ img2grey-1.1.2+torch27cu128cxx11-cp39-abi3-manylinux_2_28_aarch64.whl
+☸ img2grey-1.1.2+torch26cu126cxx98-cp39-abi3-manylinux_2_28_aarch64.whl
+☸ img2grey-1.1.2+torch27cu126cxx11-cp39-abi3-manylinux_2_28_aarch64.whl
+☸ img2grey-1.1.2+torch26cu126cxx11-cp39-abi3-manylinux_2_28_aarch64.whl
+☸ img2grey-1.1.2+torch26cu118cxx98-cp39-abi3-manylinux_2_28_x86_64.whl
+☸ img2grey-1.1.2+torch26cu124cxx98-cp39-abi3-manylinux_2_28_x86_64.whl
+☸ img2grey-1.1.2+torch26cu118cxx11-cp39-abi3-manylinux_2_28_x86_64.whl
+☸ img2grey-1.1.2+torch27cu118cxx11-cp39-abi3-manylinux_2_28_x86_64.whl</p>
+<p>Mỗi một trong số các bánh xe này sẽ hoạt động như bất kỳ bánh xe Python nào khác: kernel có thể được nhập bằng một <code>import img2grey</code> đơn giản.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Hướng dẫn này đã hướng dẫn bạn toàn bộ vòng đời của một kernel CUDA sẵn sàng cho sản xuất. Bạn đã thấy cách xây dựng một kernel tùy chỉnh từ đầu, đăng ký nó như một toán tử PyTorch gốc và chia sẻ nó với cộng đồng trên Hugging Face Hub. Chúng tôi cũng đã khám phá các phương pháp hay nhất để kiểm soát phiên bản, quản lý sự phụ thuộc và triển khai, đảm bảo công việc của bạn vừa mạnh mẽ vừa dễ bảo trì.</p>
+<p>Chúng tôi tin rằng phát triển mở và hợp tác là chìa khóa để đổi mới. Bây giờ bạn đã có các công cụ và kiến ​​thức để xây dựng các kernel hiệu suất cao của riêng mình, chúng tôi rất vui khi thấy những gì bạn tạo ra! Chúng tôi nhiệt liệt mời bạn chia sẻ công việc của bạn, đặt câu hỏi và bắt đầu thảo luận trên <a href="https://huggingface.co/kernels-community">Kernel Hub</a> hoặc trong <a href="https://github.com/huggingface/kernel-builder">kho lưu trữ GitHub kernel-builder</a> và <a href="https://github.com/huggingface/kernels">kho lưu trữ GitHub kernel</a> của chúng tôi. Cho dù bạn là một nhà phát triển dày dặn kinh nghiệm hay chỉ mới bắt đầu, cộng đồng luôn ở đây để hỗ trợ bạn.</p>
+<p>Hãy bắt đầu xây dựng! 🚀</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/kernel-builder">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/august-18-2025/">August 18, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/2e2081/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobot-dataset-v3/thumbnail.png" alt="`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">`LeRobotDataset`- Mang các bộ dữ liệu quy mô lớn đến lerobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/a5ab6d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/faster-transformers/thumbnail.png" alt="Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các thủ thuật từ OpenAI gpt-oss mà BẠN 🫵 có thể sử dụng với transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/777761/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/riskrubric/thumbnail.png" alt="Dân chủ hóa An toàn AI với RiskRubric.ai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dân chủ hóa An toàn AI với RiskRubric.ai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/c813d8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/0s-zLFC0-vi8maL45QgUS93WJwkDdrwItNJiaoHb4rh6_Eru1sg43UJEax5twdcItCR8lK8bW-0hqsPjsxe-O1dduxTdzsv_Av66SY1psiPuTnC4gg=w400-h225-n-nu" alt="Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
