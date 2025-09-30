@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tăng tốc Qwen3-8B Agent trên Intel® Core™ Ultra với các Mô hình Nháp được Cắt tỉa Độ sâu | AI Today - SkyAI</title>
+
+<meta name="description" content="">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Tăng tốc Qwen3-8B Agent trên Intel® Core™ Ultra với các Mô hình Nháp được Cắt tỉa Độ sâu</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold"> </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-09-30T00:00:00&#43;00:00">September 30, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            7 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/intel-qwen3-agent/smolagents-1300-650.png" alt="Tăng tốc Qwen3-8B Agent trên Intel® Core™ Ultra với các Mô hình Nháp được Cắt tỉa Độ sâu">
+        <figcaption class="text-center italic text-xs"></figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="tăng-tốc-qwen3-8b-agent-trên-intel-core-ultra-với-các-mô-hình-nháp-được-tỉa-bớt-độ-sâu">Tăng tốc Qwen3-8B Agent trên Intel® Core™ Ultra với các Mô hình Nháp được Tỉa Bớt Độ Sâu</h1>
+<p><a href="/blog/assets/intel-qwen3-agent/smolagents-1300-650.png"><img src="/blog/assets/intel-qwen3-agent/smolagents-1300-650.png" alt="banner image"></a></p>
+<p>TL;DR:</p>
+<ul>
+<li><a href="https://huggingface.co/Qwen/Qwen3-8B">Qwen3-8B</a> là một trong những bản phát hành thú vị gần đây nhất—một mô hình có khả năng agentic gốc, làm cho nó phù hợp tự nhiên với AIPC.</li>
+<li>Với <a href="https://github.com/openvinotoolkit/openvino.genai">OpenVINO.GenAI</a>, chúng tôi đã có thể tăng tốc độ tạo bằng ~1.3 lần bằng cách sử dụng giải mã suy đoán với bản nháp Qwen3-0.6B nhẹ.</li>
+<li>Bằng cách sử dụng giải mã suy đoán và áp dụng một quy trình cắt tỉa đơn giản cho bản nháp, chúng tôi đã đẩy nhanh tốc độ lên ~1.4 lần.</li>
+<li>Chúng tôi đã gói gọn điều này bằng cách chỉ ra cách những cải tiến này có thể được sử dụng để chạy một AI Agent cục bộ, nhanh chóng với 🤗 <a href="https://github.com/huggingface/smolagents">smolagents</a></li>
+</ul>
+<h2 id="qwen3">Qwen3</h2>
+<p>Qwen3-8B là một phần của dòng Qwen mới nhất, được đào tạo với các hành vi agentic rõ ràng. Nó hỗ trợ gọi công cụ, suy luận nhiều bước và khả năng xử lý ngữ cảnh dài, giúp nó phù hợp với các quy trình làm việc của agent phức tạp. Khi được tích hợp với các framework như Hugging Face 🤗smolagents, QwenAgent hoặc AutoGen, nó cho phép một loạt các ứng dụng agentic được xây dựng xung quanh việc sử dụng công cụ và suy luận. Không giống như chatbot một lượt, các ứng dụng agentic dựa trên các mô hình suy luận tạo ra các dấu vết &ldquo;suy nghĩ thành tiếng&rdquo;, các bước trung gian mở rộng việc sử dụng token, làm cho tốc độ suy luận trở nên quan trọng đối với khả năng phản hồi.
+Sự kết hợp giữa suy luận được tối ưu hóa và trí thông minh agentic tích hợp làm cho Qwen3-8B trở thành một nền tảng hấp dẫn cho các AI agent thế hệ tiếp theo.</p>
+<h2 id="tăng-tốc-qwen3-8b-trên-intel-core-ultra-với-giải-mã-suy-đoán">Tăng tốc Qwen3-8B trên Intel® Core™ Ultra với Giải mã Suy đoán</h2>
+<p>Chúng tôi bắt đầu bằng cách đánh giá phiên bản OpenVINO được tối ưu hóa 4-bit của Qwen3-8B trên GPU tích hợp Intel Lunar Lake, thiết lập điều này làm cơ sở để tăng tốc hơn nữa</p>
+<p><a href="https://arxiv.org/abs/2211.17192">Giải mã suy đoán</a> là một phương pháp để tăng tốc độ tạo tự hồi quy. Nó hoạt động bằng cách sử dụng một mô hình nhỏ hơn, nhanh hơn làm bản nháp để đề xuất nhiều token trong một lần chuyển tiếp duy nhất, sau đó được mô hình mục tiêu lớn hơn xác thực trong một lần chuyển tiếp. Trong thiết lập của chúng tôi, <a href="https://huggingface.co/OpenVINO/Qwen3-8B-int4-ov">Qwen3-8B</a> đóng vai trò là mô hình mục tiêu trong khi <a href="https://huggingface.co/OpenVINO/Qwen3-0.6B-int8-ov">Qwen3-0.6B</a> được sử dụng làm bản nháp. Cách tiếp cận này mang lại tốc độ tăng trung bình 1.3 lần so với đường cơ sở.</p>
+<p>python
+from openvino_genai import LLMPipeline, draft_model</p>
+<p>target_path = &ldquo;/path/to/target/Qwen3-8B-int4-ov&rdquo;
+draft_path = &ldquo;/path/to/draft/Qwen3-0.6B-int8-ov&rdquo;
+device = &ldquo;GPU&rdquo;</p>
+<p>model = LLMPipeline(target_path, device, draft_model=draft_model(draft_path, device))</p>
+<p>streamer = lambda x: print(x, end=&quot;&quot;, flush=True)
+model.generate(&ldquo;What is speculative decoding and how does it improve inference speed?&rdquo;, max_new_tokens=100, reamer=streamer)</p>
+<blockquote>
+<p>Trước khi khởi tạo <code>LLMPipeline</code>, hãy đảm bảo cả mô hình mục tiêu và mô hình nháp đều được chuyển đổi sang OpenVINO. Bạn có thể tải xuống các mô hình đã chuyển đổi trước từ các liên kết được cung cấp hoặc làm theo các <a href="https://huggingface.co/docs/optimum-intel/en/openvino/export">hướng dẫn</a> này để chuyển đổi các mô hình của riêng bạn.</p></blockquote>
+<h2 id="đẩy-mạnh-hiệu-suất-hơn-nữa">Đẩy mạnh hiệu suất hơn nữa</h2>
+<p>Tốc độ tăng tốc giải mã suy đoán phụ thuộc vào số lượng trung bình các token được tạo trên mỗi bước chuyển tiếp của mục tiêu, <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->γ<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> \gamma <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->γ<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->, kích thước cửa sổ suy đoán và tỷ lệ giữa độ trễ của các mô hình mục tiêu và mô hình nháp <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->c<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> c <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->c<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->. Một bản nháp nhỏ hơn, nhanh hơn (mặc dù kém chính xác hơn) thường có thể mang lại khả năng tăng tốc lớn hơn. Điều này đã truyền cảm hứng cho chúng tôi thu nhỏ mô hình nháp trong khi vẫn duy trì chất lượng của nó, tức là <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->E<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->#<!-- raw HTML omitted --><!-- raw HTML omitted -->g<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted -->a<!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->d<!-- raw HTML omitted --><!-- raw HTML omitted --><em><!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->o<!-- raw HTML omitted --><!-- raw HTML omitted -->k<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted -->s<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> E(# generated_tokens) <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->E<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->#<!-- raw HTML omitted --><!-- raw HTML omitted -->g<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted -->er<!-- raw HTML omitted --><!-- raw HTML omitted -->a<!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->d<!-- raw HTML omitted --><!-- raw HTML omitted --></em><!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->o<!-- raw HTML omitted --><!-- raw HTML omitted -->k<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted -->s<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->S<!-- raw HTML omitted --><!-- raw HTML omitted -->p<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->d<!-- raw HTML omitted --><!-- raw HTML omitted -->u<!-- raw HTML omitted --><!-- raw HTML omitted -->p<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->E<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->#<!-- raw HTML omitted --><!-- raw HTML omitted -->g<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->r<!-- raw HTML omitted --><!-- raw HTML omitted -->a<!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->d<!-- raw HTML omitted --><!-- raw HTML omitted --><em><!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->o<!-- raw HTML omitted --><!-- raw HTML omitted -->k<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted -->s<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->γ<!-- raw HTML omitted --><!-- raw HTML omitted -->c<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+Speedup = \frac{E(# generated_tokens)}{\gamma c + 1}
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Sp<!-- raw HTML omitted --><!-- raw HTML omitted -->ee<!-- raw HTML omitted --><!-- raw HTML omitted -->d<!-- raw HTML omitted --><!-- raw HTML omitted -->u<!-- raw HTML omitted --><!-- raw HTML omitted -->p<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->γ<!-- raw HTML omitted --><!-- raw HTML omitted -->c<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->E<!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->#<!-- raw HTML omitted --><!-- raw HTML omitted -->g<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted -->er<!-- raw HTML omitted --><!-- raw HTML omitted -->a<!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->d<!-- raw HTML omitted --><!-- raw HTML omitted --></em><!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->o<!-- raw HTML omitted --><!-- raw HTML omitted -->k<!-- raw HTML omitted --><!-- raw HTML omitted -->e<!-- raw HTML omitted --><!-- raw HTML omitted -->n<!-- raw HTML omitted --><!-- raw HTML omitted -->s<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><a href="https://huggingface.co/papers/2411.11055">Công trình gần đây</a> của chúng tôi cho thấy độ sâu mô hình (số lớp) là một yếu tố chính gây ra độ trễ suy luận.
+Chúng tôi đã lấy cảm hứng từ công việc gần đây về nén theo lớp [1]. Trong phương pháp của chúng tôi, chúng tôi xác định các khối lớp đóng góp rất ít, được đo bằng khoảng cách góc và loại bỏ chúng. Sau khi cắt tỉa, chúng tôi áp dụng tinh chỉnh để phục hồi độ chính xác. Sử dụng phương pháp này, chúng tôi đã cắt tỉa 6 trong số 28 lớp từ mô hình nháp Qwen3-0.6B.
+Để khôi phục chất lượng của mô hình nháp đã cắt tỉa, chúng tôi tiếp tục tinh chỉnh nó bằng dữ liệu tổng hợp do Qwen3-8B tạo ra.
+Dữ liệu được tạo ra bằng cách tạo phản hồi cho 500 nghìn lời nhắc từ <a href="https://huggingface.co/datasets/BAAI/Infinity-Instruct">tập dữ liệu BAAI/Infinity-Instruct</a>.</p>
+<p>Mô hình nháp đã cắt tỉa thu được tốc độ tăng ~1.4x so với đường cơ sở, một cải tiến so với mức tăng ~1.3× đạt được với bản nháp ban đầu. Kết quả này phù hợp với những kỳ vọng về mặt lý thuyết - giảm độ trễ bản nháp sẽ cải thiện tốc độ tăng tốc tổng thể, cho phép suy luận nhanh hơn và hiệu quả hơn.</p>
+<p>Điều này chứng minh cách cắt tỉa + giải mã suy đoán có thể mở ra suy luận nhanh hơn và hiệu quả hơn—làm cho các AI agent cục bộ trở nên thiết thực hơn.</p>
+<p>Hãy xem <a href="https://github.com/openvinotoolkit/openvino_notebooks/blob/latest/supplementary_materials/notebooks/qwen-3/qwen3.ipynb">notebook</a> và <a href="https://huggingface.co/OpenVINO/Qwen3-pruned-6L-from-0.6B-int8-ov">mô hình nháp</a> đã cắt tỉa độ sâu Qwen3-0.6B để tái tạo kết quả của chúng tôi từng bước</p>
+<h2 id="tích-hợp-với-smolagents">Tích hợp với 🤗smolagents</h2>
+<p>Để giới thiệu tiềm năng thực tế, chúng tôi đã triển khai thiết lập được tối ưu hóa của mình với thư viện 🤗smolagents. Với sự tích hợp này, các nhà phát triển có thể cắm Qwen3-8B (kết hợp với bản nháp đã cắt tỉa của chúng tôi) để xây dựng các agent gọi API và các công cụ bên ngoài, viết và thực thi mã, xử lý suy luận ngữ cảnh dài và chạy hiệu quả trên Intel® Core™ Ultra.
+Lợi ích không giới hạn ở Hugging Face, việc ghép nối mô hình này cũng có thể được sử dụng liền mạch với các framework như AutoGen hoặc QwenAgent, tăng cường hơn nữa hệ sinh thái agentic.</p>
+<p>Trong bản demo của chúng tôi, chúng tôi đã giao cho agent dựa trên Qwen3 được tăng tốc một nhiệm vụ: 👉 Tóm tắt các tính năng chính của dòng mô hình Qwen3 và trình bày chúng trong một bộ slide.</p>
+<p>Đây là cách nó hoạt động:</p>
+<ol>
+<li>Agent đã sử dụng một công cụ tìm kiếm web để thu thập thông tin cập nhật.</li>
+<li>Sau đó, nó chuyển sang trình thông dịch Python để tạo slide với thư viện <code>python-pptx</code>.</li>
+</ol>
+<p>Quy trình làm việc đơn giản này chỉ làm nổi bật một phần nhỏ trong số các khả năng được mở khóa khi các mô hình Qwen3 được tăng tốc đáp ứng các framework như 🤗smolagents, mang lại các AI agent thực tế, hiệu quả vào cuộc sống trên AI PC. Hãy thử nó <a href="https://github.com/openvinotoolkit/openvino_notebooks/blob/latest/supplementary_materials/notebooks/qwen-3/smolagents/qwen3_agent.ipynb">ở đây</a> 🚀</p>
+<p><a href="https://www.youtube.com/embed/irSDd5lNxIk"><img src="https://img.youtube.com/vi/irSDd5lNxIk/0.jpg" alt="YouTube video player"></a></p>
+<h3 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h3>
+<p>[1] Gromov, A., Tirumala, K., Shapourian, H., Glorioso, P., &amp; Roberts, D. A. (2025, January 22). Tính không hiệu quả phi lý của các lớp sâu hơn. Áp phích được trình bày tại ICLR 2025. <a href="https://arxiv.org/abs/2403.17887">https://arxiv.org/abs/2403.17887</a></p>
+<blockquote>
+<p><strong>Thông báo về hiệu suất và pháp lý</strong></p>
+<ul>
+<li>Kết quả hiệu suất dựa trên các điểm chuẩn nội bộ với OpenVINO™ 2025.2 kể từ tháng 9 năm 2025, sử dụng cấu hình với bộ xử lý Intel® Core™ Ultra 7 268V 2.20 GHz với GPU Intel® Arc™ 140V tích hợp, kết hợp với bộ nhớ DDR5 32 GB.</li>
+<li>Hiệu suất thay đổi theo cách sử dụng, cấu hình và các yếu tố khác. Tìm hiểu thêm tại <a href="http://www.Intel.com/PerformanceIndex">www.Intel.com/PerformanceIndex</a>.</li>
+<li>Không có sản phẩm hoặc thành phần nào có thể hoàn toàn an toàn.</li>
+<li>Chi phí và kết quả của bạn có thể khác nhau.</li>
+<li>Công nghệ Intel có thể yêu cầu phần cứng, phần mềm hoặc kích hoạt dịch vụ được bật.</li>
+<li>© Intel Corporation. Intel, logo Intel và các nhãn hiệu khác của Intel là thương hiệu của Intel Corporation hoặc các công ty con của nó.</li>
+<li>Các tên và thương hiệu khác có thể được tuyên bố là tài sản của người khác.</li>
+</ul></blockquote>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/intel-qwen3-agent">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/september-29-2025/">September 29, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-30/6de724/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/vibegame/thumbnail.png" alt="VibeGame- Khám phá các trò chơi mã hóa Vibe" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-30T00:00:00&#43;00:00">Sep 30, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">VibeGame- Khám phá các trò chơi mã hóa Vibe</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/9008f5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/embeddinggemma/thumbnail.png" alt="Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chào mừng EmbeddingGemma, mô hình nhúng hiệu quả mới của Google</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-30/c047c5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/a62b6eb169818f14c35b7a192af269e283f8fa93-1000x1000.svg" alt="Cho phép Mã Claude hoạt động tự chủ hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cho phép Mã Claude hoạt động tự chủ hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-30/b5a357/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/09/A-man-wearing-a-hardhat-and-carrying-a-digital-tablet-inspects-solar-panels-1024x575.jpg" alt="Cung cấp năng lượng cho tương lai năng lượng của Châu Á-Thái Bình Dương- AI và đổi mới kỹ thuật số cho các tiện ích" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cung cấp năng lượng cho tương lai năng lượng của Châu Á-Thái Bình Dương- AI và đổi mới kỹ thuật số cho các tiện ích</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-30/eeae4d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/a683fdcfe3e2c7c6532342a0fa4ff789c3fd4852-1000x1000.svg" alt="Giới thiệu Claude Sonnet 4.5" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Claude Sonnet 4.5</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-30/087a9f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/4d663bd87c391c144b9bca513b3849ccfa00a3b9-1000x1000.svg" alt="Quản lý bối cảnh trên nền tảng nhà phát triển Claude" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Quản lý bối cảnh trên nền tảng nhà phát triển Claude</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-30/800fa8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/intel-qwen3-agent/smolagents-1300-650.png" alt="Tăng tốc Qwen3-8B Agent trên Intel® Core™ Ultra với các Mô hình Nháp được Cắt tỉa Độ sâu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tăng tốc Qwen3-8B Agent trên Intel® Core™ Ultra với các Mô hình Nháp được Cắt tỉa Độ sâu</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
