@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Giới thiệu CodeMender- một tác nhân AI để bảo mật mã | AI Today - SkyAI</title>
+
+<meta name="description" content="CodeMender giúp vá các lỗ hổng phần mềm quan trọng, đồng thời viết lại và bảo mật mã hiện có.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Giới thiệu CodeMender- một tác nhân AI để bảo mật mã</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">CodeMender giúp vá các lỗ hổng phần mềm quan trọng, đồng thời viết lại và bảo mật mã hiện có. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-10-07T00:00:00&#43;00:00">October 7, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            9 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/fnAx6nksgsvTcj5EDj7bx1yD8sMXwfkBnR6vla-e-h4wZSKFI3a1nFftGvDYyJAk01ZzNr2-QJyqfw30V2_tcp6tE-udCtMCuyou9cBIHyxGnO_mtQ=w400-h225-n-nu" alt="Giới thiệu CodeMender- một tác nhân AI để bảo mật mã">
+        <figcaption class="text-center italic text-xs">CodeMender giúp vá các lỗ hổng phần mềm quan trọng, đồng thời viết lại và bảo mật mã hiện có.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="giới-thiệu-codemender-một-tác-nhân-ai-cho-bảo-mật-mã">Giới thiệu CodeMender: Một tác nhân AI cho bảo mật mã</h1>
+<p><strong>Sử dụng AI tiên tiến để sửa các lỗ hổng phần mềm quan trọng</strong></p>
+<p>Hôm nay, chúng tôi chia sẻ những kết quả ban đầu từ nghiên cứu của mình về CodeMender, một tác nhân hỗ trợ bởi AI mới giúp cải thiện bảo mật mã một cách tự động.</p>
+<p>Các lỗ hổng phần mềm rất khó và tốn thời gian để các nhà phát triển tìm và sửa, ngay cả với các phương pháp tự động truyền thống như fuzzing. Những nỗ lực dựa trên AI của chúng tôi như <a href="https://googleprojectzero.blogspot.com/2024/10/from-naptime-to-big-sleep.html">Big Sleep</a> và <a href="https://security.googleblog.com/2023/08/ai-powered-fuzzing-breaking-bug-hunting.html">OSS-Fuzz</a> đã chứng minh khả năng của AI trong việc tìm ra các lỗ hổng zero-day mới trong phần mềm đã được kiểm tra kỹ lưỡng. Khi chúng ta đạt được nhiều đột phá hơn trong việc khám phá lỗ hổng do AI hỗ trợ, con người sẽ ngày càng khó theo kịp.</p>
+<p>CodeMender giúp giải quyết vấn đề này bằng cách tiếp cận toàn diện đối với bảo mật mã, vừa phản ứng nhanh, vá ngay các lỗ hổng mới, vừa chủ động, viết lại và bảo mật mã hiện có, đồng thời loại bỏ toàn bộ các loại lỗ hổng trong quá trình này. Trong sáu tháng qua kể từ khi chúng tôi xây dựng CodeMender, chúng tôi đã tải lên 72 bản sửa lỗi bảo mật cho các dự án nguồn mở, bao gồm một số dự án lớn tới 4,5 triệu dòng mã.</p>
+<p>Bằng cách tự động tạo và áp dụng các bản vá bảo mật chất lượng cao, tác nhân do AI hỗ trợ của CodeMender giúp các nhà phát triển và người bảo trì tập trung vào những gì họ làm tốt nhất - xây dựng phần mềm tốt.</p>
+<h2 id="codemender-hoạt-động">CodeMender hoạt động</h2>
+<p>CodeMender hoạt động bằng cách tận dụng khả năng tư duy của các mô hình <a href="https://blog.google/products/gemini/gemini-2-5-deep-think/">Gemini Deep Think</a> gần đây để tạo ra một tác nhân tự trị có khả năng gỡ lỗi và sửa các lỗ hổng phức tạp.</p>
+<p>Để làm được điều này, tác nhân CodeMender được trang bị các công cụ mạnh mẽ cho phép nó suy luận về mã trước khi thực hiện các thay đổi và tự động xác thực những thay đổi đó để đảm bảo chúng chính xác và không gây ra hồi quy.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Mặc dù các mô hình ngôn ngữ lớn đang được cải thiện nhanh chóng, nhưng những sai sót trong bảo mật mã có thể gây tốn kém. Quy trình xác thực tự động của CodeMender đảm bảo rằng các thay đổi mã là chính xác trên nhiều khía cạnh bằng cách chỉ hiển thị các bản vá chất lượng cao cho con người xem xét, ví dụ: khắc phục nguyên nhân gốc rễ của sự cố, chính xác về mặt chức năng, không gây ra hồi quy và tuân theo các nguyên tắc về kiểu dáng.</p>
+<p>Là một phần của nghiên cứu của chúng tôi, chúng tôi cũng đã phát triển các kỹ thuật và công cụ mới cho phép CodeMender suy luận về mã và xác thực các thay đổi hiệu quả hơn. Điều này bao gồm:</p>
+<ul>
+<li><strong>Phân tích chương trình nâng cao:</strong> Chúng tôi đã phát triển các công cụ dựa trên phân tích chương trình nâng cao, bao gồm phân tích tĩnh, phân tích động, kiểm tra khác biệt, fuzzing và bộ giải SMT. Bằng cách sử dụng các công cụ này để xem xét một cách có hệ thống các mẫu mã, luồng điều khiển và luồng dữ liệu, CodeMender có thể xác định tốt hơn nguyên nhân gốc rễ của các lỗ hổng bảo mật và điểm yếu kiến ​​trúc.</li>
+<li><strong>Hệ thống đa tác nhân:</strong> Chúng tôi đã phát triển các tác nhân có mục đích đặc biệt cho phép CodeMender giải quyết các khía cạnh cụ thể của một vấn đề cơ bản. Ví dụ: CodeMender sử dụng một công cụ phê bình dựa trên mô hình ngôn ngữ lớn, công cụ này làm nổi bật sự khác biệt giữa mã gốc và mã đã sửa đổi để xác minh rằng các thay đổi được đề xuất không gây ra hồi quy và tự sửa nếu cần.</li>
+</ul>
+<h2 id="khắc-phục-các-lỗ-hổng">Khắc phục các lỗ hổng</h2>
+<p>Để vá một lỗ hổng một cách hiệu quả và ngăn nó tái xuất hiện, Code Mender sử dụng trình gỡ lỗi, trình duyệt mã nguồn và các công cụ khác để xác định nguyên nhân gốc rễ và đưa ra các bản vá. Chúng tôi đã thêm hai ví dụ về các lỗ hổng vá CodeMender trong băng chuyền video bên dưới.</p>
+<p><strong>Ví dụ #1: Xác định nguyên nhân gốc rễ của lỗ hổng</strong></p>
+<p>Đây là một đoạn trích về lý luận của tác nhân về nguyên nhân gốc rễ cho một bản vá do CodeMender tạo ra, sau khi phân tích kết quả đầu ra của trình gỡ lỗi và công cụ tìm kiếm mã.</p>
+<p>Mặc dù bản vá cuối cùng trong ví dụ này chỉ thay đổi một vài dòng mã, nhưng nguyên nhân gốc rễ của lỗ hổng không được rõ ràng ngay lập tức. Trong trường hợp này, báo cáo sự cố cho thấy tràn bộ đệm heap, nhưng vấn đề thực tế nằm ở nơi khác - quản lý ngăn xếp không chính xác các phần tử Ngôn ngữ đánh dấu mở rộng (XML) trong quá trình phân tích cú pháp.</p>
+<p><strong>Ví dụ #2: Tác nhân có thể tạo các bản vá không tầm thường</strong></p>
+<p>Trong ví dụ này, tác nhân CodeMender đã có thể đưa ra một bản vá không tầm thường giải quyết một vấn đề phức tạp về tuổi thọ đối tượng.</p>
+<p>Tác nhân không chỉ có thể tìm ra nguyên nhân gốc rễ của lỗ hổng mà còn có thể sửa đổi một hệ thống hoàn toàn tùy chỉnh để tạo mã C trong dự án.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="chủ-động-viết-lại-mã-hiện-có-để-bảo-mật-tốt-hơn">Chủ động viết lại mã hiện có để bảo mật tốt hơn</h2>
+<p>Chúng tôi cũng đã thiết kế CodeMender để chủ động viết lại mã hiện có để sử dụng các cấu trúc dữ liệu và API an toàn hơn.</p>
+<p>Ví dụ: chúng tôi đã triển khai CodeMender để áp dụng các chú thích <code>-fbounds-safety</code> cho các phần của thư viện nén hình ảnh được sử dụng rộng rãi có tên là <a href="https://github.com/webmproject/libwebp">libwebp</a>. Khi các chú thích <strong>-fbounds-safety</strong> được áp dụng, trình biên dịch sẽ thêm kiểm tra ranh giới vào mã để ngăn kẻ tấn công khai thác tràn hoặc thiếu bộ đệm để thực thi mã tùy ý.</p>
+<p>Một vài năm trước, một lỗ hổng tràn bộ đệm heap trong libwebp (<a href="https://www.cve.org/CVERecord?id=CVE-2023-4863">CVE-2023-4863</a>) đã được một tác nhân đe dọa sử dụng như một phần của <a href="https://citizenlab.ca/2023/09/blastpass-nso-group-iphone-zero-click-zero-day-exploit-captured-in-the-wild/">khai thác iOS zero-click</a>. Với các chú thích <strong>-fbounds-safety</strong>, lỗ hổng này, cùng với hầu hết các tràn bộ đệm khác trong dự án nơi chúng tôi đã áp dụng các chú thích, sẽ không thể khai thác được mãi mãi.</p>
+<p>Trong băng chuyền video bên dưới, chúng tôi hiển thị các ví dụ về quy trình ra quyết định của tác nhân, bao gồm các bước xác thực.</p>
+<p><strong>Ví dụ #1: Các bước lý luận của tác nhân</strong></p>
+<p>Trong ví dụ này, tác nhân CodeMender được yêu cầu giải quyết lỗi <strong>-fbounds-safety</strong> sau trên con trỏ <strong>bit_depths</strong>:</p>
+<!-- raw HTML omitted -->
+<pre><code>&lt;picture class=&quot;picture&quot;&gt;
+  &lt;source
+  media=&quot;(min-width: 600px)&quot;
+  type=&quot;image/webp&quot;
+  width=&quot;616&quot;
+  height=&quot;86&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/f7YUIkgCh40m_WmaZYxse_Q4xHSpPYB66pVNeUToM4SAupHiZl6y2huBI_3vkzHdLjY2nPa1NX_Luc31Azh6tkEEB4qDlEMPtocWh8ARqWqXU5mrXQ=w616-rw 1x, https://lh3.googleusercontent.com/f7YUIkgCh40m_WmaZYxse_Q4xHSpPYB66pVNeUToM4SAupHiZl6y2huBI_3vkzHdLjY2nPa1NX_Luc31Azh6tkEEB4qDlEMPtocWh8ARqWqXU5mrXQ=w1232-rw 2x&quot;
+/&gt;&lt;source
+  
+  type=&quot;image/webp&quot;
+  width=&quot;528&quot;
+  height=&quot;74&quot;
+  srcset=&quot;https://lh3.googleusercontent.com/f7YUIkgCh40m_WmaZYxse_Q4xHSpPYB66pVNeUToM4SAupHiZl6y2huBI_3vkzHdLjY2nPa1NX_Luc31Azh6tkEEB4qDlEMPtocWh8ARqWqXU5mrXQ=w528-rw 1x, https://lh3.googleusercontent.com/f7YUIkgCh40m_WmaZYxse_Q4xHSpPYB66pVNeUToM4SAupHiZl6y2huBI_3vkzHdLjY2nPa1NX_Luc31Azh6tkEEB4qDlEMPtocWh8ARqWqXU5mrXQ=w1056-rw 2x&quot;
+/&gt;
+  &lt;img alt=&quot;&quot; class=&quot;picture__image&quot; height=&quot;86&quot; loading=&quot;lazy&quot; src=&quot;https://lh3.googleusercontent.com/f7YUIkgCh40m_WmaZYxse_Q4xHSpPYB66pVNeUToM4SAupHiZl6y2huBI_3vkzHdLjY2nPa1NX_Luc31Azh6tkEEB4qDlEMPtocWh8ARqWqXU5mrXQ=w616&quot; width=&quot;616&quot;&gt;
+&lt;/picture&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Ví dụ #2: Tác nhân tự động sửa lỗi và lỗi kiểm tra</strong></p>
+<p>Một trong những tính năng chính khác của CodeMender là khả năng tự động sửa các lỗi mới và mọi lỗi kiểm tra phát sinh từ các chú thích của chính nó. Đây là một ví dụ về việc tác nhân phục hồi sau lỗi biên dịch.</p>
+<p><strong>Ví dụ #3: Tác nhân xác thực các thay đổi</strong></p>
+<p>Trong ví dụ này, tác nhân CodeMender sửa đổi một hàm và sau đó sử dụng công cụ đánh giá LLM được định cấu hình để tương đương chức năng để xác minh rằng chức năng vẫn còn nguyên vẹn. Khi công cụ phát hiện lỗi, tác nhân sẽ tự sửa dựa trên phản hồi của thẩm phán LLM.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="bảo-mật-phần-mềm-cho-mọi-người">Bảo mật phần mềm cho mọi người</h2>
+<p>Mặc dù những kết quả ban đầu của chúng tôi với CodeMender rất hứa hẹn, nhưng chúng tôi đang áp dụng một cách tiếp cận thận trọng, tập trung vào độ tin cậy. Hiện tại, tất cả các bản vá do CodeMender tạo ra đều được các nhà nghiên cứu con người xem xét trước khi chúng được gửi lên thượng nguồn.</p>
+<p>Sử dụng CodeMender, chúng tôi đã bắt đầu gửi các bản vá cho nhiều thư viện nguồn mở quan trọng khác nhau, nhiều trong số đó đã được chấp nhận và tải lên. Chúng tôi đang tăng dần quy trình này để đảm bảo chất lượng và giải quyết một cách có hệ thống các phản hồi từ cộng đồng nguồn mở.</p>
+<p>Chúng tôi cũng sẽ dần liên hệ với những người bảo trì dự án nguồn mở quan trọng quan tâm với các bản vá do CodeMender tạo ra. Bằng cách lặp lại phản hồi từ quy trình này, chúng tôi hy vọng sẽ phát hành CodeMender như một công cụ mà tất cả các nhà phát triển phần mềm có thể sử dụng để giữ cho cơ sở mã của họ an toàn.</p>
+<p>Chúng tôi sẽ có một số kỹ thuật và kết quả để chia sẻ, mà chúng tôi dự định xuất bản dưới dạng các bài báo và báo cáo kỹ thuật trong những tháng tới. Với CodeMender, chúng tôi mới chỉ bắt đầu khám phá tiềm năng đáng kinh ngạc của AI để tăng cường bảo mật phần mềm cho mọi người.</p>
+<p><strong>Lời cảm ơn</strong></p>
+<p>Tín dụng (được liệt kê theo thứ tự bảng chữ cái):</p>
+<p>Alex Rebert, Arman Hasanzadeh, Carlo Lemos, Charles Sutton, Dongge Liu, Gogul Balakrishnan, Hiep Chu, James Zern, Koushik Sen, Lihao Liang, Max Shavrick, Oliver Chang và Petros Maniatis.</p>
+<h2 id="bài-viết-liên-quan">Bài viết liên quan</h2>
+<ul>
+<li><a href="https://deepmind.google/discover/blog/advancing-geminis-security-safeguards/">Tăng cường các biện pháp bảo vệ an ninh của Gemini</a></li>
+<li><a href="https://deepmind.google/discover/blog/evaluating-potential-cybersecurity-threats-of-advanced-ai/">Đánh giá các mối đe dọa an ninh mạng tiềm ẩn của AI tiên tiến</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://deepmind.google/discover/blog/introducing-codemender-an-ai-agent-for-code-security/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/06-october-2025/">06 October 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/deepmind.google/">Deepmind.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-27/c813d8/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/0s-zLFC0-vi8maL45QgUS93WJwkDdrwItNJiaoHb4rh6_Eru1sg43UJEax5twdcItCR8lK8bW-0hqsPjsxe-O1dduxTdzsv_Av66SY1psiPuTnC4gg=w400-h225-n-nu" alt="Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-27T00:00:00&#43;00:00">Sep 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật chất</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Kỷ nguyên mới của các tác nhân vật lý sẽ giúp robot nhận thức, lập kế hoạch, suy nghĩ, sử dụng công cụ và hành động để giải quyết các nhiệm vụ phức tạp.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-22/58648e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/KrVRFeSqPbxpjcC81NjJbRZig1fB45GEdP0ePsC745QFbZoWMp7X0kPDUFM2sIcILhupUje-eemShX4zSTMutwwCyozz6xc0g1yhGep4TwHzUanW=w400-h225-n-nu" alt="Củng cố Khung Khung An Toàn Tiền Tuyến của chúng tôi" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-09-22T00:00:00&#43;00:00">Sep 22, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Củng cố Khung Khung An Toàn Tiền Tuyến của chúng tôi</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chúng tôi đang củng cố Khung An toàn Tiền tuyến (FSF) để giúp xác định và giảm thiểu các rủi ro nghiêm trọng từ các mô hình AI tiên tiến.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-07/10ab20/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/fnAx6nksgsvTcj5EDj7bx1yD8sMXwfkBnR6vla-e-h4wZSKFI3a1nFftGvDYyJAk01ZzNr2-QJyqfw30V2_tcp6tE-udCtMCuyou9cBIHyxGnO_mtQ=w400-h225-n-nu" alt="Giới thiệu CodeMender- một tác nhân AI để bảo mật mã" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu CodeMender- một tác nhân AI để bảo mật mã</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-04/efc506/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/rteb/thumbnail.png" alt="Giới thiệu RTEB- Một tiêu chuẩn mới để đánh giá khả năng truy xuất thông tin" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu RTEB- Một tiêu chuẩn mới để đánh giá khả năng truy xuất thông tin</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-02/058c9b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/dots-ocr-ne/dots_header.png" alt="OCR SOTA trên thiết bị với Core ML và dots.ocr" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">OCR SOTA trên thiết bị với Core ML và dots.ocr</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-30/c047c5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/a62b6eb169818f14c35b7a192af269e283f8fa93-1000x1000.svg" alt="Cho phép Mã Claude hoạt động tự chủ hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cho phép Mã Claude hoạt động tự chủ hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-09-30/b5a357/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/09/A-man-wearing-a-hardhat-and-carrying-a-digital-tablet-inspects-solar-panels-1024x575.jpg" alt="Cung cấp năng lượng cho tương lai năng lượng của Châu Á-Thái Bình Dương- AI và đổi mới kỹ thuật số cho các tiện ích" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cung cấp năng lượng cho tương lai năng lượng của Châu Á-Thái Bình Dương- AI và đổi mới kỹ thuật số cho các tiện ích</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
