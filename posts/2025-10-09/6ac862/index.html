@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Giới thiệu Mô hình Sử dụng Máy tính Gemini 2.5 | AI Today - SkyAI</title>
+
+<meta name="description" content="Có sẵn trong bản xem trước thông qua API, mô hình Sử dụng Máy tính của chúng tôi là một mô hình chuyên dụng được xây dựng dựa trên khả năng của Gemini 2.5 Pro để cung cấp năng lượng cho các tác nhân có thể tương tác với giao diện người dùng.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Giới thiệu Mô hình Sử dụng Máy tính Gemini 2.5</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Có sẵn trong bản xem trước thông qua API, mô hình Sử dụng Máy tính của chúng tôi là một mô hình chuyên dụng được xây dựng dựa trên khả năng của Gemini 2.5 Pro để cung cấp năng lượng cho các tác nhân có thể tương tác với giao diện người dùng. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-10-09T00:00:00&#43;00:00">October 9, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            9 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/ka2UHKqEKG1GR8w-QqBLkIN48VBUClMsw8yo_ACI1vrofXyAKBd4QrcDyiIVdBu2V2S9o5tpMQL8Fi68ec4Y8CErz0CV4oTkl2RicrYl9q2pyDhz=w400-h225-n-nu" alt="Giới thiệu Mô hình Sử dụng Máy tính Gemini 2.5">
+        <figcaption class="text-center italic text-xs">Có sẵn trong bản xem trước thông qua API, mô hình Sử dụng Máy tính của chúng tôi là một mô hình chuyên dụng được xây dựng dựa trên khả năng của Gemini 2.5 Pro để cung cấp năng lượng cho các tác nhân có thể tương tác với giao diện người dùng.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="giới-thiệu-mô-hình-sử-dụng-máy-tính-gemini-25">Giới thiệu Mô hình Sử dụng Máy tính Gemini 2.5</h1>
+<p>Hôm nay, chúng tôi phát hành mô hình Sử dụng Máy tính Gemini 2.5 thông qua API, vượt trội hơn các giải pháp thay thế hàng đầu trong các tác vụ trên trình duyệt và thiết bị di động.</p>
+<p>Trước đó trong năm nay, chúng tôi đã đề cập rằng chúng tôi sẽ mang khả năng sử dụng máy tính đến cho các nhà phát triển thông qua Gemini API. Hôm nay, chúng tôi phát hành <a href="http://ai.google.dev/gemini-api/docs/computer-use">Mô hình Sử dụng Máy tính Gemini 2.5</a>, mô hình chuyên dụng mới của chúng tôi được xây dựng trên khả năng lý luận và hiểu biết trực quan của Gemini 2.5 Pro, cung cấp sức mạnh cho các tác nhân có khả năng tương tác với giao diện người dùng (UI). Nó vượt trội hơn các giải pháp thay thế hàng đầu trên nhiều tiêu chuẩn kiểm soát web và thiết bị di động, tất cả đều có độ trễ thấp hơn. Các nhà phát triển có thể truy cập các khả năng này thông qua Gemini API trong <a href="http://ai.google.dev/gemini-api/docs/computer-use">Google AI Studio</a> và <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/computer-use">Vertex AI</a>.</p>
+<p>Trong khi các mô hình AI có thể giao tiếp với phần mềm thông qua API có cấu trúc, nhiều tác vụ kỹ thuật số vẫn yêu cầu tương tác trực tiếp với giao diện người dùng đồ họa, ví dụ: điền và gửi biểu mẫu. Để hoàn thành các tác vụ này, các tác nhân phải điều hướng các trang web và ứng dụng giống như cách con người làm: bằng cách nhấp, nhập và cuộn. Khả năng điền các biểu mẫu một cách tự nhiên, thao tác các thành phần tương tác như danh sách thả xuống và bộ lọc, và hoạt động đằng sau các thông tin đăng nhập là một bước quan trọng tiếp theo trong việc xây dựng các tác nhân đa năng, mạnh mẽ.</p>
+<h2 id="cách-thức-hoạt-động">Cách thức hoạt động</h2>
+<p>Các khả năng cốt lõi của mô hình được hiển thị thông qua công cụ <code>computer_use</code> mới trong Gemini API và nên được vận hành trong một vòng lặp. Đầu vào cho công cụ là yêu cầu của người dùng, ảnh chụp màn hình của môi trường và lịch sử các hành động gần đây. Đầu vào cũng có thể chỉ định xem có loại trừ các chức năng khỏi <a href="http://ai.google.dev/gemini-api/docs/computer-use#supported-actions">danh sách đầy đủ các hành động UI được hỗ trợ</a> hay chỉ định các chức năng tùy chỉnh bổ sung để đưa vào hay không.</p>
+<p>Mô hình sau đó phân tích các đầu vào này và tạo ra một phản hồi, thường là một lệnh gọi hàm đại diện cho một trong các hành động UI như nhấp hoặc nhập. Phản hồi này cũng có thể chứa một yêu cầu xác nhận của người dùng cuối, điều này là bắt buộc đối với một số hành động nhất định như thực hiện mua hàng. Mã phía máy khách sau đó thực thi hành động đã nhận.</p>
+<p>Sau khi hành động được thực thi, một ảnh chụp màn hình mới của GUI và URL hiện tại được gửi lại cho mô hình Sử dụng Máy tính dưới dạng phản hồi hàm khởi động lại vòng lặp. Quá trình lặp đi lặp lại này tiếp tục cho đến khi tác vụ hoàn thành, xảy ra lỗi hoặc tương tác bị chấm dứt bởi phản hồi an toàn hoặc quyết định của người dùng.</p>
+<p>Mô hình Sử dụng Máy tính Gemini 2.5 được tối ưu hóa chủ yếu cho trình duyệt web, nhưng cũng thể hiện hứa hẹn mạnh mẽ cho các tác vụ kiểm soát UI trên thiết bị di động. Nó chưa được tối ưu hóa cho kiểm soát cấp hệ điều hành máy tính để bàn.</p>
+<p>Xem một vài bản trình diễn dưới đây để xem mô hình hoạt động (hiển thị ở tốc độ 3X).</p>
+<p><strong>Lời nhắc:</strong> &ldquo;Từ <a href="https://tinyurl.com/pet-care-signup">https://tinyurl.com/pet-care-signup</a>, hãy lấy tất cả chi tiết cho bất kỳ thú cưng nào có cư trú tại California và thêm chúng làm khách trong CRM spa của tôi tại <a href="https://pet-luxe-spa.web.app/">https://pet-luxe-spa.web.app/</a>. Sau đó, thiết lập một cuộc hẹn thăm khám theo dõi với chuyên gia Anima Lavar vào ngày 10 tháng 10 vào bất kỳ thời gian nào sau 8 giờ sáng. Lý do cho chuyến thăm giống như phương pháp điều trị được yêu cầu của họ.&rdquo;</p>
+<p><a href="https://www.youtube.com/watch?v=_lu-FcPUIfM"><img src="https://i.ytimg.com/vi_webp/_lu-FcPUIfM/maxresdefault.webp" alt="Gemini Computer Use demo at a pet spa"></a></p>
+<p><strong>Lời nhắc:</strong> &ldquo;Câu lạc bộ nghệ thuật của tôi đã động não các nhiệm vụ trước hội chợ của chúng tôi. Ban điều hành hỗn loạn và tôi cần sự giúp đỡ của bạn để sắp xếp các nhiệm vụ vào một số danh mục tôi đã tạo. Truy cập sticky-note-jam.web.app và đảm bảo các ghi chú được đặt rõ ràng trong đúng phần. Kéo chúng đến đó nếu không.&rdquo;</p>
+<p><a href="https://www.youtube.com/watch?v=slOLc1nkKY0"><img src="https://i.ytimg.com/vi_webp/slOLc1nkKY0/maxresdefault.webp" alt="Demo of computer use model using sticky notes"></a></p>
+<h2 id="cách-thức-hoạt-động-1">Cách thức hoạt động</h2>
+<p>Mô hình Sử dụng Máy tính Gemini 2.5 thể hiện hiệu suất mạnh mẽ trên nhiều tiêu chuẩn kiểm soát web và thiết bị di động. Bảng dưới đây bao gồm kết quả từ các số liệu tự báo cáo, các đánh giá do Browserbase thực hiện và các đánh giá chúng tôi tự chạy. Chi tiết đánh giá có sẵn trong <a href="https://storage.googleapis.com/deepmind-media/gemini/computer_use_eval_additional_info.pdf">thông tin đánh giá Sử dụng Máy tính Gemini 2.5</a> và trong <a href="https://www.browserbase.com/blog/evaluating-browser-agents">bài đăng trên blog của Browserbase</a>. Trừ khi có chỉ định khác, điểm số hiển thị là cho các công cụ sử dụng máy tính được hiển thị thông qua API.</p>
+<p><a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/CTU-Benchmark_Chart-RD5_V01.width-100.format-webp.webp"><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/CTU-Benchmark_Chart-RD5_V01.width-100.format-webp.webp" alt="Benchmark performance table: Gemini 2.5 Computer Use leads in Online-Mind2Web, WebVoyager, and AndroidWorld benchmarks."></a></p>
+<p>Mô hình cung cấp chất lượng hàng đầu cho điều khiển trình duyệt ở độ trễ thấp nhất, như được đo bằng hiệu suất trên bộ khai thác Browserbase cho Online-Mind2Web.</p>
+<p><a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/CTU-Scatterplot-RD7.width-100.format-webp.webp"><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/CTU-Scatterplot-RD7.width-100.format-webp.webp" alt="Latency vs. Quality scatterplot: Gemini 2.5 Computer Use is lowest in latency and highest in accuracy (70%+ accuracy, ∼225 sec latency)."></a></p>
+<h2 id="cách-chúng-tôi-tiếp-cận-an-toàn">Cách chúng tôi tiếp cận an toàn</h2>
+<p>Chúng tôi tin rằng cách duy nhất để xây dựng các tác nhân có lợi cho mọi người là có trách nhiệm ngay từ đầu. Các tác nhân AI kiểm soát máy tính tạo ra các rủi ro riêng, bao gồm lạm dụng có chủ ý bởi người dùng, hành vi mô hình bất ngờ và chèn lời nhắc và lừa đảo trong môi trường web. Vì vậy, điều quan trọng là phải triển khai các biện pháp bảo vệ an toàn một cách cẩn thận.</p>
+<p>Chúng tôi đã đào tạo các tính năng an toàn trực tiếp vào mô hình để giải quyết ba rủi ro chính này (được mô tả trong <a href="https://storage.googleapis.com/deepmind-media/Model-Cards/Gemini-2-5-Computer-Use-Model-Card.pdf">Thẻ Hệ thống Sử dụng Máy tính Gemini 2.5</a>).</p>
+<p>Hơn nữa, chúng tôi cũng cung cấp cho các nhà phát triển các biện pháp kiểm soát an toàn, cho phép các nhà phát triển ngăn mô hình tự động hoàn thành các hành động có khả năng rủi ro cao hoặc có hại. Các ví dụ về các hành động này bao gồm gây hại cho tính toàn vẹn của hệ thống, xâm phạm an ninh, bỏ qua CAPTCHA hoặc điều khiển các thiết bị y tế. Các biện pháp kiểm soát:</p>
+<ul>
+<li><strong>Dịch vụ an toàn từng bước:</strong> Dịch vụ an toàn ngoài mô hình, thời gian suy luận đánh giá từng hành động mà mô hình đề xuất trước khi nó được thực thi.</li>
+<li><strong>Hướng dẫn hệ thống:</strong> Các nhà phát triển có thể chỉ định thêm rằng tác nhân từ chối hoặc yêu cầu người dùng xác nhận trước khi thực hiện các loại hành động có tính chất rủi ro cao cụ thể. (Ví dụ trong <a href="https://ai.google.dev/gemini-api/docs/computer-use#safety-security">tài liệu</a>).</li>
+</ul>
+<p>Các khuyến nghị bổ sung cho các nhà phát triển về các biện pháp an toàn và thực hành tốt nhất có thể được tìm thấy trong <a href="https://googledevai.devsite.corp.google.com/gemini-api/docs/computer-use#safety-best-practices">tài liệu</a> của chúng tôi. Mặc dù các biện pháp bảo vệ này được thiết kế để giảm rủi ro, chúng tôi kêu gọi tất cả các nhà phát triển kiểm tra kỹ lưỡng hệ thống của họ trước khi ra mắt.</p>
+<h2 id="cách-những-người-thử-nghiệm-sớm-đã-sử-dụng-nó">Cách những người thử nghiệm sớm đã sử dụng nó</h2>
+<p>Các nhóm của Google đã triển khai mô hình này để sản xuất cho các trường hợp sử dụng bao gồm kiểm tra UI, có thể làm cho việc phát triển phần mềm nhanh hơn đáng kể. Các phiên bản của mô hình này cũng đã cung cấp sức mạnh cho <a href="https://deepmind.google/models/project-mariner/">Project Mariner</a>, <a href="https://firebase.blog/posts/2025/04/app-testing-agent/">Firebase Testing Agent</a>, và một số khả năng tác nhân trong <a href="https://blog.google/products/search/ai-mode-agentic-personalized/">AI Mode in Search</a>.</p>
+<p>Người dùng từ chương trình truy cập sớm của chúng tôi cũng đã thử nghiệm mô hình để cung cấp sức mạnh cho trợ lý cá nhân, tự động hóa quy trình làm việc và kiểm tra UI, và đã thấy kết quả mạnh mẽ. Theo lời của họ:</p>
+<blockquote>
+<p>&ldquo;Rất nhiều quy trình làm việc của chúng tôi yêu cầu tương tác với các giao diện dành cho con người, trong đó tốc độ đặc biệt quan trọng. Gemini 2.5 Computer Use vượt xa đối thủ cạnh tranh, thường nhanh hơn 50% và tốt hơn so với các giải pháp tốt nhất tiếp theo mà chúng tôi đã xem xét.&rdquo; - Poke.com, một trợ lý AI chủ động trong iMessage, WhatsApp và SMS với nhiều quy trình làm việc của bên thứ ba và tác nhân.</p></blockquote>
+<blockquote>
+<p>&ldquo;Các tác nhân của chúng tôi chạy hoàn toàn tự động, thực hiện công việc mà những sai sót nhỏ trong việc thu thập và phân tích cú pháp dữ liệu là không thể chấp nhận được. Gemini 2.5 Computer Use vượt trội hơn các mô hình khác trong việc phân tích cú pháp bối cảnh một cách đáng tin cậy trong các trường hợp phức tạp, tăng hiệu suất lên đến 18% trên các đánh giá khó khăn nhất của chúng tôi.&rdquo; — Autotab, một tác nhân AI thả vào.</p></blockquote>
+<blockquote>
+<p>&ldquo;Khi các tập lệnh thông thường gặp sự cố, mô hình đánh giá trạng thái màn hình hiện tại và tự động xác định các hành động cần thiết để hoàn thành quy trình làm việc. Việc triển khai này hiện đã phục hồi thành công hơn 60% các lần thực thi (trước đây phải mất nhiều ngày để khắc phục).&rdquo; — Nhóm nền tảng thanh toán của Google, đã triển khai mô hình Sử dụng Máy tính như một cơ chế dự phòng để giải quyết các thử nghiệm UI đầu cuối dễ bị hỏng đã đóng góp vào 25% tổng số lỗi thử nghiệm.</p></blockquote>
+<h2 id="cách-bắt-đầu">Cách bắt đầu</h2>
+<p>Bắt đầu từ hôm nay, mô hình có sẵn trong bản xem trước công khai, có thể truy cập thông qua Gemini API trên Google AI Studio và Vertex AI.</p>
+<ul>
+<li><strong>Thử ngay bây giờ:</strong> Trong một môi trường trình diễn do <a href="http://gemini.browserbase.com/">Browserbase</a> tổ chức.</li>
+<li><strong>Bắt đầu xây dựng:</strong> Đi sâu vào <a href="https://github.com/google/computer-use-preview">tài liệu tham khảo</a> và <a href="http://ai.google.dev/gemini-api/docs/computer-use">tài liệu</a> của chúng tôi (xem <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/computer-use">tài liệu Vertex AI để sử dụng cho doanh nghiệp</a>) để tìm hiểu cách xây dựng vòng lặp tác nhân của riêng bạn cục bộ với Playwright hoặc trong một VM đám mây với Browserbase.</li>
+<li><strong>Tham gia cộng đồng:</strong> Chúng tôi rất vui khi thấy những gì bạn xây dựng. Chia sẻ phản hồi và giúp định hướng lộ trình của chúng tôi trong <a href="https://discuss.ai.google.dev/c/gemini-api/4">Diễn đàn nhà phát triển</a> của chúng tôi.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://blog.google/technology/google-deepmind/gemini-computer-use-model/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/08-october-2025/">08 October 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/blog.google/">Blog.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-26/a1cdbe/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/cLRIrkIKPzIxhXcYyPa1IC5drSF9qmchYRfinvFIThOpxlQtQrE1_7WHky6eJ3KLQvZ8BJ-kn5kHA-XHPQwLYdjn96ldMtPN_D6X0WrcrpeI0fpzWCk=w400-h225-n-nu" alt="Chỉnh sửa hình ảnh trong Gemini vừa được nâng cấp đáng kể" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-26T00:00:00&#43;00:00">Aug 26, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chỉnh sửa hình ảnh trong Gemini vừa được nâng cấp đáng kể</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Biến đổi hình ảnh theo những cách mới tuyệt vời với tính năng chỉnh sửa hình ảnh gốc được cập nhật trong ứng dụng Gemini.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-08-05/77799e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/W4TA350_8bmFow8aEKIIKEofRZ5wRx0NztIINxbI5iCK3bskTQp7LUuKoCmgJ2Cv7VhiZEjI4KGdSgogPtrIk3bZMJQRMY3-GAuEScxVzp5dKsO0fNw=w400-h225-n-nu" alt="Tái tư duy cách chúng ta đo lường trí tuệ nhân tạo" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-08-05T00:00:00&#43;00:00">Aug 05, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Tái tư duy cách chúng ta đo lường trí tuệ nhân tạo</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Game Arena là một nền tảng mã nguồn mở mới để đánh giá nghiêm ngặt các mô hình AI. Nó cho phép so sánh trực tiếp các hệ thống tiên tiến trong các môi trường có điều kiện chiến thắng rõ ràng.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-09/6ac862/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/ka2UHKqEKG1GR8w-QqBLkIN48VBUClMsw8yo_ACI1vrofXyAKBd4QrcDyiIVdBu2V2S9o5tpMQL8Fi68ec4Y8CErz0CV4oTkl2RicrYl9q2pyDhz=w400-h225-n-nu" alt="Giới thiệu Mô hình Sử dụng Máy tính Gemini 2.5" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Mô hình Sử dụng Máy tính Gemini 2.5</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-09/c7db8f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/5f455d24ea80569b34eb4347f06152d8a5508722-1000x1000.svg" alt="Mở rộng hoạt động toàn cầu sang Ấn Độ với văn phòng thứ hai tại khu vực Châu Á Thái Bình Dương" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mở rộng hoạt động toàn cầu sang Ấn Độ với văn phòng thứ hai tại khu vực Châu Á Thái Bình Dương</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-09/8931a6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Rahul Patil gia nhập Anthropic với vai trò Giám đốc Công nghệ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Rahul Patil gia nhập Anthropic với vai trò Giám đốc Công nghệ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-07/10ab20/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/fnAx6nksgsvTcj5EDj7bx1yD8sMXwfkBnR6vla-e-h4wZSKFI3a1nFftGvDYyJAk01ZzNr2-QJyqfw30V2_tcp6tE-udCtMCuyou9cBIHyxGnO_mtQ=w400-h225-n-nu" alt="Giới thiệu CodeMender- một tác nhân AI để bảo mật mã" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu CodeMender- một tác nhân AI để bảo mật mã</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-04/efc506/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/rteb/thumbnail.png" alt="Giới thiệu RTEB- Một tiêu chuẩn mới để đánh giá khả năng truy xuất thông tin" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu RTEB- Một tiêu chuẩn mới để đánh giá khả năng truy xuất thông tin</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
