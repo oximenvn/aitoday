@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face | AI Today - SkyAI</title>
+
+<meta name="description" content="Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-10-16T00:00:00&#43;00:00">October 16, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            6 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/optimum_intel/intel_thumbnail.png" alt="GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face">
+        <figcaption class="text-center italic text-xs">Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="google-cloud-c4-mang-lại-cải-thiện-70-tco-trên-gpt-oss-với-intel-và-hugging-face">Google Cloud C4 Mang Lại Cải Thiện 70% TCO trên GPT OSS với Intel và Hugging Face</h1>
+<p>Intel và Hugging Face đã hợp tác để chứng minh giá trị thực tế của việc nâng cấp lên Máy ảo (VM) <code>C4</code> mới nhất của Google chạy trên bộ xử lý Intel® Xeon® 6 (tên mã Granite Rapids (GNR)). Chúng tôi đặc biệt muốn đánh giá hiệu suất cải thiện trong khả năng tạo văn bản của Mô hình ngôn ngữ lớn (LLM) OpenAI GPT OSS.</p>
+<p>Kết quả đã có và rất ấn tượng, cho thấy sự cải thiện <em>1.7x</em> về Tổng chi phí sở hữu (TCO) so với các phiên bản VM Google <code>C3</code> thế hệ trước. Phiên bản VM Google Cloud <code>C4</code> mang lại thêm:</p>
+<ul>
+<li>Thông lượng TPOT/vCPU/đô la cao hơn từ 1.4x đến 1.7x</li>
+<li>Giá mỗi giờ thấp hơn so với VM <code>C3</code></li>
+</ul>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>GPT OSS là tên gọi chung cho mô hình Mixture of Experts (MoE) mã nguồn mở được phát hành bởi OpenAI. Mô hình MoE là một kiến trúc mạng nơ-ron sâu sử dụng các mạng con &ldquo;chuyên gia&rdquo; chuyên dụng và một &ldquo;mạng cổng&rdquo; để quyết định sử dụng chuyên gia nào cho một đầu vào nhất định. Các mô hình MoE cho phép bạn mở rộng dung lượng mô hình của mình một cách hiệu quả mà không cần mở rộng tuyến tính chi phí tính toán. Chúng cũng cho phép chuyên môn hóa, nơi các &ldquo;chuyên gia&rdquo; khác nhau học các kỹ năng khác nhau, cho phép chúng thích ứng với các phân phối dữ liệu đa dạng.</p>
+<p>Ngay cả với các tham số rất lớn, chỉ một tập hợp con nhỏ các chuyên gia được kích hoạt trên mỗi mã thông báo, làm cho suy luận CPU khả thi.</p>
+<p>Intel và Hugging Face đã hợp tác để hợp nhất một tối ưu hóa thực thi chuyên gia (PR <a href="https://github.com/huggingface/transformers/pull/40304">#40304</a>) để loại bỏ tính toán dư thừa, nơi mọi chuyên gia xử lý tất cả các mã thông báo cho trình biến áp. Tối ưu hóa này chỉ đạo mỗi chuyên gia chỉ chạy trên các mã thông báo mà nó được định tuyến đến, loại bỏ lãng phí FLOP và cải thiện mức sử dụng.</p>
+<!-- raw HTML omitted -->
+<h2 id="phạm-vi--phần-cứng-đánh-giá">Phạm vi &amp; Phần cứng Đánh giá</h2>
+<p>Chúng tôi đã đánh giá GPT OSS trong một khối lượng công việc tạo có kiểm soát, có thể lặp lại để cô lập các khác biệt về kiến trúc (GCP <code>C4</code> VM trên bộ xử lý Intel Xeon 6 (GNR) so với GCP <code>C3</code> VM trên bộ xử lý Intel Xeon thế hệ thứ 4 (SPR)) và hiệu quả thực thi MoE. Trọng tâm là giải mã trạng thái ổn định (độ trễ trên mỗi mã thông báo) và thông lượng được chuẩn hóa từ đầu đến cuối với kích thước lô tăng lên trong khi vẫn giữ độ dài chuỗi cố định. Tất cả các lần chạy đều sử dụng bộ nhớ cache KV tĩnh và chú ý SDPA để xác định.</p>
+<h3 id="tóm-tắt-cấu-hình">Tóm tắt Cấu hình</h3>
+<ul>
+<li>Mô hình: <a href="https://huggingface.co/unsloth/gpt-oss-120b-BF16">unsloth/gpt-oss-120b-BF16</a></li>
+<li>Độ chính xác: bfloat16</li>
+<li>Tác vụ: Tạo văn bản</li>
+<li>Độ dài đầu vào: 1024 mã thông báo (được đệm bên trái)</li>
+<li>Độ dài đầu ra: 1024 mã thông báo</li>
+<li>Kích thước lô: 1, 2, 4, 8, 16, 32, 64</li>
+<li>Tính năng đã bật:
+<ul>
+<li>Bộ nhớ cache KV tĩnh</li>
+<li>Phần phụ trợ chú ý SDPA</li>
+</ul>
+</li>
+<li>Số liệu được báo cáo:
+<ul>
+<li>Thông lượng (Tổng số mã thông báo được tạo trên mỗi giây được tổng hợp trên lô)</li>
+</ul>
+</li>
+</ul>
+<h3 id="phần-cứng-đang-thử-nghiệm">Phần cứng Đang Thử nghiệm</h3>
+<!-- raw HTML omitted -->
+<h2 id="tạo-phiên-bản">Tạo Phiên bản</h2>
+<h3 id="c3"><code>C3</code></h3>
+<p>Truy cập <a href="https://console.cloud.google.com/"><code>Google Cloud Console</code></a> và nhấp vào <code>tạo VM</code> trong dự án của bạn. Thực hiện theo các bước bên dưới để tạo một phiên bản <code>176 vCPU</code>.</p>
+<!-- raw HTML omitted -->
+<h3 id="c4"><code>C4</code></h3>
+<p>Truy cập <a href="https://console.cloud.google.com/"><code>Google Cloud Console</code></a> và nhấp vào <code>tạo VM</code> trong dự án của bạn. Thực hiện theo các bước dưới đây để tạo một phiên bản <code>144 vCPU</code>.</p>
+<!-- raw HTML omitted -->
+<h2 id="thiết-lập-môi-trường">Thiết lập môi trường</h2>
+<p>Đăng nhập vào phiên bản bằng SSH và sau đó cài đặt docker. Thực hiện theo các bước bên dưới để thiết lập môi trường một cách dễ dàng. Để có thể tái tạo, chúng tôi liệt kê các phiên bản và cam kết mà chúng tôi đang sử dụng trong các lệnh.</p>
+<!-- raw HTML omitted -->
+<p>Chúng ta đang ở trong container ngay bây giờ, hãy thực hiện các bước sau.</p>
+<!-- raw HTML omitted -->
+<h2 id="quy-trình-đánh-giá">Quy trình Đánh giá</h2>
+<p>Đối với mỗi kích thước lô, chúng tôi</p>
+<!-- raw HTML omitted -->
+<p>Chạy <code>numactl -l python benchmark.py</code> cho các mã sau.</p>
+<p>python
+import os
+import time
+import torch
+from datasets import load_dataset
+from transformers import AutoModelForCausalLM, AutoTokenizer</p>
+<p>INPUT_TOKENS = 1024
+OUTPUT_TOKENS = 1024</p>
+<p>def get_inputs(tokenizer, batch_size):
+dataset = load_dataset(&ldquo;ola13/small-the_pile&rdquo;, split=&ldquo;train&rdquo;)
+tokenizer.padding_side = &ldquo;left&rdquo;
+selected_texts = []
+for sample in dataset:
+input_ids = tokenizer(sample[&ldquo;text&rdquo;], return_tensors=&ldquo;pt&rdquo;).input_ids
+if len(selected_texts) == 0 and input_ids.shape[-1] &gt;= INPUT_TOKENS:
+selected_texts.append(sample[&ldquo;text&rdquo;])
+elif len(selected_texts) &gt; 0:
+selected_texts.append(sample[&ldquo;text&rdquo;])
+if len(selected_texts) == batch_size:
+break</p>
+<pre><code>return tokenizer(selected_texts, max_length=INPUT_TOKENS, padding=&quot;max_length&quot;, truncation=True, return_tensors=&quot;pt&quot;)
+</code></pre>
+<p>def run_generate(model, inputs, generation_config):
+inputs[&ldquo;generation_config&rdquo;] = generation_config
+model.generate(**inputs) # warm up
+pre = time.time()
+model.generate(**inputs)
+latency = (time.time() - pre)
+return latency</p>
+<p>def benchmark(model, tokenizer, batch_size, generation_config):
+inputs = get_inputs(tokenizer, batch_size)
+generation_config.max_new_tokens = 1
+generation_config.min_new_tokens = 1
+prefill_latency = run_generate(model, inputs, generation_config)
+generation_config.max_new_tokens = OUTPUT_TOKENS
+generation_config.min_new_tokens = OUTPUT_TOKENS
+total_latency = run_generate(model, inputs, generation_config)
+decoding_latency = (total_latency - prefill_latency) / (OUTPUT_TOKENS - 1)
+throughput = OUTPUT_TOKENS * batch_size / total_latency</p>
+<pre><code>return prefill_latency, decoding_latency, throughput
+</code></pre>
+<p>if <strong>name</strong> == &ldquo;<strong>main</strong>&rdquo;:
+model_id = &ldquo;unsloth/gpt-oss-120b-BF16&rdquo;
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model_kwargs = {&ldquo;dtype&rdquo;: torch.bfloat16}
+model = AutoModelForCausalLM.from_pretrained(model_id, **model_kwargs)
+model.config._attn_implementation=&ldquo;sdpa&rdquo;
+generation_config = model.generation_config
+generation_config.do_sample = False
+generation_config.cache_implementation=&ldquo;static&rdquo;</p>
+<pre><code>for batch_size in [1, 2, 4, 8, 16, 32, 64]:
+    print(f&quot;---------- Run generation with batch size = {batch_size} ----------&quot;, flush=True)
+    prefill_latency, decoding_latency, throughput = benchmark(model, tokenizer, batch_size, generation_config)
+    print(f&quot;throughput = {throughput}&quot;, flush=True)
+</code></pre>
+<h2 id="kết-quả">Kết quả</h2>
+<h3 id="thông-lượng-chuẩn-hóa-trên-mỗi-vcpu">Thông lượng Chuẩn hóa trên mỗi vCPU</h3>
+<p>Trên các kích thước lô lên đến 64, <code>C4</code> chạy bằng bộ xử lý Intel Xeon 6 luôn vượt trội hơn <code>C3</code> với thông lượng trên mỗi vCPU cao hơn từ 1.4x đến 1.7×. Công thức là:</p>
+<h1 id="textnormalized_throughput_per_vcpu">$\text{normalized_throughput_per_vCPU}</h1>
+<p>\frac{\text{throughput_C4} / \text{vCPUs_C4}}
+{\text{throughput_C3} / \text{vCPUs_C3}}$</p>
+<!-- raw HTML omitted -->
+<h3 id="chi-phí--tco">Chi phí &amp; TCO</h3>
+<p>Ở kích thước lô 64, <code>C4</code> cung cấp thông lượng trên mỗi vCPU cao hơn 1.7× so với <code>C3</code>; với mức giá gần ngang bằng trên mỗi vCPU (chi phí hàng giờ tỷ lệ tuyến tính với số lượng vCPU), điều này mang lại lợi thế TCO 1.7× (<code>C3</code> sẽ yêu cầu chi tiêu gấp 1.7× cho cùng một khối lượng mã thông báo được tạo).</p>
+<p>Tỷ lệ thông lượng trên mỗi vCPU:
+$\frac{\text{throughput_C4} / \text{vCPUs_C4}}{\text{throughput_C3} / \text{vCPUs_C3}}
+= 1.7
+\Rightarrow
+\frac{\text{TCO_C3}}{\text{TCO_C4}} \approx 1.7$</p>
+<!-- raw HTML omitted -->
+<h2 id="kết-luận">Kết luận</h2>
+<p>VM Google Cloud <code>C4</code> được hỗ trợ bởi bộ xử lý Intel Xeon 6 (GNR) cung cấp cả hiệu suất tăng ấn tượng và hiệu quả chi phí tốt hơn cho suy luận MoE lớn so với VM Google Cloud <code>C3</code> thế hệ trước (được hỗ trợ bởi bộ xử lý Intel Xeon thế hệ thứ 4). Đối với suy luận GPT OSS MoE, chúng tôi quan sát thấy thông lượng cao hơn, độ trễ thấp hơn và chi phí giảm. Những kết quả này nhấn mạnh rằng nhờ các tối ưu hóa khung mục tiêu từ Intel và Hugging Face, các mô hình MoE lớn có thể được phục vụ hiệu quả trên CPU đa năng thế hệ tiếp theo.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/gpt-oss-on-intel-xeon">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/october-16-2025/">October 16, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-04/efc506/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/rteb/thumbnail.png" alt="Giới thiệu RTEB- Một tiêu chuẩn mới để đánh giá khả năng truy xuất thông tin" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-04T00:00:00&#43;00:00">Oct 04, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu RTEB- Một tiêu chuẩn mới để đánh giá khả năng truy xuất thông tin</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Không có mô tả ngắn gọn</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-02/058c9b/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/dots-ocr-ne/dots_header.png" alt="OCR SOTA trên thiết bị với Core ML và dots.ocr" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-02T00:00:00&#43;00:00">Oct 02, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">OCR SOTA trên thiết bị với Core ML và dots.ocr</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2"></p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-16/4423db/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/_ys2ESbxOZmEx8DpK8yKDikkqRuN_b_Z674d5WRSnC2gvHKdLZFo3tfoGjSoJVs2X0kruqz_uG3ww5Xo4JmdRViU0cJLT5I3RfZBoH2Pa4pj4eo3-Q=w400-h225-n-nu" alt="Đưa AI đến thế hệ năng lượng nhiệt hạch tiếp theo" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đưa AI đến thế hệ năng lượng nhiệt hạch tiếp theo</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-16/882956/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/optimum_intel/intel_thumbnail.png" alt="GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-14/f9c7fe/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6905c83d0735e1bc430025fdd1748d1406079036-1000x1000.svg" alt="Anthropic và Salesforce mở rộng quan hệ đối tác để đưa Claude đến các ngành công nghiệp được quản lý" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic và Salesforce mở rộng quan hệ đối tác để đưa Claude đến các ngành công nghiệp được quản lý</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-14/3d6226/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/10/From-Vision-to-Impact-Advancing-Public-Finance-Transformation-Through-AI-and-Ecosystem-Collaboration-Featured-1024x575.jpg" alt="Từ tầm nhìn đến tác động- Thúc đẩy chuyển đổi tài chính công thông qua AI và hợp tác hệ sinh thái" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Từ tầm nhìn đến tác động- Thúc đẩy chuyển đổi tài chính công thông qua AI và hợp tác hệ sinh thái</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-10/883183/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AI21’s Jamba Reasoning 3B tái định nghĩa &#39;Nhỏ&#39; có nghĩa là gì trong LLM — Bối cảnh 250K trên Máy tính xách tay</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
