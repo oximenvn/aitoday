@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel | AI Today - SkyAI</title>
+
+<meta name="description" content="Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-10-21T00:00:00&#43;00:00">October 21, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            9 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/optimum_intel/optimum_openvino_thumbnail.png" alt="Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel">
+        <figcaption class="text-center italic text-xs">Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="chạy-vlm-của-bạn-trong-3-bước-đơn-giản-trên-cpu-intel">Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel</h1>
+<p>Với khả năng ngày càng tăng của các mô hình ngôn ngữ lớn (LLM), một lớp mô hình mới đã nổi lên: <a href="https://huggingface.co/blog/vlms-2025">Vision Language Models (VLM)</a>. Những mô hình này có thể phân tích hình ảnh và video để mô tả các cảnh, tạo chú thích và trả lời các câu hỏi về nội dung trực quan.</p>
+<p>Mặc dù việc chạy các mô hình AI trên thiết bị của riêng bạn có thể khó khăn vì các mô hình này thường đòi hỏi nhiều tính toán, nhưng nó cũng mang lại những lợi ích đáng kể: bao gồm cải thiện quyền riêng tư vì dữ liệu của bạn vẫn ở trên máy của bạn và tăng cường tốc độ và độ tin cậy vì bạn không phụ thuộc vào kết nối internet hoặc máy chủ bên ngoài. Đây là nơi các công cụ như <a href="https://huggingface.co/docs/optimum-intel/en/index">Optimum Intel</a> và <a href="https://docs.openvino.ai/2025/index.html">OpenVINO</a> xuất hiện, cùng với một mô hình nhỏ, hiệu quả như <a href="https://huggingface.co/blog/smolvlm">SmolVLM</a>. Trong bài đăng trên blog này, chúng tôi sẽ hướng dẫn bạn ba bước dễ dàng để chạy VLM cục bộ mà không cần phần cứng hoặc GPU đắt tiền (mặc dù bạn có thể chạy tất cả các mẫu mã từ bài đăng trên blog này trên GPU Intel).</p>
+<h2 id="triển-khai-mô-hình-của-bạn-với-optimum">Triển khai mô hình của bạn với Optimum</h2>
+<p>Các mô hình nhỏ như SmolVLM được xây dựng để tiêu thụ ít tài nguyên, nhưng chúng có thể được tối ưu hóa hơn nữa. Trong bài đăng trên blog này, chúng ta sẽ xem cách tối ưu hóa mô hình của bạn, để giảm mức sử dụng bộ nhớ và tăng tốc suy luận, làm cho nó hiệu quả hơn để triển khai trên các thiết bị có tài nguyên hạn chế.</p>
+<p>Để làm theo hướng dẫn này, bạn cần cài đặt <code>optimum</code> và <code>openvino</code>, bạn có thể thực hiện bằng:</p>
+<p>bash
+pip install optimum-intel[openvino] transformers==4.52.*</p>
+<h2 id="bước-1-chuyển-đổi-mô-hình-của-bạn">Bước 1: Chuyển đổi mô hình của bạn</h2>
+<p>Đầu tiên, bạn sẽ cần chuyển đổi mô hình của mình sang <a href="https://docs.openvino.ai/2025/documentation/openvino-ir-format.html">OpenVINO IR</a>. Có nhiều tùy chọn để thực hiện việc này:</p>
+<ol>
+<li>Bạn có thể sử dụng <a href="https://huggingface.co/docs/optimum-intel/en/openvino/export#using-the-cli">Optimum CLI</a></li>
+</ol>
+<p>bash
+optimum-cli export openvino -m HuggingFaceTB/SmolVLM2-256M-Video-Instruct smolvlm_ov/</p>
+<ol start="2">
+<li>Hoặc bạn có thể chuyển đổi nó <a href="https://huggingface.co/docs/optimum-intel/en/openvino/export#when-loading-your-model">ngay lập tức</a> khi tải mô hình của bạn:</li>
+</ol>
+<p>python
+from optimum.intel import OVModelForVisualCausalLM</p>
+<p>model_id = &ldquo;HuggingFaceTB/SmolVLM2-256M-Video-Instruct&rdquo;
+model = OVModelForVisualCausalLM.from_pretrained(model_id)
+model.save_pretrained(&ldquo;smolvlm_ov&rdquo;)</p>
+<h2 id="bước-2-lượng-tử-hóa">Bước 2: Lượng tử hóa</h2>
+<p>Bây giờ là lúc để tối ưu hóa mô hình của bạn. Lượng tử hóa làm giảm độ chính xác của trọng số và/hoặc kích hoạt của mô hình, dẫn đến các mô hình nhỏ hơn, nhanh hơn. Về cơ bản, đó là một cách để ánh xạ các giá trị từ một kiểu dữ liệu có độ chính xác cao, chẳng hạn như số dấu phẩy động 32 bit (FP32), sang định dạng có độ chính xác thấp hơn, thường là số nguyên 8 bit (INT8). Mặc dù quá trình này mang lại một số lợi ích chính, nhưng nó cũng có thể ảnh hưởng đến sự mất độ chính xác tiềm ẩn.</p>
+<p><img src="https://huggingface.co/datasets/OpenVINO/documentation/resolve/main/blog/openvino_vlm/quantization.png" alt="Lượng tử hóa"></p>
+<p>Optimum hỗ trợ hai phương pháp lượng tử hóa sau đào tạo chính:</p>
+<ul>
+<li><a href="https://huggingface.co/docs/optimum-intel/en/openvino/optimization#weight-only-quantization">Weight Only Quantization (WOQ)</a></li>
+<li><a href="https://huggingface.co/docs/optimum-intel/en/openvino/optimization#full-quantization">Static Quantization</a></li>
+</ul>
+<p>Hãy khám phá từng phương pháp.</p>
+<h3 id="tùy-chọn-1-weight-only-quantization">Tùy chọn 1: Weight Only Quantization</h3>
+<p>Lượng tử hóa chỉ trọng số có nghĩa là chỉ các trọng số được lượng tử hóa, nhưng các kích hoạt vẫn ở độ chính xác ban đầu của chúng. Do đó, mô hình trở nên nhỏ hơn và hiệu quả hơn về bộ nhớ, cải thiện thời gian tải. Nhưng vì các kích hoạt không được lượng tử hóa, nên tốc độ suy luận đạt được bị hạn chế. Lượng tử hóa chỉ trọng số là một bước đầu tiên đơn giản vì nó thường không dẫn đến sự suy giảm độ chính xác đáng kể.</p>
+<blockquote>
+<p>Kể từ OpenVINO 2024.3, nếu trọng số của mô hình đã được lượng tử hóa, các kích hoạt tương ứng cũng sẽ được lượng tử hóa tại thời gian chạy, dẫn đến tăng tốc bổ sung tùy thuộc vào thiết bị.</p></blockquote>
+<p>Để chạy nó, bạn sẽ cần tạo cấu hình lượng tử hóa <code>OVWeightQuantizationConfig</code> như sau:</p>
+<p>python
+from optimum.intel import OVModelForVisualCausalLM, OVWeightQuantizationConfig</p>
+<p>q_config = OVWeightQuantizationConfig(bits=8)
+q_model = OVModelForVisualCausalLM.from_pretrained(model_id, quantization_config=q_config)
+q_model.save_pretrained(&ldquo;smolvlm_int8&rdquo;)</p>
+<p>hoặc tương đương bằng cách sử dụng CLI:</p>
+<p>bash
+optimum-cli export openvino -m HuggingFaceTB/SmolVLM2-256M-Video-Instruct &ndash;weight-format int8 smolvlm_int8/</p>
+<h2 id="tùy-chọn-2-static-quantization">Tùy chọn 2: Static Quantization</h2>
+<p>Với Static Quantization, cả trọng số và kích hoạt đều được lượng tử hóa trước khi suy luận. Để đạt được ước tính tốt nhất cho các tham số lượng tử hóa kích hoạt, chúng ta thực hiện một bước hiệu chỉnh. Trong bước này, một tập dữ liệu đại diện nhỏ được đưa qua mô hình. Trong trường hợp của chúng tôi, chúng tôi sẽ sử dụng 50 mẫu của <a href="https://huggingface.co/datasets/ucla-contextual/contextual_test">tập dữ liệu theo ngữ cảnh</a> và sẽ áp dụng lượng tử hóa tĩnh trên bộ mã hóa tầm nhìn trong khi lượng tử hóa chỉ trọng số sẽ được áp dụng trên phần còn lại của mô hình. Các thử nghiệm cho thấy rằng việc áp dụng lượng tử hóa tĩnh trên bộ mã hóa tầm nhìn mang lại cải thiện hiệu suất đáng chú ý mà không làm giảm đáng kể độ chính xác. Vì bộ mã hóa tầm nhìn chỉ được gọi một lần cho mỗi thế hệ, nên hiệu suất tổng thể đạt được từ việc áp dụng lượng tử hóa tĩnh trên thành phần này thấp hơn so với hiệu suất đạt được bằng cách tối ưu hóa các thành phần được sử dụng thường xuyên hơn như mô hình ngôn ngữ. Tuy nhiên, phương pháp này có thể có lợi trong một số trường hợp nhất định. Ví dụ: khi cần câu trả lời ngắn, đặc biệt với nhiều hình ảnh làm đầu vào.</p>
+<p>python
+from optimum.intel import OVModelForVisualCausalLM, OVPipelineQuantizationConfig, OVQuantizationConfig, OVWeightQuantizationConfig</p>
+<p>q_config = OVPipelineQuantizationConfig(
+quantization_configs={
+&ldquo;lm_model&rdquo;: OVWeightQuantizationConfig(bits=8),
+&ldquo;text_embeddings_model&rdquo;: OVWeightQuantizationConfig(bits=8),
+&ldquo;vision_embeddings_model&rdquo;: OVQuantizationConfig(bits=8),
+},
+dataset=dataset,
+num_samples=num_samples,
+)
+q_model = OVModelForVisualCausalLM.from_pretrained(model_id, quantization_config=q_config)
+q_model.save_pretrained(&ldquo;smolvlm_static_int8&rdquo;)</p>
+<p>Lượng tử hóa kích hoạt thêm các lỗi nhỏ có thể tích tụ và ảnh hưởng đến độ chính xác, vì vậy việc kiểm tra cẩn thận sau đó là rất quan trọng. Thông tin và ví dụ khác có thể được tìm thấy trong <a href="https://huggingface.co/docs/optimum-intel/en/openvino/optimization#pipeline-quantization">tài liệu của chúng tôi</a>.</p>
+<h3 id="bước-3-chạy-suy-luận">Bước 3: Chạy suy luận</h3>
+<p>Bây giờ bạn có thể chạy suy luận với mô hình đã lượng tử hóa của mình:</p>
+<p>python
+generated_ids = q_model.generate(**inputs, max_new_tokens=100)
+generated_texts = processor.batch_decode(generated_ids, skip_special_tokens=True)
+print(generated_texts[0])</p>
+<p>Nếu bạn có máy tính xách tay Intel gần đây, Intel AI PC hoặc GPU rời Intel, bạn có thể tải mô hình trên GPU bằng cách thêm <code>device=&quot;gpu&quot;</code> khi tải mô hình của bạn:</p>
+<p>python
+model = OVModelForVisualCausalLM.from_pretrained(model_id, device=&ldquo;gpu&rdquo;)</p>
+<p>Chúng tôi cũng <a href="https://huggingface.co/spaces/echarlaix/vision-langage-openvino">đã tạo một space</a> để bạn có thể chơi với <a href="https://huggingface.co/echarlaix/SmolVLM2-256M-Video-Instruct-openvino">mô hình gốc</a> và các biến thể lượng tử hóa của nó thu được bằng cách áp dụng <a href="https://huggingface.co/echarlaix/SmolVLM2-256M-Video-Instruct-openvino-8bit-woq-data-free">lượng tử hóa chỉ trọng số</a> và <a href="https://huggingface.co/echarlaix/SmolVLM2-256M-Video-Instruct-openvino-8bit-mixed">lượng tử hóa hỗn hợp</a> tương ứng. Bản demo này chạy trên bộ xử lý Intel Xeon thế hệ thứ 4 (Sapphire Rapids).</p>
+<p><img src="https://huggingface.co/datasets/OpenVINO/documentation/resolve/main/blog/openvino_vlm/chat1.png" alt=" HF Space"></p>
+<p>Để tái tạo kết quả của chúng tôi, hãy xem <a href="https://github.com/huggingface/optimum-intel/blob/main/notebooks/openvino/vision_language_quantization.ipynb">notebook</a> của chúng tôi.</p>
+<h2 id="đánh-giá-và-kết-luận">Đánh giá và Kết luận</h2>
+<p>Chúng tôi đã chạy một điểm chuẩn để so sánh hiệu suất của các phiên bản <a href="https://huggingface.co/HuggingFaceTB/SmolVLM2-256M-Video-Instruct">PyTorch</a>, <a href="https://huggingface.co/echarlaix/SmolVLM2-256M-Video-Instruct-openvino">OpenVINO</a> và <a href="https://huggingface.co/echarlaix/SmolVLM2-256M-Video-Instruct-openvino-8bit-woq-data-free">OpenVINO 8-bit WOQ</a> của mô hình gốc. Mục tiêu là đánh giá tác động của lượng tử hóa chỉ trọng số đối với độ trễ và thông lượng trên phần cứng Intel CPU. Đối với thử nghiệm này, chúng tôi đã sử dụng <a href="https://huggingface.co/datasets/OpenVINO/documentation/resolve/main/blog/openvino_vlm/flower.png">một hình ảnh duy nhất</a> làm đầu vào.</p>
+<p>Chúng tôi đã đo các chỉ số sau để đánh giá hiệu suất của mô hình:</p>
+<ul>
+<li>Time To First Token (TTFT): Thời gian cần thiết để tạo ra token đầu tiên.</li>
+<li>Time Per Output Token (TPOT): Thời gian cần thiết để tạo ra mỗi token đầu ra tiếp theo.</li>
+<li>End-to-End Latency: Tổng thời gian cần thiết để tạo ra tất cả các token đầu ra.</li>
+<li>Decoding Throughput: Số lượng token mỗi giây mà mô hình tạo ra trong giai đoạn giải mã.</li>
+</ul>
+<p>Dưới đây là kết quả trên Intel CPU:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Configuration</th>
+          <th>Time To First Token (TTFT)</th>
+          <th>Time Per Output Token (TPOT)</th>
+          <th>End-to-End Latency</th>
+          <th>Decoding Throughput</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>pytorch</td>
+          <td>5.150</td>
+          <td>1.385</td>
+          <td>25.927</td>
+          <td>0.722</td>
+      </tr>
+      <tr>
+          <td>openvino</td>
+          <td>0.420</td>
+          <td>0.021</td>
+          <td>0.738</td>
+          <td>47.237</td>
+      </tr>
+      <tr>
+          <td>openvino-8bit-woq</td>
+          <td>0.247</td>
+          <td>0.016</td>
+          <td>0.482</td>
+          <td>63.928</td>
+      </tr>
+  </tbody>
+</table>
+<p>Điểm chuẩn này chứng minh cách các mô hình đa phương thức nhỏ, được tối ưu hóa, như <a href="https://huggingface.co/HuggingFaceTB/SmolVLM2-256M-Video-Instruct">SmolVLM2-256M</a>, hoạt động trên CPU Intel trên các cấu hình khác nhau. Theo các thử nghiệm, phiên bản PyTorch cho thấy độ trễ cao, với thời gian đến token đầu tiên (TTFT) hơn 5 giây với thông lượng giải mã là 0.7 token/giây. Đơn giản chỉ cần chuyển đổi mô hình bằng Optimum và chạy nó trên OpenVINO làm giảm đáng kể thời gian đến token đầu tiên (TTFT) xuống 0.42 giây (<strong>tăng tốc x12</strong>) và tăng thông lượng lên 47 token/giây (<strong>x65</strong>). Áp dụng lượng tử hóa chỉ trọng số 8 bit làm giảm thêm TTFT (<strong>x1.7</strong>) và tăng thông lượng (<strong>x1.4</strong>), đồng thời giảm kích thước mô hình và cải thiện hiệu quả.</p>
+<blockquote>
+<p><strong>Cấu hình nền tảng</strong></p>
+<p>Cấu hình nền tảng cho các yêu cầu hiệu suất ở trên:</p>
+<p><strong>System Board:</strong> MSI B860M GAMING PLUS WIFI (MS-7E42)<br>
+<strong>CPU:</strong> Intel® Core™ Ultra 7 265K<br>
+<strong>Sockets/Physical Cores:</strong> 1/20 (20 threads)<br>
+<strong>HyperThreading/Turbo Settings:</strong> Disabled<br>
+<strong>Memory:</strong> 64 GB DDR5 @ 6400 MHz<br>
+<strong>TDP:</strong> 665W<br>
+<strong>BIOS:</strong> American Megatrends International, LLC. 2.A10<br>
+<strong>BIOS Release Date:</strong> 28.11.2024<br>
+<strong>OS:</strong> Ubuntu 24.10<br>
+<strong>Kernel:</strong> 6.11.0–25-generic<br>
+<strong>OpenVINO Version:</strong> 2025.2.0<br>
+<strong>torch:</strong> 2.8.0<br>
+<strong>torchvision:</strong> 0.23.0+cpu<br>
+<strong>optimum-intel:</strong> 1.25.2<br>
+<strong>transformers:</strong> 4.53.3<br>
+<strong>Benchmark Date:</strong> 15.05.2025<br>
+<strong>Benchmarked by:</strong> Intel Corporation<br>
+Hiệu suất có thể khác nhau tùy theo mục đích sử dụng, cấu hình và các yếu tố khác. Xem cấu hình nền tảng bên dưới.</p></blockquote>
+<h2 id="liên-kết-và-tài-nguyên-hữu-ích">Liên kết và Tài nguyên hữu ích</h2>
+<ul>
+<li><a href="https://github.com/huggingface/optimum-intel/blob/main/notebooks/openvino/vision_language_quantization.ipynb">Notebook</a></li>
+<li><a href="https://huggingface.co/spaces/echarlaix/vision-langage-openvino">Thử Space của chúng tôi</a></li>
+<li><a href="https://web.cvent.com/event/d550a2a7-04f2-4a28-b641-3af228e318ca/regProcessStep1?utm_campaign=speakers4&amp;utm_medium=organic&amp;utm_source=Community">Xem bản ghi webinar</a></li>
+<li><a href="https://huggingface.co/docs/optimum-intel/en/openvino/inference">Tài liệu Optimum Intel</a></li>
+</ul>
+<blockquote>
+<p>Hiệu suất thay đổi theo cách sử dụng, cấu hình và các yếu tố khác. Tìm hiểu thêm trên trang Performance Index.<br>
+Kết quả hiệu suất dựa trên thử nghiệm tính đến ngày hiển thị trong cấu hình và có thể không phản ánh tất cả các bản cập nhật có sẵn công khai. Xem sao lưu để biết chi tiết cấu hình. Không có sản phẩm hoặc thành phần nào có thể hoàn toàn an toàn. Chi phí và kết quả của bạn có thể khác nhau. Công nghệ Intel có thể yêu cầu phần cứng, phần mềm hoặc kích hoạt dịch vụ được bật.<br>
+© Intel Corporation. Intel, logo Intel và các nhãn hiệu Intel khác là nhãn hiệu của Intel Corporation hoặc các công ty con của nó.</p></blockquote>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/openvino-vlm">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/october-15-2025/">October 15, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-16/882956/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/optimum_intel/intel_thumbnail.png" alt="GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-16T00:00:00&#43;00:00">Oct 16, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-04/efc506/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/rteb/thumbnail.png" alt="Giới thiệu RTEB- Một tiêu chuẩn mới để đánh giá khả năng truy xuất thông tin" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-04T00:00:00&#43;00:00">Oct 04, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu RTEB- Một tiêu chuẩn mới để đánh giá khả năng truy xuất thông tin</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Không có mô tả ngắn gọn</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-21/b01498/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/optimum_intel/optimum_openvino_thumbnail.png" alt="Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-17/675838/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà nghiên cứu phát hiện ra việc thêm một câu đơn giản vào lời nhắc giúp mô hình AI sáng tạo hơn nhiều</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-17/b722d0/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://deepmind.googleKh%c3%b4ng%20c%c3%b3%20link%20%e1%ba%a3nh%20minh%20h%e1%bb%8da" alt="Cách một mô hình Gemma đã giúp khám phá ra một con đường điều trị ung thư tiềm năng mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách một mô hình Gemma đã giúp khám phá ra một con đường điều trị ung thư tiềm năng mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-16/4423db/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/_ys2ESbxOZmEx8DpK8yKDikkqRuN_b_Z674d5WRSnC2gvHKdLZFo3tfoGjSoJVs2X0kruqz_uG3ww5Xo4JmdRViU0cJLT5I3RfZBoH2Pa4pj4eo3-Q=w400-h225-n-nu" alt="Đưa AI đến thế hệ năng lượng nhiệt hạch tiếp theo" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đưa AI đến thế hệ năng lượng nhiệt hạch tiếp theo</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-16/882956/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/optimum_intel/intel_thumbnail.png" alt="GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">GPT OSS trên Google Cloud C4 mang lại cải thiện 70% TCO trên GPT OSS với Intel và Hugging Face</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
