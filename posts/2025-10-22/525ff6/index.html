@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Đơn giản hóa ngăn xếp AI- Chìa khóa cho trí tuệ có thể mở rộng, di động từ đám mây đến biên | AI Today - SkyAI</title>
+
+<meta name="description" content="Nội dung được trình bày bởi Arm">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Đơn giản hóa ngăn xếp AI- Chìa khóa cho trí tuệ có thể mở rộng, di động từ đám mây đến biên</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Nội dung được trình bày bởi Arm </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-10-22T00:00:00&#43;00:00">October 22, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https%3A%2F%2Fimages.ctfassets.net%2Fjdtwqhzvc2n1%2F5NhML02FGAEkp2yOpsPkrx%2Fb62d547d376660e631c01d70283f7946%2FAdobeStock_1243259614.jpeg&amp;w=3840&amp;q=50" alt="Đơn giản hóa ngăn xếp AI- Chìa khóa cho trí tuệ có thể mở rộng, di động từ đám mây đến biên">
+        <figcaption class="text-center italic text-xs">Nội dung được trình bày bởi Arm</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="đơn-giản-hóa-ngăn-xếp-ai-chìa-khóa-cho-trí-tuệ-có-thể-mở-rộng-di-động-từ-đám-mây-đến-biên">Đơn giản hóa ngăn xếp AI: Chìa khóa cho trí tuệ có thể mở rộng, di động từ đám mây đến biên</h1>
+<p><em>Được trình bày bởi Arm</em></p>
+<p>Một ngăn xếp phần mềm đơn giản hơn là chìa khóa để AI di động, có thể mở rộng trên đám mây và biên.</p>
+<p>AI hiện đang cung cấp năng lượng cho các ứng dụng thực tế, nhưng các ngăn xếp phần mềm rời rạc đang kìm hãm nó. Các nhà phát triển thường xuyên xây dựng lại cùng một mô hình cho các mục tiêu phần cứng khác nhau, mất thời gian cho mã kết dính thay vì xuất xưởng các tính năng. Tin tốt là một sự thay đổi đang diễn ra. Các chuỗi công cụ thống nhất và các thư viện được tối ưu hóa đang giúp có thể triển khai các mô hình trên các nền tảng mà không ảnh hưởng đến hiệu suất.</p>
+<p>Tuy nhiên, một trở ngại quan trọng vẫn còn: sự phức tạp của phần mềm. Các công cụ khác nhau, tối ưu hóa cụ thể cho phần cứng và các ngăn xếp công nghệ phân lớp tiếp tục gây khó khăn cho sự tiến bộ. Để mở khóa làn sóng đổi mới AI tiếp theo, ngành phải xoay chuyển một cách quyết định khỏi phát triển biệt lập và hướng tới các nền tảng đầu cuối được sắp xếp hợp lý.</p>
+<p>Sự chuyển đổi này đã hình thành. Các nhà cung cấp đám mây lớn, nhà cung cấp nền tảng biên và cộng đồng nguồn mở đang hội tụ trên các chuỗi công cụ thống nhất giúp đơn giản hóa quá trình phát triển và tăng tốc triển khai, từ đám mây đến biên. Trong bài viết này, chúng ta sẽ khám phá lý do tại sao đơn giản hóa là chìa khóa cho AI có thể mở rộng, điều gì đang thúc đẩy động lực này và cách các nền tảng thế hệ tiếp theo đang biến tầm nhìn đó thành kết quả thực tế.</p>
+<h3 id="điểm-nghẽn-phân-mảnh-phức-tạp-và-kém-hiệu-quả">Điểm nghẽn: phân mảnh, phức tạp và kém hiệu quả</h3>
+<p>Vấn đề không chỉ là sự đa dạng của phần cứng; đó là nỗ lực trùng lặp trên các khung và mục tiêu làm chậm thời gian tạo ra giá trị.</p>
+<ul>
+<li><strong>Các mục tiêu phần cứng đa dạng</strong>: GPU, NPU, thiết bị chỉ có CPU, SoC di động và bộ tăng tốc tùy chỉnh.</li>
+<li><strong>Phân mảnh công cụ và khung</strong>: TensorFlow, PyTorch, ONNX, MediaPipe và những thứ khác.</li>
+<li><strong>Hạn chế về biên</strong>: Các thiết bị yêu cầu hiệu suất theo thời gian thực, tiết kiệm năng lượng với chi phí tối thiểu.</li>
+</ul>
+<p>Theo <a href="https://www.gartner.com/en/documents/3994810">Gartner Research</a>, những sự không phù hợp này tạo ra một trở ngại chính: hơn 60% các sáng kiến AI bị đình trệ trước khi sản xuất, do sự phức tạp của tích hợp và sự thay đổi hiệu suất.</p>
+<h3 id="đơn-giản-hóa-phần-mềm-trông-như-thế-nào">Đơn giản hóa phần mềm trông như thế nào</h3>
+<p>Sự đơn giản hóa đang kết hợp xung quanh năm động thái giúp cắt giảm chi phí và rủi ro tái thiết kế:</p>
+<ul>
+<li><strong>Các lớp trừu tượng đa nền tảng</strong> giúp giảm thiểu việc tái thiết kế khi chuyển các mô hình.</li>
+<li><strong>Các thư viện được điều chỉnh hiệu suất</strong> được tích hợp vào các khung ML chính.</li>
+<li><strong>Thiết kế kiến trúc thống nhất</strong> có quy mô từ trung tâm dữ liệu đến thiết bị di động.</li>
+<li><strong>Các tiêu chuẩn và thời gian chạy mở</strong> (ví dụ: ONNX, MLIR) giảm khóa và cải thiện khả năng tương thích.</li>
+<li><strong>Hệ sinh thái ưu tiên nhà phát triển</strong> nhấn mạnh tốc độ, khả năng tái tạo và khả năng mở rộng.</li>
+</ul>
+<p>Những thay đổi này đang làm cho AI dễ tiếp cận hơn, đặc biệt là đối với các công ty khởi nghiệp và nhóm học thuật trước đây thiếu nguồn lực để tối ưu hóa theo yêu cầu. Các dự án như Optimum của Hugging Face và các điểm chuẩn MLPerf cũng đang giúp tiêu chuẩn hóa và xác nhận hiệu suất trên phần cứng chéo.</p>
+<p><strong>Động lực của hệ sinh thái và các tín hiệu thực tế</strong> Sự đơn giản hóa không còn là khát vọng nữa; nó đang xảy ra ngay bây giờ. Trong toàn ngành, các cân nhắc về phần mềm đang ảnh hưởng đến các quyết định ở cấp độ IP và thiết kế silicon, dẫn đến các giải pháp sẵn sàng sản xuất ngay từ ngày đầu tiên. Những người chơi hệ sinh thái lớn đang thúc đẩy sự thay đổi này bằng cách điều chỉnh các nỗ lực phát triển phần cứng và phần mềm, mang lại sự tích hợp chặt chẽ hơn trên toàn bộ ngăn xếp.</p>
+<p>Một chất xúc tác quan trọng là sự trỗi dậy nhanh chóng của suy luận biên, trong đó các mô hình AI được triển khai trực tiếp trên các thiết bị thay vì trên đám mây. Điều này đã làm tăng nhu cầu về các ngăn xếp phần mềm được sắp xếp hợp lý hỗ trợ tối ưu hóa đầu cuối, từ silicon đến hệ thống đến ứng dụng. Các công ty như Arm đang đáp ứng bằng cách cho phép kết hợp chặt chẽ hơn giữa các nền tảng điện toán và chuỗi công cụ phần mềm của họ, giúp các nhà phát triển tăng tốc thời gian triển khai mà không ảnh hưởng đến hiệu suất hoặc tính di động. Sự xuất hiện của các mô hình nền tảng đa phương thức và đa năng (ví dụ: LLaMA, Gemini, Claude) cũng đã thêm vào tính cấp thiết. Các mô hình này yêu cầu thời gian chạy linh hoạt có thể mở rộng trên môi trường đám mây và biên. Các tác nhân AI, tương tác, điều chỉnh và thực hiện các tác vụ một cách tự động, tiếp tục thúc đẩy nhu cầu về phần mềm đa nền tảng, hiệu quả cao.</p>
+<p>MLPerf Inference v3.1 bao gồm hơn 13.500 kết quả hiệu suất từ 26 người gửi, xác nhận điểm chuẩn đa nền tảng về khối lượng công việc AI. Kết quả trải rộng trên cả trung tâm dữ liệu và thiết bị biên, thể hiện sự đa dạng của các triển khai được tối ưu hóa hiện đang được thử nghiệm và chia sẻ.</p>
+<p>Tổng hợp lại, những tín hiệu này làm rõ rằng nhu cầu và ưu đãi của thị trường đang phù hợp với một tập hợp các ưu tiên chung, bao gồm tối đa hóa hiệu suất trên mỗi watt, đảm bảo tính di động, giảm thiểu độ trễ và cung cấp bảo mật và tính nhất quán ở quy mô lớn.</p>
+<h3 id="điều-gì-phải-xảy-ra-để-đơn-giản-hóa-thành-công">Điều gì phải xảy ra để đơn giản hóa thành công</h3>
+<p>Để nhận ra lời hứa của các nền tảng AI đơn giản hóa, một số điều phải xảy ra:</p>
+<ul>
+<li><strong>Đồng thiết kế phần cứng/phần mềm mạnh mẽ</strong>: các tính năng phần cứng được hiển thị trong các khung phần mềm (ví dụ: bộ nhân ma trận, hướng dẫn bộ tăng tốc) và ngược lại, phần mềm được thiết kế để tận dụng phần cứng cơ bản.</li>
+<li><strong>Chuỗi công cụ và thư viện mạnh mẽ, nhất quán</strong>: nhà phát triển cần các thư viện đáng tin cậy, được ghi chép đầy đủ, hoạt động trên các thiết bị. Tính di động hiệu suất chỉ hữu ích nếu các công cụ ổn định và được hỗ trợ tốt.</li>
+<li><strong>Hệ sinh thái mở</strong>: nhà cung cấp phần cứng, người bảo trì khung phần mềm và nhà phát triển mô hình cần hợp tác. Các tiêu chuẩn và dự án được chia sẻ giúp tránh việc phát minh lại bánh xe cho mọi thiết bị hoặc trường hợp sử dụng mới.</li>
+<li><strong>Các trừu tượng không làm lu mờ hiệu suất</strong>: mặc dù trừu tượng cấp cao giúp các nhà phát triển, nhưng chúng vẫn phải cho phép điều chỉnh hoặc hiển thị khi cần thiết. Sự cân bằng phù hợp giữa trừu tượng và kiểm soát là chìa khóa.</li>
+<li><strong>Bảo mật, quyền riêng tư và lòng tin được tích hợp sẵn</strong>: đặc biệt là khi nhiều điện toán chuyển sang thiết bị (biên/di động), các vấn đề như bảo vệ dữ liệu, thực thi an toàn, tính toàn vẹn của mô hình và quyền riêng tư mới quan trọng.</li>
+</ul>
+<h3 id="arm-là-một-ví-dụ-về-sự-đơn-giản-hóa-do-hệ-sinh-thái-dẫn-dắt">Arm là một ví dụ về sự đơn giản hóa do hệ sinh thái dẫn dắt</h3>
+<p>Đơn giản hóa AI ở quy mô lớn hiện phụ thuộc vào thiết kế trên toàn hệ thống, nơi silicon, phần mềm và công cụ phát triển phát triển đồng bộ. Cách tiếp cận này cho phép khối lượng công việc AI chạy hiệu quả trên các môi trường đa dạng, từ các cụm suy luận đám mây đến các thiết bị biên bị hạn chế pin. Nó cũng làm giảm chi phí tối ưu hóa theo yêu cầu, giúp đưa các sản phẩm mới ra thị trường nhanh hơn. Arm (Nasdaq:Arm) đang thúc đẩy mô hình này với trọng tâm hướng đến nền tảng giúp đẩy các tối ưu hóa phần cứng-phần mềm lên thông qua ngăn xếp phần mềm. Tại <a href="https://newsroom.arm.com/blog/arm-computex-2025?utm_source=vb&amp;utm_medium=sponsored-content&amp;utm_content=longform_txt_na_sw-simplification&amp;utm_campaign=mk30_brand-paid_brand-tl_thirdparty_mediabuy_na">COMPUTEX 2025</a>, Arm đã chứng minh cách CPU Arm9 mới nhất của họ, kết hợp với các phần mở rộng ISA dành riêng cho AI và các thư viện Kleidi, cho phép tích hợp chặt chẽ hơn với các khung được sử dụng rộng rãi như PyTorch, ExecuTorch, ONNX Runtime và MediaPipe. Sự liên kết này làm giảm nhu cầu về các kernel tùy chỉnh hoặc các toán tử được điều chỉnh bằng tay, cho phép các nhà phát triển mở khóa hiệu suất phần cứng mà không từ bỏ các chuỗi công cụ quen thuộc.</p>
+<p>Hàm ý thực tế là rất lớn. Trong trung tâm dữ liệu, các nền tảng dựa trên Arm đang mang lại hiệu suất trên mỗi watt được cải thiện, rất quan trọng để mở rộng khối lượng công việc AI một cách bền vững. Trên các thiết bị tiêu dùng, những tối ưu hóa này cho phép trải nghiệm người dùng siêu phản hồi và trí thông minh nền luôn bật, nhưng tiết kiệm năng lượng.</p>
+<p>Nói rộng hơn, ngành đang kết hợp xung quanh sự đơn giản hóa như một mệnh lệnh thiết kế, nhúng hỗ trợ AI trực tiếp vào lộ trình phần cứng, tối ưu hóa cho tính di động của phần mềm và tiêu chuẩn hóa hỗ trợ cho thời gian chạy AI chính thống. Cách tiếp cận của Arm minh họa cách tích hợp sâu trên toàn bộ ngăn xếp điện toán có thể biến AI có thể mở rộng thành một thực tế thiết thực.</p>
+<h3 id="xác-nhận-thị-trường-và-động-lực">Xác nhận thị trường và động lực</h3>
+<p>Vào năm 2025, <a href="https://newsroom.arm.com/blog/half-of-compute-shipped-to-top-hyperscalers-in-2025-will-be-arm-based?utm_source=vb&amp;utm_medium=sponsored-content&amp;utm_content=longform_txt_na_sw-simplification&amp;utm_campaign=mk30_brand-paid_brand-tl_thirdparty_mediabuy_na">gần một nửa số điện toán được vận chuyển đến các hyperscaler lớn sẽ chạy trên kiến trúc dựa trên Arm</a>, một cột mốc nhấn mạnh một sự thay đổi đáng kể trong cơ sở hạ tầng đám mây. Khi khối lượng công việc AI trở nên thâm dụng tài nguyên hơn, các nhà cung cấp đám mây đang ưu tiên các kiến trúc mang lại hiệu suất trên mỗi watt vượt trội và hỗ trợ tính di động của phần mềm liền mạch. Sự phát triển này đánh dấu một trục chiến lược hướng tới cơ sở hạ tầng có thể mở rộng, tiết kiệm năng lượng được tối ưu hóa cho hiệu suất và nhu cầu của AI hiện đại.</p>
+<p>Ở biên, các công cụ suy luận tương thích với Arm đang cho phép trải nghiệm thời gian thực, chẳng hạn như dịch trực tiếp và trợ lý giọng nói luôn bật, trên các thiết bị chạy bằng pin. Những tiến bộ này mang lại khả năng AI mạnh mẽ trực tiếp cho người dùng mà không làm giảm hiệu quả năng lượng.</p>
+<p>Động lực của nhà phát triển cũng đang tăng tốc. Trong một hợp tác gần đây, GitHub và Arm đã giới thiệu Arm Linux và Windows runner gốc cho GitHub Actions, sắp xếp hợp lý các quy trình CI cho các nền tảng dựa trên Arm. Các công cụ này hạ thấp rào cản gia nhập cho các nhà phát triển và cho phép phát triển đa nền tảng, hiệu quả hơn ở quy mô lớn.</p>
+<h3 id="điều-gì-xảy-ra-tiếp-theo">Điều gì xảy ra tiếp theo</h3>
+<p>Đơn giản hóa không có nghĩa là loại bỏ hoàn toàn sự phức tạp; nó có nghĩa là quản lý nó theo những cách trao quyền cho sự đổi mới. Khi ngăn xếp AI ổn định, người chiến thắng sẽ là những người mang lại hiệu suất liền mạch trên một bối cảnh phân mảnh.</p>
+<p>Từ góc độ hướng tới tương lai, hãy mong đợi:</p>
+<ul>
+<li><strong>Điểm chuẩn như lan can bảo vệ</strong>: Bộ MLPerf + OSS hướng dẫn nơi tối ưu hóa tiếp theo.</li>
+<li><strong>Nhiều ngược dòng hơn, ít nhánh hơn</strong>: Các tính năng phần cứng nằm trong các công cụ chính thống, không phải các nhánh tùy chỉnh.</li>
+<li><strong>Hội tụ nghiên cứu + sản xuất</strong>: Bàn giao nhanh hơn từ các bài báo sang sản phẩm thông qua thời gian chạy được chia sẻ.</li>
+</ul>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Giai đoạn tiếp theo của AI không phải là về phần cứng kỳ lạ; nó cũng là về phần mềm đi tốt. Khi cùng một mô hình đáp ứng hiệu quả trên đám mây, máy khách và biên, các nhóm sẽ xuất xưởng nhanh hơn và tốn ít thời gian hơn để xây dựng lại ngăn xếp.</p>
+<p>Sự đơn giản hóa trên toàn hệ sinh thái, không phải khẩu hiệu do thương hiệu dẫn đầu, sẽ phân tách những người chiến thắng. Sách hướng dẫn thực tế rất rõ ràng: thống nhất các nền tảng, tối ưu hóa ngược dòng và đo lường bằng các điểm chuẩn mở. <a href="https://www.arm.com/markets/artificial-intelligence/software?utm_source=vb&amp;utm_medium=sponsored-content&amp;utm_content=longform_txt_na_sw-simplification&amp;utm_campaign=mk30_brand-paid_brand-tl_thirdparty_mediabuy_na">Khám phá cách các nền tảng phần mềm Arm AI</a> đang cho phép tương lai này — hiệu quả, an toàn và ở quy mô lớn.</p>
+<hr>
+<p><em>Các bài viết được tài trợ là nội dung do một công ty sản xuất, công ty này đang trả tiền cho bài đăng hoặc có mối quan hệ kinh doanh với VentureBeat và chúng luôn được đánh dấu rõ ràng. Để biết thêm thông tin, hãy liên hệ <a href="mailto:sales@venturebeat.com">sales@venturebeat.com</a>.</em></p>
+<hr>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/simplifying-the-ai-stack-the-key-to-scalable-portable-intelligence-from">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/october-22-2025/">October 22, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-22/df2c82/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/sentence-transformers-joins-hf/thumbnail.png" alt="Sentence Transformers gia nhập Hugging Face!" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-22T00:00:00&#43;00:00">Oct 22, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Sentence Transformers gia nhập Hugging Face!</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">announcementnlpopen-source Sentence Transformers is joining Hugging Face!</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-22/3723c4/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/10/Microsoft-Fabric-in-higher-ed-1260px-1024x657.jpg" alt="Xây dựng các tổ chức giáo dục đại học được trao quyền dữ liệu" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-22T00:00:00&#43;00:00">Oct 22, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Xây dựng các tổ chức giáo dục đại học được trao quyền dữ liệu</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Khám phá cách Microsoft Fabric trong giáo dục đại học giúp thống nhất dữ liệu, mở rộng quy mô AI và thúc đẩy sự nhanh nhẹn. Tải xuống sách điện tử Tổ chức được trao quyền dữ liệu miễn phí.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-22/525ff6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https%3A%2F%2Fimages.ctfassets.net%2Fjdtwqhzvc2n1%2F5NhML02FGAEkp2yOpsPkrx%2Fb62d547d376660e631c01d70283f7946%2FAdobeStock_1243259614.jpeg&amp;w=3840&amp;q=50" alt="Đơn giản hóa ngăn xếp AI- Chìa khóa cho trí tuệ có thể mở rộng, di động từ đám mây đến biên" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đơn giản hóa ngăn xếp AI- Chìa khóa cho trí tuệ có thể mở rộng, di động từ đám mây đến biên</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-22/df2c82/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/sentence-transformers-joins-hf/thumbnail.png" alt="Sentence Transformers gia nhập Hugging Face!" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Sentence Transformers gia nhập Hugging Face!</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-22/3723c4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/10/Microsoft-Fabric-in-higher-ed-1260px-1024x657.jpg" alt="Xây dựng các tổ chức giáo dục đại học được trao quyền dữ liệu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Xây dựng các tổ chức giáo dục đại học được trao quyền dữ liệu</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-21/b01498/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/optimum_intel/optimum_openvino_thumbnail.png" alt="Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chạy VLM của bạn trong 3 bước đơn giản trên CPU Intel</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-17/675838/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà nghiên cứu phát hiện ra việc thêm một câu đơn giản vào lời nhắc giúp mô hình AI sáng tạo hơn nhiều</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
