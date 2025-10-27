@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trung tâm Hugging Face v1.0- Năm năm xây dựng nền tảng của Máy học Mở | AI Today - SkyAI</title>
+
+<meta name="description" content="Bản phát hành lớn này đánh dấu một cột mốc quan trọng trong quá trình phát triển trung tâm, bao gồm các khả năng của nó và những gì mong đợi trong tương lai.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Trung tâm Hugging Face v1.0- Năm năm xây dựng nền tảng của Máy học Mở</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bản phát hành lớn này đánh dấu một cột mốc quan trọng trong quá trình phát triển trung tâm, bao gồm các khả năng của nó và những gì mong đợi trong tương lai. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-10-27T00:00:00&#43;00:00">October 27, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            15 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/blog/assets/huggingface-hub-v1/thumbnail.png" alt="Trung tâm Hugging Face v1.0- Năm năm xây dựng nền tảng của Máy học Mở">
+        <figcaption class="text-center italic text-xs">Bản phát hành lớn này đánh dấu một cột mốc quan trọng trong quá trình phát triển trung tâm, bao gồm các khả năng của nó và những gì mong đợi trong tương lai.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="huggingface_hub-v10-năm-năm-xây-dựng-nền-tảng-của-mã-nguồn-mở-máy-học">huggingface_hub v1.0: Năm Năm Xây Dựng Nền Tảng của Mã Nguồn Mở Máy Học</h1>
+<p><strong>TL;DR:</strong> Sau năm năm phát triển, <code>huggingface_hub</code> đã đạt đến phiên bản v1.0 - một cột mốc đánh dấu sự trưởng thành của thư viện như là một gói Python cung cấp sức mạnh cho <strong>200.000 thư viện phụ thuộc</strong> và cung cấp chức năng cốt lõi để truy cập hơn 2 triệu mô hình công khai, 0,5 triệu bộ dữ liệu công khai và 1 triệu Spaces công khai. Bản phát hành này giới thiệu các thay đổi đột phá được thiết kế để hỗ trợ thập kỷ tiếp theo của mã nguồn mở máy học, được thúc đẩy bởi một cộng đồng toàn cầu gồm gần 300 người đóng góp và hàng triệu người dùng.</p>
+<p><strong>🚀 Chúng tôi đặc biệt khuyên bạn nên nâng cấp lên v1.0 để hưởng lợi từ những cải tiến hiệu suất lớn và khả năng mới.</strong></p>
+<p>bash
+pip install &ndash;upgrade huggingface_hub</p>
+<p>Những thay đổi lớn trong bản phát hành này bao gồm việc chuyển sang <code>httpx</code> làm thư viện backend, một CLI <code>hf</code> được thiết kế lại hoàn toàn (thay thế cho <code>huggingface-cli</code> đã ngừng sử dụng) có giao diện dựa trên Typer với một bộ tính năng được mở rộng đáng kể và áp dụng đầy đủ <code>hf_xet</code> cho việc truyền tệp, thay thế cho <code>hf_transfer</code> kế thừa. Bạn có thể tìm thấy <strong><a href="https://github.com/huggingface/huggingface_hub/releases/tag/v1.0.0">ghi chú phát hành đầy đủ tại đây</a></strong>.</p>
+<blockquote>
+<p>Chúng tôi đã làm việc chăm chỉ để đảm bảo rằng <code>huggingface_hub</code> v1.0.0 vẫn tương thích ngược. Trên thực tế, hầu hết các thư viện ML sẽ hoạt động trơn tru với cả phiên bản v0.x và v1.x. Ngoại lệ chính là <code>transformers</code>, yêu cầu rõ ràng <code>huggingface_hub</code> v0.x trong các bản phát hành v4 của nó và v1.x trong bản phát hành v5 sắp tới. Để có cái nhìn tổng quan chi tiết về khả năng tương thích trên các thư viện, hãy tham khảo bảng trong <a href="https://github.com/huggingface/huggingface_hub/issues/3340">vấn đề này</a>.</p></blockquote>
+<h2 id="câu-chuyện-đằng-sau-thư-viện">Câu Chuyện Đằng Sau Thư Viện</h2>
+<p>Mọi thư viện lớn đều có một câu chuyện. Đối với <code>huggingface_hub</code>, nó bắt đầu với một ý tưởng đơn giản: <strong>điều gì sẽ xảy ra nếu việc chia sẻ các mô hình máy học có thể dễ dàng như chia sẻ mã trên GitHub?</strong></p>
+<p>Trong những ngày đầu của Hugging Face Hub, các nhà nghiên cứu và học viên phải đối mặt với một sự thất vọng chung. Đào tạo một mô hình hiện đại đòi hỏi nguồn lực tính toán và chuyên môn đáng kể. Sau khi được đào tạo, những mô hình này thường tồn tại biệt lập, được lưu trữ trên các máy cục bộ và được chia sẻ qua các liên kết Google Drive (bị hỏng). Cộng đồng AI đang sao chép công việc, lãng phí tài nguyên và bỏ lỡ các cơ hội hợp tác.</p>
+<p>Hugging Face Hub nổi lên như một câu trả lời cho thách thức này. Ban đầu, nó chủ yếu được sử dụng để chia sẻ các checkpoint tương thích với thư viện <code>transformers</code>. Tất cả mã Python để tương tác với Hub đều nằm trong thư viện này, khiến nó không thể truy cập được để các thư viện khác sử dụng lại.</p>
+<p>Vào cuối năm 2020, chúng tôi đã phát hành <code>huggingface_hub</code> <a href="https://github.com/huggingface/huggingface_hub/releases/tag/v0.0.1">v0.0.1</a> với một nhiệm vụ đơn giản: trích xuất logic bên trong từ <code>transformers</code> và tạo một thư viện chuyên dụng sẽ thống nhất cách truy cập và chia sẻ các mô hình và bộ dữ liệu máy học trên Hugging Face Hub. Ban đầu, thư viện đơn giản như một trình bao bọc Git để tải xuống tệp và quản lý kho lưu trữ. Năm năm và hơn 35 bản phát hành sau đó, <code>huggingface_hub</code> đã phát triển vượt xa nguồn gốc của nó.</p>
+<p>Hãy cùng theo dõi hành trình đó.</p>
+<!-- raw HTML omitted -->
+<h3 id="những-năm-nền-tảng-2020-2021">Những Năm Nền Tảng (2020-2021)</h3>
+<p>Các bản phát hành ban đầu đã thiết lập những điều cơ bản. Phiên bản <a href="https://github.com/huggingface/huggingface_hub/releases/tag/v0.0.8">0.0.8</a> giới thiệu các API đầu tiên của chúng tôi, bao bọc các lệnh Git để tương tác với kho lưu trữ. Phiên bản <a href="https://github.com/huggingface/huggingface_hub/releases/tag/v0.0.17">0.0.17</a> mang đến xác thực dựa trên mã thông báo, cho phép truy cập an toàn vào các kho lưu trữ và tải lên riêng tư. Đây là những khởi đầu khiêm tốn, nhưng chúng đã đặt nền tảng cho mọi thứ sau này.</p>
+<h3 id="sự-thay-đổi-lớn-git-sang-http-2022">Sự Thay Đổi Lớn: Git sang HTTP (2022)</h3>
+<p>Vào tháng 6 năm 2022, phiên bản <a href="https://github.com/huggingface/huggingface_hub/releases/tag/v0.8.1">0.8.1</a> đánh dấu một thời điểm then chốt: chúng tôi đã giới thiệu HTTP Commit API. Thay vì yêu cầu cài đặt Git và Git LFS, giờ đây người dùng có thể tải tệp trực tiếp thông qua các yêu cầu HTTP. API <code>create_commit()</code> mới đã đơn giản hóa đáng kể quy trình làm việc, đặc biệt đối với các tệp mô hình lớn khó sử dụng với Git LFS. Ngoài ra, một bố cục tệp bộ nhớ cache nhận biết git đã được giới thiệu. Tất cả các thư viện (không chỉ transformers mà cả các thư viện của bên thứ ba) giờ đây sẽ chia sẻ cùng một bộ nhớ cache, với phiên bản rõ ràng và loại bỏ trùng lặp tệp.</p>
+<p>Đây không chỉ là một cải tiến kỹ thuật. Đó là một sự thay đổi triết học. Chúng tôi không còn xây dựng một trình bao bọc Git cho transformers; chúng tôi đang xây dựng cơ sở hạ tầng có mục đích cho các hiện vật máy học có thể cung cấp năng lượng cho bất kỳ thư viện nào trong hệ sinh thái ML.</p>
+<h3 id="một-bề-mặt-api-mở-rộng-20222024">Một Bề Mặt API Mở Rộng (2022–2024)</h3>
+<p>Khi Hub phát triển từ một kho lưu trữ mô hình thành một nền tảng đầy đủ, <code>huggingface_hub</code> đã bắt kịp với một bề mặt API mở rộng. Các nguyên thủy kho lưu trữ cốt lõi đã trưởng thành: liệt kê cây, duyệt các refs và commits, đọc tệp hoặc đồng bộ hóa thư mục, quản lý các thẻ, nhánh và chu kỳ phát hành. Siêu dữ liệu kho lưu trữ và webhooks đã hoàn thành các dịch vụ để các nhóm có thể phản ứng với những thay đổi trong thời gian thực.</p>
+<p>Song song đó, <a href="https://huggingface.co/docs/huggingface_hub/guides/manage-spaces">Spaces</a> nổi lên như một cách đơn giản nhưng mạnh mẽ để lưu trữ và chia sẻ các bản demo ML tương tác trực tiếp trên Hub. Theo thời gian, <code>huggingface_hub</code> đã đạt được toàn quyền kiểm soát theo chương trình để triển khai và quản lý Spaces (yêu cầu phần cứng, bí mật, cấu hình môi trường, tải lên). Để triển khai các mô hình trên cơ sở hạ tầng quy mô sản xuất, <a href="https://huggingface.co/docs/huggingface_hub/guides/inference_endpoints">Inference Endpoints</a> cũng đã được tích hợp. Cuối cùng, <a href="https://huggingface.co/docs/huggingface_hub/guides/jobs">Jobs API</a> đã ra mắt sau đó (Q3 2025) để hoàn thành dịch vụ tính toán của chúng tôi.</p>
+<p>Các lớp xã hội và cộng đồng cũng trở thành công dân hạng nhất: từ các API cho <a href="https://huggingface.co/docs/huggingface_hub/guides/community">pull requests và comments</a>, đến thông tin người dùng và tổ chức, lượt thích kho lưu trữ, theo dõi và người theo dõi, xuyên suốt <a href="https://huggingface.co/docs/huggingface_hub/guides/collections">Collections</a> để tuyển chọn và chia sẻ các bộ tài nguyên liên quan. Công thái học hàng ngày cũng được cải thiện: xác thực liền mạch trong Colab, tải xuống có thể tiếp tục, tải lên đáng tin cậy các thư mục quy mô lớn, v.v.</p>
+<p>Sau đó, phiên bản <a href="https://github.com/huggingface/huggingface_hub/releases/tag/v0.28.0">0.28.0</a> và hệ sinh thái <a href="https://huggingface.co/docs/huggingface_hub/guides/inference">Inference Providers</a> đã ra đời. Thay vì một backend suy luận duy nhất, chúng tôi đã hợp tác với nhiều nhà cung cấp không máy chủ (Together AI, SambaNova, Replicate, Cerebras, Groq, v.v.) để phục vụ một API với định tuyến trong suốt. Chúng tôi đã áp dụng một kiến trúc suy luận trả tiền cho mỗi yêu cầu phù hợp với cách mọi người thực sự muốn làm việc.</p>
+<h3 id="sẵn-sàng-xet-đi-2024-2025">Sẵn Sàng. Xet. Đi! (2024-2025)</h3>
+<p>Phiên bản <a href="https://github.com/huggingface/huggingface_hub/releases/tag/v0.30.0">0.30.0</a> giới thiệu Xet, một giao thức mới đột phá để lưu trữ các đối tượng lớn trong kho lưu trữ Git. Không giống như Git LFS, khử trùng lặp ở cấp độ tệp, Xet hoạt động ở cấp độ chunk (chunk 64KB). Khi bạn cập nhật một tệp lớn trong một bộ dữ liệu hoặc một mô hình, chỉ các chunk đã thay đổi được tải lên hoặc tải xuống, chứ không phải toàn bộ tệp.</p>
+<p><a href="https://huggingface.co/spaces/jsulz/ready-xet-go">Việc di chuyển là rất lớn</a>, bắt đầu với 20 petabyte trên hơn 500.000 kho lưu trữ. Tuy nhiên, nó đã xảy ra một cách minh bạch, với khả năng tương thích ngược hoàn toàn. Một năm sau, tất cả <strong>77PB+</strong> trên <strong>6.000.000 kho lưu trữ</strong> đã được di chuyển sang backend Xet, cho phép tải lên và tải xuống nhanh hơn (và thông minh hơn!). Điều này đã xảy ra mà không cần sự can thiệp của người dùng và không làm gián đoạn quy trình làm việc hiện tại 🔥</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/huggingface-hub-v1/xet_progress.png" alt="Xet Progress"></p>
+<h2 id="đo-lường-sự-tăng-trưởng-và-tác-động">Đo Lường Sự Tăng Trưởng và Tác Động</h2>
+<p>Đo lường sự tăng trưởng và tác động của một thư viện mã nguồn mở là một nhiệm vụ khó khăn. Các con số kể một câu chuyện của riêng chúng:</p>
+<ul>
+<li><strong>113,5 triệu lượt tải xuống hàng tháng</strong>, <strong>1,6 tỷ</strong> tổng (Tháng 10 năm 2025).</li>
+<li>Cung cấp quyền truy cập vào <strong>2M+</strong> mô hình công khai, <strong>500k+</strong> bộ dữ liệu công khai, <strong>1M+</strong> Spaces công khai và khoảng gấp đôi khi tính đến các kho lưu trữ riêng tư.</li>
+<li>Được sử dụng bởi <strong>60k+</strong> người dùng hàng ngày, <strong>550k+</strong> hàng tháng</li>
+<li>Được tin cậy bởi <strong>200k+ công ty</strong> từ các công ty khởi nghiệp đến Fortune 500</li>
+</ul>
+<p>Nhưng quy mô thực sự trở nên rõ ràng khi bạn nhìn vào hệ sinh thái. <code>huggingface_hub</code> là một <strong>phụ thuộc</strong> cho hơn <strong>200.000 kho lưu trữ</strong> trên GitHub và <strong>3.000 gói</strong> trên PyPI, cung cấp năng lượng cho mọi thứ, từ các framework lớn của bên thứ ba như Keras, LangChain, PaddleOCR, ChatTTS, YOLO, Google Generative AI, Moshi, NVIDIA NeMo và Open Sora, đến vô số thư viện và công cụ nhỏ hơn trên toàn cảnh ML. Hệ sinh thái của riêng chúng tôi (transformers, diffusers, datasets, sentence-transformers, lighteval, gradio, peft, trl, smolagents, timm, lerobot, v.v.) cũng được hưởng lợi từ nền tảng này.</p>
+<p>Điều đáng chú ý là? Hầu hết các tích hợp của bên thứ ba đã xảy ra một cách tự nhiên và chúng tôi không đóng vai trò gì trong đó. Hugging Face Hub trao quyền cho cộng đồng ML theo vô số cách, nhưng chúng tôi liên tục khiêm tốn về mức độ nó đã đi và mức độ nó được sử dụng rộng rãi.</p>
+<h2 id="xây-dựng-cho-thập-kỷ-tiếp-theo">Xây Dựng cho Thập Kỷ Tiếp Theo</h2>
+<p>Phiên bản 1.0 không chỉ là đạt được một cột mốc quan trọng. Đó là về <strong>xây dựng nền tảng cho thập kỷ tiếp theo của mã nguồn mở máy học</strong>. Các thay đổi đột phá mà chúng tôi đã thực hiện không phải là tùy ý; chúng là các quyết định chiến lược định vị <code>huggingface_hub</code> để mở rộng quy mô với sự tăng trưởng bùng nổ của AI trong khi vẫn duy trì độ tin cậy mà hàng triệu nhà phát triển phụ thuộc vào.</p>
+<h3 id="cơ-sở-hạ-tầng-http-hiện-đại-với-httpx-và-hf_xet">Cơ Sở Hạ Tầng HTTP Hiện Đại với httpx và hf_xet</h3>
+<p>Thay đổi kiến trúc quan trọng nhất trong v1.0 là việc chúng tôi di chuyển từ <code>requests</code> sang <a href="https://www.python-httpx.org/">httpx</a>. Đây không chỉ là sự thay đổi phụ thuộc. Đó là một nâng cấp cơ bản đưa thư viện vào kỷ nguyên hiện đại của HTTP.</p>
+<p><strong>Tại sao httpx?</strong> Lợi ích là đáng kể: hỗ trợ HTTP/2 gốc để có hiệu quả kết nối tốt hơn và an toàn luồng thực sự cho phép sử dụng lại kết nối an toàn trên nhiều luồng. Quan trọng nhất, <code>httpx</code> cung cấp một API thống nhất cho cả hoạt động đồng bộ và không đồng bộ, loại bỏ sự khác biệt nhỏ về hành vi tồn tại giữa máy khách suy luận đồng bộ và không đồng bộ của chúng tôi.</p>
+<p>Việc di chuyển được thiết kế để minh bạch nhất có thể. Hầu hết người dùng sẽ không cần phải thay đổi bất cứ điều gì. Đối với những người có backend HTTP tùy chỉnh, chúng tôi đã cung cấp các đường dẫn di chuyển rõ ràng từ <code>configure_http_backend()</code> sang <code>set_client_factory()</code> và <code>set_async_client_factory()</code>.</p>
+<p>Ngoài ra, <code>hf_xet</code> hiện là gói mặc định để tải lên và tải xuống tệp đến và từ Hub, thay thế cho <code>hf_transfer</code> tùy chọn trước đây, hiện đã được loại bỏ hoàn toàn.</p>
+<h3 id="các-tác-nhân-được-đơn-giản-hóa-với-mcp-và-tác-nhân-nhỏ">Các Tác Nhân Được Đơn Giản Hóa với MCP và Tác Nhân Nhỏ</h3>
+<p>Phiên bản <a href="https://github.com/huggingface/huggingface_hub/releases/tag/v0.32.0">0.32.0</a> giới thiệu <strong>tích hợp Model Context Protocol (MCP)</strong> và <strong>các tác nhân nhỏ</strong>, thay đổi cơ bản cách các nhà phát triển xây dựng các tác nhân AI. Những gì đã từng yêu cầu tích hợp framework phức tạp giờ đây mất khoảng 70 dòng Python.</p>
+<p><a href="https://huggingface.co/docs/huggingface_hub/package_reference/mcp"><code>MCPClient</code></a> cung cấp một cách tiêu chuẩn hóa để các tác nhân AI tương tác với các công cụ, trong khi CLI <code>tiny-agents</code> cho phép bạn chạy các tác nhân trực tiếp từ Hub. Kết nối với các máy chủ MCP cục bộ hoặc từ xa, sử dụng bất kỳ Gradio Space nào làm công cụ và xây dựng các tác nhân đàm thoại có cảm giác tự nhiên và phản hồi nhanh.</p>
+<p>Tất cả những điều này được xây dựng trên <code>InferenceClient</code> hiện có của chúng tôi và hàng tá Inference Provider mà nó hỗ trợ. Chúng tôi tin rằng các Tác nhân là tương lai và <code>huggingface_hub</code> ở đó để cung cấp các khối xây dựng cho phép những người xây dựng AI chơi với chúng.</p>
+<h3 id="một-cli-đầy-đủ-tính-năng-cho-quy-trình-làm-việc-hiện-đại">Một CLI Đầy Đủ Tính Năng cho Quy Trình Làm Việc Hiện Đại</h3>
+<p>CLI đã phát triển từ một công cụ dòng lệnh đơn giản thành một <strong>giao diện toàn diện cho các hoạt động ML</strong>. Lệnh <code>hf</code> được sắp xếp hợp lý thay thế cho <code>huggingface-cli</code> kế thừa bằng một mẫu hành động tài nguyên hiện đại:</p>
+<ul>
+<li><code>hf auth login</code> để xác thực</li>
+<li><code>hf download</code> và <code>hf upload</code> để truyền tệp</li>
+<li><code>hf repo</code> để quản lý kho lưu trữ</li>
+<li><code>hf cache ls</code> và <code>hf cache rm</code> để quản lý bộ nhớ cache</li>
+<li><code>hf jobs run</code> để tính toán đám mây</li>
+</ul>
+<p>CLI đi kèm với một <a href="https://huggingface.co/docs/huggingface_hub/installation#install-the-hugging-face-cli">trình cài đặt sandbox</a>, giúp dễ dàng nâng cấp mà không làm hỏng môi trường dev hiện có:</p>
+<p>bash</p>
+<h1 id="trên-macos-hoặc-linux">Trên macOS hoặc Linux</h1>
+<p>curl -LsSf <a href="https://hf.co/cli/install.sh">https://hf.co/cli/install.sh</a> | sh</p>
+<h1 id="hoặc-trên-windows">hoặc trên Windows</h1>
+<p>powershell -ExecutionPolicy ByPass -c &ldquo;irm <a href="https://hf.co/cli/install.ps1">https://hf.co/cli/install.ps1</a> | iex&rdquo;</p>
+<p>Với hỗ trợ tự động hoàn thành và một trình cài đặt hoạt động trên các nền tảng, CLI hiện có cảm giác bóng bẩy như bất kỳ công cụ nhà phát triển hiện đại nào.</p>
+<h3 id="dọn-dẹp-nhà-cửa-cho-tương-lai">Dọn Dẹp Nhà Cửa cho Tương Lai</h3>
+<p>Phiên bản 1.0 loại bỏ các mẫu kế thừa đang kìm hãm chúng tôi. Lớp <code>Repository</code> dựa trên Git đã biến mất. Các phương pháp dựa trên HTTP như <code>upload_file()</code> và <code>create_commit()</code> đơn giản hơn, đáng tin cậy hơn và phù hợp hơn cho quy trình làm việc hiện đại. Quản lý mã thông báo <code>HfFolder</code> đã được thay thế bằng các hàm <code>login()</code>, <code>logout()</code> và <code>get_token()</code> rõ ràng. Lớp <code>InferenceApi</code> cũ đã được thay thế bằng <code>InferenceClient</code> đầy đủ tính năng hơn. <code>hf_transfer</code> đã được thay thế hoàn toàn bằng gói nhị phân <code>hf_xet</code>.</p>
+<p>Những thay đổi này không được thực hiện một cách nhẹ nhàng. Hầu hết các từ chối đã được công bố trước nhiều tháng với các cảnh báo rõ ràng và hướng dẫn di chuyển. Kết quả là một codebase sạch hơn, dễ bảo trì hơn có thể tập trung vào các tính năng hướng tới tương lai hơn là hỗ trợ các mẫu đã ngừng sử dụng.</p>
+<h3 id="hướng-dẫn-di-chuyển">Hướng Dẫn Di Chuyển</h3>
+<p>Chúng tôi hiểu rằng các thay đổi đột phá gây rối. Đó là lý do tại sao chúng tôi đã đầu tư rất nhiều vào việc làm cho quá trình di chuyển diễn ra suôn sẻ nhất có thể. <a href="https://huggingface.co/docs/huggingface_hub/concepts/migration">Hướng dẫn di chuyển toàn diện</a> của chúng tôi cung cấp hướng dẫn từng bước cho mọi thay đổi với giải thích lý do tại sao mỗi thay đổi là cần thiết.</p>
+<p>Quan trọng nhất, chúng tôi đã duy trì khả năng tương thích ngược ở bất cứ nơi nào có thể. <code>HfHubHttpError</code>, ví dụ, kế thừa cả các lớp <code>HTTPError</code> cơ bản cũ <code>request</code> và <code>httpx</code> mới, đảm bảo rằng việc xử lý lỗi tiếp tục hoạt động trên các phiên bản.</p>
+<p>Với bản phát hành này, chúng tôi hoàn toàn cam kết với tương lai và chúng tôi sẽ tập trung độc quyền vào v1.0 và hơn thế nữa, đảm bảo chúng tôi có thể cung cấp hiệu suất, tính năng và công cụ mà cộng đồng cần để tương tác với Hugging Face Hub. Các phiên bản <code>v0.*</code> trước đó sẽ vẫn có sẵn trên PyPI, nhưng chúng sẽ chỉ nhận được các bản cập nhật lỗ hổng bảo mật.</p>
+<blockquote>
+<p>Chúng tôi đã làm việc chăm chỉ để đảm bảo rằng <code>huggingface_hub</code> v1.0.0 vẫn tương thích ngược. Trên thực tế, hầu hết các thư viện ML sẽ hoạt động trơn tru với cả phiên bản v0.x và v1.x. Ngoại lệ chính là <code>transformers</code>, yêu cầu rõ ràng <code>huggingface_hub</code> v0.x trong các bản phát hành v4 của nó và v1.x trong bản phát hành v5 sắp tới. Để có cái nhìn tổng quan chi tiết về khả năng tương thích trên các thư viện, hãy tham khảo bảng trong <a href="https://github.com/huggingface/huggingface_hub/issues/3340">vấn đề này</a>.</p></blockquote>
+<h2 id="lời-cảm-ơn">Lời Cảm Ơn</h2>
+<p>Gửi tới hơn 280 người đóng góp của chúng tôi, những người đã xây dựng thư viện này thông qua mã, tài liệu, bản dịch và hỗ trợ cộng đồng, xin cảm ơn!</p>
+<p>Chúng tôi cũng vô cùng biết ơn toàn bộ cộng đồng Hugging Face vì phản hồi, báo cáo lỗi và đề xuất của họ đã định hình thư viện này.</p>
+<p>Cuối cùng, xin gửi lời cảm ơn chân thành đến người dùng của chúng tôi - từ các nhà phát triển cá nhân đến các doanh nghiệp lớn - vì đã tin tưởng <code>huggingface_hub</code> để cung cấp năng lượng cho quy trình làm việc của bạn. Sự hỗ trợ của bạn thúc đẩy chúng tôi tiếp tục cải thiện và đổi mới.</p>
+<p><a href="https://github.com/huggingface/huggingface_hub">Vui lòng gắn sao cho chúng tôi trên GitHub ⭐</a> để thể hiện sự ủng hộ của bạn và giúp chúng tôi tiếp tục xây dựng nền tảng của mã nguồn mở máy học. Đã năm năm, nhưng nó vẫn chỉ là sự khởi đầu!</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/huggingface-hub-v1">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/october-27-2025/">October 27, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-27/18e1a6/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobot-release-v040/thumbnail.png" alt="LeRobot v0.4.0- Siêu nạp cho học tập Robotics OSS" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-27T00:00:00&#43;00:00">Oct 27, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">LeRobot v0.4.0- Siêu nạp cho học tập Robotics OSS</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">LeRobot v0.4.0 nhằm mục đích đơn giản hóa hơn nữa các thí nghiệm nghiên cứu trong lĩnh vực học tập robot nguồn mở.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-23/570800/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/openenv/thumbnail.png" alt="Cùng nhau xây dựng hệ sinh thái Open Agent- Giới thiệu OpenEnv" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-23T00:00:00&#43;00:00">Oct 23, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cùng nhau xây dựng hệ sinh thái Open Agent- Giới thiệu OpenEnv</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Cùng nhau xây dựng hệ sinh thái Open Agent- Giới thiệu OpenEnv</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-27/18e1a6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobot-release-v040/thumbnail.png" alt="LeRobot v0.4.0- Siêu nạp cho học tập Robotics OSS" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LeRobot v0.4.0- Siêu nạp cho học tập Robotics OSS</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-27/f11de9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/ddad92700787ec1bf1d80359c0c5e6ca305682b0-1000x1000.svg" alt="Mở rộng việc sử dụng TPU và Dịch vụ Google Cloud của chúng tôi" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mở rộng việc sử dụng TPU và Dịch vụ Google Cloud của chúng tôi</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-27/555574/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/b5c98d26c46edc43193e7f7e28a00633a538bb9c-1000x1000.svg" alt="Seoul trở thành văn phòng thứ ba của Anthropic ở Châu Á - Thái Bình Dương khi chúng tôi tiếp tục phát triển quốc tế" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Seoul trở thành văn phòng thứ ba của Anthropic ở Châu Á - Thái Bình Dương khi chúng tôi tiếp tục phát triển quốc tế</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-27/7f9a8f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/huggingface-hub-v1/thumbnail.png" alt="Trung tâm Hugging Face v1.0- Năm năm xây dựng nền tảng của Máy học Mở" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Trung tâm Hugging Face v1.0- Năm năm xây dựng nền tảng của Máy học Mở</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-23/e3340c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">&#39;AI đang xé nát các công ty&#39;- CEO của Writer AI chỉ trích các nhà lãnh đạo Fortune 500 vì quản lý sai công nghệ</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
