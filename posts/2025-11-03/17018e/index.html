@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Xây dựng AI cho những người bảo vệ mạng | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này khám phá cách AI có thể được sử dụng để tăng cường khả năng phòng thủ mạng.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Xây dựng AI cho những người bảo vệ mạng</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này khám phá cách AI có thể được sử dụng để tăng cường khả năng phòng thủ mạng. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-03T00:00:00&#43;00:00">November 3, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            16 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/97cf99624aa60f59b75f9e08cdf0f00d33c34804-1000x1000.svg" alt="Xây dựng AI cho những người bảo vệ mạng">
+        <figcaption class="text-center italic text-xs">Bài viết này khám phá cách AI có thể được sử dụng để tăng cường khả năng phòng thủ mạng.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="xây-dựng-ai-cho-người-bảo-vệ-mạng">Xây dựng AI cho người bảo vệ mạng</h1>
+<p><strong>Các mô hình AI hiện hữu ích cho các tác vụ an ninh mạng trong thực tế, không chỉ trên lý thuyết. Khi nghiên cứu và kinh nghiệm chứng minh tính hữu dụng của AI tiên tiến như một công cụ cho những kẻ tấn công mạng, chúng tôi đã đầu tư vào việc cải thiện khả năng của Claude để giúp những người bảo vệ phát hiện, phân tích và khắc phục các lỗ hổng trong mã và các hệ thống đã triển khai. Công việc này cho phép Claude Sonnet 4.5 ngang bằng hoặc vượt trội hơn Opus 4.1, mô hình tiên tiến của chúng tôi được phát hành chỉ hai tháng trước đó, trong việc khám phá các lỗ hổng mã và các kỹ năng an ninh mạng khác. Việc áp dụng và thử nghiệm AI sẽ là chìa khóa để những người bảo vệ có thể theo kịp.</strong></p>
+<p>Chúng tôi tin rằng hiện tại chúng ta đang ở một bước ngoặt cho tác động của AI đối với an ninh mạng.</p>
+<p>Trong vài năm qua, nhóm của chúng tôi đã cẩn thận theo dõi các khả năng liên quan đến an ninh mạng của các mô hình AI. Ban đầu, chúng tôi thấy các mô hình không đặc biệt mạnh mẽ đối với các khả năng nâng cao và có ý nghĩa. Tuy nhiên, trong khoảng một năm trở lại đây, chúng tôi đã nhận thấy một sự thay đổi. Ví dụ:</p>
+<ul>
+<li>Chúng tôi đã chỉ ra rằng các mô hình có thể <a href="https://red.anthropic.com/2025/cyber-toolkits/">tái tạo một trong những cuộc tấn công mạng tốn kém nhất</a> trong lịch sử—vụ vi phạm Equifax năm 2017—trong mô phỏng.</li>
+<li>Chúng tôi đã đưa Claude vào các cuộc thi an ninh mạng và nó đã <a href="https://red.anthropic.com/2025/cyber-competitions/">vượt trội hơn các đội người</a> trong một số trường hợp.</li>
+<li>Claude đã giúp chúng tôi <a href="https://www.anthropic.com/news/automate-security-reviews-with-claude-code">khám phá các lỗ hổng trong mã của chính mình</a> và sửa chúng trước khi phát hành.</li>
+</ul>
+<p>Trong cuộc thi <a href="https://aicyberchallenge.com/">AI Cyber Challenge</a> của DARPA mùa hè này, các đội đã sử dụng LLM (bao gồm Claude) để xây dựng &ldquo;hệ thống lý luận mạng&rdquo; kiểm tra hàng triệu dòng mã để tìm các lỗ hổng cần vá. Ngoài các lỗ hổng được chèn vào, các đội còn tìm thấy (và đôi khi vá) <a href="https://aicyberchallenge.com/Finals-winners-announcement/">các lỗ hổng không tổng hợp, chưa từng được khám phá trước đây</a>. Vượt ra ngoài bối cảnh cạnh tranh, các phòng thí nghiệm tiên tiến khác hiện đang áp dụng các mô hình để <a href="https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/">khám phá và báo cáo các lỗ hổng mới</a>.</p>
+<p>Đồng thời, như một phần trong công việc Bảo vệ của chúng tôi, chúng tôi đã tìm thấy và ngăn chặn những kẻ đe dọa trên nền tảng của riêng mình, những kẻ đã tận dụng AI để mở rộng quy mô hoạt động của chúng. Nhóm <a href="https://www.anthropic.com/news/building-safeguards-for-claude">Bảo vệ</a> của chúng tôi gần đây đã phát hiện (và ngăn chặn) một trường hợp &ldquo;<a href="https://www.anthropic.com/news/detecting-countering-misuse-aug-2025">tấn công cảm xúc</a>,&rdquo; trong đó một tội phạm mạng đã sử dụng Claude để xây dựng một kế hoạch tống tiền dữ liệu quy mô lớn mà trước đây sẽ cần một đội ngũ người. Safeguards cũng đã phát hiện và chống lại việc sử dụng Claude trong ngày càng <a href="https://www-cdn.anthropic.com/b2a76c6f6992465c09a6f2fce282f6c0cea8c200.pdf">các hoạt động gián điệp phức tạp</a>, bao gồm cả việc nhắm mục tiêu vào cơ sở hạ tầng viễn thông quan trọng, bởi một tác nhân thể hiện các đặc điểm phù hợp với các hoạt động APT của Trung Quốc.</p>
+<p>Tất cả các bằng chứng này khiến chúng ta nghĩ rằng chúng ta đang ở một bước ngoặt quan trọng trong hệ sinh thái mạng, và tiến trình từ đây có thể trở nên khá nhanh hoặc việc sử dụng có thể tăng lên khá nhanh chóng.</p>
+<p>Do đó, bây giờ là một thời điểm quan trọng để tăng tốc việc sử dụng AI phòng thủ để bảo mật mã và cơ sở hạ tầng. <strong>Chúng ta không nên nhường lợi thế mạng có được từ AI cho những kẻ tấn công và tội phạm.</strong> Mặc dù chúng tôi sẽ tiếp tục đầu tư vào việc phát hiện và ngăn chặn những kẻ tấn công độc hại, nhưng chúng tôi nghĩ rằng giải pháp có khả năng mở rộng nhất là xây dựng các hệ thống AI trao quyền cho những người bảo vệ môi trường kỹ thuật số của chúng ta—như các nhóm bảo mật bảo vệ doanh nghiệp và chính phủ, các nhà nghiên cứu an ninh mạng và những người duy trì phần mềm nguồn mở quan trọng.</p>
+<p>Trong quá trình chuẩn bị cho việc phát hành Claude Sonnet 4.5, chúng tôi đã bắt đầu làm điều đó.</p>
+<h2 id="claude-sonnet-45-nhấn-mạnh-các-kỹ-năng-mạng">Claude Sonnet 4.5: nhấn mạnh các kỹ năng mạng</h2>
+<p>Khi LLM tăng về quy mô, &ldquo;<a href="https://arxiv.org/abs/2206.07682">khả năng mới nổi</a>&quot;—các kỹ năng không rõ ràng trong các mô hình nhỏ hơn và không nhất thiết là mục tiêu rõ ràng của quá trình đào tạo mô hình—xuất hiện. Thật vậy, khả năng của Claude để thực hiện các tác vụ an ninh mạng như tìm và khai thác các lỗ hổng phần mềm trong các thử thách Capture-the-Flag (CTF) là sản phẩm phụ của việc phát triển các trợ lý AI hữu ích nói chung.</p>
+<p>Nhưng chúng tôi không muốn chỉ dựa vào tiến trình mô hình chung để trang bị tốt hơn cho những người bảo vệ. Do tính cấp bách của thời điểm này trong quá trình phát triển của AI và an ninh mạng, chúng tôi đã dành các nhà nghiên cứu để làm cho Claude giỏi hơn về các kỹ năng chính như khám phá và vá lỗ hổng mã.</p>
+<p>Kết quả của công việc này được phản ánh trong Claude Sonnet 4.5. Nó có thể so sánh hoặc vượt trội hơn Claude Opus 4.1 về nhiều khía cạnh của an ninh mạng trong khi cũng ít tốn kém hơn và nhanh hơn.</p>
+<h2 id="bằng-chứng-từ-các-đánh-giá">Bằng chứng từ các đánh giá</h2>
+<p>Trong quá trình xây dựng Sonnet 4.5, chúng tôi đã có một nhóm nghiên cứu nhỏ tập trung vào việc tăng cường khả năng của Claude để tìm các lỗ hổng trong cơ sở mã, vá chúng và kiểm tra các điểm yếu trong cơ sở hạ tầng bảo mật đã triển khai được mô phỏng. Chúng tôi đã chọn những điều này vì chúng phản ánh các nhiệm vụ quan trọng đối với các tác nhân phòng thủ. Chúng tôi cố tình tránh các cải tiến rõ ràng có lợi cho công việc tấn công—chẳng hạn như khai thác nâng cao hoặc viết phần mềm độc hại. Chúng tôi hy vọng sẽ cho phép các mô hình tìm thấy mã không an toàn trước khi triển khai và tìm và sửa các lỗ hổng trong mã đã triển khai. Tất nhiên, có rất nhiều nhiệm vụ bảo mật quan trọng khác mà chúng tôi không tập trung vào; ở cuối bài đăng này, chúng tôi sẽ trình bày chi tiết về các hướng đi trong tương lai.</p>
+<p>Để kiểm tra hiệu quả của nghiên cứu của chúng tôi, chúng tôi đã chạy các đánh giá tiêu chuẩn ngành về các mô hình của mình. Chúng cho phép so sánh rõ ràng giữa các mô hình, đo lường tốc độ tiến bộ của AI và—đặc biệt trong trường hợp các đánh giá mới, được phát triển bên ngoài—cung cấp một số liệu tốt để đảm bảo rằng chúng tôi không chỉ dạy cho các bài kiểm tra của riêng mình.</p>
+<p>Khi chúng tôi chạy các đánh giá này, một điều nổi bật là tầm quan trọng của việc chạy chúng nhiều lần. Ngay cả khi nó tốn kém về mặt tính toán đối với một tập hợp lớn các nhiệm vụ đánh giá, nó vẫn nắm bắt tốt hơn hành vi của một kẻ tấn công hoặc người bảo vệ có động cơ đối với bất kỳ vấn đề thực tế cụ thể nào. Làm như vậy cho thấy hiệu suất ấn tượng không chỉ từ Claude Sonnet 4.5, mà còn từ các mô hình cũ hơn vài thế hệ.</p>
+<h3 id="cybench">Cybench</h3>
+<p>Một trong những đánh giá mà chúng tôi đã theo dõi trong hơn một năm là <a href="https://cybench.github.io/">Cybench</a>, một điểm chuẩn được lấy từ các thử thách cạnh tranh CTF.<!-- raw HTML omitted -->1<!-- raw HTML omitted --> Trong đánh giá này, chúng tôi thấy sự cải thiện vượt bậc từ Claude Sonnet 4.5, không chỉ so với Claude Sonnet 4, mà thậm chí còn so với các mô hình Claude Opus 4 và 4.1. Có lẽ nổi bật nhất là, <em>Sonnet 4.5 đạt được xác suất thành công cao hơn khi chỉ thực hiện một lần thử cho mỗi nhiệm vụ so với Opus 4.1 khi thực hiện mười lần thử cho mỗi nhiệm vụ</em>. Các thử thách là một phần của đánh giá này phản ánh các quy trình làm việc hơi phức tạp, kéo dài. Ví dụ: một thử thách liên quan đến việc phân tích lưu lượng mạng, trích xuất phần mềm độc hại từ lưu lượng đó, đồng thời giải mã và giải mã phần mềm độc hại. Chúng tôi ước tính rằng điều này sẽ mất ít nhất một giờ đối với một người có kỹ năng, và có thể lâu hơn nhiều; Claude mất 38 phút để giải quyết nó.</p>
+<p>Khi chúng tôi cho Claude Sonnet 4.5 10 lần thử trong đánh giá Cybench, nó thành công ở 76,5% số thử thách. Điều này đặc biệt đáng chú ý vì chúng tôi đã tăng gấp đôi tỷ lệ thành công này chỉ trong sáu tháng qua (Sonnet 3.7, được phát hành vào tháng 2 năm 2025, chỉ có tỷ lệ thành công 35,9% khi thực hiện 10 lần thử).</p>
+<!-- raw HTML omitted -->
+<h3 id="cybergym">CyberGym</h3>
+<p>Trong một đánh giá bên ngoài khác, chúng tôi đã đánh giá Claude Sonnet 4.5 trên <a href="https://www.cybergym.io/">CyberGym</a>, một điểm chuẩn đánh giá khả năng của các tác nhân (1) tìm các lỗ hổng (đã được khám phá trước đó) trong các dự án phần mềm nguồn mở thực tế dựa trên mô tả cấp cao về điểm yếu và (2) khám phá các lỗ hổng mới (chưa được khám phá trước đây).<!-- raw HTML omitted -->2<!-- raw HTML omitted --> Nhóm CyberGym trước đây đã phát hiện ra rằng Claude Sonnet 4 là mô hình mạnh nhất trên <a href="https://www.cybergym.io/">bảng xếp hạng công khai</a> của họ.</p>
+<p>Claude Sonnet 4.5 đạt điểm cao hơn đáng kể so với Claude Sonnet 4 hoặc Claude Opus 4. Khi sử dụng các ràng buộc chi phí tương tự như bảng xếp hạng CyberGym công khai (tức là giới hạn 2 đô la cho mỗi truy vấn API LLM trên mỗi lỗ hổng), chúng tôi thấy rằng Sonnet 4.5 đạt được điểm hiện đại mới là 28,9%. Nhưng những kẻ tấn công thực sự hiếm khi bị giới hạn theo cách này: chúng có thể cố gắng thực hiện nhiều cuộc tấn công, với chi phí cao hơn nhiều so với 2 đô la cho mỗi lần thử. Khi chúng tôi loại bỏ các ràng buộc này và cho Claude 30 lần thử cho mỗi nhiệm vụ, chúng tôi thấy rằng Sonnet 4.5 tái tạo các lỗ hổng trong 66,7% chương trình. Và mặc dù giá tương đối của phương pháp này cao hơn, nhưng chi phí tuyệt đối—khoảng 45 đô la để thử một nhiệm vụ 30 lần—vẫn khá thấp.</p>
+<!-- raw HTML omitted -->
+<p>Điều thú vị không kém là tốc độ mà Claude Sonnet 4.5 khám phá ra các lỗ hổng mới. Mặc dù bảng xếp hạng CyberGym cho thấy rằng Claude Sonnet 4 chỉ khám phá ra các lỗ hổng trong khoảng 2% mục tiêu, Sonnet 4.5 khám phá ra các lỗ hổng mới trong 5% trường hợp. Bằng cách lặp lại thử nghiệm 30 lần, nó khám phá ra các lỗ hổng mới trong hơn 33% dự án.</p>
+<!-- raw HTML omitted -->
+<h3 id="nghiên-cứu-sâu-hơn-về-vá-lỗi">Nghiên cứu sâu hơn về vá lỗi</h3>
+<p>Chúng tôi cũng đang tiến hành nghiên cứu sơ bộ về khả năng tạo và xem xét các bản vá của Claude để sửa các lỗ hổng. Vá các lỗ hổng là một nhiệm vụ khó hơn so với việc tìm chúng vì mô hình phải thực hiện các thay đổi phẫu thuật để loại bỏ lỗ hổng mà không làm thay đổi chức năng ban đầu. Nếu không có hướng dẫn hoặc thông số kỹ thuật, mô hình phải suy ra chức năng dự định này từ cơ sở mã.</p>
+<p>Trong thử nghiệm của mình, chúng tôi đã giao cho Claude Sonnet 4.5 nhiệm vụ vá các lỗ hổng trong bộ đánh giá CyberGym dựa trên mô tả về lỗ hổng và thông tin về chương trình đang làm gì khi bị treo. Chúng tôi đã sử dụng Claude để đánh giá công việc của chính mình, yêu cầu nó chấm điểm các bản vá đã gửi bằng cách so sánh chúng với các bản vá tham khảo do con người tạo ra. 15% số bản vá do Claude tạo ra được đánh giá là tương đương về mặt ngữ nghĩa với các bản vá do con người tạo ra. Tuy nhiên, phương pháp dựa trên so sánh này có một hạn chế quan trọng: vì các lỗ hổng thường có thể được sửa theo nhiều cách hợp lệ nên các bản vá khác với bản tham khảo vẫn có thể chính xác, dẫn đến kết quả âm tính giả trong đánh giá của chúng tôi.</p>
+<p>Chúng tôi đã phân tích thủ công một mẫu các bản vá có điểm số cao nhất và thấy chúng có chức năng giống hệt với các bản vá tham khảo đã được hợp nhất vào phần mềm nguồn mở mà đánh giá CyberGym dựa trên đó. Công việc này cho thấy một mô hình phù hợp với những phát hiện rộng hơn của chúng tôi: Claude phát triển các kỹ năng liên quan đến mạng khi nó cải thiện nói chung. Kết quả sơ bộ của chúng tôi cho thấy rằng việc tạo bản vá—giống như việc khám phá lỗ hổng trước đó—là một khả năng mới nổi có thể được nâng cao bằng nghiên cứu tập trung. Bước tiếp theo của chúng tôi là giải quyết một cách có hệ thống những thách thức mà chúng tôi đã xác định để biến Claude thành một tác giả và người đánh giá bản vá đáng tin cậy.</p>
+<h2 id="trao-đổi-với-các-đối-tác-đáng-tin-cậy">Trao đổi với các đối tác đáng tin cậy</h2>
+<p>Bảo mật phòng thủ trong thế giới thực phức tạp hơn nhiều so với các đánh giá của chúng tôi có thể nắm bắt. Chúng tôi đã liên tục phát hiện ra rằng các vấn đề thực tế phức tạp hơn, các thách thức khó hơn và các chi tiết triển khai quan trọng hơn rất nhiều. Do đó, chúng tôi cảm thấy điều quan trọng là phải làm việc với các tổ chức thực sự sử dụng AI để phòng thủ để nhận phản hồi về cách nghiên cứu của chúng tôi có thể đẩy nhanh tiến độ của họ. Trong quá trình chuẩn bị cho Sonnet 4.5, chúng tôi đã làm việc với một số tổ chức đã áp dụng mô hình này cho các thách thức thực tế của họ trong các lĩnh vực như khắc phục lỗ hổng, kiểm tra bảo mật mạng và phân tích mối đe dọa.</p>
+<p>Nidhi Aggarwal, Giám đốc Sản phẩm của HackerOne, cho biết, &ldquo;Claude Sonnet 4.5 đã giảm thời gian tiếp nhận lỗ hổng trung bình cho các tác nhân bảo mật Hai của chúng tôi xuống 44% đồng thời cải thiện độ chính xác lên 25%, giúp chúng tôi giảm rủi ro cho các doanh nghiệp một cách tự tin.&rdquo; Theo Sven Krasser, Phó chủ tịch cấp cao về Khoa học dữ liệu và Nhà khoa học trưởng tại CrowdStrike, &ldquo;Claude cho thấy triển vọng mạnh mẽ đối với việc kiểm tra xâm nhập—tạo ra các kịch bản tấn công sáng tạo giúp tăng tốc cách chúng tôi nghiên cứu nghề nghiệp của những kẻ tấn công. Những thông tin chi tiết này củng cố khả năng phòng thủ của chúng tôi trên các điểm cuối, danh tính, đám mây, dữ liệu, SaaS và khối lượng công việc AI.&rdquo;</p>
+<p>Những lời chứng thực này đã giúp chúng tôi tin tưởng hơn vào tiềm năng cho công việc phòng thủ, ứng dụng với Claude.</p>
+<h2 id="tiếp-theo-là-gì">Tiếp theo là gì?</h2>
+<p>Claude Sonnet 4.5 thể hiện một cải tiến có ý nghĩa, nhưng chúng tôi biết rằng nhiều khả năng của nó còn non trẻ và chưa phù hợp với khả năng của các chuyên gia bảo mật và các quy trình đã được thiết lập. Chúng tôi sẽ tiếp tục nỗ lực để cải thiện các khả năng liên quan đến phòng thủ của các mô hình của mình và tăng cường thông tin tình báo về mối đe dọa và các biện pháp giảm thiểu giúp bảo vệ nền tảng của chúng tôi. Trên thực tế, chúng tôi đã sử dụng kết quả điều tra và đánh giá của mình để liên tục tinh chỉnh khả năng nắm bắt việc sử dụng sai trái các mô hình của chúng tôi cho các hành vi mạng có hại. Điều này bao gồm sử dụng các kỹ thuật như <a href="https://alignment.anthropic.com/2025/summarization-for-monitoring/">tóm tắt</a> cấp tổ chức để hiểu bức tranh lớn hơn ngoài một lời nhắc và hoàn thành duy nhất; điều này giúp phân tách hành vi sử dụng kép khỏi hành vi xấu xa, đặc biệt đối với các trường hợp sử dụng gây tổn hại nhiều nhất liên quan đến hoạt động tự động quy mô lớn.</p>
+<p><strong>Nhưng chúng tôi tin rằng bây giờ là thời điểm để càng nhiều tổ chức càng tốt bắt đầu thử nghiệm cách AI có thể cải thiện tư thế bảo mật của họ và xây dựng các đánh giá để đánh giá những thành quả đó.</strong> <a href="https://www.anthropic.com/news/automate-security-reviews-with-claude-code">Đánh giá bảo mật tự động</a> trong Claude Code cho thấy AI có thể được tích hợp vào quy trình CI/CD như thế nào. Chúng tôi đặc biệt muốn cho phép các nhà nghiên cứu và nhóm thử nghiệm với việc áp dụng các mô hình trong các lĩnh vực như tự động hóa Trung tâm điều hành bảo mật (SOC), phân tích Quản lý thông tin và sự kiện bảo mật (SIEM), kỹ thuật mạng an toàn hoặc phòng thủ chủ động. Chúng tôi muốn xem và sử dụng nhiều đánh giá hơn cho các khả năng phòng thủ như một phần của <a href="https://www.anthropic.com/news/a-new-initiative-for-developing-third-party-model-evaluations">hệ sinh thái bên thứ ba</a> đang phát triển để đánh giá mô hình.</p>
+<p>Nhưng ngay cả việc xây dựng và áp dụng để mang lại lợi thế cho những người bảo vệ chỉ là một phần của giải pháp. Chúng ta cũng cần các cuộc trò chuyện về việc làm cho cơ sở hạ tầng kỹ thuật số trở nên kiên cường hơn và phần mềm mới an toàn theo thiết kế—bao gồm cả sự giúp đỡ từ các mô hình AI tiên tiến. Chúng tôi mong muốn được thảo luận về những điều này với ngành, chính phủ và xã hội dân sự khi chúng ta điều hướng thời điểm mà tác động của AI đối với an ninh mạng chuyển từ mối quan tâm trong tương lai sang một mệnh lệnh ngày nay.</p>
+<p><em>Bài viết này ban đầu được đăng vào ngày 29 tháng 9 năm 2025 trên blog của Frontier Red Team, <a href="https://red.anthropic.com/">red.anthropic.com</a>.</em></p>
+<h4 id="chú-thích">Chú thích</h4>
+<ol>
+<li>
+<p>Andy K Zhang và cộng sự, &ldquo;Cybench: A Framework for Evaluating Cybersecurity Capabilities and Risks of Language Models,&rdquo; trong Hội nghị Quốc tế về Biểu diễn Học tập lần thứ mười ba (2025), <a href="https://openreview.net/forum?id=tc90LV0yRL">https://openreview.net/forum?id=tc90LV0yRL</a>.</p>
+</li>
+<li>
+<p>Zhun Wang và cộng sự, &ldquo;CyberGym: Evaluating AI Agents&rsquo; Cybersecurity Capabilities with Real-World Vulnerabilities at Scale,&rdquo; bản in trước arXiv arXiv:2506.02548 (2025), <a href="https://arxiv.org/abs/2506.02548">https://arxiv.org/abs/2506.02548</a>.</p>
+</li>
+</ol>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/research/building-ai-cyber-defenders">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/03-november-2025/">03 November 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-01/8b5547/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/8d339ae8ecedecc1409db8f5bbb99c958db56946-1000x1000.svg" alt="Claude và Slack" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-01T00:00:00&#43;00:00">Nov 01, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Claude và Slack</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Khám phá cách tích hợp Claude với Slack có thể tăng cường năng suất và hợp tác nhóm của bạn.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-01/704d9a/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/1576ae23eaf481f33bd36ab468171cc69d12361a-1000x1000.svg" alt="Cách các doanh nghiệp đang thúc đẩy chuyển đổi AI với Claude" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-01T00:00:00&#43;00:00">Nov 01, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách các doanh nghiệp đang thúc đẩy chuyển đổi AI với Claude</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tìm hiểu cách các doanh nghiệp đang tận dụng Claude để thúc đẩy quá trình chuyển đổi trí tuệ nhân tạo.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-03/b051d4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://images.squarespace-cdn.com/content/v1/6213c340453c3f502425776e/1740730741987-1D4BQP5IM6SNWADN57LZ/Blog&#43;Thumbnail&#43;1x1.PNG" alt="Stability AI và Arm mang âm thanh tạo sinh trên thiết bị đến điện thoại thông minh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Stability AI và Arm mang âm thanh tạo sinh trên thiết bị đến điện thoại thông minh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-03/17018e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/97cf99624aa60f59b75f9e08cdf0f00d33c34804-1000x1000.svg" alt="Xây dựng AI cho những người bảo vệ mạng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Xây dựng AI cho những người bảo vệ mạng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-01/704d9a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/1576ae23eaf481f33bd36ab468171cc69d12361a-1000x1000.svg" alt="Cách các doanh nghiệp đang thúc đẩy chuyển đổi AI với Claude" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách các doanh nghiệp đang thúc đẩy chuyển đổi AI với Claude</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-01/8b5547/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/8d339ae8ecedecc1409db8f5bbb99c958db56946-1000x1000.svg" alt="Claude và Slack" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Claude và Slack</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-01/43ad79/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/blog/assets/lerobotxnvidia-healthcare/thumbnail.png" alt="Xây dựng một Robot Chăm sóc sức khỏe từ Mô phỏng đến Triển khai với NVIDIA Isaac" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Xây dựng một Robot Chăm sóc sức khỏe từ Mô phỏng đến Triển khai với NVIDIA Isaac</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
