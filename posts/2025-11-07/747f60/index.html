@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ánh xạ, mô hình hóa và hiểu về tự nhiên bằng AI | AI Today - SkyAI</title>
+
+<meta name="description" content="Khám phá cách AI đang được sử dụng để lập bản đồ, mô hình hóa và hiểu về thế giới tự nhiên.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Ánh xạ, mô hình hóa và hiểu về tự nhiên bằng AI</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Khám phá cách AI đang được sử dụng để lập bản đồ, mô hình hóa và hiểu về thế giới tự nhiên. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-07T00:00:00&#43;00:00">November 7, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            8 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/cvwHhmyNTdzQQLXbBfOpUWURCfMEb7PqqzTYn49Ctrp4amciX8pJwWufnihj0pXuFbSdORk9qN0yV3NL_dIiSaldLHSa3wIpghNOz3hr04lt2f9twg=w600-h600-n-nu" alt="Ánh xạ, mô hình hóa và hiểu về tự nhiên bằng AI">
+        <figcaption class="text-center italic text-xs">Khám phá cách AI đang được sử dụng để lập bản đồ, mô hình hóa và hiểu về thế giới tự nhiên.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="ba-cách-các-nhà-khoa-học-google-sử-dụng-ai-để-hiểu-rõ-hơn-về-tự-nhiên">Ba cách các nhà khoa học Google sử dụng AI để hiểu rõ hơn về tự nhiên</h1>
+<p>Các mô hình AI có thể giúp lập bản đồ các loài, bảo vệ rừng và lắng nghe các loài chim trên khắp thế giới.</p>
+<p>Sinh quyển của hành tinh là tổng hòa của các loài thực vật, động vật, nấm và các sinh vật khác. Mỗi ngày, chúng ta phụ thuộc vào nó để sinh tồn – không khí chúng ta hít thở, nước chúng ta uống và thức ăn chúng ta ăn đều được tạo ra bởi các hệ sinh thái của Trái đất.</p>
+<p>Khi nhu cầu ngày càng tăng về đất đai và tài nguyên gây áp lực lên các hệ sinh thái này và các loài của chúng, trí tuệ nhân tạo (AI) có thể là một công cụ chuyển đổi để giúp bảo vệ chúng. Nó có thể giúp các chính phủ, công ty và các nhóm bảo tồn dễ dàng thu thập dữ liệu thực địa, tích hợp dữ liệu đó vào những hiểu biết mới và chuyển những hiểu biết đó thành hành động. Và nó có thể thông báo các kế hoạch tốt hơn và theo dõi sự thành công của những kế hoạch đó khi được đưa vào thực tế.</p>
+<p>Hôm nay, chúng tôi công bố nghiên cứu mới về sinh quyển dự đoán nguy cơ phá rừng, một dự án mới để lập bản đồ phạm vi của các loài trên Trái đất và các bản cập nhật mới nhất về mô hình âm thanh sinh học Perch của chúng tôi.</p>
+<h2 id="dự-đoán-nạn-phá-rừng">Dự đoán nạn phá rừng</h2>
+<p>Rừng là một trong những trụ cột quan trọng nhất của sinh quyển — lưu trữ carbon, điều hòa lượng mưa, giảm thiểu lũ lụt và chứa phần lớn đa dạng sinh học trên cạn của hành tinh. Thật không may, bất chấp tầm quan trọng của chúng, rừng vẫn tiếp tục bị mất với tốc độ đáng báo động.</p>
+<p>Trong hơn 20 năm, có thể theo dõi nạn phá rừng từ không gian, sử dụng viễn thám dựa trên vệ tinh. Cùng với Viện Tài nguyên Thế giới, gần đây chúng tôi đã đi sâu hơn một cấp độ, phát triển một mô hình về các tác nhân gây mất rừng — từ nông nghiệp và khai thác gỗ đến khai thác mỏ và hỏa hoạn — ở độ phân giải 1km2 chưa từng có, trong những năm 2000-2024.</p>
+<p>Hôm nay, chúng tôi phát hành một tập dữ liệu chuẩn để dự đoán nguy cơ phá rừng. Mô hình này sử dụng dữ liệu đầu vào vệ tinh thuần túy, tránh nhu cầu về các lớp đầu vào cục bộ cụ thể như đường xá và kiến trúc mô hình hiệu quả, được xây dựng xung quanh các biến đổi thị giác. Phương pháp này cho phép dự đoán chính xác, độ phân giải cao về nguy cơ phá rừng, xuống quy mô 30 mét và trên các khu vực rộng lớn.</p>
+<!-- raw HTML omitted -->
+<h2 id="mô-hình-hóa-sự-phân-bố-của-các-loài-trên-trái-đất">Mô hình hóa sự phân bố của các loài trên Trái đất</h2>
+<p>Để bảo tồn các loài bị đe dọa của hành tinh, chúng ta phải biết chúng ở đâu. Với hơn 2 triệu loài đã biết và hàng triệu loài nữa sẽ được khám phá và đặt tên, đó là một nhiệm vụ to lớn.</p>
+<p>Để giúp giải quyết vấn đề này, các nhà nghiên cứu của Google đang phát triển một phương pháp mới do AI cung cấp để tạo ra bản đồ phạm vi loài ở quy mô chưa từng có – với nhiều loài hơn, trên nhiều khu vực hơn trên thế giới và ở độ phân giải cao hơn bao giờ hết. Mô hình Mạng thần kinh đồ thị (GNN) kết hợp cơ sở dữ liệu mở về các quan sát thực địa về các loài, với các nhúng vệ tinh từ AlphaEarth Foundations và với thông tin về đặc điểm loài (chẳng hạn như khối lượng cơ thể). Phương pháp này cho phép chúng ta suy ra sự phân bố địa lý tiềm ẩn có khả năng xảy ra cho nhiều loài cùng một lúc và cho phép các nhà khoa học tinh chỉnh các phân bố được suy ra đó bằng dữ liệu và chuyên môn địa phương bổ sung.</p>
+<p>Là một phần của dự án thí điểm với các nhà nghiên cứu tại QCIF và EcoCommons, chúng tôi đã sử dụng mô hình của mình để lập bản đồ các loài động vật có vú ở Úc như Greater Glider: một loài thú có túi sống về đêm, đuôi xù sống trong các khu rừng bạch đàn cổ thụ. Chúng tôi cũng đang phát hành 23 bản đồ loài này thông qua Phòng thí nghiệm Đa dạng Sinh học Liên hợp quốc ngay hôm nay.</p>
+<!-- raw HTML omitted -->
+<h2 id="lắng-nghe-thông-qua-âm-thanh-sinh-học">Lắng nghe thông qua âm thanh sinh học</h2>
+<p>Tất cả các nỗ lực để hiểu và mô hình hóa các hệ sinh thái cuối cùng đều phụ thuộc vào việc giám sát tại hiện trường. AI cũng có thể đóng một vai trò quan trọng ở đây, tăng cường giám sát thực địa sinh thái truyền thống — vốn nổi tiếng là khó khăn và tốn kém — bằng cách tự động xác định môi trường sống và các loài từ các thiết bị giám sát.</p>
+<p>Một ví dụ thuyết phục là âm thanh sinh học. Chim, động vật lưỡng cư, côn trùng và các loài khác sử dụng âm thanh để giao tiếp, khiến nó trở thành một phương thức tuyệt vời để xác định các loài cư trú và hiểu được sức khỏe của một hệ sinh thái. Màn hình âm thanh sinh học đáng tin cậy và giá cả phải chăng có sẵn. Tuy nhiên, các thiết bị này tạo ra các tập dữ liệu âm thanh rộng lớn, chứa đầy những âm thanh chưa biết và chồng chéo, quá lớn để xem xét thủ công, nhưng cũng khó phân tích tự động.</p>
+<p>Để giúp các nhà khoa học và nhà bảo tồn gỡ rối sự phức tạp này, gần đây chúng tôi đã phát hành Perch 2.0 - một bản cập nhật cho bộ phân loại âm thanh động vật của chúng tôi. Mô hình mới này không chỉ là hiện đại cho việc xác định chim mà còn có sẵn như một mô hình nền tảng, cho phép các nhà sinh thái học thực địa nhanh chóng điều chỉnh mô hình để xác định các loài và môi trường sống mới, ở bất kỳ đâu trên Trái đất.</p>
+<p>Chúng tôi đặc biệt tự hào về công việc của mình với Đại học Hawai`i, nơi Perch đang hướng dẫn các biện pháp bảo vệ loài chim ăn mật đang bị đe dọa và cũng được sử dụng để xác định các cuộc gọi của con non để hiểu về sức khỏe của quần thể.</p>
+<!-- raw HTML omitted -->
+<h2 id="tương-lai-của-ai-cho-tự-nhiên">Tương lai của AI cho Tự nhiên</h2>
+<p>Mục tiêu của công việc này là giúp các nhà hoạch định chính sách ở mọi cấp độ dễ dàng hành động để bảo vệ hành tinh. Nhưng dữ liệu tốt hơn chỉ dẫn đến các quyết định tốt hơn nếu dữ liệu đó kỹ lưỡng; nếu nó thực sự nắm bắt được những gì đang xảy ra trong một hệ sinh thái nhất định ở mọi cấp độ.</p>
+<p>Đó là lý do tại sao chúng tôi đang làm việc để tích hợp các mô hình này và các mô hình khác lại với nhau, kết hợp dữ liệu từ nhiều phương thức hơn như dữ liệu vệ tinh, hình ảnh, âm thanh sinh học, tài liệu, v.v. Và, để kết hợp tất cả những điều này cùng với các mô hình về hoạt động của con người như thay đổi sử dụng đất và tập quán nông nghiệp cũng như các mô hình về năng suất nông nghiệp, ngăn chặn lũ lụt và các hậu quả liên quan đến con người khác.</p>
+<p>Bằng cách cung cấp cho các nhà hoạch định chính sách một sự hiểu biết toàn diện về các mối đe dọa đối với sinh quyển, chúng ta có thể giúp họ hành động để bảo vệ các thế hệ thực vật, động vật và con người trong tương lai. Nếu chúng ta có thể mô hình hóa môi trường, có lẽ chúng ta có thể giúp nó phát triển mạnh mẽ.</p>
+<p>Tìm hiểu thêm về các nỗ lực AI và tính bền vững của chúng tôi bằng cách xem:</p>
+<ul>
+<li>Google Earth AI</li>
+<li>Google Earth Engine</li>
+<li>AlphaEarth Foundations</li>
+</ul>
+<h2 id="lời-cảm-ơn">Lời cảm ơn</h2>
+<p>Nghiên cứu này được đồng phát triển bởi Google DeepMind và Google Research.</p>
+<ul>
+<li>Google DeepMind: Andrea Burns, Anton Raichuk, Arianna Manzini, Bart van Merrienboer, Burcu Karagol Ayan, Dominic Masters, Drew Purves, Jenny Hamer, Julia Haas, Keith Anderson, Matt Overlan, Maxim Neumann, Melanie Rey, Mustafa Chasmai, Petar Veličković, Ravi Rajakumar, Tom Denton, Vincent Dumoulin</li>
+<li>Google Research và Google Partners: Ben Williams, Charlotte Stanton, Dan Morris, Elise Kleeman, Lauren Harrell, Michelangelo Conserva</li>
+</ul>
+<p>Chúng tôi cũng xin cảm ơn các đối tác của chúng tôi tại UNEP-WCMC và QCIF, các cộng tác viên bổ sung Aparna Warrier, Artlind Kortoci, Burooj Ghani, Christine Kaeser-Chen, Grace Young, Kira Prabhu, Jamie McPike, Jane Labanowski, Jerome Massot, Kuan Lu, Mélisande Teng, Michal Kazmierski, Millie Chapman, Rishabh Baghel, Scott Riddle, Shelagh McLellan, Simon Guiroy, Stefan Kahl, Tim Coleman và Youngin Shin, cũng như Peter Battaglia và Kat Chou vì sự hỗ trợ của họ.</p>
+<h2 id="bài-viết-liên-quan">Bài viết liên quan</h2>
+<ul>
+<li>AlphaEarth Foundations giúp lập bản đồ hành tinh của chúng ta với chi tiết chưa từng có</li>
+<li>AI đang giúp thúc đẩy khoa học âm thanh sinh học để cứu các loài có nguy cơ tuyệt chủng như thế nào</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://deepmind.google/blog/mapping-modeling-and-understanding-nature-with-ai/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/november-2025/">November 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/deepmind.google/">Deepmind.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-16/4423db/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/_ys2ESbxOZmEx8DpK8yKDikkqRuN_b_Z674d5WRSnC2gvHKdLZFo3tfoGjSoJVs2X0kruqz_uG3ww5Xo4JmdRViU0cJLT5I3RfZBoH2Pa4pj4eo3-Q=w400-h225-n-nu" alt="Đưa AI đến thế hệ năng lượng nhiệt hạch tiếp theo" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-16T00:00:00&#43;00:00">Oct 16, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Đưa AI đến thế hệ năng lượng nhiệt hạch tiếp theo</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chúng tôi đang hợp tác với Commonwealth Fusion Systems (CFS) để đưa năng lượng nhiệt hạch sạch, an toàn, không giới hạn đến gần hơn với hiện thực.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-10-07/10ab20/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/fnAx6nksgsvTcj5EDj7bx1yD8sMXwfkBnR6vla-e-h4wZSKFI3a1nFftGvDYyJAk01ZzNr2-QJyqfw30V2_tcp6tE-udCtMCuyou9cBIHyxGnO_mtQ=w400-h225-n-nu" alt="Giới thiệu CodeMender- một tác nhân AI để bảo mật mã" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-10-07T00:00:00&#43;00:00">Oct 07, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu CodeMender- một tác nhân AI để bảo mật mã</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">CodeMender giúp vá các lỗ hổng phần mềm quan trọng, đồng thời viết lại và bảo mật mã hiện có.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-07/747f60/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/cvwHhmyNTdzQQLXbBfOpUWURCfMEb7PqqzTYn49Ctrp4amciX8pJwWufnihj0pXuFbSdORk9qN0yV3NL_dIiSaldLHSa3wIpghNOz3hr04lt2f9twg=w600-h600-n-nu" alt="Ánh xạ, mô hình hóa và hiểu về tự nhiên bằng AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Ánh xạ, mô hình hóa và hiểu về tự nhiên bằng AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-07/f7c5ff/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/ffc0d7957a232518519f13c0d64896921ea215e2-1000x1000.svg" alt="Văn phòng mới ở Paris và Munich mở rộng sự hiện diện của Anthropic tại Châu Âu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Văn phòng mới ở Paris và Munich mở rộng sự hiện diện của Anthropic tại Châu Âu</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-04/927814/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic và Iceland công bố một trong những chương trình thử nghiệm giáo dục AI quốc gia đầu tiên trên thế giới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic và Iceland công bố một trong những chương trình thử nghiệm giáo dục AI quốc gia đầu tiên trên thế giới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-04/271efd/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bên trong bước nhảy vọt AI kép của Zendesk- Từ các tác nhân đáng tin cậy đến trí thông minh thời gian thực với GPT-5 và HyperArc</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-04/b06e77/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/11/D365_1090828_Blog_251029-1-1024x576.webp" alt="Microsoft được vinh danh là một trong những nhà lãnh đạo trong IDC MarketScape cho các ứng dụng ERP dành cho doanh nghiệp lớn hỗ trợ AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Microsoft được vinh danh là một trong những nhà lãnh đạo trong IDC MarketScape cho các ứng dụng ERP dành cho doanh nghiệp lớn hỗ trợ AI</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
