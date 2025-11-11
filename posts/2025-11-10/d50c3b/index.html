@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tại sao MiniMax M2 lại trở thành một Mô hình Chú ý Toàn phần? | AI Today - SkyAI</title>
+
+<meta name="description" content="Tại sao MiniMax M2 lại trở thành một Mô hình Chú ý Toàn phần?">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Tại sao MiniMax M2 lại trở thành một Mô hình Chú ý Toàn phần?</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Tại sao MiniMax M2 lại trở thành một Mô hình Chú ý Toàn phần? </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            13 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Tại sao MiniMax M2 lại trở thành một Mô hình Chú ý Toàn phần?">
+        <figcaption class="text-center italic text-xs">Tại sao MiniMax M2 lại trở thành một Mô hình Chú ý Toàn phần?</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="tại-sao-minimax-m2-lại-trở-thành-mô-hình-chú-ý-đầy-đủ">Tại sao MiniMax M2 lại trở thành mô hình chú ý đầy đủ?</h1>
+<p>Sau khi ra mắt M2, chúng tôi đã nhận được nhiều câu hỏi từ cộng đồng về việc &ldquo;Tại sao các bạn lại quay lại quá khứ và sử dụng chú ý đầy đủ với MiniMax M2?&rdquo;. Chúng tôi có thể đưa ra cuộc tranh luận theo sách giáo khoa — dành một buổi chiều để giải thích tại sao bạn nên xây dựng chú ý tuyến tính hoặc thưa thớt, sau đó dành một buổi chiều khác để giải thích tại sao bạn không nên làm vậy. Nhưng cuối cùng, tất cả những lý thuyết đó cũng chỉ có vậy. Câu hỏi thực sự rất đơn giản: bạn có nên làm điều đó không?</p>
+<p>Vì vậy, hãy bắt đầu với kết luận: Chúng tôi luôn nỗ lực vì điều đó. Nhưng trong một hệ thống cấp công nghiệp, thực tế là chú ý hiệu quả vẫn còn một chặng đường dài phía trước trước khi nó có thể vượt trội hơn chú ý đầy đủ một cách dứt khoát. Khi LLM phát triển, toàn bộ ngăn xếp đã trở nên cực kỳ phức tạp. Chúng tôi phục vụ nhiều trường hợp hơn và các đánh đổi thiết kế kiến trúc đang bùng nổ: &ldquo;Nó hoạt động như thế nào trên mã và toán học? Còn các kịch bản tác nhân thì sao? Nó xử lý đa phương thức như thế nào? Chuỗi CoT dài có còn hiệu quả không? Liệu RL có thể mở rộng trên đó không? Có những cạm bẫy ẩn với tính toán có độ chính xác thấp không? Làm thế nào để triển khai tư duy xen kẽ, lưu trữ bộ nhớ đệm, giải mã suy đoán? &hellip; &quot;</p>
+<p>Nói tóm lại, có sự khác biệt rất lớn giữa lời hứa trên lý thuyết và lợi ích thu được trong sản xuất. Bạn chỉ có thể tuyên bố lợi ích đó sau khi đáp ứng Điều kiện 1&hellip;n và giải quyết Vấn đề 1&hellip;n.</p>
+<h2 id="ii-tại-sao-lại-cần-chú-ý-hiệu-quả">II. Tại sao lại cần Chú ý Hiệu quả?</h2>
+<p>Hãy làm một thí nghiệm tưởng tượng. Nếu bạn có khả năng tính toán vô hạn, bạn có bận tâm đến chú ý tuyến tính hoặc chú ý thưa thớt không? Một số người có thể đưa ra các lập luận lý thuyết về chú ý softmax &ldquo;làm mịn quá mức&rdquo; trong ngữ cảnh vô hạn&hellip; nhưng ai mà biết được? Trong giới hạn tính toán hiện tại, không có mô hình nào thực sự đẩy chú ý softmax đến giới hạn tuyệt đối của nó. Vì vậy, vì mọi mục đích thực tế, cuộc đua cho chú ý hiệu quả là một cuộc đua để tiết kiệm tính toán.</p>
+<p>Đối với thiết kế M2 của chúng tôi, liệu chúng tôi có thể nhắm đến việc tiết kiệm token — đạt được chất lượng tương tự với ít token hơn không? Chà, nếu bạn tin vào luật tỷ lệ, để đạt được mục tiêu này, bạn có lẽ sẽ đặt cược vào các con đường khác để đạt được điều đó, chứ không phải chú ý hiệu quả.
+Vì vậy, sự thật đơn giản là: Tính toán là hữu hạn. Chúng ta cần một kiến trúc sử dụng nó tốt hơn — các mô hình đạt hiệu suất cao hơn trong cùng một ngân sách (huấn luyện &amp; suy luận).</p>
+<h2 id="iii-các-nút-thắt-thực-sự">III. Các nút thắt thực sự</h2>
+<p>Để xây dựng một mô hình có thể triển khai và sử dụng thực tế bởi cộng đồng, chúng ta phải bắt đầu với những gì người dùng quan tâm: Chất lượng, Tốc độ (TPS) và Giá cả. Chất lượng là không thể thương lượng. Một mô hình vô dụng thì vẫn vô dụng ngay cả khi nó miễn phí. Vậy làm thế nào để chúng ta tạo ra một mô hình Chú ý Tuyến tính/Thưa thớt/Kết hợp hoạt động đủ tốt? Thách thức lớn nhất ở đây không phải là thiết kế kiến trúc — nút thắt thực sự là những hạn chế của việc đánh giá. (Đối với tốc độ và giá cả, chúng bị ảnh hưởng nặng nề bởi ngăn xếp suy luận — và các mô hình tuyệt vời có xu hướng thu hút các kỹ sư giỏi để tối ưu hóa chúng.)</p>
+<h3 id="bẫy-đánh-giá-luật-goodhart-được-áp-dụng">Bẫy đánh giá: Luật Goodhart được áp dụng</h3>
+<p>&ldquo;Miễn là bạn xây dựng bảng xếp hạng, chúng tôi sẽ tìm cách đánh bại nó.&rdquo; Trong vài năm qua của sự phát triển LLM, tốc độ tiến bộ của bảng xếp hạng là đáng kinh ngạc. Bất kể một điểm chuẩn khó đến đâu — ngay cả khi điểm SOTA bắt đầu bằng các chữ số đơn — một khi nó thu hút sự chú ý của ngành, nó thường sẽ bị nghiền nát trong vòng vài lần lặp lại. Nhưng làm thế nào để xây dựng một hệ thống đánh giá toàn diện và thực sự phản ánh khả năng thực sự của mô hình? Đó là một trong những vấn đề khó khăn nhất — và quan trọng nhất — trong phát triển LLM, và nó càng trở nên cấp bách hơn khi bạn bắt đầu can thiệp vào một thành phần cơ bản như sự chú ý.</p>
+<h3 id="các-điểm-chuẩn-là-sự-trừu-tượng-bị-rò-rỉ">Các điểm chuẩn là sự trừu tượng bị rò rỉ</h3>
+<p>Không có bữa trưa miễn phí. Khi bạn giảm độ phức tạp của sự chú ý, bạn phải trả giá. Câu hỏi là, ở đâu?</p>
+<p>Khi chúng tôi phát triển MiniMax-Text-01, mọi người vẫn đang đánh giá MMLU, BBH, MATH và LongBench (tất cả đều đã bão hòa). Từ góc nhìn của một năm trước, một mô hình kết hợp giữa Lightning Attention và Full Attention trông cũng tốt như chú ý đầy đủ thuần túy. Các mô hình kết hợp nhỏ của chúng tôi đã xác nhận điều này trên các bảng xếp hạng. (Chúng tôi đã tìm thấy bữa trưa miễn phí?)</p>
+<p>Không hẳn. Cái giá phải trả trở nên rõ ràng ở quy mô lớn hơn: mô hình có những thiếu sót rõ ràng trong các tác vụ suy luận phức tạp, đa bước.
+Được rồi, một khi vấn đề được phơi bày, bạn có thể sửa nó. Chúng tôi đã phát triển các chỉ số proxy cho điểm yếu cụ thể này và lặp đi lặp lại cho đến khi mô hình kết hợp dường như khớp với MHA. Nhưng chỉ số proxy đó có còn tương quan với hiệu suất hạ nguồn trong thế giới thực ở quy mô lớn hơn nữa không? Có những điểm yếu ẩn nào khác không? Ai mà biết được. Chúng tôi chưa chạy các thí nghiệm đó.</p>
+<p>Mô hình càng tốt, chúng càng khó đánh giá. Nhưng đó là một phần không thể thiếu của hành trình — hãy tiếp tục đi, các nhóm đánh giá!</p>
+<h3 id="cái-giá-đắt-của-việc-biết-mọi-thứ">Cái giá đắt của việc biết mọi thứ</h3>
+<p>Đối với các tác vụ suy luận phức tạp, đôi khi chúng ta có thể tìm thấy các chỉ số proxy ban đầu tương quan tốt với hiệu suất cuối cùng — nhưng không phải cho tất cả các tác vụ (ít nhất, chưa phải vậy). Khi các tác vụ trở nên khó khăn hơn, lượng tính toán thử nghiệm cần thiết chỉ để có được một tín hiệu có ý nghĩa thống kê trên chỉ số của bạn tăng lên theo cấp số nhân — điều này thật mỉa mai, vì chúng tôi nghiên cứu chú ý hiệu quả vì tính toán bị hạn chế.</p>
+<p>Và ngoài các điểm chuẩn học thuật, các vấn đề tối ưu hóa thường chỉ xuất hiện ở quy mô lớn. Bạn không bao giờ thực sự biết điều gì sẽ xảy ra cho đến khi bạn mở rộng quy mô. Bất kỳ ai đọc bài báo M1 của chúng tôi sẽ nhớ lại các vấn đề về độ chính xác nghiêm trọng mà chúng tôi gặp phải trong quá trình huấn luyện RL — những vấn đề lẽ ra đã được phát hiện sớm hơn. Quay lại và phân tích sự hội tụ số học của Lightning Attention với kinh nghiệm đó trong tay là điều cực kỳ sáng tỏ.</p>
+<p>Việc khám phá ra các vấn đề thực sự thường khó hơn nhiều so với việc giải quyết chúng.</p>
+<h3 id="một-bản-giao-hưởng-của-các-biến-số">Một bản giao hưởng của các biến số</h3>
+<p>Có quá nhiều biến số trong quá trình huấn luyện mô hình. Các kiến trúc khác nhau hoạt động rất khác nhau trên các phân phối dữ liệu khác nhau và với các trình tối ưu hóa khác nhau. Trong một thế giới mà dữ liệu của chúng ta liên tục được cập nhật, một thử nghiệm được chạy trên hỗn hợp dữ liệu của tháng trước có thể cho kết quả ngược lại ngày hôm nay.</p>
+<p>Chúng ta không thể quan sát mọi thứ một cách hoàn hảo — nhưng chúng ta đang nỗ lực tìm kiếm các chiến lược thử nghiệm đáng tin cậy hơn.</p>
+<h3 id="cơ-sở-hạ-tầng-nơi-lý-thuyết-gặp-kim-loại">Cơ sở hạ tầng: Nơi lý thuyết gặp kim loại</h3>
+<p>So với chú ý đầy đủ, cơ sở hạ tầng cho chú ý tuyến tính và thưa thớt còn non nớt hơn nhiều. Để thực sự đạt được kết quả đã hứa, vẫn còn rất nhiều công việc nền tảng cần hoàn thành.</p>
+<p>Hãy lấy ví dụ về chú ý tuyến tính: Nếu bạn phân tích cường độ tính toán của các kiến trúc tuyến tính hiện có, nhiều kiến trúc trong số đó bị giới hạn bởi bộ nhớ — ngay cả trong quá trình huấn luyện. Nếu không có tối ưu hóa IO cực đoan, bạn về cơ bản sẽ bỏ lỡ một lượng lớn FLOPs của GPU. Và suy luận mang lại nhiều thách thức hơn cả huấn luyện: Làm thế nào để cung cấp một dịch vụ thực sự nhanh hơn và rẻ hơn? Chú ý tuyến tính có độ phức tạp tính toán tuyến tính và sử dụng bộ nhớ không đổi. Điều đó có nghĩa là có một điểm giao nhau, nơi nó trở nên hiệu quả hơn chú ý đầy đủ về tính toán và bộ nhớ. Về lý thuyết, điểm đó nằm ở vài nghìn token — không quá dài đối với các mô hình lớn ngày nay.</p>
+<p>Nhưng đó chỉ là lý thuyết. Chúng ta cần giải quyết một vài vấn đề chính để thực sự đạt được điều đó:</p>
+<ul>
+<li>Lưu trữ trạng thái có độ chính xác thấp: Chú ý tuyến tính hiện tại nhạy cảm với độ chính xác số học hơn nhiều so với chú ý đầy đủ.</li>
+<li>Bộ nhớ đệm tiền tố: Trong các ứng dụng thực tế, tỷ lệ trúng bộ nhớ đệm cho các cuộc trò chuyện rất cao. Một kiến trúc mới phải xử lý điều này một cách duyên dáng.</li>
+<li>Giải mã suy đoán: Làm thế nào để tối ưu hóa giải mã suy đoán với xương sống chú ý tuyến tính?
+Chà, may mắn thay, tất cả những điều này dường như có thể giải quyết được.</li>
+</ul>
+<h2 id="iv-bước-tiếp-theo">IV. Bước tiếp theo</h2>
+<p>Mở rộng quy mô vẫn là tên của trò chơi, và mở rộng quy mô ngữ cảnh là một trong những vấn đề chính. Độ dài ngữ cảnh dài hơn và dài hơn là chìa khóa trong cả tiền huấn luyện và hậu huấn luyện. Khi sự tăng trưởng tính toán GPU chậm lại trong khi độ dài dữ liệu tiếp tục tăng, lợi ích của chú ý tuyến tính và thưa thớt sẽ dần xuất hiện. Chúng ta nên chuẩn bị ngay bây giờ:</p>
+<ul>
+<li>Dữ liệu tốt hơn: Dữ liệu ngữ cảnh dài đa phương thức, giàu thông tin hơn.</li>
+<li>Đánh giá tốt hơn: Hệ thống đánh giá và các mô hình thử nghiệm mang tính thông tin cao hơn để tăng tốc độ lặp lại.</li>
+<li>Cơ sở hạ tầng tốt hơn: Cơ sở hạ tầng huấn luyện và suy luận trưởng thành để khai thác tối đa tiềm năng của GPU.</li>
+</ul>
+<h2 id="v-phụ-lục-mã-swa">V. Phụ lục: Mã SWA&hellip;</h2>
+<p>Chúng tôi vô tình để mã suy luận SWA trong bản phát hành mã nguồn mở và một số người đã hỏi tại sao nó không được sử dụng trong mô hình cuối cùng. Câu trả lời đơn giản: hiệu suất không đủ tốt.</p>
+<p>Thí nghiệm đó là từ khá sớm, trước khi GPT-OSS được phát hành mã nguồn mở (nhân tiện, chúng tôi khá ngạc nhiên khi thấy cấu trúc của nó). Nhưng chúng tôi có thể chia sẻ một bản tóm tắt ngắn gọn về nỗ lực thất bại của mình. Chúng tôi đã cố gắng điều chỉnh CPT thành SWA kết hợp, kiểm tra cả trộn lớp trong và lớp ngoài. Động lực cho việc trộn lớp trong là để cân bằng cường độ tính toán trên tất cả các lớp, điều này thân thiện với cả PP trong huấn luyện và PP hoặc AFD trong suy luận. Thật không may, cả hai đều không hoạt động. Hiệu suất giảm đáng kể khi độ dài ngữ cảnh tăng — điều này không thể chấp nhận được trong các kịch bản tác nhân.</p>
+<p>Phân tích của chúng tôi cho thấy rằng nhiều mẫu chú ý toàn cầu (như đầu truy xuất và đầu cảm ứng) đã được thiết lập sớm trong quá trình tiền huấn luyện. CPT khó có thể điều chỉnh các mẫu đó sau đó. Chắc chắn bạn có thể giảm thiểu vấn đề bằng cách sử dụng các thăm dò dữ liệu để xác định và giữ các đầu đó làm chú ý đầy đủ — nhưng thật không may, gần như không thể khám phá tất cả chúng từ các tiên nghiệm của con người.
+(Và không, vấn đề này không liên quan đến các điểm nghẽn chú ý.)</p>
+<p>Nếu bạn quan tâm đến dòng nghiên cứu này, chúng tôi khuyên bạn nên xem xét kỹ hơn GPT-OSS, CWM và Gemma, đặc biệt là hiệu suất ngữ cảnh dài của chúng.</p>
+<p>Cuối cùng, chúng tôi đang tuyển dụng! Nếu bạn muốn tham gia cùng chúng tôi, hãy gửi sơ yếu lý lịch của bạn đến <a href="mailto:guixianren@minimaxi.com">guixianren@minimaxi.com</a>.</p>
+<h1 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h1>
+<ul>
+<li><a href="https://arxiv.org/abs/2501.08313">MiniMax-01: Scaling Foundation Models with Lightning Attention</a></li>
+<li><a href="https://arxiv.org/abs/2506.13585">MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning Attention</a></li>
+<li><a href="https://ai.meta.com/research/publications/cwm-an-open-weights-llm-for-research-on-code-generation-with-world-models/">CWM: An Open-Weights LLM for Research on Code Generation with World Models</a></li>
+<li><a href="https://qwen.ai/blog?id=4074cca80393150c248e508aa62983f9cb7d27cd&amp;from=research.latest-advancements-list">Qwen3-Next</a></li>
+<li><a href="https://arxiv.org/abs/2503.19786">Gemma 3 Technical Report</a></li>
+<li><a href="https://arxiv.org/abs/2508.10925">gpt-oss-120b &amp; gpt-oss-20b Model Card</a></li>
+<li><a href="https://arxiv.org/abs/2404.15574">Retrieval Head Mechanistically Explains Long-Context Factuality</a></li>
+<li><a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html">https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html</a></li>
+</ul>
+<hr>
+<h2 id="thảo-luận-về-bài-viết-này">Thảo luận về bài viết này</h2>
+<p><strong>AWESOME INSIGHTS</strong></p>
+<p>Không có bữa trưa miễn phí trong Chú ý Tuyến tính, thực sự là một bài học thực tế.
+Mong chờ bước tiếp theo của bạn!!!!</p>
+<p><strong>Ontological Geometric Self-Evolving</strong></p>
+<p>Các thông số chi tiết cho nút 8 byte được sử dụng trong các phiên bản có thể mở rộng của Khung OGSE (cụ thể là v8.1 và v8.1 Scalable). Định dạng cực kỳ nhỏ gọn này là điều cần thiết để đạt được các mục tiêu khả năng mở rộng khổng lồ của hệ thống, cho phép khung quản lý hơn một nghìn tỷ (1T+) nút trong khi giảm thiểu việc sử dụng bộ nhớ.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/681dd70de058e46d0cc6b775/kyoVqF2kt7wir02WAPS5z.png" alt="Screenshot 2025-11-03 173210"></p>
+<p>Rất tiện lợi khi <a href="https://winwin.pk/">Winwin</a> có mọi thứ. Tôi không cần phải có hai trang web khác nhau. Tôi có thể đặt cược vào bóng đá, sau đó vào sòng bạc trực tiếp hoặc chơi Aviator trong khi chờ đợi trận đấu. Tất cả từ một tài khoản tại PKR.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/MiniMax-AI/why-did-m2-end-up-as-a-full-attention-model">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/11-ng%C3%A0y-tr%C6%B0%E1%BB%9Bc/">11 Ngày Trước</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/dea53d/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Căn chỉnh với cái gì? Suy nghĩ lại về Tổng quát hóa Tác nhân trong MiniMax M2" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Căn chỉnh với cái gì? Suy nghĩ lại về Tổng quát hóa Tác nhân trong MiniMax M2</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Căn chỉnh với cái gì? Suy nghĩ lại về Tổng quát hóa Tác nhân trong MiniMax M2</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/3d4666/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Điều gì tạo nên dữ liệu suy luận tốt" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Điều gì tạo nên dữ liệu suy luận tốt</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Điều gì tạo nên dữ liệu suy luận tốt</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

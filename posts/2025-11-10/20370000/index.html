@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Song song chuỗi siêu dài- Nguyên tắc Kỹ thuật và Triển khai Ulysses &#43; Ring-Attention | AI Today - SkyAI</title>
+
+<meta name="description" content="Song song chuỗi siêu dài- Nguyên tắc Kỹ thuật và Triển khai Ulysses &#43; Ring-Attention">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Song song chuỗi siêu dài- Nguyên tắc Kỹ thuật và Triển khai Ulysses &#43; Ring-Attention</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Song song chuỗi siêu dài- Nguyên tắc Kỹ thuật và Triển khai Ulysses &#43; Ring-Attention </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            15 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/687f306cce425fc5d3e6f5c7/jeMzeWHoYmX6e97RMjPnH.png" alt="Song song chuỗi siêu dài- Nguyên tắc Kỹ thuật và Triển khai Ulysses &#43; Ring-Attention">
+        <figcaption class="text-center italic text-xs">Song song chuỗi siêu dài- Nguyên tắc Kỹ thuật và Triển khai Ulysses &#43; Ring-Attention</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="siêu-phân-tán-chuỗi-dài-các-nguyên-tắc-kỹ-thuật-và-triển-khai-của-ulysses--ring-attention">Siêu phân tán chuỗi dài: Các nguyên tắc kỹ thuật và triển khai của Ulysses + Ring-Attention</h1>
+<p>Đào tạo chuỗi siêu dài luôn là một hướng đi quan trọng trong việc đào tạo các mô hình lớn. Trong các quy trình suy luận thực tế, đặc biệt là trong quy trình hoạt động của Agent, khả năng tổng quát hóa của mô hình đối với các chuỗi dài và các tình huống phức tạp đại diện cho độ tin cậy của mô hình trong các ứng dụng thực tế. Các tình huống chuỗi dài cũng đặt ra yêu cầu cao hơn đối với việc đào tạo các mô hình lớn. Do đặc điểm độ phức tạp O(N^2) của tính toán Attention, khi chuỗi đầu vào thực tế tăng lên, việc sử dụng bộ nhớ có sự bùng nổ theo cấp số nhân. Điều này đặt ra những thách thức to lớn cho khả năng sử dụng các loại card có bộ nhớ hạn chế trong các tình huống đào tạo chuỗi dài.</p>
+<p>Công nghệ Sequence Parallel (SP) có thể được sử dụng để giảm sự phụ thuộc vào bộ nhớ lớn cho việc đào tạo chuỗi dài trong điều kiện đa card hoặc đa máy. Nói một cách đơn giản, song song hóa chuỗi có thể được định nghĩa bởi khái niệm sau:</p>
+<blockquote>
+<p>Song song hóa chuỗi là quá trình chia một chuỗi đầu vào thành nhiều chuỗi con để tính toán song song trên các card khác nhau trong quá trình đào tạo, do đó giảm yêu cầu bộ nhớ cho việc đào tạo.</p></blockquote>
+<p>Các phương pháp song song hóa chuỗi phổ biến bao gồm:</p>
+<ol>
+<li>Ulysses</li>
+<li>Ring-Attention</li>
+<li>Megatron-SP/CP</li>
+</ol>
+<p>Trong số này, cả Ulysses và Ring-Attention đều là các giải pháp song song hóa chuỗi dựa trên hệ sinh thái Transformers. Chúng tôi chủ yếu giới thiệu các nguyên tắc kỹ thuật và triển khai của hai giải pháp này. Megatron-CP[1] và Ring-Attention có thể được coi là các công nghệ tương tự, trong khi Megatron-SP thực hiện phân chia trên các giá trị kích hoạt và thường được sử dụng kết hợp với Megatron-TP. Chúng tôi sẽ không đi sâu vào những điều này ở đây.</p>
+<p>Trước hết, hãy xem xét hiệu quả giảm bộ nhớ có thể đạt được trong việc đào tạo chuỗi dài trên mô hình Qwen2.5-3B sau khi tích hợp cả hai công nghệ đào tạo Ulysses và Ring-Attention:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Kích thước SP</th>
+          <th style="text-align: left">Chiến lược SP</th>
+          <th style="text-align: left">Bộ nhớ GPU</th>
+          <th style="text-align: left">Thời gian đào tạo</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">8</td>
+          <td style="text-align: left">w/ ulysses=2 ring=4</td>
+          <td style="text-align: left"><strong>17.92GiB</strong></td>
+          <td style="text-align: left">1:07:20</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">4</td>
+          <td style="text-align: left">w/ ulysses=2 ring=2</td>
+          <td style="text-align: left">27.78GiB</td>
+          <td style="text-align: left">37:48</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">2</td>
+          <td style="text-align: left">w/ ulysses=2</td>
+          <td style="text-align: left">48.5GiB</td>
+          <td style="text-align: left">24:16</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">w/o SP</td>
+          <td style="text-align: left">75.35GiB</td>
+          <td style="text-align: left">19:41</td>
+      </tr>
+  </tbody>
+</table>
+<p>Lưu ý rằng do khối lượng giao tiếp tăng lên và tải GPU khác nhau gây ra bởi việc chia chuỗi, thời gian đào tạo sẽ tương ứng kéo dài.</p>
+<p>Khi chia thành 2 chuỗi con, Ulysses đã được sử dụng; khi chia thành 4/8 chuỗi con, Ulysses (chia 2) + Ring-Attention (chia 2 hoặc 4) đã được sử dụng. Dưới đây chúng tôi đi sâu vào các nguyên tắc và kế hoạch triển khai của hai công nghệ này.</p>
+<h1 id="ulysses">Ulysses</h1>
+<p>Ulysses là một thuật toán song song hóa chuỗi được phát triển bởi nhóm DeepSpeed[2]. Ý tưởng của Ulysses có thể được tóm tắt trong một câu:</p>
+<blockquote>
+<p>Sau khi chuỗi được chia thành các chuỗi con, việc trao đổi giá trị kích hoạt được thực hiện trước tính toán Attention trong mỗi lớp, cho phép mỗi card kết hợp thành một chuỗi hoàn chỉnh. Sau đó, các Attention Heads được phân phối trên các card khác nhau để đạt được việc giảm bộ nhớ. Sau khi tính toán hoàn tất, chúng sẽ được trao đổi trở lại.</p></blockquote>
+<p>Thông qua cách tiếp cận này, mặc dù tính toán QKV vẫn liên quan đến các giá trị kích hoạt O(N^2), bộ nhớ vẫn được giảm vì mỗi card có ít Attention Heads hơn. Hình sau đây cho thấy một ví dụ đơn giản, giả sử chia thành hai chuỗi, mỗi chuỗi có hai attention heads:</p>
+<!-- raw HTML omitted -->
+<p>Đây là hình ảnh từ bài báo:</p>
+<!-- raw HTML omitted -->
+<p>Trong đó N biểu thị độ dài chuỗi và d biểu thị hidden_size, cũng có thể được hiểu cụ thể là số lượng Attention Heads * hidden_size thực tế.</p>
+<p>Trạng thái sau khi chia Ulysses:</p>
+<!-- raw HTML omitted -->
+<p>Nguyên tắc kỹ thuật của Ulysses rất rõ ràng, với điểm mấu chốt là giao tiếp all-to-all từ N/P đến d/P. Vì QKV hoàn chỉnh trong quá trình tính toán Attention, và các Attention-Heads khác nhau được phân phối trên các card khác nhau, nó có tính phổ quát trong các tình huống như GQA và MHA, và hoàn toàn tương thích với nhiều công nghệ khác nhau như flash-attn, SDPA và padding_free. Tất nhiên, do sự tồn tại của giao tiếp giữa các card, quá trình backward yêu cầu xử lý thêm.</p>
+<p>Tuy nhiên, những hạn chế của Ulysses cũng khá rõ ràng, đó là bị giới hạn bởi số lượng Attention Heads. Đặc biệt trong GQA, nơi số lượng KV heads ít hơn nhiều so với số lượng Q heads, Ulysses có thể không thể chia trên nhiều card hơn.</p>
+<h1 id="ring-attention">Ring-Attention</h1>
+<p>Trước khi thảo luận về Ring-Attention, chúng ta cần nói ngắn gọn về Flash-Attention. Nguyên tắc của Flash-Attention cũng có thể được giải thích trong một câu:</p>
+<blockquote>
+<p>QKV và softmax có thể thực hiện tính toán và cập nhật song song theo khối, tối đa hóa việc sử dụng SRAM đồng thời giảm việc sử dụng bộ nhớ.</p></blockquote>
+<!-- raw HTML omitted -->
+<p>Mã giả cho quá trình chuyển tiếp của flash-attention:</p>
+<!-- raw HTML omitted -->
+<p>Lưu ý mã giả ở dòng 10 ~ 12 của Thuật toán 1 ở trên, phần này thực hiện cập nhật hợp nhất trên * LSE* (log-sum-exp) theo khối:</p>
+<p>$$
+lse_i^{new} = m_i^{new} + \log\left(e^{m_i - m_i^{new}}\ell_i + e^{\tilde m_{ij}-m_i^{new}} \tilde \ell_{ij}\right)
+$$</p>
+<p>Trong đó:</p>
+<p>$$
+m_i^{new} = \max(m_i, \tilde m_{ij})
+$$</p>
+<p>Và Attention-Out được hợp nhất và cập nhật, tức là sau khi tính toán các khối mới, kết quả của các khối mới được hợp nhất với kết quả của các khối cũ để thu được kết quả cuối cùng.</p>
+<p>Vì vậy, nếu mỗi card mang một phần của độ dài chuỗi và kết quả tính toán được truyền qua các card, flash-attention có thể hoạt động giữa các card không? Đây là ý tưởng cơ bản của Ring-Attention.</p>
+<blockquote>
+<p>Ring-Attention: Tận dụng nguyên tắc rằng tính toán Attention có thể được thực hiện theo khối, các khối chuỗi được chia trên nhiều card để tính toán riêng biệt, và sau đó kết quả tính toán được hợp nhất để thu được kết quả cuối cùng.</p></blockquote>
+<!-- raw HTML omitted -->
+<p>Giả sử có N khối, hãy xem xét cùng Q$<em>i$ và K$</em>{0..n-1}$~ V$_{0..n-1}$~ có thể giao tiếp và chảy giữa các khối khác nhau. Trước tiên hãy xem xét phần Softmax:</p>
+<p>$$
+p_{ij} = \frac{e^{x_{ij}}}{Z_i}
+$$</p>
+<p>Trong đó:</p>
+<p>$$
+Z_i = \sum_{j=1}^N e^{x_{ij}}
+$$</p>
+<p>Thông thường, để tránh bất ổn định số học, số mũ không được tính toán trực tiếp, mà sử dụng các phương pháp tính toán ổn định số học:</p>
+<p>$$
+p_{ij} = \exp(x_{ij} - \text{lse}_i)
+$$</p>
+<p>$$
+\text{lse}_i = \log \sum_{j=1}^N e^{x_{ij}}
+$$</p>
+<p>Có thể thấy rằng sau khi mở rộng bằng công thức số mũ, phương pháp này tương đương với công thức ban đầu ở trên.</p>
+<p>Tiếp theo, chúng ta cần suy ra các bản cập nhật cho LSE và Attention-Out một cách đệ quy. Hãy xem xét LSE trước. Xem xét chúng ta đã có kết quả tích lũy trước đó và kết quả khối hiện tại, LSE mới sẽ là:</p>
+<p>$$
+Z_i^{new} = \sum_{j\in\text{prev}} e^{x_{ij}} + \sum_{j\in\text{block}} e^{x_{ij}}
+$$</p>
+<p>Sau đó:</p>
+<p>$$
+A_i^{new} = A_i + \tilde A_{ij},\quad Z_i^{new} = Z_i + \tilde Z_{ij},\quad {out}_i^{new} = \frac{A_i^{new}}{Z_i^{new}}
+$$</p>
+<p>Sử dụng LSE để biểu thị công thức trên:</p>
+<p>$$
+{out}_i^{new} = \frac{A_i+ \tilde A_{ij}}{e^{\text{lse}_i^{new}}}
+$$</p>
+<p>Lưu ý rằng sau khi chia tử số trong công thức trên, nó có thể được chuyển đổi thành tổng của hai biểu thức độc lập, và hai biểu thức này tương ứng ở dạng sigmoid, do đó chúng ta thu được:</p>
+<p>$$
+{out}_i^{new} = \text{sigmoid}(\text{lse}_i - \tilde{\text{lse}}_{ij}) \cdot \text{out}_i  + \text{sigmoid}(\tilde{\text{lse}}_{ij} - \text{lse}_i) \cdot \tilde{\text{out}}_{ij}
+$$</p>
+<blockquote>
+<p>Hai công thức cập nhật này tương đương với các công thức đệ quy được đưa ra trong bài báo flash-attention, cả hai đều tuân theo phương pháp cập nhật khối và online-softmax.</p></blockquote>
+<p>Quá trình suy luận trên cung cấp công thức tính toán chuyển tiếp cho các cập nhật lặp lại, với mã nằm trong <code>update_out_and_lse</code>:
+<a href="https://github.com/modelscope/ms-swift/blob/main/swift/trainers/sequence_parallel/zigzag_ring_attn.py#L69">https://github.com/modelscope/ms-swift/blob/main/swift/trainers/sequence_parallel/zigzag_ring_attn.py#L69</a></p>
+<p>Vì có một quá trình chuyển tiếp, chắc chắn phải có một quá trình ngược. Trong quá trình lan truyền ngược, chúng ta cần dần dần khôi phục từ bước i-1 cuối cùng về bước 0. Do hạn chế về không gian, việc suy luận công thức ngược không được mở rộng ở đây, với mã nằm trong <code>lse_grad</code>:
+<a href="https://github.com/modelscope/ms-swift/blob/main/swift/trainers/sequence_parallel/zigzag_ring_attn.py#L263">https://github.com/modelscope/ms-swift/blob/main/swift/trainers/sequence_parallel/zigzag_ring_attn.py#L263</a>
+<a href="https://github.com/modelscope/ms-swift/blob/main/swift/trainers/sequence_parallel/zigzag_ring_attn.py#L458">https://github.com/modelscope/ms-swift/blob/main/swift/trainers/sequence_parallel/zigzag_ring_attn.py#L458</a></p>
+<p>Tốt, chúng ta đã chuẩn bị lý thuyết ở trên và có thể bắt đầu triển khai mã.</p>
+<p>Lưu ý rằng Ring-Attention có nhiều biến thể triển khai, chẳng hạn như strip-ring-attention[3]. Trong số các triển khai này, triển khai zigzag là xuất sắc nhất về cân bằng tải. Để hiểu vấn đề với Ring-Attention ban đầu, hãy xem hình sau:</p>
+<!-- raw HTML omitted -->
+<p>Do GPU 0 xử lý phần đầu của câu, khi KV từ các card khác chảy đến GPU 0, GPU không thể tham gia tính toán phần sau của câu do causal=True, trong khi GPU 3 có thể tính toán toàn bộ chuỗi từ 0 đến 2. Do đó, tải tính toán trên mỗi card không nhất quán. Dưới tiền đề này, Megatron-CP và một số triển khai xuất sắc áp dụng phân chia zigzag:</p>
+<!-- raw HTML omitted -->
+<p>Giả sử chúng ta cần phân chia trên 4 card, sau đó trong điều kiện chuỗi có thể được chia đều thành 8 phần, chúng ta kết hợp 0/7 với nhau, 1/6 với nhau, 2/5 và 3/4 tương ứng với nhau. Điều này đảm bảo tính toán cân bằng. Hơn nữa, tính toán này còn có một đặc điểm khác:</p>
+<ol>
+<li>Khi tính toán QKV cục bộ (số chuỗi 0), causal=True được tính toán trực tiếp</li>
+<li>Khi số chuỗi chảy nhỏ hơn hoặc bằng thứ hạng hiện tại, chỉ cần tính toán nửa đầu của KV</li>
+<li>Khi số chuỗi chảy lớn hơn thứ hạng hiện tại, chỉ cần tính toán nửa sau của Q</li>
+</ol>
+<!-- raw HTML omitted -->
+<p>Điều này càng làm giảm tải tính toán. Để triển khai mã, vui lòng xem:
+<a href="https://github.com/modelscope/ms-swift/blob/main/swift/trainers/sequence_parallel/zigzag_ring_attn.py#L348">https://github.com/modelscope/ms-swift/blob/main/swift/trainers/sequence_parallel/zigzag_ring_attn.py#L348</a></p>
+<h1 id="ulysses-và-ring-attention">Ulysses và Ring-Attention</h1>
+<p>Không khó để thấy rằng hai sơ đồ song song hóa chuỗi này đều có những đặc điểm riêng.</p>
+<ol>
+<li>Ulysses có chi phí giao tiếp tương đối thấp, nhưng bị giới hạn bởi số lượng Attention Heads, và giao tiếp all-to-all nhạy cảm với độ trễ và có các yêu cầu nhất định về cấu trúc liên kết mạng.</li>
+<li>Giao tiếp vòng P2P của Ring-Attention có yêu cầu thấp hơn, nhưng có khối lượng giao tiếp cao hơn và không bị giới hạn bởi số lượng Attention Heads.</li>
+</ol>
+<p>Từ các nguyên tắc trên, chúng ta có thể thấy rằng Ulysses và Ring-Attention thực sự có thể được sử dụng kết hợp. Chúng ta có thể sử dụng Ulysses với khối lượng giao tiếp thấp hơn để phân chia trước, và nếu số lượng Attention Heads không đủ (GQA), hoặc số lượng chuỗi được phân chia quá lớn, thì bổ sung bằng Ring-Attention.</p>
+<p>SWIFT triển khai công nghệ tính toán kết hợp như vậy, có thể áp dụng cho nhiều tình huống khác nhau bao gồm văn bản thuần túy, đa phương thức, SFT, DPO, GRPO, v.v. Trong quá trình triển khai mã cơ bản, chúng tôi đã áp dụng một số tác phẩm mã nguồn mở xuất sắc của cộng đồng[4][5] và viết lại một phần mã.</p>
+<p><a href="https://github.com/modelscope/ms-swift">https://github.com/modelscope/ms-swift</a></p>
+<p>Cách sử dụng cũng rất đơn giản, chỉ cần thêm một tham số bổ sung vào dòng lệnh:</p>
+<p>bash
+&ndash;sequence_parallel_size N</p>
+<p>Framework sẽ tự động tính toán phương pháp phân chia, và thậm chí có thể hỗ trợ các trường hợp số lượng GPU không đều (3, 5, 7, v.v.).</p>
+<h2 id="phương-pháp-phân-chia">Phương pháp phân chia</h2>
+<p>Cách tiếp cận tự nhiên nhất là sử dụng Ulysses để thu thập cục bộ trước, sau đó sử dụng Ring-Attention toàn cục để tính toán LSE và Attention-Out toàn cục. Giả sử phân chia thành 4 chuỗi con (Ulysses world_size=2, Ring-Attention world_size=2), với model head=4:</p>
+<!-- raw HTML omitted -->
+<p>Sau khi giao tiếp all-to-all của Ulysses, GPU0 và GPU1 như cùng một nhóm Ulysses đều giữ chuỗi 0/3, nhưng với các head khác nhau (nửa đầu và nửa sau). GPU2 và GPU3 cũng tương tự. Trong quá trình tính toán Ring-Attention, GPU0 và GPU2 tạo thành một nhóm Ring-Attention để giao tiếp vòng, và GPU1 và GPU3 cũng tương tự.</p>
+<p>Trước khi phân chia, chuỗi cần được đệm để nó có thể được chia cho world_size*2 (nhân 2 vì zigzag yêu cầu kết hợp lại các khối con).</p>
+<h2 id="thích-ứng-đa-phương-thức">Thích ứng đa phương thức</h2>
+<p>Thích ứng phân chia chuỗi cho các mô hình đa phương thức khá khó khăn, chủ yếu là do:</p>
+<ol>
+<li>Độ dài chuỗi của các mô hình đa phương thức không thể xác định trước khi thực hiện chuyển tiếp thực tế. Một số mô hình chỉ sử dụng một thẻ <code>&amp;lt;image&amp;gt; token</code> để đại diện cho phần đa phương thức, và sau khi ViT mã hóa hình ảnh, thẻ này được thay thế bằng một chuỗi rất dài.</li>
+<li>Một số chuỗi đầu vào của mô hình chứa các thẻ đóng, chẳng hạn như <code>&amp;lt;image&amp;gt;&amp;lt;/image&amp;gt;</code>, không thể được phân chia trước khi chúng được thay thế bằng mã hóa hình ảnh thực tế, nếu không lỗi sẽ được ném ra trực tiếp.</li>
+</ol>
+<p>Nói chung, LLM đa phương thức chứa các lớp bên trong và bên ngoài của mô hình. Lớp ngoài bao gồm xử lý ViT và logic tính toán lm_head, trong khi lớp bên trong tính toán decode_layers, mà chúng ta gọi là backbone.</p>
+<p>Để thích ứng phân chia đa phương thức, SWIFT áp dụng một mẹo kỹ thuật trong quá trình triển khai: phân chia không xảy ra trong quá trình chuẩn bị dữ liệu (data_collator), mà trong hook chuyển tiếp của backbone. Điều này là do khi đi vào backbone, mã hóa đa phương thức từ phần ViT đã được hợp nhất với phần văn bản thuần túy, và embedding thu được tại thời điểm này có độ dài chính xác. Hơn nữa, thực hiện phân chia trong hook của backbone cũng tương thích với các mô hình văn bản thuần túy. Cách tiếp cận này cũng cho phép framework tránh lưu mã mô hình bổ sung, ngăn chặn chi phí bảo trì tăng lên khi mã mô hình gốc được cập nhật.</p>
+<h2 id="thích-ứng-không-đệm">Thích ứng không đệm</h2>
+<p>Thích ứng không đệm có thể được hiểu là định dạng đầu vào ở dạng flash-attention: nhiều chuỗi được nối lại thành một siêu chuỗi dài.</p>
+<!-- raw HTML omitted -->
+<p>Cách tiếp cận này mang lại rắc rối cho việc triển khai kỹ thuật thực tế. Do đó, trong quá trình triển khai, SWIFT áp dụng giải pháp kỹ thuật sau:</p>
+<ol>
+<li>Phân rã đầu vào không đệm ban đầu, và thực hiện đệm (chia hết cho world_size*2) và phân chia riêng cho từng chuỗi.</li>
+<li>Trước khi tính toán attention, theo vị trí đệm, đặt đệm của QV thành 0 và đệm của K thành các giá trị cực nhỏ để ngăn chặn đệm ảnh hưởng tiêu cực đến việc tính toán attention.</li>
+<li>Do việc tính toán tổn thất cuối cùng của GRPO và DPO yêu cầu các chuỗi hoàn chỉnh, trong trường hợp không đệm, việc thu thập logits trước sẽ làm tăng khối lượng giao tiếp, trong khi thu thập sau sẽ gây ra tính toán tổn thất bất thường. Do đó, logic tính toán tổn thất cho từng phương pháp đào tạo cần được viết lại hoàn toàn.</li>
+<li>Do Q chỉ có nửa độ dài khi số chuỗi giao tiếp lớn hơn thứ hạng, nó cần được khôi phục về độ dài đầy đủ trong quá trình cập nhật gradient ngược. Do đó, đệm grad cần được thực hiện riêng cho từng chuỗi, và LSE cần được đệm thành các giá trị cực nhỏ.</li>
+</ol>
+<h2 id="lan-truyền-ngược">Lan truyền ngược</h2>
+<p>Theo quá trình suy luận công thức ở trên, quá trình lan truyền ngược của các cập nhật khối LSE và Attention-Out cần được thực hiện tuần tự và yêu cầu một số thông tin chuyển tiếp, chẳng hạn như LSE khối, Attention-Out khối, v.v. Mặc dù thông tin này có thể thu được trong quá trình chuyển tiếp flash_attn_forward, việc lưu trữ nó trong ctx có thể tiêu tốn thêm bộ nhớ. Do đó, chúng tôi chọn phương pháp tính toán lại flash_attn_forward một lần trong quá trình ngược, sau đó tính toán lse_grad dựa trên các kết quả trung gian, và sau đó thực hiện lan truyền ngược thực tế trên QKV.</p>
+<h1 id="kết-quả-tối-ưu-hóa-bộ-nhớ">Kết quả tối ưu hóa bộ nhớ</h1>
+<p>Chúng tôi đã sử dụng mô hình 3B và kiểm tra hiệu quả tối ưu hóa bộ nhớ trên 8 GPU A100:</p>
+<p>bash
+NPROC_PER_NODE=8 <br>
+swift sft <br>
+&ndash;model Qwen/Qwen2.5-3B-Instruct <br>
+&ndash;dataset &rsquo;test.jsonl&rsquo; \ # 9000 tokens per sequence
+&ndash;train_type lora <br>
+&ndash;torch_dtype bfloat16 <br>
+&ndash;per_device_train_batch_size 4 <br>
+&ndash;target_modules all-linear <br>
+&ndash;gradient_accumulation_steps 8 <br>
+&ndash;save_total_limit 2 <br>
+&ndash;save_only_model true <br>
+&ndash;save_steps 50 <br>
+&ndash;max_length 65536 <br>
+&ndash;warmup_ratio 0.05 <br>
+&ndash;attn_impl flash_attn <br>
+&ndash;sequence_parallel_size 8 <br>
+&ndash;logging_steps 1 <br>
+&ndash;use_logits_to_keep false <br>
+&ndash;padding_free true</p>
+<p>Như đã thấy ở phần đầu của bài viết, khi chia thành 8 phần, mức sử dụng bộ nhớ đào tạo giảm từ gần 80GiB xuống dưới 20GiB, đạt được hiệu quả mà các card đồ họa thương mại thông thường có thể thực hiện đào tạo.</p>
+<h1 id="triển-vọng">Triển vọng</h1>
+<p>Bài viết này đã giải thích việc triển khai các khả năng đào tạo kết hợp Ulysses + Ring-Attention trong framework SWIFT. Chúng tôi vẫn đang tiếp tục khám phá các tối ưu hóa hơn nữa trong lĩnh vực này, ví dụ:</p>
+<ol>
+<li>Trong quá trình ngược, liệu việc tính toán lại flash_attention_forward có phải là cách triển khai đạt được tốc độ tối ưu không?</li>
+<li>Vẫn còn tiềm năng để tối ưu hóa hơn nữa về khối lượng giao tiếp P2P và các hướng thực thi không đồng bộ.</li>
+</ol>
+<p>Các nhà phát triển quan tâm đến điều này có thể đưa ra các đề xuất có giá trị để giúp SWIFT cùng nhau cải thiện khả năng đào tạo mô hình lớn trong các tình huống chuỗi dài.</p>
+<p>Tài liệu tham khảo:</p>
+<ol>
+<li><a href="https://docs.nvidia.com/megatron-core/developer-guide/latest/api-guide/context_parallel.html">https://docs.nvidia.com/megatron-core/developer-guide/latest/api-guide/context_parallel.html</a></li>
+<li><a href="https://arxiv.org/abs/2309.14509">https://arxiv.org/abs/2309.14509</a></li>
+<li><a href="https://arxiv.org/abs/2311.09431">https://arxiv.org/abs/2311.09431</a></li>
+<li><a href="https://github.com/deepspeedai/DeepSpeed">https://github.com/deepspeedai/DeepSpeed</a></li>
+<li><a href="https://github.com/zhuzilin/ring-flash-attention">https://github.com/zhuzilin/ring-flash-attention</a></li>
+</ol>
+<hr>
+<h3 id="thảo-luận">Thảo luận</h3>
+<h4 id="locke">Locke</h4>
+<p>Could you provide some reference code?
+Using the trainer, I&rsquo;m confused by the dataloader and DistributedSampler.
+Different ranks in the same sp_group always fail to obtain the same data idx es.</p>
+<h4 id="plkmn">plkmn</h4>
+<p>USP also combine DeepSpeed-Ulysses and Ring-Attention together.
+<a href="https://arxiv.org/abs/2405.07719">https://arxiv.org/abs/2405.07719</a></p>
+<hr>
+<p><strong>Chú ý:</strong> Bài viết gốc được xuất bản vào ngày 16 tháng 9 năm 2025. Các nhận xét có thể không phản ánh thông tin mới nhất.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/exploding-gradients/ulysses-ring-attention">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/16-th%C3%A1ng-9/">16 Tháng 9</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d6e9ef/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/667d6f513a685cd30f542fef/ipB8pJRbVIK2FJOOEGUjC.png" alt="Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/51f15f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/660fefd0e219d7297f3f85b1/DxJqJ90SsZ5dHmvq0pVyQ.jpeg" alt="Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kỹ thuật nhắc lệnh cho cửa sổ ngữ cảnh dài của Claude | AI Today - SkyAI</title>
+
+<meta name="description" content="Hướng dẫn về các kỹ thuật kỹ thuật nhắc lệnh hiệu quả để tận dụng tối đa cửa sổ ngữ cảnh dài của Claude, cải thiện khả năng xử lý thông tin.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Kỹ thuật nhắc lệnh cho cửa sổ ngữ cảnh dài của Claude</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Hướng dẫn về các kỹ thuật kỹ thuật nhắc lệnh hiệu quả để tận dụng tối đa cửa sổ ngữ cảnh dài của Claude, cải thiện khả năng xử lý thông tin. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/454127b470eed6d649e67d19afb6dd5ab354fb58-1600x1600.png&amp;w=3840&amp;q=75" alt="Kỹ thuật nhắc lệnh cho cửa sổ ngữ cảnh dài của Claude">
+        <figcaption class="text-center italic text-xs">Hướng dẫn về các kỹ thuật kỹ thuật nhắc lệnh hiệu quả để tận dụng tối đa cửa sổ ngữ cảnh dài của Claude, cải thiện khả năng xử lý thông tin.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="kỹ-thuật-prompt-cho-cửa-sổ-ngữ-cảnh-dài-của-claude">Kỹ thuật prompt cho cửa sổ ngữ cảnh dài của Claude</h1>
+<h2 id="giới-thiệu-cửa-sổ-ngữ-cảnh-dài-100k-token-của-claude">Giới thiệu cửa sổ ngữ cảnh dài 100K token của Claude</h2>
+<p>Cửa sổ ngữ cảnh dài 100.000 token của Claude cho phép mô hình xử lý hàng trăm trang tài liệu kỹ thuật hoặc thậm chí cả một cuốn sách. Khi chúng tôi tiếp tục mở rộng quy mô API Claude, nhu cầu về hướng dẫn prompt để tối đa hóa tiềm năng của Claude ngày càng tăng. Hôm nay, chúng tôi rất vui mừng chia sẻ một nghiên cứu tình huống định lượng về hai kỹ thuật có thể cải thiện khả năng ghi nhớ của Claude trên các ngữ cảnh dài:</p>
+<ol>
+<li>Trích xuất các đoạn trích tham khảo liên quan đến câu hỏi trước khi trả lời.</li>
+<li>Bổ sung prompt bằng các ví dụ về câu hỏi đã được trả lời đúng về các phần khác của tài liệu.</li>
+</ol>
+<p>Hãy đi sâu vào chi tiết.</p>
+<h2 id="thử-nghiệm-khả-năng-ghi-nhớ-ngữ-cảnh-dài-hỏi-đáp-trắc-nghiệm">Thử nghiệm khả năng ghi nhớ ngữ cảnh dài: Hỏi đáp trắc nghiệm</h2>
+<p>Mục tiêu của chúng tôi với thử nghiệm này là đánh giá các kỹ thuật nhằm tối đa hóa cơ hội nhớ lại thông tin cụ thể từ một tài liệu dài của Claude.</p>
+<p>Làm nguồn dữ liệu nền cho thử nghiệm, chúng tôi đã sử dụng một tài liệu chính phủ công khai hàng ngày chứa các bản ghi và hoạt động của nhiều bộ phận khác nhau. Chúng tôi đã chọn một tài liệu từ ngày 13 tháng 7, tức là sau thời điểm cắt dữ liệu đào tạo của Claude. Điều này giảm thiểu khả năng Claude đã biết thông tin trong tài liệu.</p>
+<p>Để tạo một bộ dữ liệu gồm các cặp câu hỏi và câu trả lời (Q&amp;A), chúng tôi đã sử dụng một phương pháp mà chúng tôi gọi là “ghép ngẫu nhiên”. Chúng tôi chia tài liệu thành các phần và sử dụng Claude để tạo năm câu hỏi trắc nghiệm cho mỗi phần, mỗi câu có ba câu trả lời sai và một câu trả lời đúng. Sau đó, chúng tôi đã sắp xếp lại các bộ phần được ngẫu nhiên hóa thành các tài liệu dài để chúng tôi có thể cung cấp cho Claude và kiểm tra khả năng ghi nhớ nội dung của nó.</p>
+<h3 id="prompt-claude-để-tạo-câu-hỏi-trắc-nghiệm">Prompt Claude để tạo câu hỏi trắc nghiệm</h3>
+<p>Việc yêu cầu Claude viết các bài đánh giá (evals) cho bạn là một công cụ mạnh mẽ mà chúng tôi, với tư cách là một nhóm kỹ thuật prompt, thường xuyên sử dụng. Tuy nhiên, cần phải prompt cẩn thận để Claude viết các câu hỏi có độ khó phù hợp. Dưới đây là một số thách thức mà chúng tôi đã giải quyết trong quá trình thiết kế một bộ kiểm tra hiệu quả:</p>
+<ul>
+<li>Claude có thể đề xuất các câu hỏi mà nó có thể trả lời ngay lập tức mà không cần tham chiếu đến bất kỳ tài liệu nào, ví dụ: &ldquo;Bộ Giao thông Vận tải làm gì?&rdquo;</li>
+<li>Claude có thể đưa ra các câu hỏi mà nó gặp khó khăn trong việc trả lời đúng, ngay cả trong các tình huống ngữ cảnh ngắn. Ví dụ, vì Claude nhìn thế giới theo token, không phải theo từ, nên một câu hỏi như &ldquo;Có bao nhiêu từ trong đoạn văn?&rdquo; thường gây khó khăn cho Claude.</li>
+<li>Claude có thể để lại những gợi ý không cố ý trong câu trả lời, khiến câu trả lời đúng dễ đoán. Đặc biệt, chúng tôi nhận thấy mặc định của nó là làm cho câu trả lời đúng trở nên rất chi tiết so với các câu trả lời sai.</li>
+<li>Claude có thể tham chiếu &ldquo;tài liệu này&rdquo; hoặc &ldquo;đoạn văn này&rdquo; mà không chỉ rõ đoạn văn nào mà nó đang hỏi đến. Điều này có vấn đề vì khi chúng tôi ghép nhiều tài liệu để tạo ngữ cảnh dài, Claude không có cách nào để biết câu hỏi đang hỏi về tài liệu nào.</li>
+<li>Ngoài ra còn có rủi ro đi quá xa và làm cho câu hỏi trở nên quá rõ ràng đến mức chứa đựng câu trả lời. Ví dụ: &ldquo;Ngày xuất bản thông báo của Bộ Nội vụ ngày 2 tháng 7 năm 2023 về các hành động bổ sung trong mùa vụ đối với thủy sản là gì?&rdquo; sẽ là một câu hỏi không hiệu quả.</li>
+</ul>
+<p>Để giúp vượt qua những cạm bẫy này, chúng tôi đã sử dụng một mẫu prompt bao gồm hai đoạn ghi nhớ mẫu cùng với các câu hỏi viết tay để hoạt động như các ví dụ về viết câu hỏi few-shot, cũng như một số hướng dẫn viết để Claude chỉ định chi tiết về đoạn văn. Mẫu và tất cả các prompt khác được sử dụng trong thử nghiệm này có sẵn tại đây.</p>
+<h2 id="đánh-giá">Đánh giá</h2>
+<p>Đối với đánh giá này, chúng tôi chủ yếu tập trung vào mô hình Claude Instant nhỏ hơn của chúng tôi (phiên bản 1.2) thay vì mô hình Claude 2 của chúng tôi. Có một vài lý do cho việc này. Thứ nhất, Claude 2 đã rất giỏi trong việc ghi nhớ thông tin sau khi đọc các tài liệu rất dài. Claude Instant cần nhiều sự trợ giúp hơn, điều này giúp dễ dàng nhận thấy khi nào các thay đổi về prompt cải thiện hiệu suất. Ngoài ra, Claude Instant rất nhanh đến mức bạn có thể tự mình tái tạo các bài đánh giá này bằng notebook mà chúng tôi chia sẻ.</p>
+<p>Khi chỉ cung cấp đoạn văn chính xác mà Claude đã sử dụng để viết câu hỏi, Claude Instant đã có thể trả lời câu hỏi do chính nó tạo ra khoảng 90% thời gian. Chúng tôi đã loại bỏ 10% câu hỏi mà nó trả lời sai – vì Claude đã trả lời sai ngay cả trong tình huống ngữ cảnh ngắn, chúng quá khó để hữu ích cho việc kiểm tra ngữ cảnh dài.</p>
+<p>Chúng tôi cũng đã kiểm tra khả năng ghi nhớ của Claude khi được cung cấp một phần ngẫu nhiên không chứa tài liệu nguồn của câu hỏi. Về mặt lý thuyết, với ba câu trả lời sai, Claude chỉ nên đoán đúng 25% thời gian. Trên thực tế, nó đoán đúng 34% thời gian; cao hơn mức trung bình, nhưng không quá nhiều. Claude có thể đôi khi suy luận câu trả lời đúng dựa trên kiến thức chung của nó, hoặc dựa trên các gợi ý tinh tế trong câu trả lời.</p>
+<p>Để xây dựng tài liệu dài từ các đoạn ngắn hơn, chúng tôi đã tạo ngữ cảnh dài mới cho mỗi câu hỏi bằng cách ghép nối một loạt các đoạn văn ngẫu nhiên cho đến khi đạt được số lượng token mong muốn. Chúng tôi đã kiểm tra Claude trên các tài liệu được ghép nối chứa khoảng 75.000 và 90.000 token.</p>
+<p>Việc tạo ngữ cảnh vá víu này là lý do tại sao việc Claude tham chiếu các cụm từ mơ hồ như &ldquo;tài liệu này&rdquo; hoặc &ldquo;đoạn văn này&rdquo; trong câu hỏi của nó gây ra sự cố. Một câu hỏi như &ldquo;Ngày xuất bản thông báo này là gì?&rdquo; sẽ không thể trả lời được khi có hàng tá thông báo khác nhau trong ngữ cảnh mà &ldquo;thông báo này&rdquo; có thể đề cập đến. Đây là lý do tại sao prompt tạo câu hỏi của chúng tôi bao gồm ngôn ngữ yêu cầu Claude nói rõ về đoạn văn mà câu hỏi đề cập đến – ví dụ: &ldquo;Ngày xuất bản thông báo về các hành động bổ sung trong mùa vụ đối với thủy sản là gì?&rdquo;</p>
+<p>Sau khi tạo các tài liệu dài (ghép nối), chúng tôi đã kiểm tra khả năng ghi nhớ của Claude bằng bốn chiến lược prompt khác nhau:</p>
+<ol>
+<li><strong>Cơ sở</strong> – chỉ yêu cầu Claude trả lời</li>
+<li><strong>Ví dụ không phải chính phủ</strong> - Cung cấp cho Claude hai ví dụ cố định về các câu hỏi trắc nghiệm kiến thức chung đã được trả lời đúng, không liên quan đến tài liệu chính phủ.</li>
+<li><strong>Hai ví dụ</strong> - Cung cấp cho Claude hai ví dụ về các câu hỏi trắc nghiệm đã được trả lời đúng, được chọn ngẫu nhiên động từ tập hợp các câu hỏi do Claude tạo về các đoạn khác trong ngữ cảnh.</li>
+<li><strong>Năm ví dụ</strong> - Chiến lược tương tự như #3, nhưng với năm ví dụ.</li>
+</ol>
+<p>Đối với mỗi chiến lược trong bốn chiến lược trên, chúng tôi cũng đã kiểm tra chúng có hoặc không sử dụng <code>&lt;scratchpad&gt;</code>, trong đó chúng tôi hướng dẫn Claude trích xuất các đoạn trích liên quan. Hơn nữa, chúng tôi đã kiểm tra từng chiến lược này với đoạn văn chứa câu trả lời được đặt ở đầu, cuối hoặc giữa đầu vào. Cuối cùng, để có cái nhìn tổng quan về ảnh hưởng của độ dài ngữ cảnh đối với kết quả, chúng tôi đã kiểm tra với các tài liệu có cả 70K và 95K token.</p>
+<p>Chúng tôi đã sử dụng Claude Instant 1.2 cho bài kiểm tra trên. Chúng tôi cũng trình bày kết quả cho Claude 2 trên chiến lược cơ sở và chiến lược hoạt động tốt nhất cho Claude Instant 1.2.</p>
+<h2 id="kết-quả">Kết quả</h2>
+<p>Một số lưu ý về thử nghiệm:</p>
+<ul>
+<li>Mặc dù hiệu suất ở phần đầu và giữa tài liệu được cải thiện đáng kể nhờ sử dụng scratchpad và ví dụ, hiệu suất ở phần cuối có thể bị suy giảm. Điều này có thể là do việc bổ sung các ví dụ trong prompt làm tăng khoảng cách giữa phần cuối của tài liệu (nơi có thông tin liên quan) và thời điểm Claude cần trả lời nó. Điều này có lẽ chỉ là mối quan tâm nhỏ vì chỉ một phần nhỏ dữ liệu trong tài liệu nguồn ở cuối cùng. Tuy nhiên, điều này nhấn mạnh tầm quan trọng của việc đặt các hướng dẫn ở cuối prompt, vì chúng tôi muốn Claude ghi nhớ chúng càng nhiều càng tốt.</li>
+<li>Sự cải thiện của Claude 2 từ 0,939 lên 0,961 với prompt có vẻ nhỏ về mặt tuyệt đối, nhưng nó phản ánh mức giảm lỗi 36%.</li>
+</ul>
+<p>Một số bài học rút ra bạn có thể sử dụng để viết prompt Q&amp;A ngữ cảnh dài của mình:</p>
+<ul>
+<li>Sử dụng nhiều ví dụ và scratchpad để có hiệu suất tốt nhất trên cả hai độ dài ngữ cảnh.</li>
+<li>Trích xuất các đoạn trích liên quan vào scratchpad rất hữu ích trong mọi so sánh trực tiếp. Nó đi kèm với một chi phí nhỏ về độ trễ, nhưng cải thiện độ chính xác. Trong trường hợp của Claude Instant, độ trễ đã rất thấp nên điều này không nên là một mối quan tâm.</li>
+<li>Các ví dụ theo ngữ cảnh giúp ích trên cả 70K và 95K, và càng nhiều ví dụ càng tốt.</li>
+<li>Các ví dụ chung về kiến thức chung/bên ngoài dường như không giúp cải thiện hiệu suất.</li>
+</ul>
+<p>Đối với Claude Instant, có vẻ như có một mối quan hệ nghịch đảo đơn điệu giữa hiệu suất và khoảng cách của đoạn văn liên quan đến câu hỏi và cuối prompt, trong khi hiệu suất của Claude 2 trên 95K cho thấy một sự sụt giảm nhỏ ở giữa.</p>
+<h2 id="giới-thiệu-sổ-tay-công-thức-anthropic-mới">Giới thiệu Sổ tay công thức Anthropic mới</h2>
+<p>Mã có thể tái lập hoàn toàn cho thử nghiệm này có sẵn trong Sổ tay công thức Anthropic mới. Hiện tại, bộ tài nguyên đang phát triển này cũng chứa hai công thức khác:</p>
+<ul>
+<li>Một bản trình diễn Tìm kiếm và Truy xuất, hiển thị luồng sử dụng công cụ để tìm kiếm Wikipedia.</li>
+<li>Hướng dẫn triển khai chức năng tải lên PDF giả qua API Anthropic.</li>
+</ul>
+<p>Chúng tôi mong muốn mở rộng Sổ tay công thức Anthropic và các tài nguyên kỹ thuật prompt khác của chúng tôi trong tương lai, và chúng tôi hy vọng chúng sẽ truyền cảm hứng cho bạn để mơ lớn về những gì bạn có thể xây dựng với Claude. Nếu bạn chưa nhận được quyền truy cập vào API Claude, vui lòng đăng ký quan tâm của bạn.</p>
+<h2 id="chú-thích">Chú thích</h2>
+<ol>
+<li>Một chủ đề phổ biến trong các câu hỏi mà Claude trả lời sai là đếm, ví dụ: “Theo thông báo, số lượng phản hồi ước tính trên mỗi người trả lời cho mỗi biểu mẫu trong Gói Biểu mẫu Chung cho Biểu mẫu Vay được Thế chấp là bao nhiêu?” và “Có bao nhiêu sản phẩm hoàn chỉnh được đề xuất được liệt kê trong thông báo về hoạt động sản xuất tại cơ sở của Getinge Group Logistics Americas LLC?” Đáng chú ý, đối với một số câu hỏi này, câu trả lời “đúng” được Claude xác định trước (khi nó tạo cặp QA) thực tế không đúng. Đây là một nguồn nhiễu trong thử nghiệm này.</li>
+<li>Các câu hỏi là: 1. Ai là tổng thống đầu tiên của Hoa Kỳ? A. Thomas Jefferson, B. George Washington, C. Abraham Lincoln, D. John Adams, 2. Nhiệt độ sôi của nước, theo độ Fahrenheit, là bao nhiêu? A. 200, B. 100, C. 287, D. 212.</li>
+<li>Một bài báo gần đây đã tìm thấy mối quan hệ hình chữ U giữa hiệu suất và vị trí trong ngữ cảnh cho một nhiệm vụ tương tự. Một lời giải thích có thể cho các kết quả khác nhau là các ví dụ trong bài báo có độ dài trung bình 15K token (Phụ lục F), so với 70K/95K ở đây.</li>
+</ol>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/news/prompting-long-context">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/sep-23-2023/">Sep 23, 2023</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d9a8e7/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic tham gia cùng Nhà Trắng và các tổ chức khác trong cam kết đầu tư vào giáo dục AI cho giới trẻ Mỹ, thúc đẩy tương lai của lực lượng lao động.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/16879e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Anthropic bổ nhiệm Guillaume Princen làm Trưởng bộ phận EMEA và công bố hơn 100 vị trí mới trong khu vực" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic bổ nhiệm Guillaume Princen làm Trưởng bộ phận EMEA và công bố hơn 100 vị trí mới trong khu vực</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic chào đón Guillaume Princen đảm nhận vai trò Trưởng bộ phận EMEA, đồng thời công bố kế hoạch tuyển dụng mở rộng trong khu vực.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

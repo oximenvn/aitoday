@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Làm thế nào kỹ thuật ngữ cảnh có thể cứu công ty của bạn khỏi quá tải mã cảm xúc AI- bài học từ Qodo và Monday.com | AI Today - SkyAI</title>
+
+<meta name="description" content="Khi tổ chức kỹ thuật của monday.com, phần mềm theo dõi dự án đám mây, mở rộng quy mô vượt quá 500 nhà phát triển, nhóm bắt đầu cảm nhận được áp lực từ chính thành công của mình. Các dòng sản phẩm ngày càng nhiều, các microservices ngày càng lan rộng và mã chảy nhanh hơn các nhà phê bình có thể theo kịp. Công ty cần một cách để xem xét hàng nghìn yêu cầu kéo mỗi tháng mà không làm các nhà phát triển chìm đắm trong sự tẻ nhạt — hoặc làm giảm chất lượng.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Làm thế nào kỹ thuật ngữ cảnh có thể cứu công ty của bạn khỏi quá tải mã cảm xúc AI- bài học từ Qodo và Monday.com</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Khi tổ chức kỹ thuật của monday.com, phần mềm theo dõi dự án đám mây, mở rộng quy mô vượt quá 500 nhà phát triển, nhóm bắt đầu cảm nhận được áp lực từ chính thành công của mình. Các dòng sản phẩm ngày càng nhiều, các microservices ngày càng lan rộng và mã chảy nhanh hơn các nhà phê bình có thể theo kịp. Công ty cần một cách để xem xét hàng nghìn yêu cầu kéo mỗi tháng mà không làm các nhà phát triển chìm đắm trong sự tẻ nhạt — hoặc làm giảm chất lượng. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+        <figcaption class="text-center italic text-xs">Khi tổ chức kỹ thuật của monday.com, phần mềm theo dõi dự án đám mây, mở rộng quy mô vượt quá 500 nhà phát triển, nhóm bắt đầu cảm nhận được áp lực từ chính thành công của mình. Các dòng sản phẩm ngày càng nhiều, các microservices ngày càng lan rộng và mã chảy nhanh hơn các nhà phê bình có thể theo kịp. Công ty cần một cách để xem xét hàng nghìn yêu cầu kéo mỗi tháng mà không làm các nhà phát triển chìm đắm trong sự tẻ nhạt — hoặc làm giảm chất lượng.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="kỹ-thuật-kỹ-thuật-ngữ-cảnh-có-thể-cứu-công-ty-bạn-khỏi-quá-tải-mã-vibe-ai-bài-học-từ-qodo-và-mondaycom">Kỹ thuật kỹ thuật ngữ cảnh có thể cứu công ty bạn khỏi quá tải mã &ldquo;vibe&rdquo; AI: Bài học từ Qodo và Monday.com</h1>
+<p>Khi phần mềm theo dõi dự án đám mây monday.com của monday.com vượt mốc 500 nhà phát triển, đội ngũ đã bắt đầu cảm nhận được áp lực từ chính thành công của mình. Các dòng sản phẩm ngày càng nhân lên, các microservices ngày càng nhiều, và mã nguồn ngày càng được tạo ra nhanh hơn mức mà người đánh giá có thể theo kịp. Công ty cần một cách để xem xét hàng nghìn yêu cầu kéo (pull request) mỗi tháng mà không làm các nhà phát triển chìm trong sự nhàm chán — hoặc để chất lượng bị suy giảm.</p>
+<p>Đó là lúc Guy Regev, Phó Chủ tịch R&amp;D và người đứng đầu các đội ngũ Tăng trưởng và monday Dev, bắt đầu thử nghiệm một công cụ AI mới từ Qodo, một startup của Israel tập trung vào các tác nhân phát triển. Những gì ban đầu chỉ là một bài kiểm tra nhẹ nhàng đã sớm trở thành một phần quan trọng trong cơ sở hạ tầng phân phối phần mềm của monday.com, như một nghiên cứu điển hình mới được cả Qodo và monday.com công bố hôm nay tiết lộ.</p>
+<p><img src="https://images.ctfassets.net/jdtwqhzvc2n1/6ITdq6fWHUqQToLpa2LMjE/9071464cc3dabd3e163518c89f5eb3b2/cfr0z3n_aerial_view_extended_view_of_hundreds_of_software_devel_dac48c75-82c8-48b8-9ca4-ff785e9ba5f3.png?w=1000&amp;q=100" alt="AI abstract expressionist image of developers working hard in large office under computer code display">
+<em>Ảnh: VentureBeat làm với Midjourney</em></p>
+<p>“Qodo không giống như một công cụ khác — nó giống như thêm một nhà phát triển mới vào đội ngũ, người thực sự học cách chúng ta làm việc,” Regev nói với VentureBeat trong một cuộc phỏng vấn qua video gần đây, thêm rằng nó đã “ngăn chặn hơn 800 vấn đề mỗi tháng tiếp cận sản xuất — một số trong số đó có thể gây ra các lỗ hổng bảo mật nghiêm trọng.”</p>
+<p>Không giống như các công cụ tạo mã như GitHub Copilot hoặc Cursor, Qodo không cố gắng viết mã mới. Thay vào đó, nó chuyên xem xét mã — sử dụng cái mà họ gọi là <strong>kỹ thuật ngữ cảnh</strong> để hiểu không chỉ những gì đã thay đổi trong một pull request, mà còn tại sao, làm thế nào nó phù hợp với logic kinh doanh và liệu nó có tuân theo các phương pháp tốt nhất nội bộ hay không.</p>
+<p>“Bạn có thể gọi Claude Code hoặc Cursor và trong 5 phút nhận được 1.000 dòng mã,” Itamar Friedman, đồng sáng lập và Giám đốc điều hành của Qodo, cho biết trong cùng một cuộc gọi video với Regev. “Bạn có 40 phút, và bạn không thể xem xét hết. Vì vậy, bạn cần Qodo để thực sự xem xét nó.”</p>
+<p>Đối với monday.com, khả năng này không chỉ hữu ích — nó mang tính biến đổi.</p>
+<h2 id="xem-xét-mã-ở-quy-mô-lớn">Xem xét mã, ở quy mô lớn</h2>
+<p>Tại bất kỳ thời điểm nào, các nhà phát triển của monday.com đang triển khai các bản cập nhật trên hàng trăm kho lưu trữ và dịch vụ. Tổ chức kỹ thuật hoạt động theo các nhóm phối hợp chặt chẽ, mỗi nhóm phù hợp với các phần cụ thể của sản phẩm: marketing, CRM, công cụ phát triển, nền tảng nội bộ, v.v.</p>
+<p>Đó là lúc Qodo xuất hiện. Nền tảng của công ty sử dụng AI không chỉ để kiểm tra các lỗi rõ ràng hoặc vi phạm kiểu dáng, mà còn để đánh giá liệu một pull request có tuân thủ các quy ước cụ thể của nhóm, hướng dẫn kiến trúc và các mẫu lịch sử hay không.</p>
+<p>Nó làm điều này bằng cách học hỏi từ cơ sở mã của bạn — huấn luyện trên các PR, nhận xét, hợp nhất trước đó và thậm chí cả các chuỗi Slack để hiểu cách nhóm của bạn hoạt động.</p>
+<p>“Các nhận xét mà Qodo đưa ra không chung chung — chúng phản ánh các giá trị, thư viện, thậm chí cả tiêu chuẩn của chúng tôi về các vấn đề như cờ tính năng và quyền riêng tư,” Regev nói. “Nó nhạy cảm với ngữ cảnh theo cách mà các công cụ truyền thống không làm được.”</p>
+<h2 id="kỹ-thuật-ngữ-cảnh-thực-sự-có-nghĩa-là-gì">&ldquo;Kỹ thuật ngữ cảnh&rdquo; Thực sự có nghĩa là gì</h2>
+<p>Qodo gọi bí quyết của mình là <strong>kỹ thuật ngữ cảnh</strong> — một cách tiếp cận cấp hệ thống để quản lý mọi thứ mà mô hình nhìn thấy khi đưa ra quyết định.</p>
+<p>Điều này bao gồm sự khác biệt mã PR, tất nhiên, nhưng cũng bao gồm các cuộc thảo luận trước đó, tài liệu, các tệp liên quan từ kho lưu trữ, thậm chí cả kết quả kiểm tra và dữ liệu cấu hình.</p>
+<p>Ý tưởng là các mô hình ngôn ngữ không thực sự “suy nghĩ” — chúng dự đoán token tiếp theo dựa trên các đầu vào mà chúng nhận được. Vì vậy, chất lượng đầu ra của chúng phụ thuộc gần như hoàn toàn vào chất lượng và cấu trúc của đầu vào.</p>
+<p>Như Dana Fine, người quản lý cộng đồng của Qodo, đã nói trong một bài đăng trên blog: “Bạn không chỉ viết lời nhắc; bạn thiết kế đầu vào có cấu trúc dưới giới hạn token cố định. Mỗi token là một quyết định thiết kế.”</p>
+<p>Đây không chỉ là lý thuyết. Trong trường hợp của monday.com, điều đó có nghĩa là Qodo có thể phát hiện không chỉ các lỗi rõ ràng, mà còn cả các lỗi tinh tế thường bỏ sót các người xem xét — các biến cứng mã hóa, thiếu cơ chế dự phòng, hoặc vi phạm các quy ước kiến trúc chéo nhóm.</p>
+<p>Một ví dụ nổi bật. Trong một PR gần đây, Qodo đã gắn cờ một dòng mã vô tình làm lộ một biến môi trường staging — điều mà không người xem xét nào phát hiện ra. Nếu được hợp nhất, nó có thể gây ra các vấn đề trong sản xuất.</p>
+<p>“Những giờ chúng ta sẽ dành để khắc phục lỗ hổng bảo mật này và vấn đề pháp lý mà nó mang lại sẽ nhiều hơn nhiều so với số giờ chúng ta giảm bớt từ một pull request,” Regev nói.</p>
+<h2 id="tích-hợp-vào-quy-trình">Tích hợp vào quy trình</h2>
+<p>Ngày nay, Qodo được tích hợp sâu vào quy trình phát triển của monday.com, phân tích các pull request và đưa ra các đề xuất nhạy cảm với ngữ cảnh dựa trên các lượt xem xét mã trước đó của nhóm.</p>
+<p>“Nó không giống như chỉ là một công cụ khác… Nó giống như một đồng đội khác đã tham gia hệ thống — một người học cách chúng ta làm việc,” Regev lưu ý.</p>
+<p>Các nhà phát triển nhận được các đề xuất trong quá trình xem xét và vẫn kiểm soát các quyết định cuối cùng — một mô hình có con người tham gia vào vòng lặp, điều này rất quan trọng để được chấp nhận.</p>
+<p>Vì Qodo tích hợp trực tiếp vào GitHub thông qua các hành động và nhận xét của pull request, đội ngũ cơ sở hạ tầng của Monday.com không phải đối mặt với đường cong học tập dốc.</p>
+<p>“Nó chỉ là một hành động GitHub,” Regev nói. “Nó tạo ra một PR với các bài kiểm tra. Nó không giống như một công cụ riêng biệt mà chúng tôi phải học.”</p>
+<p>“Mục đích là thực sự giúp nhà phát triển học mã, chịu trách nhiệm, cung cấp phản hồi cho nhau, học hỏi từ đó và thiết lập các tiêu chuẩn,” Friedman nói thêm.</p>
+<h2 id="kết-quả-tiết-kiệm-thời-gian-ngăn-chặn-lỗi">Kết quả: Tiết kiệm thời gian, ngăn chặn lỗi</h2>
+<p>Kể từ khi triển khai Qodo rộng rãi hơn, monday.com đã thấy những cải tiến có thể đo lường được trên nhiều nhóm.</p>
+<p>Phân tích nội bộ cho thấy các nhà phát triển tiết kiệm khoảng một giờ cho mỗi pull request trung bình. Nhân con số đó với hàng nghìn PR mỗi tháng, khoản tiết kiệm nhanh chóng đạt đến hàng nghìn giờ phát triển mỗi năm.</p>
+<p>Đây không chỉ là các vấn đề về hình thức — nhiều vấn đề liên quan đến logic kinh doanh, bảo mật hoặc tính ổn định khi chạy. Và bởi vì các đề xuất của Qodo phản ánh các quy ước thực tế của monday.com, các nhà phát triển có nhiều khả năng thực hiện chúng hơn.</p>
+<p>Độ chính xác của hệ thống bắt nguồn từ thiết kế ưu tiên dữ liệu của nó. Qodo đào tạo trên cơ sở mã riêng và dữ liệu lịch sử của mỗi công ty, thích ứng với các phong cách và phương pháp làm việc khác nhau của nhóm. Nó không dựa vào các quy tắc chung hoặc tập dữ liệu bên ngoài. Mọi thứ đều được tùy chỉnh.</p>
+<h2 id="từ-công-cụ-nội-bộ-đến-tầm-nhìn-sản-phẩm">Từ công cụ nội bộ đến tầm nhìn sản phẩm</h2>
+<p>Đội ngũ của Regev đã rất ấn tượng với tác động của Qodo đến nỗi họ đã bắt đầu lên kế hoạch tích hợp sâu hơn giữa Qodo và Monday Dev, dòng sản phẩm tập trung vào nhà phát triển mà monday.com đang xây dựng.</p>
+<p>Tầm nhìn là tạo ra một quy trình làm việc nơi ngữ cảnh kinh doanh — nhiệm vụ, vé, phản hồi của khách hàng — chảy trực tiếp vào lớp xem xét mã. Bằng cách đó, người xem xét có thể đánh giá không chỉ liệu mã có “hoạt động” hay không, mà còn liệu nó có giải quyết đúng vấn đề hay không.</p>
+<p>“Trước đây, chúng tôi có các trình phân tích cú pháp, quy tắc nguy hiểm, phân tích tĩnh… dựa trên quy tắc… bạn cần cấu hình tất cả các quy tắc,” Regev nói. “Nhưng nó không biết những gì bạn không biết… Qodo… cảm thấy như nó đang học hỏi từ các kỹ sư của chúng tôi.”</p>
+<p>Điều này phù hợp chặt chẽ với lộ trình của Qodo. Công ty không chỉ xem xét mã. Họ đang xây dựng một nền tảng đầy đủ các tác nhân phát triển — bao gồm Qodo Gen để tạo mã nhạy cảm với ngữ cảnh, Qodo Merge để phân tích PR tự động và Qodo Cover, một tác nhân kiểm thử hồi quy sử dụng xác thực thời gian chạy để đảm bảo phạm vi kiểm thử.</p>
+<p>Tất cả những điều này được cung cấp bởi cơ sở hạ tầng của riêng Qodo, bao gồm mô hình nhúng mã nguồn mở mới của họ, Qodo-Embed-1-1.5B, đã vượt trội hơn các sản phẩm của OpenAI và Salesforce trên các tiêu chí truy xuất mã.</p>
+<h2 id="bước-tiếp-theo-là-gì">Bước tiếp theo là gì?</h2>
+<p>Qodo hiện đang cung cấp nền tảng của mình theo mô hình freemium — miễn phí cho cá nhân, giảm giá cho các startup thông qua chương trình Ưu đãi của Google Cloud và cấp doanh nghiệp cho các công ty cần SSO, triển khai air-gapped hoặc kiểm soát nâng cao.</p>
+<p>Công ty đã làm việc với các đội tại NVIDIA, Intuit và các công ty Fortune 500 khác. Và nhờ quan hệ đối tác gần đây với Google Cloud, các mô hình của Qodo có sẵn trực tiếp trong Model Garden của Vertex AI, giúp tích hợp vào các quy trình doanh nghiệp dễ dàng hơn.</p>
+<p>“Các công cụ ngữ cảnh sẽ là câu chuyện lớn của năm 2026,” Friedman nói. “Mọi doanh nghiệp sẽ cần xây dựng bộ não thứ hai của riêng mình nếu họ muốn có AI thực sự hiểu và giúp đỡ họ.”</p>
+<p>Khi các hệ thống AI ngày càng được tích hợp vào phát triển phần mềm, các công cụ như Qodo đang cho thấy cách ngữ cảnh phù hợp — được cung cấp vào đúng thời điểm — có thể biến đổi cách các nhóm xây dựng, triển khai và mở rộng quy mô mã trong toàn doanh nghiệp.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/how-context-engineering-can-save-your-company-from-ai-vibe-code-overload">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/november-10-2025/">November 10, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/e1aaaa/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Celosphere 2025- Nơi AI doanh nghiệp chuyển từ thử nghiệm sang thực thi</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Được trình bày bởi Celonis</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-04/271efd/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-04T00:00:00&#43;00:00">Nov 04, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bên trong bước nhảy vọt AI kép của Zendesk- Từ các tác nhân đáng tin cậy đến trí thông minh thời gian thực với GPT-5 và HyperArc</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Được trình bày bởi Zendesk</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

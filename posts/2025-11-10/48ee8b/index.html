@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>T5Gemma- Một bộ sưu tập mới các mô hình Gemma mã hóa-giải mã | AI Today - SkyAI</title>
+
+<meta name="description" content="Mô hình">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">T5Gemma- Một bộ sưu tập mới các mô hình Gemma mã hóa-giải mã</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Mô hình </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            7 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/e8EyippqXqLUED9_tOoYff0w5Ldr7nECZyidT0DwsFYPX1BQGguaypuNE7yFdXEKzNUfns7G3p4bHhuJiXUr_Iytt7wA1VNddn-7hrsu=w600-h600-n-nu" alt="T5Gemma- Một bộ sưu tập mới các mô hình Gemma mã hóa-giải mã">
+        <figcaption class="text-center italic text-xs">Mô hình</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="t5gemma-một-bộ-sưu-tập-mới-các-mô-hình-gemma-mã-hóa-giải-mã">T5Gemma: Một bộ sưu tập mới các mô hình Gemma mã hóa-giải mã</h1>
+<p>Trong bối cảnh các mô hình ngôn ngữ lớn (LLM) đang phát triển nhanh chóng, tâm điểm chú ý chủ yếu đổ dồn vào kiến trúc chỉ có bộ giải mã (decoder-only). Mặc dù các mô hình này thể hiện khả năng ấn tượng trong nhiều tác vụ sinh văn bản, kiến trúc mã hóa-giải mã (encoder-decoder) cổ điển, như T5 (The Text-to-Text Transfer Transformer), vẫn là lựa chọn phổ biến cho nhiều ứng dụng thực tế. Các mô hình encoder-decoder thường vượt trội trong các tác vụ tóm tắt, dịch thuật, hỏi đáp, v.v., nhờ hiệu quả suy luận cao, tính linh hoạt trong thiết kế và biểu diễn bộ mã hóa phong phú để hiểu đầu vào. Tuy nhiên, kiến trúc encoder-decoder mạnh mẽ này đã nhận được ít sự chú ý tương đối.</p>
+<p>Hôm nay, chúng tôi xem xét lại kiến trúc này và giới thiệu <strong>T5Gemma</strong>, một bộ sưu tập mới các LLM encoder-decoder được phát triển bằng cách chuyển đổi các mô hình chỉ có bộ giải mã đã được huấn luyện trước sang kiến trúc encoder-decoder thông qua kỹ thuật gọi là &ldquo;thích ứng&rdquo; (adaptation). T5Gemma dựa trên framework Gemma 2, bao gồm các mô hình Gemma 2 2B và 9B đã được thích ứng, cũng như một loạt các mô hình cỡ T5 mới được huấn luyện (Small, Base, Large và XL). Chúng tôi vui mừng phát hành các mô hình T5Gemma đã được huấn luyện trước và tinh chỉnh theo hướng dẫn cho cộng đồng để mở ra những cơ hội mới cho nghiên cứu và phát triển.</p>
+<p><img src="https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/image1_rUYuZF4.original.png" alt="T5Gemma banner"></p>
+<h2 id="từ-kiến-trúc-chỉ-có-bộ-giải-mã-sang-kiến-trúc-mã-hóa-giải-mã">Từ kiến trúc chỉ có bộ giải mã sang kiến trúc mã hóa-giải mã</h2>
+<p>Trong T5Gemma, chúng tôi đặt câu hỏi: <em>liệu chúng ta có thể xây dựng các mô hình encoder-decoder hàng đầu dựa trên các mô hình chỉ có bộ giải mã đã được huấn luyện trước hay không?</em> Chúng tôi trả lời câu hỏi này bằng cách khám phá kỹ thuật &ldquo;thích ứng mô hình&rdquo; (model adaptation). Ý tưởng cốt lõi là khởi tạo các tham số của một mô hình encoder-decoder bằng cách sử dụng trọng số của một mô hình chỉ có bộ giải mã đã được huấn luyện trước, sau đó tiếp tục tinh chỉnh chúng thông qua tiền huấn luyện dựa trên UL2 hoặc PrefixLM.</p>
+<p><img src="https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/Chart-1.original.png" alt="Sơ đồ minh họa phương pháp tiếp cận">
+<em>Tổng quan về phương pháp của chúng tôi, cho thấy cách chúng tôi khởi tạo một mô hình encoder-decoder mới bằng cách sử dụng các tham số từ một mô hình chỉ có bộ giải mã đã được huấn luyện trước.</em></p>
+<p>Phương pháp thích ứng này rất linh hoạt, cho phép kết hợp sáng tạo các kích thước mô hình khác nhau. Ví dụ, chúng ta có thể ghép một bộ mã hóa lớn với một bộ giải mã nhỏ (ví dụ: bộ mã hóa 9B với bộ giải mã 2B) để tạo ra một mô hình &ldquo;không cân bằng&rdquo;. Điều này cho phép chúng tôi tinh chỉnh sự đánh đổi giữa chất lượng và hiệu quả cho các tác vụ cụ thể, như tóm tắt, nơi việc hiểu sâu đầu vào quan trọng hơn độ phức tạp của đầu ra được tạo ra.</p>
+<h2 id="hướng-tới-sự-cân-bằng-tốt-hơn-giữa-chất-lượng-và-hiệu-quả">Hướng tới sự cân bằng tốt hơn giữa chất lượng và hiệu quả</h2>
+<p><em>T5Gemma hoạt động như thế nào?</em></p>
+<p>Trong các thử nghiệm của chúng tôi, các mô hình T5Gemma đạt được hiệu suất tương đương hoặc tốt hơn các đối tác Gemma chỉ có bộ giải mã, gần như thống trị đường cong Pareto về chất lượng-hiệu quả suy luận trên nhiều điểm chuẩn, chẳng hạn như SuperGLUE, thước đo chất lượng của biểu diễn đã học được.</p>
+<p><img src="https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/Encoder-decoder_models_benchmarks.original.png" alt="Biểu đồ các mô hình encoder-decoder trên các điểm chuẩn">
+<em>Các mô hình encoder-decoder luôn mang lại hiệu suất tốt hơn cho một mức độ tính toán suy luận nhất định, dẫn đầu đường cong chất lượng-hiệu quả trên một loạt các điểm chuẩn.</em></p>
+<p>Ưu điểm về hiệu suất này không chỉ mang tính lý thuyết; nó còn thể hiện chất lượng và tốc độ thực tế. Khi đo độ trễ thực tế cho GSM8K (lập luận toán học), T5Gemma đã giành chiến thắng rõ ràng. Ví dụ, T5Gemma 9B-9B đạt độ chính xác cao hơn Gemma 2 9B nhưng với độ trễ tương tự. Ấn tượng hơn nữa, T5Gemma 9B-2B mang lại sự cải thiện đáng kể về độ chính xác so với mô hình 2B-2B, nhưng độ trễ của nó gần như tương đương với mô hình Gemma 2 2B nhỏ hơn nhiều. Cuối cùng, các thử nghiệm này cho thấy rằng việc thích ứng kiến trúc encoder-decoder mang đến một cách linh hoạt, mạnh mẽ để cân bằng giữa chất lượng và tốc độ suy luận.</p>
+<h2 id="mở-khóa-các-khả-năng-cơ-bản-và-tinh-chỉnh">Mở khóa các khả năng cơ bản và tinh chỉnh</h2>
+<p><em>Liệu LLM encoder-decoder có thể có khả năng tương tự như mô hình chỉ có bộ giải mã không?</em></p>
+<p>Có, T5Gemma thể hiện các khả năng đầy hứa hẹn cả trước và sau khi tinh chỉnh theo hướng dẫn.</p>
+<p>Sau quá trình tiền huấn luyện, T5Gemma đạt được những cải thiện ấn tượng trên các tác vụ phức tạp đòi hỏi suy luận. Ví dụ, T5Gemma 9B-9B đạt điểm cao hơn hơn 9 điểm trên GSM8K (lập luận toán học) và cao hơn 4 điểm trên DROP (hiểu văn bản) so với mô hình Gemma 2 9B gốc. Mô hình này chứng minh rằng kiến trúc encoder-decoder, khi được khởi tạo thông qua thích ứng, có tiềm năng tạo ra một mô hình cơ bản có khả năng và hiệu suất cao hơn.</p>
+<p><img src="https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/pretrained-model-results.original.png" alt="Kết quả chi tiết cho các mô hình đã huấn luyện trước">
+<em>Kết quả chi tiết cho các mô hình đã huấn luyện trước, minh họa cách các mô hình thích ứng có những cải thiện đáng kể trên một số điểm chuẩn đòi hỏi suy luận so với Gemma 2 chỉ có bộ giải mã.</em></p>
+<p>Những cải tiến cơ bản từ quá trình tiền huấn luyện này tạo nền tảng cho những cải thiện thậm chí còn ấn tượng hơn sau khi tinh chỉnh theo hướng dẫn. Ví dụ, khi so sánh Gemma 2 IT với T5Gemma IT, khoảng cách về hiệu suất tăng lên đáng kể trên diện rộng. T5Gemma 2B-2B IT chứng kiến điểm MMLU của nó tăng gần 12 điểm so với Gemma 2 2B, và điểm GSM8K của nó tăng từ 58.0% lên 70.7%. Kiến trúc thích ứng không chỉ cung cấp một điểm khởi đầu tốt hơn mà còn phản ứng hiệu quả hơn với quá trình tinh chỉnh theo hướng dẫn, cuối cùng dẫn đến một mô hình cuối cùng có khả năng và hữu ích hơn đáng kể.</p>
+<p><img src="https://storage.googleapis.com/gweb-developer-goog-blog-assets/images/results-for-fine-tuned-RLHFed-models.original.png" alt="Kết quả cho các mô hình đã tinh chỉnh + RLHFed">
+<em>Kết quả chi tiết cho các mô hình đã tinh chỉnh + RLHFed, minh họa khả năng của quá trình hậu huấn luyện để khuếch đại đáng kể những lợi thế về hiệu suất của kiến trúc encoder-decoder.</em></p>
+<h2 id="khám-phá-mô-hình-của-chúng-tôi-phát-hành-các-checkpoint-t5gemma">Khám phá mô hình của chúng tôi: Phát hành các checkpoint T5Gemma</h2>
+<p>Chúng tôi rất vui mừng giới thiệu phương pháp mới này để xây dựng các mô hình encoder-decoder mạnh mẽ, đa dụng bằng cách thích ứng từ các LLM chỉ có bộ giải mã đã được huấn luyện trước như Gemma 2. Để giúp đẩy nhanh nghiên cứu sâu hơn và cho phép cộng đồng xây dựng dựa trên công trình này, chúng tôi vui mừng phát hành một bộ các checkpoint T5Gemma của mình.</p>
+<p>Bản phát hành bao gồm:</p>
+<ul>
+<li><strong>Nhiều kích thước:</strong> Các checkpoint cho các mô hình cỡ T5 (Small, Base, Large và XL), các mô hình dựa trên Gemma 2 (2B và 9B), cũng như một mô hình bổ sung nằm giữa T5 Large và T5 XL.</li>
+<li><strong>Nhiều biến thể:</strong> Các mô hình đã huấn luyện trước và tinh chỉnh theo hướng dẫn.</li>
+<li><strong>Cấu hình linh hoạt:</strong> Một checkpoint 9B-2B mạnh mẽ và hiệu quả không cân bằng để khám phá sự đánh đổi giữa kích thước bộ mã hóa và bộ giải mã.</li>
+<li><strong>Các mục tiêu huấn luyện khác nhau:</strong> Các mô hình được huấn luyện với mục tiêu PrefixLM hoặc UL2 để mang lại hiệu suất sinh văn bản tiên tiến hoặc chất lượng biểu diễn tốt nhất.</li>
+</ul>
+<p>Chúng tôi hy vọng các checkpoint này sẽ cung cấp một nguồn tài nguyên quý giá để điều tra kiến trúc mô hình, hiệu quả và hiệu suất.</p>
+<h2 id="bắt-đầu-với-t5gemma">Bắt đầu với T5Gemma</h2>
+<p>Chúng tôi rất mong chờ xem bạn sẽ xây dựng gì với T5Gemma. Vui lòng tham khảo các liên kết sau để biết thêm thông tin:</p>
+<ul>
+<li>Tìm hiểu về nghiên cứu đằng sau dự án này bằng cách đọc <!-- raw HTML omitted -->bài báo<!-- raw HTML omitted -->.</li>
+<li>Tải xuống các mô hình: Tìm trọng số mô hình trên <!-- raw HTML omitted -->Hugging Face<!-- raw HTML omitted --> và <!-- raw HTML omitted -->Kaggle<!-- raw HTML omitted -->.</li>
+<li>Khám phá khả năng của mô hình hoặc tinh chỉnh chúng cho các trường hợp sử dụng của riêng bạn với <!-- raw HTML omitted -->Colab notebook<!-- raw HTML omitted -->.</li>
+<li>Thực hiện suy luận với các mô hình trên <!-- raw HTML omitted -->Vertex AI<!-- raw HTML omitted -->.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://developers.googleblog.com/en/t5gemma/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-2025/">July 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/developers.googleblog.com/">Developers.googleblog.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/3434fa/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/ai9_hrOe5IB6e7EGqF216JiXYqOcqhAobVoJ0MOPRzQkGP6TPboWuLZIW2L_6xBlnOHPTYNUmpMSgurb_SPko5zdQ_ZJWx243J14ognqTA=w600-h600-n-nu" alt="Gemini 2.5 Flash-Lite hiện đã sẵn sàng cho sử dụng sản xuất quy mô lớn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gemini 2.5 Flash-Lite hiện đã sẵn sàng cho sử dụng sản xuất quy mô lớn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Mô hình</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/3855c1/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/FuKf11MtGlAGF-p34DIY0df250pPFMxvpvGeBqVhvDjZeiXYFaJSAmf5TgAyAxhYws3001ZSoj9HknNhC54R4q_5PGvfYYZzStDk6PI7-w=w600-h600-n-nu" alt="AlphaEarth Foundations giúp lập bản đồ hành tinh của chúng ta với chi tiết chưa từng có" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">AlphaEarth Foundations giúp lập bản đồ hành tinh của chúng ta với chi tiết chưa từng có</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Khoa học</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

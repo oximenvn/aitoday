@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nâng cao tiêu chuẩn cho SWE-bench được xác minh với Claude 3.5 Sonnet | AI Today - SkyAI</title>
+
+<meta name="description" content="Anthropic giới thiệu cách Claude 3.5 Sonnet được sử dụng để xác minh SWE-bench, nâng cao tiêu chuẩn cho việc đánh giá hiệu suất mô hình.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Nâng cao tiêu chuẩn cho SWE-bench được xác minh với Claude 3.5 Sonnet</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Anthropic giới thiệu cách Claude 3.5 Sonnet được sử dụng để xác minh SWE-bench, nâng cao tiêu chuẩn cho việc đánh giá hiệu suất mô hình. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            18 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+        <figcaption class="text-center italic text-xs">Anthropic giới thiệu cách Claude 3.5 Sonnet được sử dụng để xác minh SWE-bench, nâng cao tiêu chuẩn cho việc đánh giá hiệu suất mô hình.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="nâng-cao-hiệu-suất-trên-swe-bench-được-xác-minh-với-claude-35-sonnet">Nâng cao hiệu suất trên SWE-bench được xác minh với Claude 3.5 Sonnet</h1>
+<p>Mô hình mới nhất của chúng tôi, phiên bản nâng cấp của Claude 3.5 Sonnet, đã đạt được 49% trên SWE-bench Verified, một bài kiểm tra đánh giá kỹ năng kỹ thuật phần mềm, vượt qua mức 45% của mô hình trước đó. Bài viết này sẽ giải thích về &ldquo;tác nhân&rdquo; (agent) mà chúng tôi đã xây dựng xung quanh mô hình, và nhằm mục đích giúp các nhà phát triển khai thác hiệu suất tốt nhất có thể từ Claude 3.5 Sonnet.</p>
+<p><a href="https://www.swebench.com/">SWE-bench</a> là một bộ tiêu chuẩn đánh giá AI, đo lường khả năng của mô hình trong việc hoàn thành các tác vụ kỹ thuật phần mềm thực tế. Cụ thể, nó kiểm tra cách mô hình có thể giải quyết các vấn đề trên GitHub từ các kho lưu trữ Python mã nguồn mở phổ biến. Đối với mỗi tác vụ trong bộ tiêu chuẩn, mô hình AI được cung cấp một môi trường Python và bản sao làm việc cục bộ của kho lưu trữ ngay trước khi vấn đề được giải quyết. Sau đó, mô hình cần hiểu, sửa đổi và kiểm tra mã trước khi gửi giải pháp đề xuất của mình.</p>
+<p>Mỗi giải pháp sẽ được chấm điểm dựa trên các bài kiểm tra đơn vị thực tế từ yêu cầu kéo (pull request) đã đóng vấn đề GitHub gốc. Điều này kiểm tra xem mô hình AI có thể đạt được chức năng tương tự như tác giả ban đầu của PR hay không.</p>
+<p>SWE-bench không chỉ đánh giá riêng mô hình AI mà còn đánh giá toàn bộ hệ thống &ldquo;tác nhân&rdquo;. Trong bối cảnh này, &ldquo;tác nhân&rdquo; đề cập đến sự kết hợp giữa mô hình AI và các khung phần mềm xung quanh nó. Khung này chịu trách nhiệm tạo ra các lời nhắc (prompt) cho mô hình, phân tích đầu ra của mô hình để thực hiện hành động và quản lý vòng lặp tương tác, nơi kết quả của hành động trước đó của mô hình được tích hợp vào lời nhắc tiếp theo của nó. Hiệu suất của một tác nhân trên SWE-bench có thể thay đổi đáng kể tùy thuộc vào khung này, ngay cả khi sử dụng cùng một mô hình AI cơ bản.</p>
+<p>Có nhiều tiêu chuẩn khác để đánh giá khả năng lập trình của các Mô hình Ngôn ngữ Lớn (LLM), nhưng SWE-bench đã trở nên phổ biến vì một số lý do:</p>
+<ol>
+<li>Nó sử dụng các tác vụ kỹ thuật thực tế từ các dự án thực tế, thay vì các câu hỏi kiểu thi đấu hoặc phỏng vấn.</li>
+<li>Nó vẫn còn nhiều dư địa để cải thiện. Chưa có mô hình nào đạt trên 50% hoàn thành trên SWE-bench Verified (mặc dù Claude 3.5 Sonnet phiên bản cập nhật, tại thời điểm viết bài, đã đạt 49%).</li>
+<li>Nó đo lường toàn bộ &ldquo;tác nhân&rdquo;, thay vì chỉ một mô hình riêng lẻ. Các nhà phát triển mã nguồn mở và các công ty khởi nghiệp đã đạt được thành công lớn trong việc tối ưu hóa các khung để cải thiện đáng kể hiệu suất xung quanh cùng một mô hình.</li>
+</ol>
+<p>Lưu ý rằng bộ dữ liệu SWE-bench gốc chứa một số tác vụ không thể giải quyết nếu không có thêm ngữ cảnh bên ngoài vấn đề GitHub (ví dụ: về các thông báo lỗi cụ thể cần trả về). <a href="https://openai.com/index/introducing-swe-bench-verified/">SWE-bench-Verified</a> là một tập hợp con gồm 500 vấn đề của SWE-bench đã được con người xem xét để đảm bảo chúng có thể giải quyết được, do đó cung cấp thước đo rõ ràng nhất về hiệu suất của các tác nhân lập trình. Đây là bộ tiêu chuẩn mà chúng ta sẽ tham chiếu trong bài viết này.</p>
+<h2 id="đạt-được-hiệu-suất-hàng-đầu">Đạt được hiệu suất hàng đầu</h2>
+<h3 id="tác-nhân-sử-dụng-công-cụ">Tác nhân sử dụng công cụ</h3>
+<p>Triết lý thiết kế của chúng tôi khi tạo khung tác nhân được tối ưu hóa cho Claude 3.5 Sonnet phiên bản cập nhật là trao cho mô hình ngôn ngữ càng nhiều quyền kiểm soát càng tốt và giữ cho khung phần mềm càng tối giản càng tốt. Tác nhân có một lời nhắc, một Công cụ Bash để thực thi các lệnh bash và một Công cụ Chỉnh sửa, để xem và chỉnh sửa các tệp và thư mục. Chúng tôi tiếp tục lấy mẫu cho đến khi mô hình quyết định rằng nó đã hoàn thành hoặc vượt quá độ dài ngữ cảnh 200k của nó. Khung này cho phép mô hình sử dụng khả năng phán đoán của riêng nó về cách theo đuổi vấn đề, thay vì bị mã hóa cứng vào một mẫu hoặc quy trình làm việc cụ thể.</p>
+<p>Lời nhắc phác thảo một phương pháp tiếp cận được đề xuất cho mô hình, nhưng nó không quá dài hoặc quá chi tiết cho tác vụ này. Mô hình có thể tự do lựa chọn cách di chuyển từ bước này sang bước khác, thay vì phải tuân theo các bước chuyển đổi nghiêm ngặt và riêng biệt. Nếu bạn không nhạy cảm về token, việc khuyến khích rõ ràng mô hình tạo ra phản hồi dài có thể hữu ích.</p>
+<p>Đoạn mã sau đây cho thấy lời nhắc từ khung tác nhân của chúng tôi:</p>
+<p>plaintext
+&lt;uploaded_files&gt;
+{location}
+&lt;/uploaded_files&gt;
+Tôi đã tải lên một kho lưu trữ mã python trong thư mục {location} (không có trong /tmp/inputs). Hãy xem xét mô tả PR sau:</p>
+<p>&lt;pr_description&gt;
+{pr_description}
+&lt;/pr_description&gt;</p>
+<p>Bạn có thể giúp tôi triển khai các thay đổi cần thiết cho kho lưu trữ để đáp ứng các yêu cầu được chỉ định trong &lt;pr_description&gt; không?
+Tôi đã xử lý tất cả các thay đổi đối với bất kỳ tệp kiểm thử nào được mô tả trong &lt;pr_description&gt;. Điều này có nghĩa là bạn KHÔNG phải sửa đổi logic kiểm thử hoặc bất kỳ bài kiểm thử nào!</p>
+<p>Nhiệm vụ của bạn là thực hiện các thay đổi tối thiểu đối với các tệp không phải là tệp kiểm thử trong thư mục {location} để đảm bảo &lt;pr_description&gt; được đáp ứng.</p>
+<p>Hãy làm theo các bước sau để giải quyết vấn đề:</p>
+<ol>
+<li>Là bước đầu tiên, có lẽ nên khám phá kho lưu trữ để làm quen với cấu trúc của nó.</li>
+<li>Tạo một tập lệnh để tái hiện lỗi và thực thi nó bằng <code>python &lt;tên_tập_lệnh.py&gt;</code> bằng BashTool, để xác nhận lỗi.</li>
+<li>Chỉnh sửa mã nguồn của kho lưu trữ để giải quyết vấn đề.</li>
+<li>Chạy lại tập lệnh tái hiện của bạn và xác nhận rằng lỗi đã được khắc phục!</li>
+<li>Suy nghĩ về các trường hợp biên và đảm bảo rằng bản sửa lỗi của bạn xử lý chúng.</li>
+</ol>
+<p>Suy nghĩ của bạn nên kỹ lưỡng và do đó, không sao nếu nó rất dài.</p>
+<p>Lời nhắc của mô hình cho công cụ Bash:</p>
+<p>json
+{
+&ldquo;name&rdquo;: &ldquo;bash&rdquo;,
+&ldquo;description&rdquo;: &ldquo;Run commands in a bash shell\n* When invoking this tool, the contents of the &quot;command&quot; parameter does NOT need to be XML-escaped.\n* You don&rsquo;t have access to the internet via this tool.\n* You do have access to a mirror of common linux and python packages via apt and pip.\n* State is persistent across command calls and discussions with the user.\n* To inspect a particular line range of a file, e.g. lines 10-25, try &lsquo;sed -n 10,25p /path/to/the/file&rsquo;.\n* Please avoid commands that may produce a very large amount of output.\n* Please run long lived commands in the background, e.g. &lsquo;sleep 10 &amp;&rsquo; or start a server in the background.&rdquo;,
+&ldquo;input_schema&rdquo;: {
+&ldquo;type&rdquo;: &ldquo;object&rdquo;,
+&ldquo;properties&rdquo;: {
+&ldquo;command&rdquo;: {
+&ldquo;type&rdquo;: &ldquo;string&rdquo;,
+&ldquo;description&rdquo;: &ldquo;The bash command to run.&rdquo;
+}
+},
+&ldquo;required&rdquo;: [&ldquo;command&rdquo;]
+}
+}</p>
+<p>Công cụ Chỉnh sửa (Edit Tool) của mô hình:</p>
+<p>json
+{
+&ldquo;name&rdquo;: &ldquo;str_replace_editor&rdquo;,
+&ldquo;description&rdquo;: &ldquo;Custom editing tool for viewing, creating and editing files\n* State is persistent across command calls and discussions with the user\n* If <code>path</code> is a file, <code>view</code> displays the result of applying <code>cat -n</code>. If <code>path</code> is a directory, <code>view</code> lists non-hidden files and directories up to 2 levels deep\n* The <code>create</code> command cannot be used if the specified <code>path</code> already exists as a file\n* If a <code>command</code> generates a long output, it will be truncated and marked with <code>&lt;response clipped&gt;</code> \n* The <code>undo_edit</code> command will revert the last edit made to the file at <code>path</code>\n\nNotes for using the <code>str_replace</code> command:\n* The <code>old_str</code> parameter should match EXACTLY one or more consecutive lines from the original file. Be mindful of whitespaces!\n* If the <code>old_str</code> parameter is not unique in the file, the replacement will not be performed. Make sure to include enough context in <code>old_str</code> to make it unique\n* The <code>new_str</code> parameter should contain the edited lines that should replace the <code>old_str</code>&rdquo;,
+&ldquo;input_schema&rdquo;: {
+&ldquo;type&rdquo;: &ldquo;object&rdquo;,
+&ldquo;properties&rdquo;: {
+&ldquo;command&rdquo;: {
+&ldquo;type&rdquo;: &ldquo;string&rdquo;,
+&ldquo;enum&rdquo;: [&ldquo;view&rdquo;, &ldquo;create&rdquo;, &ldquo;str_replace&rdquo;, &ldquo;insert&rdquo;, &ldquo;undo_edit&rdquo;],
+&ldquo;description&rdquo;: &ldquo;The commands to run. Allowed options are: <code>view</code>, <code>create</code>, <code>str_replace</code>, <code>insert</code>, <code>undo_edit</code>.&rdquo;
+},
+&ldquo;file_text&rdquo;: {
+&ldquo;description&rdquo;: &ldquo;Required parameter of <code>create</code> command, with the content of the file to be created.&rdquo;,
+&ldquo;type&rdquo;: &ldquo;string&rdquo;
+},
+&ldquo;insert_line&rdquo;: {
+&ldquo;description&rdquo;: &ldquo;Required parameter of <code>insert</code> command. The <code>new_str</code> will be inserted AFTER the line <code>insert_line</code> of <code>path</code>.&rdquo;,
+&ldquo;type&rdquo;: &ldquo;integer&rdquo;
+},
+&ldquo;new_str&rdquo;: {
+&ldquo;description&rdquo;: &ldquo;Required parameter of <code>str_replace</code> command containing the new string. Required parameter of <code>insert</code> command containing the string to insert.&rdquo;,
+&ldquo;type&rdquo;: &ldquo;string&rdquo;
+},
+&ldquo;old_str&rdquo;: {
+&ldquo;description&rdquo;: &ldquo;Required parameter of <code>str_replace</code> command containing the string in <code>path</code> to replace.&rdquo;,
+&ldquo;type&rdquo;: &ldquo;string&rdquo;
+},
+&ldquo;path&rdquo;: {
+&ldquo;description&rdquo;: &ldquo;Absolute path to file or directory, e.g. <code>/repo/file.py</code> or <code>/repo</code>.&rdquo;,
+&ldquo;type&rdquo;: &ldquo;string&rdquo;
+},
+&ldquo;view_range&rdquo;: {
+&ldquo;description&rdquo;: &ldquo;Optional parameter of <code>view</code> command when <code>path</code> points to a file. If none is given, the full file is shown. If provided, the file will be shown in the indicated line number range, e.g. [11, 12] will show lines 11 and 12. Indexing at 1 to start. Setting <code>[start_line, -1]</code> shows all lines from <code>start_line</code> to the end of the file.&rdquo;,
+&ldquo;items&rdquo;: {
+&ldquo;type&rdquo;: &ldquo;integer&rdquo;
+},
+&ldquo;type&rdquo;: &ldquo;array&rdquo;
+}
+},
+&ldquo;required&rdquo;: [&ldquo;command&rdquo;, &ldquo;path&rdquo;]
+}
+}</p>
+<p>Một cách chúng tôi đã cải thiện hiệu suất là &ldquo;chống lỗi&rdquo; cho các công cụ của mình. Ví dụ, đôi khi mô hình có thể làm sai các đường dẫn tệp tương đối sau khi tác nhân di chuyển ra khỏi thư mục gốc. Để ngăn chặn điều này, chúng tôi chỉ đơn giản yêu cầu công cụ luôn cung cấp đường dẫn tuyệt đối.</p>
+<p>Chúng tôi đã thử nghiệm nhiều chiến lược khác nhau để chỉ định các chỉnh sửa cho các tệp hiện có và có độ tin cậy cao nhất với việc thay thế chuỗi, trong đó mô hình chỉ định <code>old_str</code> để thay thế bằng <code>new_str</code> trong tệp được cung cấp. Việc thay thế sẽ chỉ xảy ra nếu có chính xác một lần khớp <code>old_str</code>. Nếu có nhiều hơn hoặc ít hơn các lần khớp, mô hình sẽ nhận được thông báo lỗi phù hợp để thử lại.</p>
+<h2 id="kết-quả">Kết quả</h2>
+<p>Nhìn chung, Claude 3.5 Sonnet phiên bản cập nhật thể hiện khả năng suy luận, lập trình và toán học cao hơn các mô hình trước đây của chúng tôi và mô hình <a href="https://solverai.com/">đạt hiệu suất hàng đầu trước đó</a>. Nó cũng thể hiện khả năng tác nhân được cải thiện: các công cụ và khung phần mềm giúp tận dụng tốt nhất những khả năng được cải thiện đó.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Model</th>
+          <th style="text-align: left"><strong>Claude 3.5 Sonnet (new)</strong></th>
+          <th style="text-align: left">Previous SOTA</th>
+          <th style="text-align: left">Claude 3.5 Sonnet (old)</th>
+          <th style="text-align: left">Claude 3 Opus</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">SWE-bench Verified score</td>
+          <td style="text-align: left">49%</td>
+          <td style="text-align: left">45%</td>
+          <td style="text-align: left">33%</td>
+          <td style="text-align: left">22%</td>
+      </tr>
+  </tbody>
+</table>
+<p><em>Điểm trên SWE-bench Verified cho một số mô hình của chúng tôi, tất cả đều sử dụng khung tác nhân này.</em></p>
+<h2 id="ví-dụ-về-hành-vi-của-tác-nhân">Ví dụ về hành vi của tác nhân</h2>
+<p>Để chạy bộ tiêu chuẩn, chúng tôi đã sử dụng <a href="https://swe-agent.com/">khung SWE-Agent</a> làm nền tảng cho mã tác nhân của mình. Trong các nhật ký dưới đây, chúng tôi hiển thị đầu ra văn bản của tác nhân, các lệnh gọi công cụ và phản hồi công cụ dưới dạng SUY NGHĨ (THOUGHT), HÀNH ĐỘNG (ACTION) và QUAN SÁT (OBSERVATION), ngay cả khi chúng tôi không giới hạn mô hình theo một thứ tự cố định.</p>
+<p>Các khối mã dưới đây sẽ đi qua một trường hợp điển hình của Sonnet 3.5 giải quyết một vấn đề SWE-bench.</p>
+<p>Trong khối đầu tiên này, bạn có thể thấy một phần của lời nhắc ban đầu được cung cấp cho mô hình, với <code>{pr_description}</code> được điền bằng giá trị thực từ một tác vụ SWE-bench. Quan trọng là, tác vụ này chứa các bước để tái hiện lỗi, điều này sẽ cung cấp cho mô hình một điểm khởi đầu có giá trị để điều tra.</p>
+<p>plaintext
+&lt;uploaded_files&gt;
+/repo
+&lt;/uploaded_files&gt;
+Tôi đã tải lên một kho lưu trữ mã python trong thư mục /repo (không có trong /tmp/inputs). Hãy xem xét mô tả PR sau:</p>
+<p>&lt;pr_description&gt;
+Vấn đề tham số store_cv_values của linear_model.RidgeClassifierCV</p>
+<h4 id="mô-tả">Mô tả</h4>
+<p>Lỗi tham số store_cv_values trên sklearn.linear_model.RidgeClassifierCV</p>
+<h4 id="các-bướcmã-để-tái-hiện">Các bước/Mã để tái hiện</h4>
+<p>import numpy as np
+from sklearn import linear_model as lm</p>
+<h1 id="cơ-sở-dữ-liệu-kiểm-thử">cơ sở dữ liệu kiểm thử</h1>
+<p>n = 100
+x = np.random.randn(n, 30)
+y = np.random.normal(size = n)</p>
+<p>rr = lm.RidgeClassifierCV(alphas = np.arange(0.1, 1000, 0.1), normalize = True,
+store_cv_values = True).fit(x, y)</p>
+<h4 id="kết-quả-mong-đợi">Kết quả mong đợi</h4>
+<p>Mong đợi nhận được kết quả mô hình hồi quy ridge thông thường, giữ lại các dự đoán chéo xác thực dưới dạng thuộc tính.</p>
+<h4 id="kết-quả-thực-tế">Kết quả thực tế</h4>
+<p>TypeError: <strong>init</strong>() got an unexpected keyword argument &lsquo;store_cv_values&rsquo;</p>
+<p>Thực tế là lớp lm.RidgeClassifierCV không có tham số store_cv_values, mặc dù một số thuộc tính phụ thuộc vào nó.
+&lt;/pr_description&gt;</p>
+<p>Mô hình phản hồi và trước tiên sử dụng Công cụ Chỉnh sửa để xem cấu trúc kho lưu trữ. Bạn có thể thấy đầu ra văn bản và các đối số lệnh gọi công cụ của mô hình dưới SUY NGHĨ (THOUGHT) và HÀNH ĐỘNG (ACTION), và một phần đầu ra của công cụ dưới QUAN SÁT (OBSERVATION):</p>
+<p>plaintext
+SUY NGHĨ:
+Tôi sẽ giúp bạn triển khai các thay đổi để đáp ứng mô tả PR. Hãy làm theo các bước bạn đã nêu.</p>
+<ol>
+<li>Đầu tiên, hãy khám phá cấu trúc kho lưu trữ:
+HÀNH ĐỘNG (str_replace_editor):
+command:
+view</li>
+</ol>
+<p>path:
+/repo</p>
+<p>QUAN SÁT:
+Đây là các tệp và thư mục sâu đến 2 cấp trong /repo, loại trừ các mục ẩn:
+/repo
+/repo/PULL_REQUEST_TEMPLATE.md
+/repo/ISSUE_TEMPLATE.md
+/repo/sklearn
+/repo/sklearn/decomposition
+/repo/sklearn/kernel_ridge.py
+/repo/sklearn/model_selection
+/repo/sklearn/covariance
+/repo/sklearn/cluster
+/repo/sklearn/base.py
+/repo/sklearn/dummy.py
+/repo/sklearn/naive_bayes.py
+&hellip;</p>
+<p>Bây giờ khi mô hình đã hiểu rõ hơn về cấu trúc kho lưu trữ, nó sử dụng Công cụ Chỉnh sửa để tạo một tập lệnh mới mà nó sẽ sử dụng để tái hiện lỗi và kiểm tra bản sửa lỗi của mình:</p>
+<p>plaintext
+SUY NGHĨ:
+Dựa trên cấu trúc kho lưu trữ, chúng ta sẽ cần sửa đổi Ridge Classifier trong thư mục <code>sklearn/linear_model</code>.</p>
+<p>Hãy tạo một tập lệnh để tái hiện lỗi:
+HÀNH ĐỘNG (str_replace_editor):
+command:
+create</p>
+<p>path:
+/repo/reproduce_error.py</p>
+<p>file_text:
+import numpy as np
+from sklearn import linear_model as lm</p>
+<h1 id="cơ-sở-dữ-liệu-kiểm-thử-1">cơ sở dữ liệu kiểm thử</h1>
+<p>n = 100
+x = np.random.randn(n, 30)
+y = np.random.normal(size = n)</p>
+<p>rr = lm.RidgeClassifierCV(alphas=np.arange(0.1, 1000, 0.1), normalize=True,
+store_cv_values=True).fit(x, y)</p>
+<p>QUAN SÁT:
+Tệp đã được tạo thành công tại: /repo/reproduce_error.py</p>
+<p>Mô hình sau đó sử dụng Công cụ Bash để thực thi tập lệnh mà nó đã viết và tái hiện thành công lỗi từ tác vụ:</p>
+<p>plaintext
+SUY NGHĨ:
+Hãy xác minh rằng chúng ta có thể tái hiện lỗi:
+HÀNH ĐỘNG (bash):
+command:
+python3 /repo/reproduce_error.py</p>
+<p>QUAN SÁT:
+Traceback (most recent call last):
+File &ldquo;/repo/reproduce_error.py&rdquo;, line 10, in <!-- raw HTML omitted -->
+store_cv_values=True).fit(x, y)
+TypeError: <strong>init</strong>() got an unexpected keyword argument &lsquo;store_cv_values&rsquo;</p>
+<p>Từ đây trở đi, mô hình sử dụng Công cụ Chỉnh sửa để thay đổi mã nguồn trong kho lưu trữ và chạy lại tập lệnh của mình để xác minh xem thay đổi đã khắc phục sự cố hay chưa:</p>
+<p>plaintext
+SUY NGHĨ:
+Lỗi có thể tái hiện. Nhìn vào mã, tôi thấy rằng vấn đề là mặc dù lớp <code>RidgeClassifierCV</code> kế thừa từ <code>_BaseRidgeCV</code>, nhưng nó không truyền tham số <code>store_cv_values</code> từ hàm tạo của nó cho hàm tạo lớp cơ sở.</p>
+<p>Hãy sửa lỗi này:
+HÀNH ĐỘNG (str_replace_editor):
+command:
+str_replace</p>
+<p>path:
+/repo/sklearn/linear_model/ridge.py</p>
+<p>old_str:
+def <strong>init</strong>(self, alphas=(0.1, 1.0, 10.0), fit_intercept=True,
+normalize=False, scoring=None, cv=None, class_weight=None):
+super(RidgeClassifierCV, self).<strong>init</strong>(
+alphas=alphas, fit_intercept=fit_intercept, normalize=normalize,
+scoring=scoring, cv=cv)
+self.class_weight = class_weight</p>
+<p>new_str:
+def <strong>init</strong>(self, alphas=(0.1, 1.0, 10.0), fit_intercept=True,
+normalize=False, scoring=None, cv=None, class_weight=None,
+store_cv_values=False):
+super(RidgeClassifierCV, self).<strong>init</strong>(
+alphas=alphas, fit_intercept=fit_intercept, normalize=normalize,
+scoring=scoring, cv=cv, store_cv_values=store_cv_values)
+self.class_weight = class_weight</p>
+<p>Trong ví dụ cụ thể này, mô hình đã hoạt động trong 12 bước trước khi quyết định rằng nó đã sẵn sàng để gửi. Các bài kiểm tra của tác vụ sau đó đã chạy thành công, xác minh rằng giải pháp của mô hình đã giải quyết vấn đề. Một số tác vụ mất hơn 100 lượt tương tác trước khi mô hình gửi giải pháp của mình; ở những tác vụ khác, mô hình tiếp tục cố gắng cho đến khi hết ngữ cảnh.</p>
+<p>Từ việc xem xét các nỗ lực của Claude 3.5 Sonnet phiên bản cập nhật so với các mô hình cũ hơn, Claude 3.5 Sonnet phiên bản cập nhật tự sửa lỗi thường xuyên hơn. Nó cũng thể hiện khả năng thử nhiều giải pháp khác nhau, thay vì bị mắc kẹt với cùng một lỗi lặp đi lặp lại.</p>
+<h2 id="thách-thức">Thách thức</h2>
+<p>SWE-bench Verified là một bài đánh giá mạnh mẽ, nhưng nó cũng phức tạp hơn để chạy so với các bài đánh giá đơn giản, một lượt. Đây là một số thách thức mà chúng tôi gặp phải khi sử dụng nó - những thách thức mà các nhà phát triển AI khác cũng có thể gặp phải.</p>
+<ol>
+<li><strong>Thời gian và chi phí token cao.</strong> Các ví dụ trên là từ một trường hợp đã được hoàn thành thành công trong 12 bước. Tuy nhiên, nhiều lần chạy thành công đòi hỏi hàng trăm lượt tương tác để mô hình giải quyết và hơn 100k token. Claude 3.5 Sonnet phiên bản cập nhật rất kiên trì: nó thường có thể tìm ra cách giải quyết vấn đề với đủ thời gian, nhưng điều đó có thể tốn kém.</li>
+<li><strong>Chấm điểm.</strong> Khi kiểm tra các tác vụ thất bại, chúng tôi đã phát hiện ra các trường hợp mà mô hình hoạt động đúng, nhưng có các vấn đề về thiết lập môi trường, hoặc các vấn đề với việc áp dụng các bản vá cài đặt hai lần. Việc giải quyết các vấn đề hệ thống này là rất quan trọng để có được cái nhìn chính xác về hiệu suất của tác nhân AI.</li>
+<li><strong>Các bài kiểm tra ẩn.</strong> Vì mô hình không thể nhìn thấy các bài kiểm tra mà nó đang được đánh giá, nó thường &ldquo;nghĩ&rdquo; rằng nó đã thành công khi tác vụ thực tế là một thất bại. Một số thất bại này là do mô hình giải quyết vấn đề ở mức trừu tượng sai (chỉ khắc phục tạm thời thay vì tái cấu trúc sâu hơn). Các thất bại khác có vẻ ít công bằng hơn: chúng giải quyết vấn đề, nhưng không khớp với các bài kiểm tra đơn vị từ tác vụ gốc.</li>
+<li><strong>Đa phương thức.</strong> Mặc dù Claude 3.5 Sonnet phiên bản cập nhật có khả năng thị giác và đa phương thức xuất sắc, chúng tôi đã không triển khai cách để nó xem các tệp được lưu trên hệ thống tệp hoặc được tham chiếu dưới dạng URL. Điều này làm cho việc gỡ lỗi một số tác vụ (đặc biệt là các tác vụ từ Matplotlib) trở nên đặc biệt khó khăn và cũng dễ bị ảo giác của mô hình. Chắc chắn có những cải tiến dễ dàng ở đây cho các nhà phát triển - và SWE-bench đã ra mắt một <a href="https://www.swebench.com/multimodal.html">đánh giá mới tập trung vào các tác vụ đa phương thức</a>. Chúng tôi mong đợi sẽ thấy các nhà phát triển đạt điểm cao hơn trên bài đánh giá này với Claude trong tương lai gần.</li>
+</ol>
+<p>Claude 3.5 Sonnet phiên bản cập nhật đã đạt 49% trên SWE-bench Verified, vượt qua hiệu suất hàng đầu trước đó (45%), với một lời nhắc đơn giản và hai công cụ đa năng. Chúng tôi tin rằng các nhà phát triển xây dựng với Claude 3.5 Sonnet mới sẽ nhanh chóng tìm ra những cách thức mới, tốt hơn để cải thiện điểm SWE-bench so với những gì chúng tôi đã trình bày ban đầu ở đây.</p>
+<h2 id="lời-cảm-ơn">Lời cảm ơn</h2>
+<p>Erik Schluntz đã tối ưu hóa tác nhân SWE-bench và viết bài đăng blog này. Simon Biggs, Dawn Drain và Eric Christiansen đã hỗ trợ triển khai bộ tiêu chuẩn. Shauna Kravec, Dawn Drain, Felipe Rosso, Nova DasSarma, Ven Chandrasekaran và nhiều người khác đã đóng góp vào việc đào tạo Claude 3.5 Sonnet để trở nên xuất sắc trong việc lập trình tác nhân.</p>
+<hr>
+<h2 id="nhận-bản-tin-dành-cho-nhà-phát-triển">Nhận bản tin dành cho nhà phát triển</h2>
+<p>Cập nhật sản phẩm, hướng dẫn, các bài giới thiệu cộng đồng và nhiều hơn nữa. Gửi hàng tháng đến hộp thư của bạn.</p>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="chân-trang-trang-web">Chân trang trang web</h2>
+<p>[Logo Anthropic]</p>
+<h3 id="sản-phẩm">Sản phẩm</h3>
+<ul>
+<li>Claude</li>
+<li>Claude Code</li>
+<li>Claude và Slack</li>
+<li>Claude trong Excel</li>
+<li>Gói Max</li>
+<li>Gói Team</li>
+<li>Gói Enterprise</li>
+<li>Tải ứng dụng</li>
+<li>Giá</li>
+<li>Đăng nhập vào Claude</li>
+</ul>
+<h3 id="mô-hình">Mô hình</h3>
+<ul>
+<li>Opus</li>
+<li>Sonnet</li>
+<li>Haiku</li>
+</ul>
+<h3 id="giải-pháp">Giải pháp</h3>
+<ul>
+<li>AI agents</li>
+<li>Hiện đại hóa mã</li>
+<li>Lập trình</li>
+<li>Hỗ trợ khách hàng</li>
+<li>Giáo dục</li>
+<li>Dịch vụ tài chính</li>
+<li>Chính phủ</li>
+<li>Khoa học đời sống</li>
+</ul>
+<h3 id="nền-tảng-nhà-phát-triển-claude">Nền tảng nhà phát triển Claude</h3>
+<ul>
+<li>Tổng quan</li>
+<li>Tài liệu dành cho nhà phát triển</li>
+<li>Giá</li>
+<li>Amazon Bedrock</li>
+<li>Google Cloud’s Vertex AI</li>
+<li>Đăng nhập Console</li>
+</ul>
+<h3 id="tìm-hiểu">Tìm hiểu</h3>
+<ul>
+<li>Blog</li>
+<li>Khóa học</li>
+<li>Các trường hợp sử dụng</li>
+<li>Bộ kết nối</li>
+<li>Câu chuyện khách hàng</li>
+<li>Kỹ thuật tại Anthropic</li>
+<li>Sự kiện</li>
+<li>Powered by Claude</li>
+<li>Đối tác dịch vụ</li>
+<li>Chương trình startups</li>
+</ul>
+<h3 id="công-ty">Công ty</h3>
+<ul>
+<li>Anthropic</li>
+<li>Sự nghiệp</li>
+<li>Tương lai kinh tế</li>
+<li>Nghiên cứu</li>
+<li>Tin tức</li>
+<li>Chính sách mở rộng có trách nhiệm</li>
+<li>Bảo mật và tuân thủ</li>
+<li>Minh bạch</li>
+</ul>
+<h3 id="trợ-giúp-và-bảo-mật">Trợ giúp và bảo mật</h3>
+<ul>
+<li>Khả dụng</li>
+<li>Trạng thái</li>
+<li>Trung tâm hỗ trợ</li>
+</ul>
+<h3 id="điều-khoản-và-chính-sách">Điều khoản và chính sách</h3>
+<ul>
+<li>Chính sách bảo mật</li>
+<li>Chính sách tiết lộ có trách nhiệm</li>
+<li>Điều khoản dịch vụ: Thương mại</li>
+<li>Điều khoản dịch vụ: Người tiêu dùng</li>
+<li>Chính sách sử dụng</li>
+</ul>
+<p>© 2025 Anthropic PBC</p>
+<p>[Các biểu tượng mạng xã hội: LinkedIn, X (Twitter), YouTube]</p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/research/swe-bench-sonnet">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/oct-30-2024/">Oct 30, 2024</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d9a8e7/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic tham gia cùng Nhà Trắng và các tổ chức khác trong cam kết đầu tư vào giáo dục AI cho giới trẻ Mỹ, thúc đẩy tương lai của lực lượng lao động.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/16879e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Anthropic bổ nhiệm Guillaume Princen làm Trưởng bộ phận EMEA và công bố hơn 100 vị trí mới trong khu vực" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic bổ nhiệm Guillaume Princen làm Trưởng bộ phận EMEA và công bố hơn 100 vị trí mới trong khu vực</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic chào đón Guillaume Princen đảm nhận vai trò Trưởng bộ phận EMEA, đồng thời công bố kế hoạch tuyển dụng mở rộng trong khu vực.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

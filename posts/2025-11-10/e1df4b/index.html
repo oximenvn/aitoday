@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Claude 3.7 Sonnet và Claude Code | AI Today - SkyAI</title>
+
+<meta name="description" content="Anthropic giới thiệu Claude 3.7 Sonnet, bản cập nhật cho mô hình Sonnet của mình, và Claude Code, một công cụ được thiết kế để hỗ trợ các tác vụ lập trình.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Claude 3.7 Sonnet và Claude Code</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Anthropic giới thiệu Claude 3.7 Sonnet, bản cập nhật cho mô hình Sonnet của mình, và Claude Code, một công cụ được thiết kế để hỗ trợ các tác vụ lập trình. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/46e4aa7ea208ed440d5bd9e9e3a0ee66bc336ff1-1000x1000.svg" alt="Claude 3.7 Sonnet và Claude Code">
+        <figcaption class="text-center italic text-xs">Anthropic giới thiệu Claude 3.7 Sonnet, bản cập nhật cho mô hình Sonnet của mình, và Claude Code, một công cụ được thiết kế để hỗ trợ các tác vụ lập trình.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="claude-37-sonnet-và-claude-code">Claude 3.7 Sonnet và Claude Code</h1>
+<p>Hôm nay, chúng tôi vui mừng công bố Claude 3.7 Sonnet, mô hình thông minh nhất của chúng tôi cho đến nay và là mô hình lý luận kết hợp đầu tiên có sẵn rộng rãi trên thị trường. Claude 3.7 Sonnet có thể đưa ra phản hồi gần như tức thời hoặc suy nghĩ từng bước mở rộng mà <!-- raw HTML omitted -->hiển thị cho người dùng<!-- raw HTML omitted -->. Người dùng API cũng có quyền kiểm soát chi tiết về <em>thời gian</em> mô hình có thể suy nghĩ.</p>
+<p>Claude 3.7 Sonnet cho thấy sự cải thiện đặc biệt mạnh mẽ trong lập trình và phát triển web giao diện người dùng. Cùng với mô hình, chúng tôi cũng giới thiệu một công cụ dòng lệnh cho lập trình tác tử, Claude Code. Claude Code có sẵn dưới dạng bản xem trước nghiên cứu hạn chế, và cho phép các nhà phát triển ủy quyền các tác vụ kỹ thuật đáng kể cho Claude trực tiếp từ terminal của họ.</p>
+<!-- raw HTML omitted -->
+<p>Claude 3.7 Sonnet hiện có sẵn trên tất cả các gói <!-- raw HTML omitted -->Claude<!-- raw HTML omitted --> — bao gồm Miễn phí, Pro, Team và Enterprise — cũng như <!-- raw HTML omitted -->Nền tảng Nhà phát triển Claude<!-- raw HTML omitted -->, <!-- raw HTML omitted -->Amazon Bedrock<!-- raw HTML omitted --> và <!-- raw HTML omitted -->Vertex AI của Google Cloud<!-- raw HTML omitted -->. Chế độ suy nghĩ mở rộng có sẵn trên tất cả các nền tảng trừ gói Claude miễn phí.</p>
+<p>Ở cả chế độ tiêu chuẩn và chế độ suy nghĩ mở rộng, Claude 3.7 Sonnet có cùng mức giá với các phiên bản trước: 3 đô la cho mỗi triệu token đầu vào và 15 đô la cho mỗi triệu token đầu ra — bao gồm cả token suy nghĩ.</p>
+<h2 id="claude-37-sonnet-lý-luận-tiên-tiến-trở-nên-thực-tế">Claude 3.7 Sonnet: Lý luận tiên tiến trở nên thực tế</h2>
+<p>Chúng tôi đã phát triển Claude 3.7 Sonnet với một triết lý khác biệt so với các mô hình lý luận khác trên thị trường. Giống như con người sử dụng một bộ não duy nhất cho cả phản hồi nhanh và suy ngẫm sâu sắc, chúng tôi tin rằng lý luận nên là một khả năng tích hợp của các mô hình tiên tiến thay vì một mô hình riêng biệt. Cách tiếp cận thống nhất này cũng tạo ra trải nghiệm liền mạch hơn cho người dùng.</p>
+<p>Claude 3.7 Sonnet thể hiện triết lý này theo nhiều cách. Thứ nhất, Claude 3.7 Sonnet vừa là một LLM thông thường vừa là một mô hình lý luận duy nhất: bạn có thể chọn khi nào bạn muốn mô hình trả lời bình thường và khi nào bạn muốn nó <!-- raw HTML omitted -->suy nghĩ lâu hơn trước khi trả lời<!-- raw HTML omitted -->. Ở chế độ tiêu chuẩn, Claude 3.7 Sonnet là phiên bản nâng cấp của Claude 3.5 Sonnet. Ở <!-- raw HTML omitted -->chế độ suy nghĩ mở rộng<!-- raw HTML omitted -->, nó tự suy ngẫm trước khi trả lời, điều này cải thiện hiệu suất của nó trên các tác vụ toán học, vật lý, tuân theo chỉ dẫn, lập trình và nhiều tác vụ khác. Chúng tôi thường thấy rằng việc gợi ý cho mô hình hoạt động tương tự ở cả hai chế độ.</p>
+<p>Thứ hai, khi sử dụng Claude 3.7 Sonnet thông qua API, người dùng cũng có thể kiểm soát <em>ngân sách</em> cho suy nghĩ: bạn có thể yêu cầu Claude suy nghĩ không quá N token, với bất kỳ giá trị N nào lên đến giới hạn đầu ra 128K token của nó. Điều này cho phép bạn đánh đổi tốc độ (và chi phí) để lấy chất lượng câu trả lời.</p>
+<p>Thứ ba, trong quá trình phát triển các mô hình lý luận của chúng tôi, chúng tôi đã tối ưu hóa ít hơn cho các bài toán thi đấu toán học và khoa học máy tính, và thay vào đó chuyển trọng tâm sang các tác vụ thực tế phản ánh tốt hơn cách doanh nghiệp sử dụng LLM.</p>
+<p><!-- raw HTML omitted -->Thử nghiệm ban đầu<!-- raw HTML omitted --> đã chứng minh vai trò dẫn đầu của Claude trong khả năng lập trình trên mọi phương diện: Cursor nhận xét Claude một lần nữa dẫn đầu về các tác vụ lập trình thực tế, với những cải tiến đáng kể trong các lĩnh vực từ xử lý cơ sở mã phức tạp đến sử dụng công cụ nâng cao. Cognition nhận thấy nó tốt hơn nhiều so với bất kỳ mô hình nào khác trong việc lập kế hoạch thay đổi mã và xử lý các bản cập nhật toàn diện. Vercel nhấn mạnh độ chính xác đặc biệt của Claude đối với các quy trình tác tử phức tạp, trong khi Replit đã triển khai thành công Claude để xây dựng các ứng dụng web và bảng điều khiển tinh vi từ đầu, nơi các mô hình khác gặp khó khăn. Trong các đánh giá của Canva, Claude liên tục tạo ra mã sẵn sàng triển khai với hương vị thiết kế vượt trội và giảm đáng kể lỗi.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="claude-code">Claude Code</h2>
+<p>Kể từ tháng 6 năm 2024, Sonnet đã là mô hình được ưa chuộng cho các nhà phát triển trên toàn thế giới. Hôm nay, chúng tôi trao quyền hơn nữa cho các nhà phát triển bằng cách giới thiệu <!-- raw HTML omitted -->Claude Code<!-- raw HTML omitted --> — công cụ lập trình tác tử đầu tiên của chúng tôi — trong bản xem trước nghiên cứu hạn chế.</p>
+<p>Claude Code là một cộng tác viên tích cực có thể tìm kiếm và đọc mã, chỉnh sửa tệp, viết và chạy kiểm thử, cam kết và đẩy mã lên GitHub, đồng thời sử dụng các công cụ dòng lệnh — giữ cho bạn được cập nhật ở mọi bước.</p>
+<!-- raw HTML omitted -->
+<p>Claude Code là một sản phẩm ban đầu nhưng đã trở nên không thể thiếu đối với nhóm của chúng tôi, đặc biệt là trong phát triển theo kiểm thử, gỡ lỗi các sự cố phức tạp và tái cấu trúc quy mô lớn. Trong thử nghiệm ban đầu, Claude Code đã hoàn thành các tác vụ chỉ trong một lần chạy mà thông thường sẽ mất hơn 45 phút làm việc thủ công, giảm thời gian và chi phí phát triển.</p>
+<p>Trong những tuần tới, chúng tôi dự định liên tục cải thiện nó dựa trên việc sử dụng của chúng tôi: nâng cao độ tin cậy của lệnh gọi công cụ, hỗ trợ lệnh chạy dài, cải thiện kết xuất trong ứng dụng và mở rộng sự hiểu biết của Claude về khả năng của nó.</p>
+<p>Mục tiêu của chúng tôi với Claude Code là hiểu rõ hơn cách các nhà phát triển sử dụng Claude để lập trình nhằm thông báo cho các cải tiến mô hình trong tương lai. Bằng cách <!-- raw HTML omitted -->tham gia bản xem trước này<!-- raw HTML omitted -->, bạn sẽ có quyền truy cập vào các công cụ mạnh mẽ tương tự mà chúng tôi sử dụng để xây dựng và cải thiện Claude, và phản hồi của bạn sẽ định hình tương lai của nó.</p>
+<h2 id="làm-việc-với-claude-trên-cơ-sở-mã-của-bạn">Làm việc với Claude trên cơ sở mã của bạn</h2>
+<p>Chúng tôi cũng đã cải thiện trải nghiệm lập trình trên Claude.ai. Tích hợp GitHub của chúng tôi hiện có sẵn trên tất cả các gói Claude — cho phép các nhà phát triển kết nối kho lưu trữ mã của họ trực tiếp với Claude.</p>
+<p>Claude 3.7 Sonnet là mô hình lập trình tốt nhất của chúng tôi cho đến nay. Với sự hiểu biết sâu sắc hơn về các dự án cá nhân, công việc và mã nguồn mở của bạn, nó trở thành một đối tác mạnh mẽ hơn để sửa lỗi, phát triển tính năng và xây dựng tài liệu trên các dự án GitHub quan trọng nhất của bạn.</p>
+<h2 id="xây-dựng-một-cách-có-trách-nhiệm">Xây dựng một cách có trách nhiệm</h2>
+<p>Chúng tôi đã tiến hành các bài kiểm tra và đánh giá mở rộng Claude 3.7 Sonnet, làm việc với các chuyên gia bên ngoài để đảm bảo nó đáp ứng các tiêu chuẩn của chúng tôi về bảo mật, an toàn và độ tin cậy. Claude 3.7 Sonnet cũng đưa ra các phân biệt tinh tế hơn giữa các yêu cầu có hại và vô hại, giảm <!-- raw HTML omitted -->việc từ chối không cần thiết tới 45%<!-- raw HTML omitted --> so với phiên bản trước.</p>
+<p><!-- raw HTML omitted -->Thẻ hệ thống<!-- raw HTML omitted --> cho bản phát hành này bao gồm các kết quả an toàn mới trong nhiều danh mục, cung cấp một phân tích chi tiết về các đánh giá Chính sách Mở rộng Có trách nhiệm của chúng tôi mà các phòng thí nghiệm và nhà nghiên cứu AI khác có thể áp dụng cho công việc của họ. Thẻ này cũng giải quyết các rủi ro mới nổi đi kèm với việc sử dụng máy tính, đặc biệt là các cuộc tấn công chèn lệnh (prompt injection), và giải thích cách chúng tôi đánh giá các lỗ hổng này và đào tạo Claude để chống lại và giảm thiểu chúng. Ngoài ra, nó xem xét các lợi ích an toàn tiềm năng từ các mô hình lý luận: khả năng hiểu cách mô hình đưa ra quyết định và liệu lý luận của mô hình có thực sự đáng tin cậy hay không. Đọc <!-- raw HTML omitted -->thẻ hệ thống<!-- raw HTML omitted --> đầy đủ để biết thêm.</p>
+<h2 id="hướng-tới-tương-lai">Hướng tới tương lai</h2>
+<p>Claude 3.7 Sonnet và Claude Code đánh dấu một bước quan trọng hướng tới các hệ thống AI có thể thực sự tăng cường khả năng của con người. Với khả năng lý luận sâu sắc, hoạt động tự chủ và cộng tác hiệu quả, chúng đưa chúng ta đến gần hơn với một tương lai nơi AI làm phong phú và mở rộng những gì <!-- raw HTML omitted -->con người có thể đạt được<!-- raw HTML omitted -->.</p>
+<!-- raw HTML omitted -->
+<p>Chúng tôi rất mong bạn khám phá những khả năng mới này và xem bạn sẽ tạo ra những gì với chúng. Như mọi khi, chúng tôi hoan nghênh <!-- raw HTML omitted -->phản hồi của bạn<!-- raw HTML omitted --> khi chúng tôi tiếp tục cải thiện và phát triển các mô hình của mình.</p>
+<hr>
+<h2 id="phụ-lục">Phụ lục</h2>
+<h3 id="nguồn-dữ-liệu-đánh-giá">Nguồn dữ liệu đánh giá</h3>
+<ul>
+<li><!-- raw HTML omitted -->Grok<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Gemini 2 Pro<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->o1 và o3-mini<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Bổ sung o1<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->o1 TAU-bench<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Bổ sung o3-mini<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Deepseek R1<!-- raw HTML omitted --></li>
+</ul>
+<h3 id="tau-bench">TAU-bench</h3>
+<p><strong>Thông tin về scaffolding</strong></p>
+<p>Điểm số đạt được với một phần bổ sung cho lời nhắc của Chính sách Tác tử Hàng không, hướng dẫn Claude sử dụng tốt hơn một công cụ &ldquo;lập kế hoạch&rdquo;, nơi mô hình được khuyến khích ghi lại suy nghĩ của mình khi giải quyết vấn đề, khác với chế độ suy nghĩ thông thường của chúng tôi, trong các quỹ đạo đa lượt để tận dụng tốt nhất khả năng lý luận của nó. Để phù hợp với các bước bổ sung mà Claude thực hiện bằng cách sử dụng nhiều suy nghĩ hơn, số bước tối đa (được đếm bằng số lần hoàn thành mô hình) đã tăng từ 30 lên 100 (hầu hết các quỹ đạo hoàn thành dưới 30 bước chỉ với một quỹ đạo vượt quá 50 bước).</p>
+<p>Ngoài ra, điểm TAU-bench cho Claude 3.5 Sonnet (mới) khác với những gì chúng tôi báo cáo ban đầu khi phát hành do những cải tiến nhỏ về bộ dữ liệu được giới thiệu kể từ đó. Chúng tôi đã chạy lại trên bộ dữ liệu đã cập nhật để so sánh chính xác hơn với Claude 3.7 Sonnet.</p>
+<h3 id="swe-bench-verified">SWE-bench Verified</h3>
+<p><strong>Thông tin về scaffolding</strong></p>
+<p>Có nhiều phương pháp để giải quyết các tác vụ tác tử mở như SWE-bench. Một số phương pháp giảm tải phần lớn sự phức tạp trong việc quyết định tệp nào cần điều tra hoặc chỉnh sửa và kiểm thử nào cần chạy cho phần mềm truyền thống hơn, để mô hình ngôn ngữ cốt lõi tạo mã ở những vị trí được xác định trước, hoặc chọn từ một tập hợp các hành động hạn chế hơn. Agentless (<!-- raw HTML omitted -->Xia et al., 2024<!-- raw HTML omitted -->) là một khung phổ biến được sử dụng trong việc đánh giá Deepseek R1 và các mô hình khác, bổ sung cho tác tử các cơ chế truy xuất tệp dựa trên lời nhắc và nhúng, định vị bản vá và lấy mẫu từ chối tốt nhất trong số 40 lần thử nghiệm hồi quy. Các scaffolding khác (ví dụ: <!-- raw HTML omitted -->Aide<!-- raw HTML omitted -->) bổ sung thêm cho các mô hình bằng cách tính toán thêm trong thời gian kiểm thử dưới dạng thử lại, tốt nhất trong N lần thử, hoặc Tìm kiếm cây Monte Carlo (MCTS).</p>
+<p>Đối với Claude 3.7 Sonnet và Claude 3.5 Sonnet (mới), chúng tôi sử dụng một cách tiếp cận đơn giản hơn nhiều với scaffolding tối thiểu, nơi mô hình quyết định lệnh nào sẽ chạy và tệp nào sẽ chỉnh sửa trong một phiên duy nhất. Kết quả pass@1 chính của chúng tôi &ldquo;không có suy nghĩ mở rộng&rdquo; chỉ trang bị cho mô hình <!-- raw HTML omitted -->hai công cụ được mô tả ở đây<!-- raw HTML omitted --> — một công cụ bash và một công cụ chỉnh sửa tệp hoạt động thông qua thay thế chuỗi — cũng như &ldquo;công cụ lập kế hoạch&rdquo; đã đề cập ở trên trong kết quả TAU-bench của chúng tôi. Do hạn chế về cơ sở hạ tầng, chỉ có 489/500 vấn đề thực sự có thể giải quyết trên cơ sở hạ tầng nội bộ của chúng tôi (tức là, giải pháp vàng vượt qua các bài kiểm tra). Đối với điểm pass@1 thuần túy của chúng tôi, chúng tôi tính 11 vấn đề không thể giải quyết như những thất bại để duy trì sự tương đương với <!-- raw HTML omitted -->bảng xếp hạng chính thức<!-- raw HTML omitted -->. Để minh bạch, chúng tôi cung cấp riêng các trường hợp thử nghiệm không hoạt động trên cơ sở hạ tầng của chúng tôi.</p>
+<p>Đối với con số &ldquo;tính toán cao&rdquo; của chúng tôi, chúng tôi áp dụng thêm sự phức tạp và tính toán song song trong thời gian kiểm thử như sau:</p>
+<ul>
+<li>Chúng tôi lấy mẫu nhiều lần thử song song với scaffolding trên.</li>
+<li>Chúng tôi loại bỏ các bản vá làm hỏng các bài kiểm thử hồi quy hiển thị trong kho lưu trữ, tương tự như phương pháp lấy mẫu từ chối được sử dụng bởi Agentless; lưu ý rằng không có thông tin kiểm thử ẩn nào được sử dụng.</li>
+<li>Sau đó, chúng tôi xếp hạng các lần thử còn lại bằng một mô hình tính điểm tương tự như kết quả của chúng tôi trên GPQA và AIME được mô tả trong <!-- raw HTML omitted -->bài đăng nghiên cứu<!-- raw HTML omitted --> của chúng tôi và chọn ra kết quả tốt nhất để gửi.</li>
+</ul>
+<p>Điều này mang lại điểm số 70,3% trên tập hợp con gồm 489 nhiệm vụ đã được xác minh hoạt động trên cơ sở hạ tầng của chúng tôi. Không có scaffolding này, Claude 3.7 Sonnet đạt 63,7% trên SWE-bench Verified bằng cách sử dụng cùng tập hợp con này. 11 trường hợp thử nghiệm bị loại trừ không tương thích với cơ sở hạ tầng nội bộ của chúng tôi là:</p>
+<ul>
+<li>scikit-learn__scikit-learn-14710</li>
+<li>django__django-10097</li>
+<li>psf__requests-2317</li>
+<li>sphinx-doc__sphinx-10435</li>
+<li>sphinx-doc__sphinx-7985</li>
+<li>sphinx-doc__sphinx-8475</li>
+<li>matplotlib__matplotlib-20488</li>
+<li>astropy__astropy-8707</li>
+<li>astropy__astropy-8872</li>
+<li>sphinx-doc__sphinx-8595</li>
+<li>sphinx-doc__sphinx-9711</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/news/claude-3-7-sonnet">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/feb-24-2025/">Feb 24, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/8921eb/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/74409af25137110ac04cc39e4d5ea0a2fbcea421-1000x1000.svg" alt="Tư duy mở rộng của Claude" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Tư duy mở rộng của Claude</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Nghiên cứu khám phá khái niệm &#39;tư duy mở rộng&#39; trong Claude, tìm hiểu cách mô hình xử lý và tạo ra các chuỗi suy nghĩ dài hơn.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d9a8e7/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic tham gia cùng Nhà Trắng và các tổ chức khác trong cam kết đầu tư vào giáo dục AI cho giới trẻ Mỹ, thúc đẩy tương lai của lực lượng lao động.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

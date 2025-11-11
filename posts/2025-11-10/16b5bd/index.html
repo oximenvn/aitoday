@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Giới thiệu Mô hình Không gian Trạng thái (SSM) | AI Today - SkyAI</title>
+
+<meta name="description" content="Giới thiệu Mô hình Không gian Trạng thái (SSM)">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Giới thiệu Mô hình Không gian Trạng thái (SSM)</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Giới thiệu Mô hình Không gian Trạng thái (SSM) </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/613b0a62a14099d5afed7830/pLuqSIYaNYhUqdjxlNrFn.png" alt="Giới thiệu Mô hình Không gian Trạng thái (SSM)">
+        <figcaption class="text-center italic text-xs">Giới thiệu Mô hình Không gian Trạng thái (SSM)</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="giới-thiệu-về-mô-hình-không-gian-trạng-thái-ssm">Giới thiệu về Mô hình Không gian Trạng thái (SSM)</h1>
+<p>Bài viết này trình bày về Mô hình Không gian Trạng thái (SSM) trong lĩnh vực học sâu, dựa trên mô hình S4.</p>
+<p><strong>Tác giả:</strong> Loïck BOURDOIS</p>
+<p><strong>Ngày:</strong> 19 tháng 7, 2024</p>
+<hr>
+<h2 id="lời-mở-đầu">Lời mở đầu</h2>
+<p>Tôi xin gửi lời cảm ơn chân thành đến Boris ALBAR, Pierre BEDU và Nicolas PREVOT vì đã đồng ý thành lập một nhóm làm việc về chủ đề SSM và đồng hành cùng tôi trong quá trình khám phá loại mô hình này. Đặc biệt cảm ơn Boris ALBAR đã dành thời gian hiệu đính bài viết này.</p>
+<hr>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Mô hình Không gian Trạng thái (SSM) ban đầu được sử dụng trong lý thuyết điều khiển để mô hình hóa một hệ thống động lực thông qua các biến trạng thái.</p>
+<p>Năm 2018, Aaron R. VOELKER và Chris ELIASMITH đã nghiên cứu cách bộ não biểu diễn thông tin thời gian một cách hiệu quả. Trong bài báo “Improving Spiking Dynamical Networks: Accurate Delays, Higher-Order Synapses, and Time Cells”, họ phát hiện ra rằng SSM là một mô hình tuyệt vời để mô tả các &ldquo;tế bào thời gian&rdquo; có trong não bộ.</p>
+<p>Từ lĩnh vực khoa học thần kinh, họ đã áp dụng công trình của mình vào học sâu và trở thành những người đầu tiên sử dụng SSM trong học sâu. Bài viết này sẽ tập trung vào việc định nghĩa các khái niệm cơ bản của SSM trong học sâu, dựa trên mô hình S4 được giới thiệu bởi Albert GU và cộng sự vào năm 2021. Mặc dù S4 không phải là mô hình được sử dụng trực tiếp trong thực tế (hiện nay đã có các SSM hiệu quả hơn hoặc dễ triển khai hơn), chúng tôi sử dụng nó vì mục đích giáo dục.</p>
+<hr>
+<h2 id="định-nghĩa-ssm-trong-học-sâu">Định nghĩa SSM trong học sâu</h2>
+<p>Một SSM bao gồm ba biến phụ thuộc vào thời gian $t$:</p>
+<ul>
+<li>$x(t) \in \mathbb{C}^{n}$: Biểu diễn $n$ biến trạng thái ẩn.</li>
+<li>$u(t) \in \mathbb{C}^{m}$: Biểu diễn $m$ đầu vào trạng thái.</li>
+<li>$y(t) \in \mathbb{C}^{p}$: Biểu diễn $p$ đầu ra.</li>
+</ul>
+<p>Hệ thống này được xác định bởi bốn ma trận có thể học được: $\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D}$.</p>
+<ul>
+<li>$\mathbf{A} \in \mathbb{C}^{n \times n}$: Ma trận trạng thái, điều khiển trạng thái ẩn $x(t)$.</li>
+<li>$\mathbf{B} \in \mathbb{C}^{n \times m}$: Ma trận điều khiển.</li>
+<li>$\mathbf{C} \in \mathbb{C}^{p \times n}$: Ma trận đầu ra.</li>
+<li>$\mathbf{D} \in \mathbb{C}^{p \times m}$: Ma trận lệnh.</li>
+</ul>
+<p>Hệ thống phương trình liên tục của SSM là:</p>
+<p>$$
+\begin{aligned}
+x&rsquo;(t) &amp;= \mathbf{A}x(t) + \mathbf{B}u(t) \
+y(t) &amp;= \mathbf{C}x(t) + \mathbf{D}u(t)
+\end{aligned}
+$$</p>
+<p>Trong học sâu, $\mathbf{D}u = 0$ thường được xem là một kết nối bỏ qua (skip connection) dễ dàng tính toán. Do đó, hệ thống trở thành:</p>
+<p>$$
+\begin{aligned}
+x&rsquo; &amp;= \mathbf{A}x + \mathbf{B}u \
+y &amp;= \mathbf{C}x
+\end{aligned}
+$$</p>
+<hr>
+<h2 id="rời-rạc-hóa-discretization">Rời rạc hóa (Discretization)</h2>
+<p>Để đưa SSM vào máy tính, chúng ta cần rời rạc hóa hệ thống liên tục. Bước rời rạc hóa này là rất quan trọng vì nó cho phép chuyển đổi SSM sang hai dạng khác: <strong>dạng đệ quy</strong> và <strong>dạng tích chập</strong>.</p>
+<p>Sử dụng phương pháp hình thang (trapezoid method) để rời rạc hóa:</p>
+<p>$$
+x_{n+1} - x_n = \frac{\Delta}{2}(f(t_n) + f(t_{n+1}))
+$$</p>
+<p>Với $\Delta = t_{n+1} - t_n$ và $f(t) = \mathbf{A}x(t) + \mathbf{B}u(t)$.</p>
+<p>Sau các phép biến đổi, ta có được SSM rời rạc:</p>
+<p>$$
+\begin{aligned}
+x_k &amp;= \mathbf{\bar{A}}x_{k-1} + \mathbf{\bar{B}}u_k \
+y_k &amp;= \mathbf{\bar{C}}x_k
+\end{aligned}
+$$</p>
+<p>Trong đó:</p>
+<p>$$
+\begin{aligned}
+\mathbf{\bar{A}} &amp;= (\mathbf {I} - \frac{\Delta}{2} \mathbf{A})^{-1}(\mathbf {I} + \frac{\Delta}{2} \mathbf{A}) \
+\mathbf {\bar{B}} &amp;= (\mathbf{I} - \frac{\Delta}{2}  \mathbf {A})^{-1} \Delta \mathbf{B} \
+\mathbf {\bar{C}} &amp;= \mathbf{C}\
+\end{aligned}
+$$</p>
+<hr>
+<h2 id="các-quan-điểm-của-ssm">Các quan điểm của SSM</h2>
+<h3 id="dạng-đệ-quy-recursive-view">Dạng đệ quy (Recursive View)</h3>
+<p>Dạng đệ quy của SSM là:</p>
+<p>$$
+\begin{aligned}
+x_k &amp;= \mathbf{\bar{A}}x_{k-1} + \mathbf{\bar{B}}u_k \
+y_k &amp;= \mathbf{\bar{C}}x_k
+\end{aligned}
+$$</p>
+<p>Dạng này tương tự như mạng RNN, có ưu điểm là xử lý tuần tự và có thể có ngữ cảnh không giới hạn, nhưng lại chậm trong việc huấn luyện do thiếu khả năng song song hóa và dễ gặp vấn đề về gradient.</p>
+<h3 id="dạng-tích-chập-convolutive-view">Dạng tích chập (Convolutive View)</h3>
+<p>Dạng tích chập được biểu diễn qua phép chập của một kernel $K$:</p>
+<p>$$
+y_k = K \ast u
+$$</p>
+<p>Với kernel tích chập $\mathbf{\bar{K}}_k = (\mathbf{\bar{C}} \mathbf{\bar{B}}, \mathbf{\bar{C}} \mathbf{\bar{A}} \mathbf{\bar{B}}, &hellip;, \mathbf{\bar{C}} \mathbf{\bar{A}}^{k} \mathbf{\bar{B}})$. Kernel này có kích thước bằng toàn bộ chuỗi đầu vào và có thể được tính toán hiệu quả bằng Biến đổi Fourier Nhanh (FFT).</p>
+<p>Dạng này có ưu điểm là tính năng lượng cục bộ, dễ diễn giải và huấn luyện hiệu quả (song song hóa). Tuy nhiên, nó chậm trong các ngữ cảnh trực tuyến hoặc tự hồi quy.</p>
+<hr>
+<h2 id="ưu-điểm-và-hạn-chế-của-các-quan-điểm">Ưu điểm và hạn chế của các quan điểm</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Quan điểm</th>
+          <th style="text-align: left">Ưu điểm</th>
+          <th style="text-align: left">Hạn chế</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Liên tục</strong></td>
+          <td style="text-align: left">- Xử lý tự động dữ liệu liên tục (âm thanh, chuỗi thời gian).<!-- raw HTML omitted -->- Phân tích toán học khả thi.</td>
+          <td style="text-align: left">- Rất chậm cho cả huấn luyện và suy luận.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Đệ quy</strong></td>
+          <td style="text-align: left">- Có thiên hướng tự nhiên cho dữ liệu tuần tự.<!-- raw HTML omitted -->- Suy luận hiệu quả (cập nhật trạng thái trong thời gian không đổi).</td>
+          <td style="text-align: left">- Huấn luyện chậm (thiếu song song hóa).<!-- raw HTML omitted -->- Dễ gặp vấn đề về biến mất hoặc bùng nổ gradient với chuỗi dài.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Tích chập</strong></td>
+          <td style="text-align: left">- Đặc trưng cục bộ, dễ diễn giải.<!-- raw HTML omitted -->- Huấn luyện hiệu quả (song song hóa).</td>
+          <td style="text-align: left">- Chậm trong ngữ cảnh trực tuyến hoặc tự hồi quy.<!-- raw HTML omitted -->- Kích thước ngữ cảnh cố định.</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="học-ma-trận">Học ma trận</h2>
+<p>Ma trận $\mathbf{A}$ trong dạng tích chập, $\mathbf{A}^k$, có thể được tính toán hiệu quả nếu $\mathbf{A}$ là ma trận đường chéo:</p>
+<p>$$
+\mathbf{A} = \begin{bmatrix}
+\lambda_{1} &amp; 0 &amp; \cdots &amp; 0 \
+0 &amp; \lambda_{2} &amp; \cdots &amp; 0 \
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \
+0 &amp; 0 &amp; \cdots &amp; \lambda_{n}
+\end{bmatrix}
+\Rightarrow
+\mathbf{A}^k =  \begin{bmatrix}
+\lambda_{1}^k &amp; 0 &amp; \cdots &amp; 0 \
+0 &amp; \lambda_{2}^k &amp; \cdots &amp; 0 \
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \
+0 &amp; 0 &amp; \cdots &amp; \lambda_{n}^k
+\end{bmatrix}
+$$</p>
+<p>Ma trận <strong>HiPPO</strong> (High-Order Polynomial Projection Operator) là một lựa chọn phổ biến để khởi tạo ma trận $\mathbf{A}$, giúp mô hình hội tụ tốt hơn.</p>
+<hr>
+<h2 id="kết-quả-thực-nghiệm">Kết quả thực nghiệm</h2>
+<p>S4 đã cho thấy hiệu suất ấn tượng trên nhiều tác vụ:</p>
+<ul>
+<li><strong>Âm thanh (Speech Commands):</strong> Hiệu suất vượt trội so với ConvNet với số lượng tham số tương đương, khả năng xử lý resampling tốt.</li>
+<li><strong>Chuỗi thời gian (Time Series):</strong> Vượt trội hơn Informer trên nhiều cấu hình, xử lý tốt cả dữ liệu đơn biến và đa biến.</li>
+<li><strong>Thị giác (sCIFAR-10):</strong> Đạt SoTA với số lượng tham số thấp.</li>
+<li><strong>Văn bản (Long Range Arena):</strong> Là mô hình đầu tiên giải quyết thành công tác vụ Path-X với độ dài 16K token, chứng tỏ khả năng xử lý chuỗi rất dài.</li>
+</ul>
+<p>Tuy nhiên, S4 có thể có độ phức tạp (perplexity) cao hơn transformer trên các tác vụ văn bản như WikiText-103, có thể do tính chất không liên tục của dữ liệu văn bản.</p>
+<hr>
+<h2 id="kết-luận">Kết luận</h2>
+<p>SSM là một kiến trúc mô hình mạnh mẽ với ba quan điểm khác nhau (liên tục, đệ quy, tích chập), cho phép linh hoạt trong xử lý dữ liệu và tối ưu hóa hiệu suất. Khả năng xử lý chuỗi dài và hiệu quả tính toán là những ưu điểm nổi bật. Sự khác biệt giữa các kiến trúc SSM chủ yếu nằm ở phương pháp rời rạc hóa và cách khởi tạo ma trận $\mathbf{A}$.</p>
+<hr>
+<h2 id="tài-nguyên-bổ-sung">Tài nguyên bổ sung</h2>
+<h3 id="lịch-sử-ssm">Lịch sử SSM</h3>
+<ul>
+<li><strong>LMU (2019):</strong> Tiền thân của S4, tập trung vào việc xử lý chuỗi dài trong học sâu và khoa học thần kinh.</li>
+<li><strong>Legendre Memory Units (2021):</strong> Nghiên cứu về việc song song hóa huấn luyện SSM và cho thấy hiệu quả trên tác vụ văn bản.</li>
+</ul>
+<h3 id="tài-nguyên-s4">Tài nguyên S4</h3>
+<ul>
+<li><strong>Video:</strong> Các buổi nói chuyện của Albert GU và Sasha RUSH về S4.</li>
+<li><strong>Mã nguồn:</strong> &ldquo;The Annotated S4&rdquo; (Jax) và mã nguồn chính thức của S4 (PyTorch).</li>
+<li><strong>Bài viết trên blog:</strong> Chuỗi bài viết từ Hazy Research.</li>
+<li><strong>Sách:</strong> Phụ lục E trong sách &ldquo;Hands-On Machine Learning with Scikit-Learn and Pytorch&rdquo; của Aurélien Geron.</li>
+</ul>
+<h3 id="tài-nguyên-hippo">Tài nguyên HiPPO</h3>
+<ul>
+<li><strong>Bài viết trên blog Hazy Research:</strong> Giới thiệu về ma trận HiPPO.</li>
+<li><strong>Bài báo:</strong> &ldquo;How to Train Your HiPPO&rdquo; của Albert GU và cộng sự.</li>
+</ul>
+<hr>
+<h2 id="tham-khảo">Tham khảo</h2>
+<ul>
+<li><a href="https://www.bioinf.jku.at/publications/older/2604.pdf">Long short-term memory - Sepp HOCHREITER, Jürgen SCHMIDHUBER (1997)</a></li>
+<li><a href="https://www.cds.caltech.edu/~murray/books/AM08/pdf/am08-complete_28Sep12.pdf">Feedback Systems - Karl Johan ÅSTRÖM, Richard M. MURRAY (2012 version)</a></li>
+<li><a href="https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf">Learning Multiple Layers of Features from Tiny Images - Alex KRIZHESKY (2009)</a></li>
+<li><a href="https://arxiv.org/abs/1609.07843v1">Pointer Sentinel Mixture Models - Stephen MERITY, Caiming XIONG, James BRADBURY, Richard SOCHER (2016)</a></li>
+<li><a href="https://arxiv.org/abs/1706.03762">Attention is all you need - Ashish VASWANI, Noam SHAZEER, Niki PARMAR, Jakob USZKOREIT, Llion JONES, Aidan N. GOMEZ, Lukasz KAISER, Illia POLOSUKHIN (2017)</a></li>
+<li><a href="https://arxiv.org/abs/1804.03209v1">Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition - Pete WARDEN (2018)</a></li>
+<li><a href="https://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf">Improving Spiking Dynamical Networks: Accurate Delays, Higher-Order Synapses, and Time Cells - Aaron R. VOELKER, Chris ELIASMITH (2018)</a></li>
+<li><a href="https://proceedings.neurips.cc/paper_files/paper/2019/file/952285b9b7e7a1be5aa7849f32ffff05-Paper.pdf">Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks - Aaron R. VOELKER, Ivana KAJIĆ, Chris ELIASMITH (2019)</a></li>
+<li><a href="https://compneuro.uwaterloo.ca/publications/voelker2019.html">Dynamical Systems in Spiking Neuromorphic Hardware - Aaron R. VOELKER (2019)</a></li>
+<li><a href="https://arxiv.org/abs/1910.01108">DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter - Victor SANH, Lysandre DEBUT, Julien CHAUMOND, Thomas WOLF (2019)</a></li>
+<li><a href="https://arxiv.org/abs/2011.04006">Long Range Arena: A Benchmark for Efficient Transformers - Yi TAY, Mostafa DEHGHANI, Samira ABNAR, Yikang SHEN, Dara BAHRI, Philip PHAM, Jinfeng RAO, Liu YANG, Sebastian RUDER, Donald METZLER (2020)</a></li>
+<li><a href="https://arxiv.org/abs/2012.07436">Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting - Haoyi ZHOU, Shanghang ZHANG, Jieqi peng, Shuai ZHANG, Jianxin LI, Hui XIONG, Wancai ZHANG (2020)</a></li>
+<li><a href="https://arxiv.org/abs/2008.07669">HiPPO: Recurrent Memory with Optimal Polynomial Projections - Albert GU, Tri DAO, Stefano ERMON, Atri RUDRA, Christopher RÉ (2020)</a></li>
+<li><a href="https://arxiv.org/abs/2102.11417">Parallelizing Legendre Memory Unit Training - Narsimha CHILKURI, Chris ELIASMITH (2021)</a></li>
+<li><a href="https://arxiv.org/abs/2110.13985">Combining Recurrent, Convolutional, and Continuous-time Models with Linear State-Space Layers - Albert GU, Isys JOHNSON, Karan GOEL, Khaled SAAB, Tri DAO, Atri RUDRA, Christopher RÉ (2021)</a></li>
+<li><a href="https://arxiv.org/abs/2111.00396">Efficiently Modeling Long Sequences with Structured State Spaces - Albert GU, Karan GOEL, Christopher RÉ (2021)</a></li>
+<li><a href="https://arxiv.org/abs/2206.12037">How to Train Your HiPPO: State Space Models with Generalized Orthogonal Basis Projections - Albert GU, Isys JOHNSON, Aman TIMALSINA, Atri RUDRA, Christopher RÉ (2022)</a></li>
+<li><a href="https://arxiv.org/abs/2206.11893">On the Parameterization and Initialization of Diagonal State Space Models - Albert GU, Ankit GUPTA, Karan GOEL, Christopher RÉ (2022)</a></li>
+<li><a href="https://searchworks.stanford.edu/view/14784021">Modeling sequences with structured state spaces - Albert GU (2023)</a></li>
+<li><a href="https://arxiv.org/abs/2310.02980">Never Train from Scratch: Fair Comparison of Long-Sequence Models Requires Data-Driven Priors - Ido AMOS, Jonathan BERANT, Ankit GUPTA (2023)</a></li>
+</ul>
+<hr>
+<p><strong>Bản dịch tiếng Pháp có sẵn trên blog của tôi:</strong> <a href="https://lbourdois.github.io/blog/ssm/introduction_ssm/">blog</a></p>
+<hr>
+<p><strong>Tuyên bố miễn trừ trách nhiệm:</strong> Bài viết này được dịch và biên soạn dựa trên nội dung gốc. Mọi sai sót hoặc hiểu lầm trong quá trình dịch thuật đều không cố ý.</p>
+<hr>
+<hr>
+<p><strong>Tóm tắt thay đổi:</strong></p>
+<ul>
+<li>14/12/2023: Phát hành bài viết.</li>
+<li>08/04/2024: Sửa lỗi chính tả.</li>
+<li>11/06/2024: Thêm liên kết đến bài viết thứ hai trong chuỗi bài viết về SSM.</li>
+<li>18/07/2024: Sửa lỗi chính tả LaTex.</li>
+<li>23/09/2024: Viết lại phần giới thiệu và thêm phần về nguồn gốc của SSM trong học sâu.</li>
+<li>26/10/2025: Làm rõ một số cấu trúc câu theo phản hồi của người đọc.</li>
+<li>01/11/2025: Thêm một số tài nguyên (Phụ lục E của cuốn sách &ldquo;Hands-On Machine Learning with Scikit-Learn and Pytorch&rdquo; của Aurélien Geron).</li>
+</ul>
+<hr>
+<h2 id="cộng-đồng">Cộng đồng</h2>
+<h3 id="lịch-sử-ssm-1">Lịch sử SSM</h3>
+<p>Bài viết &ldquo;LMU&rdquo; của VOELKER, KAJIĆ và ELIASMITH (2019) được coi là tiền thân của S4. Bài báo này khám phá cách áp dụng SSM vào học sâu, đặc biệt là trong việc xử lý các chuỗi dài, vượt trội hơn LSTM và các mô hình khác về khả năng xử lý hàng triệu bước.</p>
+<h3 id="tài-nguyên-ssm">Tài nguyên SSM</h3>
+<ul>
+<li><strong>Khóa học động lực học:</strong> Bài giảng của Ion HAZYUK cung cấp kiến thức về mô hình không gian trạng thái.</li>
+<li><strong>Luận án tiến sĩ:</strong> Của Albert GU và Aaron R. VOELKER.</li>
+</ul>
+<h3 id="tài-nguyên-s4-1">Tài nguyên S4</h3>
+<ul>
+<li><strong>Video:</strong> Các bài thuyết trình của Albert GU và Sasha RUSH.</li>
+<li><strong>Mã nguồn:</strong> &ldquo;The Annotated S4&rdquo; (Jax) và triển khai chính thức S4 (PyTorch).</li>
+<li><strong>Blog:</strong> Loạt bài viết về S4 từ Hazy Research.</li>
+<li><strong>Sách:</strong> Phụ lục E của &ldquo;Hands-On Machine Learning with Scikit-Learn and Pytorch&rdquo; bởi Aurélien Geron.</li>
+</ul>
+<h3 id="tài-nguyên-hippo-1">Tài nguyên HiPPO</h3>
+<ul>
+<li><strong>Bài viết trên blog Hazy Research:</strong> Giới thiệu về ma trận HiPPO.</li>
+<li><strong>Bài báo:</strong> &ldquo;How to Train Your HiPPO&rdquo; của Albert GU và cộng sự.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/lbourdois/get-on-the-ssm-train">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/19-th%C3%A1ng-7-2024/">19 Tháng 7, 2024</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d6e9ef/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/667d6f513a685cd30f542fef/ipB8pJRbVIK2FJOOEGUjC.png" alt="Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/51f15f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/660fefd0e219d7297f3f85b1/DxJqJ90SsZ5dHmvq0pVyQ.jpeg" alt="Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

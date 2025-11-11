@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mô hình Ngôn ngữ Nhỏ (SLM)- Tổng quan Toàn diện | AI Today - SkyAI</title>
+
+<meta name="description" content="Mô hình Ngôn ngữ Nhỏ (SLM)- Tổng quan Toàn diện">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Mô hình Ngôn ngữ Nhỏ (SLM)- Tổng quan Toàn diện</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Mô hình Ngôn ngữ Nhỏ (SLM)- Tổng quan Toàn diện </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64808a8c856901b0edb96245/adDtHNcE7jDiNU_x__QDx.jpeg" alt="Mô hình Ngôn ngữ Nhỏ (SLM)- Tổng quan Toàn diện">
+        <figcaption class="text-center italic text-xs">Mô hình Ngôn ngữ Nhỏ (SLM)- Tổng quan Toàn diện</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="small-language-models-slm-tổng-quan-toàn-diện">Small Language Models (SLM): Tổng quan toàn diện</h1>
+<p><em>Bài viết bởi John Johnson trên Hugging Face</em></p>
+<!-- raw HTML omitted -->
+<p>Trong vài năm trở lại đây, lĩnh vực trí tuệ nhân tạo đã có những bước phát triển vượt bậc, với các mô hình ngôn ngữ lớn (LLM) làm kinh ngạc mọi người bằng khả năng của chúng, hỗ trợ mọi thứ từ chatbot đến trợ lý lập trình. Tuy nhiên, không phải ứng dụng nào cũng đòi hỏi kích thước và độ phức tạp khổng lồ của LLM; sức mạnh tính toán cần thiết khiến chúng trở nên không khả thi cho nhiều trường hợp sử dụng. Đây là lý do tại sao Mô hình Ngôn ngữ Nhỏ (SLM) ra đời để làm cho các mô hình AI mạnh mẽ trở nên dễ tiếp cận hơn bằng cách thu nhỏ kích thước của chúng.</p>
+<p>Hãy cùng tìm hiểu về SLM là gì, cách chúng được thu nhỏ, lợi ích và hạn chế, các trường hợp sử dụng thực tế và cách chúng có thể được sử dụng trên thiết bị di động và máy tính.</p>
+<h2 id="mô-hình-ngôn-ngữ-nhỏ-slm-là-gì">Mô hình Ngôn ngữ Nhỏ (SLM) là gì?</h2>
+<p>Mô hình Ngôn ngữ Nhỏ (SLM) là các phiên bản nhẹ của mô hình ngôn ngữ truyền thống, được thiết kế để hoạt động hiệu quả trong môi trường bị hạn chế về tài nguyên như điện thoại thông minh, hệ thống nhúng hoặc máy tính có năng lượng thấp. Trong khi các mô hình ngôn ngữ lớn có hàng trăm tỷ—hoặc thậm chí hàng nghìn tỷ—tham số, SLM thường dao động từ <strong>1 triệu đến 10 tỷ tham số</strong>. Các mô hình ngôn ngữ nhỏ hơn đáng kể nhưng chúng vẫn giữ được các khả năng NLP cốt lõi như tạo văn bản, tóm tắt, dịch thuật và trả lời câu hỏi.</p>
+<blockquote>
+<p>Một số chuyên gia không thích thuật ngữ &ldquo;Mô hình Ngôn ngữ Nhỏ&rdquo;, bởi vì một tỷ tham số không hề nhỏ. Họ ưa thích thuật ngữ &ldquo;Mô hình Ngôn ngữ Lớn Nhỏ&rdquo;, nghe có vẻ phức tạp. Nhưng phần lớn đã chấp nhận &ldquo;Mô hình Ngôn ngữ Nhỏ&rdquo;, vì vậy SLM là tên gọi của nó. Nhân tiện, hãy lưu ý rằng <em>nó chỉ nhỏ khi so sánh với các mô hình lớn</em>.</p></blockquote>
+<h2 id="làm-thế-nào-để-chúng-thu-nhỏ-lại">Làm thế nào để chúng thu nhỏ lại?</h2>
+<p>Quá trình thu nhỏ mô hình ngôn ngữ bao gồm nhiều kỹ thuật nhằm giảm kích thước của nó mà không ảnh hưởng quá nhiều đến hiệu suất:</p>
+<ol>
+<li><strong>Chưng cất kiến thức (Knowledge Distillation)</strong>: Huấn luyện một mô hình &ldquo;học trò&rdquo; nhỏ hơn bằng cách chuyển giao kiến thức từ một mô hình &ldquo;thầy giáo&rdquo; lớn hơn.</li>
+<li><strong>Cắt tỉa (Pruning)</strong>: Loại bỏ các tham số dư thừa hoặc ít quan trọng trong kiến trúc mạng nơ-ron.</li>
+<li><strong>Lượng tử hóa (Quantization)</strong>: Giảm độ chính xác của các giá trị số được sử dụng trong tính toán (ví dụ: chuyển đổi số thực sang số nguyên).</li>
+</ol>
+<h2 id="ví-dụ-về-mô-hình-ngôn-ngữ-nhỏ">Ví dụ về Mô hình Ngôn ngữ Nhỏ</h2>
+<p>Nhiều mô hình ngôn ngữ nhỏ nhưng mạnh mẽ đã xuất hiện, chứng minh rằng kích thước không phải là tất cả. Các ví dụ sau đây là SLM với số lượng tham số từ 1-4 tỷ:</p>
+<ul>
+<li><a href="https://huggingface.co/meta-llama/Llama-3.2-1B"><strong>Llama3.2-1B</strong></a> – Phiên bản 1 tỷ tham số của Meta, được tối ưu hóa cho các thiết bị biên.</li>
+<li><a href="https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct"><strong>Qwen2.5-1.5B</strong></a> – Một mô hình từ Alibaba dành cho các ứng dụng đa ngôn ngữ với 1.5 tỷ tham số.</li>
+<li><a href="https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"><strong>DeepSeek-R1-Distill-Qwen-1.5B</strong></a> - Mô hình suy luận thế hệ đầu tiên của DeepSeek được chưng cất từ Qwen2.5 với 1.5 tỷ tham số.</li>
+<li><a href="https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B"><strong>SmolLM2-1.7B</strong></a> – Từ HuggingFaceTB, một mô hình ngôn ngữ &ldquo;nhỏ&rdquo; hiện đại (1.7 tỷ tham số) được huấn luyện trên các bộ dữ liệu mở chuyên biệt (FineMath, Stack-Edu và SmolTalk).</li>
+<li><a href="https://huggingface.co/microsoft/Phi-3.5-mini-instruct"><strong>Phi-3.5-Mini-3.8B</strong></a> – Mô hình mở nhỏ bé nhưng mạnh mẽ của Microsoft với 3.8 tỷ tham số, được tối ưu hóa cho khả năng suy luận và tạo mã.</li>
+<li><a href="https://huggingface.co/google/gemma-3-4b-it"><strong>Gemma3-4B</strong></a> - Được phát triển bởi Google DeepMind, mô hình 4 tỷ tham số nhẹ nhưng mạnh mẽ này là đa ngôn ngữ và đa phương thức.</li>
+</ul>
+<p>Đây là các mô hình ngôn ngữ nhỏ mạnh mẽ hơn khác: <strong>Mistral 7B</strong>, <strong>Gemma 9B</strong>, và <strong>Phi-4 14B</strong> (mặc dù tôi không chắc liệu Phi-4 với 14 tỷ tham số có còn được coi là &ldquo;nhỏ&rdquo; không, nhưng nó rất có năng lực :))</p>
+<h2 id="lợi-ích-của-mô-hình-ngôn-ngữ-nhỏ">Lợi ích của Mô hình Ngôn ngữ Nhỏ</h2>
+<ul>
+<li><strong>Yêu cầu tính toán thấp</strong> – Có thể chạy trên laptop tiêu dùng, thiết bị biên và điện thoại di động.</li>
+<li><strong>Tiêu thụ năng lượng thấp hơn</strong> – Các mô hình hiệu quả giảm mức sử dụng điện, làm cho chúng thân thiện với môi trường.</li>
+<li><strong>Suy luận nhanh hơn</strong> – Các mô hình nhỏ hơn tạo ra phản hồi nhanh chóng, lý tưởng cho các ứng dụng thời gian thực.</li>
+<li><strong>AI trên thiết bị</strong> – Không cần kết nối internet hoặc dịch vụ đám mây, nâng cao quyền riêng tư và bảo mật.</li>
+<li><strong>Triển khai rẻ hơn</strong> – Chi phí phần cứng và đám mây thấp hơn làm cho AI trở nên dễ tiếp cận hơn đối với các công ty khởi nghiệp và nhà phát triển.</li>
+<li><strong>Khả năng tùy chỉnh</strong>: Dễ dàng tinh chỉnh cho các tác vụ chuyên biệt theo lĩnh vực (ví dụ: phân tích tài liệu pháp lý).</li>
+</ul>
+<h2 id="hạn-chế-của-mô-hình-ngôn-ngữ-nhỏ">Hạn chế của Mô hình Ngôn ngữ Nhỏ</h2>
+<p>Mặc dù SLM mang lại nhiều lợi thế, chúng cũng đi kèm với một số đánh đổi:</p>
+<ul>
+<li><strong>Phạm vi hẹp</strong> hơn: Khả năng khái quát hóa hạn chế bên ngoài lĩnh vực đào tạo của chúng (ví dụ: một SLM y tế sẽ gặp khó khăn với việc viết mã).</li>
+<li><strong>Nguy cơ thiên vị</strong>: Các bộ dữ liệu nhỏ hơn có thể khuếch đại các thiên vị nếu không được quản lý cẩn thận.</li>
+<li><strong>Độ phức tạp giảm</strong>: Các mô hình nhỏ hơn có thể gặp khó khăn với các tác vụ rất tinh tế hoặc phức tạp đòi hỏi sự hiểu biết ngữ cảnh sâu sắc.</li>
+<li><strong>Kém mạnh mẽ hơn</strong>: Chúng dễ bị lỗi hơn trong các tình huống mơ hồ hoặc khi đối mặt với các đầu vào đối nghịch.</li>
+</ul>
+<h2 id="ứng-dụng-thực-tế-của-mô-hình-ngôn-ngữ-nhỏ">Ứng dụng thực tế của Mô hình Ngôn ngữ Nhỏ</h2>
+<p>Mặc dù có những hạn chế, SLM có một loạt các ứng dụng thực tế:</p>
+<ol>
+<li><strong>Chatbot &amp; Trợ lý ảo</strong>: Đủ hiệu quả để chạy trên thiết bị di động trong khi cung cấp tương tác thời gian thực.</li>
+<li><strong>Tạo mã</strong>: Các mô hình như Phi-3.5 Mini hỗ trợ các nhà phát triển viết và gỡ lỗi mã.</li>
+<li><strong>Dịch ngôn ngữ</strong>: Các mô hình nhẹ có thể cung cấp dịch thuật trên thiết bị cho khách du lịch.</li>
+<li><strong>Tóm tắt &amp; Tạo nội dung</strong>: Các doanh nghiệp sử dụng SLM để tạo nội dung tiếp thị, bài đăng mạng xã hội và báo cáo.</li>
+<li><strong>Ứng dụng chăm sóc sức khỏe</strong>: AI trên thiết bị để kiểm tra triệu chứng và nghiên cứu y tế.</li>
+<li><strong>IoT &amp; Điện toán biên</strong>: Chạy AI trên các thiết bị nhà thông minh mà không cần phụ thuộc vào đám mây.</li>
+<li><strong>Công cụ giáo dục</strong>: Hệ thống gia sư có thể sử dụng SLM để tạo các giải thích, câu đố và phản hồi cá nhân hóa trong thời gian thực.</li>
+</ol>
+<h2 id="chạy-mô-hình-ngôn-ngữ-nhỏ-trên-thiết-bị-biên">Chạy Mô hình Ngôn ngữ Nhỏ trên Thiết bị Biên</h2>
+<p>SLM mang sức mạnh AI trực tiếp đến điện thoại thông minh của bạn (sử dụng PockPal) hoặc PC (sử dụng Ollama), cung cấp quyền truy cập ngoại tuyến, quyền riêng tư nâng cao và độ trễ thấp hơn.</p>
+<h3 id="slm-trên-thiết-bị-di-động-với-pocketpal">SLM trên Thiết bị Di động với PocketPal</h3>
+<p>Đối với người dùng quan tâm đến việc trải nghiệm SLM trực tiếp, ứng dụng PocketPal AI cung cấp một cách trực quan để tương tác với các mô hình này trực tiếp trên điện thoại thông minh của bạn, mà không cần kết nối internet. Cho dù bạn muốn soạn email, động não ý tưởng hay nhận câu trả lời cho các câu hỏi nhanh, PocketPal cung cấp một giao diện liền mạch được hỗ trợ bởi các SLM được tối ưu hóa. Khả năng ngoại tuyến của nó đảm bảo các truy vấn của bạn vẫn riêng tư.</p>
+<p><strong>Tính năng</strong></p>
+<ul>
+<li>Hỗ trợ AI Ngoại tuyến: Chạy mô hình ngôn ngữ trực tiếp trên thiết bị của bạn mà không cần kết nối internet.</li>
+<li>Linh hoạt Mô hình: Tải xuống và chuyển đổi giữa nhiều SLM - như Phi, Gemma, Qwen &amp; các mô hình khác.</li>
+<li>Tự động Tải/Dỡ tải: Tự động quản lý bộ nhớ bằng cách dỡ tải các mô hình khi ứng dụng ở chế độ nền.</li>
+<li>Cài đặt Suy luận: Tùy chỉnh các tham số mô hình như prompt hệ thống, nhiệt độ, token BOS và mẫu chat.</li>
+<li>Chỉ số Hiệu suất Thời gian thực: Xem token mỗi giây và mili giây mỗi token trong quá trình tạo phản hồi AI.</li>
+</ul>
+<p>Tải PocketPal AI trên <a href="https://apps.apple.com/us/app/pocketpal-ai/id6502579498">iOS</a> và <a href="https://play.google.com/store/apps/details?id=com.pocketpalai">Android</a></p>
+<h3 id="chạy-slm-trên-pc-với-ollama">Chạy SLM trên PC với Ollama</h3>
+<p>Ollama, một công cụ mã nguồn mở, đơn giản hóa việc triển khai SLM trên PC:</p>
+<ul>
+<li><strong>Quản lý Cục bộ</strong>: Chạy các mô hình như Llama3.2-1B hoặc Phi-3.5 Mini với thiết lập tối thiểu.</li>
+<li><strong>Tối ưu hóa GPU</strong>: Tận dụng các GPU tiêu dùng để suy luận nhanh hơn.</li>
+<li><strong>Quy trình làm việc Tùy chỉnh</strong>: Tích hợp SLM vào các đường ống dữ liệu hoặc công cụ sáng tạo (ví dụ: đánh giá mã tự động).</li>
+</ul>
+<p><strong>Bắt đầu với Ollama:</strong></p>
+<ol>
+<li>
+<p>Cài đặt Ollama từ <a href="Https://ollama.com">ollama.com</a></p>
+</li>
+<li>
+<p>Mở terminal và tải xuống một mô hình:</p>
+<p>bash
+ollama pull qwen2.5:1.5b</p>
+</li>
+<li>
+<p>Chạy mô hình một cách tương tác:</p>
+<p>bash
+ollama run qwen2.5:1.5b</p>
+</li>
+</ol>
+<p>Thiết lập này cho phép các chatbot, trợ lý mã hóa và công cụ tóm tắt tài liệu được hỗ trợ bởi AI cục bộ mà không cần dịch vụ đám mây.</p>
+<h2 id="tinh-chỉnh-mô-hình-ngôn-ngữ-nhỏ">Tinh chỉnh Mô hình Ngôn ngữ Nhỏ</h2>
+<p>Một trong những khía cạnh thú vị nhất của SLM là khả năng thích ứng của chúng thông qua tinh chỉnh. Bằng cách cung cấp cho SLM các bộ dữ liệu chuyên biệt theo lĩnh vực, bạn có thể nâng cao hiệu suất của nó cho các ứng dụng ngách.</p>
+<p>Ví dụ:</p>
+<ul>
+<li>Tinh chỉnh một mô hình trên các tài liệu pháp lý để tạo một trợ lý phân tích hợp đồng.</li>
+<li>Huấn luyện một SLM trên các tài liệu kỹ thuật để xây dựng một hướng dẫn khắc phục sự cố cho kỹ sư.</li>
+</ul>
+<p>Có nhiều cách để tinh chỉnh một SLM:</p>
+<ol>
+<li>Tinh chỉnh Toàn bộ – Huấn luyện lại tất cả các tham số với dữ liệu mới (yêu cầu tính toán đáng kể).</li>
+<li>LoRA (Low-Rank Adaptation) – Chỉ tinh chỉnh một vài lớp, làm cho nó nhẹ và hiệu quả.</li>
+<li>Adapter &amp; Prompt Tuning – Thêm các lớp bổ sung hoặc tối ưu hóa prompt để hướng dẫn phản hồi của mô hình.</li>
+</ol>
+<p>Ví dụ: Tinh chỉnh với LoRA
+Sử dụng thư viện <code>peft</code> của Hugging Face:</p>
+<p>python
+from peft import LoraConfig, get_peft_model
+from transformers import AutoModelForCausalLM, AutoTokenizer</p>
+<p>model_name = &ldquo;gemma-2-2b&rdquo;
+model = AutoModelForCausalLM.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)</p>
+<p>config = LoraConfig(r=8, lora_alpha=16, lora_dropout=0.1)
+model = get_peft_model(model, config)</p>
+<h1 id="huấn-luyện-mô-hình-trên-dữ-liệu-mới">Huấn luyện mô hình trên dữ liệu mới&hellip;</h1>
+<p>Tinh chỉnh không chỉ cải thiện độ chính xác mà còn đảm bảo mô hình phù hợp chặt chẽ với các yêu cầu độc đáo của bạn.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Mô hình Ngôn ngữ Nhỏ (SLM) đại diện cho một bước tiến quan trọng hướng tới AI hiệu quả, dễ tiếp cận và tiết kiệm chi phí. Chúng cung cấp các giải pháp thực tế cho các doanh nghiệp, nhà phát triển và nhà nghiên cứu đang tìm kiếm AI mạnh mẽ mà không gặp phải gánh nặng tính toán nặng nề của LLM.</p>
+<p>Với các công cụ như <strong>Ollama</strong> cho PC và <strong>các tùy chọn tinh chỉnh</strong> để tùy chỉnh, SLM đang định hình lại bối cảnh AI - làm cho AI trở nên cá nhân hơn, riêng tư hơn và có sẵn cho tất cả mọi người.</p>
+<p>Hãy cùng khám phá cách AI nhỏ gọn có thể biến đổi các dự án của chúng ta.</p>
+<hr>
+<p><strong>Tham khảo:</strong>
+<em>Một Khảo sát về Mô hình Ngôn ngữ Nhỏ (Bài báo Nghiên cứu)</em>
+<a href="https://arxiv.org/abs/2410.20011">https://arxiv.org/abs/2410.20011</a></p>
+<hr>
+<h3 id="cộng-đồng">Cộng đồng</h3>
+<p>📻 🎙️ Hey, tôi đã tạo một <strong>podcast AI</strong> về bài viết blog này, hãy xem nó nhé!</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><em>Podcast này được tạo thông qua <a href="https://huggingface.co/spaces/ngxson/kokoro-podcast-generator">ngxson/kokoro-podcast-generator</a>, sử dụng <a href="https://huggingface.co/deepseek-ai/DeepSeek-R1">DeepSeek-R1</a> và <a href="https://huggingface.co/hexgrad/Kokoro-82M">Kokoro-TTS</a>.</em></p>
+<p><em>ngxson</em> - 25 tháng 2 năm 2025</p>
+<p>Impressive 👌</p>
+<p><em>jjokah</em> - 26 tháng 2 năm 2025</p>
+<p>Is XML-RoBERTa considered an SLM? Thanks.</p>
+<p><em>hanifsajid</em> - 2 tháng 8 năm 2025</p>
+<blockquote>
+<p>Based on size, <code>XML-RoBERTa</code> (which is under 1 billion parameters) might be considered a Small Language Model. However, in comparison to the modern SLMs (w/ broad generative capabilities), XML-RoBERTa is highly specialized for <strong>cross-lingual transfer tasks</strong>. In that case, it <em>cannot be considered a typical SLM</em>.</p></blockquote>
+<p><em>jjokah</em> - 14 tháng 8 năm 2025</p>
+<blockquote>
+<p>Indeed — with under 1B parameters, XLM-RoBERTa could technically fall under the SLM size range, but architecturally it’s a very different beast. It’s optimized for multilingual representation learning and cross-lingual transfer, not broad generative capabilities.</p>
+<p>What’s fascinating is that modern SLMs of similar size can now handle open-ended generation, reasoning, and multi-domain tasks. I can imagine an interesting future “Hybrid SLM” that fuses XLM-RoBERTa’s strong multilingual embeddings with the generative flexibility of today’s compact LMs.</p></blockquote>
+<p><em>Abdullah Alwahdi</em> - 14 tháng 8 năm 2025</p>
+<blockquote>
+<p>That&rsquo;s right. XLM-RoBERTa is a beast for the tasks it was optimized for.</p></blockquote>
+<p><em>jjokah</em> - 14 tháng 8 năm 2025</p>
+<p>Still these are large models and it require costly tuning.
+How can we make 1 or 2 order of magnitudes smaller?</p>
+<p><em>Reza Roshani Tabrizi</em> - 14 tháng 10 năm 2025</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/jjokah/small-language-model">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/22-th%C3%A1ng-2/">22 Tháng 2</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d6e9ef/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/667d6f513a685cd30f542fef/ipB8pJRbVIK2FJOOEGUjC.png" alt="Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/51f15f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/660fefd0e219d7297f3f85b1/DxJqJ90SsZ5dHmvq0pVyQ.jpeg" alt="Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chạy các Mô hình Transformer Lớn trên Thiết bị Di động và Biên</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

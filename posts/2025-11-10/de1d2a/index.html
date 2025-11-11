@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Thử nghiệm của bên thứ ba như một thành phần chính của chính sách AI | AI Today - SkyAI</title>
+
+<meta name="description" content="Anthropic thảo luận về vai trò quan trọng của thử nghiệm của bên thứ ba trong việc định hình và thực thi chính sách AI hiệu quả.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Thử nghiệm của bên thứ ba như một thành phần chính của chính sách AI</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Anthropic thảo luận về vai trò quan trọng của thử nghiệm của bên thứ ba trong việc định hình và thực thi chính sách AI hiệu quả. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            27 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/b42db5b8558fab6b7452cfe30bd4f8aa734e8337-1312x1312.png&amp;w=3840&amp;q=75" alt="Thử nghiệm của bên thứ ba như một thành phần chính của chính sách AI">
+        <figcaption class="text-center italic text-xs">Anthropic thảo luận về vai trò quan trọng của thử nghiệm của bên thứ ba trong việc định hình và thực thi chính sách AI hiệu quả.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="kiểm-tra-bởi-bên-thứ-ba---thành-phần-quan-trọng-của-chính-sách-ai">Kiểm tra bởi bên thứ ba - Thành phần quan trọng của chính sách AI</h1>
+<p>Chúng tôi tin rằng ngành công nghiệp AI cần có các phương pháp kiểm tra hiệu quả bởi bên thứ ba đối với các hệ thống AI tiên tiến. Việc xây dựng một quy trình kiểm tra và các biện pháp can thiệp chính sách đi kèm, dựa trên những hiểu biết từ ngành, chính phủ và giới học thuật, là cách tốt nhất để ngăn chặn những tác hại tiềm ẩn cho xã hội - dù cố ý hay vô tình - từ các hệ thống AI.</p>
+<p>Việc triển khai các hệ thống AI tạo sinh quy mô lớn như Claude đã cho chúng tôi thấy rằng cần có những nỗ lực để xây dựng một môi trường chính sách có khả năng ứng phó với năng lực của các mô hình AI mạnh mẽ nhất hiện nay, cũng như những mô hình có thể được phát triển trong tương lai. Trong bài viết này, chúng tôi sẽ thảo luận về hình thức kiểm tra của bên thứ ba, lý do tại sao nó cần thiết, và mô tả một số nghiên cứu mà chúng tôi đã thực hiện để đi đến lập trường chính sách này. Chúng tôi cũng sẽ thảo luận về cách các ý tưởng về kiểm tra liên quan đến các chủ đề khác trong chính sách AI, chẳng hạn như các mô hình có thể truy cập công khai và các vấn đề về &ldquo;regulatory capture&rdquo; (sự chi phối của ngành đối với cơ quan quản lý).</p>
+<h2 id="tổng-quan-về-chính-sách">Tổng quan về chính sách</h2>
+<p>Các hệ thống AI tiên tiến hiện nay đòi hỏi một quy trình giám sát và kiểm tra bởi bên thứ ba để xác nhận tính an toàn của chúng. Đặc biệt, chúng ta cần sự giám sát này để hiểu và phân tích hành vi của mô hình liên quan đến các vấn đề như <strong>tính toàn vẹn bầu cử</strong>, <strong>phân biệt đối xử có hại</strong> và khả năng <strong>lạm dụng an ninh quốc gia</strong>. Chúng tôi cũng kỳ vọng rằng các hệ thống mạnh mẽ hơn trong tương lai sẽ yêu cầu sự giám sát sâu hơn - như đã thảo luận trong bài viết <strong>&lsquo;Quan điểm cốt lõi về an toàn AI&rsquo;</strong> của chúng tôi, chúng tôi cho rằng có khả năng các phương pháp phát triển AI hiện tại có thể tạo ra các hệ thống có năng lực to lớn, và chúng tôi kỳ vọng rằng các hệ thống ngày càng mạnh mẽ hơn sẽ cần các quy trình kiểm tra mở rộng hơn. Một quy trình kiểm tra mạnh mẽ bởi bên thứ ba có vẻ là một cách tốt để bổ sung cho các quy định đặc thù ngành cũng như phát triển khả năng cho các phương pháp chính sách chung hơn.</p>
+<p>Việc xây dựng một quy trình kiểm tra bởi bên thứ ba cho các hệ thống AI ngày nay dường như mang lại cho chúng ta một trong những công cụ tốt nhất để quản lý các thách thức của AI hiện tại, đồng thời cung cấp cơ sở hạ tầng mà chúng ta có thể sử dụng cho các hệ thống trong tương lai. Chúng tôi kỳ vọng rằng cuối cùng, một hình thức kiểm tra của bên thứ ba sẽ trở thành yêu cầu pháp lý để triển khai rộng rãi các mô hình AI, nhưng việc thiết kế quy trình này và xác định chính xác các tiêu chuẩn mà hệ thống AI nên được đánh giá là điều chúng ta sẽ cần phải lặp lại trong những năm tới - chưa rõ điều gì là phù hợp hoặc hiệu quả ngày hôm nay, và cách để biết điều đó là thông qua việc tạo mẫu quy trình này và thu thập bằng chứng về nó.</p>
+<p><strong>Một quy trình kiểm tra hiệu quả bởi bên thứ ba sẽ:</strong></p>
+<ul>
+<li>Mang lại cho mọi người và các tổ chức niềm tin lớn hơn vào các hệ thống AI.</li>
+<li>Được phạm vi hóa chính xác, sao cho việc vượt qua các bài kiểm tra không trở thành gánh nặng quá lớn, gây bất lợi cho các công ty nhỏ.</li>
+<li>Chỉ áp dụng cho một tập hợp hẹp các hệ thống lớn nhất, đòi hỏi nhiều tài nguyên tính toán nhất; nếu được triển khai đúng cách, phần lớn các hệ thống AI sẽ không nằm trong phạm vi của quy trình kiểm tra này.</li>
+<li>Cung cấp phương tiện để các quốc gia và các nhóm quốc gia phối hợp với nhau thông qua việc phát triển các tiêu chuẩn chung và thử nghiệm các thỏa thuận Công nhận lẫn nhau.</li>
+</ul>
+<p><strong>Một quy trình như vậy sẽ có các thành phần chính sau đây [1]:</strong></p>
+<ul>
+<li>Các bài kiểm tra hiệu quả và được tin cậy rộng rãi để đo lường hành vi và các tiềm năng lạm dụng của một hệ thống AI nhất định.</li>
+<li>Các bên thứ ba đáng tin cậy và hợp pháp có thể thực hiện các bài kiểm tra này và kiểm toán quy trình kiểm tra của công ty.</li>
+</ul>
+<h2 id="tại-sao-chúng-ta-cần-một-quy-trình-kiểm-tra-hiệu-quả">Tại sao chúng ta cần một quy trình kiểm tra hiệu quả?</h2>
+<p>Quy trình này là cần thiết bởi vì các hệ thống AI tiên tiến - đặc biệt là các mô hình tạo sinh quy mô lớn tiêu tốn nhiều tài nguyên tính toán - không phù hợp với các khuôn khổ sử dụng theo trường hợp cụ thể và theo ngành hiện nay. Các hệ thống này được thiết kế để trở thành các &ldquo;máy mọi thứ&rdquo; - Gemini, ChatGPT và Claude đều có thể được điều chỉnh cho vô số các trường hợp sử dụng hạ nguồn, và hành vi của các hệ thống hạ nguồn luôn thừa hưởng một phần năng lực và điểm yếu của hệ thống tiên tiến mà chúng dựa vào.</p>
+<p>Các hệ thống này cực kỳ mạnh mẽ và hữu ích, nhưng chúng cũng tiềm ẩn rủi ro lạm dụng nghiêm trọng hoặc tai nạn do AI gây ra. Chúng tôi muốn giúp đưa ra một hệ thống giúp giảm đáng kể khả năng xảy ra các vụ lạm dụng hoặc tai nạn nghiêm trọng do công nghệ AI gây ra, đồng thời vẫn cho phép triển khai rộng rãi các khía cạnh mang lại lợi ích của nó. Ngoài mong muốn rõ ràng là ngăn chặn các tai nạn hoặc lạm dụng lớn vì lợi ích của chính nó, các sự cố lớn có khả năng dẫn đến các hành động điều chỉnh cực đoan, vội vàng, dẫn đến một tình huống &ldquo;tồi tệ nhất của cả hai thế giới&rdquo; nơi quy định vừa kìm hãm vừa không hiệu quả. Chúng tôi tin rằng vì nhiều lý do, việc chủ động thiết kế các quy định hiệu quả và được cân nhắc kỹ lưỡng sẽ tốt hơn.</p>
+<p>Các hệ thống cũng có khả năng hiển thị các hành vi mới lạ, tự động có thể dẫn đến các tai nạn nghiêm trọng - ví dụ, các hệ thống có thể chèn các lỗ hổng bảo mật vào mã mà chúng được yêu cầu tạo ra hoặc, khi được yêu cầu thực hiện một nhiệm vụ phức tạp với nhiều bước, thực hiện một số hành động mâu thuẫn với ý định của con người. Mặc dù những hành vi này rất khó đo lường, việc phát triển các công cụ để đo lường chúng ngay hôm nay như một biện pháp bảo hiểm chống lại việc chúng biểu hiện trong các hệ thống được triển khai rộng rãi là điều đáng giá.</p>
+<p>Tại Anthropic, chúng tôi đã triển khai các hệ thống tự quản trị mà chúng tôi tin rằng sẽ giảm đáng kể rủi ro lạm dụng hoặc tai nạn từ các công nghệ mà chúng tôi đã phát triển. Phương pháp chính của chúng tôi là <strong>Chính sách Mở rộng Trách nhiệm (RSP)</strong>, cam kết chúng tôi kiểm tra các hệ thống tiên tiến của mình, như Claude, về các rủi ro lạm dụng và tai nạn, và chỉ triển khai các mô hình vượt qua các bài kiểm tra an toàn của chúng tôi. Nhiều nhà phát triển AI khác sau đó đã áp dụng hoặc đang áp dụng các khuôn khổ có nhiều điểm tương đồng đáng kể với RSP của Anthropic.</p>
+<p>Tuy nhiên, mặc dù Anthropic đang đầu tư vào RSP của mình (và các tổ chức khác cũng đang làm tương tự), chúng tôi tin rằng loại hình kiểm tra này là chưa đủ vì nó dựa vào các quyết định tự quản trị của các đơn vị tư nhân riêng lẻ. Cuối cùng, việc kiểm tra sẽ cần được thực hiện theo cách được tin cậy rộng rãi, và nó sẽ cần được áp dụng cho tất cả mọi người phát triển các hệ thống tiên tiến. Cách tiếp cận kiểm tra toàn ngành này không có gì lạ - hầu hết các lĩnh vực kinh tế quan trọng đều được quy định thông qua các tiêu chuẩn an toàn sản phẩm và quy trình kiểm tra, bao gồm thực phẩm, y tế, ô tô và hàng không vũ trụ.</p>
+<h2 id="một-quy-trình-kiểm-tra-mạnh-mẽ-sẽ-trông-như-thế-nào">Một quy trình kiểm tra mạnh mẽ sẽ trông như thế nào?</h2>
+<p>Một quy trình kiểm tra hiệu quả bởi bên thứ ba có thể giúp xác định và ngăn chặn các rủi ro tiềm ẩn của các hệ thống AI. Nó sẽ yêu cầu:</p>
+<ul>
+<li>Một sự hiểu biết chung giữa ngành, chính phủ và giới học thuật về hình thức của một khuôn khổ kiểm tra an toàn AI - những gì nó nên và không nên bao gồm.</li>
+<li>Một giai đoạn ban đầu nơi các công ty thực hiện các lần chạy thử nghiệm để triển khai kiểm tra, đôi khi có sự giám sát của bên thứ ba, để đảm bảo các bài kiểm tra hoạt động, có tính khả thi và có thể được bên thứ ba xác nhận.</li>
+<li>Một quy trình kiểm tra hai giai đoạn: nên có một giai đoạn kiểm tra tự động, rất nhanh mà các công ty áp dụng cho hệ thống của họ. Giai đoạn này nên bao phủ một phạm vi rộng và ưu tiên tránh các kết quả âm tính giả. Nếu giai đoạn này phát hiện các vấn đề tiềm ẩn, nên có một bài kiểm tra thứ cấp kỹ lưỡng hơn, có thể sử dụng phương pháp khai thác do chuyên gia thực hiện.</li>
+<li>Tăng cường nguồn lực cho các bộ phận của chính phủ sẽ giám sát và xác nhận các bài kiểm tra - việc xây dựng và phân tích các bài kiểm tra là công việc chi tiết, tốn kém và kỹ thuật, do đó chính phủ sẽ cần tìm cách tài trợ cho các đơn vị thực hiện công việc này.</li>
+<li>Một bộ các bài kiểm tra bắt buộc được phạm vi hóa cẩn thận - chúng ta sẽ cần các bài kiểm tra cụ thể, bắt buộc theo luật khi có rõ ràng các yếu tố khuyến khích kém cho việc tự quản trị của ngành, và lợi ích an toàn công cộng từ sự giám sát của chính phủ vượt trội hơn gánh nặng pháp lý. Chúng ta nên đảm bảo đây là một bộ bài kiểm tra nhỏ, được phạm vi hóa tốt, nếu không chúng ta sẽ tạo ra các gánh nặng pháp lý và tăng khả năng bị &ldquo;regulatory capture&rdquo;.</li>
+<li>Một sự cân bằng hiệu quả giữa việc đảm bảo an toàn và sự dễ dàng trong việc thực hiện các bài kiểm tra này.</li>
+</ul>
+<p>Khi nói đến các bài kiểm tra, chúng ta đã có thể xác định một lĩnh vực hiện nay mà việc kiểm tra bởi bên thứ ba có vẻ hữu ích và phát huy thế mạnh tự nhiên của các chính phủ: <strong>rủi ro an ninh quốc gia</strong>. Chúng ta nên xác định một bộ các khả năng AI mà nếu bị lạm dụng, có thể gây tổn hại đến an ninh quốc gia, sau đó kiểm tra hệ thống của chúng ta về các khả năng này. Các khả năng như vậy có thể bao gồm khả năng tăng tốc đáng kể việc tạo ra vũ khí sinh học hoặc thực hiện các cuộc tấn công mạng phức tạp. (Nếu hệ thống có khả năng này, thì điều đó sẽ dẫn đến việc chúng ta thay đổi cách triển khai mô hình - ví dụ, loại bỏ một số khả năng khỏi các mô hình được triển khai rộng rãi và/hoặc giới hạn một số khả năng của mô hình thông qua các chế độ &lsquo;biết khách hàng của bạn&rsquo;, và đảm bảo các cơ quan chính phủ liên quan nhận thức được rằng chúng ta có các hệ thống với các khả năng này.) Chúng tôi kỳ vọng có nhiều lĩnh vực mà xã hội cuối cùng sẽ yêu cầu các phương pháp kiểm tra hợp pháp bởi bên thứ ba, và an ninh quốc gia chỉ là một trong số đó.</p>
+<p>Khi nói đến bên thứ ba thực hiện việc kiểm tra, sẽ có vô số bên và các bài kiểm tra sẽ được thực hiện vì nhiều lý do khác nhau, mà chúng tôi nêu ra ở đây:</p>
+<ul>
+<li><strong>Các công ty tư nhân:</strong> Các công ty có thể ký hợp đồng với các công ty khác để xây dựng các bài kiểm tra và đánh giá cho hệ thống của họ, như chúng tôi đã làm với các công ty như Gryphon Scientific. Chúng ta cũng có thể hình dung các công ty thực hiện kiểm tra cho các công ty khác khi các bài kiểm tra đó được luật pháp quy định nhưng không do các cơ quan chính phủ thực hiện, tương tự như cách các công ty kế toán kiểm toán sổ sách của các công ty tư nhân.</li>
+<li><strong>Các trường đại học:</strong> Ngày nay, nhiều nhà nghiên cứu tại nhiều cơ sở giáo dục đại học có quyền truy cập miễn phí hoặc được trợ cấp vào các mô hình do các phòng thí nghiệm AI phát triển; trong tương lai, chúng ta có thể hình dung một số tổ chức nghiên cứu này thực hiện các sáng kiến kiểm tra của riêng họ, một số trong đó có thể được giám sát hoặc nâng cao thông qua các cơ quan chính phủ.</li>
+<li><strong>Chính phủ:</strong> Một số bài kiểm tra (chúng tôi nghi ngờ, một số lượng tương đối nhỏ) có thể được quy định theo luật và do các cơ quan chính phủ thực hiện - ví dụ, để kiểm tra các lạm dụng liên quan đến an ninh quốc gia của các hệ thống AI. Ở đây, các cơ quan chính phủ có thể tự thực hiện các bài kiểm tra.</li>
+</ul>
+<p>Cuối cùng, chúng tôi kỳ vọng rằng việc kiểm tra bởi bên thứ ba sẽ được thực hiện bởi một hệ sinh thái đa dạng gồm nhiều tổ chức khác nhau, tương tự như cách an toàn sản phẩm được đạt được trong các lĩnh vực kinh tế khác ngày nay. Vì AI đa dụng, được thương mại hóa rộng rãi là một công nghệ tương đối mới, chúng tôi không nghĩ rằng cấu trúc của hệ sinh thái này rõ ràng ngày hôm nay và nó sẽ trở nên rõ ràng hơn thông qua tất cả các tác nhân trên thực hiện các thử nghiệm kiểm tra khác nhau. Chúng ta cần bắt đầu làm việc với quy trình kiểm tra này ngay hôm nay, vì sẽ mất nhiều thời gian để xây dựng.</p>
+<p>Chúng tôi tin rằng chúng tôi - và các bên tham gia khác trong việc phát triển AI - sẽ cần thực hiện nhiều thử nghiệm kiểm tra để làm đúng điều này. Mức độ rủi ro là cao: nếu chúng ta đưa ra một phương pháp không đo lường chính xác sự an toàn nhưng dễ thực hiện, chúng ta có nguy cơ không làm được gì có ý nghĩa hoặc hữu ích. Nếu chúng ta đưa ra một phương pháp đo lường chính xác sự an toàn nhưng khó thực hiện, chúng ta có nguy cơ tạo ra một hệ sinh thái kiểm tra ưu ái các công ty có nhiều nguồn lực hơn, do đó làm giảm khả năng tham gia của các bên nhỏ hơn.</p>
+<h2 id="cách-anthropic-hỗ-trợ-các-quy-trình-kiểm-tra-công-bằng-hiệu-quả">Cách Anthropic hỗ trợ các quy trình kiểm tra công bằng, hiệu quả</h2>
+<p>Trong tương lai, Anthropic sẽ thực hiện các hoạt động sau đây để hỗ trợ chính phủ trong việc phát triển các quy trình kiểm tra hiệu quả bởi bên thứ ba:</p>
+<ul>
+<li>Tạo mẫu quy trình kiểm tra thông qua việc triển khai RSP của chúng tôi và chia sẻ những gì chúng tôi học được.</li>
+<li>Kiểm tra đánh giá của bên thứ ba đối với hệ thống của chúng tôi thông qua các nhà thầu và đối tác chính phủ.</li>
+<li>Đào sâu công việc <strong>red teaming tiên tiến</strong> của chúng tôi để cung cấp cho chúng tôi và toàn ngành một cái nhìn rõ ràng hơn về các rủi ro của hệ thống AI và các biện pháp giảm thiểu chúng.</li>
+<li>Vận động các chính phủ tài trợ cho các cơ quan và tổ chức có thể giúp phát triển một quy trình kiểm tra hiệu quả bởi bên thứ ba (ví dụ: ở Hoa Kỳ, NIST, Viện An toàn AI Hoa Kỳ, Tài nguyên Nghiên cứu AI Quốc gia, việc sử dụng siêu máy tính của Bộ Năng lượng cho kiểm tra AI, v.v.).</li>
+<li>Khuyến khích các chính phủ xây dựng &ldquo;Đám mây Nghiên cứu Quốc gia&rdquo; của riêng họ (như Tài nguyên Nghiên cứu AI Quốc gia ở Hoa Kỳ) để họ có thể a) phát triển năng lực độc lập trong giới học thuật và chính phủ để xây dựng, nghiên cứu và kiểm tra các hệ thống AI tiên tiến, và b) làm việc về khoa học đánh giá các hệ thống AI, bao gồm cả những hệ thống do các công ty tư nhân như Anthropic phát triển.</li>
+</ul>
+<p>Việc phát triển một quy trình kiểm tra và các biện pháp can thiệp chính sách đi kèm, dựa trên những hiểu biết từ ngành, chính phủ và giới học thuật, là cách tốt nhất để ngăn chặn những tác hại cho xã hội - dù cố ý hay vô tình - từ các hệ thống AI.</p>
+<h2 id="kiểm-tra-liên-kết-với-các-ưu-tiên-chính-sách-rộng-hơn-của-chúng-tôi-như-thế-nào">Kiểm tra liên kết với các ưu tiên chính sách rộng hơn của chúng tôi như thế nào</h2>
+<p>Mục tiêu chính sách tổng thể của chúng tôi là có sự giám sát phù hợp đối với lĩnh vực AI. Chúng tôi tin rằng điều này chủ yếu sẽ đạt được thông qua việc có một hệ sinh thái hiệu quả cho việc kiểm tra và đánh giá bởi bên thứ ba các hệ thống AI. Dưới đây là một số ý tưởng chính sách AI mà bạn có thể mong đợi chúng tôi vận động để hỗ trợ điều đó:</p>
+<p><strong>Tăng cường tài trợ cho việc kiểm tra và đánh giá AI trong chính phủ</strong></p>
+<ul>
+<li>Các quy trình kiểm tra và đánh giá hiệu quả là điều kiện tiên quyết cần thiết cho bất kỳ hình thức chính sách AI hiệu quả nào. Chúng tôi nghĩ rằng các chính phủ nên thành lập và hỗ trợ các tổ chức phát triển đánh giá AI, cũng như tập hợp ngành, giới học thuật và các bên liên quan khác để thống nhất các tiêu chuẩn về an toàn của hệ thống AI. Tại Hoa Kỳ, chúng tôi đặc biệt ủng hộ <strong>tăng cường tài trợ cho NIST</strong>.</li>
+</ul>
+<p><strong>Hỗ trợ đánh giá AI tốt hơn thông qua cơ sở hạ tầng công cho nghiên cứu AI</strong></p>
+<ul>
+<li>Chúng ta cần khẩn cấp tăng số lượng và phạm vi của những người tham gia vào việc kiểm tra và đánh giá các hệ thống AI, cả về các rủi ro hiện tại và tương lai. Do đó, điều quan trọng là các chính phủ phải tạo ra cơ sở hạ tầng thử nghiệm để giúp các nhà nghiên cứu học thuật kiểm tra và đánh giá các hệ thống AI tiên tiến, và phát triển các hệ thống tiên tiến của riêng họ cho các mục đích có lợi. Để biết thêm thông tin, hãy xem sự ủng hộ của chúng tôi đối với một đám mây nghiên cứu quốc gia của Hoa Kỳ thông qua <strong>Đạo luật CREATE AI</strong> và <strong>lời khai trước Thượng viện</strong> của chúng tôi.</li>
+</ul>
+<p><strong>Phát triển các bài kiểm tra cho các khả năng cụ thể, liên quan đến an ninh quốc gia</strong></p>
+<ul>
+<li>Chúng ta nên biết liệu các hệ thống AI có thể được sử dụng theo những cách làm tăng cường hoặc (nếu được triển khai bởi một thực thể khác) làm suy yếu an ninh quốc gia hay không. Trong khi khu vực tư nhân và giới học thuật có thể phát triển phần lớn các bài kiểm tra, một số câu hỏi kiểm tra và đánh giá liên quan đến các khả năng an ninh quốc gia được phân loại, vì vậy chỉ một số chính phủ mới có thể đánh giá chúng một cách hiệu quả. Do đó, chúng tôi muốn hỗ trợ các nỗ lực của Chính phủ Hoa Kỳ trong việc phát triển các cách thức kiểm tra hệ thống AI về các khả năng liên quan đến an ninh quốc gia. Chúng tôi cũng sẽ tiếp tục công việc của mình để <strong>hiểu rõ hơn về khả năng của các hệ thống của chúng tôi</strong>.</li>
+</ul>
+<p><strong>Lập kế hoạch kịch bản và phát triển bài kiểm tra cho các hệ thống ngày càng tiên tiến</strong></p>
+<ul>
+<li><strong>Chính sách Mở rộng Trách nhiệm</strong> của chúng tôi được thiết kế để đi trước trong việc đánh giá và kiểm tra các khả năng trong tương lai, giả định của các hệ thống AI. Điều này nhằm đảm bảo chúng tôi có các bài kiểm tra liên quan để đánh giá và giảm thiểu tốt hơn các rủi ro tai nạn và lạm dụng từ các hệ thống AI ngày càng mạnh mẽ. Tuy nhiên, chúng tôi không khẳng định rằng RSP của chúng tôi phân định tất cả các bài kiểm tra cần được thực hiện đối với các mô hình ngày càng mạnh mẽ hơn. Khi AI tiến bộ do sức mạnh tính toán ngày càng tăng, một nhóm tác nhân rộng hơn nên làm việc để dự đoán các khả năng trong tương lai của hệ thống AI và phát triển các bài kiểm tra cho chúng.</li>
+</ul>
+<h2 id="các-khía-cạnh-của-chính-sách-ai-mà-chúng-tôi-tin-là-quan-trọng-để-thảo-luận">Các khía cạnh của chính sách AI mà chúng tôi tin là quan trọng để thảo luận</h2>
+<p>Trong khi phát triển cách tiếp cận chính sách của mình, chúng tôi cũng nhận thấy mình liên tục quay trở lại một vài vấn đề cụ thể như các mô hình có thể truy cập công khai và &ldquo;regulatory capture&rdquo;. Chúng tôi đã trình bày suy nghĩ chính sách hiện tại của mình bên dưới nhưng nhận ra đây là những vấn đề phức tạp mà mọi người thường không đồng ý.</p>
+<ul>
+<li>
+<p><strong>Các mô hình được phổ biến công khai và/hoặc mã nguồn mở:</strong> Khoa học tiến triển phần lớn nhờ vào nền văn hóa cởi mở và minh bạch xung quanh nghiên cứu. Điều này đặc biệt đúng trong lĩnh vực AI, nơi phần lớn cuộc cách mạng đang diễn ra hiện nay được xây dựng dựa trên việc công bố nghiên cứu và các mô hình như Transformer, BERT, Vision Transformers, v.v. Ngoài ra còn có một lịch sử lâu dài về các hệ thống mã nguồn mở và có thể truy cập công khai làm tăng cường độ bền của môi trường bảo mật bằng cách giúp nhiều người hơn thử nghiệm với công nghệ và xác định các điểm yếu tiềm ẩn của chúng.</p>
+<p>Chúng tôi tin rằng phần lớn các hệ thống AI hiện nay (có lẽ là tất cả) đều an toàn để phổ biến công khai và sẽ an toàn để phổ biến rộng rãi trong tương lai. Tuy nhiên, chúng tôi tin rằng trong tương lai, có thể khó để dung hòa một nền văn hóa phổ biến hoàn toàn các hệ thống AI tiên tiến với một nền văn hóa an toàn xã hội.</p>
+<p>Nếu - và &ldquo;nếu&rdquo; là một điểm quan trọng và chưa được giải quyết - các mô hình AI ngày càng có năng lực có thể dẫn đến các tác động bất lợi, hoặc giữ khả năng xảy ra các tai nạn thảm khốc, thì chúng ta sẽ cần điều chỉnh các chuẩn mực về những gì được phổ biến công khai ở cấp độ tiên tiến.</p>
+<p>Cụ thể, chúng ta sẽ cần đảm bảo rằng các nhà phát triển AI phát hành hệ thống của họ theo cách cung cấp các đảm bảo mạnh mẽ về an toàn - ví dụ, nếu chúng tôi phát hiện một việc lạm dụng có ý nghĩa đối với mô hình của mình, chúng tôi có thể đặt các bộ phân loại để phát hiện và chặn các nỗ lực khai thác việc lạm dụng đó, hoặc chúng tôi có thể giới hạn khả năng tinh chỉnh hệ thống thông qua quy tắc &lsquo;biết khách hàng của bạn&rsquo; cùng với các nghĩa vụ hợp đồng không được tinh chỉnh theo hướng lạm dụng cụ thể. So với điều đó, nếu ai đó muốn phát hành công khai trọng số của một mô hình có khả năng lạm dụng tương tự, họ sẽ cần phải vừa làm cứng mô hình chống lại việc lạm dụng đó (ví dụ, thông qua đào tạo RLHF hoặc RLAIF) vừa tìm cách làm cho mô hình này có khả năng chống lại các nỗ lực tinh chỉnh nó trên một tập dữ liệu cho phép lạm dụng đó. Chúng ta cũng sẽ cần thử nghiệm các quy trình tiết lộ, tương tự như cách cộng đồng bảo mật đã phát triển các chuẩn mực về việc thông báo trước về việc tiết lộ các lỗ hổng zero-day.</p>
+<p>Mặc dù những gì chúng tôi đã mô tả về bản chất là rất tốn kém, chúng tôi cũng tin rằng điều đó là cần thiết - chúng ta phải làm mọi thứ có thể để tránh các hệ thống AI cho phép lạm dụng nghiêm trọng hoặc gây ra tai nạn lớn. Tuy nhiên, việc thực hiện bất kỳ hạn chế nào đối với việc phổ biến công khai các hệ thống AI phụ thuộc vào việc có sự đồng thuận rộng rãi về những gì là lạm dụng không thể chấp nhận được của hệ thống AI hoặc hành vi hệ thống.</p>
+<p><strong>Anthropic không phải là một bên trung lập ở đây</strong> - chúng tôi là một công ty chủ yếu phát triển các hệ thống độc quyền, và chúng tôi không có đủ uy tín để đưa ra tuyên bố ở đây về những gì nên hoặc không nên được chấp nhận trong các hệ thống được phổ biến công khai. Do đó, để giải quyết các câu hỏi về các mô hình mã nguồn mở, chúng tôi cần các bên thứ ba hợp pháp phát triển các phương pháp kiểm tra và đánh giá được chấp nhận rộng rãi là hợp pháp, chúng tôi cần các bên thứ ba này (hoặc các thực thể đáng tin cậy khác) xác định một bộ lạm dụng hệ thống AI hẹp và nghiêm trọng cũng như các hành vi hệ thống AI bất lợi, và chúng ta sẽ cần áp dụng các bài kiểm tra này cho các mô hình cả hai đều được kiểm soát (ví dụ: thông qua API) hoặc được phổ biến công khai (ví dụ: thông qua việc phát hành trọng số).</p>
+<p>Việc kiểm tra bởi bên thứ ba các mô hình được phổ biến công khai và các mô hình độc quyền kín có thể tạo ra thông tin thiết yếu mà chúng ta cần để hiểu các thuộc tính an toàn của cảnh quan AI [2]. Nếu chúng ta không làm điều này, bạn có thể rơi vào tình huống mà một mô hình độc quyền hoặc một mô hình có thể truy cập công khai trực tiếp cho phép lạm dụng nghiêm trọng hoặc gây ra một tai nạn AI lớn - và nếu điều đó xảy ra, có thể có những tổn hại đáng kể cho con người và cũng có khả năng các quy định bất lợi được áp dụng cho lĩnh vực AI.</p>
+</li>
+<li>
+<p><strong>Regulatory capture (Sự chi phối của ngành đối với cơ quan quản lý):</strong> Bất kỳ hình thức chính sách nào cũng có thể bị &ldquo;regulatory capture&rdquo; bởi một thực thể đủ động lực và có nguồn lực dồi dào: ví dụ, một công ty AI có vốn hóa lớn. Một số ý tưởng chúng tôi thảo luận ở trên về các mô hình có thể truy cập công khai là những loại điều tự bản thân chúng dễ bị &ldquo;regulatory capture&rdquo;. Điều quan trọng là hệ sinh thái AI phải luôn mạnh mẽ và cạnh tranh - AI là một lĩnh vực phức tạp và cơ hội tốt nhất của nhân loại để làm đúng điều này có lẽ đến từ việc có một tập hợp đa dạng, rộng lớn các bên tham gia vào việc phát triển và giám sát nó.</p>
+<p>Chúng tôi thường ủng hộ các sáng kiến kiểm tra và đo lường bởi bên thứ ba vì chúng dường như là loại cơ sở hạ tầng chính sách giúp chúng ta xác định và ngăn chặn các tác hại cụ thể cũng như xây dựng năng lực tồn tại độc lập với các công ty lớn. Do đó, chúng tôi nghĩ rằng việc tập trung vào phát triển năng lực kiểm tra bởi bên thứ ba có thể giảm rủi ro &ldquo;regulatory capture&rdquo; và tạo ra một sân chơi bình đẳng cho các nhà phát triển. Ngược lại, các tập đoàn do ngành dẫn đầu có thể có xu hướng ưu tiên các phương pháp liên quan đến chi phí tuân thủ cao đối với các công ty bất kể quy mô của họ - một phương pháp vốn ưu ái các doanh nghiệp lớn hơn có thể chi nhiều tiền hơn cho việc tuân thủ chính sách.</p>
+</li>
+</ul>
+<h2 id="tại-sao-chúng-tôi-thận-trọng-trong-những-gì-chúng-tôi-ủng-hộ-về-chính-sách-ai">Tại sao chúng tôi thận trọng trong những gì chúng tôi ủng hộ về chính sách AI</h2>
+<p>Khi phát triển các lập trường chính sách của mình, chúng tôi giả định rằng các quy định có xu hướng tạo ra gánh nặng hành chính cho cả bên thực thi quy định (ví dụ: chính phủ) và bên bị điều chỉnh (ví dụ: các nhà phát triển AI). Do đó, chúng tôi nên ủng hộ các chính sách vừa có tính thực tế để thực thi vừa có tính khả thi để tuân thủ. Chúng tôi cũng lưu ý rằng các quy định có xu hướng tích lũy - một khi được thông qua, các quy định rất khó loại bỏ. Do đó, chúng tôi ủng hộ những gì chúng tôi coi là &ldquo;chính sách khả dụng tối thiểu&rdquo; để tạo ra một hệ sinh thái AI tốt, và chúng tôi sẽ cởi mở với phản hồi.</p>
+<h2 id="tại-sao-chính-sách-ai-lại-quan-trọng">Tại sao chính sách AI lại quan trọng</h2>
+<p>Các hệ thống AI ngày nay và các hệ thống tương lai có sức mạnh to lớn và có khả năng mang lại lợi ích to lớn cho xã hội. Chúng tôi cũng tin rằng các hệ thống này có tiềm năng lạm dụng không nhỏ, hoặc có thể gây ra tai nạn nếu được triển khai kém. Mặc dù phần lớn công việc của chúng tôi mang tính kỹ thuật, chúng tôi đã đi đến niềm tin rằng việc kiểm tra là nền tảng cho sự an toàn của hệ thống của chúng tôi - đó không chỉ là cách chúng tôi hiểu rõ hơn về khả năng và thuộc tính an toàn của các mô hình của mình, mà còn là cách các bên thứ ba có thể xác nhận các tuyên bố mà chúng tôi đưa ra về hệ thống AI.</p>
+<p>Chúng tôi tin rằng việc xây dựng một hệ sinh thái kiểm tra bởi bên thứ ba là một trong những cách tốt nhất để đưa nhiều thành phần xã hội hơn vào việc phát triển và giám sát các hệ thống AI. Chúng tôi hy vọng rằng bằng cách xuất bản bài viết này, chúng tôi đã có thể trình bày rõ hơn về lợi ích của việc kiểm tra bởi bên thứ ba cũng như phác thảo lập trường của chúng tôi để người khác phê bình và xây dựng dựa trên đó.</p>
+<h2 id="chú-thích">Chú thích</h2>
+<p>[1] Một số quốc gia cũng có thể thử nghiệm <strong>&rsquo;thị trường quy định&rsquo;</strong> nơi các nhà phát triển AI có thể mua và bán dịch vụ kiểm tra AI và cạnh tranh với nhau để cố gắng xây dựng và triển khai các hệ thống an toàn, hữu ích hơn một cách tuần tự.</p>
+<p>[2] Ví dụ, nếu bạn phát hành công khai một mô hình AI, việc một bên thứ ba tinh chỉnh mô hình đó trên một tập dữ liệu do họ lựa chọn là tương đối dễ dàng. Tập dữ liệu như vậy có thể được thiết kế để tối ưu hóa cho một hành vi lạm dụng (ví dụ: lừa đảo hoặc tấn công mạng độc hại). Nếu bạn có thể phát triển công nghệ làm cho việc tinh chỉnh mô hình AI ra khỏi phân phối khả năng ban đầu của nó trở nên rất khó khăn, thì sẽ dễ dàng hơn để tự tin phát hành các mô hình mà không có khả năng làm tổn hại đến sự an toàn hạ nguồn.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/news/third-party-testing">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/mar-25-2024/">Mar 25, 2024</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d9a8e7/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic tham gia cùng Nhà Trắng và các tổ chức khác trong cam kết đầu tư vào giáo dục AI cho giới trẻ Mỹ, thúc đẩy tương lai của lực lượng lao động.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/16879e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Anthropic bổ nhiệm Guillaume Princen làm Trưởng bộ phận EMEA và công bố hơn 100 vị trí mới trong khu vực" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic bổ nhiệm Guillaume Princen làm Trưởng bộ phận EMEA và công bố hơn 100 vị trí mới trong khu vực</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic chào đón Guillaume Princen đảm nhận vai trò Trưởng bộ phận EMEA, đồng thời công bố kế hoạch tuyển dụng mở rộng trong khu vực.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

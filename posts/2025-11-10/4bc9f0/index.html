@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi | AI Today - SkyAI</title>
+
+<meta name="description" content="Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            25 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/67692674bc5af30a79d06213/UQ6xLl_qNEGg1KQPR90bv.png" alt="Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi">
+        <figcaption class="text-center italic text-xs">Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="đánh-giá-rag-của-riêng-bạn-tại-sao-các-thực-tiễn-tốt-nhất-lại-thất-bại-với-chúng-tôi">Đánh giá RAG của riêng bạn: Tại sao các thực tiễn tốt nhất lại thất bại với chúng tôi</h1>
+<p><em>Bởi Charles AZAM trên Hugging Face</em></p>
+<p>Jimmy là một công ty kỹ thuật hạt nhân đang xây dựng Lò phản ứng mô-đun nhỏ (SMR) đầu tiên của Pháp. Các kỹ sư của chúng tôi cần tìm kiếm hàng nghìn tài liệu kỹ thuật phức tạp: các bài báo nghiên cứu hạt nhân, tài liệu quy định, các tệp PDF khoa học đa ngôn ngữ chứa đầy phương trình, sơ đồ và thuật ngữ chuyên ngành. Việc tìm kiếm thủ công không hiệu quả – chúng tôi cần một hệ thống RAG có thể thực sự truy xuất đúng tài liệu.</p>
+<p>Khi chúng tôi xây dựng, chúng tôi đã làm những gì mọi đội kỹ thuật tốt làm: chúng tôi đã tuân theo các thực tiễn tốt nhất. Chunking nhận biết ngữ cảnh. Tìm kiếm lai. Tối ưu hóa kích thước chunk cẩn thận. Các mô hình từ bảng xếp hạng MTEB.</p>
+<p>Chúng tôi đã kiểm tra 156 truy vấn trên ba ngôn ngữ. Gần như mọi &ldquo;thực tiễn tốt nhất&rdquo; đều sai với trường hợp sử dụng của chúng tôi.</p>
+<p>Kết quả đã làm chúng tôi ngạc nhiên: chunking ngẫu nhiên vượt trội hơn chunking nhận biết ngữ cảnh (70,5% so với 63,8%). Kích thước chunk hầu như không quan trọng. Tìm kiếm lai thua tìm kiếm dày đặc (69,2% so với 63,5%). Mô hình nhúng chiến thắng? Thậm chí không có trong bảng xếp hạng MTEB.</p>
+<p>Bài viết này chia sẻ toàn bộ hành trình của chúng tôi: phương pháp luận benchmark, các phát hiện hiệu suất đáng ngạc nhiên và những bài học rút ra từ việc triển khai RAG trong sản xuất. Từ việc lựa chọn giữa Mistral OCR và các giải pháp thay thế mã nguồn mở, đến việc khám phá tại sao AWS OpenSearch lại tốn kém 70 đô la mỗi ngày với kết quả tầm thường, đến tối ưu hóa cơ sở hạ tầng của chúng tôi – chúng tôi đang chia sẻ những gì thực sự hiệu quả (và những gì không).</p>
+<p>Cách duy nhất để biết điều gì hiệu quả với bạn là đo lường. Đây là cách chúng tôi đã làm.</p>
+<h2 id="tldr-quá-dài-không-đọc">TL;DR (Quá dài; Không đọc)</h2>
+<p><strong>Những phát hiện chính:</strong></p>
+<ul>
+<li><strong>Nhúng AWS Titan V2 hoạt động tốt nhất trên tất cả các chỉ số</strong> (tỷ lệ hit 69,2% so với 57,7% Qwen 8B, 39,1% Mistral embed)</li>
+<li><strong>Kích thước chunk không thực sự quan trọng</strong> – không có sự khác biệt thống kê đáng kể giữa 2K và 40K ký tự cho việc truy xuất cấp tài liệu</li>
+<li><strong>Chunking ngẫu nhiên vượt trội hơn chiến lược nhận biết ngữ cảnh</strong> – đơn giản hơn thì tốt hơn (70,5% so với 63,8% tỷ lệ hit trung bình)</li>
+<li><strong>Mistral OCR là vô đối</strong> cho các tệp PDF khoa học phức tạp (tốn kém nhưng xứng đáng)</li>
+<li><strong>Không sử dụng AWS OpenSearch</strong> cho tìm kiếm vector – quá đắt đỏ ($70/ngày tối thiểu)</li>
+<li><strong>Qdrant rất tuyệt</strong> cho cơ sở dữ liệu vector – dễ sử dụng, hiệu suất ổn định, tìm kiếm lai, dễ tự host, dịch vụ được quản lý tuyệt vời</li>
+<li><strong>Tìm kiếm chỉ dày đặc đã đánh bại tìm kiếm lai</strong> trong các thử nghiệm của chúng tôi – tìm kiếm dày đặc cho kết quả tốt hơn tìm kiếm lai (tỷ lệ hit 69,2% so với 63,5% cho Titan)</li>
+</ul>
+<p>Hãy nhớ rằng, những kết quả này đặc biệt đối với trường hợp sử dụng của chúng tôi (tài liệu khoa học bằng tiếng Anh, tiếng Pháp và tiếng Nhật).</p>
+<h2 id="tổng-quan-rag">Tổng quan RAG</h2>
+<p>Retrieval-Augmented Generation (RAG) kết hợp các mô hình ngôn ngữ lớn (LLM) với việc truy xuất kiến thức bên ngoài. Thay vì chỉ dựa vào dữ liệu đào tạo của LLM, RAG sẽ tìm nạp các tài liệu có liên quan và cung cấp chúng làm ngữ cảnh cho việc tạo sinh.</p>
+<p><strong>Các thành phần cốt lõi:</strong></p>
+<ul>
+<li><strong>Bộ chuyển đổi PDF</strong> - Trích xuất văn bản từ tài liệu</li>
+<li><strong>Chiến lược Chunking</strong> - Chia tài liệu thành các phần có thể truy xuất</li>
+<li><strong>Mô hình nhúng</strong> - Chuyển đổi văn bản thành biểu diễn vector</li>
+<li><strong>Cơ sở dữ liệu Vector</strong> - Lưu trữ và tìm kiếm các vector nhúng</li>
+<li><strong>Chế độ truy xuất</strong> - Tìm kiếm dày đặc, thưa thớt hoặc lai</li>
+<li><strong>LLM</strong> - Tạo phản hồi từ ngữ cảnh đã truy xuất</li>
+</ul>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/0q9Vtq_S8zk7C8-qx6-OQ.png" alt="rag_mermaid"></p>
+<h2 id="phương-pháp-luận-benchmark-của-chúng-tôi">Phương pháp luận Benchmark của chúng tôi</h2>
+<h3 id="thiết-lập">Thiết lập</h3>
+<p>Benchmark của chúng tôi sử dụng các tài liệu thực tế từ cơ sở dữ liệu sản xuất của chúng tôi:</p>
+<ul>
+<li><strong>PDF được chuyển đổi bằng Mistral OCR</strong> - các tài liệu khoa học phức tạp với phương trình, bảng biểu và sơ đồ</li>
+<li><strong>Lưu trữ trong Qdrant</strong> - cơ sở dữ liệu vector mà chúng tôi chọn</li>
+<li><strong>Cấu hình sản xuất</strong> - thiết lập tương tự như chúng tôi sử dụng trong hệ thống RAG thực tế của mình</li>
+</ul>
+<h3 id="bộ-dữ-liệu-kiểm-tra">Bộ dữ liệu kiểm tra</h3>
+<p>Chúng tôi đã tạo các câu hỏi kiểm tra bao gồm các mức độ khó khác nhau:</p>
+<ul>
+<li><strong>Truy xuất đơn giản</strong>: Trích xuất trực tiếp từ văn bản (ví dụ: &ldquo;Uncertainty in the specific heat capacity of helium&rdquo;)</li>
+<li><strong>Câu hỏi phức tạp</strong>: Hiểu khái niệm (ví dụ: &ldquo;Synchronization in a coupled fluid–structure system?&rdquo;)</li>
+</ul>
+<p>Bộ dữ liệu kiểm tra của chúng tôi bao gồm <strong>156 truy vấn kiểm tra duy nhất</strong> cho mỗi mô hình nhúng:</p>
+<ul>
+<li><strong>3 ngôn ngữ</strong>: Tiếng Anh, tiếng Pháp, tiếng Nhật</li>
+<li><strong>2 dạng truy vấn</strong>: Câu hỏi (&ldquo;What is&hellip;?&rdquo;) và các câu khẳng định (&ldquo;Characteristics of&hellip;&rdquo;)</li>
+</ul>
+<p>Đây là một ví dụ từ bộ kiểm tra của chúng tôi:</p>
+<p>python
+MetaQuestion(
+source_document=&ldquo;Jaiman et al. - 2023 - Mechanics of Flow-Induced Vibration Physical Mode.pdf&rdquo;,
+related_questions=[
+# Affirmatives
+Question(
+text=&ldquo;Cylinder vibrations induced by fluid flow&rdquo;,
+language=Language.ENGLISH,
+form=Form.affirmative,
+),
+Question(
+text=&ldquo;Vibrations des cylindres induites par l’écoulement des fluides&rdquo;,
+language=Language.FRENCH,
+form=Form.affirmative,
+),
+Question(
+text=&ldquo;流体の流れによって誘発される円筒の振動&rdquo;,
+language=Language.JAPANESE,
+form=Form.affirmative,
+),
+# Interrogatives
+Question(
+text=&ldquo;What can you tell me about cylinder vibrations induced by fluid flow?&rdquo;,
+language=Language.ENGLISH,
+form=Form.interrogative,
+),
+Question(
+text=&ldquo;Que peux-tu me dire sur les vibrations des cylindres induites par l&rsquo;écoulement des fluides ?&rdquo;,
+language=Language.FRENCH,
+form=Form.interrogative,
+),
+Question(
+text=&ldquo;流体の流れによって誘発される円筒の振動について教えてください。&rdquo;,
+language=Language.JAPANESE,
+form=Form.interrogative,
+),
+],
+)</p>
+<p>Mỗi truy vấn đều có <strong>kết quả thực tế đã biết</strong> - chúng tôi biết tài liệu nào cần được truy xuất.</p>
+<h3 id="các-chỉ-số">Các chỉ số</h3>
+<p><strong>Lưu ý quan trọng về Mục tiêu Truy xuất của chúng tôi:</strong></p>
+<blockquote>
+<p><strong>Mục tiêu:</strong> Mục tiêu chính của chúng tôi là <strong>truy xuất đúng tài liệu</strong>, không nhất thiết là đoạn văn hoặc phần chính xác. Một khi chúng tôi có tài liệu phù hợp, LLM của chúng tôi có thể trích xuất thông tin cụ thể cần thiết. Đây là một sự khác biệt quan trọng đã ảnh hưởng đến thiết kế benchmark và kết luận của chúng tôi.</p></blockquote>
+<p>Chúng tôi đã đo lường hiệu suất truy xuất bằng:</p>
+<ul>
+<li><strong>Top-10 Recall (Tỷ lệ Hit)</strong>: % truy vấn mà tài liệu đúng xuất hiện trong top 10 kết quả</li>
+<li><strong>MRR (Mean Reciprocal Rank)</strong>: Trung bình của 1/hạng của các tài liệu đúng (càng cao càng tốt) nhân với 100 để chuẩn hóa</li>
+<li><strong>Top-1 Recall</strong>: % truy vấn mà tài liệu đúng là kết quả đầu tiên</li>
+</ul>
+<p>Vì chúng tôi chỉ quan tâm đến việc truy xuất cấp tài liệu, không phải độ chính xác cấp chunk, điều này có ý nghĩa quan trọng đối với việc tối ưu hóa kích thước chunk (xem các phát hiện bên dưới).</p>
+<h3 id="chiến-lược-chunking">Chiến lược Chunking</h3>
+<p>Chúng tôi đã thử nghiệm hai phương pháp:</p>
+<p><strong>Chunking ngẫu nhiên</strong>: Phân chia dựa trên ký tự đơn giản với sự chồng lấp bằng LangChain&rsquo;s <code>RecursiveCharacterTextSplitter</code>. Các chunk được tạo bằng cách tách tại các ranh giới tự nhiên (đoạn văn, câu) mà không hiểu cấu trúc tài liệu.</p>
+<p><strong>Chunking nhận biết ngữ cảnh</strong>: Phân tích cấu trúc markdown (tiêu đề, phần) thành một cây phân cấp. Mỗi chunk bao gồm các tiêu đề phần mẹ của nó làm ngữ cảnh. Ví dụ, một chunk từ &ldquo;Phần 2.3 → Tiêu đề phụ 2.3.1&rdquo; bao gồm cả hai cấp tiêu đề, bảo tồn cấu trúc tài liệu.</p>
+<h3 id="cấu-hình-kiểm-tra">Cấu hình kiểm tra</h3>
+<p>Chúng tôi đã kiểm tra các kết hợp khác nhau:</p>
+<ul>
+<li><strong>Chiến lược chunking</strong>: Ngẫu nhiên so với nhận biết ngữ cảnh</li>
+<li><strong>Kích thước chunk</strong>: 2K, 4K, 6K ký tự cho Titan V2; 2K cho Mistral Embed; 2K, 10K, 40K ký tự cho Qwen 8B (tận dụng cửa sổ ngữ cảnh 32K lớn hơn của nó)</li>
+<li><strong>Mô hình nhúng</strong>: AWS Titan V2, Qwen 8B, Mistral</li>
+<li><strong>Chế độ truy xuất</strong>: Chỉ dày đặc, lai (dày đặc + thưa thớt), chỉ thưa thớt</li>
+</ul>
+<p>Điều này đã cho chúng tôi nhiều cấu hình để so sánh một cách có hệ thống trên tất cả các khía cạnh.</p>
+<h2 id="kết-quả--bài-học-chính">Kết quả &amp; Bài học chính</h2>
+<h3 id="1-mô-hình-nhúng-aws-titan-thắng-đáng-ngạc-nhiên">1. Mô hình nhúng: AWS Titan Thắng (Đáng ngạc nhiên!)</h3>
+<p>Chúng tôi đã so sánh ba mô hình nhúng trên tất cả các cấu hình, chiến lược kích thước chunk là chunking ngẫu nhiên với kích thước chunk 2000 và chồng lấp 400.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/QjYICxbX5rwFR1IGNrUf-.png" alt="model_comparison"></p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/esexc8MjK1bl5vLhZpWKd.png" alt="model_comparison_english_affirmative"></p>
+<p><strong>Tiêu chí lựa chọn Mô hình:</strong></p>
+<p>Chúng tôi đặc biệt muốn <strong>các mô hình nhúng có thể truy cập qua API</strong> để tránh quản lý cơ sở hạ tầng suy luận mô hình. Điều này đã dẫn chúng tôi đến việc kiểm tra:</p>
+<ul>
+<li><strong>AWS Titan V2</strong> (<code>amazon.titan-embed-text-v2:0</code>): Truy cập qua AWS Bedrock</li>
+<li><strong>Qwen 8B</strong> (<code>Alibaba-NLP/gte-Qwen2-7B-instruct</code>): Truy cập qua Hugging Face Inference API (nhà cung cấp: Nebius AI)</li>
+<li><strong>Mistral Embed</strong> (<code>mistral-embed</code>): Truy cập qua Mistral AI API</li>
+</ul>
+<p>Cả ba đều cung cấp quyền truy cập API REST đơn giản, điều này rất cần thiết cho các yêu cầu sản xuất của chúng tôi.</p>
+<p><strong>Kết quả:</strong></p>
+<ul>
+<li><strong>AWS Titan V2</strong>: Tỷ lệ hit 69,2%</li>
+<li><strong>Qwen 8B</strong>: Tỷ lệ hit 57,7%</li>
+<li><strong>Mistral</strong>: Tỷ lệ hit 39,1%</li>
+</ul>
+<p><strong>Sự ngạc nhiên từ bảng xếp hạng MTEB:</strong></p>
+<p>Nếu bạn chọn mô hình nhúng, bạn sẽ tự nhiên kiểm tra bảng xếp hạng <a href="https://huggingface.co/spaces/mteb/leaderboard">MTEB (Massive Text Embedding Benchmark)</a> trên Hugging Face. Đây là benchmark tiêu chuẩn để so sánh các mô hình nhúng trên các tác vụ khác nhau.</p>
+<p><strong>Phần đáng ngạc nhiên ở đây là: AWS Titan V2 thậm chí còn không có trên bảng xếp hạng MTEB.</strong> Tuy nhiên, nó đã vượt trội hơn cả Qwen 8B và Mistral (cả hai đều có trên bảng xếp hạng) cho trường hợp sử dụng của chúng tôi.</p>
+<p><strong>Tại sao Titan thắng đối với chúng tôi:</strong></p>
+<ul>
+<li>Rẻ hơn các giải pháp thay thế và có giới hạn tỷ lệ cao hơn</li>
+<li>Hiệu suất đa ngôn ngữ tốt hơn (quan trọng đối với tài liệu EN/FR/JA của chúng tôi)</li>
+<li>Mạnh mẽ hơn đối với thuật ngữ khoa học và biệt ngữ kỹ thuật</li>
+<li>Rất rẻ</li>
+</ul>
+<p><strong>Cạm bẫy của các benchmark truyền thống:</strong></p>
+<p>Hầu hết các benchmark nhúng đều kiểm tra trên các truy vấn khẳng định chỉ bằng tiếng Anh. Đây là những gì xảy ra khi chúng tôi chỉ giới hạn phân tích của mình cho các điều kiện đó:</p>
+<blockquote>
+<p><strong>Hiểu biết quan trọng:</strong>
+Trong các điều kiện benchmark &ldquo;truyền thống&rdquo; (chỉ câu hỏi khẳng định bằng tiếng Anh), <strong>Mistral hoạt động gần như ngang bằng với Titan</strong> (tỷ lệ hit 76,9% so với 80,8%). Điều này có vẻ hứa hẹn! Tuy nhiên, khi chúng tôi kiểm tra trên <strong>tất cả các ngôn ngữ và dạng truy vấn</strong>, hiệu suất của Mistral giảm đáng kể (39,1% tổng thể so với 69,2% cho Titan).</p>
+<p><strong>Sự khác biệt chính: tính nhất quán.</strong> Titan duy trì hiệu suất mạnh mẽ trên tiếng Anh, tiếng Pháp, tiếng Nhật và cả hai dạng truy vấn. Mistral vượt trội trong các điều kiện hẹp nhưng thiếu tính mạnh mẽ trên các truy vấn thực tế đa dạng.</p></blockquote>
+<p>Đây chính xác là lý do tại sao chúng tôi chọn Titan thay vì Mistral mặc dù hiệu suất cạnh tranh của Mistral trong các điều kiện lý tưởng. <strong>Các hệ thống RAG trong sản xuất cần các mô hình hoạt động nhất quán trên các mẫu truy vấn đa dạng</strong>, không chỉ những mô hình vượt trội trong các benchmark được kiểm soát.</p>
+<p><strong>Bài học đã rút ra:</strong> Khi đánh giá các mô hình nhúng, hãy kiểm tra chúng trong các điều kiện đa dạng phù hợp với trường hợp sử dụng sản xuất của bạn. Một mô hình thống trị các benchmark chỉ bằng tiếng Anh có thể gặp khó khăn với nội dung đa ngôn ngữ hoặc các cách diễn đạt truy vấn khác nhau. Hãy tìm kiếm sự nhất quán, không chỉ hiệu suất đỉnh cao.</p>
+<h3 id="2-kích-thước-chunk-đừng-suy-nghĩ-quá-nhiều">2. Kích thước Chunk: Đừng Suy Nghĩ Quá Nhiều</h3>
+<p>Chúng tôi đã kiểm tra các kích thước chunk khác nhau: 2K, 4K, 6K ký tự với Titan V2 và 2K, 10K, 40K ký tự với Qwen 8B.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/NlkB82tzCOtBu2YR1HizJ.png" alt="titan_naive_chunk_size_comparison"></p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/xwJFwsMwXrLUF2CfkOqLA.png" alt="qwen_naive_chunk_size_comparison"></p>
+<p><strong>Kết quả:</strong> Kích thước chunk có <strong>ít tác động đến hiệu suất</strong>. Sự khác biệt giữa các kích thước chunk khác nhau là không đáng kể – tất cả các cấu hình đều hoạt động trong vòng vài phần trăm giống nhau.</p>
+<p><strong>Tại sao kích thước chunk không quan trọng lắm đối với chúng tôi:</strong></p>
+<p>Hãy nhớ, mục tiêu của chúng tôi là <strong>truy xuất cấp tài liệu</strong>, không phải tìm đoạn văn chính xác. Miễn là bất kỳ chunk nào từ tài liệu đúng đều được xếp hạng cao, chúng tôi sẽ thành công. Các chunk lớn hơn vẫn chứa nội dung liên quan, chỉ là có nhiều ngữ cảnh xung quanh hơn.</p>
+<p><strong>Khuyến nghị thực tế: Đừng tối ưu hóa quá mức</strong></p>
+<p>Không giống như lời khuyên RAG thông thường nhấn mạnh việc tinh chỉnh kích thước chunk cẩn thận, <strong>dữ liệu của chúng tôi cho thấy kích thước chunk đơn giản là không phải là một tham số quan trọng</strong>. Đây là những gì chúng tôi đã tìm thấy:</p>
+<ul>
+<li><strong>Không có phạt hiệu suất với chunk lớn hơn</strong> - 2K hoạt động tương tự như 40K</li>
+<li><strong>Chunk lớn hơn = Chi phí thấp hơn</strong> - Ít chunk hơn có nghĩa là:
+<ul>
+<li>Nhà cung cấp suy luận: ít token chồng chéo hơn (rẻ hơn và ít khả năng đạt giới hạn tỷ lệ) và nhúng tất cả tài liệu nhanh hơn</li>
+<li>Cơ sở dữ liệu Vector: ít lưu trữ hơn, lập chỉ mục nhanh hơn và ít so sánh tương tự hơn tại thời điểm truy vấn
+<strong>Những gì chúng tôi sử dụng:</strong></li>
+</ul>
+</li>
+<li><strong>Titan V2</strong>: 6K ký tự (chúng tôi gặp lỗi vượt quá giới hạn này, mặc dù mô hình tuyên bố hỗ trợ 8K token - không rõ lý do)</li>
+<li><strong>Qwen 8B</strong>: 40K ký tự (hoạt động tốt với cửa sổ ngữ cảnh 32K token của nó)</li>
+</ul>
+<p><strong>Kết luận:</strong> Chúng tôi đã chuyển từ chunk 2K sang chunk lớn hơn để tiết kiệm chi phí, nhưng thành thật mà nói, bất kỳ kích thước hợp lý nào cũng sẽ hoạt động. Đừng lãng phí nhiều ngày để tối ưu hóa điều này – hãy tập trung vào lựa chọn mô hình nhúng và chế độ truy xuất.</p>
+<h3 id="3-chiến-lược-chunking-ngẫu-nhiên-tương-đương-với-nhận-biết-ngữ-cảnh">3. Chiến lược Chunking: Ngẫu nhiên tương đương với Nhận biết ngữ cảnh</h3>
+<p>Chúng tôi đã thử nghiệm chunking ngẫu nhiên (phân chia dựa trên ký tự đơn giản) so với chunking nhận biết ngữ cảnh (bảo tồn cấu trúc tài liệu như tiêu đề và đoạn văn).</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/NcP9BPaT_sSVdUjMg1mzO.png" alt="strategy_comparison_titan">
+<img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/Tmifa8YDXrcpYWIQjBYsq.png" alt="strategy_comparison_qwen"></p>
+<p><strong>Kết quả:</strong> Chunking ngẫu nhiên <strong>vượt trội hơn</strong> chunking nhận biết ngữ cảnh cho các nhúng Titan (tỷ lệ hit tốt nhất 71,8% so với 67,9%, trung bình 70,5% so với 63,8% trên các kích thước chunk với chỉ tìm kiếm dày đặc).</p>
+<p><strong>Diễn giải:</strong></p>
+<ul>
+<li>Đối với tài liệu kỹ thuật, các ranh giới cấu trúc chặt chẽ (như dấu ngắt phần) có thể làm chia tách nội dung liên quan</li>
+<li>Chunking ngẫu nhiên với sự chồng lấp đã nắm bắt đủ ngữ cảnh</li>
+<li>Chunking nhận biết ngữ cảnh làm tăng thêm sự phức tạp mà không mang lại lợi ích rõ ràng trong trường hợp của chúng tôi</li>
+</ul>
+<p><strong>Khuyến nghị:</strong> Bắt đầu đơn giản với chunking ngẫu nhiên. Chỉ sử dụng nhận biết ngữ cảnh nếu bạn có các yêu cầu cụ thể phụ thuộc vào cấu trúc.</p>
+<h3 id="4-tìm-kiếm-dày-đặc-so-với-lai-trong-qdrant-kết-quả-đáng-ngạc-nhiên">4. Tìm kiếm Dày đặc so với Lai trong Qdrant (Kết quả đáng ngạc nhiên)</h3>
+<p><strong>Hiểu các Chế độ Truy xuất:</strong></p>
+<p>Các cơ sở dữ liệu vector như Qdrant hỗ trợ các phương pháp truy xuất khác nhau:</p>
+<ul>
+<li><strong>Tìm kiếm dày đặc</strong>: Sử dụng nhúng ngữ nghĩa (như Titan hoặc Qwen) để tìm tài liệu dựa trên ý nghĩa. Chuyển đổi truy vấn và tài liệu thành các vector có chiều cao và tìm các vector tương tự. Tuyệt vời cho các kết quả phù hợp về khái niệm nhưng có thể bỏ lỡ các yêu cầu từ khóa chính xác.</li>
+<li><strong>Tìm kiếm thưa thớt</strong>: Sử dụng khớp từ khóa (tương tự như BM25 hoặc TF-IDF). Qdrant thực hiện điều này thông qua các nhúng thưa thớt của FastEmbed (chúng tôi đã sử dụng <code>prithvida/Splade_PP_en_v1</code>). Tuyệt vời cho các kết quả khớp thuật ngữ chính xác nhưng bỏ lỡ sự tương tự về ngữ nghĩa.</li>
+<li><strong>Tìm kiếm lai</strong>: Kết hợp cả hai phương pháp – hiểu ngữ nghĩa từ nhúng dày đặc + độ chính xác từ khóa từ nhúng thưa thớt. Kết quả được hợp nhất bằng cách hợp nhất điểm số. Thông thường, người ta tin rằng phương pháp này sẽ luôn tốt hơn bất kỳ phương pháp nào đơn lẻ.</li>
+</ul>
+<p><strong>Phát hiện của chúng tôi:</strong></p>
+<p>Lý thuyết thông thường cho rằng tìm kiếm lai sẽ vượt trội hơn tìm kiếm dày đặc. Đây thực sự là lý do tại sao chúng tôi chọn Qdrant. Dữ liệu của chúng tôi cho thấy điều ngược lại cho trường hợp sử dụng của chúng tôi.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/O0W093q0DvuSwBCqcc5y4.png" alt="metrics_by_sparse_mode_titan">
+<img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/vdgBhAu7-ERaJtceVCSio.png" alt="metrics_by_sparse_mode_qwen">
+<img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/DrNOjWBrM8piBsPjZHAu4.png" alt="metrics_by_sparse_mode_mistral"></p>
+<p><strong>Phát hiện:</strong> Tìm kiếm chỉ dày đặc đạt tỷ lệ hit <strong>69,2%</strong> so với <strong>63,5%</strong> cho tìm kiếm lai (sử dụng nhúng Titan với chunking ngẫu nhiên 2K ký tự).</p>
+<p><strong>Tại sao điều này có thể xảy ra:</strong></p>
+<ul>
+<li>Đối với tài liệu khoa học có thuật ngữ kỹ thuật, bản thân các nhúng dày đặc đã nắm bắt hiệu quả ý nghĩa ngữ nghĩa</li>
+<li>Tìm kiếm thưa thớt có thể gây ra nhiễu từ các kết quả khớp từ khóa thiếu ngữ cảnh ngữ nghĩa</li>
+<li>Kết quả của bạn có thể khác nhau – điều này đặc biệt đối với các loại tài liệu của chúng tôi và việc triển khai FastEmbed của Qdrant</li>
+</ul>
+<p><strong>Bối cảnh quan trọng:</strong> Chúng tôi đã chọn Qdrant đặc biệt vì khả năng tìm kiếm lai của nó. Mặc dù tìm kiếm chỉ dày đặc hoạt động tốt hơn trong các benchmark của chúng tôi, nhưng tìm kiếm lai vẫn có giá trị đối với:</p>
+<ul>
+<li>Yêu cầu khớp từ khóa chính xác</li>
+<li>Tìm kiếm tuân thủ quy định nơi các thuật ngữ cụ thể quan trọng</li>
+<li>Phương án dự phòng khi nhúng dày đặc gặp khó khăn với các thuật ngữ hiếm</li>
+</ul>
+<p><strong>Khuyến nghị:</strong> Benchmark cả hai chế độ trên corpus cụ thể của bạn. Đừng giả định rằng lai luôn tốt hơn.</p>
+<h3 id="5-hiệu-suất-đa-ngôn-ngữ">5. Hiệu suất đa ngôn ngữ</h3>
+<p>Tài liệu của chúng tôi trải dài trên tiếng Anh, tiếng Pháp và tiếng Nhật. Chúng tôi cần truy xuất đa ngôn ngữ mạnh mẽ.</p>
+<p><strong>Kết quả:</strong></p>
+<ul>
+<li>Tiếng Anh: Tỷ lệ hit 73,1%</li>
+<li>Tiếng Pháp: Tỷ lệ hit 48,7%</li>
+<li>Tiếng Nhật: Tỷ lệ hit 44,2%</li>
+</ul>
+<p>Tiếng Anh vượt trội đáng kể so với tiếng Pháp và tiếng Nhật. Điều này cho thấy hệ thống RAG của chúng tôi hoạt động tốt nhất với nội dung tiếng Anh, mặc dù tiếng Pháp và tiếng Nhật vẫn đạt được tỷ lệ truy xuất hợp lý. Khả năng đa ngôn ngữ của Titan embeddings đã được xác nhận, ngay cả khi hiệu suất thay đổi theo ngôn ngữ.</p>
+<p><strong>So sánh Mô hình trên các Ngôn ngữ:</strong></p>
+<p>Biểu đồ dưới đây so sánh cả ba mô hình nhúng (Titan, Qwen và Mistral) trên ba ngôn ngữ chúng tôi đã kiểm tra:</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/qiL1mbpwKBwHIJBPHZF_n.png" alt="model_comparison_by_language"></p>
+<p>Titan hoạt động nhất quán hơn các mô hình khác trên tất cả các ngôn ngữ, với hiệu suất đặc biệt mạnh mẽ bằng tiếng Anh. Khoảng cách giữa các mô hình rõ rệt nhất ở tiếng Pháp và tiếng Nhật, nơi khả năng đa ngôn ngữ của Titan thể hiện lợi thế rõ ràng.</p>
+<p><strong>So sánh Mô hình trên các Dạng Truy vấn:</strong></p>
+<p>Chúng tôi cũng đã phân tích hiệu suất trên các dạng truy vấn khác nhau (câu hỏi so với khẳng định):</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/67692674bc5af30a79d06213/PCyvr0sbr-4nXrojWp8kd.png" alt="model_comparison_by_form"></p>
+<p>Thật thú vị, TITAN và Mistral hoạt động tốt hơn với các câu khẳng định, như lý thuyết dự đoán (vì hầu hết thông tin trong văn bản được trình bày dưới dạng khẳng định). Tuy nhiên, Qwen hoạt động tốt hơn với các câu hỏi, điều này thực sự không có ý nghĩa gì.</p>
+<h2 id="quyết-định-thực-tế-không-benchmark">Quyết định Thực tế (Không Benchmark)</h2>
+<h3 id="chuyển-đổi-pdf-mistral-ocr">Chuyển đổi PDF: Mistral OCR</h3>
+<p><strong>Quyết định:</strong> Chúng tôi sử dụng Mistral OCR cho tất cả các quy trình xử lý tài liệu.</p>
+<p><strong>Đánh giá:</strong> Chúng tôi đã thử nghiệm thủ công 3 tệp PDF phức tạp (phương trình, bảng biểu, sơ đồ, trang quét) với:</p>
+<ul>
+<li><a href="https://mistral.ai/fr/news/mistral-ocr">Mistral OCR</a></li>
+<li><a href="https://tesseract-ocr.github.io/">Tesseract</a></li>
+<li><a href="https://github.com/microsoft/markitdown">Markitdown</a></li>
+<li><a href="https://github.com/datalab-to/marker">Marker</a></li>
+</ul>
+<p><strong>Phát hiện:</strong> Chỉ có Mistral OCR phân tích đúng các ký hiệu toán học phức tạp và bảng biểu trong các tài liệu được quét. Sự khác biệt về chất lượng đầu ra là rất lớn, thậm chí nó còn hoạt động với các phương trình hóa học.</p>
+<p><strong>Tại sao Chuyển đổi Markdown lại Quan trọng:</strong></p>
+<p>Việc chuyển đổi tất cả tài liệu (PDF, tệp Word, v.v.) sang markdown không chỉ vì hiệu suất – <strong>nó thực sự cần thiết để xây dựng một hệ thống RAG có thể gỡ lỗi</strong>:</p>
+<ul>
+<li><strong>Khả năng gỡ lỗi</strong>: Khi truy xuất thất bại hoặc trả về kết quả sai, bạn cần kiểm tra xem thực tế những gì đã được lập chỉ mục. Với các tệp PDF thô, bạn hoàn toàn mù tịt. Với markdown, bạn có thể mở tệp, tìm kiếm nội dung dự kiến và hiểu chính xác chiến lược chunking của bạn đã làm gì với nó.</li>
+<li><strong>Hiệu suất</strong>: Markdown nhẹ và xử lý nhanh. Chunking văn bản markdown nhanh hơn nhiều lần so với việc phân tích lại PDF sau mỗi lần cập nhật nhúng.</li>
+<li><strong>Khả năng tái lập</strong>: Markdown cung cấp cho bạn một biểu diễn ổn định, có thể kiểm soát phiên bản của tài liệu của bạn. Bạn có thể theo dõi các thay đổi, so sánh các phiên bản và đảm bảo tính nhất quán trên toàn bộ quy trình của bạn.</li>
+<li><strong>Tốc độ lặp lại</strong>: Kiểm tra các chiến lược chunking khác nhau trên markdown chỉ mất vài giây, không phải vài phút. Điều này làm cho việc thử nghiệm trở nên thực tế.</li>
+</ul>
+<p><strong>Kết luận:</strong> Nếu không có markdown làm định dạng trung gian, bạn không thể gỡ lỗi hoặc lặp lại hệ thống RAG của mình một cách hiệu quả. Nó không phải là tùy chọn – nó là nền tảng.</p>
+<p><strong>Sự đánh đổi:</strong> Mistral OCR rất tốn kém (1 đô la cho mỗi 1000 trang). Đối với các tài liệu khoa học mà độ chính xác là rất quan trọng, nó xứng đáng. Nếu bạn có các tệp PDF đơn giản hơn, hãy thử các giải pháp thay thế mã nguồn mở trước.</p>
+<h3 id="cơ-sở-dữ-liệu-vector-qdrant">Cơ sở dữ liệu Vector: Qdrant</h3>
+<p><strong>Quyết định:</strong> Chúng tôi sử dụng Qdrant (dịch vụ được quản lý).</p>
+<p><strong>Bối cảnh:</strong> Chúng tôi đã đánh giá Milvus, Qdrant, AWS OpenSearch, Pinecone và PostgreSQL với pgvector. Là một phần của AWS, ban đầu chúng tôi đã thử OpenSearch.</p>
+<blockquote>
+<p><strong>Phát hiện quan trọng:</strong>
+<strong>Đừng sử dụng AWS OpenSearch cho tìm kiếm vector.</strong> Lựa chọn rẻ nhất là $70 /ngày (~$2.100/tháng) cho một cụm một node.
+Điều này quá đắt đỏ cho những gì nó cung cấp.</p></blockquote>
+<p><strong>Tại sao Qdrant:</strong></p>
+<ul>
+<li>Hỗ trợ tìm kiếm lai gốc với FastEmbed (động lực ban đầu của chúng tôi)</li>
+<li>Thiết lập Docker dễ dàng để tự host</li>
+<li>Sau đó di chuyển sang dịch vụ Qdrant được quản lý để tránh bảo trì</li>
+<li>Hiệu suất và tính năng ổn định</li>
+<li>Giá cả hợp lý trên Qdrant Cloud</li>
+</ul>
+<p><strong>Tại sao không Qdrant:</strong></p>
+<ul>
+<li>Quản trị trong Qdrant Cloud thiếu các tính năng cơ bản, như chuyển quyền sở hữu</li>
+<li>Đôi khi các collection vẫn ở &ldquo;chế độ xám&rdquo; vì những lý do không rõ ràng (ít nhất là đối với những người mới bắt đầu như chúng tôi), tất cả những gì bạn phải làm là &ldquo;bắt đầu tối ưu hóa&rdquo; thủ công, nhưng nó vẫn kỳ lạ.</li>
+</ul>
+<p><strong>Tại sao không phải các giải pháp thay thế khác:</strong></p>
+<ul>
+<li>PostgreSQL có vẻ quá mức vì chúng tôi không sử dụng PostgreSQL (hoặc Aurora từ AWS) và chúng tôi sợ phải trả nhiều tiền như chúng tôi đã làm với opensearch cho một dịch vụ được quản lý.</li>
+<li>Pinecone không phải mã nguồn mở.</li>
+<li>Milvus so với Qdrant, đây là hai cơ sở dữ liệu mã nguồn mở được sao nhiều nhất. Chúng tôi phải chọn một nên một thành viên của chúng tôi chỉ thử triển khai cả hai trên một máy chủ tự host, và anh ấy đã mất nhiều thời gian hơn để làm điều đó trên Milvus, vì vậy Qdrant đã thắng. Tôi thừa nhận đây không phải là lý do tốt nhất.</li>
+</ul>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Xây dựng hệ thống RAG trong sản xuất đòi hỏi sự cân bằng giữa hiệu suất, chi phí và sự phức tạp. Đây là điểm khởi đầu được đề xuất của chúng tôi:</p>
+<p><strong>Cấu hình được đề xuất:</strong></p>
+<ul>
+<li><strong>Mô hình nhúng</strong>: AWS Titan V2 (tỷ lệ hit 69,2% - tốt nhất cho nội dung khoa học đa ngôn ngữ)</li>
+<li><strong>Kích thước Chunk</strong>: Đừng suy nghĩ quá nhiều – bất kỳ kích thước hợp lý nào cũng hoạt động (chúng tôi sử dụng 6K cho Titan, 40K cho Qwen để tiết kiệm chi phí)</li>
+<li><strong>Chiến lược Chunking</strong>: Chunking ngẫu nhiên (trung bình 70,5% tỷ lệ hit so với 63,8% cho nhận biết ngữ cảnh – đơn giản và tốt hơn)</li>
+<li><strong>Chế độ Truy xuất</strong>: Chỉ dày đặc cho trường hợp sử dụng của chúng tôi (69,2% so với 63,5% cho lai với Titan)</li>
+<li><strong>Cơ sở dữ liệu Vector</strong>: Qdrant hoặc Milvus (tránh AWS OpenSearch do chi phí)</li>
+<li><strong>Chuyển đổi PDF</strong>: Mistral OCR cho các tài liệu khoa học phức tạp (tốn kém nhưng cần thiết)</li>
+</ul>
+<blockquote>
+<p><strong>Bài học chính:</strong> Đừng mù quáng làm theo &ldquo;thực tiễn tốt nhất&rdquo; từ các bài đăng blog. Hãy benchmark trên các loại tài liệu và mẫu truy vấn cụ thể của bạn. Các phát hiện của chúng tôi đã đi ngược lại lời khuyên thông thường (chỉ dày đặc vượt trội hơn lai, ngẫu nhiên vượt trội hơn nhận biết ngữ cảnh), nhưng chúng có thể tái lập và có ý nghĩa đối với trường hợp sử dụng của chúng tôi. <strong>Những gì hiệu quả với chúng tôi có thể không hiệu quả với bạn.</strong> Cách duy nhất để biết là đo lường.</p></blockquote>
+<h2 id="lưu-ý-về-tính-khả-dụng-của-dữ-liệu">Lưu ý về Tính khả dụng của Dữ liệu</h2>
+<p>Mã benchmark và phương pháp luận của chúng tôi được trình bày chi tiết trong bài viết này để có thể tái lập. Tuy nhiên, <strong>các tài liệu khoa học mà chúng tôi đã sử dụng là độc quyền và mã nguồn đóng</strong> (tài liệu nghiên cứu và vật liệu quy định kỹ thuật hạt nhân). Mã nguồn cũng vậy, không thể chia sẻ, nó là một phần của mono-repo của chúng tôi.</p>
+<p>Mặc dù chúng tôi không thể chia sẻ dữ liệu thô, <strong>chúng tôi sẵn lòng trả lời các câu hỏi</strong> về phương pháp luận, cách tiếp cận kiểm thử hoặc các phát hiện cụ thể của chúng tôi. Đừng ngần ngại liên hệ nếu bạn đang triển khai một cái gì đó tương tự!</p>
+<p><strong>Câu hỏi hoặc phản hồi?</strong> Chúng tôi rất muốn nghe về trải nghiệm RAG của bạn, đặc biệt nếu bạn tìm thấy kết quả khác!</p>
+<h2 id="chi-tiết-triển-khai">Chi tiết Triển khai</h2>
+<p>Đây là các đoạn mã chính từ việc triển khai của chúng tôi mà bạn có thể thấy hữu ích, nó rất cơ bản:</p>
+<h3 id="chiến-lược-chunking-1">Chiến lược Chunking</h3>
+<p><strong>Chunking Ngẫu nhiên</strong> - Phân chia dựa trên ký tự đơn giản với sự chồng lấp bằng LangChain:</p>
+<p>python</p>
+<h1 id="srcpyjimmyragchunkpy32-34">src/pyjimmy/rag/chunk.py:32-34</h1>
+<p>def split_markdown(s3_markdown_path: Path, max_chunk_size: int, strategy: ChunkingStrategy) -&gt; list[str]:
+if strategy == ChunkingStrategy.naive:
+return RecursiveCharacterTextSplitter(
+chunk_size=max_chunk_size,
+chunk_overlap=400,
+add_start_index=True
+).split_text(markdown_text)</p>
+<p><strong>Chunking Nhận biết Ngữ cảnh</strong> - Bảo tồn cấu trúc tài liệu bằng cách phân tích phân cấp tiêu đề markdown:</p>
+<p>python</p>
+<h1 id="srcpyjimmyragchunkpy82-99">src/pyjimmy/rag/chunk.py:82-99</h1>
+<p>class Section:
+def <strong>init</strong>(self, body: str = &ldquo;&rdquo;, title: str | None = None, level: int = 0):
+self.body: str = body
+self.title: str | None = title
+self.level: int = level
+self.children: list[Section] = []</p>
+<pre><code>@classmethod
+def from_markdown(cls, markdown_text: str) -&gt; Section:
+    &quot;&quot;&quot;Parse markdown into hierarchical sections based on heading levels.&quot;&quot;&quot;
+    lines = markdown_text.split(&quot;\n&quot;)
+    root = cls()
+    stack = [root]
+    for line in lines:
+        if line.startswith(&quot;#&quot;):
+            level = len(line) - len(line.lstrip(&quot;#&quot;))
+            title = line.lstrip(&quot;#&quot;).strip()
+            new_section = cls(title=title, level=level)
+            while stack and stack[-1].level &gt;= level:
+                stack.pop()
+            stack[-1]._add_child(new_section)
+            stack.append(new_section)
+        else:
+            if stack:
+                stack[-1].body += line + &quot;\n&quot;
+            return root
+            
+def to_chunks(self, max_chunk_size: int, context: str = &quot;&quot;) -&gt; list[str]:
+    context += self.current_context
+    chunks = []
+    if self.body.replace(&quot;\n&quot;, &quot;&quot;).strip():
+        if len(context) &gt;= max_chunk_size:
+            logger.warning(
+                f&quot;Context too large ({len(context)} chars) for max_chunk_size {max_chunk_size}. Skipping context.&quot;
+            )
+            context = &quot;&quot;
+        chunks += [
+            context + splitted_body
+            for splitted_body in _split_text_into_chunks(self.body, max_chunk_size - len(context))
+        ]
+    for child in self.children:
+        chunks += child.to_chunks(max_chunk_size, context)
+    return chunks
+</code></pre>
+<h3 id="xử-lý-pdf-bằng-mistral-ocr">Xử lý PDF bằng Mistral OCR</h3>
+<p><strong>Chuyển đổi PDF sang Markdown</strong> - Xử lý các tài liệu khoa học phức tạp:</p>
+<p>python</p>
+<h1 id="srcpyjimmyragpdfpy22-45">src/pyjimmy/rag/pdf.py:22-45</h1>
+<p>def convert_pdf_to_markdown(pdf_path: Path, output_path: Path) -&gt; tuple[Path, Path]:
+logger.info(f&quot;Start converting PDF {pdf_path} to markdown&hellip;&quot;)
+# Split large PDFs to stay under 50MB API limit
+pdfs_under_50mb = _split_pdf_to_under_50mb_improved(pdf_path, output_path)</p>
+<pre><code>final_markdown = &quot;&quot;
+final_pages = []
+for pdf in pdfs_under_50mb:
+    ocr_response = _convert_pdf_under_50MB_to_markdown(pdf)
+    markdown = _get_combined_markdown(ocr_response=ocr_response)
+    pages = ocr_response.model_dump()[&quot;pages&quot;]
+    final_markdown += markdown
+    final_pages.extend(pages)
+
+markdown_path = output_path / f&quot;{pdf_path.stem}.md&quot;
+markdown_path.write_text(final_markdown)
+return markdown_path, yaml_path
+</code></pre>
+<p><strong>Gọi API Mistral OCR</strong>:</p>
+<p>python</p>
+<h1 id="srcpyjimmyragpdfpy175-192">src/pyjimmy/rag/pdf.py:175-192</h1>
+<p>def _convert_pdf_under_50MB_to_markdown(pdf_path: Path) -&gt; OCRResponse:
+uploaded_pdf = MISTRAL_CLIENT.files.upload(
+file=File(
+file_name=pdf_path.name,
+content=pdf_path.read_bytes(),
+content_type=&ldquo;application/pdf&rdquo;
+),
+purpose=&ldquo;ocr&rdquo;,
+)</p>
+<pre><code>signed_url = MISTRAL_CLIENT.files.get_signed_url(file_id=uploaded_pdf.id)
+
+return MISTRAL_CLIENT.ocr.process(
+    model=&quot;mistral-ocr-latest&quot;,
+    document={&quot;type&quot;: &quot;document_url&quot;, &quot;document_url&quot;: signed_url.url},
+    include_image_base64=True,
+)
+</code></pre>
+<h3 id="thiết-lập-mô-hình-nhúng">Thiết lập Mô hình Nhúng</h3>
+<p><strong>Cấu hình các Mô hình Nhúng khác nhau</strong>:</p>
+<p>python</p>
+<h1 id="srcpyjimmyragembeddingpy33-58">src/pyjimmy/rag/embedding.py:33-58</h1>
+<p>def get_dense_embedding_model(model: DenseEmbeddingModel) -&gt; Embeddings:
+if model == DenseEmbeddingModel.titan:
+# AWS Titan V2: 8,192 max tokens, 50K max characters
+return BedrockEmbeddings(model_id=&ldquo;amazon.titan-embed-text-v2:0&rdquo;)</p>
+<pre><code>if model == DenseEmbeddingModel.qwen:
+    # Qwen 8B: 32K token context window
+    return HuggingFaceEndpointEmbeddings(
+        client=InferenceClient(provider=&quot;nebius&quot;, api_key=token),
+        model=&quot;Qwen/Qwen3-Embedding-8B&quot;
+    )
+
+if model == DenseEmbeddingModel.mistral:
+    return MistralAIEmbeddings(
+        mistral_api_key=os.environ[&quot;PYJIMMY_MISTRAL_API_KEY&quot;],
+        model=&quot;mistral-embed&quot;
+    )
+</code></pre>
+<h1 id="sparse-embeddings-for-hybrid-search">Sparse embeddings for hybrid search</h1>
+<p>SPARSE_EMBEDDING_MODEL = FastEmbedSparse(model_name=&ldquo;prithvida/Splade_PP_en_v1&rdquo;)</p>
+<h3 id="cấu-hình-cửa-hàng-vector-qdrant">Cấu hình Cửa hàng Vector Qdrant</h3>
+<p><strong>Tạo Collection với Tìm kiếm Lai</strong>:</p>
+<p>python</p>
+<h1 id="srcpyjimmyragqdrantpy27-40">src/pyjimmy/rag/qdrant.py:27-40</h1>
+<p>def create_vector_store(collection_name: str, model: DenseEmbeddingModel):
+logger.info(f&quot;Creating Qdrant collection {collection_name}&hellip;&quot;)
+QdrantVectorStore.from_texts(
+texts=[],
+url=QDRANT_URL,
+api_key=QDRANT_API_KEY,
+collection_name=collection_name,
+embedding=get_dense_embedding_model(model),
+sparse_embedding=SPARSE_EMBEDDING_MODEL,  # For hybrid search
+retrieval_mode=RetrievalMode.HYBRID,
+)</p>
+<p><strong>Thêm Tài liệu với Logic Thử lại</strong>:</p>
+<p>python</p>
+<h1 id="srcpyjimmyragqdrantpy64-72-78-104">src/pyjimmy/rag/qdrant.py:64-72, 78-104</h1>
+<p>@retry(wait=wait_fixed(60))
+def _add_texts_to_vector_store(
+vector_store: QdrantVectorStore,
+texts: list[str],
+s3_folder: Path
+) -&gt; list[str]:
+&ldquo;&ldquo;&ldquo;Retry on failure due to embedding API rate limits.&rdquo;&rdquo;&rdquo;
+return vector_store.add_texts(
+texts,
+metadatas=[{&ldquo;s3_folder&rdquo;: s3_folder} for _ in texts]
+)</p>
+<p>def add_markdown_to_qdrant(
+s3_markdown_path: Path,
+max_chunk_size: int,
+chunking_strategy: ChunkingStrategy,
+model: DenseEmbeddingModel
+):
+chunks = split_markdown(s3_markdown_path, max_chunk_size, strategy=chunking_strategy)
+vector_store = get_vector_store(collection_name, model=model)</p>
+<pre><code>vector_ids = []
+max_chunks_one_request = 10
+# Batch processing to avoid timeouts
+for start_index in range(0, len(chunks), max_chunks_one_request):
+    vector_ids.extend(
+        _add_texts_to_vector_store(
+            vector_store,
+            chunks[start_index : start_index + max_chunks_one_request],
+            s3_folder=s3_folder
+        )
+    )
+</code></pre>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/charles-azam/rag">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/5-ng%C3%A0y-tr%C6%B0%E1%BB%9Bc/">5 Ngày Trước</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/6ad781/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/654bcb6fae75d15300d48205/T4L1RZUgCZgdik4ZhEWCq.jpeg" alt="LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/fe7cc6/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/60edd0133e2c73a9a21455f5/yK1G-Fv-YjYb7v_chkz3p.jpeg" alt="⚡ Điện, Nhiệt và Trí tuệ ☁️ - Giải thích Trung tâm Dữ liệu AI 🏭" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">⚡ Điện, Nhiệt và Trí tuệ ☁️ - Giải thích Trung tâm Dữ liệu AI 🏭</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Điện, Nhiệt và Trí tuệ - Giải thích Trung tâm Dữ liệu AI</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

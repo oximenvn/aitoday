@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ocrvisionmultimodal- Tăng cường các Kênh OCR của Bạn với các Mô hình Mở | AI Today - SkyAI</title>
+
+<meta name="description" content="Ocrvisionmultimodal- Tăng cường các kênh OCR của bạn với các mô hình mở">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">ocrvisionmultimodal- Tăng cường các Kênh OCR của Bạn với các Mô hình Mở</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Ocrvisionmultimodal- Tăng cường các kênh OCR của bạn với các mô hình mở </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            24 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+        <figcaption class="text-center italic text-xs">Ocrvisionmultimodal- Tăng cường các kênh OCR của bạn với các mô hình mở</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="tăng-tốc-các-quy-trình-ocr-của-bạn-với-các-mô-hình-mã-nguồn-mở">Tăng tốc các quy trình OCR của bạn với các mô hình mã nguồn mở</h1>
+<h2 id="giới-thiệu-về-ocr-hiện-đại">Giới thiệu về OCR hiện đại</h2>
+<p>Nhận dạng ký tự quang học (OCR) là một trong những thách thức sớm nhất và lâu đời nhất trong lĩnh vực thị giác máy tính. Nhiều ứng dụng thực tế đầu tiên của AI tập trung vào việc chuyển đổi văn bản in thành dạng kỹ thuật số.</p>
+<p>Với sự gia tăng của các mô hình ngôn ngữ thị giác (VLMs), OCR đã có những bước tiến đáng kể. Gần đây, nhiều mô hình OCR đã được phát triển bằng cách tinh chỉnh các VLM hiện có. Nhưng các khả năng ngày nay còn vượt xa OCR: bạn có thể truy xuất tài liệu theo truy vấn hoặc trả lời câu hỏi về chúng trực tiếp. Nhờ các tính năng thị giác mạnh mẽ hơn, các mô hình này cũng có thể xử lý các bản quét chất lượng thấp, diễn giải các thành phần phức hợp như bảng, biểu đồ và hình ảnh, đồng thời hợp nhất văn bản với hình ảnh để trả lời các câu hỏi mở trên nhiều tài liệu.</p>
+<h3 id="khả-năng-của-mô-hình">Khả năng của mô hình</h3>
+<h4 id="phiên-âm">Phiên âm</h4>
+<p>Các mô hình gần đây phiên âm văn bản thành định dạng có thể đọc được bằng máy.
+Đầu vào có thể bao gồm:</p>
+<ul>
+<li>Văn bản viết tay</li>
+<li>Các loại chữ viết khác nhau như ký tự Latinh, tiếng Ả Rập và tiếng Nhật</li>
+<li>Biểu thức toán học</li>
+<li>Công thức hóa học</li>
+<li>Thẻ đánh dấu hình ảnh/bố cục/số trang</li>
+</ul>
+<p>Mô hình OCR chuyển đổi chúng thành văn bản có thể đọc được bằng máy với nhiều định dạng khác nhau như HTML, Markdown và hơn thế nữa.</p>
+<h4 id="xử-lý-các-thành-phần-phức-hợp-trong-tài-liệu">Xử lý các thành phần phức hợp trong tài liệu</h4>
+<p>Ngoài văn bản, một số mô hình còn có thể nhận dạng:</p>
+<ul>
+<li>Hình ảnh</li>
+<li>Biểu đồ</li>
+<li>Bảng</li>
+</ul>
+<p>Một số mô hình biết vị trí của hình ảnh trong tài liệu, trích xuất tọa độ của chúng và chèn chúng vào đúng vị trí giữa các văn bản. Các mô hình khác tạo chú thích cho hình ảnh và chèn chúng vào nơi chúng xuất hiện. Điều này đặc biệt hữu ích nếu bạn đang cung cấp đầu ra có thể đọc được bằng máy cho một LLM. Các ví dụ mô hình là OlmOCR của AllenAI, hoặc PaddleOCR-VL của PaddlePaddle.</p>
+<p>Các mô hình sử dụng các định dạng đầu ra khác nhau, chẳng hạn như <strong>DocTags</strong>, <strong>HTML</strong> hoặc <strong>Markdown</strong> (được giải thích trong phần tiếp theo <em>Định dạng đầu ra</em>). Cách một mô hình xử lý bảng và biểu đồ thường phụ thuộc vào định dạng đầu ra mà chúng đang sử dụng. Một số mô hình coi biểu đồ như hình ảnh: chúng được giữ nguyên. Các mô hình khác chuyển đổi biểu đồ thành bảng Markdown hoặc JSON, ví dụ: biểu đồ cột có thể được chuyển đổi như sau.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/ocr/chart-rendering.png" alt="Chart Rendering"></p>
+<p>Tương tự đối với bảng, các ô được chuyển đổi thành định dạng có thể đọc được bằng máy trong khi vẫn giữ lại ngữ cảnh từ tiêu đề và cột.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/ocr/table-rendering.png" alt="Table Rendering"></p>
+<h4 id="định-dạng-đầu-ra">Định dạng đầu ra</h4>
+<p>Các mô hình OCR khác nhau có các định dạng đầu ra khác nhau. Tóm lại, đây là các định dạng đầu ra phổ biến được sử dụng bởi các mô hình hiện đại.
+<strong>DocTag:</strong> DocTag là một định dạng giống XML cho tài liệu thể hiện vị trí, định dạng văn bản, thông tin cấp thành phần, v.v. Dưới đây là hình minh họa một bài báo được phân tích thành DocTags. Định dạng này được sử dụng bởi các mô hình Docling mã nguồn mở.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/ocr/doctags_v2.png" alt="DocTags"></p>
+<ul>
+<li><strong>HTML:</strong> HTML là một trong những định dạng đầu ra phổ biến nhất được sử dụng để phân tích tài liệu vì nó mã hóa cấu trúc và thông tin phân cấp một cách chính xác.</li>
+<li><strong>Markdown:</strong> Markdown là định dạng dễ đọc nhất cho con người. Nó đơn giản hơn HTML nhưng không biểu cảm bằng. Ví dụ, nó không thể biểu diễn các bảng được chia cột.</li>
+<li><strong>JSON:</strong> JSON không phải là định dạng mà mô hình sử dụng cho toàn bộ đầu ra, nhưng nó có thể được sử dụng để biểu diễn thông tin trong bảng hoặc biểu đồ.</li>
+</ul>
+<p>Định dạng mô hình phù hợp phụ thuộc vào cách bạn dự định sử dụng đầu ra của nó:</p>
+<ul>
+<li><strong>Tái cấu trúc kỹ thuật số</strong>: Để tái cấu trúc tài liệu kỹ thuật số, hãy chọn mô hình có định dạng bảo toàn bố cục (ví dụ: DocTags hoặc HTML).</li>
+<li><strong>Đầu vào LLM hoặc Hỏi &amp; Đáp</strong>: Nếu trường hợp sử dụng liên quan đến việc truyền đầu ra cho LLM, hãy chọn mô hình tạo đầu ra Markdown và chú thích hình ảnh, vì chúng gần với ngôn ngữ tự nhiên hơn.</li>
+<li><strong>Sử dụng theo chương trình</strong>: Nếu bạn muốn truyền đầu ra của mình cho một chương trình (như phân tích dữ liệu), hãy chọn mô hình tạo đầu ra có cấu trúc như JSON.</li>
+</ul>
+<h4 id="nhận-biết-vị-trí">Nhận biết vị trí</h4>
+<p>Tài liệu có thể có cấu trúc phức tạp, chẳng hạn như các khối văn bản nhiều cột và hình ảnh nổi. Các mô hình OCR cũ xử lý các tài liệu này bằng cách phát hiện từ và sau đó là bố cục trang thủ công trong quá trình hậu xử lý để có văn bản được hiển thị theo thứ tự đọc, điều này rất dễ lỗi. Ngược lại, các mô hình OCR hiện đại kết hợp siêu dữ liệu bố cục để giúp bảo tồn thứ tự đọc và độ chính xác. Siêu dữ liệu này được gọi là &ldquo;neo&rdquo;, nó có thể đến dưới dạng các hộp giới hạn. Quá trình này cũng được gọi là &ldquo;neo hóa/neo hóa&rdquo; vì nó giúp giảm thiểu sự ảo giác.</p>
+<h4 id="nhắc-mô-hình">Nhắc mô hình</h4>
+<p>Các mô hình OCR có thể nhận đầu vào là hình ảnh và một lời nhắc văn bản tùy chọn, điều này phụ thuộc vào kiến trúc mô hình và thiết lập tiền huấn luyện.
+Một số mô hình OCR hỗ trợ chuyển đổi tác vụ dựa trên lời nhắc, ví dụ: granite-docling có thể phân tích toàn bộ một trang bằng lời nhắc &ldquo;Chuyển trang này sang Docling&rdquo; trong khi nó cũng có thể nhận lời nhắc như &ldquo;Chuyển công thức này sang LaTeX&rdquo; cùng với một trang đầy công thức.
+Tuy nhiên, các mô hình khác chỉ được huấn luyện để phân tích toàn bộ trang và chúng được điều kiện hóa để thực hiện điều này thông qua lời nhắc hệ thống.
+Ví dụ: OlmOCR của AllenAI nhận một lời nhắc điều kiện dài. Giống như nhiều mô hình khác, OlmOCR về mặt kỹ thuật là một phiên bản OCR được tinh chỉnh của VLM (Qwen2.5VL trong trường hợp này), vì vậy bạn có thể yêu cầu các tác vụ khác, nhưng hiệu suất của nó sẽ không ngang bằng với khả năng OCR.</p>
+<h2 id="các-mô-hình-ocr-mã-nguồn-mở-tiên-tiến">Các mô hình OCR mã nguồn mở tiên tiến</h2>
+<p>Chúng tôi đã chứng kiến một làn sóng mô hình mới đáng kinh ngạc trong năm qua. Vì có rất nhiều công việc đang diễn ra trong mã nguồn mở, những người chơi này xây dựng và hưởng lợi từ công việc của nhau. Một ví dụ tuyệt vời là bản phát hành OlmOCR của AllenAI, không chỉ phát hành một mô hình mà còn cả tập dữ liệu được sử dụng để huấn luyện nó. Với những điều này, những người khác có thể xây dựng chúng theo những hướng mới. Lĩnh vực này cực kỳ năng động, nhưng không phải lúc nào cũng rõ ràng nên sử dụng mô hình nào.</p>
+<h3 id="so-sánh-các-mô-hình-mới-nhất">So sánh các mô hình mới nhất</h3>
+<p>Để mọi thứ dễ dàng hơn một chút, chúng tôi đang tổng hợp một so sánh không đầy đủ về một số mô hình yêu thích hiện tại của chúng tôi. Tất cả các mô hình bên dưới đều nhận biết bố cục và có thể phân tích bảng, biểu đồ và phương trình toán học. Danh sách đầy đủ các ngôn ngữ mà mỗi mô hình hỗ trợ được chi tiết trong thẻ mô hình của chúng, vì vậy hãy đảm bảo kiểm tra chúng nếu bạn quan tâm. Tất cả các mô hình bên dưới đều có giấy phép mã nguồn mở ngoại trừ Chandra có giấy phép OpenRAIL và giấy phép Nanonets chưa rõ ràng. Điểm số trung bình được lấy từ thẻ mô hình của Chandra, OlmOCR, được đánh giá trên OlmOCR Benchmark, chỉ dành cho tiếng Anh.
+Nhiều mô hình trong bộ sưu tập này đã được tinh chỉnh từ Qwen2.5-VL hoặc Qwen3-VL, vì vậy chúng tôi cũng cung cấp mô hình Qwen3-VL bên dưới.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Tên mô hình</th>
+          <th>Định dạng đầu ra</th>
+          <th>Tính năng</th>
+          <th>Kích thước mô hình</th>
+          <th>Đa ngôn ngữ?</th>
+          <th>Điểm trung bình trên OlmOCR Benchmark</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="https://huggingface.co/collections/nanonets/nanonets-ocr2-68ed207f17ee6c31d226319e">Nanonets-OCR2-3B</a></td>
+          <td>Markdown có cấu trúc với thẻ ngữ nghĩa (bao gồm bảng HTML, v.v.)</td>
+          <td>Chú thích hình ảnh trong tài liệu<!-- raw HTML omitted -->Trích xuất chữ ký &amp; watermark<!-- raw HTML omitted -->Xử lý hộp kiểm, sơ đồ luồng và chữ viết tay</td>
+          <td>4B</td>
+          <td>✅Hỗ trợ tiếng Anh, tiếng Trung, tiếng Pháp, tiếng Ả Rập và nhiều hơn nữa.</td>
+          <td>Không có sẵn</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/collections/PaddlePaddle/paddleocr-vl-68f0db852483c7af0bc86849">PaddleOCR-VL</a></td>
+          <td>Markdown, JSON, bảng HTML và biểu đồ</td>
+          <td>Xử lý chữ viết tay, tài liệu cũ<!-- raw HTML omitted -->Cho phép nhắc<!-- raw HTML omitted -->Chuyển đổi bảng &amp; biểu đồ sang HTML<!-- raw HTML omitted -->Trích xuất và chèn hình ảnh trực tiếp</td>
+          <td>0.9B</td>
+          <td>✅Hỗ trợ 109 ngôn ngữ</td>
+          <td>Không có sẵn</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/rednote-hilab/dots.ocr">dots.ocr</a></td>
+          <td>Markdown, JSON</td>
+          <td>Neo hóa<!-- raw HTML omitted -->Trích xuất và chèn hình ảnh<!-- raw HTML omitted -->Xử lý chữ viết tay</td>
+          <td>3B</td>
+          <td>✅Đa ngôn ngữ với thông tin ngôn ngữ không có sẵn</td>
+          <td>79.1 ± 1.0</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/allenai/olmOCR-2-7B-1025">OlmOCR-2</a></td>
+          <td>Markdown, HTML, LaTeX</td>
+          <td>Neo hóa<!-- raw HTML omitted -->Tối ưu hóa cho xử lý hàng loạt quy mô lớn</td>
+          <td>8B</td>
+          <td>❎Chỉ tiếng Anh</td>
+          <td>82.3 ± 1.1</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/ibm-granite/granite-docling-258M">Granite-Docling-258M</a></td>
+          <td>DocTags</td>
+          <td>Chuyển đổi tác vụ dựa trên lời nhắc<!-- raw HTML omitted -->Khả năng nhắc vị trí các phần tử bằng token vị trí<!-- raw HTML omitted -->Đầu ra phong phú</td>
+          <td>258M</td>
+          <td>✅Hỗ trợ tiếng Anh, Nhật Bản, Ả Rập và Trung Quốc.</td>
+          <td>Không có sẵn</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/deepseek-ai/DeepSeek-OCR">DeepSeek-OCR</a></td>
+          <td>Markdown, HTML</td>
+          <td>Hỗ trợ hiểu biết thị giác chung<!-- raw HTML omitted -->Có thể phân tích và hiển thị lại tất cả biểu đồ, bảng và hơn thế nữa sang HTML<!-- raw HTML omitted -->Xử lý chữ viết tay<!-- raw HTML omitted -->Hiệu quả bộ nhớ, giải quyết văn bản thông qua hình ảnh</td>
+          <td>3B</td>
+          <td>✅Hỗ trợ gần 100 ngôn ngữ</td>
+          <td>75.4 ± 1.0</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datalab-to/chandra">Chandra</a></td>
+          <td>Markdown, HTML, JSON</td>
+          <td>Neo hóa<!-- raw HTML omitted -->Trích xuất và chèn hình ảnh như nguyên bản</td>
+          <td>9B</td>
+          <td>✅Hỗ trợ hơn 40 ngôn ngữ</td>
+          <td>83.1 ± 0.9</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/collections/Qwen/qwen3-vl">Qwen3-VL</a></td>
+          <td>Mô hình Ngôn ngữ Thị giác có thể xuất ở mọi định dạng</td>
+          <td>Có thể nhận dạng văn bản cổ<!-- raw HTML omitted -->Xử lý chữ viết tay<!-- raw HTML omitted -->Trích xuất và chèn hình ảnh như nguyên bản</td>
+          <td>9B</td>
+          <td>✅Hỗ trợ 32 ngôn ngữ</td>
+          <td>Không có sẵn</td>
+      </tr>
+  </tbody>
+</table>
+<p>Mặc dù Qwen3-VL bản thân nó là một mô hình ngôn ngữ thị giác mạnh mẽ và linh hoạt, được hậu huấn luyện cho hiểu biết tài liệu và các tác vụ khác, nhưng nó không được tối ưu hóa cho một lời nhắc OCR phổ quát duy nhất. Ngược lại, các mô hình khác đã được tinh chỉnh bằng một hoặc một vài lời nhắc cố định được thiết kế đặc biệt cho các tác vụ OCR. Vì vậy, để sử dụng Qwen3-VL, chúng tôi khuyên bạn nên thử nghiệm với các lời nhắc.</p>
+<p>Đây là một <a href="https://prithivMLmods-Multimodal-OCR3.hf.space">demo nhỏ</a> để bạn thử một số mô hình mới nhất và so sánh đầu ra của chúng.</p>
+<!-- raw HTML omitted -->
+<h3 id="đánh-giá-mô-hình">Đánh giá mô hình</h3>
+<h4 id="điểm-chuẩn">Điểm chuẩn</h4>
+<p>Không có mô hình tốt nhất, vì mỗi vấn đề có các nhu cầu khác nhau. Bảng có nên được hiển thị dưới dạng Markdown hay HTML? Chúng ta nên trích xuất những thành phần nào? Làm thế nào để định lượng độ chính xác của văn bản và tỷ lệ lỗi? 👀
+Mặc dù có nhiều tập dữ liệu và công cụ đánh giá, nhưng nhiều trong số đó không trả lời được những câu hỏi này. Vì vậy, chúng tôi đề xuất sử dụng các điểm chuẩn sau:</p>
+<ol>
+<li><strong>OmniDocBenchmark</strong>: Điểm chuẩn được sử dụng rộng rãi này nổi bật với các loại tài liệu đa dạng: sách, tạp chí và sách giáo khoa. Các tiêu chí đánh giá của nó được thiết kế tốt, chấp nhận bảng ở cả định dạng HTML và Markdown. Một thuật toán kết hợp mới đánh giá thứ tự đọc và các công thức được chuẩn hóa trước khi đánh giá. Hầu hết các chỉ số dựa trên khoảng cách chỉnh sửa hoặc khoảng cách chỉnh sửa cây (bảng). Đáng chú ý, các chú thích được sử dụng để đánh giá không chỉ do con người tạo ra mà còn có được thông qua VLMs SoTA hoặc các phương pháp OCR truyền thống.</li>
+<li><strong>OlmOCR-Bench</strong>: OlmOCR-Bench áp dụng một cách tiếp cận khác: chúng coi đánh giá là một loạt các bài kiểm tra đơn vị. Ví dụ, đánh giá bảng được thực hiện bằng cách kiểm tra mối quan hệ giữa các ô được chọn của một bảng cho trước. Chúng sử dụng các tệp PDF từ các nguồn công khai và chú thích được thực hiện bằng cách sử dụng nhiều loại VLMs mã nguồn đóng. Điểm chuẩn này khá thành công để đánh giá trên ngôn ngữ tiếng Anh.</li>
+<li><strong>CC-OCR (Đa ngôn ngữ)</strong>: So với các điểm chuẩn trước đó, CC-OCR ít được ưa chuộng hơn khi chọn mô hình, do chất lượng và sự đa dạng tài liệu thấp hơn. Tuy nhiên, đây là điểm chuẩn duy nhất chứa đánh giá ngoài tiếng Anh và tiếng Trung! Mặc dù đánh giá còn xa mới hoàn hảo (hình ảnh là ảnh chụp với ít từ), nhưng nó vẫn là điều tốt nhất bạn có thể làm cho đánh giá đa ngôn ngữ.</li>
+</ol>
+<p>Khi kiểm tra các mô hình OCR khác nhau, chúng tôi thấy rằng hiệu suất trên các loại tài liệu, ngôn ngữ khác nhau, v.v., thay đổi rất nhiều. Lĩnh vực của bạn có thể không được đại diện tốt trong các điểm chuẩn hiện có! Để sử dụng hiệu quả thế hệ mô hình OCR dựa trên VLM mới này, chúng tôi đề xuất nhắm mục tiêu thu thập một tập dữ liệu gồm các ví dụ đại diện cho lĩnh vực tác vụ của bạn và kiểm tra một vài mô hình khác nhau để so sánh hiệu suất của chúng.</p>
+<h4 id="hiệu-quả-chi-phí">Hiệu quả chi phí</h4>
+<p>Hầu hết các mô hình OCR đều nhỏ, có từ 3B đến 7B tham số; bạn thậm chí có thể tìm thấy các mô hình có ít hơn 1B tham số, như PaddleOCR-VL. Tuy nhiên, chi phí còn phụ thuộc vào sự sẵn có của các triển khai được tối ưu hóa cho các framework suy luận chuyên biệt. Ví dụ, OlmOCR-2 đi kèm với các triển khai vLLM và SGLang, và chi phí cho mỗi triệu trang là 178 đô la (giả sử trên H100 với giá 2,69 USD/giờ). DeepSeek-OCR có thể xử lý hơn 200k trang mỗi ngày trên một A100 duy nhất với VRAM 40GB. Với phép tính nháp, chúng ta thấy rằng chi phí cho mỗi triệu trang hoặc tương tự như OlmOCR (mặc dù nó phụ thuộc vào nhà cung cấp A100 của bạn). Nếu trường hợp sử dụng của bạn không bị ảnh hưởng, bạn cũng có thể chọn các phiên bản lượng tử hóa của mô hình. Chi phí chạy các mô hình mã nguồn mở phụ thuộc nhiều vào chi phí hàng giờ của phiên bản và các tối ưu hóa mà mô hình bao gồm, nhưng nó được đảm bảo sẽ rẻ hơn nhiều mô hình mã nguồn đóng hiện có ở quy mô lớn hơn.</p>
+<h4 id="tập-dữ-liệu-ocr-mã-nguồn-mở">Tập dữ liệu OCR mã nguồn mở</h4>
+<p>Mặc dù năm ngoái đã chứng kiến sự bùng nổ của các mô hình OCR mã nguồn mở, nhưng điều này không được đi kèm với nhiều tập dữ liệu huấn luyện và đánh giá mã nguồn mở tương ứng. Một ngoại lệ là olmocr-mix-0225 của AllenAI, đã được sử dụng để huấn luyện ít nhất 72 mô hình trên Hub – có thể nhiều hơn, vì không phải tất cả các mô hình đều ghi lại dữ liệu huấn luyện của chúng.</p>
+<p>Chia sẻ nhiều tập dữ liệu hơn có thể mở ra những tiến bộ lớn hơn nữa trong các mô hình OCR mã nguồn mở. Có một số cách tiếp cận đầy hứa hẹn để tạo các tập dữ liệu này:</p>
+<ul>
+<li><strong>Tạo dữ liệu tổng hợp</strong> (ví dụ: isl_synthetic_ocr)</li>
+<li><strong>Phiên âm do VLM tạo</strong> được lọc thủ công hoặc thông qua các thuật toán heuristic</li>
+<li><strong>Sử dụng các mô hình OCR hiện có</strong> để tạo dữ liệu huấn luyện cho các mô hình mới, có khả năng hiệu quả hơn trong các lĩnh vực cụ thể</li>
+<li><strong>Tận dụng các tập dữ liệu đã được sửa lỗi hiện có</strong> như Bộ dữ liệu Lịch sử Y tế Ấn Độ thuộc Anh của Thư viện Quốc gia Scotland, chứa OCR được con người sửa đổi rộng rãi cho các tài liệu lịch sử</li>
+</ul>
+<p>Cần lưu ý rằng nhiều tập dữ liệu như vậy tồn tại nhưng vẫn chưa được sử dụng. Việc làm cho chúng sẵn có hơn dưới dạng tập dữ liệu &ldquo;sẵn sàng để huấn luyện&rdquo; mang lại tiềm năng đáng kể cho cộng đồng mã nguồn mở.</p>
+<h2 id="công-cụ-để-chạy-mô-hình">Công cụ để chạy mô hình</h2>
+<p>Chúng tôi đã nhận được nhiều câu hỏi về việc bắt đầu với các mô hình OCR, vì vậy đây là một vài cách bạn có thể sử dụng các công cụ suy luận cục bộ và lưu trữ từ xa với Hugging Face.</p>
+<h3 id="cục-bộ">Cục bộ</h3>
+<p>Hầu hết các mô hình tiên tiến đều hỗ trợ vLLM và triển khai transformers. Bạn có thể tìm hiểu thêm về cách phục vụ từng mô hình từ thẻ mô hình của riêng chúng. Để thuận tiện, chúng tôi sẽ chỉ cho bạn cách suy luận cục bộ bằng vLLM. Mã dưới đây có thể khác nhau tùy thuộc vào mô hình, nhưng đối với hầu hết các mô hình, nó trông giống như sau.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vllm serve nanonets/Nanonets-OCR2-3B
+</span></span></code></pre></div><p>Và sau đó bạn có thể truy vấn như sau bằng cách sử dụng, ví dụ: máy khách OpenAI.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> openai <span style="color:#f92672">import</span> OpenAI
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>client <span style="color:#f92672">=</span> OpenAI(base_url<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://localhost:8000/v1&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;nanonets/Nanonets-OCR2-3B&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encode_image</span>(image_path):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(image_path, <span style="color:#e6db74">&#34;rb&#34;</span>) <span style="color:#66d9ef">as</span> image_file:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> base64<span style="color:#f92672">.</span>b64encode(image_file<span style="color:#f92672">.</span>read())<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">infer</span>(img_base64):
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> client<span style="color:#f92672">.</span>chat<span style="color:#f92672">.</span>completions<span style="color:#f92672">.</span>create(
+</span></span><span style="display:flex;"><span>        model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>        messages<span style="color:#f92672">=</span>[
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;content&#34;</span>: [
+</span></span><span style="display:flex;"><span>                    {
+</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;image_url&#34;</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">&#34;image_url&#34;</span>: {<span style="color:#e6db74">&#34;url&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;data:image/png;base64,</span><span style="color:#e6db74">{</span>img_base64<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>},
+</span></span><span style="display:flex;"><span>                    },
+</span></span><span style="display:flex;"><span>                    {
+</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;text&#34;</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#e6db74">&#34;text&#34;</span>: <span style="color:#e6db74">&#34;Extract the text from the above document as if you were reading it naturally.&#34;</span>,
+</span></span><span style="display:flex;"><span>                    },
+</span></span><span style="display:flex;"><span>                ],
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        temperature<span style="color:#f92672">=</span><span style="color:#ae81ff">0.0</span>,
+</span></span><span style="display:flex;"><span>        max_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">15000</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response<span style="color:#f92672">.</span>choices[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>message<span style="color:#f92672">.</span>content
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>img_base64 <span style="color:#f92672">=</span> encode_image(your_img_path)
+</span></span><span style="display:flex;"><span>print(infer(img_base64))
+</span></span></code></pre></div><p><strong>Transformers</strong>
+Transformers cung cấp các định nghĩa mô hình tiêu chuẩn để suy luận và tinh chỉnh dễ dàng. Các mô hình có sẵn trong transformers đi kèm với triển khai transformers chính thức (định nghĩa mô hình trong thư viện) hoặc các triển khai &ldquo;mã từ xa&rdquo;. Sau này được xác định bởi chủ sở hữu mô hình để cho phép tải mô hình dễ dàng vào giao diện transformers, vì vậy bạn không cần phải đi qua việc triển khai mô hình. Dưới đây là ví dụ về việc tải mô hình Nanonets bằng triển khai transformers.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># make sure to install flash-attn and transformers</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoProcessor, AutoModelForImageTextToText
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> PIL <span style="color:#f92672">import</span> Image
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForImageTextToText<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;nanonets/Nanonets-OCR2-3B&#34;</span>,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>,
+</span></span><span style="display:flex;"><span>    device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>,
+</span></span><span style="display:flex;"><span>    attn_implementation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;flash_attention_2&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>eval()
+</span></span><span style="display:flex;"><span>processor <span style="color:#f92672">=</span> AutoProcessor<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;nanonets/Nanonets-OCR2-3B&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">infer</span>(image_url, model, processor, max_new_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>):
+</span></span><span style="display:flex;"><span>    prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;Extract the text from the above document as if you were reading it naturally. Return the tables in html format. Return the equations in LaTeX representation. If there is an image in the document and image caption is not present, add a small description of the image inside the &lt;img&gt;&lt;/img&gt; tag; otherwise, add the image caption inside &lt;img&gt;&lt;/img&gt;. Watermarks should be wrapped in brackets. Ex: &lt;watermark&gt;OFFICIAL COPY&lt;/watermark&gt;. Page numbers should be wrapped in brackets. Ex: &lt;page_number&gt;14&lt;/page_number&gt; or &lt;page_number&gt;9/22&lt;/page_number&gt;. Prefer using ☐ and ☑ for check boxes.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    image <span style="color:#f92672">=</span> Image<span style="color:#f92672">.</span>open(image_path)
+</span></span><span style="display:flex;"><span>    messages <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>        {<span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;system&#34;</span>, <span style="color:#e6db74">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;You are a helpful assistant.&#34;</span>},
+</span></span><span style="display:flex;"><span>        {<span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>, <span style="color:#e6db74">&#34;content&#34;</span>: [
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;image&#34;</span>, <span style="color:#e6db74">&#34;image&#34;</span>: image_url},
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;text&#34;</span>, <span style="color:#e6db74">&#34;text&#34;</span>: prompt},
+</span></span><span style="display:flex;"><span>        ]},
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>    text <span style="color:#f92672">=</span> processor<span style="color:#f92672">.</span>apply_chat_template(messages, tokenize<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, add_generation_prompt<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    inputs <span style="color:#f92672">=</span> processor(text<span style="color:#f92672">=</span>[text], images<span style="color:#f92672">=</span>[image], padding<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>)<span style="color:#f92672">.</span>to(model<span style="color:#f92672">.</span>device)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    output_ids <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(<span style="color:#f92672">**</span>inputs, max_new_tokens<span style="color:#f92672">=</span>max_new_tokens, do_sample<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    generated_ids <span style="color:#f92672">=</span> [output_ids[len(input_ids):] <span style="color:#66d9ef">for</span> input_ids, output_ids <span style="color:#f92672">in</span> zip(inputs<span style="color:#f92672">.</span>input_ids, output_ids)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    output_text <span style="color:#f92672">=</span> processor<span style="color:#f92672">.</span>batch_decode(generated_ids, skip_special_tokens<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, clean_up_tokenization_spaces<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> output_text[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> infer(image_path, model, processor, max_new_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">15000</span>)
+</span></span><span style="display:flex;"><span>print(result)
+</span></span></code></pre></div><p><strong>MLX</strong>
+MLX là một framework học máy mã nguồn mở dành cho Apple Silicon. <a href="https://github.com/Blaizzy/mlx-vlm">MLX-VLM</a> được xây dựng trên MLX để phục vụ các mô hình ngôn ngữ thị giác một cách dễ dàng. Bạn có thể khám phá tất cả các mô hình OCR có sẵn ở định dạng MLX <a href="https://huggingface.co/models?sort=trending&amp;search=ocr">ở đây</a>. Chúng cũng đi kèm với các phiên bản lượng tử hóa.
+Bạn có thể cài đặt MLX-VLM như sau.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install -U mlx-vlm
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget https://huggingface.co/datasets/merve/vlm_test_images/resolve/main/throughput_smolvlm.png
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>python -m mlx_vlm.generate --model ibm-granite/granite-docling-258M-mlx --max-tokens <span style="color:#ae81ff">4096</span> --temperature 0.0 --prompt <span style="color:#e6db74">&#34;Convert this chart to JSON.&#34;</span> --image throughput_smolvlm.png
+</span></span></code></pre></div><h3 id="từ-xa">Từ xa</h3>
+<p><strong>Điểm cuối suy luận cho triển khai được quản lý</strong>
+Bạn có thể triển khai các mô hình OCR tương thích với vLLM hoặc SGLang trên Điểm cuối suy luận Hugging Face, từ tùy chọn &ldquo;Triển khai&rdquo; của kho lưu trữ mô hình hoặc trực tiếp thông qua <a href="https://endpoints.huggingface.co/">giao diện Điểm cuối suy luận</a>. Điểm cuối suy luận phục vụ các mô hình tiên tiến trong môi trường được quản lý hoàn toàn với tăng tốc GPU, tự động mở rộng quy mô và giám sát mà không cần quản lý cơ sở hạ tầng thủ công.</p>
+<p>Đây là một phương pháp đơn giản để triển khai <code>nanonets</code> sử dụng vLLM làm công cụ suy luận.</p>
+<ol>
+<li>Truy cập kho lưu trữ mô hình <a href="https://huggingface.co/nanonets/Nanonets-OCR2-3B"><!-- raw HTML omitted -->nanonets/Nanonets-OCR2-3B<!-- raw HTML omitted --></a></li>
+<li>Nhấp vào nút &ldquo;Triển khai&rdquo; và chọn &ldquo;Điểm cuối suy luận HF&rdquo;</li>
+</ol>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/ocr/IE.png" alt="Inference Endpoints"></p>
+<ol start="3">
+<li>Cấu hình thiết lập triển khai trong vài giây</li>
+</ol>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/ocr/IE2.png" alt="Inference Endpoints"></p>
+<ol start="4">
+<li>Sau khi điểm cuối được tạo, bạn có thể sử dụng nó bằng đoạn mã máy khách OpenAI mà chúng tôi đã cung cấp ở phần trước.</li>
+</ol>
+<p>Bạn có thể tìm hiểu thêm về nó <a href="https://huggingface.co/docs/inference-endpoints/engines/vllm">ở đây</a>.</p>
+<p><strong>Công việc Hugging Face cho suy luận hàng loạt</strong>
+Đối với nhiều ứng dụng OCR, bạn muốn thực hiện suy luận hàng loạt hiệu quả, tức là chạy mô hình trên hàng nghìn hình ảnh với chi phí thấp nhất và hiệu quả nhất. Một cách tiếp cận tốt là sử dụng chế độ suy luận ngoại tuyến của vLLM. Như đã thảo luận ở trên, nhiều mô hình OCR dựa trên VLM gần đây được vLLM hỗ trợ, cho phép tạo lô hình ảnh hiệu quả và tạo đầu ra OCR ở quy mô lớn.</p>
+<p>Để làm điều này dễ dàng hơn nữa, chúng tôi đã tạo <a href="https://huggingface.co/datasets/uv-scripts/ocr">uv-scripts/ocr</a>, một bộ sưu tập các tập lệnh OCR sẵn sàng chạy hoạt động với Công việc Hugging Face. Các tập lệnh này cho phép bạn chạy OCR trên bất kỳ tập dữ liệu nào mà không cần GPU của riêng mình. Chỉ cần trỏ tập lệnh vào tập dữ liệu đầu vào của bạn và nó sẽ:</p>
+<ul>
+<li>Xử lý tất cả hình ảnh trong một cột tập dữ liệu bằng nhiều mô hình OCR mở khác nhau</li>
+<li>Thêm kết quả OCR dưới dạng một cột markdown mới vào tập dữ liệu</li>
+<li>Đẩy tập dữ liệu đã cập nhật với kết quả OCR lên Hub</li>
+</ul>
+<p>Ví dụ, để chạy OCR trên 100 hình ảnh:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hf jobs uv run --flavor l4x1 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  https://huggingface.co/datasets/uv-scripts/ocr/raw/main/nanonets-ocr.py <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  your-input-dataset your-output-dataset <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --max-samples <span style="color:#ae81ff">100</span>
+</span></span></code></pre></div><p>Các tập lệnh tự động xử lý tất cả cấu hình vLLM và tạo lô, giúp OCR hàng loạt có thể truy cập được mà không cần thiết lập cơ sở hạ tầng.</p>
+<h2 id="vượt-ra-ngoài-ocr">Vượt ra ngoài OCR</h2>
+<p>Nếu bạn quan tâm đến AI tài liệu, không chỉ OCR, đây là một số khuyến nghị của chúng tôi.</p>
+<h3 id="trình-truy-xuất-tài-liệu-trực-quan">Trình truy xuất tài liệu trực quan</h3>
+<p>Truy xuất tài liệu trực quan là để truy xuất các tài liệu liên quan hàng đầu trong top-k khi được cung cấp một truy vấn văn bản. Nếu bạn đã từng làm việc với các mô hình truy xuất, sự khác biệt là bạn tìm kiếm trực tiếp trên một chồng các tệp PDF. Ngoài việc sử dụng chúng độc lập, bạn cũng có thể xây dựng các quy trình RAG đa phương thức bằng cách kết hợp chúng với một mô hình ngôn ngữ thị giác (tìm hiểu cách thực hiện <a href="https://huggingface.co/merve/smol-vision/blob/main/ColPali_%2B_Qwen2_VL.ipynb">ở đây</a>). Bạn có thể tìm thấy <a href="https://huggingface.co/models?pipeline_tag=visual-document-retrieval&amp;sort=trending">tất cả chúng trên Hugging Face Hub</a>.</p>
+<p>Có hai loại trình truy xuất tài liệu trực quan, mô hình đơn vector và đa vector. Các mô hình đơn vector tiết kiệm bộ nhớ hơn và kém hiệu quả hơn; trong khi đó, các mô hình đa vector tiêu tốn nhiều bộ nhớ hơn và hiệu quả hơn. Hầu hết các mô hình này thường đi kèm với tích hợp vLLM và transformers, vì vậy bạn có thể lập chỉ mục tài liệu bằng chúng và sau đó thực hiện tìm kiếm dễ dàng bằng cơ sở dữ liệu vector.</p>
+<h3 id="sử-dụng-mô-hình-ngôn-ngữ-thị-giác-để-hỏi--đáp-về-tài-liệu">Sử dụng Mô hình Ngôn ngữ Thị giác để Hỏi &amp; Đáp về Tài liệu</h3>
+<p>Nếu bạn có một tác vụ cần chỉ trả lời câu hỏi dựa trên tài liệu, bạn có thể sử dụng một số mô hình ngôn ngữ thị giác đã có các tác vụ tài liệu trong các tác vụ huấn luyện của chúng. Chúng tôi nhận thấy người dùng cố gắng chuyển đổi tài liệu thành văn bản và chuyển đầu ra cho LLM, nhưng nếu tài liệu của bạn có bố cục phức tạp và đầu ra tài liệu đã chuyển đổi của bạn có biểu đồ, v.v. dưới dạng HTML, hoặc hình ảnh được chú thích không chính xác, thì LLM sẽ bỏ lỡ. Thay vào đó, hãy cung cấp tài liệu và truy vấn của bạn cho một trong các mô hình ngôn ngữ thị giác nâng cao như <a href="https://huggingface.co/collections/Qwen/qwen3-vl">Qwen3-VL</a> để không bỏ lỡ bất kỳ ngữ cảnh nào.</p>
+<h2 id="tổng-kết">Tổng kết</h2>
+<p>Trong bài đăng blog này, chúng tôi muốn cung cấp cho bạn cái nhìn tổng quan về cách chọn mô hình OCR, các mô hình và khả năng tiên tiến hiện có, cũng như các công cụ để bạn bắt đầu với OCR.
+Nếu bạn muốn tìm hiểu thêm về OCR và các mô hình ngôn ngữ thị giác, chúng tôi khuyến khích bạn đọc các tài nguyên dưới đây.</p>
+<ul>
+<li><a href="https://huggingface.co/blog/vlms">Giải thích Mô hình Ngôn ngữ Thị giác</a></li>
+<li><a href="https://huggingface.co/blog/vlms-2025">Cập nhật Mô hình Ngôn ngữ Thị giác 2025</a></li>
+<li><a href="https://huggingface.co/blog/baidu/ppocrv5">Bài đăng về PP-OCR-v5</a></li>
+<li><a href="https://huggingface.co/merve/smol-vision/blob/main/Grounded_Fine_tuning.ipynb">Hướng dẫn: Tinh chỉnh Kosmos2.5 trên OCR có Neo hóa</a></li>
+<li><a href="https://huggingface.co/merve/smol-vision/blob/main/Fine_tune_Florence_2.ipynb">Hướng dẫn: Tinh chỉnh Florence-2 trên DocVQA</a></li>
+<li><a href="https://huggingface.co/blog/dots-ocr-ne">OCR tại thiết bị với Core ML và dots.ocr</a></li>
+</ul>
+<h3 id="cộng-đồng">Cộng đồng</h3>
+<ul>
+<li><strong>abol3z</strong>
+Nếu chỉ có điều này xuất hiện vào tuần trước! Tôi đã dành cả tuần qua để tìm hiểu và đánh giá tất cả những mô hình này cùng với các mô hình bổ sung, và tôi muốn chỉ ra một sự điều chỉnh. OlmOCR không phải là mô hình chỉ có tiếng Anh, trên thực tế, nó cho kết quả tốt nhất trên tất cả các framework VLM và không VLM trên tập dữ liệu tiếng Ả Rập của tôi.
+<ul>
+<li><strong>doladoo</strong>: Bạn đã thử VLM nào?</li>
+<li><strong>merve</strong>: @abol3z mô hình cơ sở của OlmOCR là Qwen2.5-VL, là mô hình đa ngôn ngữ, nhưng bản thân mô hình được huấn luyện và đánh giá trên các tệp PDF chỉ có tiếng Anh, vì vậy chúng tôi chỉ nêu rõ điều đó.</li>
+<li><strong>abol3z</strong>: @doladoo cả phiên bản 1 và 2
+@merve theo thử nghiệm của tôi, nó không mất đi các kỹ năng đa ngôn ngữ, trên thực tế nó còn làm cho chúng tốt hơn nhiều. Tôi đã thử nghiệm cả Qwen2.5-VL và OlmOCR và cái sau là tốt nhất cho văn bản tiếng Ả Rập.</li>
+<li><strong>harpreetsahota</strong>: Tóm tắt tuyệt vời! Đừng quên, DeepSeek OCR cũng hỗ trợ OCR có neo hóa!</li>
+<li><strong>janus-zheng-sg</strong>: Tôi tự hỏi tại sao mô hình minerU 2.5 lại không được đưa vào so sánh? <a href="https://huggingface.co/opendatalab/MinerU2.5-2509-1.2B">MinerU2.5-2509-1.2B</a></li>
+<li><strong>daya-shankar</strong>: Tóm tắt siêu hữu ích. Khả năng nhận biết bố cục và lợi ích về chi phí thực sự nổi bật. Cảm ơn đã chia sẻ!</li>
+<li><strong>pkghf</strong>: Thông tin chi tiết tuyệt vời và phân tích các điểm chuẩn. Tôi sẽ sử dụng các tập dữ liệu ở đây để thực hiện đánh giá.</li>
+<li><strong>staghado</strong>: <a href="https://huggingface.co/lightonai/LightOnOCR-1B-1025"><strong>LightOnOCR-1B</strong></a> sẽ phù hợp với so sánh này như một người biểu diễn mạnh mẽ, vượt trội so với trọng lượng của nó:
+<ul>
+<li>🎯 <strong>Hiệu suất</strong>: Đạt được kết quả hiện đại nhất trên OlmOCR Benchmark cho kích thước của nó—vượt qua DeepSeek-OCR, tương đương với dots.ocr (mặc dù nhỏ hơn 3 lần), hoạt động ngang bằng với PaddleOCR-VL và vượt trội hơn Qwen3-VL-2B tới 16 điểm</li>
+<li>⚡ <strong>Tốc độ</strong>: Nhanh hơn 6 lần so với dots.ocr, nhanh hơn 2 lần so với PaddleOCR-VL-0.9B, nhanh hơn 1,73 lần so với DeepSeekOCR</li>
+<li>💸 <strong>Hiệu quả</strong>: Xử lý 5,71 trang/giây trên một H100 duy nhất (~493k trang/ngày) với chi phí &lt;$0,01 mỗi 1.000 trang</li>
+<li>🧠 <strong>End-to-End</strong>: Khả năng phân biệt hoàn toàn mà không cần quy trình OCR bên ngoài—dễ dàng tinh chỉnh để cải thiện theo lĩnh vực cụ thể</li>
+<li>🧾 <strong>Linh hoạt</strong>: Xử lý bảng, hóa đơn, biểu mẫu, bố cục nhiều cột và ký hiệu toán học</li>
+<li>🌍 <strong>Các biến thể nhỏ gọn</strong>: Tùy chọn từ vựng 32k và 16k được tối ưu hóa cho các ngôn ngữ châu Âu
+Kết quả chi tiết hơn ở đây:
+<img src="https://cdn-uploads.huggingface.co/production/uploads/62cd695e94b9dcedbf1818e5/JU4L-h-FSrlaOo4d7GASf.png" alt="bench"></li>
+</ul>
+</li>
+<li><strong>Fnkh</strong>:
+(Không có mô tả nào được cung cấp.)</li>
+</ul>
+</li>
+</ul>
+<p>Bài viết này đã được dịch từ tiếng Anh.</p>
+<hr>
+<h2 id="bài-viết-khác-từ-blog-của-chúng-tôi">Bài viết khác từ Blog của chúng tôi</h2>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<hr>
+<h3 id="cộng-đồng-1">Cộng đồng</h3>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/ocr-open-models">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/21-october-2025/">21 October 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/f0d14c/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">datasetsopen-sourcevision- Mở khóa sức mạnh của hình ảnh với AI Sheets</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Datasetsopen-sourcevision- Mở khóa sức mạnh của hình ảnh với AI Sheets</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d6e9ef/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/667d6f513a685cd30f542fef/ipB8pJRbVIK2FJOOEGUjC.png" alt="Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bảng xếp hạng so sánh- AI - Từ lượt bình chọn của người dùng đến bảng xếp hạng mô hình dựa trên sự tham gia</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

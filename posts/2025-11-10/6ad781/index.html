@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt | AI Today - SkyAI</title>
+
+<meta name="description" content="LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            7 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/654bcb6fae75d15300d48205/T4L1RZUgCZgdik4ZhEWCq.jpeg" alt="LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt">
+        <figcaption class="text-center italic text-xs">LLasa Chuyển sang RL- Huấn luyện LLaSA với GRPO để cải thiện Âm điệu và Khả năng Diễn đạt</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="llasa-goes-rl-training-llasa-with-grpo-for-improved-prosody-and-expressiveness">Llasa Goes RL: Training LLaSA with GRPO for Improved Prosody and Expressiveness</h1>
+<p>Bài viết này giới thiệu về việc sử dụng Kỹ thuật Tối ưu Hóa Chính sách Phần thưởng Sinh (GRPO) để huấn luyện mô hình tổng hợp giọng nói LLaSA, nhằm cải thiện ngữ điệu và biểu cảm.</p>
+<h2 id="1-động-lực-tại-sao-lại-dùng-học-tăng-cường-cho-tts">1. Động lực: Tại sao lại dùng Học tăng cường cho TTS?</h2>
+<p>Các mô hình TTS dựa trên LLM hiện nay thường được huấn luyện bằng phương pháp ước tính khả năng cực đại (MLE). Phương pháp này chỉ đơn thuần là khiến mô hình tái tạo lại giọng nói tham chiếu một cách &ldquo;an toàn&rdquo; và &ldquo;phẳng lặng&rdquo;, bỏ qua các yếu tố quan trọng của giọng nói con người như:</p>
+<ul>
+<li>Nhấn mạnh vào các từ ngữ nhất định.</li>
+<li>Giai điệu (ngữ điệu) của câu.</li>
+<li>Biểu cảm và nhịp điệu.</li>
+</ul>
+<p>Chính vì vậy, <strong>Học tăng cường (Reinforcement Learning - RL)</strong> được đưa vào để huấn luyện mô hình tối ưu hóa các phẩm chất mà chúng ta thực sự quan tâm: sự rõ ràng, biểu cảm, nhịp điệu, sự nhất quán về giọng điệu của người nói, v.v.</p>
+<p><strong>GRPO</strong> đặc biệt phù hợp với nhiệm vụ này vì:</p>
+<ul>
+<li>Nó hoạt động trên các <strong>token rời rạc</strong> (tương tự như đầu ra của Llasa).</li>
+<li>Nó kết hợp mô hình <strong>chính sách (policy)</strong> và mô hình <strong>phần thưởng (reward model)</strong>.</li>
+<li>Nó không yêu cầu mô hình phần thưởng phải có khả năng tính đạo hàm.</li>
+</ul>
+<h2 id="2-grpo-là-gì">2. GRPO là gì?</h2>
+<p><strong>GRPO</strong> (Generative Reward Policy Optimization) là một thuật toán học tăng cường được thiết kế cho các mô hình chuỗi tự hồi quy lớn. Quy trình hoạt động đơn giản như sau:</p>
+<ol>
+<li>Tạo ra các đầu ra ứng viên từ mô hình (chính sách).</li>
+<li>Đánh giá chúng bằng một <strong>mô hình phần thưởng</strong>.</li>
+<li>Điều chỉnh các tham số của mô hình để <strong>tăng xác suất cho các chuỗi có phần thưởng cao</strong> và giảm xác suất cho các chuỗi có phần thưởng thấp.</li>
+</ol>
+<h2 id="3-tóm-tắt-kiến-trúc-llasa--xcodec2">3. Tóm tắt kiến trúc: Llasa + Xcodec2</h2>
+<p>Chúng ta vẫn tiếp tục sử dụng quy trình của Llasa:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Thành phần</th>
+          <th style="text-align: left">Vai trò</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>LLaSA Transformer</strong></td>
+          <td style="text-align: left">Mô hình tự hồi quy tạo ra các token giọng nói</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Xcodec2</strong></td>
+          <td style="text-align: left">Tokenizer chuyển đổi dạng sóng thành token rời rạc</td>
+      </tr>
+  </tbody>
+</table>
+<p>Việc giọng nói đã được biểu diễn dưới dạng <strong>token rời rạc</strong> giúp vòng lặp RL hiệu quả và tránh các vấn đề phức tạp về xử lý tín hiệu ở cấp độ khung.</p>
+<h2 id="4-quy-trình-huấn-luyện-grpo">4. Quy trình huấn luyện GRPO</h2>
+<p>Script tinh chỉnh GRPO nằm trong kho lưu trữ:</p>
+<p>Llasa-GRPO/
+│
+├─ create_dataset.py         # Script chuẩn bị dataset (tokenize audio, xây dựng prompt)
+├─ train.py                  # Vòng lặp huấn luyện GRPO chính sử dụng mô hình chính sách
+├─ inference.py              # Script cho suy luận: tạo giọng nói từ văn bản bằng mô hình đã huấn luyện
+├─ reward_whisper.py         # Module tính toán phần thưởng sử dụng ASR + WER qua Whisper
+├─ requirements.txt          # Danh sách các thư viện phụ thuộc
+└─ README.md                 # Tài liệu &amp; hướng dẫn sử dụng</p>
+<h3 id="41-mô-hình-phần-thưởng-đo-lường-chất-lượng-giọng-nói">4.1. Mô hình phần thưởng: Đo lường chất lượng giọng nói</h3>
+<p>Các thử nghiệm hiện tại sử dụng một phần thưởng kết hợp, bao gồm tỷ lệ lỗi từ (Word Error Rate - WER) và log khả năng âm tính (negative log-likelihood - NLL):</p>
+<p>$R = \frac{\lambda_w + \lambda_n}{ \frac{\lambda_w}{R_{WER}} + \frac{\lambda_n}{R_{NLL}} } $</p>
+<p>trong đó:</p>
+<ul>
+<li>$R_{WER} = 1 - \tanh(\alpha_w . WER)$</li>
+<li>$R_{NLL} = \exp(- \frac{NLL}{\alpha_n})$</li>
+<li>$\alpha_w$ và $\alpha_n$ điều chỉnh độ nhạy của hàm phần thưởng đối với WER và NLL.</li>
+<li>$\lambda_w$ và $\lambda_n$ là trọng số cho các phần thưởng WER và NLL.</li>
+</ul>
+<h3 id="42-chuẩn-bị-dữ-liệu-và-token-hóa-âm-thanh">4.2. Chuẩn bị dữ liệu và Token hóa âm thanh</h3>
+<p>Llasa hoạt động trên các <strong>token giọng nói rời rạc</strong>, vì vậy âm thanh cần được <strong>token hóa bằng XCodec2</strong> trước khi huấn luyện.
+Script <code>create_dataset.py</code> xử lý toàn bộ quy trình này:</p>
+<p>bash
+python create_dataset.py <br>
+&ndash;dataset your_dataset_name_or_path <br>
+&ndash;output_dir tokenized_dataset <br>
+&ndash;codec_id HKUSTAudio/xcodec2 <br>
+&ndash;sampling_rate 16000</p>
+<p>Script này thực hiện các bước sau:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Bước</th>
+          <th style="text-align: left">Mô tả</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>1. Tải âm thanh</strong></td>
+          <td style="text-align: left">Đọc các tệp âm thanh dạng sóng thô từ dataset</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>2. Token hóa</strong></td>
+          <td style="text-align: left">Chuyển đổi âm thanh thành các token giọng nói của <strong>XCodec2</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>3. Căn chỉnh văn bản</strong></td>
+          <td style="text-align: left">Xây dựng các chuỗi huấn luyện dạng cặp văn bản → token giọng nói</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>4. Định dạng</strong></td>
+          <td style="text-align: left">Lưu trữ dataset đã xử lý ở định dạng sẵn sàng cho huấn luyện hoặc tải lên Hugging Face</td>
+      </tr>
+  </tbody>
+</table>
+<p>Nếu bạn đã có một dataset bao gồm <strong>token giọng nói XCodec2</strong>, bạn có thể bỏ qua bước này và truyền trực tiếp vào <code>train.py</code> thông qua <code>--dataset</code>.</p>
+<h3 id="43-chạy-huấn-luyện">4.3. Chạy huấn luyện</h3>
+<p>bash
+accelerate launch train.py <br>
+&ndash;model_name_or_path HKUSTAudio/Llasa-1B-Multilingual <br>
+&ndash;dataset your_dataset.json <br>
+&ndash;reward_config reward_models/prosody_reward.json <br>
+&ndash;output_dir llasa-grpo-exp1</p>
+<p>Yêu cầu phần cứng:</p>
+<ul>
+<li>1 x A100 (40GB) cho Llasa-1B</li>
+<li>Khuyến nghị 2-4 GPU để huấn luyện RL ổn định</li>
+</ul>
+<h2 id="5-kết-quả">5. Kết quả</h2>
+<p>Dưới đây là biểu đồ phần thưởng được ghi lại trong quá trình huấn luyện GRPO.
+Chúng tôi đã huấn luyện Llasa-1B bằng Whisper-Large v3 để tính toán tín hiệu phần thưởng dựa trên WER và NLL trong quá trình tối ưu hóa.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/654bcb6fae75d15300d48205/dpyNvKl0gIwcL6d2DroBK.png" alt="Biểu đồ W&amp;B"></p>
+<h3 id="mẫu-trước--sau">Mẫu Trước &amp; Sau</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Mô hình</th>
+          <th style="text-align: left">Liên kết mẫu</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Llasa baseline</td>
+          <td style="text-align: left"><!-- raw HTML omitted --><!-- raw HTML omitted --></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Llasa + GRPO</td>
+          <td style="text-align: left"><!-- raw HTML omitted --><!-- raw HTML omitted --></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="6-kết-quả-điều-gì-thay-đổi-sau-khi-huấn-luyện-grpo">6. Kết quả: Điều gì thay đổi sau khi huấn luyện GRPO?</h2>
+<h3 id="-cải-tiến-được-quan-sát">✅ Cải tiến được quan sát:</h3>
+<ul>
+<li>Cách tiếp cận GRPO được đề xuất giúp cải thiện đáng kể cả <strong>tính nhất quán về ngữ nghĩa</strong> (khớp giữa giọng nói được tạo ra và văn bản) và <strong>tính tự nhiên</strong> của giọng nói tổng hợp.</li>
+<li>Hàm phần thưởng kết hợp (WER + NLL) mang lại sự ổn định huấn luyện tốt hơn và đầu ra chất lượng cao hơn so với từng thành phần riêng lẻ.</li>
+<li>Trong đánh giá TTS zero-shot trên nhiều ngôn ngữ, việc tinh chỉnh bằng GRPO đã giảm tỷ lệ lỗi ký tự/từ (CER/WER) và cải thiện điểm ý kiến trung bình (MOS) về tính tự nhiên.</li>
+</ul>
+<h3 id="-những-điều-cần-lưu-ý">⚠️ Những điều cần lưu ý:</h3>
+<ul>
+<li>Mặc dù khả năng nghe hiểu và tính nhất quán ngữ nghĩa được cải thiện, sự tương đồng về giọng điệu người nói không tăng lên đồng đều; một số trường hợp cho thấy kết quả tương đương hoặc chỉ cải thiện nhẹ về việc giữ phong cách của người nói.</li>
+<li>Ngay cả với cơ chế phần thưởng được cải thiện, các tác giả lưu ý rằng việc tối ưu hóa chỉ bằng các chỉ số dựa trên ASR có thể không nắm bắt đầy đủ <strong>tất cả các khía cạnh cảm nhận của giọng nói</strong> (ví dụ: cảm xúc, biểu cảm, sắc thái ngữ điệu).</li>
+</ul>
+<h2 id="7-bước-tiếp-theo-là-gì">7. Bước tiếp theo là gì?</h2>
+<p>Các công việc sắp tới bao gồm:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Hướng đi</th>
+          <th style="text-align: left">Mục tiêu</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Mô hình phần thưởng ngữ điệu học được</strong></td>
+          <td style="text-align: left">Thay thế các chỉ số thủ công bằng phần thưởng mạng nơ-ron</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Phản hồi của con người (RLAIF)</strong></td>
+          <td style="text-align: left">Đánh giá trực tiếp chất lượng cảm xúc cảm nhận được</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>GRPO thích ứng với người nói</strong></td>
+          <td style="text-align: left">Tối ưu hóa sự biến đổi phong cách cho từng giọng điệu người nói</td>
+      </tr>
+  </tbody>
+</table>
+<p>Mục tiêu cuối cùng: <strong>giọng nói đa ngôn ngữ có thể kiểm soát, biểu cảm và sống động.</strong></p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Thí nghiệm này cho thấy <strong>tổng hợp giọng nói đang bước vào kỷ nguyên tương tự như LLM văn bản, được thúc đẩy bởi RL</strong>. Bằng cách định hình <em>cách mô hình nói</em>, thay vì chỉ <em>những gì nó nói</em>, chúng ta mở ra cánh cửa cho các <strong>trợ lý ảo, người tường thuật sách nói và nhân vật ảo thực sự sống động</strong>.</p>
+<p>Kho lưu trữ:
+<a href="https://github.com/Deep-unlearning/Llasa-GRPO">https://github.com/Deep-unlearning/Llasa-GRPO</a></p>
+<p>Nếu bạn thử nghiệm hoặc xây dựng dựa trên dự án này, tôi rất muốn nghe về kết quả của bạn!</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/Steveeeeeeen/llasa-grpo">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/5-ng%C3%A0y-tr%C6%B0%E1%BB%9Bc/">5 Ngày Trước</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/4bc9f0/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/67692674bc5af30a79d06213/UQ6xLl_qNEGg1KQPR90bv.png" alt="Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Đánh giá RAG của riêng bạn- Tại sao các Tốt nhất đã Thất bại với Chúng tôi</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/fe7cc6/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/60edd0133e2c73a9a21455f5/yK1G-Fv-YjYb7v_chkz3p.jpeg" alt="⚡ Điện, Nhiệt và Trí tuệ ☁️ - Giải thích Trung tâm Dữ liệu AI 🏭" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">⚡ Điện, Nhiệt và Trí tuệ ☁️ - Giải thích Trung tâm Dữ liệu AI 🏭</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Điện, Nhiệt và Trí tuệ - Giải thích Trung tâm Dữ liệu AI</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

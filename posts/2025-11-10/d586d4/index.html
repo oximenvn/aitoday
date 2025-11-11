@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Giới thiệu Truy xuất Ngữ cảnh | AI Today - SkyAI</title>
+
+<meta name="description" content="Anthropic giới thiệu Truy xuất Ngữ cảnh, một tính năng mới được thiết kế để cải thiện khả năng hiểu và sử dụng ngữ cảnh của các mô hình AI.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Giới thiệu Truy xuất Ngữ cảnh</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Anthropic giới thiệu Truy xuất Ngữ cảnh, một tính năng mới được thiết kế để cải thiện khả năng hiểu và sử dụng ngữ cảnh của các mô hình AI. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            15 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+        <figcaption class="text-center italic text-xs">Anthropic giới thiệu Truy xuất Ngữ cảnh, một tính năng mới được thiết kế để cải thiện khả năng hiểu và sử dụng ngữ cảnh của các mô hình AI.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="giới-thiệu-về-contextual-retrieval-truy-xuất-ngữ-cảnh">Giới thiệu về Contextual Retrieval (Truy xuất Ngữ cảnh)</h1>
+<p>Để mô hình AI hữu ích trong các ngữ cảnh cụ thể, nó thường cần truy cập kiến thức nền. Ví dụ, chatbot hỗ trợ khách hàng cần kiến thức về doanh nghiệp cụ thể mà chúng đang hoạt động, và các bot phân tích pháp lý cần biết về vô số các vụ án trước đây.</p>
+<p>Các nhà phát triển thường nâng cao kiến thức của mô hình AI bằng Retrieval-Augmented Generation (RAG). RAG là một phương pháp truy xuất thông tin liên quan từ cơ sở kiến thức và bổ sung nó vào lời nhắc của người dùng, giúp cải thiện đáng kể phản hồi của mô hình. Vấn đề là các giải pháp RAG truyền thống loại bỏ ngữ cảnh khi mã hóa thông tin, điều này thường dẫn đến việc hệ thống không truy xuất được thông tin liên quan từ cơ sở kiến thức.</p>
+<p>Trong bài viết này, chúng tôi phác thảo một phương pháp cải thiện đáng kể bước truy xuất trong RAG. Phương pháp này được gọi là “Contextual Retrieval” và sử dụng hai kỹ thuật phụ: Contextual Embeddings (Nhúng Ngữ cảnh) và Contextual BM25. Phương pháp này có thể giảm 49% số lần truy xuất thất bại và, khi kết hợp với việc sắp xếp lại thứ tự (reranking), giảm tới 67%. Đây là những cải tiến đáng kể về độ chính xác truy xuất, điều này trực tiếp chuyển thành hiệu suất tốt hơn trong các tác vụ hạ nguồn.</p>
+<p>Bạn có thể dễ dàng triển khai giải pháp Contextual Retrieval của riêng mình với Claude bằng <a href="https://github.com/anthropics/anthropic-cookbook/tree/main/skills/contextual-embeddings">cookbook của chúng tôi</a>.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="ghi-chú-về-việc-chỉ-sử-dụng-lời-nhắc-dài-hơn">Ghi chú về việc chỉ sử dụng lời nhắc dài hơn</h2>
+<p>Đôi khi giải pháp đơn giản nhất là tốt nhất. Nếu cơ sở kiến thức của bạn nhỏ hơn 200.000 token (khoảng 500 trang tài liệu), bạn có thể chỉ cần bao gồm toàn bộ cơ sở kiến thức trong lời nhắc bạn cung cấp cho mô hình, không cần RAG hoặc các phương pháp tương tự.</p>
+<p>Vài tuần trước, chúng tôi đã phát hành <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching">prompt caching</a> cho Claude, giúp phương pháp này nhanh hơn và tiết kiệm chi phí hơn đáng kể. Giờ đây, các nhà phát triển có thể lưu vào bộ nhớ cache các lời nhắc được sử dụng thường xuyên giữa các lệnh gọi API, giảm độ trễ &gt; 2 lần và chi phí lên tới 90% (bạn có thể xem cách hoạt động bằng cách đọc <a href="https://github.com/anthropics/anthropic-cookbook/blob/main/misc/prompt_caching.ipynb">cookbook prompt caching</a> của chúng tôi).</p>
+<p>Tuy nhiên, khi cơ sở kiến thức của bạn phát triển, bạn sẽ cần một giải pháp có khả năng mở rộng hơn. Đó là lúc Contextual Retrieval xuất hiện.</p>
+<h2 id="tổng-quan-về-rag-mở-rộng-quy-mô-cho-các-cơ-sở-kiến-thức-lớn-hơn">Tổng quan về RAG: Mở rộng quy mô cho các cơ sở kiến thức lớn hơn</h2>
+<p>Đối với các cơ sở kiến thức lớn hơn không vừa với cửa sổ ngữ cảnh, RAG là giải pháp điển hình. RAG hoạt động bằng cách tiền xử lý cơ sở kiến thức theo các bước sau:</p>
+<ol>
+<li>Chia nhỏ cơ sở kiến thức (tập hợp các tài liệu) thành các đoạn văn bản nhỏ hơn, thường không quá vài trăm token.</li>
+<li>Sử dụng mô hình nhúng để chuyển đổi các đoạn văn bản này thành các vector nhúng mã hóa ý nghĩa.</li>
+<li>Lưu trữ các vector nhúng này trong cơ sở dữ liệu vector cho phép tìm kiếm theo sự tương đồng ngữ nghĩa.</li>
+</ol>
+<p>Khi chạy, khi người dùng nhập một truy vấn vào mô hình, cơ sở dữ liệu vector được sử dụng để tìm các đoạn văn bản liên quan nhất dựa trên sự tương đồng ngữ nghĩa với truy vấn. Sau đó, các đoạn văn bản liên quan nhất được thêm vào lời nhắc gửi đến mô hình tạo sinh.</p>
+<p>Trong khi các mô hình nhúng xuất sắc trong việc nắm bắt các mối quan hệ ngữ nghĩa, chúng có thể bỏ lỡ các kết quả khớp chính xác quan trọng. May mắn thay, có một kỹ thuật cũ hơn có thể hỗ trợ trong các tình huống này. BM25 (Best Matching 25) là một hàm xếp hạng sử dụng khớp từ vựng để tìm các kết quả khớp từ hoặc cụm từ chính xác. Nó đặc biệt hiệu quả đối với các truy vấn bao gồm các định danh duy nhất hoặc các thuật ngữ kỹ thuật.</p>
+<p>BM25 hoạt động dựa trên khái niệm TF-IDF (Term Frequency-Inverse Document Frequency - Tần suất thuật ngữ-Tần suất nghịch đảo tài liệu). TF-IDF đo lường mức độ quan trọng của một từ đối với một tài liệu trong một tập hợp. BM25 tinh chỉnh điều này bằng cách xem xét độ dài tài liệu và áp dụng hàm bão hòa cho tần suất thuật ngữ, giúp ngăn chặn các từ phổ biến chiếm ưu thế trong kết quả.</p>
+<p>Đây là cách BM25 có thể thành công nơi các nhúng ngữ nghĩa thất bại: Giả sử người dùng truy vấn &ldquo;Mã lỗi TS-999&rdquo; trong cơ sở dữ liệu hỗ trợ kỹ thuật. Một mô hình nhúng có thể tìm thấy nội dung về mã lỗi nói chung, nhưng có thể bỏ lỡ kết quả khớp chính xác &ldquo;TS-999&rdquo;. BM25 tìm kiếm chuỗi văn bản cụ thể này để xác định tài liệu liên quan.</p>
+<p>Các giải pháp RAG có thể truy xuất chính xác nhất các đoạn văn bản phù hợp nhất bằng cách kết hợp các kỹ thuật nhúng và BM25 theo các bước sau:</p>
+<ol>
+<li>Chia nhỏ cơ sở kiến thức (tập hợp các tài liệu) thành các đoạn văn bản nhỏ hơn, thường không quá vài trăm token.</li>
+<li>Tạo mã hóa TF-IDF và nhúng ngữ nghĩa cho các đoạn văn bản này.</li>
+<li>Sử dụng BM25 để tìm các đoạn văn bản hàng đầu dựa trên khớp chính xác.</li>
+<li>Sử dụng nhúng để tìm các đoạn văn bản hàng đầu dựa trên sự tương đồng ngữ nghĩa.</li>
+<li>Kết hợp và loại bỏ các bản sao của kết quả từ (3) và (4) bằng các kỹ thuật kết hợp xếp hạng.</li>
+<li>Thêm các đoạn văn bản top-K vào lời nhắc để tạo phản hồi.</li>
+</ol>
+<!-- raw HTML omitted -->
+<p>Bằng cách tận dụng cả BM25 và mô hình nhúng, các hệ thống RAG truyền thống có thể cung cấp kết quả toàn diện và chính xác hơn, cân bằng giữa khớp thuật ngữ chính xác và hiểu ngữ nghĩa rộng hơn.</p>
+<p>Cách tiếp cận này cho phép bạn mở rộng quy mô một cách hiệu quả về chi phí cho các cơ sở kiến thức khổng lồ, vượt xa những gì có thể vừa trong một lời nhắc duy nhất. Nhưng các hệ thống RAG truyền thống này có một hạn chế đáng kể: chúng thường phá hủy ngữ cảnh.</p>
+<h2 id="vấn-đề-ngữ-cảnh-trong-rag-truyền-thống">Vấn đề ngữ cảnh trong RAG truyền thống</h2>
+<p>Trong RAG truyền thống, các tài liệu thường được chia thành các đoạn nhỏ hơn để truy xuất hiệu quả. Mặc dù cách tiếp cận này hoạt động tốt cho nhiều ứng dụng, nó có thể dẫn đến các vấn đề khi các đoạn văn bản riêng lẻ thiếu ngữ cảnh đầy đủ.</p>
+<p>Ví dụ, hãy tưởng tượng bạn có một bộ sưu tập thông tin tài chính (ví dụ: các hồ sơ SEC của Hoa Kỳ) được nhúng trong cơ sở kiến thức của bạn và bạn nhận được câu hỏi sau: <em>&ldquo;Tăng trưởng doanh thu của ACME Corp trong Q2 2023 là bao nhiêu?&rdquo;</em></p>
+<p>Một đoạn văn bản liên quan có thể chứa văn bản: <em>&ldquo;Doanh thu của công ty đã tăng 3% so với quý trước.&rdquo;</em> Tuy nhiên, đoạn văn bản này một mình không chỉ định nó đang đề cập đến công ty nào hoặc khoảng thời gian liên quan, khiến việc truy xuất thông tin chính xác hoặc sử dụng thông tin một cách hiệu quả trở nên khó khăn.</p>
+<h2 id="giới-thiệu-về-contextual-retrieval">Giới thiệu về Contextual Retrieval</h2>
+<p>Contextual Retrieval giải quyết vấn đề này bằng cách thêm ngữ cảnh giải thích cụ thể cho từng đoạn văn bản vào đầu mỗi đoạn văn bản trước khi nhúng (“Contextual Embeddings”) và tạo chỉ mục BM25 (“Contextual BM25”).</p>
+<p>Hãy quay lại ví dụ về bộ sưu tập hồ sơ SEC của chúng tôi. Đây là một ví dụ về cách một đoạn văn bản có thể được chuyển đổi:</p>
+<!-- raw HTML omitted -->
+<p>contextualized_chunk = &ldquo;This chunk is from an SEC filing on ACME corp&rsquo;s performance in Q2 2023; the previous quarter&rsquo;s revenue was $314 million. The company&rsquo;s revenue grew by 3% over the previous quarter.&quot;<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->Copy<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Cần lưu ý rằng các phương pháp khác để sử dụng ngữ cảnh nhằm cải thiện truy xuất đã được đề xuất trong quá khứ. Các đề xuất khác bao gồm: <a href="https://aclanthology.org/W02-0405.pdf">thêm tóm tắt tài liệu chung vào các đoạn văn bản</a> (chúng tôi đã thử nghiệm và thấy lợi ích rất hạn chế), <a href="https://arxiv.org/abs/2212.10496">nhúng tài liệu giả định</a>, và <a href="https://www.llamaindex.ai/blog/a-new-document-summary-index-for-llm-powered-qa-systems-9a32ece2f9ec">lập chỉ mục dựa trên tóm tắt</a> (chúng tôi đã đánh giá và thấy hiệu suất thấp). Các phương pháp này khác với những gì được đề xuất trong bài đăng này.</p>
+<h2 id="triển-khai-contextual-retrieval">Triển khai Contextual Retrieval</h2>
+<p>Tất nhiên, sẽ tốn rất nhiều công sức để chú thích thủ công hàng nghìn hoặc thậm chí hàng triệu đoạn văn bản trong một cơ sở kiến thức. Để triển khai Contextual Retrieval, chúng ta dựa vào Claude. Chúng tôi đã viết một lời nhắc hướng dẫn mô hình cung cấp ngữ cảnh súc tích, đặc trưng cho từng đoạn văn bản, giải thích đoạn văn bản đó bằng cách sử dụng ngữ cảnh của toàn bộ tài liệu. Chúng tôi đã sử dụng lời nhắc Claude 3 Haiku sau đây để tạo ngữ cảnh cho mỗi đoạn văn bản:</p>
+<!-- raw HTML omitted -->
+<p>Ngữ cảnh được tạo ra, thường từ 50-100 token, được thêm vào đầu đoạn văn bản trước khi nhúng và trước khi tạo chỉ mục BM25.</p>
+<p>Luồng tiền xử lý trông như thế nào trong thực tế:</p>
+<!-- raw HTML omitted -->
+<p>Nếu bạn quan tâm đến việc sử dụng Contextual Retrieval, bạn có thể bắt đầu với <a href="https://github.com/anthropics/anthropic-cookbook/tree/main/skills/contextual-embeddings">cookbook của chúng tôi</a>.</p>
+<h2 id="sử-dụng-prompt-caching-để-giảm-chi-phí-của-contextual-retrieval">Sử dụng Prompt Caching để giảm chi phí của Contextual Retrieval</h2>
+<p>Contextual Retrieval có thể đạt được với chi phí thấp một cách độc đáo với Claude, nhờ tính năng lưu vào bộ nhớ cache lời nhắc đặc biệt mà chúng tôi đã đề cập ở trên. Với prompt caching, bạn không cần phải truyền tài liệu tham chiếu cho mỗi đoạn văn bản. Bạn chỉ cần tải tài liệu vào bộ nhớ cache một lần và sau đó tham chiếu nội dung đã được lưu vào bộ nhớ cache trước đó. Giả sử các đoạn văn bản 800 token, tài liệu 8k token, hướng dẫn ngữ cảnh 50 token và 100 token ngữ cảnh cho mỗi đoạn, <strong>chi phí một lần để tạo các đoạn văn bản có ngữ cảnh là 1,02 đô la cho mỗi triệu token tài liệu</strong>.</p>
+<h3 id="phương-pháp-luận">Phương pháp luận</h3>
+<p>Chúng tôi đã thử nghiệm trên nhiều miền kiến thức khác nhau (cơ sở mã, tiểu thuyết, bài báo ArXiv, bài báo Khoa học), mô hình nhúng, chiến lược truy xuất và chỉ số đánh giá. Chúng tôi đã bao gồm một vài ví dụ về các câu hỏi và câu trả lời mà chúng tôi đã sử dụng cho mỗi miền trong <a href="https://assets.anthropic.com/m/1632cded0a125333/original/Contextual-Retrieval-Appendix-2.pdf">Phụ lục II</a>.</p>
+<p>Các biểu đồ dưới đây cho thấy hiệu suất trung bình trên tất cả các miền kiến thức với cấu hình nhúng hiệu suất cao nhất (Gemini Text 004) và truy xuất top-20-chunks. Chúng tôi sử dụng 1 trừ recall@20 làm chỉ số đánh giá của mình, đo lường tỷ lệ phần trăm các tài liệu liên quan không được truy xuất trong top 20 đoạn văn bản. Bạn có thể xem toàn bộ kết quả trong phụ lục - việc thêm ngữ cảnh cải thiện hiệu suất trong mọi kết hợp nhúng-nguồn mà chúng tôi đã đánh giá.</p>
+<h3 id="cải-thiện-hiệu-suất">Cải thiện hiệu suất</h3>
+<p>Các thí nghiệm của chúng tôi cho thấy rằng:</p>
+<ul>
+<li><strong>Contextual Embeddings giảm tỷ lệ thất bại truy xuất top-20-chunk xuống 35%</strong> (5,7% → 3,7%).</li>
+<li><strong>Kết hợp Contextual Embeddings và Contextual BM25 giảm tỷ lệ thất bại truy xuất top-20-chunk xuống 49%</strong> (5,7% → 2,9%).</li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="cân-nhắc-về-triển-khai">Cân nhắc về triển khai</h3>
+<p>Khi triển khai Contextual Retrieval, có một vài điểm cần lưu ý:</p>
+<ol>
+<li><strong>Ranh giới đoạn văn bản:</strong> Cân nhắc cách bạn chia tài liệu thành các đoạn văn bản. Lựa chọn kích thước đoạn văn bản, ranh giới đoạn văn bản và chồng lấp đoạn văn bản có thể ảnh hưởng đến hiệu suất truy xuất<!-- raw HTML omitted -->1<!-- raw HTML omitted -->.</li>
+<li><strong>Mô hình nhúng:</strong> Mặc dù Contextual Retrieval cải thiện hiệu suất trên tất cả các mô hình nhúng chúng tôi đã thử nghiệm, một số mô hình có thể hưởng lợi nhiều hơn những mô hình khác. Chúng tôi thấy <a href="https://ai.google.dev/gemini-api/docs/embeddings">Gemini</a> và <a href="https://www.voyageai.com/">Voyage</a> embeddings đặc biệt hiệu quả.</li>
+<li><strong>Lời nhắc ngữ cảnh tùy chỉnh:</strong> Mặc dù lời nhắc chung mà chúng tôi cung cấp hoạt động tốt, bạn có thể đạt được kết quả tốt hơn nữa với các lời nhắc được tùy chỉnh cho miền hoặc trường hợp sử dụng cụ thể của bạn (ví dụ: bao gồm một bảng thuật ngữ các thuật ngữ chính có thể chỉ được định nghĩa trong các tài liệu khác trong cơ sở kiến thức).</li>
+<li><strong>Số lượng đoạn văn bản:</strong> Thêm nhiều đoạn văn bản vào cửa sổ ngữ cảnh làm tăng cơ hội bạn bao gồm thông tin liên quan. Tuy nhiên, nhiều thông tin hơn có thể gây xao nhãng cho mô hình, vì vậy có một giới hạn cho điều này. Chúng tôi đã thử gửi 5, 10 và 20 đoạn văn bản, và thấy rằng việc sử dụng 20 là hiệu quả nhất trong số các tùy chọn này (xem phụ lục để so sánh) nhưng bạn nên thử nghiệm trên trường hợp sử dụng của mình.</li>
+</ol>
+<p><strong>Luôn chạy đánh giá:</strong> Việc tạo phản hồi có thể được cải thiện bằng cách chuyển đoạn văn bản có ngữ cảnh và phân biệt giữa nội dung nào là ngữ cảnh và nội dung nào là đoạn văn bản.</p>
+<h2 id="tăng-cường-hiệu-suất-hơn-nữa-với-reranking">Tăng cường hiệu suất hơn nữa với Reranking</h2>
+<p>Trong bước cuối cùng, chúng ta có thể kết hợp Contextual Retrieval với một kỹ thuật khác để đạt được nhiều cải tiến hiệu suất hơn. Trong RAG truyền thống, hệ thống AI tìm kiếm cơ sở kiến thức của mình để tìm các đoạn văn bản có khả năng liên quan. Với các cơ sở kiến thức lớn, truy xuất ban đầu này thường trả về nhiều đoạn văn bản - đôi khi hàng trăm - với mức độ liên quan và tầm quan trọng khác nhau.</p>
+<p>Reranking là một kỹ thuật lọc được sử dụng phổ biến để đảm bảo chỉ các đoạn văn bản liên quan nhất được gửi đến mô hình. Reranking cung cấp phản hồi tốt hơn và giảm chi phí cũng như độ trễ vì mô hình xử lý ít thông tin hơn. Các bước chính là:</p>
+<ol>
+<li>Thực hiện truy xuất ban đầu để lấy các đoạn văn bản có khả năng liên quan nhất (chúng tôi sử dụng top 150).</li>
+<li>Truyền top-N đoạn văn bản, cùng với truy vấn của người dùng, qua mô hình reranking.</li>
+<li>Sử dụng mô hình reranking, gán cho mỗi đoạn văn bản một điểm số dựa trên mức độ liên quan và tầm quan trọng của nó đối với lời nhắc, sau đó chọn top-K đoạn văn bản (chúng tôi sử dụng top 20).</li>
+<li>Truyền top-K đoạn văn bản vào mô hình làm ngữ cảnh để tạo kết quả cuối cùng.</li>
+</ol>
+<!-- raw HTML omitted -->
+<h3 id="cải-thiện-hiệu-suất-1">Cải thiện hiệu suất</h3>
+<p>Có nhiều mô hình reranking trên thị trường. Chúng tôi đã chạy các bài kiểm tra của mình với <a href="https://cohere.com/rerank">Cohere reranker</a>. <a href="https://docs.voyageai.com/docs/reranker">Voyage cũng cung cấp reranker</a>, mặc dù chúng tôi không có thời gian để kiểm tra nó. Các thí nghiệm của chúng tôi cho thấy, trên nhiều miền khác nhau, việc thêm bước reranking sẽ tối ưu hóa truy xuất hơn nữa.</p>
+<p>Cụ thể, chúng tôi phát hiện ra rằng Reranked Contextual Embedding và Contextual BM25 đã giảm tỷ lệ thất bại truy xuất top-20-chunk xuống 67% (5,7% → 1,9%).</p>
+<!-- raw HTML omitted -->
+<h3 id="cân-nhắc-về-chi-phí-và-độ-trễ">Cân nhắc về chi phí và độ trễ</h3>
+<p>Một cân nhắc quan trọng với reranking là tác động đến độ trễ và chi phí, đặc biệt khi reranking một số lượng lớn các đoạn văn bản. Bởi vì reranking thêm một bước bổ sung khi chạy, nó chắc chắn sẽ thêm một chút độ trễ, ngay cả khi reranker chấm điểm tất cả các đoạn văn bản song song. Có một sự đánh đổi cố hữu giữa việc reranking nhiều đoạn văn bản hơn để có hiệu suất tốt hơn so với reranking ít hơn để có độ trễ và chi phí thấp hơn. Chúng tôi khuyên bạn nên thử nghiệm với các cài đặt khác nhau trên trường hợp sử dụng cụ thể của bạn để tìm ra sự cân bằng phù hợp.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Chúng tôi đã thực hiện một số lượng lớn các thử nghiệm, so sánh các tổ hợp khác nhau của tất cả các kỹ thuật được mô tả ở trên (mô hình nhúng, sử dụng BM25, sử dụng contextual retrieval, sử dụng reranker và tổng số kết quả top-K được truy xuất), trên nhiều loại tập dữ liệu khác nhau. Đây là bản tóm tắt những gì chúng tôi đã tìm thấy:</p>
+<ol>
+<li>Embeddings + BM25 tốt hơn chỉ dùng embeddings.</li>
+<li>Voyage và Gemini có embeddings tốt nhất trong số những cái chúng tôi đã thử nghiệm.</li>
+<li>Truyền top-20 đoạn văn bản cho mô hình hiệu quả hơn chỉ top-10 hoặc top-5.</li>
+<li>Thêm ngữ cảnh vào các đoạn văn bản cải thiện đáng kể độ chính xác truy xuất.</li>
+<li>Reranking tốt hơn không reranking.</li>
+<li><strong>Tất cả các lợi ích này cộng lại</strong>: để tối đa hóa cải thiện hiệu suất, chúng ta có thể kết hợp contextual embeddings (từ Voyage hoặc Gemini) với contextual BM25, cộng với một bước reranking và thêm 20 đoạn văn bản vào lời nhắc.</li>
+</ol>
+<p>Chúng tôi khuyến khích tất cả các nhà phát triển làm việc với các cơ sở kiến thức sử dụng <a href="https://github.com/anthropics/anthropic-cookbook/tree/main/skills/contextual-embeddings">cookbook của chúng tôi</a> để thử nghiệm các phương pháp này nhằm mở khóa các cấp độ hiệu suất mới.</p>
+<h2 id="phụ-lục-i">Phụ lục I</h2>
+<p>Dưới đây là phân tích kết quả trên các tập dữ liệu, nhà cung cấp nhúng, việc sử dụng BM25 ngoài embeddings, việc sử dụng contextual retrieval và việc sử dụng reranking cho Retrievals @ 20.</p>
+<p>Xem <a href="https://assets.anthropic.com/m/1632cded0a125333/original/Contextual-Retrieval-Appendix-2.pdf">Phụ lục II</a> để biết phân tích cho Retrievals @ 10 và @ 5 cũng như các câu hỏi và câu trả lời ví dụ cho mỗi tập dữ liệu.</p>
+<!-- raw HTML omitted -->
+<h2 id="lời-cảm-ơn">Lời cảm ơn</h2>
+<p>Nghiên cứu và viết bởi Daniel Ford. Cảm ơn Orowa Sikder, Gautam Mittal và Kenneth Lien đã có những phản hồi quan trọng, Samuel Flamini đã triển khai các cookbook, Lauren Polansky đã điều phối dự án và Alex Albert, Susan Payne, Stuart Ritchie và Brad Abrams đã định hình bài đăng blog này.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.anthropic.com/news/contextual-retrieval">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/sep-19-2024/">Sep 19, 2024</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.anthropic.com/">Www.anthropic.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d9a8e7/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic Ký cam kết của Nhà Trắng với Thanh niên Hoa Kỳ- Đầu tư vào Giáo dục AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic tham gia cùng Nhà Trắng và các tổ chức khác trong cam kết đầu tư vào giáo dục AI cho giới trẻ Mỹ, thúc đẩy tương lai của lực lượng lao động.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/16879e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Anthropic bổ nhiệm Guillaume Princen làm Trưởng bộ phận EMEA và công bố hơn 100 vị trí mới trong khu vực" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Anthropic bổ nhiệm Guillaume Princen làm Trưởng bộ phận EMEA và công bố hơn 100 vị trí mới trong khu vực</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Anthropic chào đón Guillaume Princen đảm nhận vai trò Trưởng bộ phận EMEA, đồng thời công bố kế hoạch tuyển dụng mở rộng trong khu vực.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

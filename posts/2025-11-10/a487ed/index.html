@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VaultGemma- LLM riêng tư khác biệt có khả năng nhất thế giới | AI Today - SkyAI</title>
+
+<meta name="description" content="Mô hình">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">VaultGemma- LLM riêng tư khác biệt có khả năng nhất thế giới</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Mô hình </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-10T00:00:00&#43;00:00">November 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            13 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/3mRKhOlY-S5r9tjQiHkuyfwYQpUmrcoN_1zjvIDKt838NJ_e2HhK43rbfeLrt64VxHwL-zjwHLmcH8aMbhY8j0rJLCpKNuusFSN4QrmW6J4=w600-h600-n-nu" alt="VaultGemma- LLM riêng tư khác biệt có khả năng nhất thế giới">
+        <figcaption class="text-center italic text-xs">Mô hình</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="vaultgemma-mô-hình-ngôn-ngữ-có-khả-năng-mạnh-nhất-với-sự-riêng-tư-vi-phân">VaultGemma: Mô hình ngôn ngữ có khả năng mạnh nhất với sự riêng tư vi phân</h1>
+<h2 id="giới-thiệu-về-vaultgemma">Giới thiệu về VaultGemma</h2>
+<p>Trí tuệ nhân tạo (AI) ngày càng tích hợp sâu hơn vào cuộc sống của chúng ta, việc xây dựng AI với sự riêng tư làm cốt lõi là một bước tiến quan trọng. <strong>Quyền riêng tư vi phân (Differential Privacy - DP)</strong> cung cấp một giải pháp mạnh mẽ về mặt toán học bằng cách thêm nhiễu có hiệu chỉnh để ngăn chặn việc ghi nhớ dữ liệu.</p>
+<p>Tuy nhiên, việc áp dụng DP cho các Mô hình Ngôn ngữ Lớn (LLM) đặt ra những thách thức. Áp lực của nhiễu DP làm thay đổi các <strong>quy luật tỷ lệ (scaling laws)</strong> truyền thống – các quy tắc mô tả động lực hiệu suất – bằng cách làm giảm sự ổn định trong quá trình huấn luyện và tăng đáng kể kích thước lô (batch size) cùng chi phí tính toán.</p>
+<p>Nghiên cứu mới của chúng tôi, “<!-- raw HTML omitted -->Scaling Laws for Differentially Private Language Models<!-- raw HTML omitted -->”, được thực hiện với sự hợp tác của Google DeepMind, đã thiết lập các quy luật mô hình hóa chính xác những phức tạp này, cung cấp một bức tranh toàn diện về sự đánh đổi giữa tính toán, quyền riêng tư và tiện ích. Dựa trên nghiên cứu này, chúng tôi vui mừng giới thiệu <strong>VaultGemma</strong>, mô hình lớn nhất (1 tỷ tham số) được huấn luyện từ đầu với quyền riêng tư vi phân. Chúng tôi công bố trọng số trên <!-- raw HTML omitted -->Hugging Face<!-- raw HTML omitted --> và <!-- raw HTML omitted -->Kaggle<!-- raw HTML omitted -->, cùng với một <!-- raw HTML omitted -->báo cáo kỹ thuật<!-- raw HTML omitted -->, nhằm thúc đẩy sự phát triển của thế hệ AI riêng tư tiếp theo.</p>
+<h2 id="hiểu-rõ-các-quy-luật-tỷ-lệ">Hiểu rõ các quy luật tỷ lệ</h2>
+<p>Với phương pháp thử nghiệm được xây dựng cẩn thận, chúng tôi đã định lượng lợi ích của việc tăng kích thước mô hình, kích thước lô và số lần lặp trong bối cảnh huấn luyện DP. Công việc của chúng tôi đòi hỏi phải đưa ra một số giả định đơn giản hóa để khắc phục số lượng kết hợp khổng lồ có thể được xem xét. Chúng tôi giả định rằng mức độ mô hình học được phụ thuộc chủ yếu vào <strong>&ldquo;tỷ lệ nhiễu-lô&rdquo; (noise-batch ratio)</strong>, so sánh lượng nhiễu ngẫu nhiên chúng tôi thêm vào cho quyền riêng tư với kích thước của các nhóm dữ liệu (lô) mà chúng tôi sử dụng để huấn luyện. Giả định này có hiệu lực vì nhiễu quyền riêng tư chúng tôi thêm vào lớn hơn nhiều so với bất kỳ sự ngẫu nhiên tự nhiên nào đến từ việc lấy mẫu dữ liệu.</p>
+<p>Để thiết lập một quy luật tỷ lệ DP, chúng tôi đã thực hiện một loạt các thử nghiệm toàn diện để đánh giá hiệu suất trên nhiều kích thước mô hình và tỷ lệ nhiễu-lô khác nhau. Dữ liệu thực nghiệm thu được, cùng với các mối quan hệ xác định đã biết giữa các biến số khác, cho phép chúng tôi trả lời nhiều truy vấn theo kiểu quy luật tỷ lệ thú vị, chẳng hạn như: &ldquo;Với ngân sách tính toán, ngân sách quyền riêng tư và ngân sách dữ liệu nhất định, cấu hình huấn luyện tối ưu để đạt được tổn thất huấn luyện thấp nhất có thể là gì?&rdquo;</p>
+<p><img src="https://storage.googleapis.com/gweb-research2023-media/images/VaultGemma1_ScalingLaws.width-1250.png" alt="Cấu trúc các quy luật tỷ lệ DP của chúng tôi. Chúng tôi thiết lập rằng tổn thất dự đoán có thể được mô hình hóa chính xác bằng cách chủ yếu sử dụng kích thước mô hình, số lần lặp và tỷ lệ nhiễu-lô, đơn giản hóa các tương tác phức tạp giữa ngân sách tính toán, quyền riêng tư và dữ liệu."></p>
+<p><em>Cấu trúc các quy luật tỷ lệ DP. Chúng tôi thiết lập rằng tổn thất dự đoán có thể được mô hình hóa chính xác bằng cách chủ yếu sử dụng kích thước mô hình, số lần lặp và tỷ lệ nhiễu-lô, đơn giản hóa các tương tác phức tạp giữa ngân sách tính toán, quyền riêng tư và dữ liệu.</em></p>
+<h2 id="phát-hiện-chính-sức-mạnh-cộng-hưởng">Phát hiện chính: Sức mạnh cộng hưởng</h2>
+<p>Trước khi đi sâu vào các quy luật tỷ lệ đầy đủ, điều hữu ích là hiểu động lực và sự cộng hưởng giữa ngân sách tính toán, ngân sách quyền riêng tư và ngân sách dữ liệu từ góc độ kế toán quyền riêng tư — tức là hiểu các yếu tố này ảnh hưởng đến tỷ lệ nhiễu-lô như thế nào đối với kích thước mô hình và số lần lặp cố định. Phân tích này có chi phí thấp hơn vì nó không yêu cầu bất kỳ quá trình huấn luyện mô hình nào, nhưng vẫn mang lại nhiều hiểu biết hữu ích. Ví dụ, việc tăng ngân sách quyền riêng tư một cách riêng biệt dẫn đến lợi ích giảm dần, trừ khi nó đi kèm với sự gia tăng tương ứng về ngân sách tính toán (FLOPs) hoặc ngân sách dữ liệu (tokens).</p>
+<p><img src="https://storage.googleapis.com/gweb-research2023-media/images/vg-gif.width-800.gif" alt="Lợi ích biên của việc tăng ngân sách quyền riêng tư (epsilon) và ngân sách tính toán (kích thước lô) về tác động của chúng đến tỷ lệ nhiễu-lô."></p>
+<p><em>Lợi ích biên của việc tăng ngân sách quyền riêng tư (epsilon) và ngân sách tính toán (kích thước lô) về tác động của chúng đến tỷ lệ nhiễu-lô.</em></p>
+<p>Để khám phá sâu hơn về sự cộng hưởng này, hình ảnh trực quan dưới đây cho thấy cấu hình huấn luyện tối ưu thay đổi như thế nào dựa trên các ràng buộc khác nhau. Khi ngân sách quyền riêng tư và tính toán thay đổi, hãy lưu ý cách khuyến nghị chuyển đổi giữa việc đầu tư vào một mô hình nhỏ hơn so với việc huấn luyện với kích thước lô lớn hơn hoặc nhiều lần lặp hơn.</p>
+<p><img src="https://storage.googleapis.com/gweb-research2023-media/media/VaultGemma3_TrainingLossFin.mp4" alt="Dự đoán tổn thất huấn luyện cho các cài đặt khác nhau của ngân sách dữ liệu/quyền riêng tư/tính toán, và phân tích chi tiết hơn theo số lần lặp, kích thước lô và kích thước mô hình. Các biểu đồ cho thấy cả tổn thất tối thiểu có thể đạt được cho các cài đặt ngân sách khác nhau, cũng như các cấu hình siêu tham số tối ưu."></p>
+<p><em>Dự đoán tổn thất huấn luyện cho các cài đặt khác nhau của ngân sách dữ liệu/quyền riêng tư/tính toán, và phân tích chi tiết hơn theo số lần lặp, kích thước lô và kích thước mô hình. Các biểu đồ cho thấy cả tổn thất tối thiểu có thể đạt được cho các cài đặt ngân sách khác nhau, cũng như các cấu hình siêu tham số tối ưu.</em></p>
+<p>Dữ liệu này cung cấp một nguồn thông tin hữu ích cho các nhà thực hành. Mặc dù tất cả các hiểu biết đều được báo cáo trong bài báo, một phát hiện quan trọng là nên huấn luyện một mô hình nhỏ hơn nhiều với kích thước lô lớn hơn nhiều so với những gì sẽ được sử dụng nếu không có DP. Hiểu biết chung này không gây ngạc nhiên cho các chuyên gia DP, do tầm quan trọng của kích thước lô lớn. Mặc dù hiểu biết chung này vẫn giữ nguyên trong nhiều cài đặt, các cấu hình huấn luyện tối ưu thực sự thay đổi theo ngân sách quyền riêng tư và dữ liệu. Hiểu rõ sự đánh đổi là rất quan trọng để đảm bảo cả ngân sách tính toán và quyền riêng tư đều được sử dụng một cách khôn ngoan trong các tình huống huấn luyện thực tế. Các hình ảnh trực quan trên cũng cho thấy rằng thường có sự linh hoạt trong các cấu hình huấn luyện — tức là, một loạt các kích thước mô hình có thể cung cấp tiện ích rất giống nhau nếu được kết hợp với số lần lặp và/hoặc kích thước lô phù hợp.</p>
+<h2 id="áp-dụng-quy-luật-tỷ-lệ-để-xây-dựng-vaultgemma">Áp dụng quy luật tỷ lệ để xây dựng VaultGemma</h2>
+<p>Các mô hình <!-- raw HTML omitted -->Gemma<!-- raw HTML omitted --> được thiết kế với trách nhiệm và an toàn làm cốt lõi. Điều này làm cho chúng trở thành một nền tảng tự nhiên để phát triển một mô hình chất lượng sản xuất, được huấn luyện DP như VaultGemma.</p>
+<h3 id="tiến-bộ-thuật-toán-huấn-luyện-ở-quy-mô-lớn">Tiến bộ thuật toán: Huấn luyện ở quy mô lớn</h3>
+<p>Các quy luật tỷ lệ chúng tôi đã rút ra ở trên đại diện cho bước đầu tiên quan trọng để huấn luyện một mô hình Gemma hữu ích với DP. Chúng tôi đã sử dụng các quy luật tỷ lệ để xác định cả lượng tính toán chúng tôi cần để huấn luyện một mô hình Gemma 2 dựa trên tham số 1B tối ưu về tính toán với DP, và cách phân bổ lượng tính toán đó giữa kích thước lô, số lần lặp và độ dài chuỗi để đạt được tiện ích tốt nhất.</p>
+<p>Một khoảng trống nổi bật giữa nghiên cứu làm nền tảng cho các quy luật tỷ lệ và việc huấn luyện thực tế VaultGemma là cách chúng tôi xử lý <strong>lấy mẫu Poisson (Poisson sampling)</strong>, một thành phần trung tâm của <strong>DP-SGD</strong>. Ban đầu, chúng tôi sử dụng một phương pháp đơn giản là tải dữ liệu theo các lô đồng nhất, sau đó chuyển sang lấy mẫu Poisson để có được đảm bảo quyền riêng tư tốt nhất với lượng nhiễu ít nhất. Phương pháp này đặt ra hai thách thức chính: nó tạo ra các lô có kích thước khác nhau và nó yêu cầu một thứ tự xử lý dữ liệu ngẫu nhiên, cụ thể. Chúng tôi đã giải quyết điều này bằng cách sử dụng công trình gần đây của chúng tôi về <!-- raw HTML omitted -->Scalable DP-SGD<!-- raw HTML omitted -->, cho phép chúng tôi xử lý dữ liệu theo các lô có kích thước cố định — bằng cách thêm phần đệm bổ sung hoặc cắt bớt chúng — trong khi vẫn duy trì các biện pháp bảo vệ quyền riêng tư mạnh mẽ.</p>
+<h2 id="kết-quả">Kết quả</h2>
+<p>Trang bị các quy luật tỷ lệ mới và các thuật toán huấn luyện nâng cao, chúng tôi đã xây dựng VaultGemma, cho đến nay là mô hình mở lớn nhất (1 tỷ tham số) được huấn luyện đầy đủ với quyền riêng tư vi phân với một phương pháp có thể mang lại các mô hình có tiện ích cao.</p>
+<p>Từ quá trình huấn luyện VaultGemma, chúng tôi nhận thấy các quy luật tỷ lệ của mình có độ chính xác cao. Tổn thất huấn luyện cuối cùng của VaultGemma rất gần với những gì các phương trình của chúng tôi dự đoán, xác nhận nghiên cứu của chúng tôi và cung cấp cho cộng đồng một lộ trình đáng tin cậy cho sự phát triển mô hình riêng tư trong tương lai.</p>
+<p><img src="https://storage.googleapis.com/gweb-research2023-media/images/VaultGemma4_Performance.width-1250.png" alt="So sánh hiệu suất của VaultGemma 1B (có quyền riêng tư vi phân) so với đối tác không có quyền riêng tư (Gemma3 1B) và một mô hình cơ sở cũ hơn (GPT-2 1.5B). Kết quả định lượng mức đầu tư tài nguyên hiện tại cần thiết cho quyền riêng tư và cho thấy rằng quá trình huấn luyện DP hiện đại mang lại tiện ích tương đương với các mô hình không có quyền riêng tư từ khoảng năm năm trước, làm nổi bật khoảng cách quan trọng mà công việc của chúng tôi sẽ giúp cộng đồng thu hẹp một cách có hệ thống."></p>
+<p><em>So sánh hiệu suất của VaultGemma 1B (có quyền riêng tư vi phân) so với đối tác không có quyền riêng tư (Gemma3 1B) và một mô hình cơ sở cũ hơn (GPT-2 1.5B). Kết quả định lượng mức đầu tư tài nguyên hiện tại cần thiết cho quyền riêng tư và cho thấy rằng quá trình huấn luyện DP hiện đại mang lại tiện ích tương đương với các mô hình không có quyền riêng tư từ khoảng năm năm trước, làm nổi bật khoảng cách quan trọng mà công việc của chúng tôi sẽ giúp cộng đồng thu hẹp một cách có hệ thống.</em></p>
+<p>Chúng tôi cũng so sánh hiệu suất hạ nguồn của mô hình của chúng tôi với đối tác không có quyền riêng tư trên một loạt các tiêu chuẩn học thuật (tức là <!-- raw HTML omitted -->HellaSwag<!-- raw HTML omitted -->, <!-- raw HTML omitted -->BoolQ<!-- raw HTML omitted -->, <!-- raw HTML omitted -->PIQA<!-- raw HTML omitted -->, <!-- raw HTML omitted -->SocialIQA<!-- raw HTML omitted -->, <!-- raw HTML omitted -->TriviaQA<!-- raw HTML omitted -->, <!-- raw HTML omitted -->ARC-C<!-- raw HTML omitted -->, <!-- raw HTML omitted -->ARC-E<!-- raw HTML omitted -->). Để đặt hiệu suất này vào bối cảnh và định lượng mức đầu tư tài nguyên hiện tại cần thiết cho quyền riêng tư, chúng tôi cũng đưa ra so sánh với một mô hình GPT-2 cũ hơn có kích thước tương tự, mô hình này hoạt động tương tự trên các tiêu chuẩn này. So sánh này cho thấy rằng các phương pháp huấn luyện riêng tư ngày nay tạo ra các mô hình có tiện ích tương đương với các mô hình không có quyền riêng tư từ khoảng 5 năm trước, làm nổi bật khoảng cách quan trọng mà công việc của chúng tôi sẽ giúp cộng đồng thu hẹp một cách có hệ thống.</p>
+<p>Cuối cùng, mô hình đi kèm với các biện pháp bảo vệ quyền riêng tư lý thuyết và thực nghiệm mạnh mẽ.</p>
+<h3 id="đảm-bảo-quyền-riêng-tư-chính-thức">Đảm bảo quyền riêng tư chính thức</h3>
+<p>Nói chung, cả các tham số quyền riêng tư (ε, δ) và <strong>đơn vị quyền riêng tư (privacy unit)</strong> đều là những yếu tố quan trọng cần xem xét khi thực hiện huấn luyện DP, vì chúng cùng nhau xác định mô hình đã huấn luyện có thể học được những gì. VaultGemma đã được huấn luyện với đảm bảo DP ở <strong>cấp độ chuỗi (sequence-level)</strong> là (ε ≤ 2.0, δ ≤ 1.1e-10), trong đó một chuỗi bao gồm 1024 token liên tiếp được trích xuất từ các nguồn dữ liệu không đồng nhất. Cụ thể, chúng tôi đã sử dụng cùng một hỗn hợp huấn luyện đã được sử dụng để huấn luyện mô hình <!-- raw HTML omitted -->Gemma 2<!-- raw HTML omitted -->, bao gồm một số lượng tài liệu có độ dài khác nhau. Trong quá trình tiền xử lý, các tài liệu dài được chia nhỏ và mã hóa thành nhiều chuỗi, và các tài liệu ngắn hơn được đóng gói lại thành một chuỗi duy nhất. Mặc dù đơn vị quyền riêng tư cấp độ chuỗi là một lựa chọn tự nhiên cho hỗn hợp huấn luyện của chúng tôi, trong các tình huống có ánh xạ rõ ràng giữa dữ liệu và người dùng, <strong><!-- raw HTML omitted -->quyền riêng tư vi phân cấp độ người dùng<!-- raw HTML omitted --></strong> sẽ là một lựa chọn tốt hơn.</p>
+<p>Điều này có ý nghĩa gì trong thực tế? Nói một cách không chính thức, vì chúng tôi cung cấp sự bảo vệ ở cấp độ chuỗi, nếu thông tin liên quan đến bất kỳ sự kiện hoặc suy luận nào (có khả năng riêng tư) xảy ra trong một chuỗi duy nhất, thì về cơ bản VaultGemma không biết sự kiện đó: phản hồi cho bất kỳ truy vấn nào sẽ tương tự về mặt thống kê với kết quả từ một mô hình chưa bao giờ huấn luyện trên chuỗi được đề cập. Tuy nhiên, nếu nhiều chuỗi huấn luyện chứa thông tin liên quan đến một sự kiện cụ thể, thì nói chung VaultGemma sẽ có thể cung cấp thông tin đó.</p>
+<h3 id="ghi-nhớ-thực-nghiệm">Ghi nhớ thực nghiệm</h3>
+<p>Để bổ sung cho đảm bảo DP cấp độ chuỗi của chúng tôi, chúng tôi đã tiến hành các bài kiểm tra bổ sung về các thuộc tính quyền riêng tư thực nghiệm của mô hình đã huấn luyện. Để thực hiện điều này, chúng tôi đã nhắc mô hình bằng một tiền tố gồm 50 token từ một tài liệu huấn luyện để xem liệu nó có tạo ra hậu tố tương ứng gồm 50 token hay không. VaultGemma 1B không cho thấy bất kỳ sự ghi nhớ có thể phát hiện nào về dữ liệu huấn luyện của nó và chứng minh thành công hiệu quả của quá trình huấn luyện DP.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>VaultGemma đại diện cho một bước tiến quan trọng trong hành trình xây dựng AI vừa mạnh mẽ vừa có quyền riêng tư theo thiết kế. Bằng cách phát triển và áp dụng sự hiểu biết mới, mạnh mẽ về các quy luật tỷ lệ cho DP, chúng tôi đã huấn luyện và phát hành thành công mô hình ngôn ngữ lớn nhất, mở, được huấn luyện bằng DP cho đến nay.</p>
+<p>Mặc dù vẫn còn một khoảng cách về tiện ích giữa các mô hình được huấn luyện bằng DP và các mô hình không được huấn luyện bằng DP, chúng tôi tin rằng khoảng cách này có thể được thu hẹp một cách có hệ thống bằng nhiều nghiên cứu hơn về thiết kế cơ chế cho huấn luyện DP. Chúng tôi hy vọng rằng VaultGemma và nghiên cứu đi kèm của chúng tôi sẽ trao quyền cho cộng đồng để xây dựng thế hệ AI an toàn, có trách nhiệm và riêng tư tiếp theo cho mọi người.</p>
+<h2 id="lời-cảm-ơn">Lời cảm ơn</h2>
+<p>Chúng tôi muốn cảm ơn toàn bộ đội ngũ Gemma và Google Privacy vì những đóng góp và hỗ trợ của họ trong suốt dự án này, đặc biệt là Peter Kairouz, Brendan McMahan và Dan Ramage đã góp ý về bài đăng blog, Mark Simborg và Kimberly Schwede đã hỗ trợ trực quan hóa, và các đội ngũ tại Google đã hỗ trợ thiết kế thuật toán, triển khai cơ sở hạ tầng và bảo trì sản xuất. Những người sau đây đã đóng góp trực tiếp vào công trình được trình bày ở đây (sắp xếp theo thứ tự bảng chữ cái): Borja Balle, Zachary Charles, Christopher A. Choquette-Choo, Lynn Chua, Prem Eruvbetine, Badih Ghazi, Steve He, Yangsibo Huang, Armand Joulin, George Kaissis, Pritish Kamath, Ravi Kumar, Daogao Liu, Ruibo Liu, Pasin Manurangsi, Thomas Mesnard, Andreas Terzis, Tris Warkentin, Da Yu và Chiyuan Zhang.</p>
+<hr>
+<p><em>Nhãn: AI tạo sinh, Mô hình &amp; Bộ dữ liệu nguồn mở, AI có trách nhiệm, Bảo mật, Quyền riêng tư và Phòng chống lạm dụng</em></p>
+<h3 id="link-bài-viết-gốc"><a href="https://research.google/blog/vaultgemma-the-worlds-most-capable-differentially-private-llm/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/september-2025/">September 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/research.google/">Research.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/d74504/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/5uM8Ge-m5JQMtztsrzqkVQ8gpuVzxL8EScBW3N7St4pPRn-YBw0dy37dJ8z__Js-WV5TVckQ_Gibu_9AhmdV5jykqtXHLNHar2qQKDt-Fg=w600-h600-n-nu" alt="Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật lý" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gemini Robotics 1.5 đưa các tác nhân AI vào thế giới vật lý</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Mô hình</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-10/7a75eb/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/nFGD4geCYXI8EqdhXZZdBjXO8MXsjUXxd1Uk3MNWzFTDgM6IHkd262EdoA5vnWBI9JnOIFWyJhN4EhUK1qJhZKrJTXJRY7GIJxM6bkqakw=w600-h600-n-nu" alt="Gemini đạt huy chương vàng tại Chung kết Thế giới Cuộc thi Lập trình Sinh viên Quốc tế" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-10T00:00:00&#43;00:00">Nov 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gemini đạt huy chương vàng tại Chung kết Thế giới Cuộc thi Lập trình Sinh viên Quốc tế</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Nghiên cứu</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/b8c27e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/uF7GXzuXeJdrHENlTa-5forMtBtL3ZkNdvhNaSHI2RctkquboCqvIoJvp900uy97RI8Vzt6Ev0T968w_1IprEDzDuTnpXwWHMuPEeOjBjvEGYJM0Ql4=w600-h600-n-nu" alt="Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Làm thế nào AI đang giúp giáo viên Bắc Ireland có thêm thời gian</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/79dc54/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/669dbd709a4bf63e08f1ddc2/aV10ZJPPzH5LbnHFZNqc7.png" alt="QAT- Nghệ thuật phát triển một mô hình Bonsai" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">QAT- Nghệ thuật phát triển một mô hình Bonsai</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/7bd361/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/64ce091a9e9ca8123d7a42b0/OEPggp82RwigxNLL35LgT.jpeg" alt="SYNTH- biên giới dữ liệu mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SYNTH- biên giới dữ liệu mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/f8ff31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/84dfc3a6a5b8bf79a0cd430524c1f5a89e376531-1681x1261.svg" alt="Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thông báo · Chính sách- Tuyên bố của Dario Amodei về Hội nghị Thượng đỉnh Hành động AI Paris</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
