@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Build and Share ROCm Kernels Easily with Hugging Face | AI Today - SkyAI</title>
+
+<meta name="description" content="Xây dựng và Chia sẻ ROCm Kernels Dễ dàng với Hugging Face">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Build and Share ROCm Kernels Easily with Hugging Face</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Xây dựng và Chia sẻ ROCm Kernels Dễ dàng với Hugging Face </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-18T00:00:00&#43;00:00">November 18, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            17 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://image-link" alt="Build and Share ROCm Kernels Easily with Hugging Face">
+        <figcaption class="text-center italic text-xs">Xây dựng và Chia sẻ ROCm Kernels Dễ dàng với Hugging Face</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="dễ-dàng-xây-dựng-và-chia-sẻ-kernel-rocm-với-hugging-face">Dễ dàng xây dựng và chia sẻ Kernel ROCm với Hugging Face</h1>
+<p>Hugging Face đang trên hành trình thúc đẩy và dân chủ hóa trí tuệ nhân tạo thông qua mã nguồn mở và khoa học mở.</p>
+<hr>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Kernel tùy chỉnh là xương sống của học sâu hiệu suất cao, cho phép các hoạt động GPU được điều chỉnh chính xác cho khối lượng công việc của bạn; cho dù đó là xử lý hình ảnh, biến đổi tensor hay các tác vụ nặng về tính toán khác. Nhưng việc biên dịch các kernel này cho các kiến trúc phù hợp, kết nối tất cả các cờ xây dựng và tích hợp chúng một cách rõ ràng vào các tiện ích mở rộng PyTorch có thể nhanh chóng trở thành một mớ hỗn độn của CMake/Nix, lỗi trình biên dịch và các vấn đề ABI, điều này không thú vị. Các thư viện <strong>kernel-builder</strong> và <strong>kernels</strong> của Hugging Face giúp việc chia sẻ các kernel này với <strong>kernels-community</strong> trở nên dễ dàng, với hỗ trợ cho nhiều bộ xử lý GPU và tăng tốc khác nhau, bao gồm CUDA, ROCm, Metal và XPU. Điều này đảm bảo các kernel của bạn nhanh, di động và tích hợp liền mạch với PyTorch.</p>
+<p>Trong hướng dẫn này, chúng tôi tập trung hoàn toàn vào các kernel tương thích với ROCm và chỉ ra cách xây dựng, kiểm tra và chia sẻ chúng bằng <strong>kernel-builder</strong>. Bạn sẽ học cách tạo các kernel chạy hiệu quả trên GPU AMD, cùng với các phương pháp hay nhất để có thể tái sản xuất, đóng gói và triển khai.</p>
+<p>Hướng dẫn dành riêng cho ROCm này là phiên bản được tối giản hóa của hướng dẫn kernel-builder ban đầu. Nếu bạn đang tìm kiếm phiên bản tập trung vào CUDA rộng hơn, bạn có thể tìm thấy nó tại đây: <a href="https://huggingface.co/blog/kernel-builder">Hướng dẫn xây dựng và mở rộng các Kernel CUDA sẵn sàng cho sản xuất</a>.</p>
+<hr>
+<h2 id="các-bước-xây-dựng">Các bước xây dựng</h2>
+<p>Chúng tôi sẽ sử dụng kernel GEMM từ <a href="https://github.com/RadeonFlow/RadeonFlow_Kernels">RadeonFlow_Kernels</a> làm ví dụ. Nếu bạn muốn đi thẳng vào hướng dẫn, hãy <a href="#step-1-project-structure">nhấp vào đây</a>.</p>
+<h3 id="về-kernel">Về kernel</h3>
+<blockquote>
+<p>Phần này được viết bởi các tác giả kernel GEMM của RadeonFlow để giới thiệu kernel.
+Tác giả: <a href="https://huggingface.co/ColorsWind">ColorsWind</a>, <a href="https://huggingface.co/ftyghome">Zesen Liu</a>, và <a href="https://huggingface.co/jpy794">Andy</a></p></blockquote>
+<p>Kernel <strong>RadeonFlow GEMM</strong> là một triển khai nhân phép nhân ma trận theo khối, hiệu suất cao, định dạng FP8 được tối ưu hóa cho GPU AMD Instinct MI300X. GEMM (Nhân Ma trận Tổng quát) là khối xây dựng cốt lõi đằng sau hầu hết các khối lượng công việc học sâu: cho hai ma trận A và B, bạn tính tích C = A × B của chúng. Ở đây nó được triển khai bằng FP8, một định dạng dấu phẩy động có độ chính xác thấp, đánh đổi một chút độ chính xác để lấy thông lượng cao hơn nhiều và băng thông bộ nhớ thấp hơn. Kernel này được phát triển cho <a href="https://www.datamonsters.com/amd-developer-challenge-2025">Thử thách nhà phát triển AMD 2025</a>, nó đã giành được 🏆 <strong>Giải thưởng Lớn</strong> vào <strong>Tháng 6 năm 2025</strong>, công nhận sự xuất sắc của nó về hiệu suất và đổi mới trên phần cứng AMD.</p>
+<p>Kernel hoạt động trên đầu vào được lượng tử hóa bằng định dạng dấu phẩy động <code>e4m3fnuz</code> và áp dụng hệ số tỷ lệ theo khối để bảo toàn độ chính xác trong quá trình tính toán có độ chính xác thấp. Định dạng <code>e4m3fnuz</code> là một biến thể FP8 với 4 bit số mũ và 3 bit số thực, được thiết kế để hiệu quả cho các khối lượng công việc mạng nơ-ron. Vì FP8 có dải động nhỏ hơn nhiều so với FP16/FP32, chúng tôi áp dụng hệ số tỷ lệ theo khối (a_scale và b_scale) để mỗi khối giá trị được co giãn lại vào một phạm vi &ldquo;thoải mái&rdquo; về mặt số học trước và sau khi tính toán, điều này giúp bảo toàn độ chính xác mặc dù có độ chính xác thấp. Nó nhận các đối số sau:</p>
+<p><code>(a, b, a_scale, b_scale, c)</code></p>
+<p>trong đó <code>a</code> và <code>b</code> là các ma trận đầu vào, <code>a_scale</code> và <code>b_scale</code> là các hệ số tỷ lệ cho <code>a</code> và <code>b</code> tương ứng,
+và <code>c</code> là ma trận đầu ra:</p>
+<ul>
+<li><code>a</code> là K × M ở định dạng e4m3fnuz</li>
+<li><code>b</code> là K × N ở định dạng e4m3fnuz</li>
+<li><code>a_scale</code> là (K // 128) × M ở định dạng fp32</li>
+<li><code>b_scale</code> là (K // 128) × (N // 128) ở định dạng fp32</li>
+<li><code>c</code> là M × N ở định dạng bf16</li>
+</ul>
+<p>Kernel được biên dịch trước cho các hình dạng ma trận cụ thể và giả định bố cục bộ nhớ được chuyển vị (như yêu cầu của cuộc thi). Để hỗ trợ các hình dạng bổ sung hoặc bố cục bộ nhớ thay thế, bạn phải sửa đổi trình khởi chạy kernel.</p>
+<p>Vì vậy, bây giờ chúng ta có một kernel ROCm hiệu suất cao, câu hỏi tự nhiên là: làm thế nào để chúng ta tích hợp nó vào quy trình làm việc PyTorch thực tế và chia sẻ nó với những người khác? Đó chính xác là những gì chúng ta sẽ đề cập tiếp theo, sử dụng <code>kernel-builder</code> và <code>kernels</code> để cấu trúc, xây dựng và xuất bản kernel ROCm.</p>
+<blockquote>
+<p>Đây là một hướng dẫn khá kỹ thuật, nhưng bạn vẫn có thể làm theo từng bước mà không cần hiểu mọi chi tiết và mọi thứ sẽ hoạt động tốt. Nếu bạn tò mò, bạn luôn có thể quay lại sau để tìm hiểu sâu hơn về các khái niệm.</p></blockquote>
+<h3 id="bước-1-cấu-trúc-dự-án">Bước 1: Cấu trúc dự án</h3>
+<p>Hugging Face Kernel Builder mong đợi các tệp của bạn được tổ chức như sau:</p>
+<p>gemm/
+├── build.toml
+├── gemm
+│   └── gemm_kernel.h
+├── flake.nix
+└── torch-ext
+├── torch_binding.cpp
+├── torch_binding.h
+└── gemm
+└── <strong>init</strong>.py</p>
+<ul>
+<li><strong>build.toml</strong>: Tệp kê khai dự án; nó là bộ não của quy trình xây dựng.</li>
+<li><strong>gemm/</strong>: Mã nguồn CUDA thô của bạn, nơi phép thuật GPU diễn ra.</li>
+<li><strong>flake.nix</strong>: Chìa khóa để có một môi trường xây dựng hoàn hảo, có thể tái sản xuất.</li>
+<li><strong>torch-ext/gemm/</strong>: Lớp bao bọc Python cho các toán tử PyTorch thô</li>
+</ul>
+<p>Đôi khi dự án của bạn có thể phụ thuộc vào các tệp khác, như kiểm thử hoặc tập lệnh trợ giúp, và bạn có thể thêm chúng mà không gặp vấn đề gì.
+Trong trường hợp của chúng tôi, dự án của chúng tôi sẽ được cấu trúc như sau:</p>
+<p>gemm/
+├── build.toml
+├── gemm
+│   ├── gemm_kernel.h
+│   ├── gemm_kernel_legacy.h
+│   ├── transpose_kernel.h
+│   └── gemm_launcher.hip
+├── include
+│   ├── clangd_workaround.h
+│   ├── gpu_libs.h
+│   ├── gpu_types.h
+│   └── timer.h
+├── src/utils
+│   ├── arithmetic.h
+│   └── timer.hip
+├── tests/checker
+│   ├── checker.cpp
+│   ├── metrics.h
+│   └── checker.h
+├── flake.nix
+└── torch-ext
+├── torch_binding.cpp
+├── torch_binding.h
+└── gemm
+└── <strong>init</strong>.py</p>
+<p>Nếu bạn nhìn vào các tệp gốc của kernel gemm trong RadeonFlow Kernels, chúng là các tệp nguồn HIP với phần mở rộng <code>.cpp</code>. Là bước đầu tiên, bạn cần thay đổi các phần mở rộng này thành <code>.h</code> hoặc <code>.hip</code> tùy thuộc vào nội dung và cách sử dụng của chúng:</p>
+<ul>
+<li>Sử dụng <code>.h</code> cho các tệp tiêu đề chứa khai báo kernel, hàm nội tuyến hoặc mã mẫu sẽ được bao gồm trong các tệp khác</li>
+<li>Sử dụng <code>.hip</code> cho các tệp triển khai chứa mã HIP/GPU cần được biên dịch riêng (ví dụ: trình khởi chạy kernel, hàm thiết bị với các triển khai phức tạp)</li>
+</ul>
+<p>Trong ví dụ của chúng tôi, <code>gemm_kernel.h</code>, <code>gemm_kernel_legacy.h</code> và <code>transpose_kernel.h</code> là các tệp tiêu đề, trong khi <code>gemm_launcher.hip</code> là một tệp triển khai HIP. Quy ước đặt tên này giúp kernel-builder xác định và biên dịch chính xác từng loại tệp.</p>
+<h3 id="bước-2-thiết-lập-tệp-cấu-hình">Bước 2: Thiết lập tệp cấu hình</h3>
+<h4 id="tệp-kê-khai-buildtoml">Tệp kê khai <code>build.toml</code></h4>
+<p>Tệp này điều phối toàn bộ quá trình xây dựng. Nó cho kernel-builder biết phải biên dịch những gì và mọi thứ kết nối như thế nào.</p>
+<p>toml
+[general]
+name = &ldquo;gemm&rdquo;
+universal = false</p>
+<p>[torch]
+src = [
+&ldquo;torch-ext/torch_binding.cpp&rdquo;,
+&ldquo;torch-ext/torch_binding.h&rdquo;,
+]</p>
+<p>[kernel.gemm]
+backend = &ldquo;rocm&rdquo;
+rocm-archs = [
+&ldquo;gfx942&rdquo;,
+]</p>
+<p>depends = [&ldquo;torch&rdquo;]</p>
+<p>src = [
+&ldquo;include/clangd_workaround.h&rdquo;,
+&ldquo;include/gpu_libs.h&rdquo;,
+&ldquo;include/gpu_types.h&rdquo;,
+&ldquo;include/timer.h&rdquo;,
+&ldquo;gemm/gemm_kernel.h&rdquo;,
+&ldquo;gemm/gemm_kernel_legacy.h&rdquo;,
+&ldquo;gemm/gemm_launcher.hip&rdquo;,
+&ldquo;gemm/transpose_kernel.h&rdquo;,
+&ldquo;src/utils/arithmetic.h&rdquo;,
+&ldquo;src/utils/timer.hip&rdquo;,
+&ldquo;tests/checker/metrics.h&rdquo;,
+]</p>
+<p>include = [&ldquo;include&rdquo;]</p>
+<p><strong>chung</strong></p>
+<p>Phần này chứa các cài đặt cấu hình chung của dự án.</p>
+<ul>
+<li><strong>tên</strong> (bắt buộc): Tên dự án của bạn. Điều này phải khớp với tên kernel của bạn và sẽ được sử dụng cho gói Python.</li>
+<li><strong>đại năng</strong> (tùy chọn): kernel là kernel đa năng khi được đặt thành <code>true</code>. Kernel đa năng là gói Python thuần túy (không có tệp biên dịch). Kernel đa năng không sử dụng các phần khác được mô tả bên dưới. Một ví dụ điển hình về kernel đa năng là kernel Triton. Mặc định: <code>false</code></li>
+</ul>
+<p><strong>torch</strong></p>
+<p>Phần này mô tả cấu hình tiện ích mở rộng Torch. Nó xác định các ràng buộc Python sẽ hiển thị kernel của bạn cho PyTorch.</p>
+<ul>
+<li><strong>src</strong> (bắt buộc): Một danh sách các tệp nguồn và tiêu đề cho tiện ích mở rộng PyTorch. Trong trường hợp của chúng tôi, điều này bao gồm các tệp ràng buộc C++ tạo giao diện Python.</li>
+</ul>
+<p><strong>kernel.gemm</strong></p>
+<p>Đặc tả của một kernel có tên &ldquo;gemm&rdquo;. Bạn có thể xác định nhiều phần kernel trong cùng một tệp build.toml nếu bạn có nhiều kernel.</p>
+<ul>
+<li><strong>backend</strong> (bắt buộc): Bộ xử lý tính toán cho kernel. Chúng tôi sử dụng &ldquo;rocm&rdquo; cho hỗ trợ GPU AMD.</li>
+<li><strong>rocm-archs</strong> (bắt buộc đối với ROCm): Một danh sách các kiến trúc ROCm mà kernel nên được biên dịch. &ldquo;gfx942&rdquo; nhắm mục tiêu vào các GPU dòng MI300.</li>
+<li><strong>phụ thuộc</strong> (bắt buộc): Một danh sách các phụ thuộc. Chúng tôi phụ thuộc vào &ldquo;torch&rdquo; để sử dụng các phép toán tensor của PyTorch.</li>
+<li><strong>bao gồm</strong> (tùy chọn): Thư mục bao gồm tương đối với thư mục gốc dự án. Điều này giúp trình biên dịch tìm tệp tiêu đề.</li>
+</ul>
+<h4 id="tệp-sao-chép-lại-flakenix">Tệp sao chép lại <code>flake.nix</code></h4>
+<p>Để đảm bảo bất kỳ ai cũng có thể xây dựng kernel của bạn trên bất kỳ máy nào, chúng tôi sử dụng tệp flake.nix. Nó khóa phiên bản chính xác của kernel-builder và tất cả các phụ thuộc bắc cầu của nó. (Bạn chỉ cần sao chép và dán ví dụ này và thay đổi mô tả)</p>
+<p>nix
+{
+description = &ldquo;Flake for GEMM kernel&rdquo;;</p>
+<p>inputs = {
+kernel-builder.url = &ldquo;github:huggingface/kernel-builder&rdquo;;
+};</p>
+<p>outputs =
+{
+self,
+kernel-builder,
+}:</p>
+<pre><code>kernel-builder.lib.genFlakeOutputs {
+  inherit self;
+  path = ./.;
+};
+</code></pre>
+<p>}</p>
+<h4 id="viết-kernel">Viết Kernel</h4>
+<p>Bây giờ là mã GPU. Bên trong <code>gemm/gemm_launcher.hip</code>, chúng tôi xác định cách kernel GEMM được khởi chạy.
+Tùy thuộc vào cấu hình, chúng tôi gọi triển khai <code>gemm/gemm_kernel</code> được tối ưu hóa mới hoặc quay lại triển khai cũ ( <code>gemm/gemm_kernel_legacy</code>).</p>
+<p>cpp
+// &hellip; bao gồm và định nghĩa trước đó
+extern &ldquo;C&rdquo; void run(
+void *a, void *b, void *as, void *bs, void *c,
+int m, int n, int k,
+PerfMetrics *metrics, hipStream_t job_stream0) {
+const __FP8_TYPE *a_ptr = static_cast&lt;const __FP8_TYPE *&gt;(a);
+const __FP8_TYPE *b_ptr = static_cast&lt;const __FP8_TYPE *&gt;(b);
+__BF16_TYPE *c_ptr = static_cast&lt;__BF16_TYPE *&gt;(c);
+const float *as_ptr = static_cast&lt;const float *&gt;(as);
+const float *bs_ptr = static_cast&lt;const float *&gt;(bs);</p>
+<pre><code>KernelTimerScoped timer(timers, 2LL * m * n * k,
+    metrics ? &amp;metrics-&gt;entries[0].time : nullptr,
+    metrics ? &amp;metrics-&gt;entries[0].gflops : nullptr, job_stream0);
+
+// Điều phối GEMM đến triển khai nhanh nhất có sẵn
+switch (pack_shape(m, n, k)) {
+    DISPATCH_GEMM(1024, 1536, 7168, 256, 128, 128, 4, 2, 512, 4, 16);
+    DISPATCH_GEMM(6144, 7168, 2304, 256, 128, 128, 4, 2, 512, 1, 16);
+    default: {
+        printf(&quot;Error: Unsupported shape M=%d, K=%d, N=%d\n&quot;, m, k, n);
+        abort();
+    }
+}
+</code></pre>
+<p>}
+// &hellip;</p>
+<h4 id="đăng-ký-một-toán-tử-pytorch-gốc">Đăng ký một toán tử PyTorch gốc</h4>
+<p>Đây là bước quan trọng. Chúng ta không chỉ làm cho hàm khả dụng trong Python; chúng ta đang biến nó thành một toán tử PyTorch gốc. Điều đó có nghĩa là nó trở thành một phần hạng nhất của chính PyTorch, có thể truy cập thông qua <code>torch.ops</code>.</p>
+<p>Tệp <code>torch-ext/torch_binding.cpp</code> xử lý việc đăng ký này.</p>
+<p>cpp
+#include &lt;torch/all.h&gt;
+#include &lt;torch/library.h&gt;
+#include &lt;hip/hip_runtime.h&gt;</p>
+<p>#include &ldquo;registration.h&rdquo;
+#include &ldquo;torch_binding.h&rdquo;</p>
+<p>// Khai báo trước hàm C từ gemm_launcher.hip
+extern &ldquo;C&rdquo; {
+struct PerfMetrics;
+void run(void *a, void *b, void *as, void *bs, void *c, int m, int n, int k, PerfMetrics *metrics, hipStream_t job_stream0);
+}</p>
+<p>void gemm(torch::Tensor &amp;out, torch::Tensor const &amp;a, torch::Tensor const &amp;b,
+torch::Tensor const &amp;as, torch::Tensor const &amp;bs) {</p>
+<pre><code>// Xác thực thuộc tính tensor
+TORCH_CHECK(a.device().is_cuda(), &quot;Input tensor a must be on GPU device&quot;);
+TORCH_CHECK(b.device().is_cuda(), &quot;Input tensor b must be on GPU device&quot;);
+TORCH_CHECK(as.device().is_cuda(), &quot;Scale tensor as must be on GPU device&quot;);
+TORCH_CHECK(bs.device().is_cuda(), &quot;Scale tensor bs must be on GPU device&quot;);
+TORCH_CHECK(out.device().is_cuda(), &quot;Output tensor out must be on GPU device&quot;);
+
+TORCH_CHECK(a.is_contiguous(), &quot;Input tensor a must be contiguous&quot;);
+TORCH_CHECK(b.is_contiguous(), &quot;Input tensor b must be contiguous&quot;);
+TORCH_CHECK(as.is_contiguous(), &quot;Scale tensor as must be contiguous&quot;);
+TORCH_CHECK(bs.is_contiguous(), &quot;Scale tensor bs must be contiguous&quot;);
+TORCH_CHECK(out.is_contiguous(), &quot;Output tensor out must be contiguous&quot;);
+
+// Lấy kích thước ma trận từ hình dạng tensor
+// Giả sử a là [M, K], b là [K, N], out là [M, N]
+int M = a.size(0);
+int K = a.size(1);
+int N = b.size(1);
+
+TORCH_CHECK(b.size(0) == K, &quot;Matrix dimensions mismatch: a.size(1) != b.size(0)&quot;);
+TORCH_CHECK(out.size(0) == M, &quot;Output tensor dimension mismatch: out.size(0) != M&quot;);
+TORCH_CHECK(out.size(1) == N, &quot;Output tensor dimension mismatch: out.size(1) != N&quot;);
+
+// Sử dụng stream HIP mặc định (stream 0)
+const hipStream_t stream = 0;
+
+// Gọi hàm C
+run(a.data_ptr(), b.data_ptr(), as.data_ptr(), bs.data_ptr(), out.data_ptr(),
+    M, N, K, nullptr, stream);
+</code></pre>
+<p>}</p>
+<p>TORCH_LIBRARY_EXPAND(TORCH_EXTENSION_NAME, ops) {
+ops.def(&ldquo;gemm(Tensor! out, Tensor a, Tensor b, Tensor a_scale, Tensor b_scale) -&gt; ()&rdquo;);
+ops.impl(&ldquo;gemm&rdquo;, torch::kCUDA, &amp;gemm);
+}</p>
+<p>REGISTER_EXTENSION(TORCH_EXTENSION_NAME)</p>
+<p>Tệp <code>torch_binding.h</code> chứa các khai báo hàm. Ví dụ, kernel <code>gemm</code> có khai báo sau trong <code>torch_binding.h</code>:</p>
+<p>h
+#pragma once</p>
+<p>#include &lt;torch/torch.h&gt;</p>
+<p>void gemm(torch::Tensor &amp;out, torch::Tensor const &amp;a, torch::Tensor const &amp;b,
+torch::Tensor const &amp;as, torch::Tensor const &amp;bs);</p>
+<h4 id="thiết-lập-trình-bao-bọc-__init__py">Thiết lập trình bao bọc <code>__init__.py</code></h4>
+<p>Trong <code>torch-ext/gemm/</code>, chúng ta cần một tệp <code>__init__.py</code> để làm cho thư mục này trở thành một gói Python và để hiển thị toán tử tùy chỉnh của chúng ta một cách thân thiện với người dùng.</p>
+<p>python
+from typing import Optional
+import torch
+from ._ops import ops</p>
+<p>def gemm(a: torch.Tensor, b: torch.Tensor, as_: torch.Tensor, bs: torch.Tensor,
+out: Optional[torch.Tensor] = None) -&gt; torch.Tensor:</p>
+<pre><code>if out is None:
+    # Tạo tensor đầu ra với hình dạng và dtype phù hợp
+    M, K = a.shape
+    K_b, N = b.shape
+    assert K == K_b, f&quot;Kích thước ma trận không khớp: A có {K} cột, B có {K_b} hàng&quot;
+    
+    # Đầu ra phải có kiểu BF16 trên cùng một thiết bị với đầu vào
+    out = torch.empty((M, N), dtype=torch.bfloat16, device=a.device)
+
+ops.gemm(out, a, b, as_, bs)
+return out
+</code></pre>
+<h3 id="bước-3-xây-dựng-kernel">Bước 3: Xây dựng kernel</h3>
+<p>Kernel-builder sử dụng Nix để xây dựng kernel. Bạn có thể xây dựng hoặc chạy kernel trực tiếp nếu bạn đã cài đặt Nix trên hệ thống của mình. Chúng tôi khuyên bạn nên cài đặt Nix theo cách sau:</p>
+<ul>
+<li><strong>Linux</strong>: sử dụng <a href="https://nixos.org/download/">trình cài đặt Nix chính thức</a>.</li>
+<li><strong>macOS</strong>: sử dụng <a href="https://docs.determinate.systems/determinate-nix/">trình cài đặt Nix Determinate</a>. Ngoài ra, Xcode 16.x hiện được yêu cầu để xây dựng kernel.</li>
+</ul>
+<h4 id="bắt-đầu-với-nix">Bắt đầu với Nix</h4>
+<p>Trước tiên, hãy chạy lệnh này:</p>
+<p>bash
+nix flake update</p>
+<p>Lệnh này tạo một tệp <code>flake.lock</code> ghim kernel-builder và tất cả các phụ thuộc bắc cầu của nó. Cam kết cả <code>flake.nix</code> và <code>flake.lock</code> vào kho lưu trữ của bạn để đảm bảo các bản dựng kernel có thể tái sản xuất.</p>
+<p>Vì kernel-builder phụ thuộc vào nhiều gói (ví dụ: mọi phiên bản PyTorch được hỗ trợ), nên nên bật bộ nhớ cache Hugging Face để tránh các bản dựng lại tốn kém:</p>
+<p>bash</p>
+<h1 id="cài-đặt-cachix-và-cấu-hình-bộ-nhớ-cache">Cài đặt cachix và cấu hình bộ nhớ cache</h1>
+<p>cachix use huggingface</p>
+<p>Hoặc chạy nó một lần mà không cần cài đặt cachix vĩnh viễn:</p>
+<p>bash</p>
+<h1 id="sử-dụng-cachix-mà-không-cài-đặt-nó">Sử dụng cachix mà không cài đặt nó</h1>
+<p>nix run nixpkgs#cachix &ndash; use huggingface</p>
+<h4 id="xây-dựng-kernel-bằng-nix">Xây dựng Kernel bằng Nix</h4>
+<p>Một kernel có tệp <code>flake.nix</code> có thể được xây dựng bằng lệnh build-and-copy:</p>
+<p>bash
+cd Build_RadeonFlow_Kernels/gemm
+nix build . -L</p>
+<p>Kernel đã biên dịch sau đó sẽ nằm trong thư mục <code>build/</code> cục bộ.</p>
+<h4 id="vỏ-phát-triển-để-phát-triển-cục-bộ">Vỏ phát triển để phát triển cục bộ</h4>
+<p>Kernel-builder cung cấp các vỏ để phát triển kernel. Trong một vỏ như vậy, tất cả các phụ thuộc cần thiết đều có sẵn, cũng như <code>build2cmake</code> để tạo các tệp dự án:</p>
+<p>bash
+$ nix develop
+$ build2cmake generate-torch build.toml
+$ cmake -B build-ext
+$ cmake &ndash;build build-ext</p>
+<p>Nếu bạn muốn kiểm thử kernel như một gói Python, bạn có thể làm như vậy. <code>nix develop</code> sẽ tự động tạo một môi trường ảo trong <code>.venv</code> và kích hoạt nó:</p>
+<p>bash
+$ nix develop
+$ build2cmake generate-torch build.toml
+$ pip install &ndash;no-build-isolation -e .</p>
+<p>Các vỏ phát triển có sẵn cho mọi cấu hình xây dựng. Ví dụ, bạn có thể lấy vỏ phát triển PyTorch 2.7 với ROCm 6.3 bằng:</p>
+<p>bash
+$ rm -rf .venv  # Xóa venv hiện có nếu có
+$ nix develop .#devShells.torch27-cxx11-rocm63-x86_64-linux</p>
+<h3 id="bước-4-tải-kernel-lên-hub">Bước 4: Tải kernel lên Hub</h3>
+<p>Bây giờ chúng ta đã xây dựng kernel, chúng ta có thể kiểm thử nó và tải nó lên Hub.</p>
+<h4 id="xây-dựng-kernel-cho-tất-cả-các-phiên-bản-pytorch-và-rocm">Xây dựng Kernel cho tất cả các phiên bản PyTorch và ROCm</h4>
+<p>Một điều nhỏ chúng ta muốn làm trước khi chia sẻ là dọn dẹp tất cả các tạo tác phát triển đã được tạo trong quá trình xây dựng để tránh tải lên các tệp không cần thiết.</p>
+<p>bash
+build2cmake clean build.toml</p>
+<p>Để xây dựng kernel cho tất cả các phiên bản PyTorch và ROCm được hỗ trợ, công cụ kernel-builder sẽ tự động hóa quy trình:</p>
+<p>bash</p>
+<h1 id="bên-ngoài-vỏ-dev-chạy-lệnh-sau">Bên ngoài vỏ dev, chạy lệnh sau</h1>
+<h1 id="nếu-bạn-ở-trong-sandbox-bạn-có-thể-thoát-bằng-exit">nếu bạn ở trong sandbox, bạn có thể thoát bằng <code>exit</code></h1>
+<p>nix build . -L</p>
+<blockquote>
+<p><strong>Lưu ý:</strong>
+Quá trình này có thể mất một lúc, vì nó sẽ xây dựng kernel cho tất cả các phiên bản PyTorch và ROCm được hỗ trợ.
+Đầu ra sẽ nằm trong thư mục <code>result</code>.</p></blockquote>
+<p>Bước cuối cùng là di chuyển kết quả vào thư mục xây dựng mong đợi (đây là nơi thư viện kernels sẽ tìm kiếm chúng).</p>
+<p>bash
+mkdir -p build
+rsync -av &ndash;delete &ndash;chmod=Du+w,Fu+w result/ build/</p>
+<h4 id="đẩy-lên-hugging-face-hub">Đẩy lên Hugging Face Hub</h4>
+<p>Đẩy các tạo tác xây dựng lên Hub sẽ giúp các nhà phát triển khác dễ dàng sử dụng kernel của bạn.</p>
+<p>Đầu tiên, tạo một repo mới:</p>
+<p>bash
+hf repo create gemm</p>
+<blockquote>
+<p>Đảm bảo bạn đã đăng nhập vào Hugging Face Hub bằng cách sử dụng <code>huggingface-cli login</code>.</p></blockquote>
+<p>Bây giờ, trong thư mục dự án của bạn, hãy kết nối dự án của bạn với kho lưu trữ mới và đẩy mã của bạn:</p>
+<p>bash</p>
+<h1 id="khởi-tạo-git-và-kết-nối-với-hugging-face-hub">Khởi tạo git và kết nối với Hugging Face Hub</h1>
+<p>git init
+git remote add origin <a href="https://huggingface.co/">https://huggingface.co/</a>&lt;tên-của-bạn&gt;/gemm</p>
+<h1 id="kéo-các-thay-đổi-chỉ-tệp-gitattributes-mặc-định">Kéo các thay đổi (chỉ tệp .gitattributes mặc định)</h1>
+<p>git pull origin main
+git xet install
+git checkout -b main</p>
+<h1 id="cập-nhật-để-sử-dụng-xet-cho-các-tệp-nhị-phân">Cập nhật để sử dụng Xet cho các tệp nhị phân</h1>
+<p>git xet track &ldquo;*.so&rdquo;</p>
+<h1 id="thêm-và-cam-kết-các-thay-đổi-của-bạn-cẩn-thận-chỉ-bao-gồm-các-tệp-cần-thiết">Thêm và cam kết các thay đổi của bạn (cẩn thận chỉ bao gồm các tệp cần thiết</h1>
+<h1 id="vì-lệnh-build2cmake-của-chúng-tôi-đã-tạo-ra-nhiều-tệp-dành-riêng-cho-dev">vì lệnh build2cmake của chúng tôi đã tạo ra nhiều tệp dành riêng cho dev)</h1>
+<p>git add <br>
+build/ gemm/ include/ src/utils tests/checker <br>
+torch-ext/torch_binding.cpp torch-ext/torch_binding.h torch-ext/gemm <br>
+flake.nix flake.lock build.toml</p>
+<p>git commit -m &ldquo;feat: Đã tạo kernel gemm tuân thủ&rdquo;
+git push -u origin main</p>
+<p>Tuyệt vời! Kernel của bạn giờ đây đã có trên Hugging Face Hub, sẵn sàng để người khác sử dụng và hoàn toàn tuân thủ thư viện kernels.</p>
+<h3 id="bước-5-hãy-sử-dụng-nó-">Bước 5: Hãy sử dụng nó :)</h3>
+<p>Với thư viện <strong>kernels</strong>, bạn không &ldquo;cài đặt&rdquo; kernel theo nghĩa truyền thống. Bạn tải nó trực tiếp từ kho lưu trữ Hub của nó, điều này sẽ tự động đăng ký toán tử mới.</p>
+<p>python
+import torch
+from kernels import get_kernel</p>
+<h1 id="tải-kernel-từ-hub">Tải kernel từ Hub</h1>
+<p>gemm = get_kernel(&ldquo;kernels-community/gemm&rdquo;)</p>
+<h1 id="kích-thước-ma-trận-phải-được-hỗ-trợ---xem-gemm_launchercpp">Kích thước ma trận (phải được hỗ trợ - xem gemm_launcher.cpp)</h1>
+<p>M, N, K = 1024, 1536, 7168
+QUANT_SIZE = 128</p>
+<h1 id="thiết-lập-thiết-bị">Thiết lập thiết bị</h1>
+<p>device = torch.device(&ldquo;cuda&rdquo;)</p>
+<h1 id="tạo-đầu-vào---kernel-yêu-cầu-akm-bkn">Tạo đầu vào - kernel yêu cầu A:(K,M), B:(K,N)</h1>
+<p>A_fp32 = torch.randn(M, K, device=device)
+B_fp32 = torch.randn(K, N, device=device)</p>
+<h1 id="chuyển-đổi-sang-fp8">Chuyển đổi sang FP8</h1>
+<p>A_fp8 = A_fp32.to(torch.float8_e4m3fnuz)
+B_fp8 = B_fp32.to(torch.float8_e4m3fnuz)</p>
+<h1 id="tạo-hệ-số-tỷ-lệ-tỷ-lệ-đồng-nhất">Tạo hệ số tỷ lệ (tỷ lệ đồng nhất)</h1>
+<p>A_scale = torch.ones(K // QUANT_SIZE, M, device=device, dtype=torch.float32)
+B_scale = torch.ones(K // QUANT_SIZE, N // QUANT_SIZE, device=device, dtype=torch.float32)</p>
+<p>C = torch.zeros(M, N, device=device, dtype=torch.bfloat16)</p>
+<h1 id="sử-dụng-kernel">Sử dụng kernel</h1>
+<p>result = gemm.gemm(A_fp8, B_fp8, A_scale, B_scale, C)</p>
+<p>Đó là tất cả! Kernel ROCm của bạn giờ đây đã sẵn sàng để sử dụng từ Hugging Face Hub.</p>
+<hr>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Xây dựng và chia sẻ kernel ROCm với Hugging Face giờ đây dễ dàng hơn bao giờ hết. Với quy trình làm việc sạch sẽ, có thể tái sản xuất được hỗ trợ bởi Nix và tích hợp liền mạch vào PyTorch, các nhà phát triển có thể tập trung vào việc tối ưu hóa hiệu suất thay vì thiết lập. Sau khi được xây dựng, kernel tùy chỉnh của bạn có thể được chia sẻ trên Hugging Face Hub; làm cho nó có thể truy cập ngay lập tức cho cộng đồng và có thể sử dụng trên các dự án chỉ với một vài dòng mã. 🚀</p>
+<hr>
+<h2 id="thư-viện--hub-liên-quan">Thư viện &amp; Hub liên quan</h2>
+<ul>
+<li><a href="https://github.com/huggingface/kernel-builder">kernel-builder</a> – Xây dựng và biên dịch kernel tùy chỉnh.</li>
+<li><a href="https://github.com/huggingface/kernels">kernels</a> – Thư viện để quản lý và tải kernel từ Hub.</li>
+<li><a href="https://huggingface.co/kernels-community">Kernels Community Hub</a> – Chia sẻ và khám phá kernel từ cộng đồng.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/build-rocm-kernels">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/17-november-2025/">17 November 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-18/ac4366/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Building for an Open Future - our new partnership with Google Cloud" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-18T00:00:00&#43;00:00">Nov 18, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Building for an Open Future - our new partnership with Google Cloud</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Xây dựng cho Tương lai Mở - quan hệ đối tác mới của chúng tôi với Google Cloud</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-11/a28337/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/653772fed7616b72795db894/1GPjjeZP_RGRl1pYgFdZc.png" alt="Gợi ý hiệu quả cho các mô hình thị giác sinh" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-11T00:00:00&#43;00:00">Nov 11, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gợi ý hiệu quả cho các mô hình thị giác sinh</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Không có mô tả</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-18/ce17e9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="3 cách để điều hướng các mức thuế thay đổi với các tác nhân AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">3 cách để điều hướng các mức thuế thay đổi với các tác nhân AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-18/727dd3/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/8gKv9UIh5aIhlt3bXop7h0y5XvkSE-h09RltJhaxKIXdUoP6d5UdNPaoWsX988Mn5gAOAQFcwfms2K0ZEm3Y178i-j7-Os5SuwixBgzEx58=w1440-h1440-n-nu" alt="Aeneas biến đổi cách các nhà sử học kết nối quá khứ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Aeneas biến đổi cách các nhà sử học kết nối quá khứ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-18/1974ff/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Anthropic hợp tác với Chính phủ Rwanda và ALX để mang giáo dục AI đến hàng trăm nghìn người học trên khắp Châu Phi" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic hợp tác với Chính phủ Rwanda và ALX để mang giáo dục AI đến hàng trăm nghìn người học trên khắp Châu Phi</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-18/cd2c09/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://images.squarespace-cdn.com/content/v1/6213c340453c3f502425776e/1757701462077-AVB5GHJTUZC89VZIAR6D/2025&#43;Integrity&#43;Report_Thumbnail_1x1.png" alt="Báo cáo Liêm chính và Minh bạch Hàng năm của Stability AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Báo cáo Liêm chính và Minh bạch Hàng năm của Stability AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-18/46ade8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Build and Share ROCm Kernels Easily with Hugging Face" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Build and Share ROCm Kernels Easily with Hugging Face</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
