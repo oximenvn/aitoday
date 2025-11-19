@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Phân hủy phân chiếu chuẩn hóa | AI Today - SkyAI</title>
+
+<meta name="description" content="Phân hủy phân chiếu chuẩn hóa">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Phân hủy phân chiếu chuẩn hóa</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Phân hủy phân chiếu chuẩn hóa </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-19T00:00:00&#43;00:00">November 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            13 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/65c992424936ab38ecf706b0/aq7vuHFPO1S93fwJk0Cuq.jpeg" alt="Phân hủy phân chiếu chuẩn hóa">
+        <figcaption class="text-center italic text-xs">Phân hủy phân chiếu chuẩn hóa</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="norm-preserving-biprojected-abliteration">Norm-Preserving Biprojected Abliteration</h1>
+<p>Abliteration là một kỹ thuật nhằm loại bỏ các hành vi từ chối khỏi các mô hình ngôn ngữ bằng cách xác định và can thiệp vào &ldquo;các hướng từ chối&rdquo; trong không gian kích hoạt, về mặt lý thuyết được biểu diễn thông qua một hướng từ chối trung bình duy nhất. Phát hiện này rất hữu ích trong việc diễn giải cơ chế hoạt động của mô hình.</p>
+<p>Chúng tôi gần đây đã trình bày một phương pháp cải tiến gọi là &ldquo;abliteration được chiếu&rdquo; (projected abliteration) nhằm cải thiện cách tiếp cận truyền thống bằng cách chỉ loại bỏ các thành phần quan trọng về mặt cơ chế của hướng từ chối, xác nhận một phát hiện trước đó rằng các LLM mã hóa sự từ chối và có hại một cách riêng biệt. Sau đó, chúng tôi đã tinh chỉnh thêm kỹ thuật này thành &ldquo;abliteration hai chiều chiếu&rdquo; (biprojected abliteration), kỹ thuật này cũng loại bỏ thành phần tương ứng khi loại bỏ sự từ chối được đo bằng một lớp khác với lớp can thiệp. Về lý thuyết, điều này sẽ tránh làm xáo trộn hướng vô hại của bất kỳ lớp nào được nhắm mục tiêu can thiệp. Thật thú vị, một số hành vi từ chối an toàn đã quay trở lại.</p>
+<p>Sau khi xem xét kỹ hơn, vẫn còn một vấn đề liên quan đến việc sửa đổi trọng số lớp và chuẩn trọng số.</p>
+<p>Trong abliteration truyền thống (và các sửa đổi trước đó của chúng tôi), hướng từ chối đã chuẩn hóa được trừ khỏi các luồng còn lại của lớp mục tiêu để can thiệp, cụ thể là <em>self_attn.o_proj</em> và <em>mlp.down_proj</em>. Mặc dù điều này có hiệu quả trong thực tế để điều hướng, nhưng nó không có cơ sở toán học vì:</p>
+<ul>
+<li>Hướng bị loại bỏ chứa một thành phần có độ lớn đơn vị cùng với thành phần hướng, làm phức tạp việc diễn giải.</li>
+<li>Việc loại bỏ không tôn trọng tầm quan trọng tương đối của các neuron, dẫn đến các hiệu ứng tỷ lệ không thể đoán trước.</li>
+<li>Nó làm xáo trộn hình học của ma trận trọng số theo những cách không thể đoán trước.</li>
+</ul>
+<p>Trái với quan niệm thông thường rằng abliteration làm suy giảm đáng kể khả năng của mô hình, phương pháp bảo toàn chuẩn của chúng tôi đã cải thiện hiệu suất suy luận so với mô hình cơ sở (NatInt: 21.33 so với 18.72), đồng thời đạt được việc loại bỏ từ chối hiệu quả (UGI: 32.61 so với 19.58).</p>
+<h2 id="một-can-thiệp-toán-học-tinh-chỉnh">Một Can thiệp Toán học Tinh chỉnh</h2>
+<p>Thay vì trừ hướng từ chối khỏi các trọng số đích, chúng tôi đề xuất trừ chỉ thành phần hướng, đồng thời bảo toàn chuẩn của các trọng số.</p>
+<p>Việc áp dụng bảo toàn chuẩn có tính tôn trọng hơn đối với việc chuẩn hóa lớp hiện có bằng cách duy trì cấu trúc tỷ lệ kích hoạt tương đối mà các lớp chuẩn hóa của mô hình đã được huấn luyện để mong đợi. Do đó, chúng tôi mong đợi một số cải thiện so với abliteration thông thường về việc giảm thiểu thiệt hại ngẫu nhiên đối với khả năng suy luận. Hơn nữa, quá trình abliteration vẫn có thể được thực hiện dưới dạng sửa đổi hạng 1, giữ cho phương pháp tổng thể có hiệu quả về mặt tính toán.</p>
+<p>Cho trước:</p>
+<ul>
+<li>Ma trận trọng số $\mathbf{W} \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}$</li>
+<li>Hướng từ chối $\mathbf{r} \in \mathbb{R}^{d_{\text{out}}}$ (được tinh chỉnh thông qua chiếu hai chiều)</li>
+<li>Hệ số tỷ lệ $\alpha \in [0, 1]$</li>
+</ul>
+<p><strong>Bước 1: Chuẩn hóa hướng từ chối</strong></p>
+<!-- raw HTML omitted -->
+<p>Đối với mỗi hàng $i$ của $\mathbf{W}$:</p>
+<!-- raw HTML omitted -->
+<p>Tính toán các hệ số chiếu (sự căn chỉnh của mỗi chiều đầu vào với sự từ chối):</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="ví-dụ-triển-khai-pytorch">Ví dụ Triển khai PyTorch</h2>
+<p>python
+import torch</p>
+<h1 id="triển-khai-cốt-lõi-trích-đoạn-từ-hàm-hoàn-chỉnh">Triển khai cốt lõi (trích đoạn từ hàm hoàn chỉnh)</h1>
+<p>&quot;&quot;&quot;
+Args:
+W: Ma trận trọng số có hình dạng [out_features, in_features]
+refusal_dir: Vector hướng từ chối có hình dạng [out_features]
+scale_factor: Hệ số tỷ lệ cho cường độ abliteration (mặc định: 1.0)
+&quot;&quot;&quot;</p>
+<pre><code>    # Chuẩn hóa hướng từ chối
+    refusal_normalized = torch.nn.functional.normalize(refusal_dir, dim=0)
+
+    # Phân rã ma trận trọng số
+    W_norm = torch.norm(W, dim=1, keepdim=True)  # [out_features, 1]
+    W_direction = torch.nn.functional.normalize(W, dim=1)  # chuẩn hóa trên mỗi neuron đầu ra
+
+    # Áp dụng abliteration cho thành phần HƯỚNG
+    projection = torch.matmul(refusal_normalized, W_direction)  # [in_features]
+    W_direction_new = W_direction - scale_factor * torch.outer(refusal_normalized, projection)
+
+    # Chuẩn hóa lại hướng đã điều chỉnh để cho phép kết hợp lại
+    W_direction_new = torch.nn.functional.normalize(W_direction_new, dim=1)
+
+    # Kết hợp lại: giữ nguyên độ lớn ban đầu, sử dụng hướng mới
+    W_new = W_norm * W_direction_new
+</code></pre>
+<h2 id="phương-pháp-lựa-chọn-lớp">Phương pháp Lựa chọn Lớp</h2>
+<p>Chúng tôi đã đo lường các hướng từ chối trên tất cả các lớp nhưng yêu cầu một phương pháp có nguyên tắc để chọn các phép đo nào sẽ sử dụng để can thiệp. Lựa chọn của chúng tôi sử dụng một chỉ số chất lượng tổng hợp kết hợp ba yếu tố:</p>
+<p><strong>Tỷ lệ tín hiệu trên nhiễu (SNR)</strong>: Độ lớn của hướng từ chối so với các kích hoạt trung bình:</p>
+<p>python
+snr = ||r|| / max(||harmful_mean||, ||harmless_mean||)</p>
+<p>trong đó hướng từ chối $\mathbf{r} = \text{harmful_mean} - \text{harmless_mean}$.</p>
+<p><strong>Độ tương tự cosin</strong>: Khoảng cách góc giữa các giá trị trung bình kích hoạt có hại và vô hại:</p>
+<p>python
+dissimilarity = 1 - cosine_similarity(harmful_mean, harmless_mean)</p>
+<p>Các giá trị cao hơn cho thấy hình học biểu diễn rõ ràng hơn.</p>
+<p><strong>Điểm chất lượng tổng hợp</strong>:</p>
+<p>python
+quality = snr × (1 - cos_sim)</p>
+<p>Bằng cách lập biểu đồ các chỉ số này trên tất cả các lớp, chúng tôi đã chọn các ứng cử viên thể hiện cả SNR cao và độ tương tự cosin mạnh, đặc biệt chú ý đến các lớp thể hiện sự thay đổi đột ngột về các chỉ số này. Sự phù hợp của hướng từ chối đã chọn để áp dụng cho các lớp lân cận và phía trước được hướng dẫn bởi việc theo dõi sự tiến hóa tương tự cosin của các hướng từ chối qua các lớp liên tiếp — sự căn chỉnh hướng ổn định cho thấy khả năng áp dụng đa lớp mạnh mẽ.</p>
+<p>Phương pháp này có thể nói là mang tính kinh nghiệm, nhưng dựa trên cấu trúc hình học đã quan sát được của các biểu diễn từ chối. Công việc trong tương lai có thể chính thức hóa việc lựa chọn lớp tối ưu thông qua các nghiên cứu abliteration có hệ thống.</p>
+<p>Heuristic này có hiệu quả về mặt tính toán: một lượt suy luận duy nhất thu thập các kích hoạt trên tất cả các lớp và các chỉ số chất lượng được tính toán sau khi hoàn thành từ dữ liệu này. Không giống như các phương pháp tìm kiếm lặp đi lặp lại yêu cầu nhiều lần đánh giá mô hình, phân tích này bổ sung thêm chi phí tối thiểu vào quy trình abliteration tiêu chuẩn, chỉ đơn giản là trích xuất thêm tín hiệu từ các phép đo đã được thực hiện.</p>
+<p>Đối với Gemma3 12B Instruct, với các lớp được đánh số [0..47], chúng tôi đã chọn các phép đo từ các lớp 23 và 29 để ứng dụng rộng rãi. Việc giữ lại các phép đo hướng từ chối và trung bình vô hại đã chứng tỏ là rất quan trọng trong các lần tinh chỉnh tiếp theo.</p>
+<h2 id="kết-quả">Kết quả</h2>
+<p>Với phương pháp sửa đổi này, chúng tôi đã thực hiện abliteration Gemma3 12B Instruct một lần nữa. Như trước đây, chúng tôi đã áp dụng hệ số tỷ lệ mặc định là 1.0, can thiệp vào các lớp [11..41]. Đúng như mong đợi, chúng tôi đã có thể bỏ qua sự từ chối với các lời nhắc thử nghiệm có hại. Mô hình đã giữ lại nhiều khả năng của nó trong thử nghiệm không chính thức và &ldquo;grimjim/gemma-3-12b-it-norm-preserved-biprojected-abliterated&rdquo; đạt điểm cao nhất trên các benchmark UGI và NatInt trong <a href="https://huggingface.co/spaces/DontPlanToEnd/UGI-Leaderboard">Bảng xếp hạng UGI</a> so với các biến thể abliteration được công bố trước đó của chúng tôi cho cùng một mô hình cơ sở, và chính mô hình Instruct cơ sở.</p>
+<p>Như trước đây, trong quá trình đo lường kích hoạt, việc làm thưa thớt độ lớn ở mức cường độ 0.995 đã được áp dụng khi thu thập các phép đo từ các lời nhắc. Điều này là cần thiết để phân biệt hướng từ chối giữa các giá trị trung bình có hại và vô hại. Quan sát thực nghiệm là các kích hoạt ngoại lệ mạnh mẽ đặc trưng cho mô hình.</p>
+<p>Để tối đa hóa độ ổn định số, chúng tôi tiếp tục sử dụng dấu phẩy động 32-bit trong suốt các phép tính trung gian mặc dù mô hình được phát hành ở định dạng dấu phẩy động bfloat16 16-bit. Trước đây đã ghi nhận rằng việc thực hiện các phép tính trung gian ở dấu phẩy động bfloat16 16-bit dẫn đến kết quả không tối ưu. Chúng tôi khuyến nghị rằng ít nhất dấu phẩy động 32-bit nên được sử dụng trong các mô hình thể hiện sự biến thiên lớn về độ lớn kích hoạt.</p>
+<h2 id="thảo-luận">Thảo luận</h2>
+<p>Bằng cách thu hẹp thành công phạm vi can thiệp chỉ còn thành phần hướng với các chuẩn được bảo toàn, chúng tôi thiết lập rằng hướng từ chối một mình là rất quan trọng đối với kết quả abliteration, thay vì hướng từ chối bị vướng vào các hiệu ứng độ lớn. Tuy nhiên, bất chấp cơ sở lý thuyết này, có khả năng việc loại bỏ thành phần bị vướng vào việc đánh giá có hại có thể làm giảm sự an toàn theo những cách không có nguyên tắc. Korznikov và cộng sự. (2025) đã chứng minh rằng việc điều chỉnh kích hoạt trên các đặc điểm ngay cả khi vô hại cũng có thể làm tổn hại đến sự an toàn của LLM, cho thấy rằng các can thiệp trong không gian biểu diễn có thể có những hậu quả không mong muốn đối với các cơ chế an toàn.</p>
+<p>Việc bảo toàn độ lớn có thể rất quan trọng trong trường hợp của <a href="https://huggingface.co/google/gemma-3-12b-it">Gemma3 12B Instruct</a>, vì các ngoại lệ có độ lớn cao che giấu hướng từ chối gần như chắc chắn mã hóa thông tin hành vi quan trọng cần được bảo toàn để duy trì chức năng, như được báo cáo bởi Sun và cộng sự. (2024).</p>
+<p>Kết quả benchmark trên <a href="https://huggingface.co/spaces/DontPlanToEnd/UGI-Leaderboard">Bảng xếp hạng UGI</a> cho thấy sự cải thiện rõ ràng so với các biến thể abliteration trước đó:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Biến thể Mô hình</th>
+          <th style="text-align: left">Điểm UGI</th>
+          <th style="text-align: left">Điểm NatInt</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Gemma-3 12B Instruct (cơ sở)</td>
+          <td style="text-align: left">19.58</td>
+          <td style="text-align: left">18.72</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Abliterated tiêu chuẩn</td>
+          <td style="text-align: left">32.08</td>
+          <td style="text-align: left">18.64</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Biprojected bảo toàn chuẩn</td>
+          <td style="text-align: left"><strong>32.61</strong></td>
+          <td style="text-align: left"><strong>21.33</strong></td>
+      </tr>
+  </tbody>
+</table>
+<p>Đáng chú ý, trong khi abliteration tiêu chuẩn đạt được mức độ bỏ qua kiểm duyệt tương đương (điểm UGI), thì nó lại cho thấy sự suy giảm khả năng nhẹ (NatInt: 18.64 so với 18.72 của mô hình cơ sở). Phương pháp bảo toàn chuẩn không chỉ đạt hiệu quả bỏ qua kiểm duyệt mà còn cải thiện đáng kể khả năng suy luận (NatInt: 21.33). Phát hiện này phù hợp với những quan sát gần đây về hiện tượng &ldquo;Thuế An toàn&rdquo; (Huang và cộng sự, 2025), nơi sự căn chỉnh an toàn đã được chứng minh là làm suy giảm khả năng suy luận trong các mô hình ngôn ngữ. Sự cải thiện so với mô hình cơ sở cho thấy việc loại bỏ các ràng buộc an toàn được mã hóa theo hướng có thể mở khóa các khả năng suy luận tiềm ẩn đã bị các cơ chế an toàn ngăn chặn, mặc dù mối quan hệ này cần được điều tra thêm.</p>
+<p>Mặc dù chúng tôi đã thiết lập trước đây bằng thực nghiệm rằng can thiệp vào nhiều lớp là cần thiết để đạt được tốc độ tuân thủ mong muốn đối với các lời nhắc có hại, chúng tôi đã tìm thấy cơ sở lý thuyết trong một bài báo năm 2023 của McGrath và cộng sự có tiêu đề &ldquo;Hiệu ứng Hydra: Sự tự sửa chữa nổi lên trong các phép tính mô hình ngôn ngữ&rdquo;. Các tác giả đã chứng minh rằng khi các lớp riêng lẻ bị ablate, các lớp khác sẽ bù đắp thích ứng để phục hồi khoảng 70% phép tính ban đầu. Cơ chế tự sửa chữa này giải thích tại sao các can thiệp lớp đơn lẻ thường không đủ để abliteration mạnh mẽ, vì mô hình vốn đã định tuyến xung quanh các hư hỏng cục bộ.</p>
+<p>Chiến lược can thiệp đa lớp giải quyết trực tiếp thách thức này: bằng cách đồng thời sửa đổi cả phép chiếu đầu ra chú ý và phép chiếu xuống MLP trên nhiều lớp, người ta có thể &ldquo;cắt nhiều đầu của hydra&rdquo; cùng một lúc, ngăn chặn các cơ chế bù đắp khôi phục hành vi từ chối. Thông qua việc lựa chọn cẩn thận các phép đo lớp và một bộ lớp can thiệp, một phép can thiệp hạng 2L có cấu trúc (trong đó L là số lớp được nhắm mục tiêu) có thể cung cấp đủ phạm vi phủ sóng để vượt qua sự tự sửa chữa nổi lên đồng thời vẫn giữ hiệu quả về mặt tính toán thông qua cấu trúc hạng 1 của mỗi sửa đổi trọng số riêng lẻ. &ldquo;Hiệu ứng hydra&rdquo; này khi nhìn lại đã giải thích cho sự trở lại một phần của các yêu cầu an toàn trong quá trình &ldquo;biprojected abliteration&rdquo;.</p>
+<p>Chúng tôi đã cấu trúc lại quy trình abliteration truyền thống thành ba giai đoạn riêng biệt: (1) đo lường trên tất cả các lớp, (2) lựa chọn lớp phân tích thông qua các chỉ số chất lượng và (3) can thiệp có mục tiêu trên các lớp đã chọn. Sự phân tách này mang lại sự linh hoạt: thay vì cam kết với một lớp &rsquo;tốt nhất&rsquo; duy nhất, các chuyên gia có thể chọn nhiều ứng cử viên chất lượng cao để can thiệp, cho phép chiến lược đa lớp cần thiết để vượt qua hiệu ứng hydra đồng thời duy trì hiệu quả về mặt tính toán thông qua cấu trúc hạng 1 của mỗi sửa đổi trọng số riêng lẻ.</p>
+<p>Cuối cùng, một hậu quả thực tế thú vị nảy sinh từ sự hiểu biết này: số lượng lớp can thiệp cung cấp một cơ chế thô nhưng hiệu quả để điều chỉnh sự cân bằng tuân thủ-an toàn. Ít lớp hơn cho phép nhiều tự sửa chữa hơn, bảo toàn một số khả năng từ chối, trong khi nhiều lớp hơn khắc phục các cơ chế bù đắp một cách triệt để hơn. Điều này cung cấp cho các chuyên gia một tham số có thể điều chỉnh để hiệu chỉnh hành vi của mô hình theo trường hợp sử dụng và khả năng chấp nhận rủi ro của họ.</p>
+<h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h2>
+<ul>
+<li><a href="https://www.lesswrong.com/posts/jGuXSZgv6qfdhMCuJ/refusal-in-llms-is-mediated-by-a-single-direction">Arditi và cộng sự, &ldquo;Refusal in LLMs is mediated by a single direction&rdquo;, lesswrong.com, 2024.</a></li>
+<li><a href="https://arxiv.org/abs/2503.00555">Huang và cộng sự, &ldquo;Safety Tax: Safety Alignment Makes Your Large Reasoning Models Less Reasonable&rdquo;, arXiv preprint, 2025</a></li>
+<li><a href="https://arxiv.org/abs/2509.22067">Korznikov và cộng sự, &ldquo;The Rogue Scalpel: Activation Steering Compromises LLM Safety&rdquo;, arXiv preprint, 2025</a></li>
+<li><a href="https://huggingface.co/blog/mlabonne/abliteration">Labonne, &ldquo;Uncensor any LLM with abliteration&rdquo;, huggingface.co, 2024.</a></li>
+<li><a href="https://huggingface.co/blog/grimjim/projected-abliteration">Lai, &ldquo;Projected Abliteration&rdquo;, HuggingFace article, 2025</a></li>
+<li><a href="https://arxiv.org/abs/2307.15771">McGrath và cộng sự, &ldquo;The Hydra Effect: Emergent Self-repair in Language Model Computations&rdquo;, arXiv preprint, 2023</a></li>
+<li><a href="https://arxiv.org/abs/2402.17762v2">Sun và cộng sự, &ldquo;Massive Activations in Large Language Models&rdquo;, arXiv preprint, 2024</a></li>
+<li><a href="https://arxiv.org/abs/2507.11878">Zhao và cộng sự, &ldquo;LLMs Encode Harmfulness and Refusal Separately&rdquo;, arXiv preprint, 2025.</a></li>
+</ul>
+<p><em>Ngày xuất bản ban đầu: Ngày 6 tháng 11 năm 2025.</em></p>
+<hr>
+<h3 id="cộng-đồng">Cộng đồng</h3>
+<p><strong>grimjim</strong>
+Tác giả bài viết</p>
+<blockquote>
+<p>In retrospect, a key insight to this approach was to treat the harmless direction as a boundary condition to clamp to. Both the removal of projected interference along the harmless direction and the preservation of per element magnitudes aimed to minimize perturbation along and near the harmless direction.</p>
+<p>Activation measurements were done on a 4-bit bitsandbytes quant, but final assembly was performed on the full-weight bfloat16 model.</p></blockquote>
+<p><strong>ItzPingCat</strong></p>
+<blockquote>
+<p>GPT OSS when</p></blockquote>
+<p><strong>SeaJay20k</strong></p>
+<blockquote>
+<p>Really cool stuff! I look forward to your future worl</p></blockquote>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/grimjim/norm-preserving-biprojected-abliteration">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/13-days-ago/">13 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/e9f6f6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/ipGH8HHMSu49DthGP28XZZ5J8trwbBeVwbkxHoxipOBB1rLI_MRjUeU2zswaIkPgWKRHu5eJGZmUIQWidxCPJ2vVB0KUqy7NwCtLjxu9FU71B-rxcg=w1440-h1440-n-nu" alt="Bắt đầu xây dựng với Gemini 3" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bắt đầu xây dựng với Gemini 3</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/d47b56/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61b8e2ba285851687028d395/Rq3xWG7mJ3aCRoBsq340h.jpeg" alt="Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/32b0d2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/2KeyrGnSHkdmqbcNw5vNeL/cecc8af8a67e02395c663b22d9a19682/nuneybits_Vector_art_of_digital_film_reel_63eee9bf-9b4d-4d52-ae61-67717cda7a74.webp?w=1000&amp;q=100" alt="Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

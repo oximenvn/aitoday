@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Suy nghĩ hay không suy nghĩ- Bộ định tuyến cho các LLM lai | AI Today - SkyAI</title>
+
+<meta name="description" content="Suy nghĩ hay không suy nghĩ- Bộ định tuyến cho các LLM lai">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Suy nghĩ hay không suy nghĩ- Bộ định tuyến cho các LLM lai</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Suy nghĩ hay không suy nghĩ- Bộ định tuyến cho các LLM lai </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-19T00:00:00&#43;00:00">November 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            6 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/65e1bdb336a669a4ca5dab7d/XzxXRFbs6-Sgd8RyoIjYV.png" alt="Suy nghĩ hay không suy nghĩ- Bộ định tuyến cho các LLM lai">
+        <figcaption class="text-center italic text-xs">Suy nghĩ hay không suy nghĩ- Bộ định tuyến cho các LLM lai</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="to-think-or-not-to-think-a-router-for-hybrid-llms">To Think or Not to Think: A Router for Hybrid LLMs</h1>
+<p>This article details the development of a reasoning-effort router for Large Language Models (LLMs), aiming to intelligently decide when to engage &ldquo;thinking&rdquo; (reasoning) mode to improve output quality versus when to skip it for faster responses.</p>
+<h2 id="introduction">Introduction</h2>
+<p>The concept of &ldquo;test-time compute&rdquo; has revolutionized how LLMs work. Models can now allocate more computational resources (tokens) to complex questions, leading to better and more accurate results. This has been seen in models like OpenAI&rsquo;s o1 and DeepSeek-R1. More recently, hybrid models like Qwen3 allow users to toggle a &ldquo;thinking&rdquo; flag. However, choosing between a fast, non-reasoning model and a slower, reasoning-heavy one for each task can be inconvenient. This project introduces a <strong>router</strong> that predicts whether a given task requires thinking, acting as an &ldquo;Auto&rdquo; option.</p>
+<h2 id="problem-setup">Problem Setup</h2>
+<p>To build this router, the core need was <strong>paired data</strong>: for each query, we need a response generated with thinking mode enabled and another generated with it disabled, along with a label indicating which is better or if thinking is unnecessary. The goal is to train a classifier to predict a label: <code>think</code> or <code>no_think</code>.</p>
+<ul>
+<li><code>think</code>: Used when reasoning significantly improves quality.</li>
+<li><code>no_think</code>: Used when reasoning doesn&rsquo;t justify the extra tokens.</li>
+</ul>
+<p>The data was primarily synthetic, focusing on Qwen3 models. The approach involved using the same base model with different test-time computes (thinking on/off) and then scoring these outputs to create a supervision signal for the router.</p>
+<h2 id="data-collection">Data Collection</h2>
+<p>The datasets needed to capture diverse real-world queries and clearly reasoning-heavy tasks. They were categorized into open-ended and closed-ended datasets.</p>
+<h3 id="open-ended-datasets">Open-Ended Datasets</h3>
+<ul>
+<li><strong>WildChat-filtered-Qwen3-8B-Scored</strong>: Contains real user chats.</li>
+<li><strong>Nectar-Qwen3-8B</strong>: Another dataset of user conversations.</li>
+</ul>
+<p>Due to budget constraints, filtering was applied: English only, single-turn interactions, samples scored highly by <code>HuggingFaceFW/fineweb-edu-classifier</code>, and queries originally made to GPT-4 (as a heuristic for harder questions). For each query, think-mode and no-think-mode outputs were generated and later scored by a reward model.</p>
+<h3 id="closed-ended-datasets">Closed-Ended Datasets</h3>
+<p>These datasets feature tasks where correctness is easily verifiable and non-thinking models perform noticeably worse.</p>
+<ul>
+<li><strong>AIME-1983-2024-Qwen3-8B</strong>: Competition math problems.</li>
+<li><strong>Big-Math-RL-Qwen3-8B</strong>: Another math-focused dataset.</li>
+</ul>
+<p>For these, the ground-truth answer allowed for accuracy flags:</p>
+<ul>
+<li><code>acc_think(x)</code>: 1 if think-mode answer matches ground truth, else 0.</li>
+<li><code>acc_no_think(x)</code>: 1 if no-think answer matches ground truth, else 0.</li>
+</ul>
+<h2 id="data-labeling">Data Labeling</h2>
+<h3 id="closed-ended-data">Closed-Ended Data</h3>
+<p>Labeling is straightforward:</p>
+<ul>
+<li>If think-mode is correct and no-think-mode is wrong: label <code>think</code>.</li>
+<li>If no-think is correct and think-mode is wrong: label <code>no_think</code>.</li>
+</ul>
+<p>Edge cases:</p>
+<ul>
+<li>If both are correct: label <code>no_think</code> (no need for extra tokens).</li>
+<li>If both are wrong: label <code>think</code> (assuming larger future models might solve it with more reasoning).</li>
+</ul>
+<h3 id="open-ended-data">Open-Ended Data</h3>
+<p>These were scored using the <strong>Skywork-Reward-V2-Llama-3.1-8B</strong> reward model. The <code>think</code> mode was chosen if its reward was higher than the <code>no_think</code> mode, unless the absolute difference was below a threshold <code>ε</code>, in which case <code>no_think</code> was chosen. The <code>&amp;lt;think&amp;gt;...&amp;lt;/think&amp;gt;</code> chain-of-thought was removed before scoring.</p>
+<h2 id="training">Training</h2>
+<p>After labeling, approximately <strong>70k samples</strong> were available. The task was a classification problem predicting <code>y ∈ {think, no_think}</code>. Both BERT variants (encoder-only) and Qwen3-0.6B (decoder-only) were tested, with <strong>Qwen3-0.6B</strong> and <strong>mmBERT-small</strong> being selected.</p>
+<p>The training curves (loss, F1, accuracy) showed good performance. The W&amp;B dashboard provides detailed training logs.</p>
+<h2 id="results">Results</h2>
+<p>The router was evaluated on test sets from the open-ended dataset and 2025 math benchmarks.</p>
+<h3 id="wildchat-test">WildChat (Test)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Strategy</th>
+          <th style="text-align: left">Avg Reward</th>
+          <th style="text-align: left">vs No-Think</th>
+          <th style="text-align: left">vs Think</th>
+          <th style="text-align: left">Think %</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>No Think (Baseline)</strong></td>
+          <td style="text-align: left">22.6868</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">0.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Think (Baseline)</strong></td>
+          <td style="text-align: left">24.7362</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">100.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-0.6b</td>
+          <td style="text-align: left">24.0576</td>
+          <td style="text-align: left">+1.3708</td>
+          <td style="text-align: left">-0.6787</td>
+          <td style="text-align: left">42.9%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-mmbert-small</td>
+          <td style="text-align: left">24.1236</td>
+          <td style="text-align: left">+1.4368</td>
+          <td style="text-align: left">-0.6126</td>
+          <td style="text-align: left">46.3%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-bert</td>
+          <td style="text-align: left">23.3694</td>
+          <td style="text-align: left">+0.6826</td>
+          <td style="text-align: left">-1.3668</td>
+          <td style="text-align: left">33.5%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-mf</td>
+          <td style="text-align: left">22.6865</td>
+          <td style="text-align: left">-0.0004</td>
+          <td style="text-align: left">-2.0498</td>
+          <td style="text-align: left">0.2%</td>
+      </tr>
+  </tbody>
+</table>
+<p>The router models significantly outperformed the no-think baseline and RouteLLM models while using fewer tokens.</p>
+<h3 id="nectar-test">Nectar (Test)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Strategy</th>
+          <th style="text-align: left">Avg Reward</th>
+          <th style="text-align: left">vs No-Think</th>
+          <th style="text-align: left">vs Think</th>
+          <th style="text-align: left">Think %</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>No Think (Baseline)</strong></td>
+          <td style="text-align: left">8.6090</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">0.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Think (Baseline)</strong></td>
+          <td style="text-align: left">9.9649</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">100.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-0.6b</td>
+          <td style="text-align: left">9.6866</td>
+          <td style="text-align: left">+1.0776</td>
+          <td style="text-align: left">-0.2784</td>
+          <td style="text-align: left">28.5%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-mmbert-small</td>
+          <td style="text-align: left">8.9183</td>
+          <td style="text-align: left">+0.3093</td>
+          <td style="text-align: left">-1.0466</td>
+          <td style="text-align: left">9.9%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-bert</td>
+          <td style="text-align: left">9.9603</td>
+          <td style="text-align: left">+1.3513</td>
+          <td style="text-align: left">-0.0046</td>
+          <td style="text-align: left">99.7%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-mf</td>
+          <td style="text-align: left">8.5713</td>
+          <td style="text-align: left">-0.0377</td>
+          <td style="text-align: left">-1.3936</td>
+          <td style="text-align: left">1.9%</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="aime-2025-qwen3-8b">AIME 2025 (Qwen3-8B)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Strategy</th>
+          <th style="text-align: left">Avg Accuracy</th>
+          <th style="text-align: left">vs No-Think</th>
+          <th style="text-align: left">vs Think</th>
+          <th style="text-align: left">Avg Length</th>
+          <th style="text-align: left">Think %</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>No Think (Baseline)</strong></td>
+          <td style="text-align: left">0.1267</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">3411.5</td>
+          <td style="text-align: left">0.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Think (Baseline)</strong></td>
+          <td style="text-align: left">0.2400</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">12835.2</td>
+          <td style="text-align: left">100.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-0.6b</td>
+          <td style="text-align: left">0.1933</td>
+          <td style="text-align: left">+0.0667</td>
+          <td style="text-align: left">-0.0467</td>
+          <td style="text-align: left">11815.0</td>
+          <td style="text-align: left">90.0%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-mmbert-small</td>
+          <td style="text-align: left">0.2267</td>
+          <td style="text-align: left">+0.1000</td>
+          <td style="text-align: left">-0.0133</td>
+          <td style="text-align: left">12322.1</td>
+          <td style="text-align: left">93.3%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-bert</td>
+          <td style="text-align: left">0.2333</td>
+          <td style="text-align: left">+0.1067</td>
+          <td style="text-align: left">-0.0067</td>
+          <td style="text-align: left">12553.6</td>
+          <td style="text-align: left">96.7%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-mf</td>
+          <td style="text-align: left">0.1267</td>
+          <td style="text-align: left">+0.0000</td>
+          <td style="text-align: left">-0.1133</td>
+          <td style="text-align: left">3411.5</td>
+          <td style="text-align: left">0.0%</td>
+      </tr>
+  </tbody>
+</table>
+<p>The router shows improved accuracy over no-think baselines and generalizes reasonably to Qwen3-30B.</p>
+<h3 id="aime-2025-qwen3-30b">AIME 2025 (Qwen3-30B)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Strategy</th>
+          <th style="text-align: left">Avg Accuracy</th>
+          <th style="text-align: left">vs No-Think</th>
+          <th style="text-align: left">vs Think</th>
+          <th style="text-align: left">Avg Length</th>
+          <th style="text-align: left">Think %</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>No Think (Baseline)</strong></td>
+          <td style="text-align: left">0.1933</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">1178.2</td>
+          <td style="text-align: left">0.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Think (Baseline)</strong></td>
+          <td style="text-align: left">0.6400</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">11773.5</td>
+          <td style="text-align: left">100.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-0.6b</td>
+          <td style="text-align: left">0.5667</td>
+          <td style="text-align: left">+0.3733</td>
+          <td style="text-align: left">-0.0733</td>
+          <td style="text-align: left">11112.8</td>
+          <td style="text-align: left">90.0%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-mmbert-small</td>
+          <td style="text-align: left">0.6067</td>
+          <td style="text-align: left">+0.4133</td>
+          <td style="text-align: left">-0.0333</td>
+          <td style="text-align: left">11477.9</td>
+          <td style="text-align: left">93.3%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-bert</td>
+          <td style="text-align: left">0.6133</td>
+          <td style="text-align: left">+0.4200</td>
+          <td style="text-align: left">-0.0267</td>
+          <td style="text-align: left">11593.9</td>
+          <td style="text-align: left">96.7%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-mf</td>
+          <td style="text-align: left">0.1933</td>
+          <td style="text-align: left">+0.0000</td>
+          <td style="text-align: left">-0.4467</td>
+          <td style="text-align: left">1178.2</td>
+          <td style="text-align: left">0.0%</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="hmmt-2025-qwen3-8b">HMMT 2025 (Qwen3-8B)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Strategy</th>
+          <th style="text-align: left">Avg Accuracy</th>
+          <th style="text-align: left">vs No-Think</th>
+          <th style="text-align: left">vs Think</th>
+          <th style="text-align: left">Avg Length</th>
+          <th style="text-align: left">Think %</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>No Think (Baseline)</strong></td>
+          <td style="text-align: left">0.0467</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">5210.1</td>
+          <td style="text-align: left">0.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Think (Baseline)</strong></td>
+          <td style="text-align: left">0.0800</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">13628.4</td>
+          <td style="text-align: left">100.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-0.6b</td>
+          <td style="text-align: left">0.0533</td>
+          <td style="text-align: left">+0.0067</td>
+          <td style="text-align: left">-0.0267</td>
+          <td style="text-align: left">10425.3</td>
+          <td style="text-align: left">60.0%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-mmbert-small</td>
+          <td style="text-align: left">0.0867</td>
+          <td style="text-align: left">+0.0400</td>
+          <td style="text-align: left">+0.0067</td>
+          <td style="text-align: left">12360.6</td>
+          <td style="text-align: left">83.3%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-bert</td>
+          <td style="text-align: left">0.0800</td>
+          <td style="text-align: left">+0.0333</td>
+          <td style="text-align: left">+0.0000</td>
+          <td style="text-align: left">13262.2</td>
+          <td style="text-align: left">96.7%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-mf</td>
+          <td style="text-align: left">0.0467</td>
+          <td style="text-align: left">+0.0000</td>
+          <td style="text-align: left">-0.0333</td>
+          <td style="text-align: left">5210.1</td>
+          <td style="text-align: left">0.0%</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="hmmt-2025-qwen3-30b">HMMT 2025 (Qwen3-30B)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Strategy</th>
+          <th style="text-align: left">Avg Accuracy</th>
+          <th style="text-align: left">vs No-Think</th>
+          <th style="text-align: left">vs Think</th>
+          <th style="text-align: left">Avg Length</th>
+          <th style="text-align: left">Think %</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>No Think (Baseline)</strong></td>
+          <td style="text-align: left">0.0867</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">1038.2</td>
+          <td style="text-align: left">0.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Think (Baseline)</strong></td>
+          <td style="text-align: left">0.4600</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">11718.4</td>
+          <td style="text-align: left">100.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-0.6b</td>
+          <td style="text-align: left">0.3133</td>
+          <td style="text-align: left">+0.2267</td>
+          <td style="text-align: left">-0.1467</td>
+          <td style="text-align: left">7597.4</td>
+          <td style="text-align: left">60.0%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">reasoning-router-mmbert-small</td>
+          <td style="text-align: left">0.3933</td>
+          <td style="text-align: left">+0.3067</td>
+          <td style="text-align: left">-0.0667</td>
+          <td style="text-align: left">9801.3</td>
+          <td style="text-align: left">83.3%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-bert</td>
+          <td style="text-align: left">0.4267</td>
+          <td style="text-align: left">+0.3400</td>
+          <td style="text-align: left">-0.0333</td>
+          <td style="text-align: left">11281.4</td>
+          <td style="text-align: left">96.7%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">routellm-mf</td>
+          <td style="text-align: left">0.0867</td>
+          <td style="text-align: left">+0.0000</td>
+          <td style="text-align: left">-0.3733</td>
+          <td style="text-align: left">1038.2</td>
+          <td style="text-align: left">0.0%</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>Model Architecture</strong>: Router trained on transformers; other architectures not explored.</li>
+<li><strong>Reward Model</strong>: Skywork-Reward-V2-Llama-3.1-8B is used, which might have biases.</li>
+<li><strong>Data Diversity</strong>: Excludes multilingual queries, coding tasks, multi-turn conversations, and multimodal inputs due to constraints.</li>
+<li><strong>Model Size</strong>: Evaluations primarily on Qwen3-8B, with limited testing on Qwen3-30B. Larger models and newer hybrid models (like OpenAI&rsquo;s o3/o4-mini) are not fully explored.</li>
+<li><strong>Multi-level Reasoning</strong>: Future work could extend the router beyond binary &ldquo;think/no-think&rdquo; to select from multiple reasoning tiers.</li>
+</ul>
+<h2 id="conclusions">Conclusions</h2>
+<p>This work demonstrates that a reasoning-effort router can be effectively trained using primarily synthetic data, even without human preference data. The router reliably predicts when thinking mode is beneficial, validating the motivation behind this project. The release of models like OpenAI&rsquo;s GPT-5 with built-in routers further supports this approach. This project offers a promising, lightweight method for test-time compute allocation in hybrid LLMs.</p>
+<h2 id="references">References</h2>
+<p>[1] RouteLLM – Learning to Route LLMs with Preference Data: <a href="https://arxiv.org/abs/2406.18665">https://arxiv.org/abs/2406.18665</a>
+[2] OpenAI o1 – Learning to Reason with LLMs: <a href="https://openai.com/index/learning-to-reason-with-llms/">https://openai.com/index/learning-to-reason-with-llms/</a>
+[3] DeepSeek-R1 – Reinforcement Learning for Reasoning: <a href="https://arxiv.org/abs/2501.12948">https://arxiv.org/abs/2501.12948</a>
+[4] Qwen3 Technical Report – Hybrid reason/no-reason models: <a href="https://arxiv.org/abs/2505.09388">https://arxiv.org/abs/2505.09388</a>
+[5] OpenAI – Introducing GPT-5: <a href="https://openai.com/index/introducing-gpt-5/">https://openai.com/index/introducing-gpt-5/</a>
+[6] DeepSeek V3.1 – Hybrid Reasoning Announcement: <a href="https://api-docs.deepseek.com/news/news250821">https://api-docs.deepseek.com/news/news250821</a>
+[7] Skywork Reward Model – Skywork-Reward-V2-Llama-3.1-8B: <a href="https://huggingface.co/Skywork/Skywork-Reward-V2-Llama-3.1-8B">https://huggingface.co/Skywork/Skywork-Reward-V2-Llama-3.1-8B</a></p>
+<h2 id="appendix">Appendix</h2>
+<h3 id="hugging-face-collections">Hugging Face Collections</h3>
+<p>The full collection of datasets, models, and router artifacts is available at:
+<strong>Reasoning Router Collection</strong>: <a href="https://huggingface.co/collections/AmirMohseni/reasoning-router">https://huggingface.co/collections/AmirMohseni/reasoning-router</a></p>
+<h3 id="datasets">Datasets</h3>
+<ul>
+<li><strong>AIME competition math</strong>: <a href="https://huggingface.co/datasets/AmirMohseni/AIME-1983-2024-Qwen3-8B">AIME-1983-2024-Qwen3-8B</a></li>
+<li><strong>Nectar open-ended chats</strong>: <a href="https://huggingface.co/datasets/AmirMohseni/Nectar-Qwen3-8B">Nectar-Qwen3-8B</a></li>
+<li><strong>Large-scale math RL-style data</strong>: <a href="https://huggingface.co/datasets/AmirMohseni/Big-Math-RL-Qwen3-8B">Big-Math-RL-Qwen3-8B</a></li>
+<li><strong>Filtered real-world WildChat data</strong>: <a href="https://huggingface.co/datasets/AmirMohseni/WildChat-filtered-Qwen-3-8B-Scored">WildChat-filtered-Qwen3-8B-Scored</a></li>
+</ul>
+<h3 id="code-repository">Code Repository</h3>
+<p>The code is available on GitHub:
+<strong>LLM-Router (GitHub)</strong>: <a href="https://github.com/Amir-Mohseni/LLM-Router">https://github.com/Amir-Mohseni/LLM-Router</a></p>
+<h3 id="qwen3-8b-sampling-parameters">Qwen3-8B Sampling Parameters</h3>
+<p>python</p>
+<h1 id="sampling-presets">Sampling presets</h1>
+<p>THINKING_PARAMS = {
+&ldquo;chat_template_kwargs&rdquo;: {&ldquo;enable_thinking&rdquo;: True},
+&ldquo;do_sample&rdquo;: True,
+&ldquo;temperature&rdquo;: 0.6,
+&ldquo;top_p&rdquo;: 0.95,
+&ldquo;top_k&rdquo;: 20,
+&ldquo;min_p&rdquo;: 0,
+}</p>
+<p>NON_THINKING_PARAMS = {
+&ldquo;chat_template_kwargs&rdquo;: {&ldquo;enable_thinking&rdquo;: False},
+&ldquo;do_sample&rdquo;: True,
+&ldquo;temperature&rdquo;: 0.7,
+&ldquo;top_p&rdquo;: 0.8,
+&ldquo;top_k&rdquo;: 20,
+&ldquo;min_p&rdquo;: 0,
+}</p>
+<h3 id="citation">Citation</h3>
+<p>bibtex
+@misc{mohseni2025reasoningrouter,
+author       = {Mohseni, Amir},
+title        = {To Think or Not to Think: A Router for Hybrid LLMs},
+howpublished = {Hugging Face Blog Post},
+month        = {November},
+year         = {2025},
+url          = {https://huggingface.co/blog/AmirMohseni/reasoning-router}
+}</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/AmirMohseni/reasoning-router">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/3-days-ago/">3 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/e9f6f6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/ipGH8HHMSu49DthGP28XZZ5J8trwbBeVwbkxHoxipOBB1rLI_MRjUeU2zswaIkPgWKRHu5eJGZmUIQWidxCPJ2vVB0KUqy7NwCtLjxu9FU71B-rxcg=w1440-h1440-n-nu" alt="Bắt đầu xây dựng với Gemini 3" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bắt đầu xây dựng với Gemini 3</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/d47b56/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61b8e2ba285851687028d395/Rq3xWG7mJ3aCRoBsq340h.jpeg" alt="Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/32b0d2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/2KeyrGnSHkdmqbcNw5vNeL/cecc8af8a67e02395c663b22d9a19682/nuneybits_Vector_art_of_digital_film_reel_63eee9bf-9b4d-4d52-ae61-67717cda7a74.webp?w=1000&amp;q=100" alt="Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

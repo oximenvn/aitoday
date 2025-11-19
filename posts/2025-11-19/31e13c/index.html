@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PEFT- Các phương pháp tinh chỉnh hiệu quả tham số cho LLM | AI Today - SkyAI</title>
+
+<meta name="description" content="PEFT- Các phương pháp tinh chỉnh hiệu quả tham số cho LLM">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">PEFT- Các phương pháp tinh chỉnh hiệu quả tham số cho LLM</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">PEFT- Các phương pháp tinh chỉnh hiệu quả tham số cho LLM </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-19T00:00:00&#43;00:00">November 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            50 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/666b9ef5e6c60b6fc4156675/av6g3oEeQQ4Rpa_IBFfaT.jpeg" alt="PEFT- Các phương pháp tinh chỉnh hiệu quả tham số cho LLM">
+        <figcaption class="text-center italic text-xs">PEFT- Các phương pháp tinh chỉnh hiệu quả tham số cho LLM</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="peft-các-phương-pháp-tinh-chỉnh-hiệu-quả-tham-số-cho-llm">PEFT: Các phương pháp Tinh chỉnh Hiệu quả Tham số cho LLM</h1>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Trong bối cảnh LLM (Mô hình ngôn ngữ lớn) có những hạn chế và chi phí cao, nơi các tổ chức lớn sử dụng các khả năng tính toán cực kỳ phức tạp để tạo ra các mô hình ngôn ngữ đa mục đích, PEFT (Parameter-Efficient Fine-Tuning - Tinh chỉnh Hiệu quả Tham số) nổi lên như một giải pháp thay thế có giá trị — không chỉ để giảm chi phí mà còn để cho phép chỉ định và kiểm soát.</p>
+<p>Bài viết này khám phá vũ trụ của các kỹ thuật Tinh chỉnh Hiệu quả Tham số (PEFT) — một bộ các phương pháp cho phép điều chỉnh các mô hình ngôn ngữ lớn (LLM) hiệu quả hơn về bộ nhớ và hiệu suất tính toán. Dựa trên bài báo “<!-- raw HTML omitted -->[2303.15647] Scaling Down to Scale Up: A Guide to Parameter-Efficient Fine-Tuning<!-- raw HTML omitted -->” và thư viện PEFT, tích hợp với Hugging Face&rsquo;s Transformers, nghiên cứu này đi sâu vào các khái niệm và phương pháp chính tạo điều kiện thuận lợi cho việc tinh chỉnh các mô hình ngôn ngữ mà không cần huấn luyện tất cả hàng tỷ tham số của chúng.</p>
+<p>Bài viết này cung cấp một giới thiệu về các kỹ thuật PEFT chính, mô tả cách chúng hoạt động và làm nổi bật các đặc điểm cũng như các ứng dụng tiềm năng của chúng để tinh chỉnh các mô hình ngôn ngữ, tập trung vào việc tối đa hóa hiệu quả bộ nhớ và hiệu suất thời gian huấn luyện.</p>
+<p>Và cũng có một notebook thực hiện tinh chỉnh một mô hình để tóm tắt các cuộc trò chuyện dịch vụ khách hàng, sử dụng Tinh chỉnh Toàn bộ, LoRA, QLoRA và IA3.</p>
+<!-- raw HTML omitted -->
+<h2 id="các-loại-phương-pháp-peft">Các loại phương pháp PEFT</h2>
+<p>Phương pháp Tinh chỉnh Hiệu quả Tham số (PEFT) có thể được phân loại theo hai khía cạnh chính: cấu trúc khái niệm của chúng (ví dụ: giới thiệu tham số mới hoặc điều chỉnh các tham số hiện có) và mục tiêu chính của chúng (giảm thiểu dấu chân bộ nhớ, cải thiện hiệu quả lưu trữ hoặc giảm chi phí tính toán).</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Các phương pháp này được chia thành ba loại chính:</p>
+<p><strong>Phương pháp Cộng thêm</strong></p>
+<p>Các phương pháp cộng thêm giới thiệu các tham số mới vào mô hình cơ sở, thường thông qua các lớp bộ điều hợp nhỏ hoặc bằng cách điều chỉnh một phần các embedding đầu vào (được gọi là soft prompts). Các phương pháp này được sử dụng rộng rãi và bao gồm:</p>
+<ul>
+<li><strong>Bộ điều hợp (Adapters)</strong>: Các mạng dày đặc nhỏ (kết nối đầy đủ) được chèn sau các lớp phụ transformer cụ thể, cho phép điều chỉnh cho các tác vụ mới mà không cần huấn luyện tất cả các tham số của mô hình.</li>
+<li><strong>Soft Prompts</strong>: Tinh chỉnh được áp dụng trực tiếp cho các embedding đầu vào của mô hình, cho phép điều chỉnh đặc hiệu tác vụ mà không cần sửa đổi các tham số nội bộ của mô hình.</li>
+</ul>
+<p>Các phương pháp này thường hiệu quả về bộ nhớ vì chúng làm giảm kích thước của gradient và trạng thái bộ tối ưu hóa.</p>
+<p><strong>Phương pháp Lựa chọn</strong></p>
+<p>Các phương pháp lựa chọn chỉ điều chỉnh một phần các tham số hiện có của mô hình. Điều này có thể được thực hiện theo nhiều cách, chẳng hạn như:</p>
+<ul>
+<li><strong>Tinh chỉnh Lớp trên cùng</strong>: Tập trung vào việc tinh chỉnh chỉ các lớp trên của mạng trong khi để yên các lớp dưới.</li>
+<li><strong>Tinh chỉnh Tham số Cụ thể</strong>: Tinh chỉnh có chọn lọc các loại tham số nhất định, chẳng hạn như bias, trong khi đóng băng các tham số khác.</li>
+<li><strong>Cập nhật Thưa thớt</strong>: Chọn một tập hợp con các tham số cụ thể để huấn luyện. Mặc dù có tiềm năng, cách tiếp cận này có thể tốn kém về mặt tính toán do cần xác định các tham số liên quan nhất.</li>
+</ul>
+<p>Mặc dù giảm số lượng tham số được huấn luyện, các phương pháp lựa chọn có thể đòi hỏi chi phí tính toán cao, đặc biệt là trong các cấu hình thưa thớt.</p>
+<p><strong>Phương pháp dựa trên Tái tham số hóa</strong></p>
+<p>Các phương pháp dựa trên tái tham số hóa giảm số lượng tham số có thể huấn luyện bằng cách sử dụng các biểu diễn hạng thấp, tận dụng sự dư thừa có trong các mạng nơ-ron. Các phương pháp chính bao gồm:</p>
+<ul>
+<li><strong>LoRa (Low-Rank Adaptation)</strong>: Sử dụng phân rã ma trận hạng thấp để biểu diễn các cập nhật trọng số, cung cấp một cách hiệu quả để tinh chỉnh mô hình.</li>
+<li><strong>Intrinsic SAID</strong>: Sử dụng phép biến đổi Fastfood, một kỹ thuật để biểu diễn hiệu quả các cập nhật hạng thấp.</li>
+</ul>
+<p>Các phương pháp này làm giảm đáng kể số lượng tham số cần huấn luyện, làm cho chúng lý tưởng cho các tình huống mà hiệu quả lưu trữ và thời gian huấn luyện là rất quan trọng.</p>
+<p><strong>Điểm bổ sung</strong></p>
+<ul>
+<li><strong>Phương pháp Cộng thêm</strong>: Mặc dù chúng giới thiệu các tham số mới, chúng có thể hiệu quả về bộ nhớ hơn nói chung bằng cách giảm lượng gradient và trạng thái bộ tối ưu hóa cần được lưu trữ.</li>
+<li><strong>Phương pháp Lựa chọn</strong>: Mặc dù có tiềm năng, chúng có thể đòi hỏi chi phí tính toán cao, đặc biệt là trong các trường hợp cập nhật thưa thớt.</li>
+<li><strong>Phương pháp Lai</strong>: Sự kết hợp các ý tưởng từ các danh mục khác nhau thường được khám phá để tối đa hóa hiệu suất, tận dụng điểm mạnh của mỗi phương pháp.</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Phương pháp</th>
+          <th style="text-align: left">Loại</th>
+          <th style="text-align: left">Lưu trữ</th>
+          <th style="text-align: left">Bộ nhớ</th>
+          <th style="text-align: left">Backprop</th>
+          <th style="text-align: left">Chi phí suy luận</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Adapters (Houlsby et al., 2019)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">AdaMix (Wang et al., 2022)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">SparseAdapter (He et al., 2022b)</td>
+          <td style="text-align: left">A, S</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Cross-Attn tuning (Gheini et al., 2021)</td>
+          <td style="text-align: left">S</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">BitFit (Ben-Zaken et al., 2021)</td>
+          <td style="text-align: left">S</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">DiffPruning (Guo et al., 2020)</td>
+          <td style="text-align: left">S</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Fish-Mask (Sung et al., 2021)</td>
+          <td style="text-align: left">S</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có thể</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">LT-SFT (Ansell et al., 2022)</td>
+          <td style="text-align: left">S</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có thể</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Prompt Tuning (Lester et al., 2021)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Đầu vào bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Prefix-Tuning (Li and Liang, 2021)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Đầu vào bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Spot (Vu et al., 2021)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Đầu vào bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">IPT (Qin et al., 2021)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN và đầu vào bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">MAM Adapter (He et al., 2022a)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN và đầu vào bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Parallel Adapter (He et al., 2022a)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Intrinsic SAID (Aghajanyan et al., 2020)</td>
+          <td style="text-align: left">R</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">LoRa (Hu et al., 2021)</td>
+          <td style="text-align: left">R</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">UniPELT (Mao et al., 2021)</td>
+          <td style="text-align: left">A, R</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN và đầu vào bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Compacter (Karimi Mahabadi et al., 2021)</td>
+          <td style="text-align: left">A, R</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">PHM Adapter (Karimi Mahabadi et al., 2021)</td>
+          <td style="text-align: left">A, R</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">KronA (Edalati et al., 2022)</td>
+          <td style="text-align: left">R</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">KronA_Bres (Edalati et al., 2022)</td>
+          <td style="text-align: left">A, R</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Lớp tuyến tính bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">(IA)³ (Liu et al., 2022)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Cổng bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Attention Fusion (Cao et al., 2022)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">Bộ giải mã bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">LeTS (Fu et al., 2021)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">FFN bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Ladder Side-Tuning(Sung et al., 2022)</td>
+          <td style="text-align: left">A</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">Bộ giải mã bổ sung</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">FAR (Vucetic et al., 2022)</td>
+          <td style="text-align: left">S</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có thể</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">Không có chi phí</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">S4-model (Chen et al., 2023)</td>
+          <td style="text-align: left">A, R, S</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">FFN và đầu vào bổ sung</td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<p>Bảng trên trình bày một so sánh chi tiết các phương pháp PEFT về hiệu quả lưu trữ, hiệu quả bộ nhớ và hiệu quả tính toán. Nó xem xét việc giảm chi phí lan truyền ngược trong quá trình huấn luyện và chi phí suy luận liên quan đến mỗi phương pháp. Các kỹ thuật khác nhau được phân loại như sau:</p>
+<ul>
+<li><strong>A (Cộng thêm)</strong>: Các phương pháp giới thiệu các tham số mới vào mô hình.</li>
+<li><strong>S (Lựa chọn)</strong>: Các phương pháp chỉ tinh chỉnh một tập hợp con các tham số hiện có.</li>
+<li><strong>R (Tái tham số hóa)</strong>: Các phương pháp sử dụng các biểu diễn hạng thấp để giảm số lượng tham số có thể huấn luyện.</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Phương pháp</th>
+          <th style="text-align: left">% Tham số có thể huấn luyện</th>
+          <th style="text-align: left">% Tham số đã thay đổi</th>
+          <th style="text-align: left">Đánh giá trên</th>
+          <th style="text-align: left"></th>
+          <th style="text-align: left"></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">&lt;1B</td>
+          <td style="text-align: left">&lt;20B</td>
+          <td style="text-align: left">&gt;20B</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Adapters (Houlsby et al., 2019)</td>
+          <td style="text-align: left">0.1 - 6</td>
+          <td style="text-align: left">0.1 - 6</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">AdaMix (Wang et al., 2022)</td>
+          <td style="text-align: left">0.1 - 0.2</td>
+          <td style="text-align: left">0.1 - 0.2</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">SparseAdapter (He et al., 2022b)</td>
+          <td style="text-align: left">2.0</td>
+          <td style="text-align: left">2.0</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">BitFit (Ben-Zaken et al., 2021)</td>
+          <td style="text-align: left">0.05 - 0.1</td>
+          <td style="text-align: left">0.05 - 0.1</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">DiffPruning (Guo et al., 2020)</td>
+          <td style="text-align: left">200</td>
+          <td style="text-align: left"><strong>0.5</strong></td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Fish-Mask (Sung et al., 2021)</td>
+          <td style="text-align: left">0.01 - 0.5</td>
+          <td style="text-align: left">0.01 - 0.5</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Prompt Tuning (Lester et al., 2021)</td>
+          <td style="text-align: left">0.1</td>
+          <td style="text-align: left">0.1</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Prefix-Tuning (Li and Liang, 2021)</td>
+          <td style="text-align: left">0.1 - 4.0</td>
+          <td style="text-align: left">0.1 - 4.0</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">IPT (Qin et al., 2021)</td>
+          <td style="text-align: left">56.0</td>
+          <td style="text-align: left">56.0</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">MAM Adapter (He et al., 2022a)</td>
+          <td style="text-align: left">0.5</td>
+          <td style="text-align: left">0.5</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Parallel Adapter (He et al., 2022a)</td>
+          <td style="text-align: left">0.5</td>
+          <td style="text-align: left">0.5</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Intrinsic SAID (Aghajanyan et al., 2020)</td>
+          <td style="text-align: left">0.001 - 0.1</td>
+          <td style="text-align: left"><strong>~0.1 hoặc 100</strong></td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">LoRa (Hu et al., 2021)</td>
+          <td style="text-align: left">0.01 - 0.5</td>
+          <td style="text-align: left"><strong>~0.5 hoặc ~30</strong></td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">UniPELT (Mao et al., 2021)</td>
+          <td style="text-align: left">1.0</td>
+          <td style="text-align: left">1.0</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Compacter (Karimi Mahabadi et al., 2021)</td>
+          <td style="text-align: left">0.05-0.07</td>
+          <td style="text-align: left"><strong>~0.07 hoặc ~0.1</strong></td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">PHM Adapter (Karimi Mahabadi et al., 2021)</td>
+          <td style="text-align: left">0.2</td>
+          <td style="text-align: left"><strong>~0.2 hoặc ~1.0</strong></td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">KronA (Edalati et al., 2022)</td>
+          <td style="text-align: left">0.07</td>
+          <td style="text-align: left"><strong>~0.07 hoặc ~30.0</strong></td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">KronA_Bres (Edalati et al., 2022)</td>
+          <td style="text-align: left">0.07</td>
+          <td style="text-align: left"><strong>~0.07 hoặc ~1.0</strong></td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">(IA)³ (Liu et al., 2022)</td>
+          <td style="text-align: left">0.02</td>
+          <td style="text-align: left">0.02</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Ladder Side-Tuning(Sung et al., 2022)</td>
+          <td style="text-align: left">7.5</td>
+          <td style="text-align: left">7.5</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">FAR (Vucetic et al., 2022)</td>
+          <td style="text-align: left">6.6-26.4</td>
+          <td style="text-align: left">6.6-26.4</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+          <td style="text-align: left">không</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">S4-model (Chen et al., 2023)</td>
+          <td style="text-align: left">0.5</td>
+          <td style="text-align: left"><strong>hơn 0.5</strong></td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">có</td>
+          <td style="text-align: left">không</td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<p>Bảng 2 cung cấp một phân tích về quy mô mô hình mà các phương pháp PEFT đã được đánh giá, làm nổi bật số lượng tham số có thể huấn luyện điển hình mà mỗi phương pháp sử dụng. Số lượng &ldquo;tham số có thể huấn luyện&rdquo; cụ thể đề cập đến các tham số được điều chỉnh bởi thuật toán tối ưu hóa gradient, phân biệt chúng với &ldquo;tham số đã thay đổi&rdquo;, chỉ ra sự thay đổi so với mô hình ban đầu. Đối với các phương pháp dựa trên tái tham số hóa, bảng báo cáo các tham số cả trước và sau khi tái tham số hóa.</p>
+<hr>
+<h2 id="phương-pháp-cộng-thêm">Phương pháp Cộng thêm</h2>
+<h3 id="bộ-điều-hợp-adapters">Bộ điều hợp (Adapters)</h3>
+<p>Các phương pháp dựa trên bộ điều hợp thêm các tham số huấn luyện bổ sung sau các lớp chú ý và kết nối đầy đủ của một mô hình được đào tạo trước đã đóng băng để giảm mức sử dụng bộ nhớ và tăng tốc độ huấn luyện. Việc triển khai cụ thể của bộ điều hợp có thể khác nhau; nó có thể là một lớp bổ sung đơn giản hoặc liên quan đến việc biểu diễn các cập nhật trọng số ∆W dưới dạng phân rã hạng thấp của ma trận trọng số. Trong cả hai trường hợp, bộ điều hợp thường nhỏ nhưng cho thấy hiệu suất tương đương với các mô hình được tinh chỉnh đầy đủ, cho phép huấn luyện các mô hình lớn hơn với ít tài nguyên hơn.</p>
+<p>Khái niệm về bộ điều hợp ban đầu được phát triển cho phân loại hình ảnh đa miền (<!-- raw HTML omitted -->Rebuffi et al., 2017, 2018<!-- raw HTML omitted -->) và liên quan đến việc thêm các lớp đặc trưng miền vào các mô-đun mạng nơ-ron. <!-- raw HTML omitted -->Houlsby et al. (2019)<!-- raw HTML omitted --> đã điều chỉnh ý tưởng này cho NLP. Họ đề xuất thêm các mạng kết nối đầy đủ sau các lớp chú ý và FFN trong kiến trúc Transformer.</p>
+<hr>
+<h3 id="soft-prompts">Soft Prompts</h3>
+<p>Các phương pháp Prompt đã nổi lên như một cách hiệu quả để điều chỉnh các mô hình ngôn ngữ được đào tạo trước cho các tác vụ cụ thể mà không cần tinh chỉnh đầy đủ (<!-- raw HTML omitted -->Brown et al., 2020<!-- raw HTML omitted -->). Khái niệm này liên quan đến việc cung cấp các hướng dẫn hoặc ví dụ cho mô hình định hướng hành vi của nó cho tác vụ mong muốn.</p>
+<p>Có hai loại phương pháp prompt chính:</p>
+<ul>
+<li><strong>Hard Prompts</strong>: Bao gồm văn bản tự nhiên được tạo thủ công để hướng dẫn mô hình về tác vụ. Ví dụ: &ldquo;Translate the following text to French:&rdquo; hoặc &ldquo;Classify the sentiment as positive or negative:&rdquo;. Mặc dù trực quan, chúng đòi hỏi chuyên môn đáng kể để tạo ra các prompt hiệu quả.</li>
+<li><strong>Soft Prompts</strong>: Sử dụng các vector liên tục và có thể huấn luyện được nối với các embedding đầu vào. Không giống như hard prompts, các &ldquo;virtual tokens&rdquo; này được tối ưu hóa tự động cho tác vụ nhưng không thể diễn giải được bằng con người vì chúng không tương ứng với các từ thực tế. (<!-- raw HTML omitted -->Li và Liang, 2021<!-- raw HTML omitted -->; <!-- raw HTML omitted -->Lester et al.<!-- raw HTML omitted -->, 2021; Liu et al., 2021)</li>
+</ul>
+<h4 id="prompt-tuning">Prompt Tuning</h4>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><strong>Khái niệm</strong>:
+<!-- raw HTML omitted -->Prompt Tuning<!-- raw HTML omitted --> đề xuất thêm một tensor có thể huấn luyện, được gọi là &ldquo;soft prompt&rdquo;, vào các embedding đầu vào của mô hình. Tensor này được tối ưu hóa trực tiếp thông qua giảm thiểu gradient, cho phép mô hình điều chỉnh hành vi của nó mà không làm thay đổi các tham số mô hình cơ bản.</p>
+<p><strong>Triển khai:</strong></p>
+<ul>
+<li>Prompt tokens được khởi tạo ngẫu nhiên hoặc từ các word embedding hiện có.</li>
+<li>Trong quá trình huấn luyện, chỉ các prompt tokens được cập nhật, giữ nguyên mô hình cơ sở.</li>
+<li>Kích thước prompt (số lượng token) là một siêu tham số có thể điều chỉnh.</li>
+<li>Prompts có thể được tái sử dụng cho các phiên bản khác nhau của cùng một tác vụ.</li>
+</ul>
+<p><strong>Hiệu quả</strong>:</p>
+<ul>
+<li>Nghiên cứu cho thấy rằng prompt tuning hiệu quả về tham số hơn khi kích thước mô hình tăng lên. Ví dụ, T5-11B đạt hiệu suất tương tự trên chuẩn đánh giá SuperGLUE với các soft prompt ngắn (5 token) và dài (150 token).</li>
+<li>Quy mô mô hình: Prompt tuning chỉ trở nên tương đương với tinh chỉnh toàn bộ trong các mô hình có hơn 10 tỷ tham số, cho thấy hiệu quả của nó chủ yếu ở các mô hình lớn.</li>
+<li>Chi phí suy luận bổ sung: Mặc dù soft prompts rất hiệu quả về tham số, chúng có thể dẫn đến tăng cường độ tính toán do có thêm token, đặc biệt trong các mô hình transformer có độ phức tạp bậc hai.</li>
+</ul>
+<p><strong>Ứng dụng và Hạn chế</strong>:</p>
+<ul>
+<li>Lý tưởng cho các tác vụ phân loại và sinh văn bản.</li>
+<li>Cho phép duy trì một bản sao duy nhất của mô hình cơ sở cho nhiều tác vụ.</li>
+<li>Hiệu suất có thể kém hơn tinh chỉnh truyền thống trong các mô hình nhỏ hơn.</li>
+<li>Khả năng diễn giải của prompt tokens bị hạn chế bởi bản chất liên tục của chúng.</li>
+</ul>
+<h4 id="prefix-tuning">Prefix Tuning</h4>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><strong>Khái niệm</strong>:
+<!-- raw HTML omitted -->Prefix Tuning<!-- raw HTML omitted --> là một phương pháp tinh chỉnh giới thiệu các tham số có thể huấn luyện (&lsquo;prefixes&rsquo;) trên tất cả các lớp của mô hình, giữ nguyên các tham số ban đầu không thay đổi. Không giống như các phương pháp khác chỉ sửa đổi các embedding đầu vào, phương pháp này tối ưu hóa prefixes ở nhiều cấp độ kiến trúc, cho phép điều chỉnh tinh tế và hiệu quả hơn.</p>
+<p>Trong hình trên, người ta chứng minh rằng chỉ các prefix (khối prefix màu đỏ) được tối ưu hóa, do đó chỉ cần lưu trữ prefix cho mỗi tác vụ, làm cho phương pháp này hiệu quả và mô-đun.</p>
+<p><strong>Triển khai</strong>:</p>
+<ul>
+<li>Một chuỗi các vector đặc trưng tác vụ (prefixes) được chèn vào các trạng thái ẩn ở mỗi lớp của mô hình.</li>
+<li>Để xử lý sự bất ổn định trong quá trình huấn luyện, prefixes được tạo ra thông qua một mạng chuyển tiếp (FFN), được tối ưu hóa trong quá trình huấn luyện. Sau khi huấn luyện, chỉ prefixes được giữ lại và FFN bị loại bỏ.</li>
+</ul>
+<p><strong>Hiệu suất</strong>:</p>
+<ul>
+<li>Cho thấy hiệu suất gần với tinh chỉnh toàn bộ, chỉ yêu cầu ít hơn 0,1% tổng số tham số của mô hình.</li>
+<li>Nó hoạt động đặc biệt tốt trên các tác vụ sinh ngôn ngữ tự nhiên (NLG) và đặc biệt hiệu quả trong các thiết lập ít dữ liệu.</li>
+</ul>
+<p><strong>So sánh với Prompt Tuning</strong>:</p>
+<ul>
+<li>Cả hai phương pháp đều thêm các tham số bổ sung vào mô hình, nhưng prefix tuning chèn các tham số này vào mỗi lớp, trong khi prompt tuning chỉ sửa đổi các embedding đầu vào.</li>
+<li>Prefix tuning, với việc tích hợp trên các lớp, đạt được hiệu suất tương đương với tinh chỉnh toàn bộ, nhưng với hiệu quả cao hơn nhiều, chủ yếu ở các mô hình lớn.</li>
+</ul>
+<h4 id="p-tuning">P-tuning</h4>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><strong>Khái niệm</strong>:
+<!-- raw HTML omitted -->P-Tuning<!-- raw HTML omitted --> là một phương pháp được phát triển để tối ưu hóa hiệu suất của các mô hình ngôn ngữ trong các tác vụ hiểu ngôn ngữ tự nhiên (NLU), nhằm khắc phục những hạn chế của các prompt rời rạc truyền thống. Dựa trên khái niệm soft prompt, phương pháp này sử dụng một tensor embedding có thể huấn luyện được tối ưu hóa thông qua một bộ mã hóa prompt chuyên dụng — thường là một mạng LSTM hai chiều. Cách tiếp cận này cho phép điều chỉnh mô hình tinh tế hơn cho các tác vụ cụ thể trong khi vẫn duy trì hiệu quả tính toán.</p>
+<p><strong>Triển khai</strong>:</p>
+<ul>
+<li>Phương pháp bắt đầu bằng cách chèn các token neo vào chuỗi đầu vào, đóng vai trò là điểm tham chiếu để hướng dẫn mô hình xác định các thành phần đầu vào quan trọng.</li>
+<li>Prompt tokens có thể được định vị linh hoạt tại bất kỳ vị trí nào trong chuỗi đầu vào, không giới hạn ở phần đầu.</li>
+<li>Sửa đổi mô hình chỉ xảy ra ở lớp đầu vào, không giống như các phương pháp như prefix tuning ảnh hưởng đến nhiều lớp, dẫn đến việc triển khai hiệu quả hơn.</li>
+</ul>
+<p><strong>Hiệu quả/Hiệu suất</strong>:</p>
+<ul>
+<li>
+<!-- raw HTML omitted -->
+</li>
+<li>Trong các điểm chuẩn như LAMA và SuperGlue, P-Tuning cho phép các mô hình GPT khôi phục một lượng lớn kiến thức thế giới và đạt được hiệu suất tương đương hoặc tốt hơn các mô hình BERT có kích thước tương tự.</li>
+<li>Nó cũng cải thiện hiệu suất của mô hình BERT, đặc biệt trong các thiết lập có giám sát và học ít mẫu, giảm sự phụ thuộc vào kỹ thuật prompt chuyên sâu.</li>
+</ul>
+<!-- raw HTML omitted -->
+<p><strong>Ứng dụng</strong>:</p>
+<ul>
+<li>Chủ yếu áp dụng cho các tác vụ NLU, P-Tuning cho phép các mô hình như GPT cạnh tranh hiệu quả trong các lĩnh vực mà BERT chiếm ưu thế.</li>
+<li>Nó đặc biệt có lợi cho các tác vụ yêu cầu kiểm tra kiến thức và học ít mẫu, nơi nó vượt trội hơn các phương pháp tiên tiến.</li>
+</ul>
+<p><strong>So sánh và Điểm bổ sung</strong>:</p>
+<ul>
+<li>So với các phương pháp tinh chỉnh khác như prefix tuning, P-Tuning linh hoạt hơn trong việc định vị prompt và không yêu cầu sửa đổi tất cả các lớp của mô hình. Việc sử dụng bộ mã hóa prompt, đặc biệt là LSTM, cung cấp khả năng tối ưu hóa prompt mạnh mẽ hơn, dẫn đến hiệu suất vượt trội trong các điểm chuẩn cụ thể.</li>
+</ul>
+<hr>
+<h2 id="phương-pháp-dựa-trên-tái-tham-số-hóa">Phương pháp dựa trên Tái tham số hóa</h2>
+<p>Các phương pháp tinh chỉnh hiệu quả tham số dựa trên tái tham số hóa tận dụng các biểu diễn hạng thấp để giảm thiểu số lượng tham số có thể huấn luyện. Khái niệm rằng các mạng nơ-ron có các biểu diễn chiều thấp đã được khám phá rộng rãi trong các phân tích học sâu thực nghiệm và lý thuyết.</p>
+<h3 id="intrinsic-said">Intrinsic SAID</h3>
+<p>Được giới thiệu bởi <!-- raw HTML omitted -->Aghajanyan et al. vào năm 2020<!-- raw HTML omitted -->, Intrinsic SAID là một phương pháp tinh chỉnh dựa trên khám phá rằng các mô hình ngôn ngữ lớn có thể được điều chỉnh hiệu quả bằng cách sử dụng ít tham số hơn nhiều so với quy mô tổng thể của chúng. Phương pháp này khám phá khái niệm &ldquo;chiều nội tại&rdquo; - ý tưởng rằng tồn tại một không gian con có chiều thấp hơn, nơi việc tinh chỉnh có thể được thực hiện hiệu quả như trong toàn bộ không gian tham số.</p>
+<p><strong>Khái niệm</strong>:</p>
+<ul>
+<li>Chiều nội tại biểu thị số lượng tham số tối thiểu cần thiết để điều chỉnh hiệu quả một mô hình cho một tác vụ cụ thể.</li>
+<li>SAID sử dụng phép biến đổi Fastfood để chiếu các cập nhật từ không gian chiều thấp sang không gian mô hình đầy đủ, cho phép tinh chỉnh hiệu quả.</li>
+<li>Một phát hiện quan trọng là các mô hình lớn hơn thường có chiều nội tại thấp hơn so với quy mô tổng thể của chúng, làm cho phương pháp này đặc biệt phù hợp với LLM.</li>
+</ul>
+<p><strong>Triển khai</strong>:</p>
+<ul>
+<li>
+<!-- raw HTML omitted -->
+</li>
+<li>
+<!-- raw HTML omitted -->
+</li>
+<li>
+<!-- raw HTML omitted -->
+</li>
+<li>
+<!-- raw HTML omitted -->
+</li>
+<li><strong>Hạn chế</strong>:
+<ul>
+<li>Mặc dù giảm số lượng tham số có thể huấn luyện, nó vẫn yêu cầu cập nhật tất cả các trọng số của mô hình.</li>
+<li>Tính toán chiều nội tại có thể tốn kém về mặt tính toán.</li>
+<li>Hiệu quả của phép biến đổi Fastfood có thể bị ảnh hưởng trên phần cứng học sâu cụ thể.</li>
+<li>Việc triển khai thực tế có thể phức tạp hơn các phương pháp như LoRA.</li>
+</ul>
+</li>
+</ul>
+<p>Intrinsic SAID, mặc dù có những hạn chế thực tế đối với các mô hình rất lớn, đã thiết lập các nền tảng lý thuyết quan trọng có ảnh hưởng trực tiếp đến sự phát triển của các phương pháp thực tế hơn như LoRA. Đóng góp chính của nó là chứng minh bằng toán học rằng việc tinh chỉnh hiệu quả trong các không gian con chiều thấp không chỉ khả thi mà còn là một thuộc tính nội tại của các mô hình quy mô lớn. Khám phá này đã mở đường cho một thế hệ kỹ thuật tinh chỉnh hiệu quả mới, ảnh hưởng đáng kể đến hướng nghiên cứu về điều chỉnh mô hình ngôn ngữ.</p>
+<hr>
+<h3 id="low-rank-adaptation-lora">Low-Rank Adaptation (LoRA)</h3>
+<p>Được giới thiệu bởi <!-- raw HTML omitted -->Hu et al. vào năm 2021<!-- raw HTML omitted -->, LoRA giảm đáng kể chi phí tính toán bằng cách phân tách các cập nhật trọng số thành các ma trận hạng thấp, giảm thiểu số lượng tham số có thể huấn luyện và mức tiêu thụ bộ nhớ.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><strong>Khái niệm</strong>:
+Các mô hình học sâu, như LLM (Mô hình ngôn ngữ lớn), phụ thuộc vào các ma trận trọng số lưu trữ các tham số được học trong quá trình đào tạo trước. Trong tinh chỉnh truyền thống, các ma trận trọng số này (W) được cập nhật trực tiếp. Mặt khác, LoRA biểu diễn các cập nhật này (∆W) dưới dạng tích của hai ma trận hạng thấp (Wa và Wb): ∆W = WA x Wb</p>
+<p>Sự phân tách này giảm đáng kể số lượng tham số có thể huấn luyện trong khi giữ nguyên ma trận trọng số ban đầu. Cách tiếp cận này có thể thực hiện được nhờ khái niệm <strong>chiều nội tại</strong>, cho thấy rằng các mô hình lớn có chỗ để học hiệu quả trong các chiều nhỏ hơn. Vào năm 2020, một nhóm Facebook đã xuất bản một bài báo (<!-- raw HTML omitted -->Intrinsic Dimensionality Paper<!-- raw HTML omitted -->) chứng minh điều này.</p>
+<p><strong>Triển khai</strong>:
+Việc triển khai LoRA tuân theo các bước sau:</p>
+<ul>
+<li>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->Giả sử hạng của ma trận là 300 và W được phân tách thành hai ma trận hạng 300, P và Q. Kích thước của P và Q sẽ là:<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->P shape = (<!-- raw HTML omitted -->16000<!-- raw HTML omitted -->, <!-- raw HTML omitted -->300<!-- raw HTML omitted -->)<br>
+Q shape = (<!-- raw HTML omitted -->300<!-- raw HTML omitted -->, <!-- raw HTML omitted -->16000<!-- raw HTML omitted -->)
+<!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->Tổng số tham số với phân tách sẽ là:<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->16000<!-- raw HTML omitted --> * <!-- raw HTML omitted -->300<!-- raw HTML omitted --> + <!-- raw HTML omitted -->300<!-- raw HTML omitted --> * <!-- raw HTML omitted -->16000<!-- raw HTML omitted --> = <!-- raw HTML omitted -->9600000<!-- raw HTML omitted --> = <!-- raw HTML omitted -->9.6<!-- raw HTML omitted --> triệu
+<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<ul>
+<li><strong>Huấn luyện</strong>: Chỉ các ma trận (A) và (B) được huấn luyện, trong khi (W) vẫn bị đóng băng.</li>
+<li><strong>Kết hợp</strong>: Sau khi tinh chỉnh, (∆W) có thể được kết hợp trở lại vào ma trận (W), duy trì hiệu suất của mô hình.</li>
+</ul>
+<p>Trong thực tế, LoRA thường được áp dụng cho các khối chú ý Transformer, chẳng hạn như các ma trận chiếu Wk và Wv trong các mô-đun chú ý đa đầu.</p>
+<p><strong>Hiệu quả/Hiệu suất</strong>:</p>
+<ul>
+<li><strong>Giảm Tham số</strong>: Một mô hình như GPT-3, với 175 tỷ tham số, sẽ chỉ cần điều chỉnh khoảng 37,7 triệu tham số bằng cách sử dụng LoRA, đại diện cho mức giảm gần 5000 lần chi phí tính toán.</li>
+<li><strong>Tính linh hoạt</strong>: LoRA có thể được áp dụng có chọn lọc cho các phần của mô hình, chẳng hạn như các lớp cụ thể, để tối ưu hóa hiệu suất hơn nữa.</li>
+<li><strong>Hiệu suất</strong>: Các nghiên cứu cho thấy rằng các mô hình được tinh chỉnh bằng LoRA có kết quả tương đương với tinh chỉnh đầy đủ, nhưng với chi phí tính toán và bộ nhớ thấp hơn.</li>
+</ul>
+<p><strong>Ứng dụng</strong>:</p>
+<ul>
+<li><strong>Mô hình Ngôn ngữ</strong>: LoRA ban đầu được thiết kế cho LLM, cho phép điều chỉnh hiệu quả các mô hình như GPT, PaLM và LLaMA.</li>
+<li><strong>Mô hình Khuếch tán</strong>: Do hiệu quả của nó, LoRA đã trở thành một lựa chọn phổ biến cho các mô hình tạo ảnh như DALL-E và Stable Diffusion.</li>
+<li><strong>Tạo biến thể</strong>: Phương pháp này tạo điều kiện thuận lợi cho việc tạo ra nhiều biến thể nhẹ của mô hình cơ sở, được điều chỉnh cho các tác vụ khác nhau.</li>
+</ul>
+<p><strong>So sánh và Lợi ích Bổ sung</strong>:</p>
+<ul>
+<li><strong>Vượt qua các Phương pháp PEFT Khác</strong>: LoRA thường vượt trội hơn các kỹ thuật như BitFit và Adapters, đặc biệt là ở các mô hình rất lớn.</li>
+<li><strong>Khả năng Kết hợp</strong>: Phương pháp này là trực giao với các điều chỉnh hiệu quả khác, chẳng hạn như lượng tử hóa, cho phép kết hợp như QLoRA.</li>
+<li><strong>Loại bỏ Độ trễ</strong>: Khả năng kết hợp các trọng số đã điều chỉnh vào mô hình cơ sở loại bỏ độ trễ suy luận bổ sung, làm cho LoRA lý tưởng cho các ứng dụng thời gian thực.</li>
+</ul>
+<p>Với những lợi ích này, LoRA đại diện cho một cột mốc quan trọng trong việc huấn luyện hiệu quả các mô hình quy mô lớn, cân bằng ấn tượng giữa chi phí và hiệu suất.</p>
+<h4 id="quantized-low-rank-adaptation-qlora">Quantized Low-Rank Adaptation (QLoRA)</h4>
+<p>Được giới thiệu bởi <!-- raw HTML omitted -->Dettmers et al., 2023<!-- raw HTML omitted -->, QLoRA kết hợp hiệu quả của lượng tử hóa với phương pháp thích ứng hạng thấp của LoRA, tiếp tục tối ưu hóa việc tinh chỉnh cho các mô hình ngôn ngữ quy mô lớn. Kỹ thuật này cho phép các mô hình có tới 65 tỷ tham số được tinh chỉnh trên các GPU hạn chế (chẳng hạn như một GPU 48GB duy nhất), đồng thời bảo tồn hiệu suất của các phương pháp tinh chỉnh 16 bit truyền thống.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><strong>Khái niệm</strong>:
+QLoRA sử dụng lượng tử hóa để giảm độ chính xác số học của trọng số mô hình, giảm thiểu việc sử dụng bộ nhớ đồng thời duy trì hiệu quả tính toán. Đồng thời, LoRA được áp dụng để thực hiện các cập nhật trọng số bằng các ma trận hạng thấp. Sự kết hợp mạnh mẽ này làm giảm đáng kể chi phí tính toán và bộ nhớ mà không làm tổn hại đến hiệu suất.</p>
+<p>Các cải tiến chính bao gồm:</p>
+<ul>
+<li><strong>4-bit Normal Float (NF4)</strong>: Một kiểu dữ liệu mới được thiết kế đặc biệt để biểu diễn hiệu quả các trọng số tuân theo phân phối chuẩn (phổ biến trong LLM) chỉ sử dụng 4 bit cho mỗi phần tử. NF4 đã chứng tỏ sự vượt trội hơn FP4 và Int4, cải thiện đáng kể độ chính xác sau lượng tử hóa, như được chứng minh bằng perplexity trung bình thấp hơn (27,41 so với 31,07) trong các thử nghiệm với các mô hình như OPT, BLOOM, LLaMA và Pythia.</li>
+<li><strong>Double Quantization</strong>: Được triển khai thông qua <!-- raw HTML omitted -->bitsandbytes<!-- raw HTML omitted --> của Hugging Face, điều này làm giảm mức sử dụng bộ nhớ trung bình bằng cách lượng tử hóa cả các hằng số lượng tử hóa.</li>
+<li><strong>Paged Optimizers</strong>: Quản lý các đỉnh bộ nhớ trong quá trình huấn luyện.</li>
+</ul>
+<p><strong>Triển khai</strong>:</p>
+<ul>
+<li><strong>Lượng tử hóa</strong>: Trọng số mô hình được lượng tử hóa thành 4 bit bằng kỹ thuật NF4, giảm yêu cầu bộ nhớ mà không làm mất thông tin liên quan.</li>
+<li><strong>Tinh chỉnh</strong>: Các ma trận hạng thấp được huấn luyện (tương tự như LoRA), trong khi các trọng số ban đầu vẫn được lượng tử hóa và đóng băng.</li>
+<li><strong>Hiệu suất được bảo tồn</strong>: Cách tiếp cận này duy trì độ chính xác và hiệu quả của mô hình, ngay cả với việc giảm tài nguyên đáng kể.</li>
+</ul>
+<p><strong>Kết quả Thực nghiệm</strong>:
+Các thí nghiệm với QLoRA đã chứng minh rằng nó tái tạo hiệu suất của các phương pháp tinh chỉnh 16 bit truyền thống, ngay cả khi sử dụng lượng tử hóa 4 bit. Điều này đã được chứng minh trong các điểm chuẩn học thuật như GLUE, Super-NaturalInstructions và MMLU.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Như được hiển thị trong Bảng 2, định dạng NF4 với double quantization (NFloat4 + DQ) đạt được perplexity trung bình thấp nhất (27,41) trong tất cả các định dạng 4 bit được thử nghiệm, làm nổi bật hiệu quả của nó trong việc bảo tồn thông tin. Bảng 3 cho thấy QLoRA duy trì hiệu suất gần hoặc bằng với quá trình đào tạo 16 bit (BF16) trên các quy mô mô hình và tác vụ khác nhau.</p>
+<p><strong>Hiệu quả</strong>:</p>
+<ul>
+<li><strong>Giảm Bộ nhớ</strong>: Lượng tử hóa 4 bit giảm mức sử dụng bộ nhớ tới 75% so với trọng số FP16.</li>
+<li><strong>Chi phí Tính toán</strong>: Kết hợp LoRA với lượng tử hóa cho phép tinh chỉnh các mô hình cực lớn bằng phần cứng dễ tiếp cận hơn.</li>
+<li><strong>Hiệu suất Tối ưu hóa</strong>: Ngay cả với các tài nguyên hạn chế, QLoRA cũng đạt được kết quả tương đương với các phương pháp truyền thống, cho thấy khả năng áp dụng thực tế.</li>
+</ul>
+<p>Bằng cách kết hợp lượng tử hóa và thích ứng hạng thấp, QLoRA dân chủ hóa việc tinh chỉnh LLM, cho phép các nhà nghiên cứu và nhà phát triển có tài nguyên tính toán hạn chế làm việc với các mô hình quy mô lớn mà không làm tổn hại đến chất lượng.</p>
+<h4 id="khởi-tạo">Khởi tạo</h4>
+<p>Các trọng số LoRA được khởi tạo trong thư viện PEFT bằng Kaiming-uniform cho trọng số A và giá trị 0 cho B theo mặc định, dẫn đến phép biến đổi đồng nhất, phù hợp với <!-- raw HTML omitted -->triển khai tham chiếu<!-- raw HTML omitted -->.</p>
+<h5 id="pissa">PiSSA</h5>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->PiSSA<!-- raw HTML omitted --><!-- raw HTML omitted --> khởi tạo bộ điều hợp LoRA bằng cách sử dụng các giá trị và vector suy biến chính của ma trận trọng số ban đầu (W) của mô hình để khởi tạo bộ điều hợp. Sự sửa đổi trực tiếp này cho phép PiSSA hội tụ nhanh hơn so với khởi tạo tiêu chuẩn và đạt được hiệu suất vượt trội bằng cách tập trung vào các thành phần liên quan nhất của mô hình trong quá trình tinh chỉnh trong khi vẫn giữ nguyên các thành phần còn lại. Hơn nữa, PiSSA giảm lỗi lượng tử hóa so với QLoRA, dẫn đến cải thiện bổ sung.</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Các hình ảnh trên minh họa lợi thế của PiSSA trong việc cải thiện và tăng tốc độ hội tụ cũng như giảm lỗi lượng tử hóa, như được chứng minh qua các thử nghiệm trong bài báo đã xuất bản.</p>
+<p>Các thử nghiệm cho thấy PiSSA liên tục vượt trội hơn LoRA trên nhiều mô hình và tác vụ khác nhau, bao gồm các điểm chuẩn hiểu ngôn ngữ tự nhiên và sinh ngôn ngữ tự nhiên. Ví dụ, trên điểm chuẩn GSM8K, mô hình Mistral-7B được tinh chỉnh bằng PiSSA đạt độ chính xác 72,86%, vượt trội so với 67,7% đạt được với LoRA, một cải tiến đáng kể 5,16%. Hơn nữa, PiSSA vượt trội trong việc giảm lỗi lượng tử hóa so với QLoRA. Phiên bản lượng tử hóa, QPiSSA, đạt độ chính xác 86,05% trong cùng một điểm chuẩn, vượt trội hơn QLoRA với 81,73%.</p>
+<p>Nhờ khả năng tương thích với các kỹ thuật lượng tử hóa và việc sử dụng SVD nhanh để khởi tạo, PiSSA cung cấp một giải pháp hiệu quả về bộ nhớ và nâng cao hiệu suất mà không ảnh hưởng đến tốc độ huấn luyện.</p>
+<h5 id="olora">OLoRA</h5>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->OLoRA<!-- raw HTML omitted --> (Orthonormal Low-Rank Adaptation) là một kỹ thuật thích ứng tham số hiệu quả sử dụng phân tách QR để khởi tạo các bộ điều hợp LoRA. Thay vì áp dụng trực tiếp sự thích ứng cho trọng số mô hình, OLoRA giới thiệu một phép biến đổi trực giao cho ma trận trọng số được đào tạo trước trước bất kỳ điều chỉnh nào. Nó phân tách ma trận trọng số 𝑊 thành một ma trận trực giao 𝑄 và một ma trận tam giác trên 𝑅. Cách tiếp cận này mang lại sự ổn định trong quá trình huấn luyện cao hơn, tăng tốc độ hội tụ và mang lại hiệu suất vượt trội.</p>
+<p>OLoRA được áp dụng độc lập cho mỗi lớp của mô hình, sử dụng các ma trận trọng số đã điều chỉnh trong quá trình truyền xuôi, trong khi gradient chỉ được tính toán liên quan đến các ma trận điều chỉnh trong quá trình lan truyền ngược. Điều này bảo tồn kiến thức của mô hình ban đầu, cho phép điều chỉnh hiệu quả với chi phí tính toán thấp.</p>
+<p>Mặc dù phân tách QR có chi phí tính toán ban đầu là 𝑂(𝑚𝑛𝑟), nhưng nó chỉ được thực hiện một lần cho mỗi lớp trong quá trình khởi tạo, làm cho chi phí bổ sung không đáng kể so với tổng chi phí huấn luyện các mô hình quy mô lớn.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Các số liệu này minh họa hành vi mất mát trong quá trình tinh chỉnh cho các mô hình như Tiny-Llama-1.1B, với các hạng khác nhau, Gemma-2B và OPT-1.3B, nơi OLoRA hội tụ nhanh hơn. Các thử nghiệm này được trình bày chi tiết trong bài báo gốc.</p>
+<h5 id="rank-stabilized-lora-rslora">Rank-stabilized LoRA (rsLoRA)</h5>
+<p>Kiến trúc LoRA của các bộ điều hợp LoRA theo tỷ lệ trong mỗi lần truyền xuôi theo một hệ số cố định được thiết lập trong quá trình khởi tạo, phụ thuộc vào hạng (r). Trong việc triển khai ban đầu, hệ số này được định nghĩa là ( \text{lora_alpha} / r ), nhưng <!-- raw HTML omitted --><!-- raw HTML omitted -->rank-stabilized LoRA (rsLoRA)<!-- raw HTML omitted --><!-- raw HTML omitted --> sử dụng ( \text{lora_alpha} / \sqrt{r} ), ổn định bộ điều hợp và tăng cường tiềm năng hiệu suất khi sử dụng các hạng cao hơn.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Trong các thử nghiệm, rsLoRA đã chứng tỏ hiệu suất vượt trội so với LoRA ở các cấu hình hạng cao. Trong khi huấn luyện mô hình LLaMA 2 trên 20.000 ví dụ từ tập dữ liệu hướng dẫn OpenOrca, nó duy trì sự ổn định của gradient ngay cả với các hạng cao, trong khi LoRA tiêu chuẩn gặp phải hiện tượng suy sụp gradient và hiệu quả học tập thấp hơn.</p>
+<h5 id="weight-decomposed-low-rank-adaptation-dora">Weight-Decomposed Low-Rank Adaptation (DoRA)</h5>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->DoRA<!-- raw HTML omitted --> phân tách các cập nhật trọng số thành hai thành phần: độ lớn và hướng. Hướng được xử lý bởi LoRA tiêu chuẩn, trong khi độ lớn được quản lý bởi một tham số học riêng biệt. Cách tiếp cận này cải thiện hiệu suất của LoRA, đặc biệt ở các hạng thấp hơn.</p>
+<p>Các thử nghiệm đã chứng minh rằng DoRA liên tục vượt trội hơn LoRA và các phương pháp tinh chỉnh khác trên các mô hình như LLaMA, LLaVA và VL-BART trong các tác vụ hạ nguồn khác nhau, bao gồm lý luận thông thường, tinh chỉnh hướng dẫn trực quan và hiểu văn bản-hình ảnh/video. Ví dụ, trên mô hình LLaMA-7B, DoRA đã cải thiện độ chính xác trung bình lên 3,7% so với LoRA trên các tập dữ liệu lý luận thông thường, thậm chí còn vượt qua mức độ chính xác của ChatGPT. Đối với các mô hình lớn hơn như LLaMA-13B, DoRA đạt hiệu suất tương tự như bộ điều hợp song song trong khi chỉ sử dụng một phần tư số tham số có thể huấn luyện và không làm tăng chi phí suy luận.</p>
+<p><strong>Mã bài báo</strong>: <!-- raw HTML omitted -->GitHub - NVlabs/DoRA: [ICML2024 (Oral)] Official PyTorch implementation of DoRA: Weight-Decomposed Low-Rank Adaptation<!-- raw HTML omitted --></p>
+<hr>
+<h3 id="hợp-nhất-bộ-điều-hợp-lora">Hợp nhất Bộ điều hợp LoRA</h3>
+<p>Trong khi LoRA nhỏ gọn và nhanh hơn đáng kể để huấn luyện, các vấn đề về độ trễ có thể phát sinh trong quá trình suy luận do việc tải riêng mô hình cơ sở và bộ điều hợp LoRA. Để loại bỏ độ trễ này, bạn có thể sử dụng hàm <!-- raw HTML omitted --><strong><!-- raw HTML omitted -->merge_and_unload()<!-- raw HTML omitted --></strong><!-- raw HTML omitted --> để hợp nhất các trọng số bộ điều hợp với mô hình cơ sở. Điều này cho phép bạn sử dụng mô hình đã hợp nhất mới như một mô hình độc lập. Hàm <!-- raw HTML omitted -->merge_and_unload()<!-- raw HTML omitted --> không giữ lại trọng số bộ điều hợp trong bộ nhớ.</p>
+<p>Dưới đây là một sơ đồ minh họa trực quan về việc hợp nhất bộ điều hợp LoRA:</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Để giữ một bản sao riêng của trọng số và cho phép tách rời bộ điều hợp, bạn có thể sử dụng <!-- raw HTML omitted --><strong><!-- raw HTML omitted -->merge_adapter()<!-- raw HTML omitted --></strong><!-- raw HTML omitted --> và <!-- raw HTML omitted --><!-- raw HTML omitted -->unmerge_adapter()<!-- raw HTML omitted --><!-- raw HTML omitted -->.</p>
+<hr>
+<h3 id="biến-thể">Biến thể</h3>
+<h4 id="low-rank-hadamard-product-loha">Low-Rank Hadamard Product (LoHa)</h4>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><strong>Khái niệm</strong>:
+Low-Rank Hadamard Product (<!-- raw HTML omitted -->LoHa<!-- raw HTML omitted -->) sử dụng các ma trận hạng thấp kết hợp thông qua tích Hadamard (nhân theo từng phần tử) thay vì phép nhân ma trận truyền thống.</p>
+<ul>
+<li><strong>Biểu diễn ∆W</strong>: Trong LoHa, ma trận cập nhật trọng số ∆W được phân tách thành bốn ma trận nhỏ hơn, và mỗi cặp ma trận hạng thấp này được kết hợp bằng tích Hadamard. Điều này cho phép mô hình giữ lại hạng cao và khả năng biểu đạt trong khi vẫn giữ nguyên số lượng tham số có thể huấn luyện.</li>
+</ul>
+<p><strong>Triển khai</strong>:</p>
+<ul>
+<li><strong>Tích Hadamard</strong>: LoHa dựa vào tích Hadamard thay vì phép nhân ma trận để kết hợp các ma trận hạng thấp, ảnh hưởng đến cấu trúc và quá trình huấn luyện của mô hình.</li>
+<li><strong>Mở rộng LoRA</strong>: LoHa có thể được xem là một phần mở rộng của Low-Rank Adaptation (LoRA), nâng cao dung lượng mô hình mà không cần thêm nhiều tham số hơn.</li>
+<li><strong>Lớp Embedding</strong>: Mặc dù LoHa có thể áp dụng cho các mô hình khác nhau, nhưng nó chưa được triển khai đầy đủ trong các framework Parameter-Efficient Fine-Tuning (PEFT) cho các lớp embedding.</li>
+</ul>
+<p><strong>Hiệu quả và Hiệu suất</strong>:</p>
+<ul>
+<li><strong>Trade-off Hiệu suất</strong>: LoHa cân bằng khả năng biểu đạt của mô hình và số lượng tham số. Nó cho phép hạng và dung lượng cao hơn mà không làm tăng gánh nặng tính toán.</li>
+<li><strong>Học Liên kết (FL)</strong>: Trong FL, LoHa đã thể hiện sự giảm đáng kể chi phí truyền thông (thấp hơn 3–10 lần) trong khi vẫn duy trì hiệu suất mô hình tương đương. Điều này đạt được thông qua phương pháp FedPara, sử dụng trọng số hạng thấp theo sau là tích Hadamard, làm cho nó hiệu quả hơn các phương pháp hạng thấp truyền thống.</li>
+</ul>
+<p><strong>Ứng dụng</strong>:
+LoHa ban đầu được phát triển cho các tác vụ thị giác máy tính, đặc biệt là trong các mô hình khuếch tán nơi việc tạo ra các hình ảnh đa dạng là rất quan trọng.</p>
+<h4 id="low-rank-kronecker-product-lokr">Low-Rank Kronecker Product (LoKr)</h4>
+<p><!-- raw HTML omitted -->LoKr<!-- raw HTML omitted --> là một biến thể LoRA, liên quan chặt chẽ đến LoRA và LoHa, chủ yếu được áp dụng trong các mô hình khuếch tán nhưng cũng có thể điều chỉnh cho các loại mô hình khác. Sự khác biệt chính giữa LoKr và LoRA là LoKr thay thế phép nhân ma trận truyền thống bằng tích Kronecker. Sự phân tách này tạo ra một ma trận khối bảo tồn cấu trúc và hạng của ma trận trọng số ban đầu, đảm bảo mô hình giữ nguyên khả năng tổng quát hóa trong quá trình tinh chỉnh.</p>
+<p><strong>Ưu điểm chính</strong>:</p>
+<ul>
+<li><strong>Khả năng Vector hóa</strong>: Tích Kronecker có thể được vector hóa, nghĩa là các cột của ma trận có thể được xếp chồng thành một vector. Điều này làm giảm sự cần thiết phải xây dựng lại hoàn toàn ma trận điều chỉnh (∆W), tăng tốc độ tinh chỉnh và nâng cao hiệu quả.</li>
+<li><strong>Linh hoạt Ma trận Bổ sung</strong>: LoKr cho phép có ma trận hạng thấp thứ ba tùy chọn, cung cấp khả năng kiểm soát tinh tế hơn trong quá trình tinh chỉnh.</li>
+</ul>
+<p>Mặc dù ban đầu được thiết kế cho các mô hình khuếch tán, tính linh hoạt của LoKr cho phép tích hợp vào nhiều loại mô hình, làm cho nó trở thành một kỹ thuật thích ứng hạng thấp hiệu quả mà không làm tổn hại đến hiệu suất của mô hình cơ sở.</p>
+<h4 id="mixture-of-lora-experts-x-lora">Mixture of LoRA Experts (X-LoRA)</h4>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><strong>Khái niệm</strong>:
+<!-- raw HTML omitted -->X-LoRA<!-- raw HTML omitted --> là một phương pháp thích ứng hạng thấp nâng cao sử dụng khái niệm <em>hỗn hợp các chuyên gia</em> (MoE). Nó kích hoạt động các chuyên gia LoRA khác nhau bằng cách sử dụng các cơ chế điều khiển (cổng) có thể dày đặc hoặc thưa thớt. Không giống như các phương pháp MoE truyền thống, X-LoRA giữ cả chuyên gia LoRA và mô hình cơ sở bị đóng băng trong quá trình huấn luyện, chỉ huấn luyện các lớp điều khiển (cổng), do đó giảm độ phức tạp và chi phí huấn luyện.</p>
+<p><strong>Triển khai</strong>:</p>
+<ul>
+<li><strong>Hai lần Lượt</strong>: Trong quá trình suy luận, X-LoRA thực hiện hai bước. Đầu tiên, mô hình tạo ra các trạng thái ẩn mà không áp dụng bộ điều hợp LoRA. Sau đó, các trạng thái này được sử dụng để tính toán các điều chỉnh từ bộ điều hợp LoRA, tái tổ chức động và chọn các chuyên gia phù hợp nhất cho tác vụ.</li>
+<li><strong>Lớp Điều khiển</strong>: Các lớp điều khiển quyết định chuyên gia LoRA nào được kích hoạt và điều chỉnh chính xác quy mô của chúng, cả ở cấp độ lớp và token. Đây là những phần duy nhất được huấn luyện trong X-LoRA.</li>
+<li><strong>Thích ứng tùy chỉnh</strong>: X-LoRA cho phép thích ứng chi tiết, kích hoạt các chuyên gia LoRA cụ thể cho các lớp và token nhất định, dẫn đến việc tinh chỉnh cá nhân hóa cao.</li>
+</ul>
+<p><strong>Hiệu quả và Hiệu suất</strong>:</p>
+<ul>
+<li><strong>Hiệu quả Tham số</strong>: Vì chỉ các lớp điều khiển được huấn luyện, trong khi mô hình cơ sở và chuyên gia LoRA vẫn bị đóng băng, X-LoRA giảm đáng kể số lượng tham số được điều chỉnh, cho phép huấn luyện nhẹ mà không làm giảm hiệu suất.</li>
+<li><strong>Khôi phục Kiến thức Động</strong>: Cơ chế hai lượt cho phép mô hình &ldquo;suy ngẫm&rdquo; về đầu ra của nó, điều chỉnh động các dự đoán của nó để cải thiện độ chính xác và nhạy cảm với ngữ cảnh.</li>
+</ul>
+<p><strong>Ứng dụng</strong>:
+X-LoRA vượt trội trong các lĩnh vực khoa học và kỹ thuật, chẳng hạn như phân tích vật liệu, cơ học protein và thiết kế phân tử. Khả năng kết hợp động kiến thức từ các chuyên gia khác nhau làm cho nó có hiệu quả cao đối với các vấn đề phức tạp, liên ngành như dự đoán đặc tính cơ học nano hoặc hành vi phân tử.</p>
+<!-- raw HTML omitted -->
+<h3 id="krona">KronA</h3>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><strong>Khái niệm</strong>:
+KronA là một phương pháp tinh chỉnh hiệu quả tham số mở rộng ý tưởng phân tách ma trận được sử dụng trong LoRA bằng cách tận dụng tích Kronecker. Tích Kronecker cho phép cải thiện hiệu quả thứ tự, nghĩa là nó giữ nguyên hoặc nâng cao hạng của các ma trận trọng số gốc đang được phân tách (<!-- raw HTML omitted -->Edalati et al., 2022<!-- raw HTML omitted -->).</p>
+<p>Tích Kronecker được sử dụng trong KronA được biểu diễn dưới dạng δW = WA ⊗ WB, trong đó WA và WB là các ma trận liên quan đến sự phân tách. Cách tiếp cận này cho phép KronA đạt được tỷ lệ hạng trên tham số tốt hơn so với các phương pháp phân tách ma trận truyền thống.</p>
+<p><strong>Triển khai</strong>:
+Nó hoạt động trong hai bước:</p>
+<ul>
+<li><strong>Xác định Tham số</strong>: Sử dụng một chỉ số học dựa trên chuẩn L1, nó đánh giá các phần nào của mô hình là quan trọng để điều chỉnh. Sau đó, các cột của các ma trận cần được điều chỉnh được chọn.</li>
+<li><strong>Cấu hình lại Động</strong>: Các tham số của mô hình và các lớp tuyến tính được chia thành các thành phần đóng băng và có thể huấn luyện. Trong quá trình huấn luyện, các phép nhân ma trận được thực hiện riêng cho các thành phần và kết quả được nối để tạo ra đầu ra.</li>
+</ul>
+<p><strong>Hiệu quả/Hiệu suất</strong>:
+KronA rất hiệu quả về tham số, chỉ cập nhật khoảng 0,07% tổng số tham số của mô hình, tương tự như các phương pháp như LoRA và Compacter. Tuy nhiên, nó đạt được hiệu suất tốt hơn, đặc biệt trên các tác vụ trong chuẩn GLUE.</p>
+<p>Phương pháp này không chỉ hiệu quả về tham số mà còn nhanh hơn trong quá trình suy luận so với các phương pháp dựa trên bộ điều hợp như Compacter. Điều này phần lớn là do việc tính toán hiệu quả tích Kronecker, giúp tránh chi phí phát sinh liên quan đến việc biểu diễn ma trận tường minh.</p>
+<p><strong>Ứng dụng</strong>:
+KronA đặc biệt hữu ích cho các mô hình có số lượng tham số nhỏ hơn (dưới 1 tỷ). Nó phù hợp với các tác vụ mà hiệu quả tham số và tốc độ suy luận là rất quan trọng, chẳng hạn như các ứng dụng thời gian thực hoặc môi trường bị giới hạn tài nguyên.</p>
+<p>Phương pháp này đã thể hiện hiệu suất mạnh mẽ trong các tác vụ xử lý ngôn ngữ tự nhiên, đặc biệt là trên chuẩn GLUE, nơi nó đạt hoặc vượt trội hơn các phương pháp tinh chỉnh khác trong khi vẫn duy trì dấu chân tham số tương tự hoặc nhỏ hơn.</p>
+<hr>
+<h2 id="tinh-chỉnh-lựa-chọn">Tinh chỉnh Lựa chọn</h2>
+<p>Các phương pháp lựa chọn điều chỉnh một tập hợp con các tham số hiện có của mô hình. Điều này có thể liên quan đến lựa chọn độ sâu lớp, lựa chọn dựa trên loại hoặc thậm chí lựa chọn tham số riêng lẻ.</p>
+<h3 id="bitfit">BitFit</h3>
+<p><strong>Khái niệm</strong>:
+BitFit là một kỹ thuật tinh chỉnh hiệu quả được đề xuất bởi (<!-- raw HTML omitted -->Ben-Zaken et al., 2021<!-- raw HTML omitted -->), tập trung vào việc điều chỉnh chỉ các số hạng bias của các mô hình được đào tạo trước thay vì cập nhật tất cả trọng số lớp. Trong các lớp tuyến tính hoặc tích chập, ma trận trọng số 𝑊 không thay đổi, trong khi chỉ vector bias 𝑏 được tối ưu hóa.</p>
+<p><strong>Triển khai</strong>:
+Việc triển khai BitFit rất đơn giản. Các số hạng bias được chọn từ các tham số của mô hình và bộ tối ưu hóa hoạt động riêng trên các tham số này.</p>
+<p>Cách tiếp cận này chỉ sửa đổi khoảng 0,05% tổng số tham số của mô hình, làm cho BitFit rất hiệu quả về lưu trữ và tính toán.</p>
+<p><strong>Hiệu quả/Hiệu suất</strong>:
+BitFit thể hiện hiệu quả bộ nhớ và thời gian huấn luyện xuất sắc. Bằng cách cập nhật một phần nhỏ nhất các tham số, nó giảm đáng kể yêu cầu về tài nguyên, chẳng hạn như bộ nhớ và công suất tính toán, đặc biệt so với tinh chỉnh toàn bộ. Nó đã cho thấy hiệu quả trong các mô hình nhỏ hơn, đặc biệt là trong các tình huống dữ liệu nhỏ đến trung bình, nơi hiệu suất của nó tương đương hoặc thậm chí vượt trội hơn tinh chỉnh toàn bộ.</p>
+<p>Tuy nhiên, khi áp dụng cho các mô hình lớn hơn, chẳng hạn như T0-3B hoặc GPT-3, BitFit có thể trở nên kém cạnh tranh hơn, tụt hậu so với tinh chỉnh toàn bộ hoặc các phương pháp tinh chỉnh hiệu quả khác như LoRA hoặc Prefix Tuning. Điều này là do việc sửa đổi chỉ các số hạng bias có thể không đủ để nắm bắt sự phức tạp của dữ liệu huấn luyện trong các mô hình lớn hơn.</p>
+<p><strong>Ứng dụng</strong>:
+BitFit đặc biệt hữu ích trong các tình huống mà tài nguyên tính toán bị hạn chế hoặc khi cần huấn luyện mô hình nhanh chóng trên dữ liệu mới mà không có khả năng tinh chỉnh toàn bộ. Nó đặc biệt hiệu quả trong các lĩnh vực có tập dữ liệu huấn luyện nhỏ hoặc trung bình, chẳng hạn như điều chỉnh các mô hình ngôn ngữ được đào tạo trước cho các tác vụ cụ thể (ví dụ: phân loại văn bản hoặc trả lời câu hỏi).</p>
+<p><strong>So sánh với các Kỹ thuật Khác</strong>:
+So với các kỹ thuật tinh chỉnh hiệu quả khác như LoRA và Adapters, BitFit là phương pháp đơn giản nhất, vì nó chỉ sửa đổi các bias. Tuy nhiên, sự đơn giản của nó có thể dẫn đến hiệu suất kém hơn trong các tình huống liên quan đến tập dữ liệu lớn hoặc mô hình lớn, nơi các kỹ thuật như LoRA có xu hướng hiệu quả hơn.</p>
+<!-- raw HTML omitted -->
+<ul>
+<li><em>Mã bài báo</em>: <!-- raw HTML omitted -->GitHub - benzakenelad/BitFit: Simple Parameter-efficient Fine-tuning for Transformer-based Masked Language-models<!-- raw HTML omitted --></li>
+</ul>
+<h4 id="diffpruning">DiffPruning</h4>
+<p><strong>Khái niệm</strong>:
+<!-- raw HTML omitted -->DiffPruning<!-- raw HTML omitted -->, một kỹ thuật được đề xuất bởi Guo et al. (2020), là một kỹ thuật tinh chỉnh hiệu quả nhằm cập nhật trọng số mạng nơ-ron một cách thưa thớt. Phương pháp này giới thiệu một mặt nạ nhị phân có thể học được biểu diễn bởi δ = z ◦ ∆W, trong đó &ldquo;◦&rdquo; là tích Hadamard (nhân theo từng phần tử). Mặt nạ này được huấn luyện cùng với mô hình trong quá trình tinh chỉnh, như một phần của mục tiêu chính quy hóa.</p>
+<p><strong>Triển khai</strong>:
+Trong quá trình tinh chỉnh, cả trọng số mô hình và mặt nạ nhị phân có thể học được quyết định tham số nào sẽ thực sự được cập nhật đều được điều chỉnh. Điều này dẫn đến một bản cập nhật thưa thớt hiệu quả cao, giảm số lượng tham số được sửa đổi mà không ảnh hưởng đến hiệu suất của mô hình.</p>
+<p><strong>Hiệu quả và Hiệu suất</strong>:
+DiffPruning đạt được hiệu quả tham số đặc biệt bằng cách chỉ sửa đổi khoảng 0,5% tham số của mô hình trong các cấu hình quy mô nhỏ (&lt;1B tham số). Do đó, nó phù hợp nhất cho các ứng dụng biên đa tác vụ (chẳng hạn như thiết bị di động) nơi bộ nhớ bị hạn chế. Tuy nhiên, bằng cách giảm thiểu số lượng tham số được sửa đổi, kỹ thuật này cần nhiều bộ nhớ hơn trong quá trình huấn luyện, vì tất cả các tham số được tối ưu hóa cùng với mặt nạ nhị phân.</p>
+<p><strong>Ứng dụng</strong>:
+Nó đặc biệt hữu ích trong các tình huống mà nhiều tác vụ cần được quản lý hiệu quả với bộ nhớ lưu trữ hạn chế, chẳng hạn như trên thiết bị di động. Nó cũng có thể áp dụng trong các tình huống mà các tác vụ mới xuất hiện theo luồng liên tục hoặc từ các nhà cung cấp khác nhau, vì chỉ cần lưu trữ một vector khác biệt nhỏ cho mỗi tác vụ. Kỹ thuật này đã chứng tỏ hiệu suất tương đương với tinh chỉnh toàn bộ trong các điểm chuẩn như GLUE, trong khi chỉ sửa đổi một phần nhỏ tham số của mô hình.</p>
+<p><strong>So sánh và Điểm bổ sung</strong>:
+Nó mang lại khả năng mở rộng thuận lợi khi số lượng tác vụ tăng lên, chỉ yêu cầu lưu trữ một vector khác biệt nhỏ cho mỗi tác vụ. Mặc dù hiệu quả hơn về các tham số được sửa đổi, chi phí bộ nhớ trong quá trình huấn luyện có thể cao hơn so với các phương pháp tinh chỉnh truyền thống, do cần tối ưu hóa tất cả các tham số cùng với mặt nạ nhị phân có thể học được.</p>
+<ul>
+<li><strong>Kiểm soát Độ thưa</strong>: Cách tiếp cận có thể phân biệt được với chuẩn L0 cho phép DiffPruning thúc đẩy các bản cập nhật thưa thớt một cách có kiểm soát, làm cho nó hữu ích cho các tình huống mà việc tiết kiệm dung lượng và tài nguyên tính toán là rất quan trọng.</li>
+<li><strong>Thích ứng Nhiều Tác vụ</strong>: Bằng cách không yêu cầu truy cập đồng thời tất cả các tác vụ trong quá trình huấn luyện, DiffPruning là một giải pháp khả thi cho các thiết bị cần thích ứng với các tác vụ mới liên tục, mà không cần hiệu chỉnh lại toàn bộ mô hình.</li>
+</ul>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Trong hình này, bên trái hiển thị hiệu suất trung bình trên tập xác thực GLUE ở các tỷ lệ độ thưa mục tiêu khác nhau cho các phương pháp. Bên phải hiển thị kết quả với BERTlarge trên tập xác thực SQuAD v1.1.</p>
+<h4 id="freeze-and-reconfigure-far">Freeze and Reconfigure (FAR)</h4>
+<p><strong>Khái niệm</strong>:
+<!-- raw HTML omitted -->Freeze and Reconfigure (FAR)<!-- raw HTML omitted --> là một phương pháp tinh chỉnh hiệu quả nhằm giảm tiêu thụ bộ nhớ và tăng tốc độ huấn luyện các mô hình ngôn ngữ lớn như BERT. FAR hoạt động bằng cách đóng băng một phần tham số của mô hình và chỉ tập trung vào việc điều chỉnh các tham số quan trọng nhất. Mục tiêu là giảm việc sử dụng tài nguyên trong quá trình huấn luyện, đặc biệt là trong các tình huống biên nơi bộ nhớ và công suất tính toán bị hạn chế. Phương pháp này cũng cấu hình lại kiến trúc mô hình để nhóm các tham số đóng băng và có thể huấn luyện một cách riêng biệt, tối ưu hóa các hoạt động bộ nhớ.</p>
+<p><strong>Triển khai</strong>:
+Nó hoạt động theo hai bước:</p>
+<ul>
+<li><strong>Xác định Tham số</strong>: Sử dụng một chỉ số học dựa trên chuẩn L1, nó đánh giá các phần nào của mô hình là quan trọng để điều chỉnh. Sau đó, các cột của các ma trận cần được điều chỉnh được chọn.</li>
+<li><strong>Cấu hình lại Động</strong>: Các tham số của mô hình và các lớp tuyến tính được chia thành các thành phần đóng băng và có thể huấn luyện. Trong quá trình huấn luyện, các phép nhân ma trận được thực hiện riêng cho các thành phần và kết quả được nối để tạo ra đầu ra.</li>
+</ul>
+<p><strong>Hiệu quả và Hiệu suất</strong>:
+Trong các thử nghiệm với DistilBERT trên các tác vụ GLUE và SQuAD, nó đã quản lý để đóng băng tới 60% tham số của mô hình, giảm thời gian huấn luyện 30% và thời gian truy cập bộ nhớ 47%, mà không làm giảm hiệu suất đáng kể về các chỉ số. Cách tiếp cận này cung cấp sự linh hoạt tuyệt vời khi sử dụng phần cứng và framework hiện đại như PyTorch, và sau khi huấn luyện, các tham số có thể được cấu hình lại, loại bỏ bất kỳ tác động tiêu cực nào đến suy luận.</p>
+<p><strong>Ứng dụng</strong>:
+FAR đặc biệt hiệu quả trong các tình huống biên, chẳng hạn như trên thiết bị di động, nơi tài nguyên bị hạn chế. Ứng dụng chính của nó là trong các mô hình như DistilBERT, được sử dụng trong các tác vụ NLP như chuẩn GLUE và SQuAD 2.0, nơi nó thể hiện hiệu suất tương đương với tinh chỉnh toàn bộ, nhưng chỉ với một phần nhỏ tham số được cập nhật (khoảng 6%).</p>
+<p><strong>So sánh và Điểm bổ sung</strong>:
+So với BitFit, vốn đóng băng tất cả các trọng số của các lớp dày đặc, FAR đã thể hiện hiệu suất vượt trội, đặc biệt là trong các tác vụ phức tạp hơn như SQuAD 2.0. BitFit đã có sự sụt giảm hiệu suất mạnh mẽ, đặc biệt là trong các tác vụ khó khăn hơn, nơi nó hoạt động kém hơn gần 20% về các chỉ số EM và F1. Điều này cho thấy FAR hiệu quả hơn trong việc xử lý sự phức tạp của các tác vụ này trong các mô hình nén như DistilBERT, cung cấp sự cân bằng giữa hiệu quả tài nguyên và hiệu suất.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<h4 id="fishmask">FishMask</h4>
+<p><strong>Khái niệm</strong>:
+<!-- raw HTML omitted -->FishMask<!-- raw HTML omitted --> (Fisher-Induced Sparse uncHanging) mask là một kỹ thuật tinh chỉnh hiệu quả dựa trên các cập nhật tham số thưa thớt, trong đó các tham số cần được điều chỉnh được chọn dựa trên thông tin Fisher. Bằng cách tính toán tầm quan trọng của mỗi tham số bằng thông tin Fisher, FishMask tạo ra một mặt nạ thưa thớt, cho phép chỉ một tập hợp con cố định các tham số được cập nhật trong quá trình huấn luyện, trong khi phần còn lại vẫn bị đóng băng. Mục tiêu chính là tối ưu hóa hiệu suất đồng thời giảm chi phí bộ nhớ và giao tiếp, đặc biệt là trong các môi trường học phân tán và chuyển giao.</p>
+<p><strong>Triển khai</strong>:</p>
+<ul>
+<li>
+<!-- raw HTML omitted -->
+</li>
+<li><strong>Lựa chọn</strong>: Sau khi tính toán Fisher, các tham số có giá trị Fisher cao nhất sẽ được chọn và điều chỉnh. Việc lựa chọn dựa trên một ngưỡng phần trăm.</li>
+<li><strong>Mặt nạ</strong>: Một mặt nạ được tạo ra để chỉ ra việc lựa chọn tham số.</li>
+</ul>
+<p><strong>Hiệu quả</strong>:
+Kỹ thuật FishMask được thiết kế để giảm chi phí bộ nhớ và giao tiếp trong môi trường phân tán, mà không làm giảm đáng kể hiệu suất của mô hình. Bằng cách chỉ cập nhật một phần nhỏ các tham số (thường là 1% đến 10%), FishMask có thể duy trì hiệu suất tương đương với các phương pháp như Adapters, đồng thời hiệu quả hơn về bộ nhớ.</p>
+<p>Về hiệu suất, FishMask cho thấy kết quả tương tự như các kỹ thuật như Adapters, nhưng kém hơn các phương pháp tiên tiến hơn như LoRA và (IA)³.</p>
+<p><strong>Ứng dụng</strong>:
+FishMask đặc biệt hữu ích trong các tình huống mà việc cập nhật tất cả các tham số mô hình sẽ không khả thi.</p>
+<p><strong>So sánh và Điểm bổ sung</strong>:
+So với các phương pháp tinh chỉnh thưa thớt khác, chẳng hạn như BitFit và DiffPruning, FishMask nổi bật nhờ việc tính toán trước một mặt nạ cố định các tham số quan trọng, giúp loại bỏ nhu cầu điều chỉnh động trong quá trình huấn luyện. Điều này mang lại sự giảm đáng kể chi phí tính toán, đặc biệt là trên phần cứng hiện đại có thể có hỗ trợ hạn chế cho các hoạt động thưa thớt động.</p>
+<p>Trong các thử nghiệm, FishMask đã thể hiện hiệu suất tương đương với Adapters, nhưng với chi phí bộ nhớ thấp hơn. Tuy nhiên, nó không đạt được mức hiệu suất của các kỹ thuật như LoRA và (IA)³, có thể điều chỉnh tham số chính xác và hiệu quả hơn trên nhiều tác vụ.</p>
+<hr>
+<h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h2>
+<ul>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->PEFT<!-- raw HTML omitted --><!-- raw HTML omitted --> - <!-- raw HTML omitted -->Hugging Face.<!-- raw HTML omitted --> Truy cập ngày: 22 tháng 8 năm 2024.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Scaling Down to Scale Up: A Guide to Parameter-Efficient Fine-Tuning<!-- raw HTML omitted --><!-- raw HTML omitted --> - Vladislav Lialin, Vijaya Deshpande, Anna Rumshisky, 2023.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->LoRA: Low-Rank Adaptation of Large Language Models<!-- raw HTML omitted --><!-- raw HTML omitted --> - Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, Weizhu Chen, 2021.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Intrinsic Dimensionality Explains the Effectiveness of Language Model Fine-Tuning<!-- raw HTML omitted --><!-- raw HTML omitted --> - Armen Aghajanyan, Luke Zettlemoyer, Sonal Gupta</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->PiSSA: Principal Singular Values and Singular Vectors Adaptation of Large Language Models<!-- raw HTML omitted --><!-- raw HTML omitted --> - Fanxu Meng, Zhaohui Wang, Muhan Zhang, 2024.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->OLoRA: Orthonormal Low-Rank Adaptation of Large Language Models<!-- raw HTML omitted --><!-- raw HTML omitted --> - Kerim Büyükakyüz, 2024.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->A Rank Stabilization Scaling Factor for Fine-Tuning with LoRA<!-- raw HTML omitted --><!-- raw HTML omitted --> - Damjan Kalajdzievski, 2023.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->DoRA: Weight-Decomposed Low-Rank Adaptation<!-- raw HTML omitted --><!-- raw HTML omitted --> - Shih-Yang Liu, Chien-Yi Wang, Hongxu Yin, Pavlo Molchanov, Yu-Chiang Frank Wang, Kwang-Ting Cheng, Min-Hung Chen, 2024.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->X-LoRA: Mixture of Low-Rank Adapter Experts, a Flexible Framework for Large Language Models with Applications in Protein Mechanics and Molecular Design<!-- raw HTML omitted --><!-- raw HTML omitted --> - Eric L. Buehler, Markus J. Buehler, 2024.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->KronA: Parameter Efficient Tuning with Kronecker Adapter<!-- raw HTML omitted --><!-- raw HTML omitted --> - Ali Edalati, Marzieh Tahaei, Ivan Kobyzev, Vahid Partovi Nia, James J. Clark, Mehdi Rezagholizadeh, 2022.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Language Models are Few-Shot Learners<!-- raw HTML omitted --><!-- raw HTML omitted --> - Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, Dario Amodei, 2020.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->It’s Not Just Size That Matters: Small Language Models Are Also Few-Shot Learners<!-- raw HTML omitted --><!-- raw HTML omitted --> - Schick &amp; Schütze, NAACL 2021.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->The Power of Scale for Parameter-Efficient Prompt Tuning<!-- raw HTML omitted --><!-- raw HTML omitted --> - Brian Lester, Rami Al-Rfou, Noah Constant, 2021.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->GPT Understands, Too<!-- raw HTML omitted --><!-- raw HTML omitted --> - Xiao Liu, Yanan Zheng, Zhengxiao Du, Ming Ding, Yujie Qian, Zhilin Yang, Jie Tang, 2021</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Efficient Fine-Tuning of BERT Models on the Edge<!-- raw HTML omitted --><!-- raw HTML omitted --> - Danilo Vucetic, Mohammadreza Tayaranian, Maryam Ziaeefard, James J. Clark, Brett H. Meyer, Warren J. Gross, 2022</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Training Neural Networks with Fixed Sparse Masks<!-- raw HTML omitted --><!-- raw HTML omitted --> - Yi-Lin Sung, Varun Nair, and Colin Raffel, 2021.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than In-Context Learning<!-- raw HTML omitted --><!-- raw HTML omitted --> - Haokun Liu, Derek Tam, Mohammed Muqeeth, Jay Mohta, Tenghao Huang, Mohit Bansal, Colin Raffel, 2022.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Generative AI with Large Language Models - Deeplearning.AI, AWS Course<!-- raw HTML omitted --><!-- raw HTML omitted --> - Chris Fregly, Antje Barth,
+Shelbee Eigenbrode, Mike Chambers.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Finetuning Transformer Models - Codeacademy Course<!-- raw HTML omitted --><!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->HuggingFace PEFT<!-- raw HTML omitted --><!-- raw HTML omitted --> <!-- raw HTML omitted -->GitHub<!-- raw HTML omitted --> - Sourab Mangrulkar, Sylvain Gugger, Lysandre Debut, Younes Belkada, Sayak Paul và Benjamin Bossan. Truy cập ngày: 22 tháng 8 năm 2024.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->meta-llama/llama-recipes: Scripts for fine-tuning Meta Llama3 with composable FSDP &amp; PEFT methods to cover single/multi-node GPUs. Supports default &amp; custom datasets for applications such as summarization and Q&amp;A. Supporting a number of candid inference solutions such as HF TGI, VLLM for local or cloud deployment. Demo apps to showcase Meta Llama3 for WhatsApp &amp; Messenger.<!-- raw HTML omitted --><!-- raw HTML omitted --> <!-- raw HTML omitted -->GitHub<!-- raw HTML omitted -->. Truy cập ngày: 22 tháng 8 năm 2024.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->microsoft/LoRA: Code for loralib, an implementation of &ldquo;LoRA: Low-Rank Adaptation of Large Language Models.&quot;<!-- raw HTML omitted --><!-- raw HTML omitted --> <!-- raw HTML omitted -->GitHub<!-- raw HTML omitted --> - Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang và Weizhu Chen*. Truy cập ngày: 22 tháng 8 năm 2024.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/samuellimabraz/peft-methods">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/jan-24/">Jan 24</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/e9f6f6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/ipGH8HHMSu49DthGP28XZZ5J8trwbBeVwbkxHoxipOBB1rLI_MRjUeU2zswaIkPgWKRHu5eJGZmUIQWidxCPJ2vVB0KUqy7NwCtLjxu9FU71B-rxcg=w1440-h1440-n-nu" alt="Bắt đầu xây dựng với Gemini 3" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bắt đầu xây dựng với Gemini 3</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/d47b56/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61b8e2ba285851687028d395/Rq3xWG7mJ3aCRoBsq340h.jpeg" alt="Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/32b0d2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/2KeyrGnSHkdmqbcNw5vNeL/cecc8af8a67e02395c663b22d9a19682/nuneybits_Vector_art_of_digital_film_reel_63eee9bf-9b4d-4d52-ae61-67717cda7a74.webp?w=1000&amp;q=100" alt="Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

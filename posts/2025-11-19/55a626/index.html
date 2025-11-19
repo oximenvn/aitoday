@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kiến trúc thử nghiệm chuyển văn bản thành hình ảnh | AI Today - SkyAI</title>
+
+<meta name="description" content="Các thử nghiệm kiến trúc chuyển văn bản thành hình ảnh">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Kiến trúc thử nghiệm chuyển văn bản thành hình ảnh</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Các thử nghiệm kiến trúc chuyển văn bản thành hình ảnh </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-19T00:00:00&#43;00:00">November 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            22 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1608816711384-5fe497b773152f333e959e6f.png" alt="Kiến trúc thử nghiệm chuyển văn bản thành hình ảnh">
+        <figcaption class="text-center italic text-xs">Các thử nghiệm kiến trúc chuyển văn bản thành hình ảnh</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="thử-nghiệm-kiến-trúc-văn-bản-sang-hình-ảnh">Thử nghiệm Kiến trúc Văn bản sang Hình ảnh</h1>
+<p>Trong bài đăng đầu tiên của loạt bài này, chúng tôi đã giới thiệu dự án của mình: huấn luyện một mô hình nền tảng văn bản sang hình ảnh hoàn toàn từ đầu và thực hiện hoàn toàn công khai. Chúng tôi đã nêu bật các mục tiêu của mình, chia sẻ các thử nghiệm ban đầu và cung cấp cái nhìn đầu tiên về các kỹ thuật và ý tưởng định hình cách tiếp cận của chúng tôi.</p>
+<p>Phần thứ hai này đánh dấu sự khởi đầu của các phân tích kỹ thuật chuyên sâu của chúng tôi, bắt đầu với nền tảng của mô hình: kiến trúc của nó. Trong vài tháng qua, chúng tôi đã khám phá và kiểm tra hiệu suất của nhiều lựa chọn thiết kế khác nhau, từ các kiến trúc nền tảng dựa trên transformer đã được thiết lập cho đến các biến thể tùy chỉnh của riêng chúng tôi, để hiểu rõ hơn về cách mỗi lựa chọn ảnh hưởng đến hiệu suất, khả năng mở rộng và hiệu quả.</p>
+<p>Ở đây, chúng tôi trình bày những gì chúng tôi đã thử, những gì chúng tôi đã học được và cách các thử nghiệm này đã định hình nền tảng cho mô hình hiện tại của chúng tôi. Đây là phần đầu tiên trong loạt cập nhật chuyên sâu, khi chúng tôi tiếp tục tinh chỉnh, huấn luyện và mã nguồn mở từng phần của quy trình.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/YoXda368g_Fgoyzl1vITJ.gif" alt="Sự tiến hóa của hình ảnh được tạo ra qua 100K bước đầu tiên">
+<img src="https://cdn-uploads.co/production/uploads/68e529af513e724edd8702f6/967armqSCimp5SCAZzJFa.gif" alt="Sự tiến hóa của hình ảnh được tạo ra qua 100K bước đầu tiên">
+<img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/-9neV2zcKwZNH2vGiDA76.gif" alt="Sự tiến hóa của hình ảnh được tạo ra qua 100K bước đầu tiên">
+<img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/owid0DYt0Etxsh-f8kp5V.gif" alt="Sự tiến hóa của hình ảnh được tạo ra qua 100K bước đầu tiên">
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Hình:<!-- raw HTML omitted --> Sự tiến hóa của hình ảnh được tạo ra qua 100K bước đầu tiên.<!-- raw HTML omitted --></p>
+<h2 id="nhắc-lại-về-khớp-dòng-và-lan-tỏa-tức-thời">Nhắc lại về Khớp Dòng và Lan tỏa Tức thời</h2>
+<p>Để cung cấp bối cảnh cho các so sánh kiến trúc theo sau, chúng tôi tóm tắt ngắn gọn khuôn khổ <!-- raw HTML omitted -->khớp dòng đã được điều chỉnh<!-- raw HTML omitted --> được sử dụng để huấn luyện tất cả các mô hình của chúng tôi.</p>
+<p>Khuôn khổ sinh tạo của chúng tôi được xây dựng dựa trên <!-- raw HTML omitted -->khớp dòng<!-- raw HTML omitted --> (Lipman et al., 2022), một công thức xác định học một phép biến đổi thời gian liên tục giữa một phân phối ưu tiên đơn giản và phân phối dữ liệu mục tiêu. Trái ngược với các mô hình lan tỏa, mô phỏng các quỹ đạo ngẫu nhiên thông qua nhiễu và quá trình khử nhiễu, khớp dòng học một <!-- raw HTML omitted -->trường vận tốc xác định<!-- raw HTML omitted --> trực tiếp mô tả cách các mẫu tiến hóa từ nhiễu sang dữ liệu theo thời gian.</p>
+<p>Về mặt hình thức, chúng tôi định nghĩa một họ các phân phối trung gian liên tục $p_t$ cho $t \in [0, 1]$, nội suy giữa một phân phối cơ sở $p_0$ (thường là nhiễu Gaussian) và phân phối dữ liệu $p_1$ (hình ảnh trong trường hợp của chúng tôi). Mục tiêu là học một trường vận tốc $v^\star_t(z_t)$ vận chuyển $p_0$ đến $p_1$ thông qua một phương trình vi phân thường:</p>
+<p>$ \frac{d z_t}{d t} = v_\theta(z_t, t), \quad \text{với} \quad z_0 \sim p_0, ; z_1 \sim p_1 $</p>
+<p>Mục tiêu huấn luyện là căn chỉnh vận tốc dự đoán $v_\theta(z_t, t)$ với dòng chảy thực tế $v^\star_t(z_t)$ bằng một hàm mất mát $\ell_2$:</p>
+<p>$ \mathcal{L}<em>{\text{FM}} = \mathbb{E}</em>{t, z_t} \left[ | v_\theta(z_t, t) - v_t^\star(z_t) |_2^2 \right] $</p>
+<p>Trong thực tế, chúng tôi áp dụng công thức <!-- raw HTML omitted -->dòng chảy được điều chỉnh<!-- raw HTML omitted --> (Liu et al., 2022), một biến thể đơn giản hóa của khớp dòng, trong đó các mẫu tuân theo <!-- raw HTML omitted -->đường vận chuyển tuyến tính<!-- raw HTML omitted --> giữa nhiễu và dữ liệu. Theo giả định này, trường dòng chảy tối ưu trở nên độc lập với thời gian và có thể được biểu diễn dưới dạng:</p>
+<p>$ v_t^\star(z_t) = z_1 - z_0 $</p>
+<p>Công thức điều chỉnh này loại bỏ nhu cầu mô hình hóa rõ ràng động lực học phụ thuộc vào thời gian trong khi vẫn giữ được bản chất xác định của quá trình vận chuyển. Mạng $v_\theta$ được huấn luyện để dự đoán trường vận tốc cố định này bằng hàm mất mát $\ell_2$:</p>
+<p>$ \mathcal{L}<em>{\text{RF}} = \mathbb{E}</em>{z_0, z_1, t} \left[ | v_\theta(z_t, t) - (z_1 - z_0) |_2^2 \right] $</p>
+<p>Điều này cung cấp một mục tiêu huấn luyện ổn định và hiệu quả về mặt tính toán, tránh các phương trình vi phân ngẫu nhiên và lịch trình nhiễu phức tạp trong khi vẫn giữ được sự linh hoạt sinh tạo của các phương pháp dựa trên lan tỏa.</p>
+<p>Để cải thiện hiệu quả tính toán, khớp dòng được thực hiện <!-- raw HTML omitted -->trong không gian tiềm ẩn<!-- raw HTML omitted --> thay vì trực tiếp trong không gian pixel. Với một hình ảnh $x \in \mathbb{R}^{H \times W \times 3}$, bộ mã hóa $\mathcal{E}$ ánh xạ nó tới một biểu diễn tiềm ẩn nhỏ gọn $z = \mathcal{E}(x)$, và bộ giải mã $\mathcal{D}$ tái tạo hình ảnh từ $z$, thực thi $\mathcal{D}(z) \approx x$. Biểu diễn tiềm ẩn này bảo tồn chất lượng cảm nhận trong khi giảm chiều, cho phép huấn luyện nhanh hơn và tiết kiệm bộ nhớ hơn.</p>
+<p>Cuối cùng, vì mục tiêu của chúng tôi là tạo ra <!-- raw HTML omitted -->văn bản sang hình ảnh<!-- raw HTML omitted -->, mô hình được điều kiện hóa bằng một lời nhắc văn bản. Một <!-- raw HTML omitted -->bộ mã hóa văn bản<!-- raw HTML omitted --> $f_\phi$ (ví dụ: T5 hoặc T5Gemma) ánh xạ một lời nhắc được mã hóa token $y$ thành một chuỗi các biểu diễn nhúng:</p>
+<p>$ c = f_\phi(y) $</p>
+<p>Những biểu diễn nhúng này đóng vai trò là tín hiệu điều kiện hóa cho quá trình sinh tạo, hướng dẫn mô hình liên kết nội dung trực quan với ý nghĩa ngữ nghĩa của lời nhắc. Do đó, mạng hoàn chỉnh học một trường vận tốc có điều kiện $v_\theta(z_t, t, c)$, kết hợp hiệu quả của mô hình hóa không gian tiềm ẩn, tính xác định của dòng chảy được điều chỉnh và khả năng biểu đạt của điều kiện hóa dựa trên văn bản.</p>
+<h2 id="kiến-trúc">Kiến trúc</h2>
+<p>Chúng tôi đã đánh giá một loạt các <!-- raw HTML omitted -->kiến trúc dựa trên transformer<!-- raw HTML omitted --> — bao gồm <!-- raw HTML omitted -->DiT<!-- raw HTML omitted -->, <!-- raw HTML omitted -->MMDiT<!-- raw HTML omitted -->, <!-- raw HTML omitted -->DiT-Air<!-- raw HTML omitted -->, <!-- raw HTML omitted -->UViT<!-- raw HTML omitted --> và thiết kế tùy chỉnh của riêng chúng tôi <!-- raw HTML omitted -->PRX<!-- raw HTML omitted --> — để nghiên cứu cách các lựa chọn cấu trúc ảnh hưởng đến hiệu suất trong các điều kiện huấn luyện tương đương.</p>
+<p>Thay vì nhắm đến mô hình lớn nhất hoặc biểu cảm nhất, mục tiêu của chúng tôi là xác định <!-- raw HTML omitted -->nguyên tắc kiến trúc nào mang lại sự cân bằng tốt nhất<!-- raw HTML omitted --> giữa hiệu quả, ổn định và sự liên kết văn bản-hình ảnh.</p>
+<p>Các phần sau đây giới thiệu ngắn gọn từng kiến trúc, phác thảo các ý tưởng thiết kế chính của chúng và động lực đằng sau chúng.</p>
+<h3 id="dit-peebles--xie-2022">DiT (Peebles &amp; Xie, 2022)</h3>
+<p><!-- raw HTML omitted -->Diffusion Transformer (DiT)<!-- raw HTML omitted --> là kiến trúc đầu tiên sử dụng các khối Transformer cho việc tạo ảnh trong các mô hình lan tỏa. Ban đầu được giới thiệu cho việc tạo điều kiện theo lớp, nó sau đó đã được mở rộng để tổng hợp văn bản sang hình ảnh, thiết lập nền tảng mà nhiều mô hình tiếp theo đã được xây dựng.</p>
+<p>Trong các thử nghiệm của chúng tôi, chúng tôi tuân theo biến thể <!-- raw HTML omitted -->PixArt-α<!-- raw HTML omitted --> (Chen et al., 2023), bổ sung DiT với <!-- raw HTML omitted -->cơ chế chú ý chéo<!-- raw HTML omitted --> được chèn giữa các lớp chú ý tự thân và truyền thẳng. Thiết kế này cho phép kết hợp trực tiếp hơn các đặc trưng hình ảnh và văn bản, cải thiện sự liên kết giữa các hình ảnh được tạo ra và các lời nhắc điều kiện hóa.</p>
+<p>PixArt-α cũng giới thiệu một chiến lược chuẩn hóa tinh chỉnh bằng cách sử dụng một cấu hình <!-- raw HTML omitted -->Adaptive LayerNorm (AdaLN)<!-- raw HTML omitted --> duy nhất được chia sẻ. Thay vì duy trì các tham số chuẩn hóa thích ứng riêng biệt trong mỗi khối, như trong DiT gốc, một bộ tham số tỷ lệ và dịch chuyển toàn cục duy nhất được dẫn xuất từ nhúng thời gian và được chia sẻ trên các lớp. Điều này giảm sự dư thừa và tổng số tham số trong khi vẫn giữ được sự linh hoạt thông qua các nhúng nhẹ, theo từng khối.</p>
+<p>Mặc dù các kiến trúc gần đây hơn đã vượt trội DiT về hiệu quả và khả năng biểu đạt, nó vẫn là một đường cơ sở mạnh mẽ và được áp dụng rộng rãi, được đánh giá cao vì sự đơn giản và khả năng mở rộng của nó. Nhiều hệ thống văn bản sang hình ảnh hiện đại, bao gồm cả <!-- raw HTML omitted -->Wan<!-- raw HTML omitted --> (Wang et al., 2025), vẫn dựa vào các kiến trúc nền tảng lấy cảm hứng từ DiT.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/_18QvwAIDc8Kg30XqUoF8.png" alt="Khối DiT PixArt-α">
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Hình:<!-- raw HTML omitted --> Khối DiT PixArt-α (hình ảnh từ arXiv:2503.10618)<!-- raw HTML omitted --></p>
+<h3 id="mmdit-esser-et-al-2024">MMDiT (Esser et al., 2024)</h3>
+<p><!-- raw HTML omitted -->Multimodal Diffusion Transformer (MMDiT)<!-- raw HTML omitted -->, được giới thiệu như một phần của <!-- raw HTML omitted -->Stable Diffusion 3<!-- raw HTML omitted -->, mở rộng họ DiT với <!-- raw HTML omitted -->kiến trúc luồng kép<!-- raw HTML omitted --> xử lý đồng thời các token văn bản và hình ảnh trong một khuôn khổ Transformer chung.</p>
+<p>Không giống như PixArt-α, nơi điều kiện văn bản được tiêm qua chú ý chéo vào một kiến trúc nền tảng chỉ hình ảnh, MMDiT duy trì hai luồng token song song — một cho văn bản và một cho đặc trưng hình ảnh — trong toàn bộ mạng. Mỗi luồng có các lớp chuẩn hóa, điều biến và truyền thẳng riêng, nhưng chúng <!-- raw HTML omitted -->chia sẻ cơ chế chú ý chung<!-- raw HTML omitted --> cho phép giao tiếp hai chiều hoàn toàn giữa các phương thức.</p>
+<p>Trong quá trình tính toán chú ý, truy vấn, khóa và giá trị được rút ra từ cả token văn bản và hình ảnh, cho phép mỗi phương thức chú ý đến phương thức kia. Mỗi luồng giữ lại các tham số <!-- raw HTML omitted -->AdaLN<!-- raw HTML omitted --> riêng, được điều biến bằng các nhúng thời gian và phương thức để đảm bảo điều kiện lan tỏa nhất quán trên các miền.</p>
+<p>Thiết kế này cho phép MMDiT nắm bắt các phụ thuộc đa phương thức rõ ràng hơn so với các kiến trúc đơn luồng, mặc dù với chi phí bộ nhớ và tính toán cao hơn.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/sZkWauckbKaCDD4ml1-1X.png" alt="Khối MMDiT">
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Hình:<!-- raw HTML omitted --> Khối MMDiT (hình ảnh từ arXiv:2503.10618)<!-- raw HTML omitted --></p>
+<h3 id="dit-air-li-et-al-2025">DiT-Air (Li et al., 2025)</h3>
+<p><!-- raw HTML omitted -->DiT-Air<!-- raw HTML omitted --> là một <!-- raw HTML omitted -->kiến trúc lai<!-- raw HTML omitted --> thu hẹp khoảng cách giữa DiT và MMDiT, kết hợp sự đơn giản của Transformer đơn luồng với khả năng tương tác đa phương thức biểu cảm của thiết kế luồng kép.</p>
+<p>Không giống như MMDiT, duy trì các luồng riêng biệt cho token văn bản và hình ảnh giao tiếp thông qua chú ý chung, DiT-Air hoạt động trên một <!-- raw HTML omitted -->chuỗi token thống nhất<!-- raw HTML omitted -->, nơi cả hai phương thức cùng tồn tại trong một luồng duy nhất. Nó giữ lại cơ chế <!-- raw HTML omitted -->AdaLN<!-- raw HTML omitted --> từ DiT, đảm bảo thông tin thời gian và điều kiện hóa được tích hợp nhất quán trong toàn bộ mạng.</p>
+<p>Thiết kế này mang đến sự cân bằng thực tế giữa lý luận đa phương thức có cấu trúc của MMDiT và hiệu quả của DiT gốc. Bằng cách loại bỏ chi phí tính toán và bộ nhớ của các đường dẫn kép, DiT-Air đạt được sự liên kết văn bản-hình ảnh mạnh mẽ thông qua <!-- raw HTML omitted -->chú ý chung<!-- raw HTML omitted --> trong khi vẫn nhẹ và có khả năng mở rộng.</p>
+<p>Ở quy mô lớn, DiT-Air ngang bằng hoặc vượt trội hơn các kiến trúc lớn hơn trong khi sử dụng ít tham số hơn đáng kể — khoảng <!-- raw HTML omitted -->66% ít hơn MMDiT<!-- raw HTML omitted --> và <!-- raw HTML omitted -->25% ít hơn PixArt-α<!-- raw HTML omitted --> — làm cho nó trở thành một đường cơ sở mạnh mẽ cho các mô hình lan tỏa văn bản sang hình ảnh hiệu quả.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/ac8-OX6wGVbYj5mZcFYY1.png" alt="Khối DiT-Air">
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Hình:<!-- raw HTML omitted --> Khối DiT-Air (hình ảnh từ arXiv:2503.10618)<!-- raw HTML omitted --></p>
+<h3 id="u-vit-bao-et-al-2022">U-ViT (Bao et al., 2022)</h3>
+<p><!-- raw HTML omitted -->U-shaped Vision Transformer (U-ViT)<!-- raw HTML omitted --> áp dụng một bố cục gợi nhớ đến kiến trúc U-Net cổ điển nhưng được thực hiện hoàn toàn bằng các khối Transformer. Các ngăn xếp bộ mã hóa và bộ giải mã của nó được kết nối thông qua các <!-- raw HTML omitted -->kết nối bỏ qua<!-- raw HTML omitted --> dài, cho phép các đặc trưng không gian cấp thấp từ các lớp nông được nối và chiếu vào các lớp sâu hơn để cải thiện chất lượng tái tạo.</p>
+<p>Giống như DiT-Air, U-ViT hoạt động trên một <!-- raw HTML omitted -->chuỗi token thống nhất<!-- raw HTML omitted -->, nơi các token trực quan và điều kiện hóa được xử lý chung thông qua chú ý tự thân. Tuy nhiên, nó loại bỏ hoàn toàn các cơ chế chuẩn hóa thích ứng — <!-- raw HTML omitted -->không có AdaLN hoặc điều biến theo lớp<!-- raw HTML omitted -->. Thay vào đó, thông tin điều kiện hóa như thời gian và nhúng văn bản được <!-- raw HTML omitted -->nối trực tiếp vào chuỗi token đầu vào<!-- raw HTML omitted -->, cho phép Transformer lý luận chung về các bản vá hình ảnh, token thời gian và token văn bản trong một không gian chú ý duy nhất.</p>
+<p>Thiết kế này làm cho U-ViT trở nên đơn giản và thanh lịch về mặt khái niệm, kết hợp <!-- raw HTML omitted -->mô hình hóa ngữ cảnh toàn cục<!-- raw HTML omitted --> của Transformer với <!-- raw HTML omitted -->cấu trúc phân cấp<!-- raw HTML omitted --> của kiến trúc bộ mã hóa-giải mã.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/WUtyn9v2GVFQ-PuFV7eNa.png" alt="Kiến trúc U-ViT">
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Hình:<!-- raw HTML omitted --> Kiến trúc U-ViT (hình ảnh từ arXiv:2209.12152)<!-- raw HTML omitted --></p>
+<h3 id="prx-photoroom-experimental">PRX (Photoroom eXperimental)</h3>
+<p>Để đánh giá các lựa chọn thiết kế thay thế, chúng tôi đã phát triển kiến trúc riêng của mình, <!-- raw HTML omitted -->PRX (Photoroom eXperimental)<!-- raw HTML omitted --> — một thiết kế lai kết hợp các tính năng của cả Transformer đơn luồng và luồng kép. PRX nhận <!-- raw HTML omitted -->cả token hình ảnh và văn bản<!-- raw HTML omitted --> làm đầu vào nhưng được thiết kế để chỉ xuất <!-- raw HTML omitted -->token hình ảnh<!-- raw HTML omitted -->, tập trung tính toán vào đường dẫn sinh tạo.</p>
+<p>Mỗi khối PRX nhận token văn bản trực tiếp từ bộ mã hóa văn bản, tương tự PixArt-α. Tuy nhiên, không giống như các thiết lập chú ý chéo hoặc luồng kép thông thường, PRX xử lý các token hình ảnh và văn bản <!-- raw HTML omitted -->một cách độc lập<!-- raw HTML omitted --> trước khi nối chúng cho hoạt động chú ý tự thân. Chú ý sau đó được tính toán <!-- raw HTML omitted -->chỉ cho các token hình ảnh<!-- raw HTML omitted -->, giảm cả chi phí tính toán và bộ nhớ.</p>
+<p>Thiết kế này tương tự với đường cơ sở <!-- raw HTML omitted -->chú ý tự thân DiT cạn<!-- raw HTML omitted --> được giới thiệu trong <!-- raw HTML omitted -->Exploring the Deep Fusion of Large Language Models and Diffusion Transformers for Text-to-Image Synthesis<!-- raw HTML omitted -->. Bằng cách tránh các cập nhật token văn bản rõ ràng, PRX thực hiện <!-- raw HTML omitted -->một hoạt động chú ý duy nhất<!-- raw HTML omitted --> (thay vì hai, như trong DiT tiêu chuẩn) và duy trì <!-- raw HTML omitted -->ma trận chú ý nhỏ hơn<!-- raw HTML omitted --> so với MMDiT, nơi chú ý đa phương thức tỷ lệ với tích của số lượng token văn bản và hình ảnh.</p>
+<p>Được thúc đẩy bởi quan sát rằng <!-- raw HTML omitted -->các token văn bản vẫn tĩnh trên các mốc thời gian lan tỏa<!-- raw HTML omitted -->, PRX bỏ qua điều biến mốc thời gian cho luồng văn bản. Vì các token văn bản không bị sửa đổi, chúng có thể được <!-- raw HTML omitted -->chiếu một lần tại thời điểm suy luận và lưu vào bộ nhớ đệm<!-- raw HTML omitted -->, loại bỏ các phép tính dư thừa ở mỗi bước và tăng tốc đáng kể quá trình sinh tạo.</p>
+<p>Thiết kế đơn giản nhưng hiệu quả này mang lại <!-- raw HTML omitted -->những cải tiến đáng kể về tốc độ và hiệu quả bộ nhớ<!-- raw HTML omitted --> so với cả DiT và MMDiT, trong khi vẫn duy trì sự liên kết văn bản-hình ảnh mạnh mẽ và chất lượng sinh tạo cạnh tranh.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/oIXGQQOMsLhueyuvLNvLV.png" alt="Khối PRX">
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Hình:<!-- raw HTML omitted --> Khối PRX.<!-- raw HTML omitted --></p>
+<h2 id="điểm-chuẩn-đánh-giá">Điểm chuẩn Đánh giá</h2>
+<p>Các tác giả của <!-- raw HTML omitted -->bài báo DiT-AIR (Li et al., 2025)<!-- raw HTML omitted --> đã chứng minh rằng hiệu quả kiến trúc và các xu hướng hiệu suất tương đối được quan sát ở <!-- raw HTML omitted -->quy mô nhỏ<!-- raw HTML omitted --> có thể <!-- raw HTML omitted -->dự đoán đáng tin cậy hành vi ở quy mô lớn<!-- raw HTML omitted -->.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/QkxSULBnKh4G1vFBwucGi.png" alt="Sơ đồ khối kiến trúc PRX">
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Hình:<!-- raw HTML omitted --> Sơ đồ kiến trúc khối PRX.<!-- raw HTML omitted --></p>
+<p>Dựa trên phát hiện này, chúng tôi đã thiết kế điểm chuẩn của mình để tuân theo nguyên tắc tương tự nhằm cho phép lặp lại nhanh chóng: hoạt động ở độ phân giải và kích thước mô hình thấp hơn, dự kiến rằng các kết quả quy mô thấp này vẫn đại diện cho các đối tác quy mô lớn của chúng.</p>
+<p>Tuy nhiên, không giống như nghiên cứu DiT-AIR, các so sánh của chúng tôi <!-- raw HTML omitted -->không được kiểm soát về số lượng tham số<!-- raw HTML omitted -->. Thay vào đó, chúng tôi cố định <!-- raw HTML omitted -->số lượng khối Transformer, đầu chú ý và các chiều ẩn<!-- raw HTML omitted --> trên tất cả các mô hình để đảm bảo so sánh chéo mô hình công bằng. Cách tiếp cận này cho phép chúng tôi cô lập đóng góp của cấu trúc kiến trúc — chẳng hạn như cấu hình luồng, chiến lược điều kiện hóa và thiết kế chuẩn hóa — mà không làm lẫn các hiệu ứng này với năng lực hoặc quy mô mô hình tổng thể.</p>
+<p>Sau đó, chúng tôi đã huấn luyện tất cả các mô hình với thiết lập thử nghiệm sau trên một tập dữ liệu tùy chỉnh gồm 1 triệu hình ảnh ở độ phân giải 256x256.</p>
+<ul>
+<li><!-- raw HTML omitted -->Kích thước lô:<!-- raw HTML omitted --> 256</li>
+<li><!-- raw HTML omitted -->Khối Transformer:<!-- raw HTML omitted --> 16</li>
+<li><!-- raw HTML omitted -->Đầu chú ý:<!-- raw HTML omitted --> 28</li>
+<li><!-- raw HTML omitted -->Chiều nhúng token:<!-- raw HTML omitted --> 1792</li>
+<li><!-- raw HTML omitted -->Không gian tiềm ẩn:<!-- raw HTML omitted --> Flux VAE với 16 kênh tiềm ẩn và hệ số nén ×8</li>
+<li><!-- raw HTML omitted -->Bộ mã hóa văn bản:<!-- raw HTML omitted --> GemmaT5</li>
+<li><!-- raw HTML omitted -->Mã hóa vị trí:<!-- raw HTML omitted --> Rotary (RoPE) cho tất cả các kiến trúc ngoại trừ U-ViT, sử dụng mã hóa vị trí 1D đã học</li>
+</ul>
+<p>Chúng tôi đã đánh giá tất cả các kiến trúc bằng cách sử dụng các tiêu chí sau:</p>
+<ul>
+<li><!-- raw HTML omitted -->Mất mát tái tạo:<!-- raw HTML omitted --> Sai số bình phương trung bình (MSE) giữa các mẫu tái tạo và mục tiêu trên một tập đánh giá được giữ lại.</li>
+<li><!-- raw HTML omitted -->Frechet Inception Distance (FID):<!-- raw HTML omitted --> Đo lường sự tương tự giữa các phân phối của hình ảnh được tạo và hình ảnh thực bằng cách sử dụng thống kê đặc trưng của Inception v3. Giá trị thấp hơn cho thấy chất lượng hình ảnh cao hơn.</li>
+<li><!-- raw HTML omitted -->Clip- Maximum Mean Discrepancy (CMMD)<!-- raw HTML omitted --> Đánh giá khoảng cách giữa phân phối ảnh thực và ảnh tạo bằng cách sử dụng nhúng CLIP và một chỉ số Maximum Mean Discrepancy (MMD), cung cấp một giải pháp thay thế mạnh mẽ và hiệu quả về mẫu hơn cho FID, được cho là phù hợp hơn với nhận thức của con người.</li>
+<li><!-- raw HTML omitted -->Sử dụng bộ nhớ:<!-- raw HTML omitted --> Mức tiêu thụ bộ nhớ GPU đỉnh trong quá trình huấn luyện.</li>
+<li><!-- raw HTML omitted -->Thông lượng mạng:<!-- raw HTML omitted --> Số lượng mẫu trung bình được xử lý mỗi giây, đo lường hiệu quả tổng thể.</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Model</th>
+          <th style="text-align: left">Parameters</th>
+          <th style="text-align: left">MSE ⬇️</th>
+          <th style="text-align: left">FID ⬇️</th>
+          <th style="text-align: left">CMMD ⬇️</th>
+          <th style="text-align: left">Throughput ⬆️</th>
+          <th style="text-align: left">Memory ⬇️</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">DiT</td>
+          <td style="text-align: left">867M</td>
+          <td style="text-align: left">0.536</td>
+          <td style="text-align: left">14.02</td>
+          <td style="text-align: left">0.253</td>
+          <td style="text-align: left">1046.6</td>
+          <td style="text-align: left">27.2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">DiT-Air</td>
+          <td style="text-align: left">689M</td>
+          <td style="text-align: left">0.534</td>
+          <td style="text-align: left">13.16</td>
+          <td style="text-align: left">0.244</td>
+          <td style="text-align: left">972.5</td>
+          <td style="text-align: left">25.4</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">MMDiT</td>
+          <td style="text-align: left">3.1B</td>
+          <td style="text-align: left"><strong>0.53</strong></td>
+          <td style="text-align: left">13.81</td>
+          <td style="text-align: left"><strong>0.19</strong></td>
+          <td style="text-align: left">761.3</td>
+          <td style="text-align: left">54.3</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">PRX</td>
+          <td style="text-align: left">1.2B</td>
+          <td style="text-align: left"><strong>0.53</strong></td>
+          <td style="text-align: left"><strong>13.16</strong></td>
+          <td style="text-align: left">0.217</td>
+          <td style="text-align: left"><strong>1059.9</strong></td>
+          <td style="text-align: left"><strong>23.8</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">UViT</td>
+          <td style="text-align: left">696M</td>
+          <td style="text-align: left">0.535</td>
+          <td style="text-align: left">14.6</td>
+          <td style="text-align: left">0.239</td>
+          <td style="text-align: left">914.7</td>
+          <td style="text-align: left">25.2</td>
+      </tr>
+  </tbody>
+</table>
+<p>Nhìn chung, <!-- raw HTML omitted -->MMDiT<!-- raw HTML omitted --> đạt điểm tái tạo và CMMD tốt nhất, cho thấy hiệu suất sinh tạo mạnh mẽ, nhưng nó cũng là mô hình <!-- raw HTML omitted -->nặng nhất<!-- raw HTML omitted -->, đòi hỏi nhiều tham số và bộ nhớ GPU nhất, đồng thời thể hiện <!-- raw HTML omitted -->thông lượng thấp nhất<!-- raw HTML omitted -->.</p>
+<p><!-- raw HTML omitted -->DiT<!-- raw HTML omitted -->, <!-- raw HTML omitted -->DiT-Air<!-- raw HTML omitted --> và các biến thể <!-- raw HTML omitted -->U-ViT<!-- raw HTML omitted --> mang lại kết quả cạnh tranh trên các chỉ số nhưng vẫn hơi kém hơn về chất lượng hình ảnh, đặc biệt là về FID và CMMD, trong khi hiệu quả tổng thể hơn.</p>
+<p>Kiến trúc <!-- raw HTML omitted -->PRX<!-- raw HTML omitted --> được đề xuất của chúng tôi mang lại <!-- raw HTML omitted -->sự cân bằng tốt nhất<!-- raw HTML omitted -->, ngang bằng với chất lượng tái tạo của MMDiT trong khi vượt trội hơn về <!-- raw HTML omitted -->FID<!-- raw HTML omitted -->, <!-- raw HTML omitted -->thông lượng<!-- raw HTML omitted --> và <!-- raw HTML omitted -->hiệu quả bộ nhớ<!-- raw HTML omitted -->. Khả năng <!-- raw HTML omitted -->lưu trữ luồng văn bản trong quá trình suy luận<!-- raw HTML omitted --> càng củng cố PRX như một lựa chọn thực tế: nó giảm đáng kể chi phí tính toán và độ trễ, mang lại lợi thế rõ ràng cho việc triển khai trong thế giới thực ngay cả khi điểm CMMD của nó vẫn cao hơn một chút so với MMDiT.</p>
+<h2 id="bộ-mã-hóa-văn-bản-hướng-tới-t5gemma">Bộ mã hóa văn bản: Hướng tới T5Gemma</h2>
+<p>Bộ mã hóa văn bản đóng vai trò trung tâm trong các mô hình văn bản sang hình ảnh, hoạt động như cầu nối giữa hiểu biết ngôn ngữ tự nhiên và sinh tạo trực quan. Chất lượng và cấu trúc của biểu diễn văn bản trực tiếp ảnh hưởng đến cách mô hình nắm bắt ngữ nghĩa và thành phần trong các hình ảnh được tạo ra.</p>
+<p>Theo truyền thống, hầu hết các kiến trúc T2I dựa trên lan tỏa — chẳng hạn như Flux hoặc Stable Diffusion 3 — đã dựa vào <!-- raw HTML omitted -->T5<!-- raw HTML omitted --> (Raffel et al., 2020), một <!-- raw HTML omitted -->Transformer bộ mã hóa-giải mã<!-- raw HTML omitted --> cổ điển được huấn luyện theo mô hình văn bản-văn bản. Biến thể lớn nhất được sử dụng rộng rãi, <!-- raw HTML omitted -->T5-XXL<!-- raw HTML omitted -->, chứa khoảng <!-- raw HTML omitted -->11 tỷ tham số<!-- raw HTML omitted --> và tạo ra các biểu diễn nhúng có chiều <!-- raw HTML omitted -->4096<!-- raw HTML omitted -->. Nhờ khả năng hiểu ngữ cảnh mạnh mẽ và chú ý hai chiều, T5 từ lâu đã đóng vai trò là kiến trúc nền tảng cho điều kiện hóa văn bản trong các mô hình lan tỏa.</p>
+<p>Tuy nhiên, các công trình gần đây đã chứng kiến sự chuyển dịch sang <!-- raw HTML omitted -->bộ mã hóa dựa trên LLM<!-- raw HTML omitted -->, cung cấp các biểu diễn nhúng phong phú hơn, có cơ sở ngữ nghĩa hơn. Trong số này, <!-- raw HTML omitted -->T5Gemma<!-- raw HTML omitted --> nổi bật như một mô hình bộ mã hóa-giải mã hiện đại có nguồn gốc từ họ <!-- raw HTML omitted -->Gemma 2<!-- raw HTML omitted -->. Nó được xây dựng thông qua một quy trình điều chỉnh chuyển đổi các LLM chỉ bộ giải mã được huấn luyện trước thành kiến trúc bộ mã hóa-giải mã, cho phép T5Gemma thừa hưởng chiều sâu biểu diễn của Gemma trong khi vẫn giữ được khả năng lý luận hai chiều của T5.</p>
+<p>Chúng tôi đã đánh giá <!-- raw HTML omitted -->T5Gemma<!-- raw HTML omitted --> như một giải pháp thay thế trực tiếp cho T5 trong quy trình văn bản sang hình ảnh của chúng tôi và quan sát thấy một số lợi thế:</p>
+<ul>
+<li><!-- raw HTML omitted -->Ít tham số hơn<!-- raw HTML omitted --> (≈2 tỷ so với 11 tỷ cho T5-XXL).</li>
+<li><!-- raw HTML omitted -->Chiều nhúng nhỏ hơn<!-- raw HTML omitted --> (2304 so với 4096), giảm chi phí bộ nhớ và tính toán.</li>
+<li><!-- raw HTML omitted -->Mất mát đánh giá được cải thiện<!-- raw HTML omitted -->, cho thấy các biểu diễn nhúng văn bản cung cấp nhiều thông tin hơn và được căn chỉnh tốt hơn.</li>
+<li><!-- raw HTML omitted -->Khả năng đa ngôn ngữ<!-- raw HTML omitted -->, được kế thừa từ mô hình nền tảng Gemma 2, cho phép tạo ảnh từ các lời nhắc bằng nhiều ngôn ngữ mà không cần điều chỉnh thêm.</li>
+</ul>
+<p>Với những lợi thế này, chúng tôi đã áp dụng <!-- raw HTML omitted -->T5Gemma 2B<!-- raw HTML omitted --> làm bộ mã hóa văn bản cho các mô hình sắp tới của chúng tôi, cải thiện hiệu quả, khả năng mở rộng và hỗ trợ đa ngôn ngữ trong các lần lặp lại trong tương lai.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/MQfpxaEJxVvziBkfnT5Zq.png" alt="Thế hệ đa ngôn ngữ với PRX và T5Gemma"></p>
+<!-- raw HTML omitted -->
+<h2 id="không-gian-tiềm-ẩn-và-bộ-mã-hóa-tự-động">Không gian tiềm ẩn và Bộ mã hóa tự động</h2>
+<p>Lựa chọn biểu diễn tiềm ẩn có ảnh hưởng lớn đến cả hiệu quả huấn luyện và chất lượng sinh tạo. Trong các thử nghiệm của chúng tôi, chúng tôi đã sử dụng <!-- raw HTML omitted -->FluxVAE<!-- raw HTML omitted -->, tại thời điểm thử nghiệm đã mang lại sự cân bằng tốt nhất giữa chất lượng tái tạo và tốc độ tính toán. Sự ổn định và khả năng tương thích của nó với các kiến trúc lan tỏa dựa trên Transformer đã làm cho nó trở thành lựa chọn đầu tiên tự nhiên cho các lần lặp lại ban đầu của chúng tôi.</p>
+<p>Song song đó, chúng tôi cũng đã huấn luyện các phiên bản mô hình PRX của chúng tôi bằng cách sử dụng <!-- raw HTML omitted -->Bộ mã hóa tự động nén sâu (DC-AE)<!-- raw HTML omitted -->, được phát triển bởi phòng thí nghiệm Han tại MIT (Chen et al., 2024). DC-AE được thiết kế để học các không gian tiềm ẩn nhỏ gọn nhưng biểu cảm bằng cách áp dụng <!-- raw HTML omitted -->nén có cấu trúc<!-- raw HTML omitted --> cả trong các chiều kênh và không gian. Điều này cho phép bộ mã hóa tự động mã hóa hình ảnh thành các tensor tiềm ẩn nhỏ hơn nhiều trong khi vẫn bảo tồn chất lượng cảm nhận.</p>
+<p>Trong khi FluxVAE hoạt động ở tỷ lệ nén không gian <!-- raw HTML omitted -->×8<!-- raw HTML omitted --> điển hình, DC-AE đạt được tỷ lệ <!-- raw HTML omitted -->nén ×32<!-- raw HTML omitted --> mà không làm giảm đáng kể khả năng biểu cảm hoặc độ trung thực trực quan. Điều này làm giảm đáng kể độ phân giải không gian của không gian tiềm ẩn, cải thiện cả <!-- raw HTML omitted -->thông lượng huấn luyện<!-- raw HTML omitted --> và <!-- raw HTML omitted -->hiệu quả bộ nhớ<!-- raw HTML omitted -->, đặc biệt đối với các mô hình lan tỏa độ phân giải cao.</p>
+<p>Với những lợi thế này, chúng tôi đã <!-- raw HTML omitted -->phát hành các điểm kiểm tra PRX được huấn luyện với nhúng DC-AE<!-- raw HTML omitted -->, cho phép cộng đồng khám phá một thiết lập nhanh hơn và nhẹ hơn để huấn luyện văn bản sang hình ảnh quy mô lớn.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/68e529af513e724edd8702f6/CT05hCI4r-TPfO7Gh2qQB.png" alt="Hình ảnh được tạo bằng PRX và Bộ mã hóa tự động nén sâu">
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --><!-- raw HTML omitted -->Hình:<!-- raw HTML omitted --> Hình ảnh được tạo bằng PRX và Bộ mã hóa tự động nén sâu.<!-- raw HTML omitted --></p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Bài đăng này đánh dấu <!-- raw HTML omitted -->chương kỹ thuật đầu tiên<!-- raw HTML omitted --> trong hành trình mã nguồn mở của chúng tôi nhằm xây dựng một mô hình nền tảng văn bản sang hình ảnh mới từ đầu. Chúng tôi đã chia sẻ các lựa chọn kiến trúc chính đằng sau các thử nghiệm của mình — từ các kiến trúc nền tảng Transformer, bộ mã hóa văn bản đến bộ mã hóa tự động và biểu diễn tiềm ẩn — tạo nền tảng cho các mô hình chúng tôi đang phát hành ngày hôm nay.</p>
+<p>Tại thời điểm này, chúng tôi vẫn đang <!-- raw HTML omitted -->tích cực lặp lại<!-- raw HTML omitted --> cách tiếp cận của mình. Các điểm kiểm tra được phát hành hiện tại tương ứng với <!-- raw HTML omitted -->các mô hình PRX tham số 1.2 tỷ quy mô nhỏ<!-- raw HTML omitted -->, được thiết kế để xác thực các thử nghiệm kiến trúc của chúng tôi. Các phiên bản quy mô lớn hơn đã được lên kế hoạch nhưng <!-- raw HTML omitted -->chưa bắt đầu huấn luyện<!-- raw HTML omitted --> khi chúng tôi tiếp tục tinh chỉnh các lựa chọn thiết kế và tối ưu hóa đường dẫn huấn luyện của mình.</p>
+<p>Trong <!-- raw HTML omitted -->phần tiếp theo của loạt bài này<!-- raw HTML omitted -->, chúng tôi sẽ khám phá <!-- raw HTML omitted -->các kỹ thuật huấn luyện<!-- raw HTML omitted --> của chúng tôi — cách chúng tôi tối ưu hóa việc huấn luyện quy mô lớn về tốc độ và sự ổn định, các phương pháp chúng tôi sử dụng để tăng tốc độ hội tụ và những bài học chúng tôi đã rút ra trên đường đi.</p>
+<p>Các mô hình <!-- raw HTML omitted -->PRX<!-- raw HTML omitted --> của chúng tôi đã có sẵn trên <!-- raw HTML omitted -->🤗 Hugging Face Diffusers<!-- raw HTML omitted -->, và bạn có thể dùng thử chúng trực tiếp thông qua <!-- raw HTML omitted -->bản demo tương tác<!-- raw HTML omitted --> của chúng tôi:</p>
+<p>👉 <!-- raw HTML omitted -->Dùng thử demo PRX<!-- raw HTML omitted --></p>
+<p>Chúng tôi rất hào hứng khi thấy cộng đồng thử nghiệm và xây dựng dựa trên PRX.</p>
+<hr>
+<h3 id="quan-tâm-đến-việc-đóng-góp">Quan tâm đến việc đóng góp?</h3>
+<p>Chúng tôi đã thiết lập một <!-- raw HTML omitted -->máy chủ Discord<!-- raw HTML omitted --> để cập nhật thường xuyên và thảo luận mở với cộng đồng.<!-- raw HTML omitted -->Hãy tham gia nếu bạn muốn theo dõi tiến trình chặt chẽ hơn, chia sẻ phản hồi hoặc đóng góp cho dự án.</p>
+<p>Chúng tôi nóng lòng muốn xem cộng đồng sẽ xây dựng những gì với nó.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/Photoroom/prx-part1-architectures">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/6-days-ago/">6 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/0c5745/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/65ff7616871b36bf84150cda/mBg2Z4Vcdt5bkjxbYJFej.png" alt="Tham gia Cuộc thi Lập trình Robot Mở AMD" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Tham gia Cuộc thi Lập trình Robot Mở AMD</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tham gia Cuộc thi Lập trình Robot Mở AMD</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/e9f6f6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/ipGH8HHMSu49DthGP28XZZ5J8trwbBeVwbkxHoxipOBB1rLI_MRjUeU2zswaIkPgWKRHu5eJGZmUIQWidxCPJ2vVB0KUqy7NwCtLjxu9FU71B-rxcg=w1440-h1440-n-nu" alt="Bắt đầu xây dựng với Gemini 3" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bắt đầu xây dựng với Gemini 3</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/d47b56/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61b8e2ba285851687028d395/Rq3xWG7mJ3aCRoBsq340h.jpeg" alt="Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/32b0d2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/2KeyrGnSHkdmqbcNw5vNeL/cecc8af8a67e02395c663b22d9a19682/nuneybits_Vector_art_of_digital_film_reel_63eee9bf-9b4d-4d52-ae61-67717cda7a74.webp?w=1000&amp;q=100" alt="Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

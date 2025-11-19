@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trực quan hóa cách VLMs hoạt động | AI Today - SkyAI</title>
+
+<meta name="description" content="Trực quan hóa cách VLMs hoạt động">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Trực quan hóa cách VLMs hoạt động</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Trực quan hóa cách VLMs hoạt động </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-19T00:00:00&#43;00:00">November 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/6527e89a8808d80ccff88b7a/CuGNmF1Et8KMQ0mCd1NEJ.jpeg" alt="Trực quan hóa cách VLMs hoạt động">
+        <figcaption class="text-center italic text-xs">Trực quan hóa cách VLMs hoạt động</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="hình-dung-cách-các-mô-hình-ngôn-ngữ-thị-giác-vlm-hoạt-động">Hình dung cách các Mô hình Ngôn ngữ Thị giác (VLM) hoạt động</h1>
+<p>Đây là bài đăng blog của Hafedh Hichri trên Hugging Face.</p>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Các Mô hình Ngôn ngữ Thị giác (VLM) là các mô hình AI tự hồi quy xử lý cả văn bản và hình ảnh làm đầu vào. Trong bài đăng này, chúng ta sẽ xem xét kỹ cách các VLM như Idefics3 và SmolVLM hoạt động bên trong, khám phá cách chúng kết hợp thông tin thị giác và văn bản để tạo ra đầu ra mạch lạc.</p>
+<p>Chúng ta sẽ sử dụng HuggingFaceTB/SmolVLM-256M-Instruct làm mô hình tham chiếu trong bài đăng blog này.</p>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="bộ-xử-lý-processor">Bộ xử lý (Processor)</h2>
+<p>Bộ xử lý chuẩn bị dữ liệu văn bản và hình ảnh thành một định dạng thống nhất phù hợp cho mô hình. Đối với hình ảnh, nó thực hiện một chuỗi các phép biến đổi trước khi chuyển chúng thành các biểu diễn giống như token mà mô hình có thể hiểu được.</p>
+<p>Quy trình xử lý hình ảnh có thể được hình dung như sau:</p>
+<!-- raw HTML omitted -->
+<p>Một bước quan trọng trong quy trình này là <strong>chia nhỏ hình ảnh</strong>, như đã thấy trong đoạn mã sau. Mỗi hình ảnh được chia thành các phần nhỏ hơn (hoặc &ldquo;lát cắt&rdquo;), sau đó được mã hóa riêng lẻ.</p>
+<p>Khi văn bản đi kèm với hình ảnh, mỗi hình ảnh trước tiên được biểu diễn bằng một token <code>&lt;image&gt;</code> trong chuỗi văn bản. Tùy thuộc vào số lượng lát cắt, mỗi hình ảnh sau đó được mở rộng thành: $64 \times \text{số_lượng_lát cắt}$</p>
+<p>Hằng số <strong>64</strong> đến từ mối quan hệ:
+$$
+\frac{512^2 / 16^2}{4^2} = 64
+$$</p>
+<p>Chúng ta sẽ quay lại công thức này sau, nhưng hiện tại, hãy coi nó như sau:</p>
+<blockquote>
+<p><strong>Mỗi lát cắt hình ảnh được biểu diễn bằng 64 token.</strong></p></blockquote>
+<hr>
+<h3 id="bộ-xử-lý-văn-bản-text-processor">Bộ xử lý văn bản (Text Processor)</h3>
+<p>Khi hình ảnh được bao gồm, văn bản cũng phải phản ánh điều đó bằng cách sử dụng trình giữ chỗ <code>&lt;image&gt;</code>. Bộ xử lý thực hiện các bước sau:</p>
+<ol>
+<li><strong>Chèn trình giữ chỗ</strong> – Mỗi hình ảnh trong đầu vào được biểu diễn bằng một token <code>&lt;image&gt;</code> trong văn bản.</li>
+<li><strong>Đếm số lát cắt</strong> – Bộ xử lý xác định số lượng lát cắt mà mỗi hình ảnh có sau khi tiền xử lý.</li>
+<li><strong>Mở rộng token</strong> – Mỗi token <code>&lt;image&gt;</code> sau đó được thay thế (hoặc &ldquo;mở rộng&rdquo;) thành một chuỗi dựa trên số lượng lát cắt hình ảnh, theo công thức dưới đây.</li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> PIL <span style="color:#f92672">import</span> Image
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoProcessor, AutoModelForVision2Seq
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers.image_utils <span style="color:#f92672">import</span> load_image
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Khởi tạo bộ xử lý và mô hình</span>
+</span></span><span style="display:flex;"><span>processor <span style="color:#f92672">=</span> AutoProcessor<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;HuggingFaceTB/SmolVLM-256M-Instruct&#34;</span>)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForVision2Seq<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;HuggingFaceTB/SmolVLM-256M-Instruct&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tải ảnh</span>
+</span></span><span style="display:flex;"><span>image <span style="color:#f92672">=</span> load_image(<span style="color:#e6db74">&#34;https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tạo tin nhắn đầu vào</span>
+</span></span><span style="display:flex;"><span>messages <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;content&#34;</span>: [
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;image&#34;</span>},
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;text&#34;</span>, <span style="color:#e6db74">&#34;text&#34;</span>: <span style="color:#e6db74">&#34;Can you describe this image?&#34;</span>}
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>prompt <span style="color:#f92672">=</span> processor<span style="color:#f92672">.</span>apply_chat_template(messages, add_generation_prompt<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> processor(text<span style="color:#f92672">=</span>prompt, images<span style="color:#f92672">=</span>[image], return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>out <span style="color:#f92672">=</span> processor<span style="color:#f92672">.</span>decode(inputs[<span style="color:#e6db74">&#34;input_ids&#34;</span>][<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(out<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;&lt;image&gt;&#34;</span>, <span style="color:#e6db74">&#34;.&#34;</span>)) <span style="color:#75715e"># in toàn bộ &lt;image&gt; sẽ làm màn hình bị nặng</span>
+</span></span></code></pre></div><pre tabindex="0"><code>&lt;|im_start|&gt;User:.&lt;row_1_col_1&gt;.................................................................&lt;row_1_col_2&gt;.................................................................&lt;row_1_col_3&gt;.................................................................&lt;row_1_col_4&gt;................................................................
+.&lt;row_2_col_1&gt;.................................................................&lt;row_2_col_2&gt;.................................................................&lt;row_2_col_3&gt;.................................................................&lt;row_2_col_4&gt;................................................................
+.&lt;row_3_col_1&gt;.................................................................&lt;row_3_col_2&gt;.................................................................&lt;row_3_col_3&gt;.................................................................&lt;row_3_col_4&gt;................................................................
+
+.&lt;global-img&gt;................................................................Can you describe this image?&lt;end_of_utterance&gt;
+Assistant:
+</code></pre><!-- raw HTML omitted -->
+<h2 id="chuẩn-bị-dữ-liệu-data-preparation">Chuẩn bị Dữ liệu (Data Preparation)</h2>
+<p>Trước khi được đưa vào mô hình, cả dữ liệu hình ảnh và văn bản đều được chuẩn bị và căn chỉnh.
+Giống như hầu hết các mô hình tự hồi quy, <strong>chuỗi đầu ra được dịch sang phải</strong> để dạy mô hình cách dự đoán token <em>tiếp theo</em> dựa trên tất cả các token trước đó.</p>
+<p>Tuy nhiên, vì các biểu diễn hình ảnh không thể dự đoán trực tiếp, chúng được che bằng token <code>&lt;pad&gt;</code>.
+Điều này ngăn mô hình tính toán tổn thất trên các token không phải văn bản (thị giác).</p>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="kiến-trúc-mô-hình-model-architecture">Kiến trúc Mô hình (Model Architecture)</h2>
+<h3 id="lớp-embedding-embedding-layer">Lớp Embedding (Embedding Layer)</h3>
+<p>Từ góc độ cấp cao, <strong>SmolVLM</strong> bao gồm năm thành phần chính (được minh họa ở bên phải).
+Việc xử lý văn bản bắt đầu với <strong>prompt</strong>, được token hóa và truyền qua <strong>lớp embedding</strong>. Lớp này biến đổi các token rời rạc thành các biểu diễn vector chiều cao, tạo ra một tensor có hình dạng:
+$$
+[\text{sequence_length}, 576]
+$$
+Tensor này giờ đây mã hóa biểu diễn vector của văn bản đầu vào và nó đóng vai trò là nền tảng cho tất cả các phép tính tiếp theo, lưu ý rằng tensor này đã có 13 token giữ chỗ $\times$ 64 cho hình ảnh được xử lý sắp tới (trong đó 13 là số lát cắt hình ảnh).</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<hr>
+<h3 id="mô-hình-thị-giác-vision-model">Mô hình Thị giác (Vision Model)</h3>
+<ul>
+<li>
+<p><strong>Embedding Patch (Patch Embedding)</strong></p>
+<p>Đối với nhánh thị giác, tensor đầu vào có hình dạng <code>[số\_lát\_cắt, số\_kênh, chiều\_cao, chiều\_rộng]</code>.
+Ví dụ, đối với một hình ảnh có thể được chia thành 13 lát cắt của hình ảnh RGB được biểu diễn dưới dạng <code>[13, 3, 512, 512]</code>.</p>
+<p><strong>Lớp patch embedding</strong> chuyển đổi tensor này thành một <strong>chuỗi các token thị giác</strong>, làm cho nó tương thích với kiến trúc Transformer.
+Nó thực hiện điều này bằng cách chia hình ảnh thành các patch nhỏ, không chồng chéo và chiếu từng patch vào một không gian vector chiều cao, nguyên tắc cốt lõi đằng sau điều này là điều chỉnh kênh RGB thành một chiều embedding và mở rộng 3 $\rightarrow$ 768.</p>
+<p>Hoạt động này được triển khai dưới dạng <strong>tích chập 2D</strong>, trong đó <code>kernel_size</code> và <code>stride</code> đều được đặt thành kích thước patch. Điều này đảm bảo mỗi cửa sổ tích chập xử lý một patch mà không bị chồng chéo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>self<span style="color:#f92672">.</span>patch_embedding <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Conv2d(
+</span></span><span style="display:flex;"><span>    in_channels<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>num_channels,  <span style="color:#75715e"># 3 (kênh RGB)</span>
+</span></span><span style="display:flex;"><span>    out_channels<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>embed_dim,      <span style="color:#75715e"># 768</span>
+</span></span><span style="display:flex;"><span>    kernel_size<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>patch_size,      <span style="color:#75715e"># 16</span>
+</span></span><span style="display:flex;"><span>    stride<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>patch_size,           <span style="color:#75715e"># 16</span>
+</span></span><span style="display:flex;"><span>    padding<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;valid&#34;</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Khi áp dụng cho <code>[13, 3, 512, 512]</code>, quá trình chuyển đổi diễn ra như sau:</p>
+<!-- raw HTML omitted -->
+<pre><code>	&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<p>Tensor kết quả <code>[13, 1024, 768]</code> biểu diễn mỗi hình ảnh dưới dạng một <strong>chuỗi gồm 1024 patch được nhúng</strong>, sẵn sàng để xử lý cùng với các embedding văn bản trong Transformer.</p>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>
+<p><strong>Bộ mã hóa vị trí (Positional Encoder)</strong></p>
+<p><strong>Bộ mã hóa vị trí</strong> đưa thông tin về thứ tự patch và bố cục không gian, giống như cách mã hóa vị trí hoạt động đối với các từ trong mô hình văn bản.
+Vì transformers không có ý thức về thứ tự vốn có, các mã hóa này cho phép mô hình hiểu <em>vị trí</em> của mỗi patch trong hình ảnh.</p>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>
+<p><strong>Bộ mã hóa (Encoder)</strong></p>
+<p><strong>Bộ mã hóa</strong> hoạt động một cách đơn giản:</p>
+<ul>
+<li>Lớp <strong>Attention Đa đầu (MHA)</strong> nắm bắt mối quan hệ giữa các patch hình ảnh, cho phép mô hình suy luận về sự phụ thuộc không gian.</li>
+<li>Sau đó, đầu ra được truyền qua <strong>mạng truyền tiếp (MLP)</strong> để tinh chỉnh và chiếu các đặc trưng.</li>
+</ul>
+<p>Việc triển khai attention này gần giống với cách BERT hoạt động. Điều quan trọng cần lưu ý là đầu ra của <strong>mô hình thị giác</strong> là <code>[13,1024,768]</code> với ví dụ đầu vào chúng ta đang sử dụng.</p>
+</li>
+</ul>
+<h3 id="bộ-kết-nối-connector">Bộ kết nối (Connector)</h3>
+<!-- raw HTML omitted -->
+<p><strong>Bộ kết nối</strong> đóng vai trò là cầu nối giữa <strong>bộ mã hóa thị giác</strong> và <strong>mô hình ngôn ngữ</strong>, đảm bảo cả hai phương thức đều chia sẻ không gian embedding tương thích.
+Hai chức năng chính của nó là:</p>
+<ul>
+<li><strong>Nén</strong> đầu ra thị giác (giảm số lượng token).</li>
+<li><strong>Chuyển đổi</strong> chiều embedding để khớp với embedding văn bản.</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>
+<p><strong>Hoán vị Pixel (Pixel Shuffle)</strong></p>
+<p>Hoạt động <strong>hoán vị pixel</strong> nén chiều không gian của các đặc trưng thị giác trong khi vẫn giữ nguyên các mối quan hệ không gian quan trọng.
+Trên thực tế, nó giảm số lượng token hình ảnh từ <strong>1024 $\rightarrow$ 64</strong>, làm giảm đáng kể độ dài chuỗi trong khi vẫn duy trì sự phong phú về biểu diễn.</p>
+<p>Quá trình chuyển đổi này diễn ra như sau:</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># (chiều cao và chiều rộng lát cắt)</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">→</span> [số_lát_cắt, H, W, C]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  (áp dụng phép biến đổi trên chiều rộng)</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">→</span>  [số_lát_cắt, H, W<span style="color:#f92672">/</span>scale, C<span style="color:#960050;background-color:#1e0010">×</span>scale]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  (hoán vị các chiều)</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">→</span> [số_lát_cắt, W<span style="color:#f92672">/</span>scale, H, C<span style="color:#960050;background-color:#1e0010">×</span>scale]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  (áp dụng phép biến đổi trên chiều cao)</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">→</span> [số_lát_cắt, W<span style="color:#f92672">/</span>scale, H<span style="color:#f92672">/</span>scale, C<span style="color:#960050;background-color:#1e0010">×</span>scale²]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (hoán vị lại các chiều)</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">→</span> [số_lát_cắt, H<span style="color:#f92672">/</span>scale, W<span style="color:#f92672">/</span>scale, C<span style="color:#960050;background-color:#1e0010">×</span>scale²]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># (hợp nhất chiều cao và chiều rộng)</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">→</span> [số_lát_cắt, (H<span style="color:#f92672">/</span>scale)<span style="color:#960050;background-color:#1e0010">×</span>(W<span style="color:#f92672">/</span>scale), C<span style="color:#960050;background-color:#1e0010">×</span>scale²]
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Bằng cách này, chúng ta nhận được một tensor đầu ra cuối cùng là:
+$$
+[\text{số_lát_cắt}, \text{H&rsquo;} / \text{scale} \times \text{W&rsquo;} / \text{scale}, \text{C} \times \text{scale}^2 ]
+$$
+kết quả là một chiều đầu ra bằng
+$$
+[13, 1024/4^2, 768 * 4^2] \rightarrow [13, 64, 12288]
+$$
+Bằng cách hoán vị và nhóm lại các pixel một cách có hệ thống, hoạt động này nén cả chiều cao và chiều rộng, đồng thời duy trì <strong>thứ tự không gian</strong> của thông tin thị giác theo mỗi hướng.
+Kết quả là một tensor nhỏ gọn hơn, bảo tồn các đặc điểm hình ảnh thiết yếu.</p>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>
+<p><strong>Chiếu xạ Modality (Modality Projection)</strong></p>
+<p>Bộ kết nối cũng áp dụng một <strong>lớp chiếu xạ_modality</strong>, là một phép biến đổi tuyến tính để khớp với <code>embedding_dimension</code> của các token văn bản. Bằng cách này, chúng ta nhận được
+$$
+[13, 64, 12288] \rightarrow [13, 64, 576]
+$$</p>
+</li>
+</ul>
+<h3 id="bộ-hợp-nhất-đầu-vào-input-merger">Bộ hợp nhất Đầu vào (Input Merger)</h3>
+<p><strong>Bộ hợp nhất đầu vào</strong> là một lớp không thể học được, và thực chất là một hàm chịu trách nhiệm tích hợp các embedding thị giác và văn bản vào một chuỗi đầu vào duy nhất.
+Nó <strong>thay thế mỗi token giữ chỗ <code>&lt;image&gt;</code></strong> trong chuỗi văn bản bằng các <strong>embedding thị giác tương ứng</strong> được tạo ra bởi bộ kết nối.</p>
+<p>Trên thực tế, bước này quét các ID token cho các token <code>&lt;image&gt;</code> và thay thế chúng bằng các biểu diễn hình ảnh đã được xử lý trước của chúng. Bước này hợp nhất hiệu quả cả hai phương thức thành một tensor liên tục có thể được đưa trực tiếp vào bộ giải mã.</p>
+<!-- raw HTML omitted -->
+<h3 id="bộ-giải-mã-decoder">Bộ giải mã (Decoder)</h3>
+<p><strong>Bộ giải mã</strong> hoạt động tương tự như bộ giải mã của một mô hình ngôn ngữ tự hồi quy truyền thống. Nó bao gồm các lớp <strong>Attention Đa đầu (MHA) bị che</strong> được xếp chồng lên nhau, theo sau là một <strong>đầu Mô hình Ngôn ngữ (LM)</strong>.</p>
+<ul>
+<li><strong>MHA Bị che</strong> đảm bảo rằng mỗi token chỉ có thể chú ý đến các token trước đó (bao gồm cả token thị giác), duy trì tính nhân quả trong quá trình tạo văn bản.</li>
+<li><strong>Đầu LM</strong> ánh xạ các trạng thái ẩn của bộ giải mã trở lại các logit từ vựng, cho phép mô hình dự đoán token tiếp theo.</li>
+</ul>
+<p>Điều này cho phép VLM tạo ra các đầu ra đa phương thức mạch lạc, liên kết các dự đoán văn bản với ngữ cảnh thị giác.</p>
+<p>Điều quan trọng cần ghi nhớ ở đây là vì chúng ta không có cách nào để xác định đầu ra cho các token hình ảnh, chúng ta sử dụng một token pad trong mục tiêu để bỏ qua việc tính toán tổn thất trên đó.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="kết-luận">Kết luận</h2>
+<p>Trong bài đăng này, chúng ta đã khám phá các chức năng bên trong của Mô hình Ngôn ngữ Thị giác (VLM) như <strong>SmolVLM</strong>, phân tích cách chúng xử lý và tích hợp dữ liệu đa phương thức từ pixel thô và văn bản đến các đầu ra mạch lạc, có căn cứ.</p>
+<p>Dưới đây là tóm tắt nhanh về từng giai đoạn:</p>
+<ul>
+<li><strong>Bộ xử lý:</strong> Chuẩn bị và căn chỉnh đầu vào văn bản và hình ảnh thô.</li>
+<li><strong>Mô hình Thị giác:</strong> Chuyển đổi dữ liệu pixel thành các embedding patch chiều cao.</li>
+<li><strong>Bộ kết nối:</strong> Nén và chiếu các đặc trưng thị giác vào cùng không gian embedding như token văn bản.</li>
+<li><strong>Bộ hợp nhất Đầu vào:</strong> Thay thế các token giữ chỗ bằng embedding thị giác để tạo thành một chuỗi đa phương thức thống nhất.</li>
+<li><strong>Bộ giải mã:</strong> Tạo văn bản theo ngữ cảnh bằng cách chú ý đến cả thông tin thị giác và văn bản.</li>
+</ul>
+<p>Về bản chất, VLM không chỉ nhìn và đọc, chúng <strong>suy luận trên các phương thức</strong>.
+Kiến trúc này cho phép chúng xử lý nhiều hình ảnh, prompt chỉ bằng văn bản hoặc thậm chí đầu vào chỉ bằng hình ảnh, làm cho SmolVLM trở thành một <strong>nền tảng linh hoạt và mạnh mẽ</strong> cho nhiều ứng dụng đa phương thức.</p>
+<hr>
+<h3 id="cộng-đồng">Cộng đồng</h3>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/not-lain/vlms">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/oct-7/">Oct 7</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/e9f6f6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/ipGH8HHMSu49DthGP28XZZ5J8trwbBeVwbkxHoxipOBB1rLI_MRjUeU2zswaIkPgWKRHu5eJGZmUIQWidxCPJ2vVB0KUqy7NwCtLjxu9FU71B-rxcg=w1440-h1440-n-nu" alt="Bắt đầu xây dựng với Gemini 3" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bắt đầu xây dựng với Gemini 3</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/d47b56/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61b8e2ba285851687028d395/Rq3xWG7mJ3aCRoBsq340h.jpeg" alt="Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/32b0d2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/2KeyrGnSHkdmqbcNw5vNeL/cecc8af8a67e02395c663b22d9a19682/nuneybits_Vector_art_of_digital_film_reel_63eee9bf-9b4d-4d52-ae61-67717cda7a74.webp?w=1000&amp;q=100" alt="Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

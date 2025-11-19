@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Đặc điểm không đồng nhất của sự chú ý dựa trên RoPE trong LLM ngữ cảnh dài | AI Today - SkyAI</title>
+
+<meta name="description" content="Đặc điểm không đồng nhất của sự chú ý dựa trên RoPE trong LLM ngữ cảnh dài">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Đặc điểm không đồng nhất của sự chú ý dựa trên RoPE trong LLM ngữ cảnh dài</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Đặc điểm không đồng nhất của sự chú ý dựa trên RoPE trong LLM ngữ cảnh dài </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-19T00:00:00&#43;00:00">November 19, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/avatars/51b93fea7fd68b4274ee03701245dcca.svg" alt="Đặc điểm không đồng nhất của sự chú ý dựa trên RoPE trong LLM ngữ cảnh dài">
+        <figcaption class="text-center italic text-xs">Đặc điểm không đồng nhất của sự chú ý dựa trên RoPE trong LLM ngữ cảnh dài</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="the-heterogeneous-feature-of-rope-based-attention-in-long-context-llms">The Heterogeneous Feature of RoPE-based Attention in Long-Context LLMs</h1>
+<p>This article is based on an oral presentation delivered on July 13 and 14, 2025, at the Joint Academic Workshop of HIT, THU, and FDU (held at Fudan University) and at the workshop of Shanghai Innovation Institute.</p>
+<p><strong>Tóm tắt nhanh:</strong> Trong bài trình bày này, chúng tôi giới thiệu về <em>hiện tượng đặc trưng không đồng nhất của Attention trong LLMs ngữ cảnh dài</em>, hiện tượng mà các thành phần attention theo các chiều qk khác nhau đóng vai trò khác nhau trong LLMs ngữ cảnh dài. Chúng tôi khám phá và giải thích sự không đồng nhất này từ góc độ RoPE, sau đó tận dụng nó để ngoại suy độ dài, tối ưu hóa bộ nhớ đệm và mô hình hóa video dài.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#introduction">Giới thiệu</a></li>
+<li><a href="#definition">Định nghĩa</a>
+<ul>
+<li><a href="#observation">Quan sát</a></li>
+<li><a href="#explanation">Giải thích</a></li>
+</ul>
+</li>
+<li><a href="#application">Ứng dụng</a>
+<ul>
+<li><a href="#length-extrapolation">Ngoại suy độ dài</a></li>
+<li><a href="#cache-optimization">Tối ưu hóa bộ nhớ đệm</a></li>
+<li><a href="#multi-modality">Đa phương thức</a></li>
+<li><a href="#diffusion-lm">Diffusion LM</a></li>
+</ul>
+</li>
+<li><a href="#conclusion">Kết luận</a></li>
+<li><a href="#citation">Trích dẫn</a></li>
+</ul>
+<hr>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Xin chào buổi chiều quý giáo sư và các bạn sinh viên. Tôi rất vinh dự được có mặt ở đây ngày hôm nay. Tôi là Xiaoran Liu, nghiên cứu sinh tiến sĩ tại FNLP. Chủ đề bài trình bày hôm nay của tôi là Đặc trưng không đồng nhất của Attention trong LLMs ngữ cảnh dài.</p>
+<p>Có hai từ khóa trong tiêu đề này. Từ khóa đầu tiên là <strong>ngữ cảnh dài</strong>. Xử lý ngữ cảnh dài từ lâu đã là một chủ đề quan trọng trong NLP. Từ góc độ lịch sử, việc theo đuổi độ dài ngữ cảnh dài hơn đã thúc đẩy sự phát triển của các kiến trúc mô hình: từ Bag-of-Words không có ngữ cảnh, đến CNN, RNN và LSTM với ngữ cảnh hạn chế, sau đó đến Transformers ngày nay, và thậm chí cả những đối thủ cạnh tranh gần đây như RWKV và Mamba. Việc theo đuổi ngữ cảnh dài hơn liên tục truyền cảm hứng cho các kiến trúc mới. Trong kỷ nguyên LLMs, ngữ cảnh dài luôn là một lợi thế cạnh tranh cốt lõi. LLMs đã mở rộng cửa sổ ngữ cảnh của chúng từ 2K token ban đầu lên hàng triệu token ngày nay.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/NEdxZn6N4Bw9qmx1xQXuX.png" alt="Image of context window evolution"></p>
+<p>Từ khóa thứ hai là attention, đặc biệt là <strong>điểm attention</strong>. Điểm attention đã là một hiểu biết quan trọng đằng sau nhiều công trình có ảnh hưởng trong nghiên cứu ngữ cảnh dài. Một ví dụ điển hình là StreamingLLM (ICLR’24), phát hiện ra rằng điểm attention của LLMs cho thấy các đỉnh đặc biệt mạnh mẽ xung quanh các token ban đầu và gần đây. Bằng cách duy trì sự chú ý vào hai phần này, LLM có thể duy trì hiệu suất ổn định khi xử lý các đầu vào dài. Công trình này đã được chấp nhận tại ICLR năm ngoái và có ảnh hưởng lớn. Dựa trên điều này, các tác giả cũng đã đề xuất một phương pháp tối ưu hóa bộ nhớ đệm, DuoAttention (ICLR'25), để duy trì hiệu suất truy xuất trong ngữ cảnh dài. Ngoài tối ưu hóa bộ nhớ đệm, điểm attention còn có thể được sử dụng để làm thưa động nhằm tăng tốc độ suy luận ngữ cảnh dài, chẳng hạn như Minference (NeurIPS’24 Spotlight).</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/gMrO5mDQ0QI4psz1_dB1e.png" alt="Image of attention score patterns"></p>
+<p>Tuy nhiên, các nghiên cứu này coi điểm attention như một thể thống nhất, thiếu phân tích về cách các chiều khác nhau của q và k đóng góp khác nhau vào điểm số tổng thể. Khoảng trống này đã được đề cập trong một số nghiên cứu rất gần đây, điều này cũng dẫn chúng ta đến trọng tâm của ngày hôm nay, <strong>đặc trưng không đồng nhất</strong>. Bài nói chuyện này sẽ tập trung vào việc khám phá và sử dụng các đặc trưng không đồng nhất, đồng thời giới thiệu các nghiên cứu liên quan về ngữ cảnh dài từ phòng thí nghiệm của chúng tôi.</p>
+<hr>
+<h2 id="định-nghĩa">Định nghĩa</h2>
+<p>Vậy, đặc trưng không đồng nhất là gì? <em><strong>Đặc trưng không đồng nhất</strong></em> đề cập đến hiện tượng mà các thành phần attention dọc theo các chiều qk khác nhau đóng vai trò khác nhau trong sự chú ý của LLMs ngữ cảnh dài. Dưới đây là hai ví dụ:</p>
+<h3 id="quan-sát">Quan sát</h3>
+<p>Đầu tiên, <em>từ góc độ truy xuất ngữ cảnh dài</em>, chúng ta biết rằng hầu hết điểm attention được phân bổ cho các token ban đầu và gần đây, như đã nêu trong StreamingLLM, và điểm attention là tổng của 128 tích qk theo từng phần tử trên các chiều. Nếu chúng ta chia tổng này, ví dụ, 70 chiều đầu tiên so với 58 chiều cuối cùng, chúng ta thấy rằng <em>các chiều thấp hơn chịu trách nhiệm cho điểm attention cao trên các token gần đây, và các chiều cao hơn chịu trách nhiệm cho điểm attention trên các token ban đầu</em>. Dựa trên điều này, nếu chúng ta thêm nhiễu vào 70 chiều đầu tiên, hiệu suất NIAH (Needle-In-A-Haystack) của LLMs hầu như không thay đổi. Nhưng nếu chúng ta thêm cùng một nhiễu vào 58 chiều cuối cùng, ngay cả khi chúng ít hơn, hiệu suất NIAH sẽ suy giảm đáng kể. Hiện tượng này được quan sát nhất quán trong cả mô hình LLaMA và Qwen.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/kmmFRhPBUZFQxUznUjgnl.png" alt="Image showing impact of noise on lower vs upper dimensions"></p>
+<p><em>Từ góc độ ngoại suy độ dài</em>, chúng ta kiểm tra cách các thành phần điểm attention từ các chiều thấp và cao dao động trong và vượt quá độ dài ngữ cảnh đã được huấn luyện của mô hình. Chúng ta thấy rằng <em>các chiều thấp hơn vẫn ổn định cho dù có ngoại suy hay không, trong khi các chiều cao hơn cho thấy sự dao động bất thường khi chỉ số token vượt quá độ dài ngữ cảnh tối đa được hỗ trợ</em>, và vị trí của những dao động này tương quan mạnh mẽ với nơi xảy ra sự tăng đột biến về perplexity. Do đó, chúng ta quan sát thấy các chiều qk thấp và cao thể hiện các đặc trưng không đồng nhất.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/HynmDtlBpLBrzbbisankq.png" alt="Image showing attention score fluctuations during extrapolation"></p>
+<h3 id="giải-thích">Giải thích</h3>
+<p>Vậy các đặc trưng không đồng nhất này đến từ đâu? Chúng tôi tin rằng nguồn gốc là Rotary Position Embedding (RoPE). Tại sao RoPE lại gây ra các đặc trưng không đồng nhất. Như đã biết, RoPE mã hóa thông tin vị trí bằng cách sử dụng các hàm sin hoặc cos với các góc xoay khác nhau, tức là tần số, trên các chiều qk. Cấu trúc này thừa hưởng hai đặc tính toán học của hàm hình sin: <strong>tính chu kỳ</strong> và <strong>tính đơn điệu</strong>.</p>
+<p>Các chiều thấp tương ứng với chu kỳ ngắn hoặc tần số cao, và quan sát thấy các chu kỳ hoàn chỉnh (thậm chí nhiều chu kỳ) trong quá trình tiền huấn luyện. Các chiều cao tương ứng với chu kỳ dài hoặc tần số thấp, và chỉ nhìn thấy một phần của chu kỳ (ví dụ: chỉ nửa dương) trong quá trình tiền huấn luyện. Ngoài ra, các chiều thấp có các khoảng đơn điệu ngắn, do đó các vị trí tương đối khác nhau có thể bị sụp đổ thành cùng một embedding, tương tự như va chạm băm. Các chiều cao có các khoảng đơn điệu dài, cho phép chúng duy trì thứ tự bộ phận tốt trên các ngữ cảnh dài và do đó nắm bắt các phụ thuộc ngữ nghĩa ngữ cảnh dài. Do đó, chúng ta có một kết luận có vẻ kỳ lạ nhưng thực sự hợp lý rằng, <em><strong>tính chu kỳ hạn chế khả năng ngoại suy của các chiều cao, trong khi tính đơn điệu làm cho các chiều cao chịu trách nhiệm mô hình hóa ngữ nghĩa ngữ cảnh dài</strong></em>.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/8wPLiMsRAdvpezTbvOMU4.png" alt="Image illustrating periodicity and monotonicity in RoPE"></p>
+<p>Để thay thế khái niệm mơ hồ về thấp và cao, chúng tôi đưa ra một định nghĩa toán học. Đó là chiều quan trọng. <strong>Chiều quan trọng</strong> là số lượng chiều mà RoPE hoàn thành một chu kỳ đầy đủ trong cửa sổ ngữ cảnh tiền huấn luyện. <em>Các chiều trước và sau chiều quan trọng tương ứng chính xác với các hành vi không đồng nhất đã mô tả trước đó</em>.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/3LJ2zsk7gIuXAhs1C-YI5.png" alt="Image defining critical dimension"></p>
+<hr>
+<h2 id="ứng-dụng">Ứng dụng</h2>
+<p>Sau đó, một câu hỏi đặt ra. Làm thế nào để tận dụng đặc trưng không đồng nhất?</p>
+<h3 id="ngoại-suy-độ-dài">Ngoại suy độ dài</h3>
+<p>Hầu hết các phương pháp mở rộng ngữ cảnh (ví dụ: dựa trên NTK) sửa đổi cơ sở xoay của RoPE. Sử dụng chiều quan trọng, chúng ta có thể ước tính độ dài ngữ cảnh có thể ngoại suy tối đa bằng cách tính toán khoảng cách mà chu kỳ của chiều quan trọng kéo dài sau khi thay đổi tỷ lệ. Như thể hiện trong công thức của chúng tôi, giới hạn ước tính này phù hợp với độ dài ngữ cảnh tối đa được hỗ trợ, cho phép chúng ta có <strong>quy luật thay đổi tỷ lệ cho ngoại suy dựa trên RoPE</strong> ( <a href="https://arxiv.org/abs/2310.05209">arXiv</a> ). Nghịch đảo công thức này cho chúng ta biết cần phải thay đổi tỷ lệ cơ sở xoay bao nhiêu để đạt được độ dài ngữ cảnh mong muốn, do đó cho phép ngữ cảnh hàng triệu token. Công trình này đã được chấp nhận tại ICLR’24.</p>
+<p>$$T_\text{extra} = \max\left(T_\text{tune}, 2\pi\cdot\beta^{\lceil\frac{2}{d}\log_{10000}{\frac{T_\text{train}}{2\pi}}\rceil\frac{2}{d}}\right),\quad \beta_\text{extra} = {10000}^{\log_{\frac{T_\text{Train}}{2\pi}}{\frac{T_\text{extra}}{2\pi}}}$$</p>
+<h3 id="tối-ưu-hóa-bộ-nhớ-đệm">Tối ưu hóa bộ nhớ đệm</h3>
+<p>Vì chỉ có số lượng chiều tương đối ít sau chiều quan trọng là quan trọng đối với ngữ cảnh dài, các chiều còn lại có thể được nén. Lấy cảm hứng từ framework HiPPO, chúng tôi đề xuất <strong>FourierAttention</strong> ( <a href="https://arxiv.org/abs/2506.11886">arXiv</a> , <a href="https://github.com/ShirleYoung/FourierAttention">Github</a> ), mở rộng các chiều không nhạy cảm với ngữ cảnh dài bằng một cơ sở có bậc cố định (Ở đây, chúng tôi chọn các hàm Fourier) và chỉ lưu trữ các hệ số mở rộng có kích thước cố định để biểu diễn bộ nhớ đệm KV dài tùy ý. Cơ sở Fourier hoạt động tốt nhất trong số các lựa chọn ứng cử viên và mang lại kết quả NIAH gần nhất với mô hình đã tiền huấn luyện.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/Nxh2fsxYVRWMwgRZ6RyWU.png" alt="Image showing FourierAttention concept"></p>
+<p>Quan trọng hơn, biến đổi Fourier cho phép nén và giải nén song song hiệu quả. Sử dụng Triton, chúng tôi viết lại toán tử FlashAttention để hợp nhất phép biến đổi Fourier nghịch đảo vào FlashDecoding, loại bỏ nhu cầu tạo ra bộ nhớ đệm KV đầy đủ trong quá trình suy luận. Kết quả là, trên một GPU đơn lẻ, chúng tôi hỗ trợ ngữ cảnh dài hơn các phương pháp cạnh tranh, giảm đáng kể bộ nhớ và giữ nguyên độ trễ tương tự.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/IjF4WCThGcX2EOY_jyW6U.png" alt="Image showing performance comparison of FourierAttention"></p>
+<h3 id="đa-phương-thức">Đa phương thức</h3>
+<p>Đặc trưng không đồng nhất cũng giúp ích cho việc nhúng vị trí đa phương thức. Trong bài báo ICML’25 Oral của chúng tôi, <strong>VideoRoPE</strong> ( <a href="https://arxiv.org/abs/2502.05173">arXiv</a> , <a href="https://github.com/Wiselnn570/VideoRoPE">Github</a> ), chúng tôi phân tích có hệ thống các nguyên tắc thiết kế cho nhúng vị trí video. Các chiều cao (tần số thấp) nắm bắt các phụ thuộc thời gian tầm xa, trong khi các chiều thấp (tần số cao) nắm bắt ngữ nghĩa không gian cục bộ. Điều này cải thiện đáng kể việc mô hình hóa và truy xuất video dài. Chúng tôi tiếp tục đề xuất VideoRoPE++, VideoRoPE dựa trên phương pháp ngoại suy YaRN-V, và bộ đánh giá phân biệt V-RULER.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/f9zrZvoLH-4aC39bawLYi.png" alt="Image showing VideoRoPE performance"></p>
+<h3 id="diffusion-lm">Diffusion LM</h3>
+<p>Sau đó, một câu hỏi khác nảy sinh. Đặc trưng không đồng nhất có mở rộng ra ngoài attention tự hồi quy không?</p>
+<p>Có. Điều này được chứng minh bằng công trình gần đây của chúng tôi, <strong>LongLLaDA</strong> (sau đó được chấp nhận bởi AAAI’26, <a href="https://arxiv.org/abs/2506.14429">arXiv</a> , <a href="https://github.com/OpenMOSS/LongLLaDA">Github</a> ), công trình đầu tiên về ngoại suy độ dài cho các mô hình ngôn ngữ dựa trên khuếch tán. Không giống như các mô hình tự hồi quy với attention một chiều, dLLMs sử dụng attention hai chiều, do đó tất cả các chiều đều nhất thiết phải mã hóa cả vị trí dương và âm. Do đó, dLLMs tự nhiên ngoại suy, nhưng chỉ duy trì nhận thức cục bộ hiệu quả, tương tự như cửa sổ trượt—truy xuất bị hạn chế trong phạm vi ngữ cảnh đã tiền huấn luyện.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64f033ef82c6eea604c4da8b/HklLVbRUBYOE1zvPyqqlf.png" alt="Image showing LongLLaDA performance"></p>
+<p>Mặc dù có sự khác biệt này, dLLMs cũng có một số chiều chưa thấy hết các chu kỳ nhúng vị trí trong quá trình tiền huấn luyện, do đó chúng cũng thể hiện các chiều quan trọng và đặc trưng không đồng nhất. Điều này tạo ra một quy luật thay đổi tỷ lệ cho ngoại suy trong dLLMs. Sử dụng điều này, chúng tôi đã mở rộng cửa sổ ngữ cảnh của LLaDA gấp 6 lần theo cách cắm và chạy.</p>
+<hr>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Từ các nghiên cứu trên, chúng ta thấy rằng việc khám phá xử lý ngữ cảnh dài bao gồm nhiều hơn là chỉ tăng độ dài ngữ cảnh. Nó bao gồm hiệu quả, mở rộng đa phương thức, và nhiều khía cạnh khác, kiến trúc, cơ sở hạ tầng, huấn luyện và đánh giá. Trong hai năm qua, nhóm của chúng tôi tại FNLP đã khám phá rộng rãi các hướng đi này và đạt được tiến bộ trên mọi mặt, được tóm tắt trong bài khảo sát của chúng tôi <strong>Thus Spake Long-Context Large Language Models</strong> ( <a href="https://arxiv.org/abs/2502.17129">arXiv</a> , <a href="https://github.com/OpenMOSS/Thus-Spake-Long-Context-LLM">Github</a> ), cũng là sự tôn kính đối với bản giao hưởng thơ <em>Thus Spoke Zarathustra</em>.</p>
+<p>Xin cảm ơn tất cả các đồng tác giả đã hợp tác và cảm ơn các bạn đã lắng nghe.</p>
+<hr>
+<h2 id="trích-dẫn">Trích dẫn</h2>
+<p>@article{liu2023scaling,
+title={Scaling Laws of RoPE-based Extrapolation},
+author={Liu, Xiaoran and Yan, Hang and Zhang, Shuo and An, Chenxin and Qiu, Xipeng and Lin, Dahua},
+journal={arXiv preprint arXiv:2310.05209},
+year={2023}
+}</p>
+<p>@article{liu2025beyond,
+title={Beyond Homogeneous Attention: Memory-Efficient LLMs via Fourier-Approximated KV Cache},
+author={Liu, Xiaoran and He, Siyang and Wang, Qiqi and Li, Ruixiao and Song, Yuerong and Liu, Zhigeng and Huang, Mianqiu and Huang, Zengfeng and Guo, Qipeng and He, Ziwei He and Qiu, Xipeng},
+journal={arXiv preprint arXiv:2506.11886},
+year={2025}
+}</p>
+<p>@article{wei2025videorope,
+title={VideoRoPE: What Makes for Good Video Rotary Position Embedding?},
+author={Wei, Xilin and Liu, Xiaoran and Zang, Yuhang and Dong, Xiaoyi and Zhang, Pan and Cao, Yuhang and Tong, Jian and Duan, Haodong and Guo, Qipeng and Wang, Jiaqi and Qiu, Xipeng and Lin, Dahua},
+journal={arXiv preprint arXiv:2502.05173},
+year={2025}
+}</p>
+<p>@article{liu2025longllada,
+title={LongLLaDA: Unlocking Long Context Capabilities in Diffusion LLMs},
+author={Liu, Xiaoran and Liu, Zhigeng and Huang, Zengfeng and Guo, Qipeng and He, Ziwei and Qiu, Xipeng},
+journal={arXiv preprint arXiv:2506.14429},
+year={2025}
+}</p>
+<p>@article{liu2025thus,
+title={Thus Spake Long-Context Large Language Model},
+author={Liu, Xiaoran and Li, Ruixiao and Huang, Mianqiu and Liu, Zhigeng and Song, Yuerong and Guo, Qipeng and He, Siyang and Wang, Qiqi and Li, Linlin and Liu, Qun and He, Ziwei and Zhou, Yaqian and Huang, Xuanjing and Qiu, Xipeng},
+journal={arXiv preprint arXiv:2502.17129},
+year={2025}
+}</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/SII-xrliu/heterogeneous-features">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/4-days-ago/">4 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/4af950/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Apriel-H1- Chìa khóa bất ngờ để chưng cất các mô hình suy luận hiệu quả</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/992936/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bản đồ Pharmome- bộ dữ liệu công khai toàn diện để mô hình hóa tương tác thuốc-mục tiêu</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/e9f6f6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/ipGH8HHMSu49DthGP28XZZ5J8trwbBeVwbkxHoxipOBB1rLI_MRjUeU2zswaIkPgWKRHu5eJGZmUIQWidxCPJ2vVB0KUqy7NwCtLjxu9FU71B-rxcg=w1440-h1440-n-nu" alt="Bắt đầu xây dựng với Gemini 3" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bắt đầu xây dựng với Gemini 3</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/d47b56/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61b8e2ba285851687028d395/Rq3xWG7mJ3aCRoBsq340h.jpeg" alt="Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Bỏ qua kiểm duyệt mọi LLM bằng phương pháp phân hủy</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/32b0d2/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/2KeyrGnSHkdmqbcNw5vNeL/cecc8af8a67e02395c663b22d9a19682/nuneybits_Vector_art_of_digital_film_reel_63eee9bf-9b4d-4d52-ae61-67717cda7a74.webp?w=1000&amp;q=100" alt="Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
