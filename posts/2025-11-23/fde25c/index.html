@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Viết mã RAG đơn giản từ đầu | AI Today - SkyAI</title>
+
+<meta name="description" content="Mô tả ngắn gọn">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Viết mã RAG đơn giản từ đầu</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Mô tả ngắn gọn </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-23T00:00:00&#43;00:00">November 23, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            17 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1674191139776-noauth.png" alt="Viết mã RAG đơn giản từ đầu">
+        <figcaption class="text-center italic text-xs">Mô tả ngắn gọn</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="xây-dựng-hệ-thống-rag-đơn-giản-từ-đầu">Xây dựng Hệ thống RAG Đơn giản từ Đầu</h1>
+<p>Trong bài viết này, chúng ta sẽ tìm hiểu về Retrieval-Augmented Generation (RAG) và xây dựng một hệ thống RAG đơn giản từ đầu bằng Python và Ollama. Dự án này sẽ giúp bạn hiểu rõ các thành phần chính của hệ thống RAG và cách triển khai chúng bằng các khái niệm lập trình cơ bản.</p>
+<p><img src="https://cdn-thumbnails.huggingface.co/social-thumbnails/blog/ngxson/make-your-own-rag.png" alt="Ảnh bìa bài viết"></p>
+<h2 id="rag-là-gì">RAG là gì?</h2>
+<p>Gần đây, <strong>Retrieval-Augmented Generation (RAG)</strong> đã nổi lên như một mô hình mạnh mẽ trong lĩnh vực AI và Mô hình Ngôn ngữ Lớn (LLM). RAG kết hợp khả năng truy xuất thông tin với khả năng tạo văn bản để nâng cao hiệu suất của các mô hình ngôn ngữ bằng cách tích hợp các nguồn kiến thức bên ngoài. Cách tiếp cận này đã cho thấy kết quả đầy hứa hẹn trong nhiều ứng dụng khác nhau, chẳng hạn như trả lời câu hỏi, hệ thống hội thoại và tạo nội dung.</p>
+<p>Để bắt đầu, hãy xem xét một hệ thống chatbot đơn giản <strong>không có RAG</strong>:</p>
+<p><img src="https://huggingface.co/ngxson/demo_simple_rag_py/resolve/main/diagram_0_mermaid--14092881-light-mermaid.svg" alt="Sơ đồ chatbot không có RAG"></p>
+<p>Mặc dù chatbot có thể trả lời các câu hỏi thông thường dựa trên tập dữ liệu huấn luyện của nó, nhưng nó có thể thiếu kiến thức cập nhật nhất hoặc kiến thức chuyên ngành.</p>
+<p>Một ví dụ thực tế là hỏi ChatGPT &ldquo;Tên mẹ tôi là gì?&rdquo;. ChatGPT không thể trả lời câu hỏi này vì nó không có quyền truy cập vào kiến thức bên ngoài, chẳng hạn như thông tin về các thành viên gia đình bạn.</p>
+<p><img src="https://cdn-gcs.ngxson.com/nuiblog2/2024/10/1730148331111_362c8470.webp" alt="Phản hồi thất bại của ChatGPT"></p>
+<p>Để giải quyết hạn chế này, chúng ta cần cung cấp kiến thức bên ngoài cho mô hình (trong ví dụ này, một danh sách tên thành viên gia đình):</p>
+<p><img src="https://huggingface.co/ngxson/demo_simple_rag_py/resolve/main/diagram_1_mermaid-247836131-light-mermaid.svg" alt="Sơ đồ chatbot có RAG với dữ liệu bên ngoài"></p>
+<p>Một hệ thống RAG bao gồm hai thành phần chính:</p>
+<ul>
+<li>Một <strong>mô hình truy xuất</strong> để lấy thông tin liên quan từ một nguồn kiến thức bên ngoài, có thể là cơ sở dữ liệu, công cụ tìm kiếm hoặc bất kỳ kho thông tin nào khác.</li>
+<li>Một <strong>mô hình ngôn ngữ</strong> để tạo phản hồi dựa trên kiến thức đã truy xuất.</li>
+</ul>
+<p>Có nhiều cách để triển khai RAG, bao gồm Graph RAG, Hybrid RAG và Hierarchical RAG, mà chúng ta sẽ thảo luận vào cuối bài viết này.</p>
+<h2 id="rag-đơn-giản">RAG Đơn giản</h2>
+<p>Chúng ta hãy tạo một hệ thống RAG đơn giản để truy xuất thông tin từ một tập dữ liệu được định trước và tạo phản hồi dựa trên kiến thức đã truy xuất. Hệ thống sẽ bao gồm các thành phần sau:</p>
+<p><img src="https://huggingface.co/ngxson/demo_simple_rag_py/resolve/main/diagram_2_mermaid-423723682-light-mermaid.svg" alt="Các thành phần của hệ thống RAG đơn giản"></p>
+<ol>
+<li><strong>Mô hình nhúng</strong>: Một mô hình ngôn ngữ được huấn luyện trước để chuyển đổi văn bản đầu vào thành các vector nhúng - biểu diễn vector nắm bắt ý nghĩa ngữ nghĩa. Các vector này sẽ được sử dụng để tìm kiếm thông tin liên quan trong tập dữ liệu.</li>
+<li><strong>Cơ sở dữ liệu vector</strong>: Một hệ thống lưu trữ kiến thức và các vector nhúng tương ứng. Mặc dù có nhiều công nghệ cơ sở dữ liệu vector như <a href="https://qdrant.tech/">Qdrant</a>, <a href="https://www.pinecone.io/">Pinecone</a> và <a href="https://github.com/pgvector/pgvector">pgvector</a>, chúng ta sẽ tự triển khai một cơ sở dữ liệu trong bộ nhớ đơn giản.</li>
+<li><strong>Chatbot</strong>: Một mô hình ngôn ngữ tạo phản hồi dựa trên kiến thức đã truy xuất. Đây có thể là bất kỳ mô hình ngôn ngữ nào, chẳng hạn như Llama, Gemma hoặc GPT.</li>
+</ol>
+<h3 id="giai-đoạn-lập-chỉ-mục">Giai đoạn lập chỉ mục</h3>
+<p>Giai đoạn lập chỉ mục là bước đầu tiên trong việc tạo hệ thống RAG. Nó bao gồm việc chia nhỏ tập dữ liệu (hoặc tài liệu) thành các <strong>chunk</strong> nhỏ và tính toán biểu diễn vector cho mỗi chunk có thể được tìm kiếm hiệu quả trong quá trình tạo.</p>
+<p><img src="https://huggingface.co/ngxson/demo_simple_rag_py/resolve/main/diagram_3_mermaid--95761413-light-mermaid.svg" alt="Quá trình lập chỉ mục RAG"></p>
+<p>Kích thước của mỗi chunk có thể thay đổi tùy thuộc vào tập dữ liệu và ứng dụng. Ví dụ, trong hệ thống truy xuất tài liệu, mỗi chunk có thể là một đoạn văn hoặc một câu. Trong hệ thống hội thoại, mỗi chunk có thể là một lượt hội thoại.</p>
+<p>Sau giai đoạn lập chỉ mục, mỗi chunk cùng với vector nhúng tương ứng sẽ được lưu trữ trong cơ sở dữ liệu vector. Đây là ví dụ về cách cơ sở dữ liệu vector có thể trông như thế nào sau khi lập chỉ mục:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Chunk</th>
+          <th style="text-align: left">Vector Nhúng</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Ý và Pháp sản xuất hơn 40% tổng sản lượng rượu vang trên thế giới.</td>
+          <td style="text-align: left">[0.1, 0.04, -0.34, 0.21, &hellip;]</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Taj Mahal ở Ấn Độ được làm hoàn toàn bằng đá cẩm thạch.</td>
+          <td style="text-align: left">[-0.12, 0.03, 0.9, -0.1, &hellip;]</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">90% lượng nước ngọt trên thế giới nằm ở Nam Cực.</td>
+          <td style="text-align: left">[-0.02, 0.6, -0.54, 0.03, &hellip;]</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">&hellip;</td>
+          <td style="text-align: left">&hellip;</td>
+      </tr>
+  </tbody>
+</table>
+<p>Các vector nhúng sau đó có thể được sử dụng để truy xuất thông tin liên quan dựa trên một truy vấn cho trước. Hãy coi nó như một mệnh đề <code>WHERE</code> của SQL, nhưng thay vì truy vấn dựa trên sự khớp văn bản chính xác, giờ đây chúng ta có thể truy vấn một tập hợp các chunk dựa trên biểu diễn vector của chúng.</p>
+<p>Để so sánh sự tương đồng giữa hai vector, chúng ta có thể sử dụng độ tương tự cosine, khoảng cách Euclidean hoặc các thước đo khoảng cách khác. Trong ví dụ này, chúng ta sẽ sử dụng độ tương tự cosine. Đây là công thức tính độ tương tự cosine giữa hai vector A và B:</p>
+<p><img src="https://cdn-gcs.ngxson.com/nuiblog2/2024/10/1730149025318_868a5548.webp" alt="Công thức độ tương tự cosine"></p>
+<p>Đừng lo lắng nếu bạn không quen thuộc với công thức trên, chúng ta sẽ triển khai nó trong phần tiếp theo.</p>
+<h3 id="giai-đoạn-truy-xuất">Giai đoạn truy xuất</h3>
+<p>Trong sơ đồ dưới đây, chúng ta sẽ lấy một ví dụ về <code>Truy vấn đầu vào</code> từ <code>Người dùng</code>. Sau đó, chúng ta tính toán <code>Vector Truy vấn</code> để biểu diễn truy vấn và so sánh nó với các vector trong cơ sở dữ liệu để tìm các chunk liên quan nhất.</p>
+<p>Kết quả trả về từ <code>Cơ sở dữ liệu Vector</code> sẽ chứa N chunk liên quan nhất đến truy vấn. Các chunk này sẽ được <code>Chatbot</code> sử dụng để tạo phản hồi.</p>
+<p><img src="https://huggingface.co/ngxson/demo_simple_rag_py/resolve/main/diagram_4_mermaid--1446345905-light-mermaid.svg" alt="Luồng truy xuất RAG"></p>
+<h2 id="hãy-mã-hóa-nó">Hãy mã hóa nó</h2>
+<p>Trong ví dụ này, chúng ta sẽ viết một triển khai <strong>Python</strong> đơn giản cho RAG.</p>
+<p>Để chạy các mô hình, chúng ta sẽ sử dụng <a href="https://ollama.com">ollama</a>, một công cụ dòng lệnh cho phép bạn chạy các mô hình từ Hugging Face. Với ollama, bạn <strong>không cần</strong> có quyền truy cập vào máy chủ hoặc dịch vụ đám mây để chạy các mô hình. Bạn có thể chạy các mô hình trực tiếp trên máy tính của mình.</p>
+<p>Đối với các mô hình, chúng ta hãy sử dụng các mô hình sau:</p>
+<ul>
+<li><strong>Mô hình nhúng</strong>: <a href="https://huggingface.co/CompendiumLabs/bge-base-en-v1.5-gguf">hf.co/CompendiumLabs/bge-base-en-v1.5-gguf</a></li>
+<li><strong>Mô hình ngôn ngữ</strong>: <a href="https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF">hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF</a></li>
+</ul>
+<p>Và đối với tập dữ liệu, chúng ta sẽ sử dụng <a href="https://huggingface.co/ngxson/demo_simple_rag_py/blob/main/cat-facts.txt">một danh sách đơn giản các sự thật về mèo</a>. Mỗi sự thật sẽ được coi là một chunk trong giai đoạn lập chỉ mục.</p>
+<h3 id="tải-xuống-ollama-và-các-mô-hình">Tải xuống ollama và các mô hình</h3>
+<p>Đầu tiên, hãy bắt đầu bằng việc cài đặt ollama từ trang web của dự án: <a href="https://ollama.com">ollama.com</a></p>
+<p>Sau khi cài đặt, hãy mở một terminal và chạy lệnh sau để tải xuống các mô hình cần thiết:</p>
+<p>bash
+ollama pull hf.co/CompendiumLabs/bge-base-en-v1.5-gguf
+ollama pull hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF</p>
+<p>Nếu bạn thấy kết quả đầu ra sau, điều đó có nghĩa là các mô hình đã được tải xuống thành công:</p>
+<p>bash
+pulling manifest
+&hellip;
+verifying sha256 digest
+writing manifest
+success</p>
+<p>Trước khi tiếp tục, để sử dụng <code>ollama</code> trong python, hãy cài đặt gói <code>ollama</code>:</p>
+<p>bash
+pip install ollama</p>
+<h3 id="tải-tập-dữ-liệu">Tải tập dữ liệu</h3>
+<p>Tiếp theo, hãy tạo một script Python và tải tập dữ liệu vào bộ nhớ. Tập dữ liệu chứa một danh sách các sự thật về mèo sẽ được sử dụng làm chunk trong giai đoạn lập chỉ mục.</p>
+<p>Bạn có thể tải tập dữ liệu ví dụ từ <a href="https://huggingface.co/ngxson/demo_simple_rag_py/blob/main/cat-facts.txt">ở đây</a>. Đây là ví dụ về mã để tải tập dữ liệu:</p>
+<p>python
+dataset = []
+with open(&lsquo;cat-facts.txt&rsquo;, &lsquo;r&rsquo;) as file:
+dataset = file.readlines()
+print(f&rsquo;Loaded {len(dataset)} entries&rsquo;)</p>
+<h3 id="triển-khai-cơ-sở-dữ-liệu-vector">Triển khai cơ sở dữ liệu vector</h3>
+<p>Bây giờ, hãy triển khai cơ sở dữ liệu vector.</p>
+<p>Chúng ta sẽ sử dụng mô hình nhúng từ <code>ollama</code> để chuyển đổi từng chunk thành vector nhúng, sau đó lưu trữ chunk và vector tương ứng vào một danh sách.</p>
+<p>Đây là một ví dụ về hàm để tính toán vector nhúng cho một văn bản cho trước:</p>
+<p>python
+import ollama</p>
+<p>EMBEDDING_MODEL = &lsquo;hf.co/CompendiumLabs/bge-base-en-v1.5-gguf&rsquo;
+LANGUAGE_MODEL = &lsquo;hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF&rsquo;</p>
+<h1 id="mỗi-phần-tử-trong-vector_db-sẽ-là-một-tuple-chunk-embedding">Mỗi phần tử trong VECTOR_DB sẽ là một tuple (chunk, embedding)</h1>
+<h1 id="embedding-là-một-danh-sách-các-số-float-ví-dụ-01-004--034-021-">Embedding là một danh sách các số float, ví dụ: [0.1, 0.04, -0.34, 0.21, &hellip;]</h1>
+<p>VECTOR_DB = []</p>
+<p>def add_chunk_to_database(chunk):
+embedding = ollama.embed(model=EMBEDDING_MODEL, input=chunk)[&rsquo;embeddings&rsquo;][0]
+VECTOR_DB.append((chunk, embedding))</p>
+<p>Trong ví dụ này, chúng ta sẽ coi mỗi dòng trong tập dữ liệu là một chunk để đơn giản hóa.</p>
+<p>python
+for i, chunk in enumerate(dataset):
+add_chunk_to_database(chunk)
+print(f&rsquo;Added chunk {i+1}/{len(dataset)} to the database&rsquo;)</p>
+<h3 id="triển-khai-hàm-truy-xuất">Triển khai hàm truy xuất</h3>
+<p>Tiếp theo, hãy triển khai hàm truy xuất lấy một truy vấn và trả về N chunk liên quan nhất dựa trên độ tương tự cosine. Chúng ta có thể tưởng tượng rằng độ tương tự cosine giữa hai vector càng cao, chúng càng &ldquo;gần&rdquo; nhau trong không gian vector. Điều này có nghĩa là chúng có ý nghĩa tương đồng hơn.</p>
+<p>Đây là một ví dụ về hàm để tính toán độ tương tự cosine giữa hai vector:</p>
+<p>python
+def cosine_similarity(a, b):
+dot_product = sum([x * y for x, y in zip(a, b)])
+norm_a = sum([x ** 2 for x in a]) ** 0.5
+norm_b = sum([x ** 2 for x in b]) ** 0.5
+return dot_product / (norm_a * norm_b)</p>
+<p>Bây giờ, hãy triển khai hàm truy xuất:</p>
+<p>python
+def retrieve(query, top_n=3):
+query_embedding = ollama.embed(model=EMBEDDING_MODEL, input=query)[&rsquo;embeddings&rsquo;][0]</p>
+<h1 id="danh-sách-tạm-thời-để-lưu-trữ-các-cặp-chunk-similarity">danh sách tạm thời để lưu trữ các cặp (chunk, similarity)</h1>
+<p>similarities = []
+for chunk, embedding in VECTOR_DB:
+similarity = cosine_similarity(query_embedding, embedding)
+similarities.append((chunk, similarity))</p>
+<h1 id="sắp-xếp-theo-độ-tương-tự-giảm-dần-vì-độ-tương-tự-cao-hơn-có-nghĩa-là-các-chunk-liên-quan-hơn">sắp xếp theo độ tương tự giảm dần, vì độ tương tự cao hơn có nghĩa là các chunk liên quan hơn</h1>
+<p>similarities.sort(key=lambda x: x[1], reverse=True)</p>
+<h1 id="cuối-cùng-trả-về-n-chunk-liên-quan-nhất">cuối cùng, trả về N chunk liên quan nhất</h1>
+<p>return similarities[:top_n]</p>
+<h3 id="giai-đoạn-tạo">Giai đoạn tạo</h3>
+<p>Trong giai đoạn này, chatbot sẽ tạo phản hồi dựa trên kiến thức đã truy xuất từ bước trên. Điều này được thực hiện bằng cách đơn giản thêm các chunk vào prompt sẽ được sử dụng làm đầu vào cho chatbot.</p>
+<p>Ví dụ, một prompt có thể được xây dựng như sau:</p>
+<p>python
+input_query = input(&lsquo;Ask me a question: &lsquo;)
+retrieved_knowledge = retrieve(input_query)</p>
+<p>print(&lsquo;Retrieved knowledge:&rsquo;)
+for chunk, similarity in retrieved_knowledge:
+print(f&rsquo; - (similarity: {similarity:.2f}) {chunk}&rsquo;)</p>
+<p>instruction_prompt = f&rsquo;&lsquo;&lsquo;You are a helpful chatbot.
+Use only the following pieces of context to answer the question. Don&rsquo;t make up any new information:
+{&rsquo;\n&rsquo;.join([f&rsquo; - {chunk}&rsquo; for chunk, similarity in retrieved_knowledge])}
+&rsquo;&rsquo;&rsquo;</p>
+<p>Sau đó, chúng ta sử dụng <code>ollama</code> để tạo phản hồi. Trong ví dụ này, chúng ta sẽ sử dụng <code>instruction_prompt</code> làm thông báo hệ thống:</p>
+<p>python
+stream = ollama.chat(
+model=LANGUAGE_MODEL,
+messages=[
+{&lsquo;role&rsquo;: &lsquo;system&rsquo;, &lsquo;content&rsquo;: instruction_prompt},
+{&lsquo;role&rsquo;: &lsquo;user&rsquo;, &lsquo;content&rsquo;: input_query},
+],
+stream=True,
+)</p>
+<h1 id="in-phản-hồi-từ-chatbot-theo-thời-gian-thực">in phản hồi từ chatbot theo thời gian thực</h1>
+<p>print(&lsquo;Chatbot response:&rsquo;)
+for chunk in stream:
+print(chunk[&lsquo;message&rsquo;][&lsquo;content&rsquo;], end=&rsquo;&rsquo;, flush=True)</p>
+<h3 id="tổng-hợp-lại">Tổng hợp lại</h3>
+<p>Bạn có thể tìm thấy mã cuối cùng <a href="https://huggingface.co/ngxson/demo_simple_rag_py/blob/main/demo.py">trong tệp này</a>. Để chạy mã, hãy lưu nó vào một tệp có tên <code>demo.py</code> và chạy lệnh sau:</p>
+<p>bash
+python demo.py</p>
+<p>Giờ đây, bạn có thể đặt câu hỏi cho chatbot và nó sẽ tạo phản hồi dựa trên kiến thức đã truy xuất từ tập dữ liệu.</p>
+<p>Ask me a question: tell me about cat speed
+Retrieved chunks: &hellip;
+Chatbot response:
+According to the given context, cats can travel at approximately 31 mph (49 km) over a short distance. This is their top speed.</p>
+<h2 id="các-lĩnh-vực-cần-cải-thiện">Các lĩnh vực cần cải thiện</h2>
+<p>Cho đến nay, chúng ta đã triển khai một hệ thống RAG đơn giản bằng cách sử dụng một tập dữ liệu nhỏ. Tuy nhiên, vẫn còn nhiều hạn chế:</p>
+<ul>
+<li>Nếu câu hỏi đề cập đến <strong>nhiều chủ đề</strong> cùng lúc, hệ thống có thể không cung cấp được câu trả lời tốt. Điều này là do hệ thống chỉ truy xuất các chunk dựa trên sự tương đồng của truy vấn với các chunk, mà không xem xét ngữ cảnh của truy vấn.
+<ul>
+<li>Giải pháp có thể là yêu cầu chatbot tự viết truy vấn dựa trên đầu vào của người dùng, sau đó truy xuất kiến thức dựa trên truy vấn đã tạo. Chúng ta cũng có thể sử dụng nhiều truy vấn để truy xuất thêm thông tin liên quan.</li>
+</ul>
+</li>
+<li>N top kết quả được trả về dựa trên độ tương tự cosine. Điều này có thể không phải lúc nào cũng cho kết quả tốt nhất, đặc biệt khi mỗi chunk chứa nhiều thông tin.
+<ul>
+<li>Để giải quyết vấn đề này, chúng ta có thể sử dụng một <a href="https://www.pinecone.io/learn/series/rag/rerankers/">mô hình xếp hạng lại</a> để <strong>xếp hạng lại các chunk đã truy xuất</strong> dựa trên mức độ liên quan của chúng với truy vấn.</li>
+</ul>
+</li>
+<li>Cơ sở dữ liệu được lưu trữ trong bộ nhớ, có thể không mở rộng được cho các tập dữ liệu lớn. Chúng ta có thể sử dụng cơ sở dữ liệu vector hiệu quả hơn như <a href="https://qdrant.tech/">Qdrant</a>, <a href="https://www.pinecone.io/">Pinecone</a>, <a href="https://github.com/pgvector/pgvector">pgvector</a>.</li>
+<li>Hiện tại chúng ta coi mỗi câu là một chunk. Đối với các tác vụ phức tạp hơn, chúng ta có thể cần sử dụng các kỹ thuật tinh vi hơn để <strong>chia nhỏ tập dữ liệu thành các chunk nhỏ hơn</strong>. Chúng ta cũng có thể tiền xử lý từng chunk trước khi thêm chúng vào cơ sở dữ liệu.</li>
+<li>Mô hình ngôn ngữ được sử dụng trong ví dụ này là một mô hình đơn giản chỉ có 1 tỷ tham số. Đối với các tác vụ phức tạp hơn, chúng ta có thể cần sử dụng mô hình ngôn ngữ lớn hơn.</li>
+</ul>
+<h2 id="các-loại-rag-khác">Các loại RAG khác</h2>
+<p>Trong thực tế, có nhiều cách để triển khai các hệ thống RAG. Dưới đây là một số loại hệ thống RAG phổ biến:</p>
+<ul>
+<li><strong>Graph RAG</strong>: Trong loại RAG này, nguồn kiến thức được biểu diễn dưới dạng một đồ thị, trong đó các nút là các thực thể và các cạnh là mối quan hệ giữa các thực thể. Mô hình ngôn ngữ có thể duyệt qua đồ thị để truy xuất thông tin liên quan. Có rất nhiều nghiên cứu tích cực về loại RAG này. Đây là <a href="https://huggingface.co/collections/graphrag/graphrag-papers-667566a057208377a1489c82">tập hợp các bài báo về Graph RAG</a>.</li>
+<li><strong>Hybrid RAG</strong>: một loại RAG kết hợp Knowledge Graphs (KG) và kỹ thuật cơ sở dữ liệu vector để cải thiện hệ thống trả lời câu hỏi. Để biết thêm, bạn có thể đọc bài báo <a href="https://arxiv.org/html/2408.04948v1">ở đây</a>.</li>
+<li><strong>Modular RAG</strong>: một loại RAG vượt ra ngoài quy trình &ldquo;truy xuất rồi tạo&rdquo; cơ bản, sử dụng các cơ chế định tuyến, lập lịch và hợp nhất để tạo ra một khuôn khổ linh hoạt và có thể cấu hình lại. Thiết kế mô-đun này cho phép các mẫu RAG khác nhau (tuyến tính, có điều kiện, phân nhánh và lặp lại), cho phép các ứng dụng chuyên sâu kiến thức phức tạp và thích ứng hơn. Để biết thêm, bạn có thể đọc bài báo <a href="https://arxiv.org/html/2407.21059v1">ở đây</a>.</li>
+</ul>
+<p>Đối với các loại RAG khác, bạn có thể tham khảo <a href="https://markovate.com/blog/advanced-rag-techniques/">bài đăng này của Rajeev Sharma</a>.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>RAG đại diện cho một bước tiến quan trọng trong việc làm cho các mô hình ngôn ngữ có kiến thức và chính xác hơn. Bằng cách triển khai một hệ thống RAG đơn giản từ đầu, chúng ta đã khám phá các nguyên tắc cơ bản của nhúng, truy xuất và tạo. Mặc dù việc triển khai của chúng ta rất cơ bản, nhưng nó minh họa các nguyên tắc cốt lõi thúc đẩy các hệ thống RAG phức tạp hơn được sử dụng trong môi trường sản xuất.</p>
+<p>Tiềm năng mở rộng và cải thiện hệ thống RAG là rất lớn, từ việc triển khai các cơ sở dữ liệu vector hiệu quả hơn đến khám phá các kiến trúc nâng cao như Graph RAG và Hybrid RAG. Khi lĩnh vực này tiếp tục phát triển, RAG vẫn là một kỹ thuật quan trọng để nâng cao hệ thống AI bằng kiến thức bên ngoài trong khi vẫn duy trì khả năng tạo của chúng.</p>
+<h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2005.11401">https://arxiv.org/abs/2005.11401</a></li>
+<li><a href="https://aws.amazon.com/what-is/retrieval-augmented-generation/">https://aws.amazon.com/what-is/retrieval-augmented-generation/</a></li>
+<li><a href="https://github.com/varunvasudeva1/llm-server-docs">https://github.com/varunvasudeva1/llm-server-docs</a></li>
+<li><a href="https://github.com/ollama/ollama/blob/main/docs">https://github.com/ollama/ollama/blob/main/docs</a></li>
+<li><a href="https://github.com/ollama/ollama-python">https://github.com/ollama/ollama-python</a></li>
+<li><a href="https://www.pinecone.io/learn/series/rag/rerankers/">https://www.pinecone.io/learn/series/rag/rerankers/</a></li>
+<li><a href="https://arxiv.org/html/2407.21059v1">https://arxiv.org/html/2407.21059v1</a></li>
+<li><a href="https://newsletter.armand.so/p/comprehensive-guide-rag-implementations">https://newsletter.armand.so/p/comprehensive-guide-rag-implementations</a></li>
+</ul>
+<hr>
+<h2 id="cộng-đồng">Cộng đồng</h2>
+<p>Cảm ơn bạn đã làm bài viết này, nó thực sự dễ theo dõi và thân thiện với người mới bắt đầu.</p>
+<p>Trong mã này, <code>input= chunk</code> nên là <code>input= query</code>:</p>
+<p>python
+def retrieve(query, top_n=3):
+query_embedding = ollama.embed(model=EMBEDDING_MODEL, input=chunk)[&rsquo;embeddings&rsquo;][0]</p>
+<p>Tuyệt vời &amp; thân thiện với người mới bắt đầu, cảm ơn bạn!</p>
+<p>RAG có tương lai tốt đẹp không, tôi nghĩ nó giống như một bong bóng &ndash; theo quan điểm lý thuyết</p>
+<p>Khi độ dài ngữ cảnh của mô hình dài hơn, RAG sẽ ít quan trọng hơn nhưng hiện tại nó khá hữu ích, đặc biệt đối với các thiết bị không thể duy trì độ dài ngữ cảnh như vậy.</p>
+<p>wow thật hữu ích</p>
+<p>Tôi đang cố gắng thực hiện ví dụ này và tôi thấy
+verifying sha256 digest
+writing manifest
+success
+nhưng dưới <code>.ollama\models\manifests\hf.co\bartowski\Llama-3.2-1B-Instruct-GGUF</code>, chỉ có tệp mới nhất có kích thước 1k.
+với <code>ollama list</code>, nó hiển thị
+NAME                                                 ID              SIZE      MODIFIED
+hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:latest    042cf58aa32f    807 MB    52 phút trước
+hf.co/CompendiumLabs/bge-base-en-v1.5-gguf:latest    98c4eb4a3287    68 MB     58 phút trước</p>
+<p>chúng ở đâu? nếu tôi không chỉ định đường dẫn đến mô hình và sử dụng ví dụ bên dưới, tôi gặp lỗi hết thời gian chờ 504 khi gọi
+&ldquo;embedding = ollama.embed(model=EMBEDDING_MODEL, input=chunk)[&rsquo;embeddings&rsquo;][0]&rdquo;</p>
+<p>EMBEDDING_MODEL = &lsquo;hf.co/CompendiumLabs/bge-base-en-v1.5-gguf&rsquo;
+LANGUAGE_MODEL = &lsquo;hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF&rsquo;</p>
+<p>cần chỉ định mã hóa như sau: <code>with open('cat-facts.txt', 'r', encoding=&quot;utf8&quot;)</code></p>
+<p>tôi đang gặp lỗi sau khi chạy mã trên. Có ý tưởng nào không?
+Traceback (most recent call last):
+File &ldquo;c:\prakash\AI - CCA Practise\Agentic_Financial_Advisor\main.py&rdquo;, line 8, in <!-- raw HTML omitted -->
+dataset = file.readlines()
+^^^^^^^^^^^^^^^^
+File &ldquo;C:\Users\prakshar\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py&rdquo;, line 23, in decode
+return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: &lsquo;charmap&rsquo; codec can&rsquo;t decode byte 0x9d in position 405: character maps to <!-- raw HTML omitted --></p>
+<p>bài viết hay &amp; thân thiện với người mới bắt đầu cảm ơn!</p>
+<p>Tôi vừa tình cờ đọc bài viết hướng dẫn này sau khi tìm kiếm nhiều hướng dẫn để học RAG. Bài này có vẻ hứa hẹn. Tôi đang cố gắng bắt đầu nhỏ và phát triển từng chút một với mục tiêu xây dựng hệ thống RAG cấp doanh nghiệp cho các công ty lớn. Nếu bạn cùng hướng đi, vui lòng tham gia cùng tôi, chúng ta có thể học hỏi và xây dựng cùng nhau. #Team_work_dream_work.</p>
+<p>bạn có nghĩ RAG có tương lai tốt đẹp không, tôi nghĩ nó giống như một bong bóng &ndash; theo quan điểm lý thuyết</p>
+<p>Bạn có thể đăng ký &lsquo;Cuộc gọi Khám phá&rsquo; bằng cổng Topmate của tôi để thảo luận về dự án của bạn và tìm kiếm hướng dẫn. <a href="https://topmate.io/sanjan_tp_gupta">https://topmate.io/sanjan_tp_gupta</a></p>
+<p>bạn đang bỏ qua biến (rf). Mô hình không biết thông tin nào để sử dụng cho mục đích gì. Đây là nguồn gốc của nhiều vấn đề. Nếu điều này được giải quyết, sẽ có nhiều khả năng hơn. Và &ldquo;nhiều hơn&rdquo; có nghĩa là gì? Điều đó có nghĩa là cấp quyền cho mô hình thêm dữ liệu vào các nguồn RAG của riêng nó - bao gồm cả RF.</p>
+<p>bài viết hay &amp; thân thiện với người mới bắt đầu cảm ơn!</p>
+<p>Chào Aboukary, bạn có thể đăng ký &lsquo;Cuộc gọi Khám phá&rsquo; bằng cổng Topmate của tôi để thảo luận về dự án của bạn và tìm kiếm hướng dẫn. <a href="https://topmate.io/sanjan_tp_gupta">https://topmate.io/sanjan_tp_gupta</a></p>
+<p>Tôi đang cố gắng thực hiện ví dụ này và tôi thấy
+verifying sha256 digest
+writing manifest
+success
+nhưng dưới <code>.ollama\models\manifests\hf.co\bartowski\Llama-3.2-1B-Instruct-GGUF</code>, chỉ có tệp mới nhất có kích thước 1k.
+với <code>ollama list</code>, nó hiển thị
+NAME                                                 ID              SIZE      MODIFIED
+hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:latest    042cf58aa32f    807 MB    52 phút trước
+hf.co/CompendiumLabs/bge-base-en-v1.5-gguf:latest    98c4eb4a3287    68 MB     58 phút trước</p>
+<p>chúng ở đâu? nếu tôi không chỉ định đường dẫn đến mô hình và sử dụng ví dụ bên dưới, tôi gặp lỗi hết thời gian chờ 504 khi gọi
+&ldquo;embedding = ollama.embed(model=EMBEDDING_MODEL, input=chunk)[&rsquo;embeddings&rsquo;][0]&rdquo;</p>
+<p>EMBEDDING_MODEL = &lsquo;hf.co/CompendiumLabs/bge-base-en-v1.5-gguf&rsquo;
+LANGUAGE_MODEL = &lsquo;hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF&rsquo;</p>
+<p>cần chỉ định mã hóa như sau: <code>with open('cat-facts.txt', 'r', encoding=&quot;utf8&quot;)</code></p>
+<p>bài viết hay &amp; thân thiện với người mới bắt đầu cảm ơn!</p>
+<p>Hi, tôi nghĩ điều này nên được thêm/thay đổi trong bài viết, bài báo HybridRAG đã được xuất bản (<a href="https://dl.acm.org/doi/10.1145/3677052.3698671">https://dl.acm.org/doi/10.1145/3677052.3698671</a>) @ngxson</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/ngxson/make-your-own-rag">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/oct-29-2024/">Oct 29, 2024</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/8116cb/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/b7d0d593ccea435d71e0910bd16c2841.svg" alt="Cách tạo NeuTTS-air tạo ra hơn 200 giây âm thanh trong một giây" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-23T00:00:00&#43;00:00">Nov 23, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách tạo NeuTTS-air tạo ra hơn 200 giây âm thanh trong một giây</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Mô tả ngắn gọn</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/3e003f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/5fe16a29e69f7b521398f73b/qKx7SKgZrs0y5YbbQZcdQ.png" alt="Giới thiệu Cogito v2.1" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-23T00:00:00&#43;00:00">Nov 23, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu Cogito v2.1</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Mô tả ngắn gọn</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/8116cb/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/b7d0d593ccea435d71e0910bd16c2841.svg" alt="Cách tạo NeuTTS-air tạo ra hơn 200 giây âm thanh trong một giây" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách tạo NeuTTS-air tạo ra hơn 200 giây âm thanh trong một giây</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/3e003f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/5fe16a29e69f7b521398f73b/qKx7SKgZrs0y5YbbQZcdQ.png" alt="Giới thiệu Cogito v2.1" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Cogito v2.1</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/ea9245/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/10TO4TabeTLbB0ToQ9XNuFeSRJuWNI1tTGJv4B6KfLmYwGsbAfOnwYU3By-m_Yo0biNmkFqYVKC6F8MJXyc-1Pcrnke7NlB1G4_mrxtsKHsYCIVP=w1440-h1440-n-nu" alt="Giới thiệu Nano Banana Pro" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Nano Banana Pro</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/505fe6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Lean4- Cách trình chứng minh định lý hoạt động và tại sao nó là lợi thế cạnh tranh mới trong AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Lean4- Cách trình chứng minh định lý hoạt động và tại sao nó là lợi thế cạnh tranh mới trong AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/fde25c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1674191139776-noauth.png" alt="Viết mã RAG đơn giản từ đầu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Viết mã RAG đơn giản từ đầu</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

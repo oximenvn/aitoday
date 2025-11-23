@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lean4- Cách trình chứng minh định lý hoạt động và tại sao nó là lợi thế cạnh tranh mới trong AI | AI Today - SkyAI</title>
+
+<meta name="description" content="Các mô hình ngôn ngữ lớn (LLM) đã gây kinh ngạc thế giới với khả năng của chúng, nhưng chúng vẫn bị ảnh hưởng bởi sự khó đoán và ảo giác – tự tin đưa ra thông tin sai lệch. Trong các lĩnh vực có rủi ro cao như tài chính, y tế hoặc hệ thống tự hành, sự không đáng tin cậy như vậy là không thể chấp nhận được.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Lean4- Cách trình chứng minh định lý hoạt động và tại sao nó là lợi thế cạnh tranh mới trong AI</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Các mô hình ngôn ngữ lớn (LLM) đã gây kinh ngạc thế giới với khả năng của chúng, nhưng chúng vẫn bị ảnh hưởng bởi sự khó đoán và ảo giác – tự tin đưa ra thông tin sai lệch. Trong các lĩnh vực có rủi ro cao như tài chính, y tế hoặc hệ thống tự hành, sự không đáng tin cậy như vậy là không thể chấp nhận được. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-11-23T00:00:00&#43;00:00">November 23, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            18 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://image-link" alt="Lean4- Cách trình chứng minh định lý hoạt động và tại sao nó là lợi thế cạnh tranh mới trong AI">
+        <figcaption class="text-center italic text-xs">Các mô hình ngôn ngữ lớn (LLM) đã gây kinh ngạc thế giới với khả năng của chúng, nhưng chúng vẫn bị ảnh hưởng bởi sự khó đoán và ảo giác – tự tin đưa ra thông tin sai lệch. Trong các lĩnh vực có rủi ro cao như tài chính, y tế hoặc hệ thống tự hành, sự không đáng tin cậy như vậy là không thể chấp nhận được.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="lean4-làm-thế-nào-trình-chứng-minh-định-lý-hoạt-động-và-tại-sao-nó-là-lợi-thế-cạnh-tranh-mới-trong-ai">Lean4: Làm thế nào trình chứng minh định lý hoạt động và tại sao nó là lợi thế cạnh tranh mới trong AI</h1>
+<p>Mô hình ngôn ngữ lớn (LLM) đã làm thế giới kinh ngạc với khả năng của chúng, nhưng chúng vẫn gặp phải sự khó đoán và ảo giác – tự tin đưa ra thông tin sai lệch. Trong các lĩnh vực có rủi ro cao như tài chính, y tế hoặc hệ thống tự động, sự không đáng tin cậy như vậy là không thể chấp nhận được.</p>
+<p><strong>Lean4</strong> là một ngôn ngữ lập trình mã nguồn mở và trình trợ giúp chứng minh đang trở thành một công cụ quan trọng để đưa sự chặt chẽ và chắc chắn vào các hệ thống AI. Bằng cách tận dụng xác minh hình thức, Lean4 hứa hẹn sẽ làm cho AI an toàn hơn, bảo mật hơn và có chức năng xác định. Hãy cùng khám phá cách Lean4 đang được các nhà lãnh đạo AI áp dụng và tại sao nó có thể trở thành nền tảng để xây dựng AI đáng tin cậy.</p>
+<h2 id="lean4-là-gì-và-tại-sao-nó-quan-trọng">Lean4 là gì và tại sao nó quan trọng</h2>
+<p>Lean4 vừa là một ngôn ngữ lập trình vừa là một trợ giúp chứng minh được thiết kế cho xác minh hình thức. Mọi định lý hoặc chương trình được viết bằng Lean4 phải vượt qua kiểm tra kiểu nghiêm ngặt bởi hạt nhân đáng tin cậy của Lean, đưa ra một phán quyết nhị phân: Một mệnh đề hoặc được kiểm tra là đúng hoặc không. Việc kiểm tra tất cả hoặc không có gì này có nghĩa là không có chỗ cho sự mơ hồ – một thuộc tính hoặc kết quả được chứng minh là đúng hoặc nó thất bại. Việc kiểm tra nghiêm ngặt như vậy &ldquo;tăng đáng kể độ tin cậy&rdquo; của bất kỳ thứ gì được hình thức hóa trong Lean4. Nói cách khác, Lean4 cung cấp một khuôn khổ nơi tính đúng đắn được đảm bảo về mặt toán học, không chỉ là hy vọng.</p>
+<p>Mức độ chắc chắn này chính xác là điều mà các hệ thống AI hiện tại còn thiếu. Đầu ra AI hiện đại được tạo ra bởi các mạng nơ-ron phức tạp với hành vi xác suất. Hỏi cùng một câu hỏi hai lần và bạn có thể nhận được các câu trả lời khác nhau. Ngược lại, một bằng chứng hoặc chương trình Lean4 sẽ hoạt động một cách xác định – với cùng một đầu vào, nó sẽ tạo ra cùng một kết quả đã được xác minh mọi lúc. Tính xác định và minh bạch này (mỗi bước suy luận có thể được kiểm toán) làm cho Lean4 trở thành một liều thuốc giải hấp dẫn cho sự khó đoán của AI.</p>
+<p><strong>Những lợi thế chính của xác minh hình thức của Lean4</strong>:</p>
+<ul>
+<li><strong>Độ chính xác và độ tin cậy</strong>: Các chứng minh hình thức tránh sự mơ hồ thông qua logic nghiêm ngặt, đảm bảo mỗi bước suy luận đều hợp lệ và kết quả là đúng.</li>
+<li><strong>Xác minh có hệ thống</strong>: Lean4 có thể xác minh hình thức rằng một giải pháp đáp ứng tất cả các điều kiện hoặc tiên đề được chỉ định, hoạt động như một trọng tài khách quan cho tính đúng đắn.</li>
+<li><strong>Minh bạch và tái lập</strong>: Bất kỳ ai cũng có thể độc lập kiểm tra một chứng minh Lean4 và kết quả sẽ giống nhau – một sự khác biệt rõ rệt so với suy luận mờ ám của mạng nơ-ron.</li>
+</ul>
+<p>Về bản chất, Lean4 mang tiêu chuẩn vàng về sự chặt chẽ toán học vào điện toán và AI. Nó cho phép chúng ta biến một tuyên bố của AI (“Tôi đã tìm thấy một giải pháp”) thành một chứng minh có thể kiểm tra hình thức thực sự là đúng. Khả năng này đang chứng tỏ là một yếu tố thay đổi cuộc chơi trong nhiều khía cạnh của phát triển AI.</p>
+<h2 id="lean4-như-một-mạng-lưới-an-toàn-cho-llm">Lean4 như một mạng lưới an toàn cho LLM</h2>
+<p>Một trong những giao điểm thú vị nhất của Lean4 và AI là cải thiện độ chính xác và an toàn của LLM. Các nhóm nghiên cứu và các công ty khởi nghiệp hiện đang kết hợp khả năng ngôn ngữ tự nhiên của LLM với các kiểm tra hình thức của Lean4 để tạo ra các hệ thống AI suy luận chính xác theo cách xây dựng.</p>
+<p>Hãy xem xét vấn đề ảo giác của AI, khi một AI tự tin khẳng định thông tin sai lệch. Thay vì thêm các bản vá mờ ám hơn (như hình phạt heuristic hoặc điều chỉnh củng cố), tại sao không ngăn chặn ảo giác bằng cách yêu cầu AI chứng minh các tuyên bố của mình? Đó chính xác là những gì một số nỗ lực gần đây đã làm. Ví dụ, một khuôn khổ nghiên cứu năm 2025 có tên là Safe sử dụng Lean4 để xác minh từng bước suy luận của LLM. Ý tưởng rất đơn giản nhưng mạnh mẽ: Mỗi bước trong chuỗi suy nghĩ (CoT) của AI sẽ dịch tuyên bố sang ngôn ngữ hình thức của Lean4 và AI (hoặc một trợ giúp chứng minh) cung cấp một chứng minh. Nếu chứng minh thất bại, hệ thống sẽ biết suy luận đó là sai – một chỉ báo rõ ràng về ảo giác.</p>
+<p>Dấu vết kiểm toán hình thức theo từng bước này giúp cải thiện đáng kể độ tin cậy, bắt lỗi khi chúng xảy ra và cung cấp bằng chứng có thể kiểm tra được cho mọi kết luận. Phương pháp này đã cho thấy &ldquo;cải thiện hiệu suất đáng kể đồng thời cung cấp bằng chứng có thể diễn giải và xác minh được&rdquo; về tính đúng đắn.</p>
+<p>Một ví dụ nổi bật khác là Harmonic AI, một công ty khởi nghiệp đồng sáng lập bởi Vlad Tenev (nổi tiếng với Robinhood) chuyên giải quyết ảo giác trong AI. Hệ thống của Harmonic, Aristotle, giải các bài toán toán học bằng cách tạo ra các chứng minh Lean4 cho các câu trả lời của mình và xác minh chúng một cách hình thức trước khi trả lời người dùng. &ldquo;Aristotle xác minh hình thức kết quả&hellip; chúng tôi thực sự đảm bảo rằng không có ảo giác,&rdquo; Giám đốc điều hành Harmonic giải thích. Trên thực tế, Aristotle viết một giải pháp bằng ngôn ngữ của Lean4 và chạy trình kiểm tra Lean4. Chỉ khi chứng minh được kiểm tra là đúng, nó mới trình bày câu trả lời. Điều này mang lại một chatbot toán học &ldquo;không có ảo giác&rdquo; – một tuyên bố táo bạo, nhưng được hỗ trợ bởi việc kiểm tra chứng minh xác định của Lean4.</p>
+<p>Quan trọng nhất, phương pháp này không giới hạn ở các bài toán đơn giản. Harmonic báo cáo rằng Aristotle đã đạt được hiệu suất cấp huy chương vàng trong các bài toán của Olympic Toán Quốc tế năm 2025, sự khác biệt chính là các giải pháp của nó đã được xác minh hình thức, không giống như các mô hình AI khác chỉ đưa ra câu trả lời bằng tiếng Anh. Nói cách khác, trong khi các tập đoàn công nghệ lớn như Google và OpenAI cũng đạt đến cấp độ vô địch của con người trong các câu hỏi toán học, Aristotle đã làm được điều đó với bằng chứng trong tay. Bài học rút ra cho an toàn AI là thuyết phục: Khi một câu trả lời đi kèm với chứng minh Lean4, bạn không cần phải tin tưởng AI – bạn có thể kiểm tra nó.</p>
+<p>Phương pháp này có thể được mở rộng cho nhiều lĩnh vực. Chúng ta có thể hình dung một trợ lý LLM cho tài chính đưa ra câu trả lời chỉ khi nó có thể tạo ra một chứng minh hình thức rằng nó tuân thủ các quy tắc kế toán hoặc các ràng buộc pháp lý. Hoặc, một cố vấn khoa học AI đưa ra một giả thuyết cùng với chứng minh Lean4 về sự nhất quán với các định luật vật lý đã biết. Các mẫu là như nhau – Lean4 hoạt động như một mạng lưới an toàn nghiêm ngặt, lọc ra các kết quả sai hoặc không được xác minh. Như một nhà nghiên cứu AI từ Safe đã nói, &ldquo;tiêu chuẩn vàng để hỗ trợ một tuyên bố là cung cấp một chứng minh,&rdquo; và giờ đây AI có thể làm chính xác điều đó.</p>
+<h2 id="xây-dựng-các-hệ-thống-an-toàn-và-đáng-tin-cậy-với-lean4">Xây dựng các hệ thống an toàn và đáng tin cậy với Lean4</h2>
+<p>Giá trị của Lean4 không chỉ giới hạn ở các tác vụ suy luận thuần túy; nó còn có khả năng cách mạng hóa bảo mật và độ tin cậy phần mềm trong thời đại AI. Lỗi và lỗ hổng trong phần mềm về cơ bản là các lỗi logic nhỏ lọt qua quá trình kiểm thử của con người. Điều gì sẽ xảy ra nếu lập trình được hỗ trợ bởi AI có thể loại bỏ chúng bằng cách sử dụng Lean4 để xác minh tính đúng đắn của mã?</p>
+<p>Trong giới phương pháp hình thức, người ta biết rõ rằng mã có thể chứng minh được tính đúng đắn có thể &ldquo;loại bỏ toàn bộ các lớp lỗ hổng [và] giảm thiểu các lỗi hệ thống quan trọng&rdquo;. Lean4 cho phép viết các chương trình với các chứng minh về các thuộc tính như &ldquo;mã này không bao giờ gặp sự cố hoặc tiết lộ dữ liệu&rdquo;. Tuy nhiên, trong lịch sử, việc viết mã được xác minh như vậy rất tốn công sức và đòi hỏi chuyên môn chuyên ngành. Bây giờ, với LLM, có một cơ hội để tự động hóa và mở rộng quy mô quy trình này.</p>
+<p>Các nhà nghiên cứu đã bắt đầu tạo ra các điểm chuẩn như VeriBench để thúc đẩy LLM tạo các chương trình được xác minh Lean4 từ mã thông thường. Các kết quả ban đầu cho thấy các mô hình hiện tại chưa đạt yêu cầu cho phần mềm tùy ý – trong một đánh giá, một mô hình hiện đại chỉ có thể xác minh đầy đủ khoảng 12% các thử thách lập trình được đưa ra bằng Lean4. Tuy nhiên, một phương pháp &ldquo;tác nhân&rdquo; AI thử nghiệm (tự điều chỉnh lặp đi lặp lại với phản hồi Lean) đã nâng tỷ lệ thành công đó lên gần 60%. Đây là một bước nhảy đầy hứa hẹn, gợi ý rằng các trợ lý mã hóa AI trong tương lai có thể tạo ra mã có thể kiểm tra bằng máy, không có lỗi một cách thường xuyên.</p>
+<p>Tầm quan trọng chiến lược đối với các doanh nghiệp là rất lớn. Hãy tưởng tượng có thể yêu cầu AI viết một đoạn phần mềm và nhận được không chỉ mã, mà còn là bằng chứng rằng nó bảo mật và đúng đắn theo thiết kế. Các bằng chứng như vậy có thể đảm bảo không có tràn bộ đệm, không có điều kiện chủng tộc và tuân thủ các chính sách bảo mật. Trong các ngành như ngân hàng, chăm sóc sức khỏe hoặc cơ sở hạ tầng quan trọng, điều này có thể làm giảm đáng kể rủi ro. Điều đáng nói là xác minh hình thức đã là tiêu chuẩn trong các lĩnh vực có rủi ro cao (tức là xác minh phần mềm nhúng của thiết bị y tế hoặc hệ thống hàng không). CEO của Harmonic lưu ý rõ ràng rằng công nghệ xác minh tương tự được sử dụng trong &ldquo;thiết bị y tế và hàng không&rdquo; vì sự an toàn – Lean4 đang mang lại mức độ chặt chẽ đó vào bộ công cụ AI.</p>
+<p>Ngoài lỗi phần mềm, Lean4 có thể mã hóa và xác minh các quy tắc an toàn dành riêng cho miền. Ví dụ, hãy xem xét các hệ thống AI thiết kế các dự án kỹ thuật. Một cuộc thảo luận trên diễn đàn LessWrong về an toàn AI đưa ra ví dụ về thiết kế cầu: Một AI có thể đề xuất một cấu trúc cầu và các hệ thống hình thức như Lean có thể chứng nhận rằng thiết kế tuân thủ tất cả các tiêu chí an toàn kỹ thuật cơ khí.</p>
+<p>Sự tuân thủ của cây cầu với dung sai tải trọng, độ bền vật liệu và các quy tắc thiết kế trở thành một định lý trong Lean, một khi được chứng minh, sẽ đóng vai trò là giấy chứng nhận an toàn không thể chối cãi. Tầm nhìn rộng lớn hơn là bất kỳ quyết định AI nào ảnh hưởng đến thế giới vật lý – từ bố cục mạch đến quỹ đạo hàng không vũ trụ – có thể đi kèm với chứng minh Lean4 rằng nó đáp ứng các ràng buộc an toàn đã chỉ định. Trên thực tế, Lean4 bổ sung một lớp tin cậy lên trên kết quả AI: Nếu AI không thể chứng minh rằng nó an toàn hoặc đúng đắn, nó sẽ không được triển khai.</p>
+<h2 id="từ-công-nghệ-lớn-đến-các-công-ty-khởi-nghiệp-một-phong-trào-đang-phát-triển">Từ công nghệ lớn đến các công ty khởi nghiệp: Một phong trào đang phát triển</h2>
+<p>Những gì bắt đầu từ giới học thuật như một công cụ chuyên biệt cho các nhà toán học đang nhanh chóng trở thành một nỗ lực chính thống trong AI. Trong vài năm qua, các phòng thí nghiệm AI lớn và các công ty khởi nghiệp đều đã áp dụng Lean4 để đẩy ranh giới của AI đáng tin cậy:</p>
+<ul>
+<li><strong>OpenAI và Meta (2022)</strong>: Cả hai tổ chức đều đã độc lập huấn luyện các mô hình AI giải các bài toán toán học cấp ba bằng cách tạo ra các chứng minh hình thức bằng Lean. Đây là một khoảnh khắc quan trọng, chứng minh rằng các mô hình lớn có thể tương tác với các trình trợ giúp chứng minh hình thức và đạt được các kết quả không tầm thường. Meta thậm chí còn cung cấp công khai mô hình Lean của họ cho các nhà nghiên cứu. Các dự án này cho thấy Lean4 có thể hoạt động song song với LLM để giải quyết các vấn đề đòi hỏi sự chặt chẽ logic theo từng bước.</li>
+<li><strong>Google DeepMind (2024)</strong>: Hệ thống AlphaProof của DeepMind đã chứng minh các mệnh đề toán học bằng Lean4 ở cấp độ tương đương với người đoạt huy chương bạc Olympic Toán Quốc tế. Đây là AI đầu tiên đạt được hiệu suất &ldquo;đáng huy chương&rdquo; trong các bài toán thi đấu toán học hình thức – về cơ bản xác nhận rằng AI có thể đạt được kỹ năng suy luận hàng đầu khi được liên kết với một trợ giúp chứng minh. Thành công của AlphaProof nhấn mạnh rằng Lean4 không chỉ là một công cụ gỡ lỗi; nó đang mở ra những đỉnh cao mới của suy luận tự động.</li>
+<li><strong>Hệ sinh thái khởi nghiệp</strong>: Harmonic AI kể trên là một ví dụ điển hình, đã huy động được nguồn vốn đáng kể (100 triệu đô la vào năm 2025) để xây dựng AI &ldquo;không ảo giác&rdquo; bằng cách sử dụng Lean4 làm xương sống. Một nỗ lực khác, DeepSeek, đã phát hành các mô hình trình trợ giúp Lean4 mã nguồn mở nhằm dân chủ hóa công nghệ này. Chúng ta cũng đang thấy các công ty khởi nghiệp học thuật và các công cụ – ví dụ, các trình xác minh dựa trên Lean đang được tích hợp vào các trợ lý mã hóa và các điểm chuẩn mới như FormalStep và VeriBench hướng dẫn cộng đồng nghiên cứu.</li>
+<li><strong>Cộng đồng và giáo dục</strong>: Một cộng đồng sôi động đã phát triển xung quanh Lean (diễn đàn Lean Prover, thư viện mathlib) và thậm chí các nhà toán học nổi tiếng như Terence Tao đã bắt đầu sử dụng Lean4 với sự hỗ trợ của AI để hình thức hóa các kết quả toán học tiên tiến. Sự kết hợp giữa chuyên môn của con người, kiến thức cộng đồng và AI này gợi ý về tương lai hợp tác của các phương pháp hình thức trong thực tế.</li>
+</ul>
+<p>Tất cả những phát triển này cho thấy một sự hội tụ: AI và xác minh hình thức không còn là những thế giới riêng biệt. Các kỹ thuật và bài học đang được trao đổi chéo. Mỗi thành công – cho dù đó là giải một định lý toán học hay bắt một lỗi phần mềm – đều xây dựng niềm tin rằng Lean4 có thể xử lý các vấn đề phức tạp hơn, thực tế hơn trong an toàn và độ tin cậy của AI.</p>
+<h2 id="thách-thức-và-con-đường-phía-trước">Thách thức và con đường phía trước</h2>
+<p>Điều quan trọng là phải giảm bớt sự hào hứng với một liều lượng thực tế. Việc tích hợp Lean4 vào quy trình làm việc AI vẫn còn ở giai đoạn đầu và có những rào cản cần vượt qua:</p>
+<ul>
+<li><strong>Khả năng mở rộng</strong>: Hình thức hóa kiến thức thế giới thực hoặc các cơ sở mã lớn bằng Lean4 có thể tốn nhiều công sức. Lean đòi hỏi sự chỉ định chính xác các vấn đề, điều này không phải lúc nào cũng dễ dàng đối với các tình huống thực tế phức tạp. Các nỗ lực như tự động hình thức hóa (nơi AI chuyển đổi các thông số kỹ thuật không chính thức thành mã Lean) đang được tiến hành, nhưng cần có thêm tiến bộ để làm cho điều này trở nên liền mạch cho việc sử dụng hàng ngày.</li>
+<li><strong>Hạn chế của mô hình</strong>: Các LLM hiện tại, ngay cả những mô hình tiên tiến nhất, cũng gặp khó khăn trong việc tạo ra các chứng minh hoặc chương trình Lean4 chính xác mà không có hướng dẫn. Tỷ lệ lỗi trên các điểm chuẩn như VeriBench cho thấy việc tạo ra các giải pháp được xác minh đầy đủ là một thách thức khó khăn. Nâng cao khả năng của AI để hiểu và tạo ra logic hình thức là một lĩnh vực nghiên cứu tích cực – và thành công không đảm bảo sẽ nhanh chóng. Tuy nhiên, mọi cải tiến về suy luận AI (như suy nghĩ theo chuỗi tốt hơn hoặc đào tạo chuyên biệt về các nhiệm vụ hình thức) có khả năng cải thiện hiệu suất ở đây.</li>
+<li><strong>Chuyên môn người dùng</strong>: Sử dụng xác minh Lean4 đòi hỏi một tư duy mới cho các nhà phát triển và người ra quyết định. Các tổ chức có thể cần đầu tư vào đào tạo hoặc tuyển dụng nhân viên mới hiểu về phương pháp hình thức. Sự thay đổi văn hóa để nhấn mạnh chứng minh có thể mất thời gian, giống như việc áp dụng kiểm tra tự động hoặc phân tích tĩnh đã làm trong quá khứ. Những người áp dụng sớm sẽ cần thể hiện những chiến thắng để thuyết phục ngành công nghiệp rộng lớn hơn về ROI.</li>
+</ul>
+<p>Mặc dù có những thách thức này, quỹ đạo đã được thiết lập. Như một nhà bình luận đã quan sát, chúng ta đang trong một cuộc chạy đua giữa khả năng ngày càng mở rộng của AI và khả năng của chúng ta trong việc khai thác những khả năng đó một cách an toàn. Các công cụ xác minh hình thức như Lean4 là một trong những phương tiện hứa hẹn nhất để nghiêng cán cân về phía an toàn. Chúng cung cấp một cách có nguyên tắc để đảm bảo các hệ thống AI làm chính xác những gì chúng ta dự định, không hơn không kém, với các chứng minh để chứng minh điều đó.</p>
+<h2 id="hướng-tới-ai-được-chứng-minh-là-an-toàn">Hướng tới AI được chứng minh là an toàn</h2>
+<p>Trong một thời đại mà các hệ thống AI ngày càng đưa ra các quyết định ảnh hưởng đến cuộc sống và cơ sở hạ tầng quan trọng, sự tin tưởng là tài nguyên khan hiếm nhất. Lean4 cung cấp một con đường để giành được sự tin tưởng đó không phải bằng lời hứa, mà bằng chứng minh. Bằng cách đưa sự chắc chắn toán học hình thức vào phát triển AI, chúng ta có thể xây dựng các hệ thống được xác minh là đúng đắn, an toàn và phù hợp với mục tiêu của chúng ta.</p>
+<p>Từ việc cho phép LLM giải quyết các vấn đề với độ chính xác được đảm bảo, đến việc tạo ra phần mềm không có lỗi có thể khai thác, vai trò của Lean4 trong AI đang mở rộng từ một sự tò mò nghiên cứu thành một sự cần thiết chiến lược. Các tập đoàn công nghệ và các công ty khởi nghiệp đều đang đầu tư vào phương pháp này, chỉ ra một tương lai mà việc nói &ldquo;AI có vẻ đúng&rdquo; là không đủ – chúng ta sẽ yêu cầu &ldquo;AI có thể chứng minh là đúng&rdquo;.</p>
+<p>Đối với những người ra quyết định doanh nghiệp, thông điệp rất rõ ràng: Đã đến lúc theo dõi chặt chẽ không gian này. Việc kết hợp xác minh hình thức thông qua Lean4 có thể trở thành một lợi thế cạnh tranh trong việc cung cấp các sản phẩm AI mà khách hàng và cơ quan quản lý tin tưởng. Chúng ta đang chứng kiến những bước đi đầu tiên trong sự tiến hóa của AI từ một người học việc trực quan thành một chuyên gia được xác nhận chính thức. Lean4 không phải là một viên đạn thần kỳ cho tất cả các mối lo ngại về an toàn AI, nhưng nó là một thành phần mạnh mẽ trong công thức cho AI an toàn, xác định và thực sự làm những gì nó được cho là làm – không hơn, không kém, không sai.</p>
+<p>Khi AI tiếp tục tiến bộ, những người kết hợp sức mạnh của nó với sự chặt chẽ của chứng minh hình thức sẽ dẫn đầu trong việc triển khai các hệ thống không chỉ thông minh, mà còn có thể chứng minh được độ tin cậy.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/lean4-how-the-theorem-prover-works-and-why-its-the-new-competitive-edge-in">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/november-23-2025/">November 23, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/32b0d2/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/2KeyrGnSHkdmqbcNw5vNeL/cecc8af8a67e02395c663b22d9a19682/nuneybits_Vector_art_of_digital_film_reel_63eee9bf-9b4d-4d52-ae61-67717cda7a74.webp?w=1000&amp;q=100" alt="Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các nhà sáng lập OpenCV ra mắt startup video AI để cạnh tranh với OpenAI và Google</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Một startup trí tuệ nhân tạo mới do những người tạo ra thư viện thị giác máy tính được sử dụng rộng rãi nhất thế giới thành lập đã nổi lên khỏi trạng thái ẩn với công nghệ tạo ra các video lấy con người làm trung tâm, chân thực dài tới năm phút — một bước nhảy vọt so với khả năng của các đối thủ cạnh tranh bao gồm cả Sora của OpenAI và Veo của Google.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-19/0bf8d8/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/UBKRkNVW5IWPee8mY5sZ7/fe00ca8d47c653249e4ca569c98cd515/Listen_Now_-_1200x675__1_.png?w=1000&amp;q=100" alt="VentureBeat ra mắt &#39;Beyond the Pilot&#39; — một loạt podcast mới khám phá cách AI doanh nghiệp trở nên thực tế" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-19T00:00:00&#43;00:00">Nov 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">VentureBeat ra mắt &#39;Beyond the Pilot&#39; — một loạt podcast mới khám phá cách AI doanh nghiệp trở nên thực tế</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Ra mắt ngày 19 tháng 11</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/8116cb/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/b7d0d593ccea435d71e0910bd16c2841.svg" alt="Cách tạo NeuTTS-air tạo ra hơn 200 giây âm thanh trong một giây" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách tạo NeuTTS-air tạo ra hơn 200 giây âm thanh trong một giây</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/3e003f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/5fe16a29e69f7b521398f73b/qKx7SKgZrs0y5YbbQZcdQ.png" alt="Giới thiệu Cogito v2.1" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Cogito v2.1</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/ea9245/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/10TO4TabeTLbB0ToQ9XNuFeSRJuWNI1tTGJv4B6KfLmYwGsbAfOnwYU3By-m_Yo0biNmkFqYVKC6F8MJXyc-1Pcrnke7NlB1G4_mrxtsKHsYCIVP=w1440-h1440-n-nu" alt="Giới thiệu Nano Banana Pro" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Nano Banana Pro</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/505fe6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Lean4- Cách trình chứng minh định lý hoạt động và tại sao nó là lợi thế cạnh tranh mới trong AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Lean4- Cách trình chứng minh định lý hoạt động và tại sao nó là lợi thế cạnh tranh mới trong AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/fde25c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1674191139776-noauth.png" alt="Viết mã RAG đơn giản từ đầu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Viết mã RAG đơn giản từ đầu</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
