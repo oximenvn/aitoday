@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chúng tôi đã nhận được Claude để tinh chỉnh một LLM mã nguồn mở | AI Today - SkyAI</title>
+
+<meta name="description" content="Chúng tôi đã nhận được Claude để tinh chỉnh một LLM mã nguồn mở">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Chúng tôi đã nhận được Claude để tinh chỉnh một LLM mã nguồn mở</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Chúng tôi đã nhận được Claude để tinh chỉnh một LLM mã nguồn mở </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-12-04T00:00:00&#43;00:00">December 4, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            13 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Chúng tôi đã nhận được Claude để tinh chỉnh một LLM mã nguồn mở">
+        <figcaption class="text-center italic text-xs">Chúng tôi đã nhận được Claude để tinh chỉnh một LLM mã nguồn mở</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="chúng-ta-đã-nhờ-claude-tinh-chỉnh-một-mô-hình-ngôn-ngữ-lớn-mã-nguồn-mở">Chúng ta đã nhờ Claude tinh chỉnh một mô hình ngôn ngữ lớn mã nguồn mở</h1>
+<p>Chúng tôi đã trang bị cho Claude khả năng tinh chỉnh các mô hình ngôn ngữ bằng một công cụ mới có tên là Hugging Face Skills. Không chỉ viết các tập lệnh đào tạo, mà còn có thể gửi công việc đến GPU đám mây, theo dõi tiến độ và đẩy các mô hình đã hoàn thành lên Hugging Face Hub. Hướng dẫn này cho bạn biết cách thức hoạt động và cách bạn có thể tự sử dụng nó.</p>
+<blockquote>
+<p>Claude Code có thể sử dụng &ldquo;kỹ năng&rdquo;—các hướng dẫn, tập lệnh và kiến thức chuyên môn được đóng gói—để hoàn thành các tác vụ chuyên biệt. Kỹ năng <code>hf-llm-trainer</code> dạy cho Claude mọi thứ nó cần biết về đào tạo: GPU nào cần chọn cho kích thước mô hình của bạn, cách cấu hình xác thực Hub, khi nào nên sử dụng LoRA so với tinh chỉnh toàn bộ và cách xử lý hàng tá quyết định khác góp phần tạo nên một quy trình đào tạo thành công.</p></blockquote>
+<p>Với kỹ năng này, bạn có thể nói với Claude những điều như:</p>
+<pre tabindex="0"><code>Tinh chỉnh Qwen3-0.6B trên tập dữ liệu open-r1/codeforces-cots
+</code></pre><p>Và Claude sẽ:</p>
+<ol>
+<li>Xác thực định dạng tập dữ liệu của bạn</li>
+<li>Chọn phần cứng phù hợp (t4-small cho mô hình 0.6B)</li>
+<li>Sử dụng và cập nhật một tập lệnh đào tạo với giám sát Trackio</li>
+<li>Gửi công việc đến Hugging Face Jobs</li>
+<li>Báo cáo ID công việc và chi phí ước tính</li>
+<li>Kiểm tra tiến độ khi bạn hỏi</li>
+<li>Giúp bạn gỡ lỗi nếu có sự cố xảy ra</li>
+</ol>
+<p>Mô hình được đào tạo trên GPU Hugging Face trong khi bạn làm những việc khác. Khi hoàn thành, mô hình được tinh chỉnh của bạn sẽ xuất hiện trên Hub, sẵn sàng để sử dụng.</p>
+<p>Đây không phải là một bản demo đồ chơi. Kỹ năng này hỗ trợ các phương pháp đào tạo giống như được sử dụng trong sản xuất: tinh chỉnh có giám sát, tối ưu hóa tùy chọn trực tiếp và học tăng cường với phần thưởng có thể xác minh. Bạn có thể đào tạo các mô hình từ 0,5B đến 70B tham số, chuyển đổi chúng sang GGUF để triển khai cục bộ và chạy các quy trình nhiều giai đoạn kết hợp các kỹ thuật khác nhau.</p>
+<h2 id="thiết-lập-và-cài-đặt">Thiết lập và Cài đặt</h2>
+<p>Trước khi bắt đầu, bạn sẽ cần:</p>
+<ul>
+<li>Tài khoản Hugging Face với gói <strong>Pro</strong> hoặc <strong>Team</strong> (Jobs yêu cầu gói trả phí)</li>
+<li>Một token có quyền ghi từ huggingface.co/settings/tokens</li>
+<li>Một tác nhân mã hóa như Claude Code, OpenAI Codex hoặc Gemini CLI của Google</li>
+</ul>
+<p>Các kỹ năng của Hugging Face tương thích với Claude Code, Codex và Gemini CLI. Với các tích hợp Cursor, Windsurf và Continue, chúng tôi đang trên đường hoàn thiện.</p>
+<h3 id="claude-code">Claude Code</h3>
+<ol>
+<li>
+<p>Đăng ký kho lưu trữ làm thị trường plugin:</p>
+<pre tabindex="0"><code>/plugin marketplace add huggingface/skills
+</code></pre></li>
+<li>
+<p>Để cài đặt một kỹ năng, hãy chạy:</p>
+<pre tabindex="0"><code>/plugin install &lt;skill-folder&gt;@huggingface-skills
+</code></pre><p>Ví dụ:</p>
+<pre tabindex="0"><code>/plugin install hf-llm-trainer@huggingface-skills
+</code></pre></li>
+</ol>
+<h3 id="codex">Codex</h3>
+<ol>
+<li>
+<p>Codex sẽ xác định các kỹ năng thông qua tệp <code>AGENTS.md</code>. Bạn có thể xác minh các hướng dẫn đã được tải bằng lệnh:</p>
+<pre tabindex="0"><code>codex --ask-for-approval never &#34;Summarize the current instructions.&#34;
+</code></pre></li>
+<li>
+<p>Để biết thêm chi tiết, hãy xem hướng dẫn AGENTS của Codex.</p>
+</li>
+</ol>
+<h3 id="gemini-cli">Gemini CLI</h3>
+<ol>
+<li>
+<p>Kho lưu trữ này bao gồm <code>gemini-extension.json</code> để tích hợp với Gemini CLI.</p>
+</li>
+<li>
+<p>Cài đặt cục bộ:</p>
+<pre tabindex="0"><code>gemini extensions install . --consent
+</code></pre><p>hoặc sử dụng URL GitHub:</p>
+<pre tabindex="0"><code>gemini extensions install https://github.com/huggingface/skills.git --consent
+</code></pre></li>
+<li>
+<p>Xem tài liệu về tiện ích mở rộng của Gemini CLI để được trợ giúp thêm.</p>
+</li>
+</ol>
+<h3 id="kết-nối-với-hugging-face">Kết nối với Hugging Face</h3>
+<p>Bạn sẽ cần xác thực tài khoản Hugging Face của mình bằng <strong>token có quyền ghi</strong> để công việc có thể tạo kho lưu trữ mô hình.</p>
+<p>Thiết lập token của bạn:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hf auth login
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># hoặc</span>
+</span></span><span style="display:flex;"><span>export HF_TOKEN<span style="color:#f92672">=</span>hf_your_write_access_token_here
+</span></span></code></pre></div><blockquote>
+<p><strong>LƯU Ý</strong>
+Cấu hình máy chủ Hugging Face MCP để sử dụng token ghi của bạn bằng cách gửi nó trong các tiêu đề HTTP <code>HF_TOKEN</code> hoặc <code>Authorization: Bearer</code>.</p></blockquote>
+<h2 id="chạy-tinh-chỉnh-đầu-tiên-của-bạn">Chạy Tinh chỉnh Đầu tiên của Bạn</h2>
+<p>Hãy cùng xem xét một ví dụ hoàn chỉnh. Chúng ta sẽ tinh chỉnh một mô hình nhỏ để xem toàn bộ quy trình làm việc, sau đó khám phá các khả năng nâng cao hơn.</p>
+<h3 id="hướng-dẫn-tác-nhân-mã-hóa-để-tinh-chỉnh">Hướng dẫn tác nhân mã hóa để tinh chỉnh</h3>
+<p>Bắt đầu với một hướng dẫn đơn giản và rõ ràng để tinh chỉnh một mô hình cụ thể</p>
+<pre tabindex="0"><code>Tinh chỉnh Qwen3-0.6B trên tập dữ liệu open-r1/codeforces-cots để làm theo hướng dẫn.
+</code></pre><p>Tác nhân mã hóa phân tích yêu cầu của bạn và chuẩn bị một cấu hình đào tạo. Đối với mô hình 0.6B trên tập dữ liệu demo, nó chọn <code>t4-small</code>—đủ GPU cho kích thước mô hình này và là tùy chọn rẻ nhất có sẵn.</p>
+<blockquote>
+<p>Tập dữ liệu <code>open-r1/codeforces-cots</code> là một tập dữ liệu gồm các bài toán và giải pháp của Codeforces. Đây là một tập dữ liệu tốt để tinh chỉnh hướng dẫn một mô hình nhằm giải quyết các bài toán mã hóa khó.</p></blockquote>
+<h3 id="xem-lại-trước-khi-gửi">Xem lại Trước khi Gửi</h3>
+<p>Trước khi tác nhân mã hóa của bạn gửi bất kỳ thứ gì, bạn sẽ thấy cấu hình:</p>
+<pre tabindex="0"><code>Tôi sẽ tinh chỉnh Qwen/Qwen3-0.6B trên open-r1/codeforces-cots bằng SFT.
+
+Cấu hình:
+- Phần cứng: t4-small (~$0.75/giờ)
+- Thời gian ước tính: ~20 phút
+- Chi phí ước tính: ~$0.30
+- Đầu ra: username/qwen-codeforces-cots-sft
+
+Mô hình sẽ được đẩy lên Hub tự động. Tôi có nên gửi không?
+</code></pre><p>Đây là cơ hội để bạn điều chỉnh bất cứ điều gì. Thay đổi tên kho lưu trữ đầu ra, chọn phần cứng khác hoặc yêu cầu Claude sửa đổi các tham số đào tạo. Sau khi bạn phê duyệt, tác nhân sẽ gửi công việc.</p>
+<p>Ví dụ, bạn có thể yêu cầu tác nhân chạy thử nghiệm:</p>
+<pre tabindex="0"><code>Thực hiện một lần chạy thử nghiệm nhanh trên 100 ví dụ.
+</code></pre><h3 id="theo-dõi-tiến-độ">Theo dõi Tiến độ</h3>
+<p>Sau khi gửi, bạn sẽ nhận được chi tiết công việc:</p>
+<pre tabindex="0"><code>✅ Công việc đã gửi thành công!
+
+ID công việc: abc123xyz
+Giám sát: https://huggingface.co/jobs/username/abc123xyz
+
+Thời gian dự kiến: ~20 phút
+Chi phí ước tính: ~$0.30
+
+Xem số liệu thống kê thời gian thực tại: https://huggingface.co/spaces/username/trackio
+</code></pre><!-- raw HTML omitted -->
+<p>Kỹ năng này tích hợp Trackio theo mặc định, vì vậy bạn có thể theo dõi mức giảm mất mát đào tạo trong thời gian thực. Các công việc chạy không đồng bộ, vì vậy bạn có thể đóng thiết bị đầu cuối và quay lại sau. Khi bạn muốn cập nhật:</p>
+<pre tabindex="0"><code>Công việc đào tạo của tôi đang tiến triển thế nào?
+</code></pre><p>Sau đó, tác nhân sẽ lấy nhật ký và tóm tắt tiến độ.</p>
+<h3 id="sử-dụng-mô-hình-của-bạn">Sử dụng Mô hình của Bạn</h3>
+<p>Khi quá trình đào tạo hoàn tất, mô hình của bạn sẽ có trên Hub:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoModelForCausalLM, AutoTokenizer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;username/qwen-codeforces-cots-sft&#34;</span>)
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;username/qwen-codeforces-cots-sft&#34;</span>)
+</span></span></code></pre></div><p>Đó là toàn bộ vòng lặp. Bạn đã mô tả những gì mình muốn bằng ngôn ngữ tự nhiên, và tác nhân đã xử lý việc chọn GPU, tạo tập lệnh, gửi công việc, xác thực và lưu trữ. Toàn bộ quá trình này tốn khoảng ba mươi xu.</p>
+<h2 id="phương-pháp-đào-tạo">Phương pháp Đào tạo</h2>
+<p>Kỹ năng này hỗ trợ ba phương pháp đào tạo. Hiểu khi nào nên sử dụng từng phương pháp sẽ giúp bạn đạt được kết quả tốt hơn.</p>
+<h3 id="tinh-chỉnh-có-giám-sát-sft">Tinh chỉnh có Giám sát (SFT)</h3>
+<p>SFT là nơi hầu hết các dự án bắt đầu. Bạn cung cấp dữ liệu minh họa—các ví dụ về đầu vào và đầu ra mong muốn—và quá trình đào tạo sẽ điều chỉnh mô hình để khớp với các mẫu đó.</p>
+<p>Sử dụng SFT khi bạn có các ví dụ chất lượng cao về hành vi bạn muốn. Các cuộc trò chuyện hỗ trợ khách hàng, các cặp tạo mã, hỏi đáp theo lĩnh vực cụ thể—bất cứ điều gì bạn có thể cho mô hình thấy điều gì là tốt.</p>
+<pre tabindex="0"><code>Tinh chỉnh Qwen3-0.6B trên my-org/support-conversations trong 3 epoch.
+</code></pre><p>Tác nhân xác thực tập dữ liệu, chọn phần cứng (a10g-large với LoRA cho mô hình 7B) và cấu hình đào tạo với các điểm kiểm tra và giám sát.</p>
+<blockquote>
+<p>Đối với các mô hình lớn hơn 3B tham số, tác nhân sẽ tự động sử dụng LoRA (Low-Rank Adaptation) để giảm yêu cầu bộ nhớ. Điều này làm cho việc đào tạo các mô hình 7B hoặc 13B trở nên khả thi trên GPU đơn lẻ, đồng thời bảo toàn hầu hết chất lượng của việc tinh chỉnh toàn bộ.</p></blockquote>
+<h3 id="tối-ưu-hóa-tùy-chọn-trực-tiếp-dpo">Tối ưu hóa Tùy chọn Trực tiếp (DPO)</h3>
+<p>DPO đào tạo dựa trên các cặp tùy chọn—các phản hồi mà một trong số đó được &ldquo;chọn&rdquo; và một phản hồi khác bị &ldquo;từ chối&rdquo;. Điều này căn chỉnh đầu ra của mô hình với sở thích của con người, thường là sau giai đoạn SFT ban đầu.</p>
+<p>Sử dụng DPO khi bạn có các chú thích tùy chọn từ người dán nhãn thủ công hoặc so sánh tự động. DPO tối ưu hóa trực tiếp cho phản hồi được ưu tiên mà không cần mô hình phần thưởng riêng biệt.</p>
+<pre tabindex="0"><code>Chạy DPO trên my-org/preference-data để căn chỉnh mô hình SFT mà tôi vừa đào tạo.
+Tập dữ liệu có các cột &#39;chosen&#39; và &#39;rejected&#39;.
+</code></pre><blockquote>
+<p>DPO nhạy cảm với định dạng tập dữ liệu. Nó yêu cầu các cột có tên chính xác là <code>chosen</code> và <code>rejected</code>, hoặc một cột <code>prompt</code> với đầu vào. Tác nhân sẽ xác thực điều này trước và cho bạn biết cách ánh xạ các cột nếu tập dữ liệu của bạn sử dụng các tên khác.</p></blockquote>
+<h3 id="tối-ưu-hóa-chính-sách-tương-đối-nhóm-grpo">Tối ưu hóa Chính sách Tương đối Nhóm (GRPO)</h3>
+<p>GRPO là một tác vụ học tăng cường đã được chứng minh là có hiệu quả trên các tác vụ có thể xác minh như giải bài toán, viết mã hoặc bất kỳ tác vụ nào có tiêu chí thành công theo chương trình.</p>
+<pre tabindex="0"><code>Đào tạo mô hình lập luận toán học bằng GRPO trên tập dữ liệu openai/gsm8k dựa trên Qwen3-0.6B.
+</code></pre><p>Mô hình tạo ra các phản hồi, nhận phần thưởng dựa trên độ chính xác và học hỏi từ các kết quả. Điều này phức tạp hơn SFT hoặc DPO, nhưng cấu hình tương tự.</p>
+<h2 id="phần-cứng-và-chi-phí">Phần cứng và Chi phí</h2>
+<p>Tác nhân chọn phần cứng dựa trên kích thước mô hình của bạn, nhưng hiểu các đánh đổi giúp bạn đưa ra quyết định tốt hơn.</p>
+<h3 id="ánh-xạ-kích-thước-mô-hình-sang-gpu">Ánh xạ Kích thước Mô hình sang GPU</h3>
+<p>Đối với <strong>các mô hình nhỏ dưới 1B tham số</strong>, <code>t4-small</code> hoạt động tốt. Các mô hình này đào tạo nhanh chóng—dự kiến ​​$1-2 cho một lần chạy đầy đủ. Điều này hoàn hảo cho các lần chạy giáo dục hoặc thử nghiệm.</p>
+<p>Đối với <strong>các mô hình nhỏ (1-3B)</strong>, hãy nâng cấp lên <code>t4-medium</code> hoặc <code>a10g-small</code>. Quá trình đào tạo mất vài giờ và chi phí $5-15.</p>
+<p>Đối với <strong>các mô hình trung bình (3-7B)</strong>, bạn cần <code>a10g-large</code> hoặc <code>a100-large</code> với LoRA. Tinh chỉnh toàn bộ không phù hợp, nhưng LoRA làm cho những mô hình này rất dễ đào tạo. Ngân sách $15-40 cho sản xuất.</p>
+<p>Đối với <strong>các mô hình lớn (7B+)</strong>, công việc Hugging Face skills này không phù hợp.</p>
+<h3 id="demo-so-với-sản-xuất">Demo so với Sản xuất</h3>
+<p>Khi kiểm thử một quy trình làm việc, hãy bắt đầu nhỏ:</p>
+<pre tabindex="0"><code>Thực hiện một lần chạy thử nghiệm nhanh để SFT Qwen-0.6B với 100 ví dụ từ my-org/support-conversations.
+</code></pre><p>Tác nhân mã hóa cấu hình đào tạo tối thiểu—đủ để xác minh quy trình của bạn hoạt động mà không tốn chi phí thực tế.</p>
+<p>Để sản xuất, hãy rõ ràng:</p>
+<pre tabindex="0"><code>SFT Qwen-0.6B cho sản xuất trên toàn bộ my-org/support-conversations.
+Các điểm kiểm tra sau mỗi 500 bước, 3 epoch, tốc độ học cosine.
+</code></pre><blockquote>
+<p>Luôn chạy bản demo trước khi cam kết một công việc sản xuất kéo dài nhiều giờ. Bản demo trị giá $0.50 giúp phát hiện lỗi định dạng sẽ tiết kiệm chi phí cho một lần chạy thất bại trị giá $30.</p></blockquote>
+<h2 id="xác-thực-tập-dữ-liệu">Xác thực Tập dữ liệu</h2>
+<p>Định dạng tập dữ liệu là nguồn gây ra lỗi đào tạo phổ biến nhất. Tác nhân có thể xác thực các tập dữ liệu trước khi bạn tiêu tốn thời gian GPU.</p>
+<pre tabindex="0"><code>Kiểm tra xem my-org/conversation-data có hoạt động cho đào tạo SFT không.
+</code></pre><p>Tác nhân chạy một cuộc kiểm tra nhanh trên CPU (vài xu) và báo cáo:</p>
+<pre tabindex="0"><code>Xác thực tập dữ liệu cho my-org/conversation-data:
+
+SFT: ✓ SẴN SÀNG
+  Tìm thấy cột &#39;messages&#39; với định dạng hội thoại
+
+DPO: ✗ KHÔNG TƯƠNG THÍCH
+  Thiếu cột &#39;chosen&#39; và &#39;rejected&#39;
+</code></pre><p>Nếu tập dữ liệu của bạn cần biến đổi, tác nhân có thể chỉ cho bạn cách thực hiện:</p>
+<pre tabindex="0"><code>Tập dữ liệu DPO của tôi sử dụng &#39;good_response&#39; và &#39;bad_response&#39; thay vì
+&#39;chosen&#39; và &#39;rejected&#39;. Làm thế nào để khắc phục điều này?
+</code></pre><p>Tác nhân cung cấp mã ánh xạ và có thể tích hợp nó trực tiếp vào tập lệnh đào tạo của bạn.</p>
+<h2 id="giám-sát-đào-tạo">Giám sát Đào tạo</h2>
+<p>Giám sát thời gian thực giúp bạn phát hiện sớm các vấn đề. Kỹ năng này cấu hình Trackio theo mặc định—sau khi gửi công việc, bạn có thể theo dõi các số liệu tại:</p>
+<pre tabindex="0"><code>https://huggingface.co/spaces/username/trackio
+</code></pre><p>Điều này hiển thị mức mất mát đào tạo, tốc độ học và các số liệu xác thực. Một lần chạy lành mạnh cho thấy mức mất mát giảm dần.</p>
+<p>Hãy hỏi tác nhân về trạng thái bất cứ lúc nào:</p>
+<pre tabindex="0"><code>Công việc đào tạo của tôi đang tiến triển thế nào?
+</code></pre><pre tabindex="0"><code>Công việc abc123xyz đang chạy (45 phút đã trôi qua)
+
+Bước hiện tại: 850/1200
+Mất mát đào tạo: 1.23 (↓ từ 2.41 lúc bắt đầu)
+Tốc độ học: 1.2e-5
+
+Hoàn thành dự kiến: ~20 phút
+</code></pre><p>Nếu có sự cố xảy ra, tác nhân sẽ giúp chẩn đoán. Hết bộ nhớ? tác nhân gợi ý giảm kích thước lô hoặc nâng cấp phần cứng. Lỗi tập dữ liệu? tác nhân xác định sự không khớp. Hết thời gian? tác nhân đề xuất thời lượng dài hơn hoặc cài đặt đào tạo nhanh hơn.</p>
+<h2 id="chuyển-đổi-sang-gguf">Chuyển đổi sang GGUF</h2>
+<p>Sau khi đào tạo, bạn có thể muốn chạy mô hình của mình cục bộ. Định dạng GGUF hoạt động với llama.cpp và các công cụ phụ thuộc như LM Studio, Ollama, v.v.</p>
+<pre tabindex="0"><code>Chuyển đổi mô hình đã tinh chỉnh của tôi sang GGUF với định lượng Q4_K_M.
+Đẩy lên username/my-model-gguf.
+</code></pre><p>Tác nhân gửi một công việc chuyển đổi, hợp nhất các bộ chuyển đổi LoRA, chuyển đổi sang GGUF, áp dụng định lượng và đẩy lên Hub.</p>
+<p>Sau đó, sử dụng nó cục bộ:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>llama-server -hf &lt;username&gt;/&lt;model-name&gt;:&lt;quantization&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ví dụ, để chạy mô hình Qwen3-1.7B-GGUF trên máy cục bộ của bạn:</span>
+</span></span><span style="display:flex;"><span>llama-server -hf unsloth/Qwen3-1.7B-GGUF:Q4_K_M
+</span></span></code></pre></div><h2 id="sắp-tới">Sắp tới</h2>
+<p>Chúng tôi đã chứng minh rằng các tác nhân mã hóa như Claude Code, Codex hoặc Gemini CLI có thể xử lý toàn bộ vòng đời của việc tinh chỉnh mô hình: xác thực dữ liệu, chọn phần cứng, tạo tập lệnh, gửi công việc, giám sát tiến độ và chuyển đổi đầu ra. Điều này biến những gì từng là một kỹ năng chuyên môn thành một thứ bạn có thể thực hiện thông qua trò chuyện.</p>
+<p>Một số điều cần thử:</p>
+<ul>
+<li>Tinh chỉnh một mô hình trên tập dữ liệu của riêng bạn</li>
+<li>Xây dựng một mô hình được căn chỉnh theo sở thích với SFT → DPO</li>
+<li>Đào tạo một mô hình lập luận với GRPO về toán hoặc mã</li>
+<li>Chuyển đổi mô hình sang GGUF và chạy nó với Ollama</li>
+</ul>
+<p>Kỹ năng này là mã nguồn mở. Bạn có thể mở rộng nó, tùy chỉnh nó cho các quy trình làm việc của mình hoặc sử dụng nó làm điểm khởi đầu cho các tình huống đào tạo khác.</p>
+<hr>
+<h2 id="tài-nguyên">Tài nguyên</h2>
+<ul>
+<li><a href="https://github.com/huggingface/skills/blob/main/hf-llm-trainer/SKILL.md">SKILL.md</a> — Tài liệu kỹ năng đầy đủ</li>
+<li><a href="https://github.com/huggingface/skills/blob/main/hf-llm-trainer/references/training_methods.md">Training Methods</a> — SFT, DPO, GRPO được giải thích</li>
+<li><a href="https://github.com/huggingface/skills/blob/main/hf-llm-trainer/references/hardware_guide.md">Hardware Guide</a> — Lựa chọn GPU và chi phí</li>
+<li><a href="https://huggingface.co/docs/trl">Tài liệu TR L</a> — Thư viện đào tạo cơ bản</li>
+<li><a href="https://huggingface.co/docs/huggingface_hub/guides/jobs">Hugging Face Jobs</a> — Cơ sở hạ tầng đào tạo đám mây</li>
+<li><a href="https://huggingface.co/docs/trackio">Trackio</a> — Giám sát đào tạo thời gian thực</li>
+</ul>
+<h2 id="bài-viết-khác-từ-blog-của-chúng-tôi">Bài viết khác từ Blog của chúng tôi</h2>
+<h3 id="smol2operator-tác-nhân-gui-sau-đào-tạo-cho-sử-dụng-máy-tính">Smol2Operator: Tác nhân GUI Sau Đào tạo cho Sử dụng Máy tính</h3>
+<h3 id="giới-thiệu-anylanguagemodel-một-api-cho-llm-cục-bộ-và-từ-xa-trên-nền-tảng-apple">Giới thiệu AnyLanguageModel: Một API cho LLM Cục bộ và Từ xa trên Nền tảng Apple</h3>
+<h2 id="cộng-đồng">Cộng đồng</h2>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/hf-skills-training">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/4-th%C3%A1ng-12-n%C4%83m-2025/">4 Tháng 12 Năm 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-04/4f641f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="SARLO-80- Bộ dữ liệu quang học ngôn ngữ SAR Slant Toàn cầu với Độ phân giải 80 cm" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-04T00:00:00&#43;00:00">Dec 04, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">SARLO-80- Bộ dữ liệu quang học ngôn ngữ SAR Slant Toàn cầu với Độ phân giải 80 cm</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">SARLO-80- Bộ dữ liệu quang học ngôn ngữ SAR Slant Toàn cầu với Độ phân giải 80 cm</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-04/1701f2/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1613114437487-60262a8e0703121c822a80b6.png" alt="Thực thi chính sách tùy chỉnh với khả năng suy luận- Ứng dụng AI nhanh hơn, an toàn hơn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-04T00:00:00&#43;00:00">Dec 04, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Thực thi chính sách tùy chỉnh với khả năng suy luận- Ứng dụng AI nhanh hơn, an toàn hơn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Thực thi chính sách tùy chỉnh với khả năng suy luận- Ứng dụng AI nhanh hơn, an toàn hơn</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-04/36cded/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/53TbLNDfKawmAd8kGfw7ce/17400e5e49710944890e2a6b69cf04f8/nuneybits_Vector_art_of_a_server_rack_in_the_clouds_bf8ba787-9002-494b-b6be-fedd40deb4f9.webp?w=1000&amp;q=100" alt="AWS ra mắt Kiro với các tích hợp Stripe, Figma và Datadog để hỗ trợ lập trình AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AWS ra mắt Kiro với các tích hợp Stripe, Figma và Datadog để hỗ trợ lập trình AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-04/898f9c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Chúng tôi đã nhận được Claude để tinh chỉnh một LLM mã nguồn mở" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chúng tôi đã nhận được Claude để tinh chỉnh một LLM mã nguồn mở</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-04/43a0b8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Claude dành cho các tổ chức phi lợi nhuận" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Claude dành cho các tổ chức phi lợi nhuận</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-04/0f779d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/3CmdSFZEYAQv4H7nhojmdb/b1b80ea16c7d7fd8777d247741c4e75b/nuneybits_Vector_art_of_boardroom_table_overlaid_teal_data_07098080-0b63-47c3-8f02-5c9fdbf1e5fc.webp?w=1000&amp;q=100" alt="Nghiên cứu Gong- Các nhóm bán hàng sử dụng AI tạo ra doanh thu cao hơn 77% mỗi nhân viên" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nghiên cứu Gong- Các nhóm bán hàng sử dụng AI tạo ra doanh thu cao hơn 77% mỗi nhân viên</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-04/4f641f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/680ff4388f704be391757780/-9cmzdDMCol0OfkTYK8jF.png" alt="SARLO-80- Bộ dữ liệu quang học ngôn ngữ SAR Slant Toàn cầu với Độ phân giải 80 cm" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">SARLO-80- Bộ dữ liệu quang học ngôn ngữ SAR Slant Toàn cầu với Độ phân giải 80 cm</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
