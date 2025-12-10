@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cảm biến thời gian chạy của Hud cắt giảm thời gian phân loại từ 3 giờ xuống còn 10 phút | AI Today - SkyAI</title>
+
+<meta name="description" content="Cảm biến thời gian chạy của Hud cắt giảm thời gian phân loại từ 3 giờ xuống còn 10 phút">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Cảm biến thời gian chạy của Hud cắt giảm thời gian phân loại từ 3 giờ xuống còn 10 phút</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Cảm biến thời gian chạy của Hud cắt giảm thời gian phân loại từ 3 giờ xuống còn 10 phút </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-12-10T00:00:00&#43;00:00">December 10, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://images.ctfassets.net/jdtwqhzvc2n1/5OFBMkrEKqvqYY0hbPYaoF/e31f8e8b39af32f6197a402b42f96136/hud-code-dev-smk.jpg?w=1000&amp;q=100" alt="Cảm biến thời gian chạy của Hud cắt giảm thời gian phân loại từ 3 giờ xuống còn 10 phút">
+        <figcaption class="text-center italic text-xs">Cảm biến thời gian chạy của Hud cắt giảm thời gian phân loại từ 3 giờ xuống còn 10 phút</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="cách-cảm-biến-thời-gian-chạy-của-hud-giúp-giảm-thời-gian-xử-lý-sự-cố-từ-3-giờ-xuống-còn-10-phút">Cách cảm biến thời gian chạy của Hud giúp giảm thời gian xử lý sự cố từ 3 giờ xuống còn 10 phút</h1>
+<p>Các nhóm kỹ sư đang tạo ra nhiều mã hơn với các tác nhân AI hơn bao giờ hết. Nhưng họ đang gặp trở ngại khi mã đó đến giai đoạn sản xuất.</p>
+<p>Vấn đề không nhất thiết nằm ở bản thân mã do AI tạo ra. Đó là do các công cụ giám sát truyền thống thường gặp khó khăn trong việc cung cấp dữ liệu chi tiết, ở cấp độ chức năng mà các tác nhân AI cần để hiểu mã thực sự hoạt động như thế nào trong môi trường sản xuất phức tạp. Thiếu ngữ cảnh đó, các tác nhân không thể phát hiện sự cố hoặc tạo các bản sửa lỗi có tính đến thực tế sản xuất.</p>
+<!-- raw HTML omitted -->
+<p>Đây là một thách thức mà startup Hud đang tìm cách giải quyết với việc ra mắt cảm biến mã thời gian chạy của họ vào thứ Tư. Cảm biến mang tên công ty này chạy song song với mã sản xuất, tự động theo dõi cách mọi chức năng hoạt động, giúp các nhà phát triển biết được những gì đang thực sự xảy ra trong quá trình triển khai.</p>
+<p>“Mọi nhóm phần mềm xây dựng ở quy mô lớn đều đối mặt với cùng một thách thức cơ bản: xây dựng các sản phẩm chất lượng cao hoạt động tốt trong thế giới thực,” Roee Adler, CEO và người sáng lập Hud, nói với VentureBeat trong một cuộc phỏng vấn độc quyền. “Trong kỷ nguyên mới của phát triển tăng tốc bằng AI, việc không biết mã hoạt động như thế nào trong sản xuất trở thành một phần lớn hơn của thách thức đó.”</p>
+<h2 id="điều-mà-các-nhà-phát-triển-phần-mềm-đang-gặp-khó-khăn">Điều mà các nhà phát triển phần mềm đang gặp khó khăn</h2>
+<p>Những điểm khó khăn mà các nhà phát triển đang gặp phải là khá nhất quán trong các tổ chức kỹ thuật. Moshik Eilon, trưởng nhóm công nghệ của Monday.com, giám sát 130 kỹ sư và mô tả một sự thất vọng quen thuộc với các công cụ giám sát truyền thống.</p>
+<p>“Khi bạn nhận được cảnh báo, bạn thường kiểm tra một điểm cuối có tỷ lệ lỗi cao hoặc độ trễ cao, và bạn muốn đi sâu để xem các phụ thuộc hạ nguồn,” Eilon nói với VentureBeat. “Rất nhiều lần đó là ứng dụng thực tế, và sau đó nó là một hộp đen. Bạn chỉ nhận được 80% độ trễ hạ nguồn trên ứng dụng.”</p>
+<p>Bước tiếp theo thường liên quan đến công việc điều tra thủ công trên nhiều công cụ. Kiểm tra nhật ký. Liên kết dấu thời gian. Cố gắng tái tạo lại những gì ứng dụng đang làm. Đối với các sự cố mới sâu trong một cơ sở mã lớn, các nhóm thường thiếu dữ liệu chính xác mà họ cần.</p>
+<p>Daniel Marashlian, CTO và đồng sáng lập tại Drata, đã thấy các kỹ sư của mình dành hàng giờ cho cái mà ông gọi là “thuế điều tra”. “Họ đã ánh xạ một cảnh báo chung tới một chủ sở hữu mã cụ thể, sau đó đào sâu nhật ký để tái tạo trạng thái của ứng dụng,” Marashlian nói với VentureBeat. “Chúng tôi muốn loại bỏ điều đó để nhóm của chúng tôi có thể tập trung hoàn toàn vào việc sửa chữa thay vì khám phá.”</p>
+<p>Kiến trúc của Drata càng làm tăng thêm thách thức. Công ty tích hợp với nhiều dịch vụ bên ngoài để cung cấp tuân thủ tự động, điều này tạo ra các cuộc điều tra phức tạp khi có sự cố phát sinh. Các kỹ sư theo dõi hành vi trên một cơ sở mã rất lớn trải dài trên các mô-đun rủi ro, tuân thủ, tích hợp và báo cáo.</p>
+<p>Marashlian xác định ba vấn đề cụ thể đã thúc đẩy Drata đầu tư vào cảm biến thời gian chạy. Vấn đề đầu tiên là chi phí chuyển đổi ngữ cảnh.</p>
+<p>“Dữ liệu của chúng tôi bị phân tán, vì vậy các kỹ sư của chúng tôi phải đóng vai trò là cầu nối con người giữa các công cụ không kết nối,” ông nói.</p>
+<p>Vấn đề thứ hai, ông lưu ý, là sự mệt mỏi vì cảnh báo. “Khi bạn có một hệ thống phân tán phức tạp, các kênh cảnh báo chung trở thành một luồng nhiễu nền liên tục, cái mà nhóm của chúng tôi mô tả là hiệu ứng ‘ding, ding, ding’ cuối cùng sẽ bị bỏ qua,” Marashlian nói.</p>
+<p>Động lực chính thứ ba là nhu cầu tích hợp với chiến lược AI của công ty.</p>
+<p>“Một tác nhân AI có thể viết mã, nhưng nó không thể sửa lỗi sản xuất nếu nó không thể nhìn thấy các biến thời gian chạy hoặc nguyên nhân gốc rễ,” Marashlian nói.</p>
+<h2 id="tại-sao-các-apm-truyền-thống-không-thể-dễ-dàng-giải-quyết-vấn-đề">Tại sao các APM truyền thống không thể dễ dàng giải quyết vấn đề</h2>
+<p>Các doanh nghiệp từ lâu đã dựa vào một lớp công cụ và dịch vụ được gọi là Giám sát Hiệu suất Ứng dụng (APM).</p>
+<p>Với tốc độ phát triển AI theo tác nhân và quy trình làm việc phát triển hiện đại, cả Monday.com và Drata đều không thể có được khả năng hiển thị cần thiết từ các công cụ APM hiện có.</p>
+<p>“Nếu tôi muốn có thông tin này từ Datadog hoặc CoreLogix, tôi sẽ phải nhập vô số nhật ký hoặc vô số spans, và tôi sẽ phải trả rất nhiều tiền,” Eilon nói.</p>
+<p>Eilon lưu ý rằng Monday.com đã sử dụng tỷ lệ lấy mẫu rất thấp do các ràng buộc về chi phí. Điều đó có nghĩa là họ thường bỏ lỡ dữ liệu chính xác cần thiết để gỡ lỗi các sự cố.</p>
+<p>Các công cụ giám sát hiệu suất ứng dụng truyền thống cũng yêu cầu dự đoán, đây là một vấn đề bởi vì đôi khi nhà phát triển chỉ đơn giản là không biết những gì họ không biết.</p>
+<p>“Khả năng quan sát truyền thống yêu cầu bạn phải dự đoán những gì bạn sẽ cần để gỡ lỗi,” Marashlian nói. “Nhưng khi một sự cố mới xuất hiện, đặc biệt là sâu bên trong một cơ sở mã lớn và phức tạp, bạn thường thiếu dữ liệu chính xác mà bạn cần.”</p>
+<p>Drata đã đánh giá một số giải pháp trong danh mục kỹ thuật độ tin cậy trang web AI và phản hồi sự cố tự động và không tìm thấy những gì cần thiết.</p>
+<p>“Hầu hết các công cụ chúng tôi đánh giá đều xuất sắc trong việc quản lý quy trình sự cố, định tuyến vé, tóm tắt luồng Slack hoặc tương quan biểu đồ,” ông nói. “Nhưng chúng thường dừng lại ở bản thân mã. Chúng có thể cho chúng tôi biết ‘Dịch vụ A bị lỗi’, nhưng chúng không thể cho chúng tôi biết lý do tại sao.”</p>
+<p>Một khả năng phổ biến khác trong một số công cụ bao gồm các trình giám sát lỗi như Sentry là khả năng nắm bắt các ngoại lệ. Thách thức, theo Adler, là việc nhận biết các ngoại lệ là tốt, nhưng điều đó không kết nối chúng với tác động kinh doanh hoặc cung cấp ngữ cảnh thực thi mà các tác nhân AI cần để đề xuất các bản sửa lỗi.</p>
+<h2 id="cảm-biến-thời-gian-chạy-hoạt-động-khác-nhau-như-thế-nào">Cảm biến thời gian chạy hoạt động khác nhau như thế nào</h2>
+<p>Cảm biến thời gian chạy đẩy thông minh đến điểm cuối nơi mã thực thi. Cảm biến của Hud chạy dưới dạng SDK tích hợp với một dòng mã duy nhất. Nó nhìn thấy mọi việc thực thi chức năng nhưng chỉ gửi dữ liệu tổng hợp nhẹ trừ khi có sự cố xảy ra.</p>
+<p>Khi xảy ra lỗi hoặc chậm trễ, cảm biến sẽ tự động thu thập dữ liệu pháp y sâu bao gồm các tham số HTTP, truy vấn và phản hồi cơ sở dữ liệu, và ngữ cảnh thực thi đầy đủ. Hệ thống thiết lập các đường cơ sở hiệu suất trong vòng một ngày và có thể cảnh báo về cả sự chậm trễ nghiêm trọng và các giá trị ngoại lệ mà giám sát dựa trên phân vị bỏ qua.</p>
+<p>“Bây giờ chúng tôi nhận được tất cả thông tin này cho tất cả các chức năng bất kể cấp độ của chúng, ngay cả đối với các gói cơ bản,” Eilon nói. “Đôi khi bạn có thể gặp sự cố rất sâu, và chúng tôi vẫn nhìn thấy nó khá nhanh.”</p>
+<p>Nền tảng cung cấp dữ liệu thông qua bốn kênh:</p>
+<ul>
+<li><strong>Ứng dụng web</strong> để giám sát và phân tích tập trung</li>
+<li><strong>Tiện ích mở rộng IDE</strong> cho VS Code, JetBrains và Cursor hiển thị số liệu sản xuất trực tiếp nơi mã được viết</li>
+<li><strong>Máy chủ MCP</strong> cung cấp dữ liệu có cấu trúc cho các tác nhân mã hóa AI</li>
+<li><strong>Hệ thống cảnh báo</strong> xác định sự cố mà không cần cấu hình thủ công</li>
+</ul>
+<p>Tích hợp máy chủ MCP rất quan trọng cho việc phát triển có sự hỗ trợ của AI. Các kỹ sư của Monday.com hiện đang truy vấn hành vi sản xuất trực tiếp trong Cursor.</p>
+<p>“Tôi có thể hỏi Cursor một câu hỏi: Này, tại sao điểm cuối này lại chậm?” Eilon nói. “Khi nó sử dụng Hud MCP, tôi nhận được tất cả các số liệu chi tiết và chức năng này chậm hơn 30% kể từ lần triển khai này. Sau đó, tôi cũng có thể tìm ra nguyên nhân gốc rễ.”</p>
+<p>Điều này thay đổi quy trình phản ứng sự cố. Thay vì bắt đầu trong Datadog và đi sâu qua các lớp, các kỹ sư bắt đầu bằng cách yêu cầu một tác nhân AI chẩn đoán sự cố. Tác nhân có quyền truy cập ngay vào dữ liệu sản xuất ở cấp độ chức năng.</p>
+<h2 id="từ-sự-cố-voodoo-đến-sửa-chữa-trong-vài-phút">Từ sự cố voodoo đến sửa chữa trong vài phút</h2>
+<p>Sự chuyển đổi từ khả năng lý thuyết sang tác động thực tế trở nên rõ ràng trong cách các nhóm kỹ thuật thực sự sử dụng cảm biến thời gian chạy. Những gì từng mất hàng giờ hoặc ngày điều tra giờ đây được giải quyết trong vài phút.</p>
+<p>“Tôi quen với việc có những sự cố voodoo này khi có một đỉnh CPU và bạn không biết nó đến từ đâu,” Eilon nói. “Vài năm trước, tôi đã gặp một sự cố như vậy và tôi phải tự xây dựng công cụ lấy hồ sơ CPU và bản ghi bộ nhớ. Bây giờ tôi chỉ có tất cả dữ liệu chức năng và tôi đã thấy các kỹ sư giải quyết nó rất nhanh.”</p>
+<p>Tại Drata, tác động định lượng là rất ấn tượng. Công ty đã xây dựng một lệnh nội bộ <code>/triage</code> mà các kỹ sư hỗ trợ chạy trong trợ lý AI của họ để ngay lập tức xác định nguyên nhân gốc rễ. Công việc phân loại thủ công đã giảm từ khoảng 3 giờ mỗi ngày xuống dưới 10 phút. Thời gian trung bình để giải quyết đã cải thiện khoảng 70%.</p>
+<p>Nhóm cũng tạo một báo cáo hàng ngày “Thông báo” về các lỗi sửa nhanh. Bởi vì nguyên nhân gốc rễ đã được ghi lại, các nhà phát triển có thể sửa các sự cố này trong vài phút. Các kỹ sư hỗ trợ hiện đang thực hiện chẩn đoán pháp y mà trước đây yêu cầu một nhà phát triển cao cấp. Lưu lượng vé tăng lên mà không mở rộng nhóm L2.</p>
+<h2 id="công-nghệ-này-phù-hợp-ở-đâu">Công nghệ này phù hợp ở đâu</h2>
+<p>Cảm biến thời gian chạy chiếm một không gian riêng biệt với các APM truyền thống, những công cụ này vượt trội trong việc giám sát cấp dịch vụ nhưng gặp khó khăn với dữ liệu chức năng chi tiết, hiệu quả về chi phí. Chúng khác với các trình giám sát lỗi thu thập các ngoại lệ mà không có ngữ cảnh kinh doanh.</p>
+<p>Các yêu cầu kỹ thuật để hỗ trợ các tác nhân mã hóa AI khác với khả năng quan sát hướng tới con người. Các tác nhân cần dữ liệu có cấu trúc, ở cấp độ chức năng mà chúng có thể suy luận. Chúng không thể phân tích cú pháp và tương quan nhật ký thô như con người làm. Khả năng quan sát truyền thống cũng giả định rằng bạn có thể dự đoán những gì bạn sẽ cần để gỡ lỗi và ghi lại theo đó. Cách tiếp cận đó bị phá vỡ với mã do AI tạo ra, nơi các kỹ sư có thể không hiểu sâu mọi chức năng.</p>
+<p>“Tôi nghĩ rằng chúng ta đang bước vào một kỷ nguyên mới của mã do AI tạo ra và câu đố này, câu đố ghép hình của một ngăn xếp mới đang xuất hiện,” Adler nói. “Tôi chỉ không nghĩ rằng ngăn xếp giám sát điện toán đám mây sẽ phù hợp gọn gàng với cách tương lai sẽ như thế nào.”</p>
+<h2 id="điều-này-có-ý-nghĩa-gì-đối-với-các-doanh-nghiệp">Điều này có ý nghĩa gì đối với các doanh nghiệp</h2>
+<p>Đối với các tổ chức đã sử dụng các trợ lý mã hóa AI như GitHub Copilot hoặc Cursor, thông tin tình báo thời gian chạy cung cấp một lớp bảo mật cho việc triển khai sản xuất. Công nghệ này cho phép cái mà Monday.com gọi là “điều tra tác nhân” thay vì nhảy qua các công cụ thủ công.</p>
+<p>Ý nghĩa rộng lớn hơn liên quan đến sự tin cậy. “Với mã do AI tạo ra, chúng ta đang nhận được nhiều mã do AI tạo ra hơn, và các kỹ sư bắt đầu không biết tất cả mã đó,” Eilon nói.</p>
+<p>Cảm biến thời gian chạy thu hẹp khoảng cách kiến thức đó bằng cách cung cấp ngữ cảnh sản xuất trực tiếp trong IDE nơi mã được viết.</p>
+<p>Đối với các doanh nghiệp đang tìm cách mở rộng quy mô tạo mã AI vượt ra ngoài các dự án thí điểm, thông tin tình báo thời gian chạy giải quyết một vấn đề cơ bản. Các tác nhân AI tạo mã dựa trên các giả định về hành vi hệ thống. Môi trường sản xuất rất phức tạp và đáng ngạc nhiên. Dữ liệu hành vi ở cấp độ chức năng được thu thập tự động từ sản xuất cung cấp cho các tác nhân ngữ cảnh cần thiết để tạo mã đáng tin cậy ở quy mô lớn.</p>
+<p>Các tổ chức nên đánh giá xem ngăn xếp giám sát hiện có của họ có thể cung cấp một cách hiệu quả về chi phí mức độ chi tiết mà các tác nhân AI yêu cầu hay không. Nếu việc đạt được khả năng hiển thị ở cấp độ chức năng yêu cầu tăng đáng kể chi phí nhập liệu hoặc ghi lại thủ công, cảm biến thời gian chạy có thể cung cấp một kiến trúc bền vững hơn cho các quy trình làm việc phát triển tăng tốc bằng AI đã và đang nổi lên trong ngành.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://venturebeat.com/ai/how-huds-runtime-sensor-cut-triage-time-from-3-hours-to-10-minutes">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/10-december-2025/">10 December 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/venturebeat.com/">Venturebeat.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-10/7a6465/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/3ibU0O0ON6nC4NSVY5KYkP/e13a276f2bece890100148b10cbcf165/nuneybits_Vector_art_of_self-building_computer_isometric_ca3b7721-5759-4033-9885-e096e5d68ddc.webp?w=1000&amp;q=100" alt="AI của Quilter vừa thiết kế máy tính Linux gồm 843 bộ phận và nó đã khởi động ngay lần thử đầu tiên. Phần cứng sẽ không bao giờ như cũ." style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-10T00:00:00&#43;00:00">Dec 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">AI của Quilter vừa thiết kế máy tính Linux gồm 843 bộ phận và nó đã khởi động ngay lần thử đầu tiên. Phần cứng sẽ không bao giờ như cũ.</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">AI của Quilter vừa thiết kế máy tính Linux gồm 843 bộ phận và nó đã khởi động ngay lần thử đầu tiên. Phần cứng sẽ không bao giờ như cũ.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-10/35b45a/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/5h08IT02qEnf15d2nC66XM/808f775396da3b120a6c20c72b759776/G-V5j_tz9IkXATIrqK6cF.png?w=1000&amp;q=100" alt="Mistral ra mắt mô hình mã hóa Devstral 2 mạnh mẽ bao gồm cả mã nguồn mở, phiên bản thân thiện với máy tính xách tay" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-10T00:00:00&#43;00:00">Dec 10, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Mistral ra mắt mô hình mã hóa Devstral 2 mạnh mẽ bao gồm cả mã nguồn mở, phiên bản thân thiện với máy tính xách tay</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Mistral ra mắt mô hình mã hóa Devstral 2 mạnh mẽ bao gồm cả mã nguồn mở, phiên bản thân thiện với máy tính xách tay</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-10/619587/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Accenture và Anthropic ra mắt quan hệ đối tác nhiều năm để đưa các doanh nghiệp từ các dự án thử nghiệm AI sang sản xuất" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Accenture và Anthropic ra mắt quan hệ đối tác nhiều năm để đưa các doanh nghiệp từ các dự án thử nghiệm AI sang sản xuất</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-10/7a6465/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/3ibU0O0ON6nC4NSVY5KYkP/e13a276f2bece890100148b10cbcf165/nuneybits_Vector_art_of_self-building_computer_isometric_ca3b7721-5759-4033-9885-e096e5d68ddc.webp?w=1000&amp;q=100" alt="AI của Quilter vừa thiết kế máy tính Linux gồm 843 bộ phận và nó đã khởi động ngay lần thử đầu tiên. Phần cứng sẽ không bao giờ như cũ." style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AI của Quilter vừa thiết kế máy tính Linux gồm 843 bộ phận và nó đã khởi động ngay lần thử đầu tiên. Phần cứng sẽ không bao giờ như cũ.</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-10/2d3903/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Apriel-1.6-15b-Thinker- Hiệu suất đa phương thức tiên phong hiệu quả về chi phí" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Apriel-1.6-15b-Thinker- Hiệu suất đa phương thức tiên phong hiệu quả về chi phí</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-10/bb259b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://images.ctfassets.net/jdtwqhzvc2n1/5OFBMkrEKqvqYY0hbPYaoF/e31f8e8b39af32f6197a402b42f96136/hud-code-dev-smk.jpg?w=1000&amp;q=100" alt="Cảm biến thời gian chạy của Hud cắt giảm thời gian phân loại từ 3 giờ xuống còn 10 phút" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cảm biến thời gian chạy của Hud cắt giảm thời gian phân loại từ 3 giờ xuống còn 10 phút</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-10/8f9e0c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="DeepMath- Một tác nhân suy luận toán học nhẹ với smolagents" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">DeepMath- Một tác nhân suy luận toán học nhẹ với smolagents</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
