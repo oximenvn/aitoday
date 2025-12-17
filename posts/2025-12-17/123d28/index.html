@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Open Evaluation Standard- Benchmarking NVIDIA Nemotron 3 Nano with NeMo Evaluator | AI Today - SkyAI</title>
+
+<meta name="description" content="Tiêu chuẩn Đánh giá Mở- Đánh giá Chuẩn NVIDIA Nemotron 3 Nano với Trình Đánh giá NeMo">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">The Open Evaluation Standard- Benchmarking NVIDIA Nemotron 3 Nano with NeMo Evaluator</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Tiêu chuẩn Đánh giá Mở- Đánh giá Chuẩn NVIDIA Nemotron 3 Nano với Trình Đánh giá NeMo </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-12-17T00:00:00&#43;00:00">December 17, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            16 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-uploads.huggingface.co/production/uploads/688cf7e6026af0cf8ac969dd/6RiFGxMzn9Fmgml83fK8G.jpeg" alt="The Open Evaluation Standard- Benchmarking NVIDIA Nemotron 3 Nano with NeMo Evaluator">
+        <figcaption class="text-center italic text-xs">Tiêu chuẩn Đánh giá Mở- Đánh giá Chuẩn NVIDIA Nemotron 3 Nano với Trình Đánh giá NeMo</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="the-open-evaluation-standard-benchmarking-nvidia-nemotron-3-nano-with-nemo-evaluator">The Open Evaluation Standard: Benchmarking NVIDIA Nemotron 3 Nano with NeMo Evaluator</h1>
+<p>Thật khó để xác định liệu những cải tiến được báo cáo của một mô hình có thực sự phản ánh sự tiến bộ hay chỉ là do sự khác biệt trong điều kiện đánh giá, thành phần bộ dữ liệu hoặc dữ liệu huấn luyện giống với các tác vụ đánh giá. Cách tiếp cận cởi mở của NVIDIA cho vấn đề này là công bố các công thức đánh giá minh bạch và có thể tái tạo, cho phép kiểm chứng độc lập các kết quả.</p>
+<p>NVIDIA đã phát hành <!-- raw HTML omitted --><!-- raw HTML omitted -->Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted --> với phương pháp đánh giá cởi mở rõ ràng để phân biệt điều đó. Cùng với thẻ mô hình, chúng tôi công bố công thức đánh giá hoàn chỉnh được sử dụng để tạo ra kết quả, được xây dựng bằng thư viện <!-- raw HTML omitted --><!-- raw HTML omitted -->NVIDIA NeMo Evaluator<!-- raw HTML omitted --><!-- raw HTML omitted -->, để bất kỳ ai cũng có thể chạy lại quy trình đánh giá, kiểm tra các tạo phẩm và phân tích kết quả một cách độc lập.</p>
+<p>Chúng tôi tin rằng đổi mới mở là nền tảng cho sự tiến bộ của AI. Mức độ minh bạch này rất quan trọng vì hầu hết các đánh giá mô hình đều bỏ qua các chi tiết quan trọng. Các cấu hình, lời nhắc, phiên bản harness, cài đặt thời gian chạy và nhật ký thường bị thiếu hoặc không được chỉ định đầy đủ, và ngay cả những khác biệt nhỏ về các tham số này cũng có thể thay đổi đáng kể kết quả. Nếu không có một công thức hoàn chỉnh, gần như không thể biết liệu một mô hình có thực sự thông minh hơn hay chỉ được tối ưu hóa cho một bài kiểm tra tiêu chuẩn.</p>
+<p>Bài viết này hướng dẫn các nhà phát triển cách tái tạo chính xác quy trình đánh giá đằng sau <!-- raw HTML omitted --><!-- raw HTML omitted -->Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted --> bằng cách sử dụng các công cụ, cấu hình và tạo phẩm hoàn toàn mở. Bạn sẽ tìm hiểu cách thức đánh giá được thực hiện, tại sao phương pháp này lại quan trọng và cách thực hiện cùng một quy trình làm việc đầu cuối bằng thư viện NeMo Evaluator để bạn có thể xác minh kết quả, so sánh các mô hình một cách nhất quán và tự xây dựng các quy trình đánh giá minh bạch của riêng mình.</p>
+<h2 id="xây-dựng-quy-trình-đánh-giá-nhất-quán-và-minh-bạch-với-nemo-evaluator">Xây dựng quy trình đánh giá nhất quán và minh bạch với NeMo Evaluator</h2>
+<h3 id="một-hệ-thống-đánh-giá-duy-nhất-nhất-quán">Một hệ thống đánh giá duy nhất, nhất quán</h3>
+<p>Các nhà phát triển và nhà nghiên cứu cần các quy trình đánh giá mà họ có thể tin cậy, chứ không phải các tập lệnh chạy một lần hoạt động khác nhau giữa các mô hình. NeMo Evaluator cung cấp một cách thống nhất để định nghĩa các bài kiểm tra tiêu chuẩn, lời nhắc, cấu hình và hành vi thời gian chạy một lần, sau đó sử dụng lại phương pháp đó trên nhiều mô hình và phiên bản. Điều này tránh được tình huống phổ biến là thiết lập đánh giá thay đổi âm thầm giữa các lần chạy, khiến việc so sánh theo thời gian trở nên khó khăn hoặc gây hiểu lầm.</p>
+<h3 id="phương-pháp-độc-lập-với-thiết-lập-suy-luận">Phương pháp độc lập với thiết lập suy luận</h3>
+<p>Kết quả của mô hình có thể khác nhau tùy thuộc vào backend suy luận và cấu hình, vì vậy các công cụ đánh giá không bao giờ nên bị ràng buộc với một giải pháp suy luận duy nhất. Việc khóa một công cụ đánh giá vào một giải pháp suy luận duy nhất sẽ hạn chế tính hữu ích của nó. NeMo Evaluator tránh điều này bằng cách tách quy trình đánh giá khỏi backend suy luận, cho phép cùng một cấu hình chạy trên các điểm cuối được lưu trữ, triển khai cục bộ hoặc các nhà cung cấp bên thứ ba. Sự phân tách này cho phép so sánh có ý nghĩa ngay cả khi bạn thay đổi cơ sở hạ tầng hoặc công cụ suy luận.</p>
+<h3 id="được-xây-dựng-để-mở-rộng-vượt-ra-ngoài-các-thử-nghiệm-một-lần">Được xây dựng để mở rộng vượt ra ngoài các thử nghiệm một lần</h3>
+<p>Nhiều quy trình đánh giá chỉ hoạt động một lần và sau đó bị lỗi khi phạm vi mở rộng. NeMo Evaluator được thiết kế để có thể mở rộng từ việc xác nhận nhanh, đánh giá một bài kiểm tra tiêu chuẩn đến các bộ thẻ mô hình đầy đủ và các đánh giá lặp lại trên nhiều mô hình. Trình khởi chạy, bố cục tạo phẩm và mô hình cấu hình hỗ trợ các quy trình làm việc liên tục, không chỉ các thử nghiệm riêng lẻ, để các nhóm có thể duy trì các phương pháp đánh giá nhất quán theo thời gian.</p>
+<h3 id="khả-năng-kiểm-toán-với-các-tạo-phẩm-và-nhật-ký-có-cấu-trúc">Khả năng kiểm toán với các tạo phẩm và nhật ký có cấu trúc</h3>
+<p>Đánh giá minh bạch đòi hỏi nhiều hơn là chỉ điểm số cuối cùng. Mỗi lần chạy đánh giá tạo ra các kết quả và nhật ký có cấu trúc theo mặc định, giúp dễ dàng kiểm tra cách tính điểm, hiểu các phép tính điểm, gỡ lỗi các hành vi không mong muốn và thực hiện phân tích sâu hơn. Mỗi thành phần của quá trình đánh giá đều được ghi lại và có thể tái tạo.</p>
+<h3 id="một-tiêu-chuẩn-đánh-giá-được-chia-sẻ">Một tiêu chuẩn đánh giá được chia sẻ</h3>
+<p>Bằng cách phát hành <!-- raw HTML omitted --><!-- raw HTML omitted -->Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted --> với <!-- raw HTML omitted --><!-- raw HTML omitted -->công thức đánh giá đầy đủ<!-- raw HTML omitted --><!-- raw HTML omitted -->, NVIDIA đang cung cấp một phương pháp tham chiếu mà cộng đồng có thể chạy, kiểm tra và xây dựng dựa trên đó. Sử dụng cùng một cấu hình và công cụ mang lại tính nhất quán cho cách các bài kiểm tra tiêu chuẩn được chọn, thực hiện và diễn giải, cho phép so sánh đáng tin cậy hơn giữa các mô hình, nhà cung cấp và phiên bản.</p>
+<h2 id="đánh-giá-mở-cho-nemotron-3-nano">Đánh giá mở cho Nemotron 3 Nano</h2>
+<p>Đánh giá mở có nghĩa là công bố không chỉ kết quả cuối cùng mà còn cả phương pháp đầy đủ đằng sau chúng, để các bài kiểm tra tiêu chuẩn được chạy một cách nhất quán và kết quả có thể được so sánh một cách có ý nghĩa theo thời gian. Đối với <!-- raw HTML omitted --><!-- raw HTML omitted -->Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted -->, điều này bao gồm các công cụ mã nguồn mở, cấu hình minh bạch và các tạo phẩm có thể tái tạo mà bất kỳ ai cũng có thể chạy từ đầu đến cuối.</p>
+<h3 id="công-cụ-đánh-giá-mô-hình-mã-nguồn-mở">Công cụ đánh giá mô hình mã nguồn mở</h3>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->NeMo Evaluator<!-- raw HTML omitted --><!-- raw HTML omitted --> là một thư viện mã nguồn mở được thiết kế để đánh giá các mô hình tạo sinh một cách mạnh mẽ, có thể tái tạo và có thể mở rộng. Thay vì giới thiệu một trình chạy bài kiểm tra tiêu chuẩn độc lập khác, nó hoạt động như một lớp điều phối thống nhất mang nhiều harness đánh giá dưới một giao diện duy nhất, nhất quán.</p>
+<p>Trong kiến trúc này, NeMo Evaluator tích hợp và điều phối hàng trăm bài kiểm tra tiêu chuẩn từ nhiều harness đánh giá phổ biến, bao gồm <!-- raw HTML omitted --><!-- raw HTML omitted -->NeMo Skills<!-- raw HTML omitted --><!-- raw HTML omitted --> cho các đánh giá tuân theo chỉ dẫn, sử dụng công cụ và tác tử của Nemotron, cũng như <!-- raw HTML omitted --><!-- raw HTML omitted -->LM Evaluation Harness<!-- raw HTML omitted --><!-- raw HTML omitted --> cho các bài kiểm tra tiêu chuẩn mô hình cơ bản và tiền huấn luyện, và nhiều hơn nữa (<!-- raw HTML omitted --><!-- raw HTML omitted -->danh mục bài kiểm tra tiêu chuẩn đầy đủ<!-- raw HTML omitted --><!-- raw HTML omitted -->). Mỗi harness giữ lại logic, bộ dữ liệu và ngữ nghĩa tính điểm gốc của nó, trong khi NeMo Evaluator chuẩn hóa cách chúng được cấu hình, thực thi và ghi nhật ký.</p>
+<p>Điều này mang lại hai lợi thế thực tế: các nhóm có thể chạy nhiều loại bài kiểm tra tiêu chuẩn bằng một cấu hình duy nhất mà không cần viết lại các tập lệnh đánh giá tùy chỉnh, và kết quả từ các harness khác nhau được lưu trữ và kiểm tra theo cách nhất quán, có thể dự đoán được, ngay cả khi các tác vụ cơ bản khác nhau. Khung điều phối giống nhau được sử dụng nội bộ bởi các nhóm nghiên cứu và đánh giá mô hình của NVIDIA hiện đã có sẵn cho cộng đồng, cho phép các nhà phát triển chạy các đánh giá đa dạng, đa harness thông qua một quy trình làm việc được chia sẻ, có thể kiểm toán được.</p>
+<h3 id="cấu-hình-mở">Cấu hình mở</h3>
+<p>Chúng tôi đã công bố cấu hình YAML chính xác được sử dụng cho đánh giá <!-- raw HTML omitted --><!-- raw HTML omitted -->thẻ mô hình Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted --> với NeMo Evaluator. Điều này bao gồm:</p>
+<ul>
+<li>cài đặt suy luận và triển khai mô hình</li>
+<li>lựa chọn bài kiểm tra tiêu chuẩn và tác vụ</li>
+<li>các tham số dành riêng cho bài kiểm tra tiêu chuẩn như lấy mẫu, lặp lại và mẫu lời nhắc</li>
+<li>các điều khiển thời gian chạy bao gồm song song hóa, thời gian chờ và thử lại</li>
+<li>đường dẫn đầu ra và bố cục tạo phẩm</li>
+</ul>
+<p>Sử dụng cùng một cấu hình có nghĩa là chạy cùng một phương pháp đánh giá.</p>
+<h3 id="nhật-ký-và-tạo-phẩm-mở">Nhật ký và tạo phẩm mở</h3>
+<p>Mỗi lần chạy đánh giá tạo ra các đầu ra có cấu trúc, có thể kiểm tra được, bao gồm các tệp <!-- raw HTML omitted -->results.json<!-- raw HTML omitted --> cho từng tác vụ, nhật ký thực thi để gỡ lỗi và kiểm toán, và các tạo phẩm được tổ chức theo tác vụ để dễ dàng so sánh. Cấu trúc này cho phép hiểu không chỉ điểm số cuối cùng mà còn cả cách các điểm số đó được tạo ra và để thực hiện phân tích sâu hơn về hành vi của mô hình.</p>
+<h2 id="quy-trình-tái-tạo">Quy trình tái tạo</h2>
+<p>Việc tái tạo kết quả <!-- raw HTML omitted --><!-- raw HTML omitted -->thẻ mô hình Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted --> tuân theo một vòng lặp đơn giản:</p>
+<!-- raw HTML omitted -->
+<p>Quy trình làm việc tương tự áp dụng cho bất kỳ mô hình nào bạn đánh giá bằng NeMo Evaluator. Bạn có thể hướng đánh giá đến một điểm cuối được lưu trữ hoặc một triển khai cục bộ, bao gồm các nhà cung cấp suy luận phổ biến như <!-- raw HTML omitted --><!-- raw HTML omitted -->HuggingFace<!-- raw HTML omitted --><!-- raw HTML omitted -->, <!-- raw HTML omitted --><!-- raw HTML omitted -->build.nvidia.com<!-- raw HTML omitted --><!-- raw HTML omitted --> và <!-- raw HTML omitted --><!-- raw HTML omitted -->OpenRouter<!-- raw HTML omitted --><!-- raw HTML omitted -->. Yêu cầu chính là quyền truy cập vào mô hình, dưới dạng trọng số mà bạn có thể phục vụ hoặc dưới dạng điểm cuối mà bạn có thể gọi. Đối với hướng dẫn này, chúng tôi sử dụng điểm cuối được lưu trữ trên <!-- raw HTML omitted --><!-- raw HTML omitted -->build.nvidia.com<!-- raw HTML omitted --><!-- raw HTML omitted -->.</p>
+<h2 id="tái-tạo-kết-quả-bài-kiểm-tra-tiêu-chuẩn-nemotron-3-nano">Tái tạo kết quả bài kiểm tra tiêu chuẩn Nemotron 3 Nano</h2>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Hướng dẫn này tái tạo kết quả đánh giá cho <!-- raw HTML omitted --><!-- raw HTML omitted -->NVIDIA Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted --> bằng NeMo Evaluator. Hướng dẫn từng bước, bao gồm <!-- raw HTML omitted --><!-- raw HTML omitted -->các cấu hình đã công bố được sử dụng cho đánh giá thẻ mô hình<!-- raw HTML omitted --><!-- raw HTML omitted -->, có sẵn trên GitHub. Mặc dù chúng tôi đã tập trung hướng dẫn này vào Nemotron 3 Nano 30B A3B, chúng tôi cũng đã công bố <!-- raw HTML omitted --><!-- raw HTML omitted -->các công thức cho đánh giá mô hình cơ bản<!-- raw HTML omitted --><!-- raw HTML omitted -->.</p>
+<p>Hướng dẫn này chạy một bộ đánh giá toàn diện của <!-- raw HTML omitted --><!-- raw HTML omitted -->các cấu hình đã công bố được sử dụng cho đánh giá thẻ mô hình<!-- raw HTML omitted --><!-- raw HTML omitted --> cho <!-- raw HTML omitted --><!-- raw HTML omitted -->NVIDIA Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted --> bằng cách sử dụng các bài kiểm tra tiêu chuẩn sau:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Benchmark</th>
+          <th style="text-align: left">Accuracy</th>
+          <th style="text-align: left">Category</th>
+          <th style="text-align: left">Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">BFCL v4</td>
+          <td style="text-align: left">53.8</td>
+          <td style="text-align: left">Function Calling</td>
+          <td style="text-align: left">Berkeley Function Calling Leaderboard v4</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">LiveCodeBench (v6 2025-08–2025-05)</td>
+          <td style="text-align: left">68.3</td>
+          <td style="text-align: left">Coding</td>
+          <td style="text-align: left">Đánh giá các vấn đề lập trình thực tế</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">MMLU-Pro</td>
+          <td style="text-align: left">78.3</td>
+          <td style="text-align: left">Knowledge</td>
+          <td style="text-align: left">Đánh giá ngôn ngữ đa nhiệm (chọn 10)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">GPQA</td>
+          <td style="text-align: left">73.0</td>
+          <td style="text-align: left">Science</td>
+          <td style="text-align: left">Câu hỏi cấp độ sau đại học về khoa học</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">AIME 2025</td>
+          <td style="text-align: left">89.1</td>
+          <td style="text-align: left">Mathematics</td>
+          <td style="text-align: left">Kỳ thi Toán học Hoa Kỳ</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">SciCode</td>
+          <td style="text-align: left">33.3</td>
+          <td style="text-align: left">Scientific Coding</td>
+          <td style="text-align: left">Các thử thách lập trình khoa học</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">IFBench</td>
+          <td style="text-align: left">71.5</td>
+          <td style="text-align: left">Instruction Following</td>
+          <td style="text-align: left">Bài kiểm tra tuân theo chỉ dẫn</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HLE</td>
+          <td style="text-align: left">10.6</td>
+          <td style="text-align: left">Humanity&rsquo;s Last Exam</td>
+          <td style="text-align: left">Các câu hỏi cấp độ chuyên gia trên nhiều lĩnh vực</td>
+      </tr>
+  </tbody>
+</table>
+<p><em>Đối với chi tiết Thẻ mô hình, xem <!-- raw HTML omitted --><!-- raw HTML omitted -->Thẻ mô hình NVIDIA Nemotron 3 Nano 30B A3B<!-- raw HTML omitted --><!-- raw HTML omitted -->. Để tìm hiểu sâu về kiến trúc, bộ dữ liệu và bài kiểm tra tiêu chuẩn, hãy đọc <!-- raw HTML omitted --><!-- raw HTML omitted -->Báo cáo Kỹ thuật Nemotron 3 Nano<!-- raw HTML omitted --><!-- raw HTML omitted --> đầy đủ.</em></p>
+<h3 id="1-cài-đặt-nemo-evaluator-launcher">1. Cài đặt NeMo Evaluator Launcher</h3>
+<p><code>pip install nemo-evaluator-launcher</code></p>
+<h3 id="2-đặt-các-biến-môi-trường-cần-thiết">2. Đặt các biến môi trường cần thiết</h3>
+<p>bash</p>
+<h1 id="truy-cập-điểm-cuối-nvidia">Truy cập điểm cuối NVIDIA</h1>
+<p>export NGC_API_KEY=&ldquo;your-ngc-api-key&rdquo;</p>
+<h1 id="truy-cập-hugging-face">Truy cập Hugging Face</h1>
+<p>export HF_TOKEN=&ldquo;your-huggingface-token&rdquo;</p>
+<h1 id="chỉ-cần-thiết-cho-các-bài-kiểm-tra-tiêu-chuẩn-dựa-trên-giám-khảo-như-hle">Chỉ cần thiết cho các bài kiểm tra tiêu chuẩn dựa trên giám khảo như HLE</h1>
+<p>export JUDGE_API_KEY=&ldquo;your-judge-api-key&rdquo;</p>
+<p><em>Tùy chọn nhưng khuyến nghị để chạy lại nhanh hơn:</em>
+<code>export HF_HOME=&quot;/path/to/your/huggingface/cache&quot;</code></p>
+<h3 id="3-điểm-cuối-mô-hình">3. Điểm cuối mô hình</h3>
+<p>Quá trình đánh giá sử dụng điểm cuối API của NVIDIA được lưu trữ trên <!-- raw HTML omitted --><!-- raw HTML omitted -->build.nvidia.com<!-- raw HTML omitted --><!-- raw HTML omitted -->:</p>
+<p>yaml
+target:
+api_endpoint:
+model_id: nvidia/nemotron-nano-3-30b-a3b
+url: <a href="https://integrate.api.nvidia.com/v1/chat/completions">https://integrate.api.nvidia.com/v1/chat/completions</a>
+api_key_name: NGC_API_KEY</p>
+<p>Các đánh giá có thể được chạy trên các nhà cung cấp suy luận phổ biến như <!-- raw HTML omitted --><!-- raw HTML omitted -->HuggingFace<!-- raw HTML omitted --><!-- raw HTML omitted -->, <!-- raw HTML omitted --><!-- raw HTML omitted -->build.nvidia.com<!-- raw HTML omitted --><!-- raw HTML omitted -->, hoặc <!-- raw HTML omitted --><!-- raw HTML omitted -->OpenRouter<!-- raw HTML omitted --><!-- raw HTML omitted -->, hoặc bất kỳ nơi nào có điểm cuối mô hình khả dụng.</p>
+<p>Nếu bạn đang lưu trữ mô hình cục bộ hoặc sử dụng điểm cuối khác:</p>
+<p>bash
+nemo-evaluator-launcher run <br>
+&ndash;config local_nvidia_nemotron_3_nano_30b_a3b.yaml <br>
+-o target.api_endpoint.url=http://localhost:8000/v1/chat/completions</p>
+<h3 id="4-chạy-bộ-đánh-giá-đầy-đủ">4. Chạy bộ đánh giá đầy đủ</h3>
+<p>Xem trước lần chạy mà không thực thi bằng <code>--dry-run</code>:</p>
+<p>bash
+nemo-evaluator-launcher run <br>
+&ndash;config local_nvidia_nemotron_3_nano_30b_a3b.yaml <br>
+&ndash;dry-run</p>
+<p>Từ thư mục ví dụ, chạy đánh giá bằng cấu hình YAML đã cung cấp:</p>
+<p>bash
+nemo-evaluator-launcher run <br>
+&ndash;config /path/to/examples/nemotron/local_nvidia_nemotron_3_nano_30b_a3b.yaml</p>
+<p>Lưu ý rằng để kiểm tra nhanh, bạn có thể giới hạn số lượng mẫu bằng cách đặt <code>limit_samples</code>:</p>
+<p>bash
+nemo-evaluator-launcher run <br>
+&ndash;config local_nvidia_nemotron_3_nano_30b_a3b.yaml <br>
+-o evaluation.nemo_evaluator_config.config.params.limit_samples=10</p>
+<h3 id="5-chạy-một-bài-kiểm-tra-tiêu-chuẩn-riêng-lẻ">5. Chạy một bài kiểm tra tiêu chuẩn riêng lẻ</h3>
+<p>Bạn có thể chạy các bài kiểm tra tiêu chuẩn cụ thể bằng cờ <code>-t</code> (từ thư mục <code>examples/nemotron</code>):</p>
+<p>bash</p>
+<h1 id="chỉ-chạy-mmlu-pro">Chỉ chạy MMLU-Pro</h1>
+<p>nemo-evaluator-launcher run &ndash;config local_nvidia_nemotron_3_nano_30b_a3b.yaml -t ns_mmlu_pro</p>
+<h1 id="chạy-chỉ-các-bài-kiểm-tra-tiêu-chuẩn-lập-trình">Chạy chỉ các bài kiểm tra tiêu chuẩn lập trình</h1>
+<p>nemo-evaluator-launcher run &ndash;config local_nvidia_nemotron_3_nano_30b_a3b.yaml -t ns_livecodebench</p>
+<h1 id="chạy-nhiều-bài-kiểm-tra-tiêu-chuẩn-cụ-thể">Chạy nhiều bài kiểm tra tiêu chuẩn cụ thể</h1>
+<p>nemo-evaluator-launcher run &ndash;config local_nvidia_nemotron_3_nano_30b_a3b.yaml -t ns_gpqa -t ns_aime2025</p>
+<h3 id="6-giám-sát-thực-thi-và-kiểm-tra-kết-quả">6. Giám sát thực thi và kiểm tra kết quả</h3>
+<p>bash</p>
+<h1 id="kiểm-tra-trạng-thái-của-một-công-việc-cụ-thể">Kiểm tra trạng thái của một công việc cụ thể</h1>
+<p>nemo-evaluator-launcher status</p>
+<p>bash</p>
+<h1 id="truyền-nhật-ký-cho-một-công-việc-cụ-thể">Truyền nhật ký cho một công việc cụ thể</h1>
+<p>nemo-evaluator-launcher logs <!-- raw HTML omitted --></p>
+<p>Kết quả được ghi vào thư mục đầu ra đã xác định:</p>
+<p>tree
+results_nvidia_nemotron_3_nano_30b_a3b/
+├── artifacts/
+│   └── &lt;task_name&gt;/
+│       └── results.json
+└── logs/
+└── stdout.log</p>
+<h2 id="diễn-giải-kết-quả">Diễn giải kết quả</h2>
+<p>Khi tái tạo các đánh giá, bạn có thể quan sát thấy sự khác biệt nhỏ về điểm số cuối cùng giữa các lần chạy. Sự biến đổi này phản ánh bản chất xác suất của LLM chứ không phải là vấn đề với quy trình đánh giá. Đánh giá hiện đại giới thiệu nhiều nguồn không xác định: cài đặt giải mã, thử nghiệm lặp lại, chấm điểm dựa trên giám khảo, thực thi song song và sự khác biệt về cơ sở hạ tầng phục vụ. Tất cả đều có thể dẫn đến những biến động nhỏ.</p>
+<p>Mục đích của đánh giá cởi mở không phải là tạo ra các đầu ra giống hệt nhau về mặt bit trong mọi lần chạy; mà là mang lại <!-- raw HTML omitted -->tính nhất quán về phương pháp<!-- raw HTML omitted --> với nguồn gốc rõ ràng của kết quả đánh giá. Để đảm bảo đánh giá của bạn khớp với tiêu chuẩn tham chiếu, hãy xác minh những điều sau:</p>
+<ul>
+<li><strong>Cấu hình</strong>: sử dụng tệp YAML NeMo Evaluator đã công bố mà không sửa đổi, hoặc ghi lại rõ ràng bất kỳ thay đổi nào.</li>
+<li><strong>Lựa chọn bài kiểm tra tiêu chuẩn</strong>: chạy các tác vụ, phiên bản tác vụ và mẫu lời nhắc dự định.</li>
+<li><strong>Mục tiêu suy luận</strong>: xác minh bạn đang đánh giá mô hình và điểm cuối mong muốn, bao gồm cả hành vi của mẫu trò chuyện và cài đặt lý luận khi có liên quan.</li>
+<li><strong>Cài đặt thực thi</strong>: giữ cho các tham số thời gian chạy nhất quán, bao gồm số lần lặp lại, song song hóa, thời gian chờ và hành vi thử lại.</li>
+<li><strong>Đầu ra</strong>: xác nhận các tạo phẩm và nhật ký đầy đủ và tuân theo cấu trúc mong đợi cho từng tác vụ.</li>
+</ul>
+<p>Khi các yếu tố này nhất quán, kết quả của bạn sẽ đại diện cho một sự tái tạo hợp lệ của phương pháp, ngay cả khi các lần chạy riêng lẻ hơi khác nhau. NeMo Evaluator đơn giản hóa quy trình này, liên kết định nghĩa bài kiểm tra tiêu chuẩn, lời nhắc, cài đặt thời gian chạy và cấu hình suy luận thành một quy trình làm việc có thể kiểm toán duy nhất để giảm thiểu sự không nhất quán.</p>
+<h2 id="kết-luận-một-tiêu-chuẩn-minh-bạch-hơn-cho-các-mô-hình-mở">Kết luận: Một tiêu chuẩn minh bạch hơn cho các mô hình mở</h2>
+<p>Công thức đánh giá được phát hành cùng với Nemotron 3 Nano đại diện cho một bước tiến có ý nghĩa hướng tới một phương pháp tiếp cận minh bạch và đáng tin cậy hơn để đánh giá mô hình mở. Chúng ta đang di chuyển khỏi đánh giá như một tập hợp các tập lệnh tùy chỉnh, &ldquo;hộp đen&rdquo;, và hướng tới một hệ thống xác định nơi việc lựa chọn bài kiểm tra tiêu chuẩn, lời nhắc và ngữ nghĩa thực thi được mã hóa thành một quy trình làm việc minh bạch.</p>
+<p>Đối với các nhà phát triển và nhà nghiên cứu, sự minh bạch này thay đổi ý nghĩa của việc chia sẻ kết quả. Một điểm số chỉ đáng tin cậy bằng phương pháp đằng sau nó và việc công khai phương pháp đó là điều cho phép cộng đồng xác minh các tuyên bố, so sánh các mô hình một cách công bằng và tiếp tục xây dựng trên các nền tảng được chia sẻ. Với các cấu hình đánh giá mở, tạo phẩm mở và công cụ mở, Nemotron 3 Nano thể hiện cam kết về sự cởi mở đó trong thực tế.</p>
+<p>NeMo Evaluator hỗ trợ sự thay đổi này bằng cách cung cấp một phương pháp đánh giá nhất quán trên các mô hình, phiên bản và môi trường suy luận. Mục tiêu không phải là có các con số giống hệt nhau trong mọi lần chạy; mà là sự tự tin vào một phương pháp đánh giá rõ ràng, có thể kiểm tra được và có thể lặp lại. Và đối với các tổ chức cần các quy trình đánh giá tự động hoặc quy mô lớn, một dịch vụ vi mô riêng biệt cung cấp <!-- raw HTML omitted --><!-- raw HTML omitted -->dịch vụ vi mô NeMo Evaluator<!-- raw HTML omitted --><!-- raw HTML omitted --> sẵn sàng cho doanh nghiệp, được xây dựng dựa trên các nguyên tắc đánh giá tương tự.</p>
+<p>Sử dụng <!-- raw HTML omitted --><!-- raw HTML omitted -->cấu hình đánh giá NeMo Evaluator<!-- raw HTML omitted --><!-- raw HTML omitted --> đã công bố để xem hướng dẫn đầu cuối về công thức đánh giá.</p>
+<p><strong>Tham gia Cộng đồng!</strong></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->NeMo Evaluator<!-- raw HTML omitted --><!-- raw HTML omitted --> hoàn toàn là mã nguồn mở và đóng góp của cộng đồng là rất cần thiết để định hình tương lai của đánh giá mở. Nếu có một bài kiểm tra tiêu chuẩn bạn muốn chúng tôi hỗ trợ hoặc một cải tiến bạn muốn đề xuất, hãy mở một vấn đề (issue) hoặc đóng góp trực tiếp trên GitHub. Sự đóng góp của bạn giúp củng cố hệ sinh thái và thúc đẩy một tiêu chuẩn chung, minh bạch để đánh giá các mô hình tạo sinh.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/nvidia/nemotron-3-nano-evaluation-recipe">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/december-17-2025/">December 17, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-17/d6dbb6/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-uploads.huggingface.co/production/uploads/6487da02c4b44322c124f39f/mnJsxp4Mp5t2C-IhmpQ39.png" alt="CUGA on Hugging Face- Democratizing Configurable AI Agents" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-17T00:00:00&#43;00:00">Dec 17, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">CUGA on Hugging Face- Democratizing Configurable AI Agents</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">CUGA trên Hugging Face- Dân chủ hóa các Tác nhân AI có thể Cấu hình</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-13/b3c5cc/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-uploads.huggingface.co/production/uploads/63148d3b996c52bf0142cdbe/HXyNkyB0_nHI5WDNdiKHZ.png" alt="Mới trong llama.cpp- Quản lý Mô hình" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-13T00:00:00&#43;00:00">Dec 13, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Mới trong llama.cpp- Quản lý Mô hình</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn này giới thiệu các cải tiến mới nhất trong llama.cpp liên quan đến quản lý mô hình.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-17/d6dbb6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-uploads.huggingface.co/production/uploads/6487da02c4b44322c124f39f/mnJsxp4Mp5t2C-IhmpQ39.png" alt="CUGA on Hugging Face- Democratizing Configurable AI Agents" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">CUGA on Hugging Face- Democratizing Configurable AI Agents</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-17/474125/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Tại sao API Tương tác mới của Google lại quan trọng đối với các nhà phát triển AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tại sao API Tương tác mới của Google lại quan trọng đối với các nhà phát triển AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-17/123d28/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-uploads.huggingface.co/production/uploads/688cf7e6026af0cf8ac969dd/6RiFGxMzn9Fmgml83fK8G.jpeg" alt="The Open Evaluation Standard- Benchmarking NVIDIA Nemotron 3 Nano with NeMo Evaluator" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">The Open Evaluation Standard- Benchmarking NVIDIA Nemotron 3 Nano with NeMo Evaluator</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-13/172952/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/bDhAGgYcQMPjS1lEQZaupLkx9A4eIfwnXDmaJntvF_VmThk3Rrwo2-xndepttQGtlC_ng4C0zGEmuy67rz4c9xT6ROFIN0s0-qaD1SP96AIXnbHK0Gk=w1440-h1440-n-nu" alt="Cải thiện các mô hình âm thanh Gemini cho trải nghiệm giọng nói mạnh mẽ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cải thiện các mô hình âm thanh Gemini cho trải nghiệm giọng nói mạnh mẽ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-13/b3c5cc/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-uploads.huggingface.co/production/uploads/63148d3b996c52bf0142cdbe/HXyNkyB0_nHI5WDNdiKHZ.png" alt="Mới trong llama.cpp- Quản lý Mô hình" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mới trong llama.cpp- Quản lý Mô hình</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
