@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AprielGuard- Một hệ thống bảo vệ cho sự an toàn và khả năng chống chịu với tấn công trong các hệ thống LLM hiện đại | AI Today - SkyAI</title>
+
+<meta name="description" content="AprielGuard- Một hệ thống bảo vệ cho sự an toàn và khả năng chống chịu với tấn công trong các hệ thống LLM hiện đại">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">AprielGuard- Một hệ thống bảo vệ cho sự an toàn và khả năng chống chịu với tấn công trong các hệ thống LLM hiện đại</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">AprielGuard- Một hệ thống bảo vệ cho sự an toàn và khả năng chống chịu với tấn công trong các hệ thống LLM hiện đại </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2025-12-25T00:00:00&#43;00:00">December 25, 2025</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            17 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-uploads.huggingface.co/production/uploads/667521b4585f2bf570950584/bNdKz_2O6GjsvqnLCYe3p.png" alt="AprielGuard- Một hệ thống bảo vệ cho sự an toàn và khả năng chống chịu với tấn công trong các hệ thống LLM hiện đại">
+        <figcaption class="text-center italic text-xs">AprielGuard- Một hệ thống bảo vệ cho sự an toàn và khả năng chống chịu với tấn công trong các hệ thống LLM hiện đại</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="aprielguard-một-hệ-thống-bảo-vệ-cho-sự-an-toàn-và-khả-năng-chống-lại-các-cuộc-tấn-công-đối-nghịch-trong-các-hệ-thống-llm-hiện-đại">AprielGuard: Một hệ thống bảo vệ cho sự an toàn và khả năng chống lại các cuộc tấn công đối nghịch trong các hệ thống LLM hiện đại</h1>
+<p>Các Mô hình Ngôn ngữ Lớn (LLM) đã nhanh chóng phát triển từ những trợ lý chỉ xử lý văn bản thành các hệ thống tác tử phức tạp, có khả năng thực hiện suy luận nhiều bước, gọi các công cụ bên ngoài, truy xuất bộ nhớ và thực thi mã. Cùng với sự phát triển này, bối cảnh các mối đe dọa ngày càng trở nên tinh vi: không chỉ những rủi ro an toàn nội dung truyền thống, mà còn cả các kỹ thuật vượt rào trong nhiều lượt trò chuyện, tấn công tiêm nhiễm (prompt injection), chiếm đoạt bộ nhớ và thao túng công cụ.</p>
+<p>Trong công trình này, chúng tôi giới thiệu <strong>AprielGuard</strong>, một mô hình bảo vệ an toàn-an ninh với 8 tỷ tham số, được thiết kế để phát hiện:</p>
+<ul>
+<li><strong>16 loại rủi ro an toàn</strong>, bao gồm nội dung độc hại, thù địch, nội dung người lớn, thông tin sai lệch, tự hại, hoạt động bất hợp pháp, v.v.</li>
+<li><strong>Nhiều loại tấn công đối nghịch</strong>, bao gồm tấn công tiêm nhiễm, vượt rào, làm hỏng chuỗi suy luận (chain-of-thought corruption), chiếm đoạt ngữ cảnh, đầu độc bộ nhớ và các chuỗi khai thác tác tử đa tác nhân.</li>
+<li><strong>Các vi phạm an toàn và tấn công đối nghịch trong quy trình làm việc của tác tử (agentic workflows)</strong>, bao gồm cả các lệnh gọi công cụ và dấu vết suy luận của mô hình.</li>
+</ul>
+<p>AprielGuard có sẵn ở cả hai chế độ <strong>suy luận (reasoning)</strong> và <strong>không suy luận (non-reasoning)</strong>, cho phép phân loại có thể giải thích khi cần thiết và phân loại độ trễ thấp cho các quy trình sản xuất.</p>
+<ul>
+<li>Mô hình: <a href="https://huggingface.co/ServiceNow-AI/AprielGuard">https://huggingface.co/ServiceNow-AI/AprielGuard</a></li>
+<li>Bài báo kỹ thuật: <a href="https://arxiv.org/abs/2512.20293">https://arxiv.org/abs/2512.20293</a></li>
+</ul>
+<hr>
+<h1 id="mục-lục">Mục lục</h1>
+<ol>
+<li><a href="#motivation">Động lực</a></li>
+<li><a href="#overview">Tổng quan về AprielGuard</a></li>
+<li><a href="#taxonomy">Phân loại</a></li>
+<li><a href="#training_dataset">Tập dữ liệu đào tạo</a></li>
+<li><a href="#architecture">Kiến trúc mô hình</a></li>
+<li><a href="#training">Thiết lập đào tạo</a></li>
+<li><a href="#evaluation">Đánh giá</a></li>
+<li><a href="#conclusion">Kết luận</a></li>
+<li><a href="#limitations">Hạn chế</a></li>
+</ol>
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="động-lực">Động lực</h2>
+<p>Các bộ phân loại an toàn truyền thống chủ yếu tập trung vào một phạm vi phân loại giới hạn (ví dụ: độc hại hoặc tự hại), giả định đầu vào ngắn và đánh giá từng tin nhắn người dùng. Tuy nhiên, các triển khai hiện đại có:</p>
+<ul>
+<li><strong>Các cuộc trò chuyện đa lượt</strong></li>
+<li><strong>Ngữ cảnh dài</strong></li>
+<li><strong>Các bước suy luận có cấu trúc tạo ra chuỗi suy luận</strong></li>
+<li><strong>Quy trình làm việc đa bước có hỗ trợ công cụ (tác tử)</strong></li>
+<li><strong>Một lớp tấn công đối nghịch ngày càng tăng, khai thác suy luận, công cụ hoặc bộ nhớ</strong></li>
+</ul>
+<p>Kết quả là, các nhóm sản xuất ngày càng dựa vào các giải pháp tạm thời: nhiều mô hình bảo vệ cho các giai đoạn khác nhau, bộ lọc regex, quy tắc tĩnh hoặc các phương pháp thủ công được tạo ra. Các phương pháp này dễ bị lỗi và không thể mở rộng.</p>
+<p>AprielGuard giải quyết các vấn đề này với <strong>một mô hình hợp nhất</strong> và <strong>một phân loại an toàn + đối nghịch hợp nhất</strong>, được xây dựng đặc biệt cho các hệ sinh thái tác tử LLM hiện đại.</p>
+<!-- raw HTML omitted -->
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="tổng-quan-về-aprielguard">Tổng quan về AprielGuard</h2>
+<p>AprielGuard hoạt động trên ba định dạng đầu vào:</p>
+<ol>
+<li><strong>Lời nhắc độc lập</strong></li>
+<li><strong>Cuộc trò chuyện đa lượt</strong></li>
+<li><strong>Quy trình làm việc tác tử</strong> (lệnh gọi công cụ, dấu vết suy luận, bộ nhớ, ngữ cảnh hệ thống)</li>
+</ol>
+<p>Nó xuất ra:</p>
+<ul>
+<li>Phân loại an toàn và một danh sách các danh mục bị vi phạm từ phân loại.</li>
+<li>Phân loại tấn công đối nghịch.</li>
+<li><strong>Suy luận</strong> có cấu trúc tùy chọn giải thích quyết định.</li>
+</ul>
+<!-- raw HTML omitted -->
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="phân-loại">Phân loại</h2>
+<h3 id="a-phân-loại-an-toàn">A. Phân loại An toàn</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Danh mục</th>
+          <th>Mô tả</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>O1</td>
+          <td>Nội dung độc hại</td>
+      </tr>
+      <tr>
+          <td>O2</td>
+          <td>Biểu diễn không công bằng</td>
+      </tr>
+      <tr>
+          <td>O3</td>
+          <td>Nội dung người lớn</td>
+      </tr>
+      <tr>
+          <td>O4</td>
+          <td>Xói mòn niềm tin vào thông tin công cộng</td>
+      </tr>
+      <tr>
+          <td>O5</td>
+          <td>Lan truyền quan niệm sai lầm/niềm tin sai lệch</td>
+      </tr>
+      <tr>
+          <td>O6</td>
+          <td>Thực hành tài chính rủi ro</td>
+      </tr>
+      <tr>
+          <td>O7</td>
+          <td>Thương mại và Tuân thủ</td>
+      </tr>
+      <tr>
+          <td>O8</td>
+          <td>Phổ biến thông tin nguy hiểm</td>
+      </tr>
+      <tr>
+          <td>O9</td>
+          <td>Vi phạm quyền riêng tư</td>
+      </tr>
+      <tr>
+          <td>O10</td>
+          <td>Mối đe dọa an ninh</td>
+      </tr>
+      <tr>
+          <td>O11</td>
+          <td>Phỉ báng</td>
+      </tr>
+      <tr>
+          <td>O12</td>
+          <td>Lừa đảo hoặc hành động lừa dối</td>
+      </tr>
+      <tr>
+          <td>O13</td>
+          <td>Hoạt động gây ảnh hưởng</td>
+      </tr>
+      <tr>
+          <td>O14</td>
+          <td>Hoạt động bất hợp pháp</td>
+      </tr>
+      <tr>
+          <td>O15</td>
+          <td>Thuyết phục và Thao túng</td>
+      </tr>
+      <tr>
+          <td>O16</td>
+          <td>Vi phạm tài sản cá nhân</td>
+      </tr>
+  </tbody>
+</table>
+<p><em>(16 danh mục này được lấy cảm hứng từ <a href="https://arxiv.org/abs/2402.05044">SALAD-Bench</a>)</em></p>
+<hr>
+<h3 id="b-phân-loại-tấn-công-đối-nghịch">B. Phân loại Tấn công Đối nghịch</h3>
+<p>Mô hình phát hiện và đánh giá một loạt các mẫu lời nhắc đối nghịch được thiết kế để thao túng hành vi mô hình hoặc né tránh các cơ chế an toàn. Mô hình xuất ra phân loại nhị phân (ví dụ: đối nghịch / không đối nghịch) thay vì các danh mục tấn công chi tiết.</p>
+<p>Dữ liệu đào tạo bao gồm nhiều loại đối nghịch khác nhau như đóng vai, xây dựng thế giới, thuyết phục và cách điệu, cùng với nhiều chiến lược thao túng lời nhắc phức tạp khác. Các ví dụ này chỉ đại diện cho một tập hợp con của các kịch bản đối nghịch rộng lớn hơn được kết hợp vào dữ liệu đào tạo.</p>
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="tập-dữ-liệu-đào-tạo">Tập dữ liệu đào tạo</h2>
+<ul>
+<li><strong>Dữ liệu tổng hợp</strong>: AprielGuard được đào tạo trên một tập dữ liệu đào tạo được tạo ra một cách tổng hợp. Các điểm dữ liệu đào tạo được tạo ở cấp độ chủ đề phụ của phân loại để có phạm vi bao phủ tốt hơn. Chúng tôi tận dụng Mixtral-8x7B và các mô hình không kiểm duyệt được phát triển nội bộ để tạo nội dung không an toàn cho mục đích đào tạo. Các mô hình được nhắc với nhiệt độ cao hơn để tạo ra sự đa dạng trong đầu ra. Các mẫu lời nhắc được tùy chỉnh tỉ mỉ để đảm bảo tạo dữ liệu chính xác. Các cuộc tấn công đối nghịch được xây dựng bằng cách kết hợp các điểm dữ liệu tổng hợp, các mẫu lời nhắc đa dạng và các kỹ thuật tạo dựa trên quy tắc. Chúng tôi đã sử dụng <a href="https://github.com/NVIDIA-NeMo/Curator">NVIDIA NeMo Curator</a> để tạo ra các tập dữ liệu hội thoại đa lượt quy mô lớn, có các kịch bản phức tạp, thực tế với các cuộc tấn công lặp đi lặp lại và phát triển thông qua các chuyển đổi ngữ cảnh. Cách tiếp cận này cho phép chúng tôi tổng hợp một cách có hệ thống các mẫu tương tác đa dạng, cải thiện khả năng chống chịu của mô hình đối với suy luận theo chiều dài, lượt đối nghịch và ý định người dùng đang phát triển. Chúng tôi cũng sử dụng framework <a href="https://github.com/ServiceNow/SyGra">SyGra</a> cho các quy trình tạo dữ liệu tổng hợp để tạo các lời nhắc và cuộc tấn công có hại. Tập dữ liệu đào tạo bao gồm nhiều định dạng nội dung khác nhau như hội thoại, bài đăng trên diễn đàn, tweet, lời nhắc hướng dẫn, câu hỏi và hướng dẫn sử dụng.</li>
+<li><strong>Tăng cường dữ liệu</strong>: Để tăng cường khả năng chống chịu của mô hình, một loạt các kỹ thuật tăng cường dữ liệu đã được áp dụng cho dữ liệu đào tạo. Các phép tăng cường này được thiết kế để cho mô hình tiếp xúc với các biến thể và nhiễu tự nhiên thường xảy ra trong các tình huống thực tế. Cụ thể, tập dữ liệu bao gồm các biến đổi như nhiễu ở cấp độ ký tự, chèn lỗi đánh máy, thay thế leetspeak, diễn đạt lại ở cấp độ từ và sắp xếp lại cú pháp. Các phép tăng cường như vậy giúp mô hình khái quát hóa tốt hơn bằng cách giảm độ nhạy với các biến thể bề ngoài trong đầu vào, do đó cải thiện khả năng phục hồi chống lại các thao tác đối nghịch và biểu diễn văn bản không chuẩn.</li>
+<li><strong>Quy trình làm việc tác tử</strong>: Quy trình làm việc tác tử đại diện cho các tình huống thực tế, nơi các tác tử tự động thực hiện các tác vụ nhiều bước liên quan đến lập kế hoạch, suy luận và tương tác với các công cụ, API và các tác tử khác. Các quy trình làm việc này thường bao gồm các chuỗi lời nhắc người dùng, tin nhắn hệ thống, các bước suy luận trung gian và lệnh gọi công cụ, khiến chúng dễ bị tấn công đa dạng. Để xây dựng các điểm dữ liệu đào tạo này, chúng tôi tổng hợp một loạt các kịch bản đa dạng trên nhiều lĩnh vực, ghi lại các tương tác tác tử thực tế giữa người dùng và hệ thống tác tử. Mỗi điểm dữ liệu được làm phong phú với các yếu tố ngữ cảnh chi tiết — bao gồm định nghĩa công cụ, nhật ký lệnh gọi công cụ, vai trò và chính sách của tác tử, dấu vết thực thi, lịch sử hội thoại, trạng thái bộ nhớ và suy luận trên bảng nháp. Đối với các ví dụ độc hại hoặc đối nghịch, chúng tôi làm hỏng phân đoạn có liên quan của quy trình làm việc để phản ánh một vectơ tấn công cụ thể. Tùy thuộc vào kịch bản, điều này có thể bao gồm việc sửa đổi lời nhắc người dùng, sửa đổi dấu vết suy luận trung gian, sửa đổi đầu ra công cụ, tiêm trạng thái bộ nhớ sai hoặc làm gián đoạn giao tiếp giữa các tác tử. Bằng cách làm nhiễu có hệ thống các thành phần khác nhau của quy trình làm việc tác tử, chúng tôi tạo ra các ví dụ có độ trung thực cao, tiếp xúc mô hình với phổ đa dạng các mẫu tấn công thực tế và đầy thử thách. Mỗi điểm dữ liệu được mô phỏng để phản ánh các lần thực thi thực tế, bao gồm cả các chuỗi vô hại và đối nghịch.</li>
+<li><strong>Các trường hợp sử dụng ngữ cảnh dài</strong>: Chúng tôi đã tuyển chọn một tập dữ liệu ngữ cảnh dài chuyên biệt bao gồm các trường hợp sử dụng đa dạng, có độ dài cao như quy trình làm việc Tăng cường Sinh Sản Thu hồi (RAG), chuỗi hội thoại đa lượt, chi tiết sự cố và báo cáo hoạt động chứa các giao tiếp chi tiết. Các ví dụ này mô phỏng môi trường thực tế, nơi ngữ cảnh văn bản lớn là điển hình.</li>
+</ul>
+<!-- raw HTML omitted -->
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="kiến-trúc-mô-hình">Kiến trúc Mô hình</h2>
+<p>AprielGuard được xây dựng dựa trên <strong>một biến thể Apriel-1.5 Thinker Base</strong>, được thu nhỏ xuống cấu hình 8 tỷ tham số để triển khai hiệu quả.</p>
+<ul>
+<li><strong>Transformer chỉ bộ giải mã nguyên nhân</strong></li>
+<li><strong>Hoạt động chế độ kép</strong>:
+<ul>
+<li><strong>Chế độ Suy luận</strong> → xuất các giải thích có cấu trúc</li>
+<li><strong>Chế độ Nhanh</strong> → chỉ phân loại</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h3 id="thiết-lập-đào-tạo">Thiết lập Đào tạo</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Tham số</th>
+          <th>Giá trị</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Mô hình cơ sở</td>
+          <td>Apriel 1.5 Thinker Base (thu nhỏ)</td>
+      </tr>
+      <tr>
+          <td>Kích thước mô hình</td>
+          <td>8 tỷ tham số</td>
+      </tr>
+      <tr>
+          <td>Độ chính xác</td>
+          <td>bfloat16</td>
+      </tr>
+      <tr>
+          <td>Kích thước lô</td>
+          <td>1 với tích lũy gradient = 8</td>
+      </tr>
+      <tr>
+          <td>LR</td>
+          <td>2e-4</td>
+      </tr>
+      <tr>
+          <td>Trình tối ưu hóa</td>
+          <td>Adam (β1=0.9, β2=0.999)</td>
+      </tr>
+      <tr>
+          <td>Số Epoch</td>
+          <td>3</td>
+      </tr>
+      <tr>
+          <td>Chiều dài chuỗi</td>
+          <td>Lên đến 32k</td>
+      </tr>
+      <tr>
+          <td>Chế độ Suy luận</td>
+          <td>Bật/Tắt thông qua mẫu hướng dẫn</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="tóm-tắt-đánh-giá">Tóm tắt Đánh giá</h2>
+<p>AprielGuard được đánh giá trên:</p>
+<ul>
+<li>Các điểm chuẩn an toàn công khai</li>
+<li>Các điểm chuẩn đối nghịch công khai</li>
+<li>Các điểm chuẩn quy trình làm việc tác tử nội bộ</li>
+<li>Các điểm chuẩn trường hợp sử dụng ngữ cảnh dài nội bộ (lên đến 32k)</li>
+<li>Đánh giá đa ngôn ngữ (8 ngôn ngữ)</li>
+</ul>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="kết-quả-điểm-chuẩn-an-toàn"><strong>Kết quả Điểm chuẩn An toàn</strong></h2>
+<p>Hiệu suất của AprielGuard trên các điểm chuẩn an toàn công khai.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Nguồn</th>
+          <th>Precision ↑</th>
+          <th>Recall ↑</th>
+          <th>F1-score ↑</th>
+          <th>FPR ↓</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/Bertievidgen/SimpleSafetyTests">SimpleSafetyTests</a></td>
+          <td>1.00</td>
+          <td>0.97</td>
+          <td>0.98</td>
+          <td>NA</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/CohereLabs/aya_redteaming">AyaRedteaming</a></td>
+          <td>1.00</td>
+          <td>0.88</td>
+          <td>0.94</td>
+          <td>NA</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/PKU-Alignment/BeaverTails">BeaverTails</a></td>
+          <td>0.88</td>
+          <td>0.80</td>
+          <td>0.84</td>
+          <td>0.14</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/PKU-Alignment/PKU-SafeRLHF">SafeRLHF</a></td>
+          <td>0.87</td>
+          <td>0.99</td>
+          <td>0.92</td>
+          <td>0.17</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/allenai/xstest-response">xstest-response</a></td>
+          <td>0.94</td>
+          <td>0.96</td>
+          <td>0.95</td>
+          <td>0.01</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/lmsys/toxic-chat">toxic-chat</a></td>
+          <td>0.65</td>
+          <td>0.84</td>
+          <td>0.73</td>
+          <td>0.03</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/mmathys/openai-moderation-api-evaluation">openai-moderation-api-evaluation</a></td>
+          <td>0.65</td>
+          <td>0.94</td>
+          <td>0.77</td>
+          <td>0.22</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/nvidia/Aegis-AI-Content-Safety-Dataset-1.0">Aegis-AI-Content-Safety-Dataset-1.0</a></td>
+          <td>0.98</td>
+          <td>0.74</td>
+          <td>0.84</td>
+          <td>0.03</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/nvidia/Aegis-AI-Content-Safety-Dataset-2.0">Aegis-AI-Content-Safety-Dataset-2.0</a></td>
+          <td>0.84</td>
+          <td>0.84</td>
+          <td>0.84</td>
+          <td>0.16</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/walledai/HarmBench">HarmBench</a></td>
+          <td>1.00</td>
+          <td>0.99</td>
+          <td>1.00</td>
+          <td>NA</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/walledai/XSTest">XSTest</a></td>
+          <td>0.90</td>
+          <td>0.99</td>
+          <td>0.94</td>
+          <td>0.09</td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="kết-quả-phát-hiện-đối-nghịch"><strong>Kết quả Phát hiện Đối nghịch</strong></h2>
+<p>Hiệu suất của AprielGuard trên các điểm chuẩn đối nghịch công khai.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Nguồn</th>
+          <th>Precision ↑</th>
+          <th>Recall ↑</th>
+          <th>F1-score ↑</th>
+          <th>FPR ↓</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/Lakera/gandalf_ignore_instructions">gandalf_ignore_instructions</a></td>
+          <td>1.00</td>
+          <td>0.91</td>
+          <td>0.95</td>
+          <td>NA</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/TrustAIRLab/in-the-wild-jailbreak-prompts">Salad-Data</a></td>
+          <td>1.00</td>
+          <td>0.96</td>
+          <td>0.98</td>
+          <td>NA</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/TrustAIRLab/in-the-wild-jailbreak-prompts">in-the-wild-jailbreak-prompts</a></td>
+          <td>1.00</td>
+          <td>0.87</td>
+          <td>0.93</td>
+          <td>NA</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/allenai/wildguardmix">wildguardmix</a></td>
+          <td>0.66</td>
+          <td>0.91</td>
+          <td>0.76</td>
+          <td>0.12</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/allenai/wildjailbreak">wildjailbreak</a></td>
+          <td>0.97</td>
+          <td>0.96</td>
+          <td>0.96</td>
+          <td>0.31</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/deepset/prompt-injections">prompt-injections</a></td>
+          <td>1.00</td>
+          <td>0.52</td>
+          <td>0.68</td>
+          <td>0.00</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/jackhhao/jailbreak-classification">jailbreak-classification</a></td>
+          <td>0.96</td>
+          <td>0.94</td>
+          <td>0.95</td>
+          <td>0.04</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/qualifire/prompt-injections-benchmark">prompt-injections-benchmark</a></td>
+          <td>0.80</td>
+          <td>0.94</td>
+          <td>0.87</td>
+          <td>0.15</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/rubend18/ChatGPT-Jailbreak-Prompts">ChatGPT-Jailbreak-Prompts</a></td>
+          <td>1.00</td>
+          <td>1.00</td>
+          <td>1.00</td>
+          <td>NA</td>
+      </tr>
+      <tr>
+          <td><a href="https://huggingface.co/datasets/xTRam1/safe-guard-prompt-injection">safe-guard-prompt-injection</a></td>
+          <td>1.00</td>
+          <td>0.57</td>
+          <td>0.73</td>
+          <td>0.00</td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="đánh-giá-quy-trình-làm-việc-tác-tử">Đánh giá Quy trình Làm việc Tác tử</h2>
+<p>Chúng tôi đã biên soạn một tập dữ liệu điểm chuẩn nội bộ nhằm đánh giá khả năng phát hiện Rủi ro An toàn và Tấn công Đối nghịch trong các quy trình làm việc tác tử. Để xây dựng điểm chuẩn này, chúng tôi đã thiết kế có hệ thống nhiều kịch bản tấn công nhắm vào các thành phần khác nhau của quy trình làm việc — chẳng hạn như lời nhắc đầu vào, dấu vết suy luận, tham số công cụ, trạng thái bộ nhớ và giao tiếp giữa các tác tử. Mỗi trường hợp được chú thích theo phân loại các lỗ hổng. Mỗi quy trình làm việc được mô phỏng để phản ánh các lần thực thi thực tế, bao gồm cả các chuỗi vô hại và đối nghịch. Tập dữ liệu ghi lại các điểm tấn công chi tiết trên các giai đoạn khác nhau như lập kế hoạch, suy luận, thực thi và tạo phản hồi để cung cấp đánh giá chi tiết về khả năng chống chịu của mô hình. Nhìn chung, tập dữ liệu bao gồm sự kết hợp cân bằng giữa rủi ro an toàn và tấn công đối nghịch.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="khả-năng-chống-chịu-ngữ-cảnh-dài-lên-đến-32k-token">Khả năng chống chịu Ngữ cảnh Dài (Lên đến 32k Token)</h2>
+<p>Nhiều rủi ro an toàn hoặc đối nghịch trong thế giới thực không biểu hiện trong các đoạn văn bản ngắn, riêng lẻ, mà thay vào đó xuất hiện qua các trường hợp sử dụng như quy trình làm việc Tăng cường Sinh Sản Thu hồi (RAG), chuỗi hội thoại đa lượt, chi tiết sự cố tổ chức và báo cáo hoạt động chứa các giao tiếp chi tiết. Do đó, một mô hình giám hộ phải phát hiện các trường hợp tinh tế hoặc &ldquo;kim trong đống rơm&rdquo;, nơi nội dung độc hại hoặc thao túng được phân bố thưa thớt, nhúng trong nhiều tham chiếu hoặc cố ý che khuất trong văn bản vô hại.</p>
+<p>Để đánh giá khả năng suy luận ngữ cảnh dài của AprielGuard, chúng tôi đã biên soạn một tập dữ liệu thử nghiệm chuyên biệt bao gồm các trường hợp sử dụng đa dạng, có độ dài cao. Chúng tôi đã xem xét dữ liệu lên đến 32k token cho đánh giá này. Dữ liệu cơ sở ban đầu được xây dựng từ nội dung vô hại đại diện cho các lĩnh vực này. Các yếu tố độc hại sau đó đã được tiêm có hệ thống để mô phỏng các kịch bản đối nghịch hoặc không an toàn trong khi vẫn duy trì sự mạch lạc tổng thể của văn bản. Ví dụ, trong một bản tóm tắt trường hợp sự cố, một sự tiêm nhiễm có thể được nhúng trong mô tả trường hợp, ẩn trong phần siêu dữ liệu hoặc chèn như một phần của chuỗi bình luận. Tương tự, trong dữ liệu hội thoại đa lượt, nội dung đối nghịch có thể xuất hiện giữa cuộc trò chuyện, gần cuối hoặc ở đầu để kiểm tra theo dõi sự phụ thuộc phạm vi xa.</p>
+<p><strong>Hiệu suất Rủi ro An toàn</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>Mô hình</th>
+          <th>Suy luận</th>
+          <th>Precision ↑</th>
+          <th>Recall ↑</th>
+          <th>F1 ↑</th>
+          <th>FPR ↓</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>AprielGuard-8B</td>
+          <td>Không có</td>
+          <td>0.99</td>
+          <td>0.96</td>
+          <td>0.97</td>
+          <td>0.01</td>
+      </tr>
+      <tr>
+          <td>AprielGuard-8B</td>
+          <td>Có</td>
+          <td>0.92</td>
+          <td>0.98</td>
+          <td>0.95</td>
+          <td>0.11</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Hiệu suất Tấn công Đối nghịch</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>Mô hình</th>
+          <th>Suy luận</th>
+          <th>Precision ↑</th>
+          <th>Recall ↑</th>
+          <th>F1 ↑</th>
+          <th>FPR ↓</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>AprielGuard-8B</td>
+          <td>Không có</td>
+          <td>1.00</td>
+          <td>0.78</td>
+          <td>0.88</td>
+          <td>0.00</td>
+      </tr>
+      <tr>
+          <td>AprielGuard-8B</td>
+          <td>Có</td>
+          <td>0.93</td>
+          <td>0.94</td>
+          <td>0.94</td>
+          <td>0.10</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="đánh-giá-đa-ngôn-ngữ">Đánh giá Đa ngôn ngữ</h2>
+<p>Một hạn chế lớn trong lĩnh vực nghiên cứu kiểm duyệt nội dung hiện nay là sự khan hiếm của các điểm chuẩn đa ngôn ngữ chất lượng cao. Để giải quyết khoảng trống này và đánh giá toàn diện khả năng đa ngôn ngữ của AprielGuard, chúng tôi đã mở rộng các điểm chuẩn Rủi ro An toàn và các điểm chuẩn Tấn công Đối nghịch sang nhiều ngôn ngữ phi tiếng Anh. Quá trình dịch được thực hiện bằng mô hình <a href="https://huggingface.co/google/madlad400-3b-mt">MADLAD400-3B-MT</a>, một mô hình dịch máy đa ngôn ngữ dựa trên kiến trúc T5.</p>
+<p>Đối với nghiên cứu này, chúng tôi đã chọn tám ngôn ngữ phi tiếng Anh được sử dụng rộng rãi nhất để đảm bảo phạm vi bao phủ ngôn ngữ và địa lý rộng: tiếng Pháp, tiếng Pháp Canada, tiếng Đức, tiếng Nhật, tiếng Hà Lan, tiếng Tây Ban Nha, tiếng Bồ Đào Nha Brazil và tiếng Ý. Mỗi trường hợp từ các điểm chuẩn An toàn và Đối nghịch tiếng Anh đã được dịch sang tám ngôn ngữ đích. Trong quá trình dịch, chúng tôi đã bảo tồn các định danh vai trò tiếng Anh ban đầu, chẳng hạn như <em>User:</em> và <em>Assistant:</em>, trong khi chỉ dịch nội dung hội thoại. Lựa chọn thiết kế này đảm bảo sự liên kết với khung kiểm duyệt của AprielGuard, nơi ngữ cảnh vai trò đóng một phần quan trọng trong việc đánh giá ý định an toàn và đối nghịch.</p>
+<!-- raw HTML omitted -->
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="kết-luận">Kết luận</h2>
+<ul>
+<li>AprielGuard hợp nhất khả năng chống chịu về an toàn, an ninh và tác tử vào một mô hình giám hộ duy nhất có khả năng xử lý:
+<ul>
+<li>Phân loại rủi ro an toàn toàn diện.</li>
+<li>Phát hiện tấn công đối nghịch, bao gồm cả các nỗ lực tiêm nhiễm lời nhắc và vượt rào.</li>
+<li>Các phương thức đầu vào khác nhau, chẳng hạn như lời nhắc độc lập, hội thoại đa lượt và quy trình làm việc tác tử đầy đủ.</li>
+<li>Đầu vào ngữ cảnh dài.</li>
+<li>Đầu vào đa ngôn ngữ.</li>
+<li>Suy luận có thể giải thích.</li>
+</ul>
+</li>
+</ul>
+<p>Khi LLM tiến tới các hệ thống tác tử được tích hợp sâu, nhu cầu về các quy trình hợp nhất trở nên quan trọng hơn. AprielGuard là một bước tiến tới tương lai đó — giảm độ phức tạp, cải thiện phạm vi bao phủ và cung cấp một nền tảng có thể mở rộng cho việc triển khai AI đáng tin cậy.</p>
+<hr>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="hạn-chế">Hạn chế</h2>
+<ul>
+<li><strong>Phạm vi ngôn ngữ</strong>: Mặc dù AprielGuard đã được đào tạo chủ yếu trên dữ liệu tiếng Anh, các thử nghiệm hạn chế cho thấy nó hoạt động khá tốt trên một số ngôn ngữ, bao gồm: tiếng Anh, tiếng Đức, tiếng Tây Ban Nha, tiếng Pháp, tiếng Pháp (Canada), tiếng Ý, tiếng Hà Lan và tiếng Bồ Đào Nha (Brazil).
+Tuy nhiên, nên kiểm tra và hiệu chỉnh kỹ lưỡng trước khi triển khai mô hình cho mục đích sản xuất trong môi trường phi tiếng Anh.</li>
+<li><strong>Khả năng chống chịu đối nghịch</strong>: Mặc dù được đào tạo có mục tiêu về hành vi đối nghịch và thao túng, mô hình vẫn có thể dễ bị tổn thương trước các chiến lược tấn công phức tạp hoặc chưa từng thấy.</li>
+<li><strong>Độ nhạy với miền</strong>: AprielGuard có thể hoạt động kém hơn trong các miền rất chuyên biệt hoặc kỹ thuật (ví dụ: ngữ cảnh pháp lý, y tế hoặc khoa học) đòi hỏi sự hiểu biết ngữ cảnh tinh tế.</li>
+<li><strong>Sự đánh đổi giữa độ trễ–khả năng diễn giải</strong>: Bật dấu vết suy luận giúp tăng khả năng diễn giải nhưng làm tăng độ trễ và chi phí tính toán. Đối với các trường hợp sử dụng có độ trễ thấp hoặc quy mô lớn, nên sử dụng chế độ không suy luận.</li>
+<li><strong>Độ nhạy của Chế độ Suy luận</strong>: Mô hình đôi khi cho thấy sự không nhất quán trong kết quả phân loại giữa chế độ suy luận được bật và chế độ không suy luận.</li>
+<li><strong>Mục đích sử dụng</strong>: AprielGuard chỉ dành cho mục đích sử dụng làm mô hình bảo vệ và đánh giá rủi ro. Nó phân loại các rủi ro an toàn tiềm ẩn và các mối đe dọa đối nghịch theo phân loại hợp nhất của AprielGuard. Bất kỳ sai lệch nào so với suy luận được chỉ định có thể dẫn đến hành vi không mong muốn, không an toàn hoặc không đáng tin cậy.</li>
+</ul>
+<hr>
+<h3 id="cộng-đồng">Cộng đồng</h3>
+<!-- raw HTML omitted -->
+<hr>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/ServiceNow-AI/aprielguard">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/23-th%C3%A1ng-12-n%C4%83m-2025/">23 Tháng 12 Năm 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-19/157e2a/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-uploads.huggingface.co/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Codex đang mã hóa nguồn mở các mô hình AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-19T00:00:00&#43;00:00">Dec 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Codex đang mã hóa nguồn mở các mô hình AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Codex đang mã hóa nguồn mở các mô hình AI</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-19/58d06f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-uploads.huggingface.co/production/uploads/688cf7e6026af0cf8ac969dd/6RiFGxMzn9Fmgml83fK8G.jpeg" alt="Tổng hợp kiến thức liên quan đến Trình mã hóa văn bản v5- Định nghĩa mô hình đơn giản, cung cấp năng lượng cho hệ sinh thái AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-19T00:00:00&#43;00:00">Dec 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Tổng hợp kiến thức liên quan đến Trình mã hóa văn bản v5- Định nghĩa mô hình đơn giản, cung cấp năng lượng cho hệ sinh thái AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tổng hợp kiến thức liên quan đến Trình mã hóa văn bản v5, cung cấp năng lượng cho hệ sinh thái AI</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-25/464118/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic mua lại Bun khi Claude Code đạt mốc 1 tỷ đô la" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic mua lại Bun khi Claude Code đạt mốc 1 tỷ đô la</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-25/b78351/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-uploads.huggingface.co/production/uploads/667521b4585f2bf570950584/bNdKz_2O6GjsvqnLCYe3p.png" alt="AprielGuard- Một hệ thống bảo vệ cho sự an toàn và khả năng chống chịu với tấn công trong các hệ thống LLM hiện đại" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AprielGuard- Một hệ thống bảo vệ cho sự an toàn và khả năng chống chịu với tấn công trong các hệ thống LLM hiện đại</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-25/2e125f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Chia sẻ khuôn khổ tuân thủ của chúng tôi đối với Đạo luật Minh bạch về AI Tiên tiến của California" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chia sẻ khuôn khổ tuân thủ của chúng tôi đối với Đạo luật Minh bạch về AI Tiên tiến của California</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-25/4eb0ae/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn.sanity.io/images/4zrzovbb/website/3bf3f761430d283e82c0232ed8ae03cf810673f4-1920x1080.png" alt="Giới thiệu Claude Opus 4.5" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Claude Opus 4.5</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-25/59f6d1/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Giới thiệu Mistral OCR 3" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Mistral OCR 3</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2025. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
