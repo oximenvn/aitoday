@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dynamics 365 đặt ra tiêu chuẩn cho việc đủ điều kiện bán hàng tác tử theo benchmark mới | AI Today - SkyAI</title>
+
+<meta name="description" content="Thông báo Microsoft Sales Bench—một bộ benchmark mới được thiết kế để đánh giá hiệu suất của các tác tử bán hàng được hỗ trợ bởi AI của bạn. Tìm hiểu thêm.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Dynamics 365 đặt ra tiêu chuẩn cho việc đủ điều kiện bán hàng tác tử theo benchmark mới</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Thông báo Microsoft Sales Bench—một bộ benchmark mới được thiết kế để đánh giá hiệu suất của các tác tử bán hàng được hỗ trợ bởi AI của bạn. Tìm hiểu thêm. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-01-02T00:00:00&#43;00:00">January 2, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            14 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/12/MSC21_Getty_mobile_1124225771-1260px-300x200.jpg" alt="Dynamics 365 đặt ra tiêu chuẩn cho việc đủ điều kiện bán hàng tác tử theo benchmark mới">
+        <figcaption class="text-center italic text-xs">Thông báo Microsoft Sales Bench—một bộ benchmark mới được thiết kế để đánh giá hiệu suất của các tác tử bán hàng được hỗ trợ bởi AI của bạn. Tìm hiểu thêm.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="dynamics-365-dẫn-đầu-trong-việc-đánh-giá-chất-lượng-đại-lý-bán-hàng-tự-động-trên-tiêu-chuẩn-mới">Dynamics 365 dẫn đầu trong việc đánh giá chất lượng đại lý bán hàng tự động trên tiêu chuẩn mới</h1>
+<p><strong>Tác giả:</strong> Julie Strauss, Phó Chủ tịch, AI Sales, Marketing, và Incubations
+<strong>Ngày đăng:</strong> 11 tháng 12, 2025</p>
+<h2 id="giới-thiệu-về-đại-lý-chốt-sale-sales-qualification-agent">Giới thiệu về Đại lý Chốt Sale (Sales Qualification Agent)</h2>
+<p>Vào tháng 10 năm 2025, chúng tôi đã công bố <!-- raw HTML omitted -->tính sẵn sàng chung<!-- raw HTML omitted --> của <!-- raw HTML omitted -->Đại lý Chốt Sale (SQA) trong Dynamics 365 Sales<!-- raw HTML omitted --> – một bước đột phá trong việc tự động hóa phân loại khách hàng tiềm năng. SQA giúp nhân viên bán hàng tăng cường chất lượng cơ hội bán hàng trong khi loại bỏ các công việc lặp đi lặp lại, tốn thời gian. SQA tự động nghiên cứu từng khách hàng tiềm năng, bắt đầu tương tác cá nhân hóa và giao tiếp với khách hàng để hiểu về ý định mua hàng, đảm bảo rằng nhân viên bán hàng dành thời gian gặp gỡ những khách hàng tiềm năng đã sẵn sàng thực hiện bước tiếp theo. Với các chế độ cho phép cả việc phân loại do người bán hàng điều khiển và hoàn toàn tự động, đại lý này hỗ trợ mục tiêu chính của các tổ chức bán hàng – tăng doanh thu trên mỗi nhân viên bán hàng.</p>
+<p><img src="https://www.microsoft.com/en-us/dynamics-365/blog/wp-content/uploads/2025/12/Sales-Qualification-Agent-research-1920px-1024x576.webp" alt="Giao diện Đại lý Chốt Sale trong Microsoft Dynamics 365.">
+<em>Giao diện của Đại lý Chốt Sale trong Microsoft Dynamics 365.</em></p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="tiếp-tục-đánh-giá-chất-lượng-đại-lý-ai-bán-hàng">Tiếp tục đánh giá chất lượng đại lý AI bán hàng</h2>
+<p>Microsoft đang xây dựng tương lai của công nghệ bán hàng tự động với các đại lý AI được xây dựng sẵn, như Đại lý Chốt Sale, Đại lý Nghiên cứu Bán hàng và Đại lý Chốt Đơn Bán hàng có sẵn trong Dynamics 365.</p>
+<p><img src="https://www.microsoft.com/en-us/dynamics-365/blog/wp-content/uploads/2025/12/SQA_bench_BDM_blog_image-2_1260px-1024x417.webp" alt="Sơ đồ cho thấy cách các đại lý AI được xây dựng sẵn trong Dynamics 365 Sales phù hợp với vai trò và mục tiêu.">
+<em>Sơ đồ cho thấy cách các đại lý AI được xây dựng sẵn trong Dynamics 365 Sales phù hợp với vai trò và mục tiêu.</em></p>
+<p>Microsoft cam kết cung cấp chất lượng, sự tin cậy và minh bạch cho các đại lý của mình, và điều đó đòi hỏi sự đánh giá nghiêm ngặt. Khi chúng tôi tiếp tục xây dựng các đại lý mới và cải thiện các đại lý hiện có cho quy trình làm việc bán hàng quan trọng, các tiêu chuẩn đánh giá cung cấp một cách có cấu trúc và minh bạch để khách hàng của chúng tôi đo lường chất lượng cho các công việc mà đại lý thực hiện.</p>
+<p>Hôm nay, chúng tôi công bố <strong>Microsoft Sales Bench</strong> – một bộ tiêu chuẩn đánh giá mới được thiết kế để đánh giá hiệu suất của các đại lý bán hàng được hỗ trợ bởi AI trong các tình huống thực tế. Khung làm việc này kết hợp các chỉ số được thiết kế riêng, hàng trăm kịch bản bán hàng và điểm số tổng hợp được xác thực bởi cả người đánh giá là con người và AI.</p>
+<p>Sales Bench không bắt đầu từ con số không. Nó hiện chính thức hóa và mở rộng những gì đã bắt đầu với <!-- raw HTML omitted -->Sales Research Bench<!-- raw HTML omitted -->, được xuất bản vào ngày 21 tháng 10 năm 2025, đánh giá cách các giải pháp AI trả lời các câu hỏi nghiên cứu kinh doanh cho các nhà lãnh đạo bán hàng.</p>
+<p>Hôm nay, chúng tôi mở rộng Microsoft Sales Bench với tiêu chuẩn thứ hai: <strong>Microsoft Sales Qualification Bench</strong>, tập trung vào việc đo lường hiệu quả của các đại lý AI trong việc phân loại khách hàng tiềm năng và tạo ra một danh sách khách hàng tiềm năng chất lượng cao.</p>
+<h2 id="giới-thiệu-sales-qualification-bench-cho-phân-loại-khách-hàng-tiềm-năng">Giới thiệu Sales Qualification Bench cho phân loại khách hàng tiềm năng</h2>
+<p>Microsoft Sales Qualification Bench này được phát triển từ các đánh giá nghiêm ngặt mà chúng tôi đã thực hiện kể từ bản xem trước công khai của Đại lý Chốt Sale vào tháng 4, với mục tiêu đo lường khách quan chất lượng khi chúng tôi tiếp tục phát triển đại lý, hợp tác với khách hàng từ nhiều ngành công nghiệp khác nhau. Kể từ bản xem trước, chúng tôi đã đo lường mọi cập nhật dựa trên các tiêu chuẩn này, đảm bảo các cải tiến là thực tế và có thể lặp lại.</p>
+<p>Chúng tôi đã tạo ra một bộ dữ liệu tổng hợp mô phỏng theo các công ty từ ba ngành khác nhau, với 300 khách hàng tiềm năng, bao gồm các thuộc tính như tên, công ty và địa chỉ email – đại diện cho những gì mà nhóm bán hàng thường làm việc trước bất kỳ quá trình làm giàu hoặc vệ sinh dữ liệu nào. Ngoài các thuộc tính điển hình này, chúng tôi còn bổ sung các đầu vào kiến thức quan trọng như đề xuất giá trị của sản phẩm đang được bán, các nghiên cứu điển hình của khách hàng và tài liệu để trả lời câu hỏi của khách hàng.</p>
+<p>Ngoài Đại lý Chốt Sale, chúng tôi đã sử dụng khung đánh giá để đo lường ChatGPT của OpenAI trên cùng một bộ dữ liệu. Vì chúng tôi không có quyền truy cập vào một đại lý tự động từ OpenAI, chúng tôi đã mô phỏng cách một nhân viên bán hàng sử dụng ChatGPT để tái tạo ba nhiệm vụ chính mà SQA thực hiện. Chúng tôi cung cấp cho mỗi hệ thống – Đại lý Chốt Sale và ChatGPT – chính xác cùng các đầu vào khách hàng tiềm năng, nguồn kiến thức và tín hiệu ngữ cảnh dưới các cấu hình đánh giá được kiểm soát. Chúng tôi đã sử dụng giấy phép ChatGPT Pro với GPT-4.1. Mô hình này là sự kết hợp gần nhất (và tốt hơn một chút) với GPT-4.1 mini của Đại lý Chốt Sale, mà chúng tôi đã chọn một cách cố ý để mang lại chất lượng tối ưu với chi phí thấp hơn trên mỗi khách hàng tiềm năng so với các mô hình mới hơn. Ngoài ra, giấy phép Pro được chọn để tối ưu hóa chất lượng: Trang định giá của ChatGPT mô tả Pro là “toàn quyền truy cập vào những gì tốt nhất của ChatGPT”.<!-- raw HTML omitted -->1<!-- raw HTML omitted --></p>
+<p>Khung làm việc đánh giá đầu ra từ ba nhiệm vụ trên Đại lý Chốt Sale và ChatGPT:</p>
+<ul>
+<li><strong>Nghiên cứu</strong>: Nghiên cứu công ty cho khách hàng tiềm năng – bối cảnh, ưu tiên chiến lược, sức khỏe tài chính và tin tức mới nhất.</li>
+<li><strong>Tiếp cận</strong>: Một email cá nhân hóa được tạo dựa trên nghiên cứu, để liên hệ ban đầu với khách hàng tiềm năng.</li>
+<li><strong>Tương tác</strong>: Cuộc trò chuyện của đại lý với khách hàng tiềm năng cho đến khi nó được phân loại hoặc xử lý.</li>
+</ul>
+<p>Các chỉ số chấm điểm của chúng tôi trải dài trên chất lượng cốt lõi (độ chính xác, sự liên quan, tính đầy đủ), độ tin cậy (cơ sở dữ liệu và trích dẫn) và các tiêu chí thành công cụ thể cho doanh nghiệp (ví dụ: sự liên quan của nghiên cứu công ty để làm nổi bật sự quan tâm đến các ưu đãi của người bán, cá nhân hóa email tiếp cận ban đầu được gửi để thu hút sự chú ý của khách hàng tiềm năng, độ chính xác của câu trả lời cho câu hỏi của khách hàng tiềm năng để thúc đẩy ý định mua hàng và thời điểm chuyển giao cho người bán khi khách hàng tiềm năng sẵn sàng tương tác).</p>
+<p>Các đầu ra đã được các người đánh giá là con người và một thẩm phán LLM được xây dựng bằng GPT-5.1 chấm điểm độc lập, sử dụng thang điểm từ 1-10 cho mỗi chỉ số. Sau đó, các điểm số theo chỉ số này được tổng hợp bằng cách sử dụng điểm trung bình để đưa ra điểm chất lượng tổng hợp. Kết quả là một tiêu chuẩn nghiêm ngặt trình bày điểm số tổng hợp và điểm số theo từng chiều để cho thấy các đại lý xuất sắc ở đâu hoặc cần cải thiện ở đâu. Phương pháp luận, chỉ số và định nghĩa của chúng được mô tả trong <!-- raw HTML omitted -->bài đăng blog kỹ thuật này<!-- raw HTML omitted -->.</p>
+<h2 id="kết-quả">Kết quả</h2>
+<p>Trong các đánh giá hoàn thành vào ngày 4 tháng 12 năm 2025, sử dụng Sales Qualification Bench, Đại lý Chốt Sale đã vượt trội hơn ChatGPT trên mỗi trong ba nhiệm vụ cần thiết cho việc phân loại khách hàng tiềm năng:</p>
+<ul>
+<li><strong>Nghiên cứu</strong>: Đại lý Chốt Sale đã vượt trội hơn ChatGPT với điểm số tổng hợp cao hơn <!-- raw HTML omitted -->6%<!-- raw HTML omitted -->, dẫn đầu về sự liên quan và tính đầy đủ trong kết quả nghiên cứu làm nổi bật sự quan tâm của công ty khách hàng đến các ưu đãi của người bán.</li>
+<li><strong>Tiếp cận</strong>: Đại lý Chốt Sale đã thể hiện kết quả tốt hơn <!-- raw HTML omitted -->20%<!-- raw HTML omitted --> so với ChatGPT, tạo ra các bản nháp email với sự cá nhân hóa chính xác và đề cập đến các sự kiện gần đây có liên quan sẽ gây được tiếng vang với khách hàng tiềm năng.</li>
+<li><strong>Tương tác</strong>: Các phản hồi email của Đại lý Chốt Sale để tương tác với khách hàng tiềm năng trong cuộc trò chuyện đa lượt đã đạt điểm cao hơn <!-- raw HTML omitted -->16%<!-- raw HTML omitted --> so với ChatGPT. SQA đã tạo ra các email trả lời các câu hỏi của khách hàng tiềm năng với các câu trả lời chính xác nhằm thúc đẩy sự quan tâm đến việc mua hàng và với các câu hỏi khám phá chính xác nhằm phân loại khách hàng tiềm năng trước khi chuyển giao cho nhân viên bán hàng.</li>
+</ul>
+<p>Ngoài việc hoạt động tốt hơn trên các chỉ số này, Đại lý Chốt Sale còn có khả năng hoạt động <!-- raw HTML omitted -->tự động<!-- raw HTML omitted -->, có thể giúp giảm đáng kể thời gian dành để tạo danh sách khách hàng tiềm năng trong khi giúp các nhóm bán hàng xây dựng danh sách khách hàng tiềm năng có chất lượng tốt hơn.</p>
+<p><img src="https://www.microsoft.com/en-us/dynamics-365/blog/wp-content/uploads/2025/12/SQA_bench_BDM_blog_image-3-1024x652.webp" alt="Chúng tôi đã đánh giá chất lượng dựa trên các chỉ số chấm điểm dành riêng cho các tình huống nghiên cứu, tiếp cận và tương tác. Một thẩm phán LLM, sử dụng mô hình GPT-5.1 của OpenAI, đã chấm điểm các đầu ra do Đại lý Chốt Sale và mô hình GPT-4.1 của ChatGPT tạo ra trên thang điểm từ 1 đến 10 cho mỗi hạng mục, với điểm cao hơn là tốt hơn. Một điểm số tổng hợp cho mỗi tình huống này đã được tính toán như một điểm trung bình có trọng số từ điểm số theo từng chỉ số của chúng. Tìm hiểu thêm về phương pháp luận trong bài đăng blog kỹ thuật này.">
+<em>Chúng tôi đã đánh giá chất lượng dựa trên các chỉ số chấm điểm dành riêng cho các tình huống nghiên cứu, tiếp cận và tương tác. Một thẩm phán LLM, sử dụng mô hình GPT-5.1 của OpenAI, đã chấm điểm các đầu ra do Đại lý Chốt Sale và mô hình GPT-4.1 của ChatGPT tạo ra trên thang điểm từ 1 đến 10 cho mỗi hạng mục, với điểm cao hơn là tốt hơn. Một điểm số tổng hợp cho mỗi tình huống này đã được tính toán như một điểm trung bình có trọng số từ điểm số theo từng chỉ số của chúng. Tìm hiểu thêm về phương pháp luận trong bài đăng blog kỹ thuật này.</em></p>
+<p>Đại lý Chốt Sale ghi điểm tốt trên các nhiệm vụ này vì nó được tối ưu hóa cho các kịch bản bán hàng cụ thể và sử dụng các kỹ thuật sau để đạt được kết quả tuyệt vời:</p>
+<ul>
+<li>Nó sử dụng Retrieval Augmented Generation (RAG) tự động để nghiên cứu từng khách hàng tiềm năng một cách không ngừng nghỉ, đảm bảo tính đầy đủ cao hơn. Xem thêm về điều này trong phần tiếp theo.</li>
+<li>Với kiến thức về những gì công ty bán, nó có thể cá nhân hóa mọi quy trình làm việc để tăng sự liên quan cho cả người bán hàng và khách hàng tiềm năng.</li>
+<li>Nó có thể truy xuất kiến thức tổ chức từ các tài liệu đính kèm và kho lưu trữ nội bộ như SharePoint với độ chính xác cao hơn, tăng cường độ chính xác cho các câu trả lời của nó khi tương tác với khách hàng tiềm năng.</li>
+</ul>
+<p><!-- raw HTML omitted -->Bài đăng blog kỹ thuật<!-- raw HTML omitted --> chi tiết về các chỉ số mà SQA xuất sắc so với ChatGPT, nơi nó còn thiếu sót và lý do tại sao.</p>
+<h2 id="chuyển-đổi-đánh-giá-thành-tác-động-thực-tế">Chuyển đổi đánh giá thành tác động thực tế</h2>
+<p>Việc chạy các đánh giá đã dẫn đến những cải tiến lớn cho Đại lý Chốt Sale trong giai đoạn xem trước kéo dài sáu tháng. Kết quả ban đầu đã thúc đẩy chúng tôi thử nghiệm các mẫu thiết kế AI tự động, đặc biệt là RAG tự động, giúp cải thiện nghiên cứu công ty của chúng tôi bằng cách cho phép tìm kiếm web lặp lại và suy luận theo thời gian thực. Chúng cũng đã giúp chúng tôi tăng cường phạm vi bao phủ dữ liệu bằng cách tự động liên kết các bản ghi CRM hiện có với từng khách hàng tiềm năng và suy ra tên công ty từ email của khách hàng tiềm năng. Những cập nhật này đã cung cấp cho nhân viên bán hàng những hiểu biết sâu sắc hơn, tiết lộ các cơ hội chiến lược và rủi ro vượt ra ngoài các sự kiện cơ bản.</p>
+<p>Ví dụ, khi nghiên cứu khách hàng tiềm năng cho một công ty bảo mật, Đại lý Chốt Sale có thể liên kết tin tức về các cuộc tấn công mạng gần đây với nhu cầu ngày càng tăng đối với phần mềm của công ty. Như đã nêu trong bài đăng blog kỹ thuật, nghiên cứu do đại lý tổng hợp giúp đưa ra những suy luận như vậy một cách nhất quán hơn so với ChatGPT. Việc cải thiện nghiên cứu của đại lý cũng đã cải thiện sự liên quan và cá nhân hóa của các email tiếp cận, giúp đại lý tương tác tốt hơn với khách hàng tiềm năng và làm rõ khả năng và ý định mua hàng của họ trước khi chuyển giao cho người bán.</p>
+<p><img src="https://www.microsoft.com/en-us/dynamics-365/blog/wp-content/uploads/2025/12/image-6.webp" alt="Kết quả nghiên cứu dựa trên văn bản do Đại lý Chốt Sale tạo ra trong Dynamics 365 Sales.">
+<em>Kết quả nghiên cứu dựa trên văn bản do Đại lý Chốt Sale tạo ra trong Dynamics 365 Sales.</em></p>
+<p>Sandvik Coromant, một công ty dẫn đầu về dụng cụ cắt chính xác, đã hợp tác với chúng tôi để thử nghiệm Đại lý Chốt Sale cho chương trình Thương mại Điện tử của họ. Sau các cập nhật, Pia Cedendahl, Giám đốc Bán hàng Toàn cầu cho các kênh Chiến lược/Đối tác và Bán hàng Trực tuyến, nhận xét: &ldquo;Câu trả lời của Đại lý Chốt Sale trở nên phù hợp hơn nhiều với hoạt động kinh doanh của chúng tôi – giống như có một trợ lý nghiên cứu đã hiểu những gì chúng tôi quan tâm.&rdquo; Sandvik Coromant đã chứng kiến tỷ lệ chuyển đổi khách hàng tiềm năng được cải thiện và mức độ tương tác cao hơn từ các Quản lý Tài khoản Kỹ thuật số của họ, xác nhận tác động của cách tiếp cận dựa trên đánh giá của chúng tôi. Pia đã tham gia cùng các nhà lãnh đạo Microsoft tại phiên Microsoft Ignite 2025, “<!-- raw HTML omitted -->Tăng tốc doanh thu và năng suất của người bán hàng với CRM tự động<!-- raw HTML omitted -->,” nơi cô chia sẻ cách <!-- raw HTML omitted -->nhóm đã tiết kiệm hơn 120 giờ và 19.000 đô la chỉ trong ba tuần đầu tiên kể từ khi ra mắt thử nghiệm, và dự báo tăng 5% doanh thu<!-- raw HTML omitted --> với việc triển khai đầy đủ.</p>
+<h2 id="thông-tin-chi-tiết-tốt-hơn-cá-nhân-hóa-nhiều-hơn-giá-trị-đã-được-chứng-minh">Thông tin chi tiết tốt hơn, cá nhân hóa nhiều hơn, giá trị đã được chứng minh</h2>
+<p>Với thiết kế AI tự động và được hỗ trợ bởi đánh giá dựa trên dữ liệu, khách hàng có thể tự tin sử dụng các Đại lý Chốt Sale để:</p>
+<ul>
+<li><!-- raw HTML omitted -->Nhân viên bán hàng<!-- raw HTML omitted --> nhận được tổng quan công ty toàn diện, các điểm nổi bật tin tức kịp thời và các đề xuất hành động được cung cấp nhất quán với chất lượng cao – tạo ra một đường kết nối rõ ràng từ thông tin chi tiết đến hành động.</li>
+<li><!-- raw HTML omitted -->Các nhà lãnh đạo bán hàng<!-- raw HTML omitted --> có thể mở rộng danh sách khách hàng tiềm năng có chất lượng một cách hiệu quả về chi phí, với đại lý đảm bảo chất lượng khách hàng tiềm năng cao.</li>
+<li><!-- raw HTML omitted -->Khách hàng tiềm năng<!-- raw HTML omitted --> hưởng lợi từ việc tiếp cận cá nhân hóa hơn, nâng cao trải nghiệm của họ và hỗ trợ tăng tỷ lệ chuyển đổi.</li>
+</ul>
+<h2 id="bước-tiếp-theo">Bước tiếp theo</h2>
+<p>Chúng tôi sẽ tiếp tục tinh chỉnh Đại lý Chốt Sale bằng cách sử dụng các mẫu thiết kế tự động, với mục tiêu làm cho mọi cải tiến đều có thể đo lường và có ý nghĩa. Hãy chú ý theo dõi kết quả đánh giá đầy đủ và phương pháp luận cho Sales Qualification Bench, sẽ được xuất bản để đảm bảo tính minh bạch và khả năng tái tạo. Chúng tôi cũng dự định bổ sung thêm các khung đánh giá và tiêu chuẩn vào bộ sưu tập Microsoft Sales Bench, bao gồm các tiêu chuẩn bao quát các khả năng của đại lý bán hàng trong tương lai.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->1<!-- raw HTML omitted --> <!-- raw HTML omitted -->Trang định giá ChatGPT<!-- raw HTML omitted -->, truy cập ngày 24 tháng 11 năm 2025</p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.microsoft.com/en-us/dynamics-365/blog/business-leader/2025/12/11/dynamics-365-sets-the-bar-for-agentic-sales-qualification-on-new-benchmark/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/publisheddec-11-2025/">PublishedDec 11, 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.microsoft.com/">Www.microsoft.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-02/9af1b0/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/12/M365_Blog_09122025_Hero-300x169.jpg" alt="Có sẵn hôm nay- GPT-5.2 trong Microsoft 365 Copilot" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-02T00:00:00&#43;00:00">Jan 02, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Có sẵn hôm nay- GPT-5.2 trong Microsoft 365 Copilot</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hôm nay chúng tôi vui mừng mang GPT-5.2 của OpenAI đến Microsoft 365 Copilot và Microsoft Copilot Studio.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-02/065c3e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/12/Cloud_1094492_Blog_251204-2-e1765562674987-300x169.webp" alt="Trở thành Công ty Tiên phong- Khai thác giá trị kinh doanh của AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-02T00:00:00&#43;00:00">Jan 02, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Trở thành Công ty Tiên phong- Khai thác giá trị kinh doanh của AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Các tổ chức khai thác AI hiệu quả không chỉ cải thiện hoạt động; họ đang định hình lại cách thức làm việc, cách tương tác với khách hàng và cách thức đổi mới được mở rộng quy mô.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-02/338ab5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/12/CLO24-Azure-Manufacturing-016-300x200.jpg" alt="Các đối tác thúc đẩy chuyển đổi AI trên toàn cầu- các giải pháp tác tử hoạt động tại ITAP 2025 và Microsoft Ignite 2025" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các đối tác thúc đẩy chuyển đổi AI trên toàn cầu- các giải pháp tác tử hoạt động tại ITAP 2025 và Microsoft Ignite 2025</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-02/641fe8/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/12/Azure_Blog_Abstract-05_1260x708-300x169.jpg" alt="Cập nhật Azure cho đối tác- tháng 12 năm 2025" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cập nhật Azure cho đối tác- tháng 12 năm 2025</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-02/9af1b0/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/12/M365_Blog_09122025_Hero-300x169.jpg" alt="Có sẵn hôm nay- GPT-5.2 trong Microsoft 365 Copilot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Có sẵn hôm nay- GPT-5.2 trong Microsoft 365 Copilot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-02/041ee7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/12/MSC21_Getty_mobile_1124225771-1260px-300x200.jpg" alt="Dynamics 365 đặt ra tiêu chuẩn cho việc đủ điều kiện bán hàng tác tử theo benchmark mới" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dynamics 365 đặt ra tiêu chuẩn cho việc đủ điều kiện bán hàng tác tử theo benchmark mới</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-02/62882c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2025/12/MSFT-Blog-Header-Image-21-300x169.webp" alt="Giới thiệu GPT-5.2 trong Microsoft Foundry- Tiêu chuẩn mới cho AI doanh nghiệp" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu GPT-5.2 trong Microsoft Foundry- Tiêu chuẩn mới cho AI doanh nghiệp</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
