@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>D4RT- Dạy AI nhìn thế giới theo bốn chiều | AI Today - SkyAI</title>
+
+<meta name="description" content="D4RT là một hệ thống mới giúp AI hiểu rõ hơn về thế giới động, nơi mọi thứ thay đổi theo thời gian. Nó cho phép AI dự đoán và tương tác với các vật thể chuyển động, giống như cách chúng ta nhìn nhận thế giới thực.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">D4RT- Dạy AI nhìn thế giới theo bốn chiều</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">D4RT là một hệ thống mới giúp AI hiểu rõ hơn về thế giới động, nơi mọi thứ thay đổi theo thời gian. Nó cho phép AI dự đoán và tương tác với các vật thể chuyển động, giống như cách chúng ta nhìn nhận thế giới thực. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-01-24T00:00:00&#43;00:00">January 24, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            7 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://lh3.googleusercontent.com/6e4YWTyUCidPtoe6TsvEvIzKfHvEbfMDo1CmMFZlKBdrGa57YoOuLczXg2SrWA-sChitG0rQXjkc2V9iS4n_Cb-LB5tRgj5Z2T_ljbPfKVwX9W4mYA=w1440-h1440-n-nu" alt="D4RT- Dạy AI nhìn thế giới theo bốn chiều">
+        <figcaption class="text-center italic text-xs">D4RT là một hệ thống mới giúp AI hiểu rõ hơn về thế giới động, nơi mọi thứ thay đổi theo thời gian. Nó cho phép AI dự đoán và tương tác với các vật thể chuyển động, giống như cách chúng ta nhìn nhận thế giới thực.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="d4rt-dạy-ai-nhìn-thế-giới-theo-bốn-chiều">D4RT: Dạy AI nhìn thế giới theo bốn chiều</h1>
+<p>22 tháng 1 năm 2026</p>
+<p><em>Guillaume Le Moing và Mehdi S. M. Sajjadi</em></p>
+<!-- raw HTML omitted -->
+<p>Giới thiệu D4RT, một mô hình AI thống nhất cho phép tái tạo và theo dõi các cảnh 4D trong không gian và thời gian.</p>
+<p>Mỗi khi chúng ta nhìn thế giới, chúng ta thực hiện một kỳ tích đáng kinh ngạc về trí nhớ và dự đoán. Chúng ta nhìn và hiểu mọi thứ như chúng đang tồn tại tại một thời điểm nhất định, như chúng đã tồn tại một khoảnh khắc trước, và chúng sẽ như thế nào trong khoảnh khắc tiếp theo. Mô hình tinh thần của chúng ta về thế giới duy trì một biểu diễn bền vững về thực tế và chúng ta sử dụng mô hình đó để rút ra những kết luận trực quan về mối quan hệ nhân quả giữa quá khứ, hiện tại và tương lai.</p>
+<p>Để giúp máy móc nhìn thế giới giống chúng ta hơn, chúng ta có thể trang bị cho chúng máy ảnh, nhưng điều đó chỉ giải quyết vấn đề đầu vào. Để hiểu được đầu vào này, máy tính phải giải quyết một bài toán nghịch đảo phức tạp: lấy một video - là một chuỗi các phép chiếu 2D phẳng - và khôi phục hoặc hiểu thế giới 3D phong phú, theo khối và chuyển động. Theo truyền thống, việc nắm bắt mức độ hình học và chuyển động này từ video 2D đòi hỏi các quy trình chuyên sâu về tính toán hoặc một loạt các mô hình AI chuyên dụng - một số cho chiều sâu, những mô hình khác cho chuyển động hoặc góc camera - dẫn đến các bản tái tạo AI chậm và rời rạc.</p>
+<p>Hôm nay, chúng tôi xin giới thiệu <strong>D4RT (Dynamic 4D Reconstruction and Tracking)</strong>, một mô hình AI mới thống nhất việc tái tạo cảnh động thành một khung làm việc duy nhất, hiệu quả, đưa chúng ta đến gần hơn với biên giới tiếp theo của trí tuệ nhân tạo: nhận thức toàn diện về thực tế động của chúng ta.</p>
+<h2 id="thách-thức-của-chiều-thứ-tư">Thách thức của Chiều thứ tư</h2>
+<p>Để có thể hiểu một cảnh động được ghi lại trên video 2D, một mô hình AI phải theo dõi mọi pixel của mọi đối tượng khi nó di chuyển qua ba chiều không gian và chiều thứ tư là thời gian. Ngoài ra, nó phải tách biệt chuyển động này khỏi chuyển động của máy ảnh, duy trì một biểu diễn mạch lạc ngay cả khi các đối tượng di chuyển ra phía sau nhau hoặc rời khỏi khung hình. Theo truyền thống, việc nắm bắt mức độ hình học và chuyển động này từ video 2D đòi hỏi các quy trình chuyên sâu về tính toán hoặc một loạt các mô hình AI chuyên dụng - một số cho chiều sâu, những mô hình khác cho chuyển động hoặc góc camera - dẫn đến các bản tái tạo AI chậm và rời rạc.</p>
+<p>Kiến trúc đơn giản hóa và cơ chế truy vấn mới của D4RT đặt nó ở vị trí đi đầu trong việc tái tạo 4D, đồng thời hiệu quả hơn tới 300 lần so với các phương pháp trước đây - đủ nhanh cho các ứng dụng thời gian thực trong robot học, thực tế tăng cường, và hơn thế nữa.</p>
+<h2 id="d4rt-hoạt-động-như-thế-nào-một-phương-pháp-dựa-trên-truy-vấn">D4RT hoạt động như thế nào: Một phương pháp dựa trên truy vấn</h2>
+<p>D4RT hoạt động như một kiến trúc Transformer mã hóa-giải mã thống nhất. Bộ mã hóa đầu tiên xử lý video đầu vào thành một biểu diễn nén của hình học và chuyển động của cảnh. Không giống như các hệ thống cũ sử dụng các mô-đun riêng biệt cho các tác vụ khác nhau, D4RT chỉ tính toán những gì nó cần bằng cách sử dụng cơ chế truy vấn linh hoạt tập trung vào một câu hỏi cơ bản duy nhất:</p>
+<p>&ldquo;<strong>Một pixel cho trước</strong> từ video này nằm ở đâu <strong>trong không gian 3D</strong> tại một <strong>thời điểm</strong> tùy ý, như được nhìn từ một <strong>camera đã chọn</strong>?&rdquo;</p>
+<p>Dựa trên <strong>công việc trước đây của chúng tôi</strong>, bộ giải mã nhẹ nhàng sẽ truy vấn biểu diễn này để trả lời các trường hợp cụ thể của câu hỏi đã đặt ra. Vì các truy vấn độc lập, chúng có thể được xử lý song song trên phần cứng AI hiện đại. Điều này làm cho D4RT cực kỳ nhanh và có khả năng mở rộng, bất kể nó đang theo dõi chỉ một vài điểm hay tái tạo toàn bộ cảnh.</p>
+<!-- raw HTML omitted -->
+<h2 id="khả-năng-hiểu-4d-nhanh-chóng-chính-xác">Khả năng: Hiểu 4D nhanh chóng, chính xác</h2>
+<p>Với công thức linh hoạt này, nhiều tác vụ 4D khác nhau giờ đây có thể được giải quyết bởi mô hình, bao gồm:</p>
+<ul>
+<li><strong>Theo dõi điểm</strong>: Bằng cách truy vấn vị trí của một pixel qua các bước thời gian khác nhau, D4RT có thể dự đoán quỹ đạo 3D của nó. Quan trọng là, một đối tượng không cần phải hiển thị trong các khung hình khác của video để mô hình đưa ra dự đoán.</li>
+<li><strong>Tái tạo đám mây điểm</strong>: Bằng cách đóng băng thời gian và góc nhìn camera, D4RT có thể trực tiếp tạo ra cấu trúc 3D hoàn chỉnh của một cảnh, loại bỏ các bước bổ sung như ước tính camera riêng biệt hoặc tối ưu hóa lặp lại trên mỗi video.</li>
+<li><strong>Ước tính tư thế camera</strong>: Bằng cách tạo và căn chỉnh các ảnh chụp 3D của một khoảnh khắc từ các góc nhìn khác nhau, D4RT có thể dễ dàng khôi phục quỹ đạo của camera.</li>
+</ul>
+<!-- raw HTML omitted -->
+<p>Trong các đánh giá trên bộ dữ liệu MPI Sintel với các cảnh tổng hợp phức tạp có hiện tượng mờ chuyển động nhanh và biến dạng không cứng nhắc, D4RT cho thấy tính trung thực vượt trội so với các phương pháp cơ bản gần đây. Điều này nhấn mạnh khả năng của mô hình trong việc tái tạo hình học một cách chính xác ngay cả khi các đối tượng hoặc máy ảnh di chuyển nhanh chóng trong cảnh.</p>
+<p>Quan trọng là, độ chính xác của D4RT không phải trả giá bằng hiệu quả. Trong thử nghiệm, nó hoạt động nhanh hơn từ 18 đến 300 lần so với các phương pháp tiên tiến trước đây. Ví dụ, D4RT xử lý một video kéo dài một phút chỉ trong khoảng năm giây trên một chip TPU duy nhất. Các phương pháp tiên tiến trước đây có thể mất tới mười phút cho cùng một tác vụ - một cải tiến 120 lần.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="ứng-dụng-hạ-nguồn">Ứng dụng hạ nguồn</h2>
+<p>D4RT chứng minh rằng chúng ta không cần phải lựa chọn giữa độ chính xác và hiệu quả trong việc tái tạo 4D. Hệ thống dựa trên truy vấn linh hoạt của nó có thể nắm bắt thế giới động của chúng ta trong thời gian thực, mở đường cho thế hệ tiếp theo của máy tính không gian. Điều này bao gồm:</p>
+<ul>
+<li><strong>Robot học</strong>: Robot cần điều hướng trong môi trường động có người và vật thể chuyển động. D4RT có thể cung cấp nhận thức không gian cần thiết cho việc điều hướng an toàn và thao tác khéo léo.</li>
+<li><strong>Thực tế tăng cường (AR)</strong>: Để kính AR có thể phủ các đối tượng kỹ thuật số lên thế giới thực, chúng cần có hiểu biết tức thời, độ trễ thấp về hình học của cảnh. Hiệu quả của D4RT góp phần biến việc triển khai trên thiết bị thành hiện thực hữu hình.</li>
+<li><strong>Mô hình thế giới</strong>: Bằng cách tách biệt hiệu quả chuyển động của máy ảnh, chuyển động của đối tượng và hình học tĩnh, D4RT đưa chúng ta đến gần hơn một bước với AI sở hữu &ldquo;mô hình thế giới&rdquo; thực về thực tế vật lý - một bước cần thiết trên con đường dẫn đến AGI.</li>
+</ul>
+<p>Chúng tôi đang tiếp tục khám phá khả năng của mô hình và tiềm năng ứng dụng trong lĩnh vực robot học, thực tế tăng cường và hơn thế nữa.</p>
+<p><strong>Đọc báo cáo kỹ thuật của chúng tôi</strong></p>
+<p><strong>Truy cập trang web dự án của chúng tôi</strong></p>
+<hr>
+<h3 id="bài-viết-liên-quan">Bài viết liên quan</h3>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://deepmind.google/blog/d4rt-teaching-ai-to-see-the-world-in-four-dimensions/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/24-january-2026/">24 January 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/deepmind.google/">Deepmind.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-24/dcb1f3/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://deepmind.google%28Kh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh%20minh%20h%e1%bb%8da%29" alt="Veo 3.1 Ingredients to Video- Tính nhất quán, sáng tạo và kiểm soát hơn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-24T00:00:00&#43;00:00">Jan 24, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Veo 3.1 Ingredients to Video- Tính nhất quán, sáng tạo và kiểm soát hơn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Veo 3.1 là phiên bản mới nhất của mô hình tạo video của Google, mang đến khả năng kiểm soát chi tiết hơn, sáng tạo đa dạng hơn và tính nhất quán cao hơn trong các video được tạo ra.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-12-19/3211b2/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/Dak4CQvgmk_QchE-H3czKHPr75AhfwDcRzr8AKD2URdtA5HPA7_l5Z5zW9z90frU3JUvBtJ340UQpp9X6jQqQ59Xg1fEjspC7XQIm6LhGdEqNrNv=w1440-h1440-n-nu" alt="Gemma Scope 2- giúp cộng đồng an toàn AI hiểu sâu hơn về hành vi phức tạp của mô hình ngôn ngữ" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-12-19T00:00:00&#43;00:00">Dec 19, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gemma Scope 2- giúp cộng đồng an toàn AI hiểu sâu hơn về hành vi phức tạp của mô hình ngôn ngữ</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Trách nhiệm &amp; An toàn</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-24/6d02b0/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Anthropic bổ nhiệm Irina Ghose làm Giám đốc Điều hành Ấn Độ trước lễ khai trương văn phòng Bengaluru" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic bổ nhiệm Irina Ghose làm Giám đốc Điều hành Ấn Độ trước lễ khai trương văn phòng Bengaluru</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-24/727a3f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Anthropic và Teach For All ra mắt sáng kiến đào tạo AI toàn cầu cho các nhà giáo dục" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic và Teach For All ra mắt sáng kiến đào tạo AI toàn cầu cho các nhà giáo dục</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-24/e5d49f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-uploads.huggingface.co/production/uploads/64c47f731d44fc06afc80953/fB0GHxhoG5McKZtklVj_I.png" alt="AssetOpsBench- Thu hẹp khoảng cách giữa các tiêu chuẩn đánh giá tác tử AI và thực tế công nghiệp" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AssetOpsBench- Thu hẹp khoảng cách giữa các tiêu chuẩn đánh giá tác tử AI và thực tế công nghiệp</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-24/f4be01/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Báo cáo Chỉ số Kinh tế Anthropic- các nguyên tắc kinh tế cơ bản" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Báo cáo Chỉ số Kinh tế Anthropic- các nguyên tắc kinh tế cơ bản</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-24/e123e7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.anthropic.com" alt="Các nhà khoa học đang sử dụng Claude để đẩy nhanh nghiên cứu và khám phá" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các nhà khoa học đang sử dụng Claude để đẩy nhanh nghiên cứu và khám phá</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
