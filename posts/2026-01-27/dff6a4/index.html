@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mở khóa Đào tạo RL Thuộc tính cho GPT-OSS- Một Nhìn Lại Thực tế | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết này đi sâu vào các khía cạnh thực tế của việc đào tạo RL thuộc tính cho GPT-OSS, cung cấp những hiểu biết và bài học kinh nghiệm.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Mở khóa Đào tạo RL Thuộc tính cho GPT-OSS- Một Nhìn Lại Thực tế</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết này đi sâu vào các khía cạnh thực tế của việc đào tạo RL thuộc tính cho GPT-OSS, cung cấp những hiểu biết và bài học kinh nghiệm. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-01-27T00:00:00&#43;00:00">January 27, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            21 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/6697e834fd52271e0b9ce8d8/VSBDJkmYgk4-LeXgTKThN.png" alt="Mở khóa Đào tạo RL Thuộc tính cho GPT-OSS- Một Nhìn Lại Thực tế">
+        <figcaption class="text-center italic text-xs">Bài viết này đi sâu vào các khía cạnh thực tế của việc đào tạo RL thuộc tính cho GPT-OSS, cung cấp những hiểu biết và bài học kinh nghiệm.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="mở-khóa-huấn-luyện-rl-agentic-cho-gpt-oss-đánh-giá-thực-tế">Mở Khóa Huấn Luyện RL Agentic Cho GPT-OSS: Đánh Giá Thực Tế</h1>
+<p>RL Agentic (Học tăng cường dựa trên tác nhân) mở rộng huấn luyện LLM truyền thống bằng cách tối ưu hóa không chỉ một phản hồi duy nhất, mà là toàn bộ quy trình ra quyết định được học thông qua tương tác trực tiếp với môi trường trong quá trình huấn luyện. Khác với các phương pháp học tăng cường một lượt hoặc dựa trên sở thích ngoại tuyến dựa vào các tập dữ liệu tĩnh, RL Agentic huấn luyện các chính sách bằng cách thu thập dữ liệu theo chính sách một cách chủ động khi tác nhân lập kế hoạch hành động, gọi các công cụ, quan sát kết quả và thích ứng hành vi của nó qua các quỹ đạo nhiều bước trong môi trường mô phỏng hoặc thực tế. Sự tối ưu hóa dựa trên tương tác này phân bổ tín dụng trên các quyết định có phạm vi dài, nơi các lựa chọn trung gian như định dạng lại truy vấn, lựa chọn công cụ và thứ tự thực thi ảnh hưởng trực tiếp đến sự thành công ở các bước tiếp theo. Quá trình huấn luyện tuân theo một vòng lặp khép kín lặp đi lặp lại, trong đó tác nhân tương tác với môi trường để thu thập các quỹ đạo triển khai, tính toán phần thưởng trên các quỹ đạo này, cập nhật chính sách dựa trên các kết quả quan sát được, sau đó sử dụng chính sách đã cập nhật để điều khiển vòng tương tác và thu thập dữ liệu tiếp theo, ví dụ như các thuật toán GRPO hoặc PPO.</p>
+<p>LinkedIn là một công ty ưu tiên AI, đã xây dựng các tác nhân để giúp các chuyên gia thành công hơn. Trong bối cảnh này, các mô hình phải lý luận dựa trên thông tin không đầy đủ, tương tác với các dịch vụ có cấu trúc và thích ứng với ý định của người dùng đang phát triển qua nhiều bước thay vì đưa ra một phản hồi tĩnh duy nhất. Những khả năng này đặc biệt quan trọng đối với các tác nhân hỗ trợ mục tiêu của nhà tuyển dụng, người tìm kiếm việc làm và kiến thức, cũng như người học, chẳng hạn như truy xuất thông tin, tinh chỉnh truy vấn, phối hợp công cụ và thực thi quy trình làm việc nhiều bước. Bằng cách học các chính sách ra quyết định mạnh mẽ thông qua tương tác, RL Agentic cung cấp một nền tảng có nguyên tắc để xây dựng các hệ thống AI có thể mở rộng, đáng tin cậy và thích ứng thông qua tối ưu hóa đầu cuối.</p>
+<p>Mô hình GPT-OSS đã cho thấy hiệu suất tương đương với OpenAI o3-mini và o4-mini [<!-- raw HTML omitted -->tham khảo<!-- raw HTML omitted -->], nhưng sự phù hợp của nó với huấn luyện RL Agentic vẫn chưa được xác thực. Hầu hết các công việc gần đây tập trung vào tinh chỉnh mà không có khả năng gọi công cụ, ví dụ: <!-- raw HTML omitted -->Tinh chỉnh với gpt-oss và Hugging Face Transformers<!-- raw HTML omitted --> và <!-- raw HTML omitted -->hướng dẫn unsloth: cách tinh chỉnh gpt-oss<!-- raw HTML omitted -->. Bài đăng blog này khám phá hành trình mở khóa <!-- raw HTML omitted -->RL Agentic<!-- raw HTML omitted --> cho GPT-OSS như một mô hình nền tiềm năng cho các ứng dụng agentic.</p>
+<p>Trong các thử nghiệm của chúng tôi, chúng tôi sử dụng <!-- raw HTML omitted -->verl<!-- raw HTML omitted --> làm khung huấn luyện vì đây là một trong những khung phổ biến nhất được áp dụng trong cộng đồng mã nguồn mở. Chúng tôi sử dụng gsm8k, nhiệm vụ <!-- raw HTML omitted -->Retool<!-- raw HTML omitted -->, <!-- raw HTML omitted -->nhiệm vụ tuân thủ hướng dẫn có thể xác minh<!-- raw HTML omitted -->, các nhiệm vụ này thường được sử dụng trong huấn luyện RL. Chúng tôi tập trung vào việc trình bày kết quả thực nghiệm cho mô hình GPT-OSS-20B, và việc sửa lỗi attention-sink của chúng tôi cũng hoạt động trên GPT-OSS-120B. Mô hình Qwen-2.5-32B được sử dụng bổ sung để đánh giá xu hướng chỉ số tiêu chuẩn trong quá trình huấn luyện RL.</p>
+<h2 id="thách-thức-của-huấn-luyện-rl-agentic-gpt-oss">Thách thức của Huấn Luyện RL Agentic GPT-OSS</h2>
+<p>verl đã là một khung OSS được nhóm sử dụng, và nhóm trước đây đã cộng tác và đóng góp vào nó để giúp dân chủ hóa huấn luyện RL Agentic. Với việc giới thiệu mẫu chat Harmony mới trong GPT-OSS, bước đầu tiên là đảm bảo rằng khung huấn luyện hỗ trợ đầy đủ định dạng tin nhắn đã cập nhật và ngữ nghĩa hội thoại cần thiết bởi Harmony. Bước này giúp việc tạo quỹ đạo, xây dựng quỹ đạo và phân tích công cụ vẫn nhất quán và chính xác dưới mẫu mới.</p>
+<p>Nhóm sử dụng ReTool làm một ví dụ đại diện để xác minh tính đúng đắn của mã. ReTool là một nhiệm vụ mã hóa agentic, trong đó mô hình được yêu cầu giải một bài toán toán học với sự hỗ trợ của công cụ biên dịch mã. Thiết lập này cho phép mô hình tập trung vào logic cốt lõi về lý luận và thuật toán, đồng thời ủy quyền các phép tính số học và thực thi thực tế cho công cụ. Trong một tập, mô hình tương tác với công cụ mã nhiều lần, sử dụng kết quả thực thi làm phản hồi để tinh chỉnh giải pháp của nó. Cuối quỹ đạo, mô hình đưa ra câu trả lời cuối cùng, trên đó phần thưởng được tính toán.</p>
+<p>Trong các lần chạy huấn luyện ban đầu, chúng tôi quan sát thấy KL divergence và entropy bùng nổ, cùng với phần thưởng không tăng, cho thấy các vấn đề tiềm ẩn trong thiết lập huấn luyện GPT-OSS, như thể hiện trong Hình 1.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Norm Gradient Trung bình</th>
+          <th style="text-align: left">Phần thưởng Trung bình</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/5eWLHQ-EAWKjPc7T0c6CK.png" alt="Average gradient norm in a batch"></td>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/ZpBvRXLKyAT-PIdsuRi11.png" alt="Average reward in a batch"></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Hình 1.</strong> Trái: Qwen32b có phần thưởng cao hơn đáng kể so với GPT-OSS 20B; Phải: Norm gradient bùng nổ khi huấn luyện tiến triển.</p>
+<h2 id="hành-trình-gỡ-lỗi-thực-tế-trong-verl-khôi-phục-tính-toàn-vẹn-theo-chính-sách-ppo">Hành trình Gỡ Lỗi Thực Tế trong verl: Khôi Phục Tính Toàn Vẹn Theo Chính Sách PPO</h2>
+<h3 id="khôi-phục-tính-toàn-vẹn-theo-chính-sách-sửa-lỗi-không-khớp-xác-suất-log-moe">Khôi phục tính toàn vẹn theo chính sách: Sửa lỗi không khớp xác suất log MoE</h3>
+<!-- raw HTML omitted -->
+<p>Chúng tôi tập trung vào các phương pháp theo chính sách vì chúng mang lại sự ổn định lớn hơn và hội tụ đáng tin cậy hơn. Nền tảng của Proximal Policy Optimization (PPO) theo chính sách thuần túy yêu cầu tỷ lệ lấy mẫu quan trọng phải bằng chính xác 1. Định nghĩa toán học của tỷ lệ quan trọng là:</p>
+<p>$$
+\text{ratio} = \frac{\pi(a \mid s)}{\pi_{\text{old}}(a \mid s)}
+$$</p>
+<p>Yêu cầu này đảm bảo rằng việc cập nhật chính sách chỉ được thực hiện trên dữ liệu được tạo bởi chính sách hiện tại π(a | s) = π<!-- raw HTML omitted -->old<!-- raw HTML omitted -->(a | s), ngăn chặn việc cắt bỏ không mong muốn.</p>
+<p>Chúng tôi đã quan sát thấy tỷ lệ cắt bỏ không bằng không trong quá trình huấn luyện ReTool của chúng tôi, như thể hiện trong Hình 2, bắt nguồn từ sự không khớp giữa hai xác suất log:</p>
+<ul>
+<li>Xác suất log hiện tại <code>log_prob</code>: log(π(a | s))</li>
+<li>Xác suất log cũ <code>old_log_prob</code>: log(π<!-- raw HTML omitted -->old<!-- raw HTML omitted -->(a | s))</li>
+</ul>
+<p><strong>Nguyên nhân gốc rễ: Lượt chuyển tiếp kép và Kiến trúc MoE</strong></p>
+<p>Trước verl 0.3.0, việc triển khai dựa vào hai lượt chuyển tiếp riêng biệt (một để tính toán <code>log_prob</code> hiện tại và một để truy xuất <code>old_log_prob</code> đã lưu trữ) cho cùng một cặp trạng thái-hành động.</p>
+<p>Trong kiến trúc Mixture of Experts (MoE) như GPT-OSS, mạng cổng sẽ định tuyến đầu vào đến các chuyên gia khác nhau. Do các yếu tố triển khai (ví dụ: sự khác biệt nhỏ về dấu chấm động hoặc tính ngẫu nhiên rõ ràng), việc định tuyến chuyên gia có thể khác nhau một chút giữa hai lượt chuyển tiếp. Những người đọc quan tâm có thể đọc thêm <!-- raw HTML omitted --><!-- raw HTML omitted -->Ổn định hóa MoE Reinforcement Learning bằng cách Căn chỉnh Bộ định tuyến Huấn luyện và Suy luận<!-- raw HTML omitted --><!-- raw HTML omitted -->.</p>
+<p>Sự khác biệt trong định tuyến này dẫn đến:</p>
+<p>$$
+\log(\pi(a \mid s)) \neq \log(\pi_{\text{old}}(a \mid s))
+$$</p>
+<p>Kết quả là tỷ lệ sai khác với 1, kích hoạt sai clipping PPO và vi phạm giả định cốt lõi theo chính sách.</p>
+<p><strong>Giải pháp: Ép buộc Tỷ lệ = 1 thông qua Thay thế Xác suất Log</strong></p>
+<p>Việc sửa chữa giải quyết vấn đề bằng cách ghi đè logic tính toán sai khi môi trường được biết là theo chính sách (tức là khi kích thước minibatch bằng kích thước batch toàn cục):</p>
+<p>python
+if on_policy:
+old_log_prob = log_prob.detach()
+else:
+old_log_prob = model_inputs[&ldquo;old_log_probs&rdquo;]</p>
+<p>Bằng cách đặt <code>old_log_prob</code> bằng với <code>log_prob</code> mới được tính toán (đã tách rời để ngăn chặn luồng gradient qua giá trị tham chiếu), tỷ lệ lấy mẫu quan trọng về mặt toán học bị buộc trở lại 1. Chiến lược này bỏ qua sự bất ổn gây ra bởi việc định tuyến không xác định của MoE và đảm bảo hành vi theo chính sách nghiêm ngặt trong quá trình huấn luyện PPO.</p>
+<!-- raw HTML omitted -->
+<h3 id="sửa-lỗi-không-khớp-huấn-luyện-suy-luận">Sửa lỗi Không khớp Huấn luyện-Suy luận</h3>
+<p>Mặc dù việc sửa lỗi không khớp xác suất log đã giảm tỷ lệ cắt bỏ tỷ lệ lấy mẫu quan trọng về 0, các chuẩn gradient tiếp tục bùng nổ và phần thưởng không cải thiện. Để cô lập vấn đề, chúng tôi đã đơn giản hóa việc huấn luyện cho GSM8K, một nhiệm vụ một bước mà không cần sử dụng công cụ agentic. Sự bất ổn tương tự vẫn tồn tại, như thể hiện trong các đường màu xanh lá cây trong Hình 3, cho thấy một <strong>vấn đề cơ bản trong huấn luyện RL cơ bản với GPT-OSS trong verl.</strong></p>
+<p>Chúng tôi giả định rằng <strong>sự không khớp huấn luyện-suy luận</strong> có thể là một nguyên nhân tiềm ẩn: sự khác biệt giữa việc thực thi tại thời điểm suy luận—nơi các công cụ như vLLM và SGLang tối ưu hóa mạnh mẽ cho thông lượng—và việc thực thi tại thời điểm huấn luyện dưới FSDP, ưu tiên độ chính xác và ổn định số học, có thể biến <strong>tối ưu hóa RL theo chính sách thành tối ưu hóa ngoại tuyến.</strong></p>
+<p>Bài đăng blog này <!-- raw HTML omitted -->chi tiết<!-- raw HTML omitted --> lý do tại sao sự không khớp như vậy dẫn đến gradient không ổn định và phần thưởng không cải thiện. Hình 3 so sánh các lần chạy huấn luyện có và không có sửa lỗi quỹ đạo (xem blog verl này để biết chi tiết). Sau khi áp dụng sửa lỗi quỹ đạo, động lực học huấn luyện cải thiện đáng kể, với các chuẩn gradient ổn định thay vì bùng nổ.</p>
+<p>Tuy nhiên, như thể hiện trong biểu đồ bên trái của Hình 4, phần thưởng chỉ tăng lên một cách khiêm tốn, và việc hội tụ trên nhiệm vụ GSM8K đơn giản vẫn chậm hơn đáng kể so với các biến thể mô hình dày đặc nhỏ hơn.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Entropy Trung bình</th>
+          <th style="text-align: left">Norm Gradient Trung bình</th>
+          <th style="text-align: left">Tổn thất KL Trung bình</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/ydmBLCSGlD9YKWiIocI1S.png" alt="Average entropy in a batch"></td>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/_kl8mn_CXPsRYJ467IbFs.png" alt="Average gradient norm in a batch"></td>
+          <td style="text-align: left"><img src="https://cdn-uploads.co/production/uploads/64efbd469e7770db74cb72f5/g77U9c8a-FY1rvwru96Ez.png" alt="Average KL loss in a batch"></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Hình 3.</strong> Norm gradient trong các cấu hình huấn luyện khác nhau. Màu xanh lá cây: Huấn luyện không có sửa lỗi quỹ đạo, thể hiện gradient không ổn định. Màu đỏ: Huấn luyện với lớp attention bị đóng băng để cô lập vấn đề với cơ chế attention, dẫn đến ổn định hóa một phần. Màu xanh lam: Huấn luyện với sửa lỗi quỹ đạo được bật (lấy mẫu quan trọng cấp độ quỹ đạo), mang lại chuẩn gradient ổn định.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Phần thưởng Trung bình</th>
+          <th style="text-align: left">Sự khác biệt log-perplexity tối đa</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/ihx-XsWH51V0-JM46jODE.png" alt="Average reward in a batch"></td>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/fP5KNR2XYY7EH-muYBk_X.png" alt="Maximum absolute log-perplexity difference in a batch between rollout policy and training policy"></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Hình 4.</strong> Trái: Sự cải thiện phần thưởng trên GSM8K vẫn chậm ngay cả sau khi áp dụng sửa lỗi quỹ đạo, với hiệu suất tương đương với các lần chạy mà lớp attention bị đóng băng trong quá trình huấn luyện. Phải: Sự không khớp log-ppl đáng kể được quan sát giữa công cụ suy luận (SGLang với các kernel Triton hỗ trợ lượt chuyển tiếp attention-sink) và ngăn xếp huấn luyện (FSDP với FlashAttention-v2), cho thấy sự không nhất quán lớn giữa huấn luyện và suy luận.</p>
+<p>Để cô lập thêm nguyên nhân gốc rễ, chúng tôi đóng băng các lớp attention trong quá trình huấn luyện và quan sát động lực học phần thưởng tương tự như các lần chạy không đóng băng (đường màu xanh lam so với đường màu vàng trong Hình 4). Điều này cho thấy rằng việc học chủ yếu được thúc đẩy bởi các lớp MoE, trong khi cơ chế attention đóng góp kém hiệu quả hơn mong đợi. Ngoài ra, chúng tôi quan sát thấy sự không khớp xác suất cấp token đáng kể giữa công cụ suy luận và ngăn xếp huấn luyện phân tán sử dụng các kernel attention khác nhau. Kết hợp lại, những quan sát này thúc đẩy một cuộc điều tra sâu hơn về cơ chế attention.</p>
+<!-- raw HTML omitted -->
+<h2 id="hỗ-trợ-attention-sink-trong-flashattentionv3">Hỗ Trợ Attention Sink trong FlashAttentionV3</h2>
+<p>Attention sinks được sử dụng trong GPT-OSS là các tham số vô hướng có thể học được (một cho mỗi đầu attention) hoạt động như các &ldquo;token ảo&rdquo; trong phép tính softmax. Chúng cho phép mô hình phân bổ khối lượng attention cho một sink đã học thay vì buộc tất cả attention vào các token nội dung, điều này đã được chứng minh là cải thiện sự ổn định của attention trong suy luận streaming và huấn luyện với attention cửa sổ trượt.</p>
+<p>Sau khi điều tra sâu hơn, chúng tôi đã xác định được một số vấn đề lớn:</p>
+<ul>
+<li>verl mã hóa cứng FlashAttention v2 trong <code>fsdp_worker</code>, không hỗ trợ attention sinks.</li>
+<li>Lượt chuyển tiếp ngược của attention sink không được hỗ trợ trong FlashAttention v2 và v3, vì vậy nó không hoạt động như mong đợi ngay cả khi FlashAttention v3 được bật.</li>
+<li>Vì lượt chuyển tiếp chưa được hợp nhất vào kho lưu trữ FlashAttention v3 gốc, chúng tôi đã tận dụng lượt chuyển tiếp từ nhánh FlashAttention của vLLM (PR #75) và triển khai lượt chuyển tiếp ngược để tính toán gradient của sink.</li>
+</ul>
+<h3 id="attention-tiêu-chuẩn">Attention Tiêu Chuẩn</h3>
+<p>python
+scores = QK^T / sqrt(d)               # [B, H, N_q, N_k]
+probs = softmax(scores, dim=-1)       # Σ_j P_ij = 1
+output = probs @ V                   # [B, H, N_q, d_v]</p>
+<h3 id="attention-với-sinks-gpt-oss">Attention với Sinks (GPT-OSS)</h3>
+<p>python
+scores = QK^T / sqrt(d)                               # [B, H, N_q, N_k]
+combined = concat([scores, sink_param], dim=-1)       # [B, H, N_q, N_k+1]
+probs = softmax(combined, dim=-1)                     # Σ_j P_ij + P_sink = 1
+probs_content = probs[&hellip;, :-1]                       # Loại bỏ thành phần sink
+output = probs_content @ V                           # [B, H, N_q, d_v]</p>
+<p><strong>Điểm khác biệt chính:</strong> Sink tham gia vào việc chuẩn hóa softmax nhưng không đóng góp vào đầu ra.</p>
+<h3 id="công-thức-toán-học">Công Thức Toán Học</h3>
+<p>Trọng số attention cho token nội dung j trong hàng i được định nghĩa là:</p>
+<h1 id="p_ij">$$
+P_{ij}</h1>
+<p>\frac{\exp(S_{ij})}
+{\sum_{j&rsquo;=1}^{N_k} \exp(S_{ij&rsquo;}) + \exp(S_h)}
+$$</p>
+<p><strong>Trong đó:</strong></p>
+<ul>
+<li>S<!-- raw HTML omitted -->ij<!-- raw HTML omitted --> = Q<!-- raw HTML omitted -->i<!-- raw HTML omitted --> K<!-- raw HTML omitted -->j<!-- raw HTML omitted --><!-- raw HTML omitted -->⊤<!-- raw HTML omitted --> / √d là điểm attention</li>
+<li>P<!-- raw HTML omitted -->ij<!-- raw HTML omitted --> là trọng số attention cho các token nội dung</li>
+<li>S<!-- raw HTML omitted -->h<!-- raw HTML omitted --> là tham số sink có thể học được cho đầu h</li>
+</ul>
+<p><strong>Xác suất Sink:</strong></p>
+<p>Xác suất sink được tính toán nhưng không được sử dụng trong đầu ra:</p>
+<h1 id="p_ih">$$
+P_{i,h}</h1>
+<p>\frac{\exp(S_h)}
+{\sum_{j&rsquo;=1}^{N_k} \exp(S_{ij&rsquo;}) + \exp(S_h)}
+$$</p>
+<h3 id="lượt-chuyển-tiếp-ngược">Lượt chuyển tiếp Ngược</h3>
+<p>Đạo hàm của tổn thất L đối với tham số sink S<!-- raw HTML omitted -->h<!-- raw HTML omitted --> là:</p>
+<h1 id="fracpartial-lpartial-s_h">$$
+\frac{\partial L}{\partial S_h}</h1>
+<h2 id="fracpartial-lpartial-s_ih">-
+\sum_i
+P_{i,h}
+\left(
+\frac{\partial L}{\partial S_{i,h}}</h2>
+<p>\sum_{j \in {1,\ldots,N_k}}
+P_{ij}
+\frac{\partial L}{\partial S_{ij}}
+\right)
+$$</p>
+<p><strong>Trong đó:</strong></p>
+<ul>
+<li>P<!-- raw HTML omitted -->i,h<!-- raw HTML omitted --> là xác suất attention của sink cho hàng i</li>
+<li>∂L/∂S<!-- raw HTML omitted -->ij<!-- raw HTML omitted --> là đạo hàm đối với điểm attention, bao gồm cả sink</li>
+</ul>
+<p><strong>Đạo hàm Đơn giản hóa:</strong></p>
+<p>Vì lượt chuyển tiếp được tính toán nhưng không được sử dụng trong đầu ra, đạo hàm của nó ∂L/∂S<!-- raw HTML omitted -->i,h<!-- raw HTML omitted --> = 0.</p>
+<p>Do đó, phương trình ngược lại đơn giản hóa thành:</p>
+<h1 id="fracpartial-lpartial-s_h-1">$$
+\frac{\partial L}{\partial S_h}</h1>
+<p>-
+\sum_i
+P_{i,h}
+\left(
+\sum_{j \in {1,\ldots,N_k}}
+P_{ij}
+\frac{\partial L}{\partial S_{ij}}
+\right)
+$$</p>
+<p>Lượt chuyển tiếp xuôi đã được điều chỉnh từ nhánh FlashAttention của vLLM và chúng tôi đã triển khai lượt chuyển tiếp ngược để tính toán gradient cho các tham số sink. Việc triển khai sẽ được phát hành sau quy trình đánh giá nội bộ.</p>
+<h3 id="kết-quả">Kết quả</h3>
+<p>Sau khi áp dụng sửa lỗi trong FlashAttention v3, chúng tôi quan sát thấy sự hội tụ nhanh hơn đáng kể cho GPT-OSS-20B trên nhiều loại nhiệm vụ học tăng cường. Bao gồm học tăng cường một lượt trên lý luận toán học (GSM8K — đường màu đỏ trong Hình 5), tuân thủ hướng dẫn (VerifyIf, được đánh giá trên một điểm chuẩn đa điều kiện ngoài phạm vi — Hình 6) và học tăng cường agentic nhiều lượt với việc sử dụng công cụ (ReTool — Hình 7).</p>
+<p>Trong tất cả các cài đặt, việc huấn luyện trở nên ổn định và cho thấy sự cải thiện phần thưởng ổn định.</p>
+<!-- raw HTML omitted -->
+<p><strong>Hình 5.</strong> GSM8K một lượt, đường màu đỏ hội tụ nhanh hơn đáng kể so với các đường còn lại mà không có sửa lỗi.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Entropy Trung bình</th>
+          <th style="text-align: left">Norm Gradient Trung bình</th>
+          <th style="text-align: left">Phần thưởng Trung bình</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/ydmBLCSGlD9YKWiIocI1S.png" alt="Average entropy in a batch"></td>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/_kl8mn_CXPsRYJ467IbFs.png" alt="Average gradient norm in a batch"></td>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/vb2JmmSu-LI5szC_84KsM.png" alt="Average reward in a batch"></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Hình 6</strong> Trên nhiệm vụ tuân thủ hướng dẫn có thể xác minh, lần chạy không có sửa lỗi đã sụp đổ (màu xanh lam), và lần chạy có sửa lỗi cho thấy sự cải thiện phần thưởng ổn định.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Norm Gradient Trung bình</th>
+          <th style="text-align: left">Phần thưởng Trung bình</th>
+          <th style="text-align: left">Độ chính xác Xác minh</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/_Xz7_RLhYuYhzGAeMjDXs.png" alt="Average gradient norm in a batch"></td>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/uFX-sTWI6knecIf56uahk.png" alt="Average reward in a batch"></td>
+          <td style="text-align: left"><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/5x2mdkpHcdvctZ96yfv58.png" alt="val score accuracy mean@30 for aime_2025"></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Hình 7.</strong> Trên nhiệm vụ Retool, lần chạy có sửa lỗi cho thấy sự cải thiện phần thưởng ổn định và không có gradient bùng nổ (fa2 là flash attention 2 không có sửa lỗi trong khi fa3 là flash attention 3 có sửa lỗi). Sau khi sửa lỗi, điểm độ chính xác xác minh đã tăng lên.</p>
+<h2 id="huấn-luyện-hiệu-quả-bộ-nhớ">Huấn Luyện Hiệu Quả Bộ Nhớ</h2>
+<h3 id="giảm-thiểu-sự-bùng-nổ-bộ-nhớ-fsdp-do-vật-liệu-hóa-chuyên-gia-moe-lặp-lại">Giảm thiểu Sự Bùng Nổ Bộ Nhớ FSDP Do Vật Liệu Hóa Chuyên Gia MoE Lặp Lại</h3>
+<p>Một vấn đề chúng tôi liên tục gặp phải là việc cấp phát bộ nhớ quá mức trong lượt chuyển tiếp xuôi FSDP, dẫn đến lỗi hết bộ nhớ (OOM) lặp đi lặp lại khi huấn luyện các mô hình GPT-OSS-20B bf16 trên 16 nút H200 (chiều dài phản hồi tối đa: 16k, chiều dài prompt: 8k). Hành vi này rất bất ngờ đối với một mô hình MoE 20 tỷ tham số.</p>
+<p>text
+2025-11-27T11:15:27.927Z [36m(TaskRunner pid=32081)[0m File &ldquo;/home/jobuser/.local/lib/python3.10/site-packages/transformers/models/gpt_oss/modeling_gpt_oss.py&rdquo;, line 123, in forward
+2025-11-27T11:15:27.927Z [36m(TaskRunner pid=32081)[0m hidden_states = hidden_states.repeat(num_experts, 1)
+2025-11-27T11:15:27.927Z [36m(TaskRunner pid=32081)[0m torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 180.00 GiB. GPU 0 has a total capacity of 139.72 GiB of which 110.94 GiB is free. Process 685851 has 24.88 GiB memory in use. Process 692458 has 3.87 GiB memory in use. Of the allocated memory 23.28 GiB is allocated by PyTorch, and 84.43 MiB is reserved by PyTorch but unallocated.</p>
+<p>Chúng tôi đã xác định vấn đề bắt nguồn từ hai triển khai khác nhau của đường chuyển tiếp xuôi MoE trong Hugging Face Transformers. Vấn đề này cũng đã được người dùng khác báo cáo: <a href="https://github.com/huggingface/transformers/issues/40073;">https://github.com/huggingface/transformers/issues/40073;</a> Khi verl tính toán xác suất log dưới FSDP, đường chuyển tiếp xuôi suy luận được kích hoạt. Trong triển khai Hugging Face hiện tại, đường này nhân đôi các trạng thái ẩn cho tất cả các chuyên gia và thực hiện nhân ma trận theo lô, tạo ra các tensor cực lớn trong bộ nhớ GPU. Ngược lại, đường chuyển tiếp xuôi huấn luyện sử dụng một vòng lặp để xử lý từng chuyên gia một cách tuần tự và sau đó kết hợp các kết quả. Mặc dù chậm hơn, cách tiếp cận này hiệu quả bộ nhớ hơn đáng kể.</p>
+<p>python
+@GPUMemoryLogger(role=&ldquo;dp actor&rdquo;, logger=logger)
+def compute_log_prob(self, data: DataProto, calculate_entropy=False) -&gt; torch.Tensor:
+&quot;&quot;&quot;
+&hellip;.
+&quot;&quot;&quot;
+# set to eval, this essentially prioritizes parallelism at the cost of memory efficiency
+self.actor_module.eval()
+&hellip;</p>
+<p>Chúng tôi đã vá triển khai Hugging Face để sử dụng đường thực thi hiệu quả bộ nhớ hơn, tránh vật liệu hóa chuyên gia lặp lại.</p>
+<h3 id="song-song-hóa-chuỗi-với-flash-attention-v3">Song song Hóa Chuỗi với Flash Attention V3</h3>
+<p>RL Agentic yêu cầu tác nhân phải tương tác với môi trường qua nhiều bước trong khi duy trì ngữ cảnh ngày càng mở rộng. Các quan sát và phản hồi môi trường từ mỗi bước được nối vào ngữ cảnh và được sử dụng làm đầu vào cho việc ra quyết định tiếp theo, điều này đặt ra những thách thức đáng kể về hiệu quả bộ nhớ và khả năng mở rộng trong quá trình huấn luyện.</p>
+<p>Dưới hình thức song song hóa dữ liệu được chia sẻ hoàn toàn (FSDP), các tham số mô hình, trạng thái trình tối ưu hóa và đạo hàm được chia sẻ trên toàn bộ kích thước thế giới (tức là tất cả các GPU trong cụm huấn luyện). Mỗi GPU chỉ lưu trữ và cập nhật các phần tham số được gán của nó, trong khi dữ liệu quỹ đạo được nhân bản trên tất cả các GPU—nghĩa là mỗi GPU xử lý lịch sử tương tác tác nhân đầy đủ cho mỗi quỹ đạo.</p>
+<p>Trong quá trình chuyển tiếp xuôi, khi tính toán đến một lớp có các tham số không có sẵn cục bộ, một thao tác <code>all_gather</code> sẽ được kích hoạt để vật liệu hóa toàn bộ các tham số trên các GPU. Trong quá trình chuyển tiếp ngược, một thao tác <code>reduce_scatter</code> tương ứng sẽ tổng hợp các đạo hàm và đảm bảo rằng mỗi GPU chỉ giữ lại phần chia sẻ cục bộ của nó. Điều này mang lại một mức độ mở rộng: khi số lượng GPU tăng lên, dấu chân bộ nhớ trên mỗi GPU giảm đi.</p>
+<p>FSDP cung cấp khả năng mở rộng cấp độ mô hình bằng cách chia sẻ các tham số mô hình, đạo hàm và trạng thái trình tối ưu hóa trên các GPU. Song song hóa chuỗi (hoặc song song hóa ngữ cảnh) tiếp tục giảm mức tiêu thụ bộ nhớ trên mỗi GPU bằng cách phân chia chuỗi đầu vào trên các thiết bị, do đó giảm bộ nhớ kích hoạt đỉnh trên mỗi GPU.</p>
+<p>Khi số lượng chiều song song chuỗi tăng lên, bộ nhớ kích hoạt tối đa trên mỗi GPU tương ứng giảm xuống. Chúng tôi đã triển khai song song hóa chuỗi để nhận biết attention-sink và tương thích với FlashAttention v3 (Hình 8, bên phải).</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/64efbd469e7770db74cb72f5/ryT_y9BpbFSdMDxNYlVlK.png" alt="SP (2)"></p>
+<p><strong>Hình 8.</strong> Trái: Suy luận không có song song hóa chuỗi. Phải: Suy luận có song song hóa chuỗi, nơi thao tác all-to-all bổ sung được thực hiện trước và sau lớp attention. Điều này phân chia chuỗi trên các tác nhân song song và giảm dấu chân bộ nhớ đỉnh của tính toán attention theo một yếu tố tỷ lệ với bậc của song song hóa chuỗi.</p>
+<p>Song song hóa chuỗi mở rộng theo chiều của chuỗi để giảm dấu chân kích hoạt trên mỗi GPU. Các token đầu vào từ tất cả các chuỗi được đóng gói thành một danh sách liên tục duy nhất bằng cách loại bỏ các token đệm, trong khi các ID vị trí được sử dụng để phân biệt các token thuộc về các chuỗi khác nhau. Thiết kế này có lợi tự nhiên từ khả năng hỗ trợ độ dài thay đổi của FlashAttention. Đối với song song hóa chuỗi, các lớp khác ngoài lớp attention không có sự phụ thuộc giữa các vị trí; do đó, chúng không yêu cầu mỗi GPU giữ một phần chuỗi hoàn chỉnh, và không cần giao tiếp bổ sung cho các lớp này.</p>
+<p>Tuy nhiên, lớp attention yêu cầu tất cả các token thuộc cùng một chuỗi phải có mặt trên cùng một GPU để tính toán trọng số attention một cách chính xác. Để đáp ứng ràng buộc này, một thao tác all-to-all được thực hiện để thu thập các phần tử chuỗi, với việc chia được thực hiện ở cấp độ đầu attention. Thiết kế này tránh giao tiếp trong chính phép tính attention, nếu không sẽ rất tốn kém. Sau lớp attention, một thao tác all-to-all duy nhất phân phối lại các đầu ra trở lại bố cục song song chuỗi ban đầu của chúng, sau đó các lớp phi-attention còn lại có thể tiếp tục mà không cần đồng bộ hóa thêm.</p>
+<h2 id="kết-luận">Kết Luận</h2>
+<p>Hành trình của chúng tôi để kích hoạt huấn luyện RL agentic cho mô hình nền GPT-OSS là một đánh giá thực tế, làm nổi bật rằng việc mở khóa các khả năng nâng cao trong LLM mã nguồn mở đòi hỏi kỹ thuật tỉ mỉ, chuyên sâu.</p>
+<p>Chúng tôi đã thực hiện các đóng góp đã biến đổi khả năng của GPT-OSS cho các ứng dụng agentic, đặc biệt bằng cách:</p>
+<ul>
+<li><strong>Ổn định hóa PPO:</strong> Chúng tôi đã đóng góp một sửa lỗi để khôi phục tính toàn vẹn theo chính sách, ghi đè sự không khớp xác suất log do tính không xác định của kiến trúc MoE gây ra (Hình 2).</li>
+<li><strong>Kích hoạt Hỗ trợ Attention Sink:</strong> Chúng tôi đã triển khai và tích hợp thành công lượt chuyển tiếp ngược của attention sink vào FlashAttention v3, sửa lỗi sự không khớp huấn luyện-suy luận thảm khốc trước đó đã gây ra sự bất ổn và hội tụ chậm (Hình 5, 6 và 7).</li>
+<li><strong>Mở rộng Hiệu quả Bộ nhớ:</strong> Chúng tôi đã giới thiệu các tối ưu hóa bộ nhớ quan trọng, bao gồm vá quy trình vật liệu hóa MoE và tích hợp song song hóa chuỗi với hỗ trợ attention sink mới, cho phép huấn luyện với các cửa sổ ngữ cảnh dài cần thiết cho các tác nhân đa bước (Hình 8).</li>
+</ul>
+<p>Những nỗ lực kỹ thuật này xác nhận GPT-OSS là một nền tảng có thể mở rộng và hiệu suất cao để xây dựng thế hệ tiếp theo của các tác nhân ra quyết định thông minh, đa bước.</p>
+<h2 id="lời-cảm-ơn">Lời Cảm Ơn</h2>
+<p>Cảm ơn Deepak Agarwal, Bee-Chung Chen, Animesh Singh, Gungor Polatkan, Balaji Krishnapuram và Jitendra Agarwal vì sự hỗ trợ lãnh đạo của họ.</p>
+<h2 id="tài-liệu-tham-khảo">Tài Liệu Tham Khảo</h2>
+<ol>
+<li>Feng, Jiazhan, et al. <em>Retool: Reinforcement Learning for Strategic Tool Use in LLMs.</em> arXiv preprint arXiv:2504.11536 (2025).</li>
+<li>Xiao, Guangxuan, et al. <em>Efficient Streaming Language Models with Attention Sinks.</em> arXiv preprint arXiv:2309.17453 (2023).</li>
+<li>When Speed Kills Stability: Demystifying RL Collapse from the Training–Inference Mismatch.
+<a href="https://yingru.notion.site/When-Speed-Kills-Stability-Demystifying-RL-Collapse-from-the-Training-Inference-Mismatch-271211a558b7808d8b12d403fd15edda">https://yingru.notion.site/When-Speed-Kills-Stability-Demystifying-RL-Collapse-from-the-Training-Inference-Mismatch-271211a558b7808d8b12d403fd15edda</a></li>
+</ol>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/LinkedIn/gpt-oss-agentic-rl">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/27-january-2026/">27 January 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-27/6ff81e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61a8d1aac664736898ffc84f/AT6cAB5ZNwCcqFMal71WD.jpeg" alt="Alyah ⭐️- Hướng tới Đánh giá Mạnh mẽ về Khả năng Tiếng Ả Rập Emirati trong các LLM Tiếng Ả Rập" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-27T00:00:00&#43;00:00">Jan 27, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Alyah ⭐️- Hướng tới Đánh giá Mạnh mẽ về Khả năng Tiếng Ả Rập Emirati trong các LLM Tiếng Ả Rập</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu Alyah, một mô hình được thiết kế để đánh giá các khả năng tiếng Ả Rập Emirati trong các Mô hình ngôn ngữ lớn (LLM) tiếng Ả Rập.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-27/55d17f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1613114437487-60262a8e0703121c822a80b6.png" alt="Các Mô hình Mở NVIDIA Earth-2 Bao trùm Toàn bộ Ngăn xếp Thời tiết" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-27T00:00:00&#43;00:00">Jan 27, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các Mô hình Mở NVIDIA Earth-2 Bao trùm Toàn bộ Ngăn xếp Thời tiết</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết này giới thiệu các mô hình mở NVIDIA Earth-2, nhấn mạnh khả năng của chúng trong việc giải quyết toàn bộ ngăn xếp dự báo thời tiết.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-27/6ff81e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61a8d1aac664736898ffc84f/AT6cAB5ZNwCcqFMal71WD.jpeg" alt="Alyah ⭐️- Hướng tới Đánh giá Mạnh mẽ về Khả năng Tiếng Ả Rập Emirati trong các LLM Tiếng Ả Rập" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Alyah ⭐️- Hướng tới Đánh giá Mạnh mẽ về Khả năng Tiếng Ả Rập Emirati trong các LLM Tiếng Ả Rập</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-27/e74ccd/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic hợp tác với Chính phủ Anh để đưa hỗ trợ AI vào các dịch vụ GOV.UK" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic hợp tác với Chính phủ Anh để đưa hỗ trợ AI vào các dịch vụ GOV.UK</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-27/55d17f/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1613114437487-60262a8e0703121c822a80b6.png" alt="Các Mô hình Mở NVIDIA Earth-2 Bao trùm Toàn bộ Ngăn xếp Thời tiết" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các Mô hình Mở NVIDIA Earth-2 Bao trùm Toàn bộ Ngăn xếp Thời tiết</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-27/dff6a4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/6697e834fd52271e0b9ce8d8/VSBDJkmYgk4-LeXgTKThN.png" alt="Mở khóa Đào tạo RL Thuộc tính cho GPT-OSS- Một Nhìn Lại Thực tế" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mở khóa Đào tạo RL Thuộc tính cho GPT-OSS- Một Nhìn Lại Thực tế</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-27/f4582b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2026/01/Azure-storage-ahead-next-300x169.jpg" alt="Vượt ra ngoài ranh giới- Tương lai của Azure Storage vào năm 2026" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Vượt ra ngoài ranh giới- Tương lai của Azure Storage vào năm 2026</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
