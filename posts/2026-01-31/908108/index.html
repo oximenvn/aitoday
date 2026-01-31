@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dự án Genie- Thử nghiệm với thế giới tương tác vô hạn | AI Today - SkyAI</title>
+
+<meta name="description" content="Khám phá Genie 3, một bước đột phá trong mô hình thế giới cho phép tạo và khám phá thế giới tương tác">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Dự án Genie- Thử nghiệm với thế giới tương tác vô hạn</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Khám phá Genie 3, một bước đột phá trong mô hình thế giới cho phép tạo và khám phá thế giới tương tác </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-01-31T00:00:00&#43;00:00">January 31, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            15 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://deepmind.google" alt="Dự án Genie- Thử nghiệm với thế giới tương tác vô hạn">
+        <figcaption class="text-center italic text-xs">Khám phá Genie 3, một bước đột phá trong mô hình thế giới cho phép tạo và khám phá thế giới tương tác</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="project-genie-trải-nghiệm-thế-giới-tương-tác-vô-tận">Project Genie: Trải nghiệm thế giới tương tác vô tận</h1>
+<p>Google AI Ultra subscribers tại Hoa Kỳ giờ đây đã có thể thử nghiệm Project Genie.</p>
+<p>Vào tháng 8, chúng tôi đã <a href="https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/">công bố Genie 3</a>, một mô hình thế giới đa năng có khả năng tạo ra các môi trường tương tác đa dạng. Ngay cả ở giai đoạn sơ khai này, những người thử nghiệm đáng tin cậy đã có thể tạo ra một loạt thế giới và trải nghiệm hấp dẫn, đồng thời khám phá ra những cách thức hoàn toàn mới để sử dụng nó. Bước tiếp theo là mở rộng quyền truy cập thông qua một nguyên mẫu chuyên dụng, tương tác tập trung vào việc tạo thế giới nhập vai.</p>
+<p>Bắt đầu từ hôm nay, chúng tôi đang triển khai quyền truy cập vào <a href="http://labs.google/projectgenie/">Project Genie</a> cho những người đăng ký Google AI Ultra tại Hoa Kỳ (18+). Nguyên mẫu nghiên cứu thử nghiệm này cho phép người dùng tự tạo, khám phá và kết hợp các thế giới tương tác của riêng họ.</p>
+<h2 id="cách-chúng-tôi-phát-triển-các-mô-hình-thế-giới">Cách chúng tôi phát triển các mô hình thế giới</h2>
+<p>Mô hình thế giới mô phỏng động lực của một môi trường, dự đoán cách chúng tiến triển và hành động ảnh hưởng đến chúng như thế nào. Trong khi Google DeepMind có bề dày thành tích về các tác nhân cho các môi trường cụ thể như <a href="https://deepmind.google/research/alphazero-and-muzero/">Cờ vua</a> hoặc <a href="https://deepmind.google/research/alphago/?_gl=1*1rofsan*_up*MQ..*_ga*MTU2MTkwNzU1Ni4xNzY5Mzc1ODQz*_ga_LS8HVHCNQ0*czE3NjkzNzU4NDMkbzEkZzAkdDE3NjkzNzU4NDMkajYwJGwwJGgw">Cờ vây</a>, việc xây dựng AGI đòi hỏi các hệ thống có thể điều hướng sự đa dạng của thế giới thực.</p>
+<p>Để đáp ứng thách thức này và hỗ trợ sứ mệnh AGI của chúng tôi, chúng tôi đã phát triển Genie 3. Không giống như trải nghiệm có thể khám phá trong các ảnh chụp 3D tĩnh, Genie 3 tạo ra con đường phía trước theo thời gian thực khi bạn di chuyển và tương tác với thế giới. Nó mô phỏng vật lý và tương tác cho các thế giới động, trong khi tính nhất quán đột phá của nó cho phép mô phỏng bất kỳ kịch bản nào trong thế giới thực — từ robot và mô hình hóa hoạt hình và hư cấu, đến khám phá địa điểm và bối cảnh lịch sử.</p>
+<p>Dựa trên nghiên cứu mô hình của chúng tôi với những người thử nghiệm đáng tin cậy từ nhiều ngành và lĩnh vực khác nhau, chúng tôi đang thực hiện bước tiếp theo với một nguyên mẫu nghiên cứu thử nghiệm: Project Genie.</p>
+<h2 id="project-genie-hoạt-động-như-thế-nào">Project Genie hoạt động như thế nào</h2>
+<p>Project Genie là một nguyên mẫu ứng dụng web được cung cấp bởi Genie 3, <a href="https://deepmind.google/models/gemini-image/pro/">Nano Banana Pro</a> và <a href="http://gemini.google.com/">Gemini</a>, cho phép người dùng thử nghiệm trực tiếp trải nghiệm nhập vai của mô hình thế giới của chúng tôi. Trải nghiệm này tập trung vào ba khả năng cốt lõi:</p>
+<h3 id="1-vẽ-phác-thảo-thế-giới">1. Vẽ phác thảo thế giới</h3>
+<p>Nhập văn bản và hình ảnh được tạo hoặc tải lên để tạo ra một môi trường sống, đang mở rộng. Tạo nhân vật, thế giới của bạn và xác định cách bạn muốn khám phá nó — từ đi bộ đến cưỡi ngựa, bay đến lái xe và bất cứ điều gì khác.</p>
+<p>Để kiểm soát chính xác hơn, chúng tôi đã tích hợp &ldquo;World Sketching&rdquo; với Nano Banana Pro. Điều này cho phép bạn xem trước thế giới của mình sẽ trông như thế nào và sửa đổi hình ảnh của bạn để tinh chỉnh thế giới trước khi tham gia. Bạn cũng có thể xác định góc nhìn của mình cho nhân vật — chẳng hạn như góc nhìn thứ nhất hoặc thứ ba — giúp bạn kiểm soát cách trải nghiệm cảnh trước khi bước vào.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h3 id="2-khám-phá-thế-giới">2. Khám phá thế giới</h3>
+<p>Thế giới của bạn là một môi trường có thể điều hướng đang chờ được khám phá. Khi bạn di chuyển, Project Genie sẽ tạo ra con đường phía trước theo thời gian thực dựa trên các hành động bạn thực hiện. Bạn cũng có thể điều chỉnh góc nhìn khi đi qua thế giới.</p>
+<p>&lt;image-full-width
+alignment=&ldquo;full&rdquo;
+alt-text=&ldquo;Khám phá thế giới trong Project Genie&rdquo;
+external-image=&quot;&quot;
+or-mp4-video-title=&ldquo;Video demo Genie Fish&rdquo;
+or-mp4-video-url=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/original_videos/2494_Genie_Fish_BlogPost.mp4%22">https://storage.googleapis.com/gweb-uniblog-publish-prod/original_videos/2494_Genie_Fish_BlogPost.mp4&quot;</a>
+section-header=&ldquo;Project Genie: Trải nghiệm thế giới tương tác vô tận&rdquo;
+custom-class=&ldquo;image-full-width&ndash;constrained-width uni-component-spacing&rdquo;
+autoplay=&ldquo;true&rdquo;</p>
+<blockquote>
+<!-- raw HTML omitted --></blockquote>
+<h3 id="3-kết-hợp-thế-giới">3. Kết hợp thế giới</h3>
+<p>Kết hợp các thế giới hiện có thành những diễn giải mới, bằng cách xây dựng dựa trên các bản phác thảo của chúng. Bạn cũng có thể khám phá các thế giới được tuyển chọn trong thư viện hoặc trong phần <a href="http://deepmind.google/genie">ngẫu nhiên hóa</a> để lấy cảm hứng, hoặc xây dựng dựa trên chúng. Và khi hoàn thành, bạn có thể tải xuống video về thế giới và các khám phá của mình.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="cách-chúng-tôi-xây-dựng-có-trách-nhiệm">Cách chúng tôi xây dựng có trách nhiệm</h2>
+<p>Project Genie là một nguyên mẫu nghiên cứu thử nghiệm trong Google Labs, được cung cấp bởi Genie 3. Giống như tất cả công việc của chúng tôi hướng tới các hệ thống AI tổng quát, sứ mệnh của chúng tôi là xây dựng AI một cách có trách nhiệm để mang lại lợi ích cho nhân loại. Vì Genie 3 là một mô hình nghiên cứu sơ khai, có một vài lĩnh vực cần cải thiện đã biết:</p>
+<ul>
+<li>Thế giới được tạo ra có thể không hoàn toàn giống với thực tế hoặc luôn tuân thủ chặt chẽ các bản phác thảo hoặc hình ảnh, hoặc vật lý trong thế giới thực.</li>
+<li>Nhân vật đôi khi có thể khó kiểm soát hơn, hoặc trải nghiệm độ trễ cao hơn trong việc điều khiển.</li>
+<li>Giới hạn trong việc tạo ra các thế giới trong 60 giây.</li>
+</ul>
+<p>Một vài khả năng của mô hình Genie 3 mà chúng tôi đã công bố vào tháng 8, chẳng hạn như các sự kiện có thể được kích hoạt bằng lời nhắc thay đổi thế giới khi bạn khám phá, chưa được bao gồm trong nguyên mẫu này. Bạn có thể tìm hiểu thêm chi tiết về các hạn chế của mô hình và các bản cập nhật trong tương lai về cách chúng tôi cải thiện trải nghiệm <a href="http://deepmind.google/genie">tại đây</a>.</p>
+<p>Dựa trên công việc chúng tôi đã thực hiện với những người thử nghiệm đáng tin cậy, chúng tôi rất vui mừng được chia sẻ nguyên mẫu này với những người dùng AI tiên tiến nhất của chúng tôi để hiểu rõ hơn về cách mọi người sẽ sử dụng các mô hình thế giới trong nhiều lĩnh vực nghiên cứu AI và phương tiện truyền thông tạo sinh.</p>
+<p>Quyền truy cập vào Project Genie bắt đầu triển khai hôm nay cho <a href="https://one.google.com/about/google-ai-plans/">người đăng ký Google AI Ultra</a> tại Hoa Kỳ (18+), và sẽ mở rộng ra các vùng lãnh thổ khác trong thời gian tới. Chúng tôi mong muốn được thấy sự đa dạng vô tận của các thế giới mà họ tạo ra, và theo thời gian, mục tiêu của chúng tôi là làm cho những trải nghiệm và công nghệ này trở nên dễ tiếp cận hơn với nhiều người dùng hơn.</p>
+<hr>
+<h3 id="bài-viết-liên-quan">Bài viết liên quan:</h3>
+<!-- raw HTML omitted -->
+<pre><code>  &lt;button class=&quot;uni-related-articles-cards__arrow uni-related-articles-cards__arrow--prev &quot;
+    aria-label=&quot;Previous item&quot;
+    data-ga4-analytics-carousel-scroll-click='{
+</code></pre>
+<p>&ldquo;toggle_type_direction&rdquo;: &ldquo;arrow - left&rdquo;,
+&ldquo;position&rdquo;: &quot;&rdquo;
+}'</p>
+<blockquote>
+</blockquote>
+<pre><code>    &lt;span class=&quot;uni-related-articles-cards__arrow--fig&quot;&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class=&quot;uni-related-articles-cards__arrow uni-related-articles-cards__arrow--next &quot;
+    aria-label=&quot;Next item&quot;
+    data-ga4-analytics-carousel-scroll-click='{
+</code></pre>
+<p>&ldquo;toggle_type_direction&rdquo;: &ldquo;arrow - right&rdquo;,
+&ldquo;position&rdquo;: &quot;&quot;
+}'</p>
+<blockquote>
+</blockquote>
+<pre><code>    &lt;span class=&quot;uni-related-articles-cards__arrow--fig&quot;&gt;&lt;/span&gt;
+  &lt;/button&gt;
+
+&lt;div class=&quot;uni-related-articles-cards__track&quot;&gt;
+  &lt;div role=&quot;region&quot; aria-live=&quot;polite&quot; aria-atomic=&quot;false&quot; class=&quot;uni-related-articles-cards__wrap
+            &quot;&gt;
+    
+      
+      &lt;div id=&quot;uni-related-articles-cards__item--1&quot; class=&quot;uni-related-articles-cards__item
+         uni-related-articles-cards__item--img
+        &quot;&gt;
+        &lt;a href=&quot;https://blog.google/products-and-platforms/products/chrome/gemini-3-auto-browse/&quot; class=&quot;uni-related-articles-cards__link&quot;
+          aria-label=&quot;Chrome -
+                      Kỷ nguyên mới của duyệt web: Đưa Gemini vào hoạt động trong Chrome -
+                      
+                      Bởi
+                      
+                        
+                        Parisa Tabriz
+                      
+                      - 28 tháng 1, 2026&quot;
+          data-index=&quot;1&quot;
+          data-target=&quot;card&quot;
+          data-primaryTag = &quot;products - chrome&quot;
+          data-image=&quot;true&quot;
+          data-ga4-analytics-footer-lead-click='{
+            &quot;link_text&quot;: &quot;Kỷ nguyên mới của duyệt web: Đưa Gemini vào hoạt động trong Chrome&quot;,
+            &quot;link_url&quot;:  &quot;https://blog.google/products-and-platforms/products/chrome/gemini-3-auto-browse/&quot;,
+            &quot;source_content&quot;: &quot;Related stories&quot;,
+            &quot;related_index&quot;: &quot;1&quot;,
+            &quot;related_article_tag&quot;: &quot;products - chrome&quot;,
+            &quot;article_name&quot;: &quot;Kỷ nguyên mới của duyệt web: Đưa Gemini vào hoạt động trong Chrome&quot;,
+            &quot;author_name&quot;: &quot;Parisa Tabriz&quot;,
+            &quot;content_type&quot;: &quot;article page&quot;
+          }'
+        &gt;
+          &lt;div
+            class=&quot;uni-related-articles-cards__item-top-info&quot;
+            aria-hidden=&quot;true&quot;
+            data-target=&quot;card&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__img&quot;&gt;
+</code></pre>
+<p>&lt;img
+src=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/chrome_rollercoaster.width-300.format-webp.webp%22">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/chrome_rollercoaster.width-300.format-webp.webp&quot;</a>
+alt=&rdquo;&quot;
+sizes=&quot;[{&ldquo;width&rdquo;:&ldquo;600&rdquo;, &ldquo;height&rdquo;:&ldquo;208&rdquo;}]&quot;
+srcset=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/chrome_rollercoaster.width-300.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/chrome_rollercoaster.width-300.format-webp.webp</a> 300w, <a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/chrome_rollercoaster.width-600.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/chrome_rollercoaster.width-600.format-webp.webp</a> 600w&rdquo;
+loading=&ldquo;lazy&rdquo;
+/&gt;
+<!-- raw HTML omitted --></p>
+<pre><code>            &lt;span class=&quot;uni-eyebrow uni-related-articles-cards__category&quot; data-target=&quot;eyebrow&quot;&gt;Chrome&lt;/span&gt;
+            &lt;h4 class=&quot;uni-related-articles-cards__headline&quot; data-target=&quot;title&quot;&gt;Kỷ nguyên mới của duyệt web: Đưa Gemini vào hoạt động trong Chrome&lt;/h4&gt;
+            
+          &lt;/div&gt;
+          &lt;div class=&quot;uni-related-articles-cards__info&quot; aria-hidden=&quot;true&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__author&quot;&gt;
+              Bởi
+              
+                
+                &lt;span class=&quot;uni-related-articles-cards__author--name&quot; data-target=&quot;author&quot;&gt;
+                Parisa Tabriz
+                &lt;/span&gt;
+              
+              &lt;/div&gt;
+            
+            
+          &lt;/div&gt;
+          &lt;svg
+</code></pre>
+<p>class=&ldquo;uni-related-articles-cards__item-arrow&rdquo;
+data-target=&ldquo;arrow&rdquo;
+role=&ldquo;presentation&rdquo;
+aria-hidden=&ldquo;true&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>      &lt;div id=&quot;uni-related-articles-cards__item--2&quot; class=&quot;uni-related-articles-cards__item
+         uni-related-articles-cards__item--img
+        &quot;&gt;
+        &lt;a href=&quot;https://blog.google/innovation-and-ai/technology/developers-tools/gdp-premium-ai-pro-ultra/&quot; class=&quot;uni-related-articles-cards__link&quot;
+          aria-label=&quot;Công cụ nhà phát triển -
+                      Công cụ nhà phát triển mới dành cho người đăng ký Google AI Pro và Ultra -
+                      
+                      Bởi
+                      
+                        
+                        Niv Govindaraju
+                      
+                        
+                          &amp;
+                        
+                        Bala Muthukrishnan
+                      
+                      - 27 tháng 1, 2026&quot;
+          data-index=&quot;2&quot;
+          data-target=&quot;card&quot;
+          data-primaryTag = &quot;products - developer tools&quot;
+          data-image=&quot;true&quot;
+          data-ga4-analytics-footer-lead-click='{
+            &quot;link_text&quot;: &quot;Công cụ nhà phát triển mới dành cho người đăng ký Google AI Pro và Ultra&quot;,
+            &quot;link_url&quot;:  &quot;https://blog.google/innovation-and-ai/technology/developers-tools/gdp-premium-ai-pro-ultra/&quot;,
+            &quot;source_content&quot;: &quot;Related stories&quot;,
+            &quot;related_index&quot;: &quot;2&quot;,
+            &quot;related_article_tag&quot;: &quot;products - developer tools&quot;,
+            &quot;article_name&quot;: &quot;Công cụ nhà phát triển mới dành cho người đăng ký Google AI Pro và Ultra&quot;,
+            &quot;author_name&quot;: &quot;Niv Govindaraju, Bala Muthukrishnan&quot;,
+            &quot;content_type&quot;: &quot;article page&quot;
+          }'
+        &gt;
+          &lt;div
+            class=&quot;uni-related-articles-cards__item-top-info&quot;
+            aria-hidden=&quot;true&quot;
+            data-target=&quot;card&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__img&quot;&gt;
+</code></pre>
+<p>&lt;img
+src=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/0029-GDP-Google-One-Announcement.width-300.format-webp.webp%22">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/0029-GDP-Google-One-Announcement.width-300.format-webp.webp&quot;</a>
+alt=&rdquo;&quot;
+sizes=&quot;[{&ldquo;width&rdquo;:&ldquo;600&rdquo;, &ldquo;height&rdquo;:&ldquo;208&rdquo;}]&quot;
+srcset=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/0029-GDP-Google-One-Announcement.width-300.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/0029-GDP-Google-One-Announcement.width-300.format-webp.webp</a> 300w, <a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/0029-GDP-Google-One-Announcement.width-600.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/0029-GDP-Google-One-Announcement.width-600.format-webp.webp</a> 600w&rdquo;
+loading=&ldquo;lazy&rdquo;
+/&gt;
+<!-- raw HTML omitted --></p>
+<pre><code>            &lt;span class=&quot;uni-eyebrow uni-related-articles-cards__category&quot; data-target=&quot;eyebrow&quot;&gt;Công cụ nhà phát triển&lt;/span&gt;
+            &lt;h4 class=&quot;uni-related-articles-cards__headline&quot; data-target=&quot;title&quot;&gt;Công cụ nhà phát triển mới dành cho người đăng ký Google AI Pro và Ultra&lt;/h4&gt;
+            
+          &lt;/div&gt;
+          &lt;div class=&quot;uni-related-articles-cards__info&quot; aria-hidden=&quot;true&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__author&quot;&gt;
+              Bởi
+              
+                
+                &lt;span class=&quot;uni-related-articles-cards__author--name&quot; data-target=&quot;author&quot;&gt;
+                Niv Govindaraju
+                &lt;/span&gt;
+              
+                
+                &amp;
+                
+                &lt;span class=&quot;uni-related-articles-cards__author--name&quot; data-target=&quot;author&quot;&gt;
+                Bala Muthukrishnan
+                &lt;/span&gt;
+              
+              &lt;/div&gt;
+            
+            
+              &lt;span class=&quot;uni-related-articles-cards__date&quot; data-target=&quot;date&quot;&gt;
+                27 tháng 1, 2026
+              &lt;/span&gt;
+            
+          &lt;/div&gt;
+          &lt;svg
+</code></pre>
+<p>class=&ldquo;uni-related-articles-cards__item-arrow&rdquo;
+data-target=&ldquo;arrow&rdquo;
+role=&ldquo;presentation&rdquo;
+aria-hidden=&ldquo;true&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>      &lt;div id=&quot;uni-related-articles-cards__item--3&quot; class=&quot;uni-related-articles-cards__item
+         uni-related-articles-cards__item--img
+        &quot;&gt;
+        &lt;a href=&quot;https://blog.google/products-and-platforms/products/google-one/google-ai-plus-availability/&quot; class=&quot;uni-related-articles-cards__link&quot;
+          aria-label=&quot;Google One -
+                      Google AI Plus hiện có sẵn ở mọi nơi có gói AI của chúng tôi, bao gồm cả Hoa Kỳ -
+                      
+                        Chúng tôi ra mắt Google AI Plus tại 35 quốc gia và vùng lãnh thổ mới, bao gồm cả Hoa Kỳ, làm cho nó có sẵn ở mọi nơi các gói Google AI có sẵn. -
+                      
+                      Bởi
+                      
+                        
+                        Vikas Kansal
+                      
+                      - 27 tháng 1, 2026&quot;
+          data-index=&quot;3&quot;
+          data-target=&quot;card&quot;
+          data-primaryTag = &quot;products - google one&quot;
+          data-image=&quot;false&quot;
+          data-ga4-analytics-footer-lead-click='{
+            &quot;link_text&quot;: &quot;Google AI Plus hiện có sẵn ở mọi nơi có gói AI của chúng tôi, bao gồm cả Hoa Kỳ&quot;,
+            &quot;link_url&quot;:  &quot;https://blog.google/products-and-platforms/products/google-one/google-ai-plus-availability/&quot;,
+            &quot;source_content&quot;: &quot;Related stories&quot;,
+            &quot;related_index&quot;: &quot;3&quot;,
+            &quot;related_article_tag&quot;: &quot;products - google one&quot;,
+            &quot;article_name&quot;: &quot;Google AI Plus hiện có sẵn ở mọi nơi có gói AI của chúng tôi, bao gồm cả Hoa Kỳ&quot;,
+            &quot;author_name&quot;: &quot;Vikas Kansal&quot;,
+            &quot;content_type&quot;: &quot;Short Post&quot;
+          }'
+        &gt;
+          &lt;div
+            class=&quot;uni-related-articles-cards__item-top-info&quot;
+            aria-hidden=&quot;true&quot;
+            data-target=&quot;card&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__img&quot;&gt;
+</code></pre>
+<p>&lt;img
+src=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_AI_Plus_Hero_Visual_2096x1.width-300.format-webp_7LduN9u.webp%22">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_AI_Plus_Hero_Visual_2096x1.width-300.format-webp_7LduN9u.webp&quot;</a>
+alt=&rdquo;&quot;
+sizes=&quot;[{&ldquo;width&rdquo;:&ldquo;600&rdquo;, &ldquo;height&rdquo;:&ldquo;208&rdquo;}]&quot;
+srcset=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_AI_Plus_Hero_Visual_2096x1.width-300.format-webp_7LduN9u.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_AI_Plus_Hero_Visual_2096x1.width-300.format-webp_7LduN9u.webp</a> 300w, <a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_AI_Plus_Hero_Visual_2096x1.width-600.format-webp_DHDtBMZ.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Google_AI_Plus_Hero_Visual_2096x1.width-600.format-webp_DHDtBMZ.webp</a> 600w&rdquo;
+loading=&ldquo;lazy&rdquo;
+/&gt;
+<!-- raw HTML omitted --></p>
+<pre><code>            &lt;span class=&quot;uni-eyebrow uni-related-articles-cards__category&quot; data-target=&quot;eyebrow&quot;&gt;Google One&lt;/span&gt;
+            &lt;h4 class=&quot;uni-related-articles-cards__headline&quot; data-target=&quot;title&quot;&gt;Google AI Plus hiện có sẵn ở mọi nơi có gói AI của chúng tôi, bao gồm cả Hoa Kỳ&lt;/h4&gt;
+            
+          &lt;/div&gt;
+          &lt;div class=&quot;uni-related-articles-cards__info&quot; aria-hidden=&quot;true&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__author&quot;&gt;
+              Bởi
+              
+                
+                &lt;span class=&quot;uni-related-articles-cards__author--name&quot; data-target=&quot;author&quot;&gt;
+                Vikas Kansal
+                &lt;/span&gt;
+              
+              &lt;/div&gt;
+            
+            
+              &lt;span class=&quot;uni-related-articles-cards__date&quot; data-target=&quot;date&quot;&gt;
+                27 tháng 1, 2026
+              &lt;/span&gt;
+            
+          &lt;/div&gt;
+          &lt;svg
+</code></pre>
+<p>class=&ldquo;uni-related-articles-cards__item-arrow&rdquo;
+data-target=&ldquo;arrow&rdquo;
+role=&ldquo;presentation&rdquo;
+aria-hidden=&ldquo;true&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>      &lt;div id=&quot;uni-related-articles-cards__item--4&quot; class=&quot;uni-related-articles-cards__item
+         uni-related-articles-cards__item--img
+        &quot;&gt;
+        &lt;a href=&quot;https://blog.google/products-and-platforms/products/search/ai-mode-ai-overviews-updates/&quot; class=&quot;uni-related-articles-cards__link&quot;
+          aria-label=&quot;Tìm kiếm -
+                      Chỉ cần hỏi bất cứ điều gì: trải nghiệm Tìm kiếm mới liền mạch -
+                      
+                      Bởi
+                      
+                        
+                        Robby Stein
+                      
+                      - 27 tháng 1, 2026&quot;
+          data-index=&quot;4&quot;
+          data-target=&quot;card&quot;
+          data-primaryTag = &quot;products - search&quot;
+          data-image=&quot;true&quot;
+          data-ga4-analytics-footer-lead-click='{
+            &quot;link_text&quot;: &quot;Chỉ cần hỏi bất cứ điều gì: trải nghiệm Tìm kiếm mới liền mạch&quot;,
+            &quot;link_url&quot;:  &quot;https://blog.google/products-and-platforms/products/search/ai-mode-ai-overviews-updates/&quot;,
+            &quot;source_content&quot;: &quot;Related stories&quot;,
+            &quot;related_index&quot;: &quot;4&quot;,
+            &quot;related_article_tag&quot;: &quot;products - search&quot;,
+            &quot;article_name&quot;: &quot;Chỉ cần hỏi bất cứ điều gì: trải nghiệm Tìm kiếm mới liền mạch&quot;,
+            &quot;author_name&quot;: &quot;Robby Stein&quot;,
+            &quot;content_type&quot;: &quot;article page&quot;
+          }'
+        &gt;
+          &lt;div
+            class=&quot;uni-related-articles-cards__item-top-info&quot;
+            aria-hidden=&quot;true&quot;
+            data-target=&quot;card&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__img&quot;&gt;
+</code></pre>
+<p>&lt;img
+src=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Seamless_Search_-_Blog_header.width-300.format-webp.webp%22">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Seamless_Search_-_Blog_header.width-300.format-webp.webp&quot;</a>
+alt=&rdquo;&quot;
+sizes=&quot;[{&ldquo;width&rdquo;:&ldquo;600&rdquo;, &ldquo;height&rdquo;:&ldquo;208&rdquo;}]&quot;
+srcset=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Seamless_Search_-_Blog_header.width-300.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Seamless_Search_-_Blog_header.width-300.format-webp.webp</a> 300w, <a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Seamless_Search_-_Blog_header.width-600.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Seamless_Search_-_Blog_header.width-600.format-webp.webp</a> 600w&rdquo;
+loading=&ldquo;lazy&rdquo;
+/&gt;
+<!-- raw HTML omitted --></p>
+<pre><code>            &lt;span class=&quot;uni-eyebrow uni-related-articles-cards__category&quot; data-target=&quot;eyebrow&quot;&gt;Tìm kiếm&lt;/span&gt;
+            &lt;h4 class=&quot;uni-related-articles-cards__headline&quot; data-target=&quot;title&quot;&gt;Chỉ cần hỏi bất cứ điều gì: trải nghiệm Tìm kiếm mới liền mạch&lt;/h4&gt;
+            
+          &lt;/div&gt;
+          &lt;div class=&quot;uni-related-articles-cards__info&quot; aria-hidden=&quot;true&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__author&quot;&gt;
+              Bởi
+              
+                
+                &lt;span class=&quot;uni-related-articles-cards__author--name&quot; data-target=&quot;author&quot;&gt;
+                Robby Stein
+                &lt;/span&gt;
+              
+              &lt;/div&gt;
+            
+            
+              &lt;span class=&quot;uni-related-articles-cards__date&quot; data-target=&quot;date&quot;&gt;
+                27 tháng 1, 2026
+              &lt;/span&gt;
+            
+          &lt;/div&gt;
+          &lt;svg
+</code></pre>
+<p>class=&ldquo;uni-related-articles-cards__item-arrow&rdquo;
+data-target=&ldquo;arrow&rdquo;
+role=&ldquo;presentation&rdquo;
+aria-hidden=&ldquo;true&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>      &lt;div id=&quot;uni-related-articles-cards__item--5&quot; class=&quot;uni-related-articles-cards__item
+         uni-related-articles-cards__item--img
+        &quot;&gt;
+        &lt;a href=&quot;https://blog.google/products-and-platforms/products/gemini/release-notes-podcast-smokejumpers/&quot; class=&quot;uni-related-articles-cards__link&quot;
+          aria-label=&quot;AI -
+                      Trong podcast mới nhất của chúng tôi, hãy nghe cách nhóm “Smoke Jumpers” mang Gemini đến hàng tỷ người. -
+                      
+                        Mang Gemini đến hàng tỷ người dùng đòi hỏi một nỗ lực cơ sở hạ tầng khổng lồ, phối hợp. Trong tập mới nhất của podcast Google AI: Release Notes, người dẫn chương trình Logan Kil… -
+                      
+                      Bởi
+                      
+                      - 27 tháng 1, 2026&quot;
+          data-index=&quot;5&quot;
+          data-target=&quot;card&quot;
+          data-primaryTag = &quot;topics - ai&quot;
+          data-image=&quot;false&quot;
+          data-ga4-analytics-footer-lead-click='{
+            &quot;link_text&quot;: &quot;Trong podcast mới nhất của chúng tôi, hãy nghe cách nhóm “Smoke Jumpers” mang Gemini đến hàng tỷ người.&quot;,
+            &quot;link_url&quot;:  &quot;https://blog.google/products-and-platforms/products/gemini/release-notes-podcast-smokejumpers/&quot;,
+            &quot;source_content&quot;: &quot;Related stories&quot;,
+            &quot;related_index&quot;: &quot;5&quot;,
+            &quot;related_article_tag&quot;: &quot;topics - ai&quot;,
+            &quot;article_name&quot;: &quot;Trong podcast mới nhất của chúng tôi, hãy nghe cách nhóm “Smoke Jumpers” mang Gemini đến hàng tỷ người.&quot;,
+            &quot;author_name&quot;: &quot;&quot;,
+            &quot;content_type&quot;: &quot;Short Post&quot;
+          }'
+        &gt;
+          &lt;div
+            class=&quot;uni-related-articles-cards__item-top-info&quot;
+            aria-hidden=&quot;true&quot;
+            data-target=&quot;card&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__img&quot;&gt;
+</code></pre>
+<p>&lt;img
+src=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/thumbnails_EP24_002_ccRelease_Not.width-300.format-webp.webp%22">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/thumbnails_EP24_002_ccRelease_Not.width-300.format-webp.webp&quot;</a>
+alt=&rdquo;&quot;
+sizes=&quot;[{&ldquo;width&rdquo;:&ldquo;600&rdquo;, &ldquo;height&rdquo;:&ldquo;208&rdquo;}]&quot;
+srcset=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/thumbnails_EP24_002_ccRelease_Not.width-300.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/thumbnails_EP24_002_ccRelease_Not.width-300.format-webp.webp</a> 300w, <a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/thumbnails_EP24_002_ccRelease_Not.width-600.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/thumbnails_EP24_002_ccRelease_Not.width-600.format-webp.webp</a> 600w&rdquo;
+loading=&ldquo;lazy&rdquo;
+/&gt;
+<!-- raw HTML omitted --></p>
+<pre><code>            &lt;span class=&quot;uni-eyebrow uni-related-articles-cards__category&quot; data-target=&quot;eyebrow&quot;&gt;AI&lt;/span&gt;
+            &lt;h4 class=&quot;uni-related-articles-cards__headline&quot; data-target=&quot;title&quot;&gt;Trong podcast mới nhất của chúng tôi, hãy nghe cách nhóm “Smoke Jumpers” mang Gemini đến hàng tỷ người.&lt;/h4&gt;
+            
+          &lt;/div&gt;
+          &lt;div class=&quot;uni-related-articles-cards__info&quot; aria-hidden=&quot;true&quot;&gt;
+            
+              &lt;span class=&quot;uni-related-articles-cards__date&quot; data-target=&quot;date&quot;&gt;
+                27 tháng 1, 2026
+              &lt;/span&gt;
+            
+          &lt;/div&gt;
+          &lt;svg
+</code></pre>
+<p>class=&ldquo;uni-related-articles-cards__item-arrow&rdquo;
+data-target=&ldquo;arrow&rdquo;
+role=&ldquo;presentation&rdquo;
+aria-hidden=&ldquo;true&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>      &lt;div id=&quot;uni-related-articles-cards__item--6&quot; class=&quot;uni-related-articles-cards__item
+         uni-related-articles-cards__item--img
+        &quot;&gt;
+        &lt;a href=&quot;https://blog.google/innovation-and-ai/models-and-research/google-deepmind/dear-upstairs-neighbors/&quot; class=&quot;uni-related-articles-cards__link&quot;
+          aria-label=&quot;Google DeepMind -
+                      Cách các nhà làm phim hoạt hình và nhà nghiên cứu AI tạo ra ‘Dear Upstairs Neighbors’ -
+                      
+                      Bởi
+                      
+                        
+                        Cassidy Curtis
+                      
+                        
+                          &amp;
+                        
+                        Sarah Rumbley
+                      
+                      - 26 tháng 1, 2026&quot;
+          data-index=&quot;6&quot;
+          data-target=&quot;card&quot;
+          data-primaryTag = &quot;topics - google deepmind&quot;
+          data-image=&quot;true&quot;
+          data-ga4-analytics-footer-lead-click='{
+            &quot;link_text&quot;: &quot;Cách các nhà làm phim hoạt hình và nhà nghiên cứu AI tạo ra ‘Dear Upstairs Neighbors’&quot;,
+            &quot;link_url&quot;:  &quot;https://blog.google/innovation-and-ai/models-and-research/google-deepmind/dear-upstairs-neighbors/&quot;,
+            &quot;source_content&quot;: &quot;Related stories&quot;,
+            &quot;related_index&quot;: &quot;6&quot;,
+            &quot;related_article_tag&quot;: &quot;topics - google deepmind&quot;,
+            &quot;article_name&quot;: &quot;Cách các nhà làm phim hoạt hình và nhà nghiên cứu AI tạo ra ‘Dear Upstairs Neighbors’&quot;,
+            &quot;author_name&quot;: &quot;Cassidy Curtis, Sarah Rumbley&quot;,
+            &quot;content_type&quot;: &quot;article page&quot;
+          }'
+        &gt;
+          &lt;div
+            class=&quot;uni-related-articles-cards__item-top-info&quot;
+            aria-hidden=&quot;true&quot;
+            data-target=&quot;card&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__img&quot;&gt;
+</code></pre>
+<p>&lt;img
+src=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DUN_poster_16x9_v02.width-300.format-webp.webp%22">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DUN_poster_16x9_v02.width-300.format-webp.webp&quot;</a>
+alt=&rdquo;&quot;
+sizes=&quot;[{&ldquo;width&rdquo;:&ldquo;600&rdquo;, &ldquo;height&rdquo;:&ldquo;208&rdquo;}]&quot;
+srcset=&ldquo;<a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DUN_poster_16x9_v02.width-300.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DUN_poster_16x9_v02.width-300.format-webp.webp</a> 300w, <a href="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DUN_poster_16x9_v02.width-600.format-webp.webp">https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DUN_poster_16x9_v02.width-600.format-webp.webp</a> 600w&rdquo;
+loading=&ldquo;lazy&rdquo;
+/&gt;
+<!-- raw HTML omitted --></p>
+<pre><code>            &lt;span class=&quot;uni-eyebrow uni-related-articles-cards__category&quot; data-target=&quot;eyebrow&quot;&gt;Google DeepMind&lt;/span&gt;
+            &lt;h4 class=&quot;uni-related-articles-cards__headline&quot; data-target=&quot;title&quot;&gt;Cách các nhà làm phim hoạt hình và nhà nghiên cứu AI tạo ra ‘Dear Upstairs Neighbors’&lt;/h4&gt;
+            
+          &lt;/div&gt;
+          &lt;div class=&quot;uni-related-articles-cards__info&quot; aria-hidden=&quot;true&quot;&gt;
+            
+              &lt;div class=&quot;uni-related-articles-cards__author&quot;&gt;
+              Bởi
+              
+                
+                &lt;span class=&quot;uni-related-articles-cards__author--name&quot; data-target=&quot;author&quot;&gt;
+                Cassidy Curtis
+                &lt;/span&gt;
+              
+                
+                &amp;
+                
+                &lt;span class=&quot;uni-related-articles-cards__author--name&quot; data-target=&quot;author&quot;&gt;
+                Sarah Rumbley
+                &lt;/span&gt;
+              
+              &lt;/div&gt;
+            
+            
+              &lt;span class=&quot;uni-related-articles-cards__date&quot; data-target=&quot;date&quot;&gt;
+                26 tháng 1, 2026
+              &lt;/span&gt;
+            
+          &lt;/div&gt;
+          &lt;svg
+</code></pre>
+<p>class=&ldquo;uni-related-articles-cards__item-arrow&rdquo;
+data-target=&ldquo;arrow&rdquo;
+role=&ldquo;presentation&rdquo;
+aria-hidden=&ldquo;true&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>    &lt;div class=&quot;uni-related-articles-cards__item--placeholder&quot;&gt;.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+  &lt;div class=&quot;uni-related-articles-cards__pagination ga4-bullets
+  &quot; aria-label=&quot;Pagination&quot; role=&quot;tablist&quot;&gt;
+  
+    &lt;button
+      class=&quot;uni-related-articles-cards__dot&quot;
+      type=&quot;button&quot;
+      role=&quot;tab&quot;
+      aria-selected=&quot;false&quot;
+      aria-controls=&quot;uni-related-articles-cards__item--1&quot;
+      data-index=&quot;1&quot;
+      aria-live=&quot;polite&quot;
+      data-ga4-analytics-carousel-scroll-click='{
+</code></pre>
+<p>&ldquo;toggle_type_direction&rdquo;: &ldquo;bullet&rdquo;,
+&ldquo;position&rdquo;: &ldquo;1&rdquo;
+}'</p>
+<blockquote>
+</blockquote>
+<pre><code>      &lt;span class=&quot;uni-related-articles-cards__dot-text&quot;&gt;
+        Nhảy tới vị trí 1&lt;/span&gt;
+    &lt;/button&gt;
+  
+    &lt;button
+      class=&quot;uni-related-articles-cards__dot&quot;
+      type=&quot;button&quot;
+      role=&quot;tab&quot;
+      aria-selected=&quot;false&quot;
+      aria-controls=&quot;uni-related-articles-cards__item--2&quot;
+      data-index=&quot;2&quot;
+      aria-live=&quot;polite&quot;
+      data-ga4-analytics-carousel-scroll-click='{
+</code></pre>
+<p>&ldquo;toggle_type_direction&rdquo;: &ldquo;bullet&rdquo;,
+&ldquo;position&rdquo;: &ldquo;2&rdquo;
+}'</p>
+<blockquote>
+</blockquote>
+<pre><code>      &lt;span class=&quot;uni-related-articles-cards__dot-text&quot;&gt;
+        Nhảy tới vị trí 2&lt;/span&gt;
+    &lt;/button&gt;
+  
+    &lt;button
+      class=&quot;uni-related-articles-cards__dot&quot;
+      type=&quot;button&quot;
+      role=&quot;tab&quot;
+      aria-selected=&quot;false&quot;
+      aria-controls=&quot;uni-related-articles-cards__item--3&quot;
+      data-index=&quot;3&quot;
+      aria-live=&quot;polite&quot;
+      data-ga4-analytics-carousel-scroll-click='{
+</code></pre>
+<p>&ldquo;toggle_type_direction&rdquo;: &ldquo;bullet&rdquo;,
+&ldquo;position&rdquo;: &ldquo;3&rdquo;
+}'</p>
+<blockquote>
+</blockquote>
+<pre><code>      &lt;span class=&quot;uni-related-articles-cards__dot-text&quot;&gt;
+        Nhảy tới vị trí 3&lt;/span&gt;
+    &lt;/button&gt;
+  
+    &lt;button
+      class=&quot;uni-related-articles-cards__dot&quot;
+      type=&quot;button&quot;
+      role=&quot;tab&quot;
+      aria-selected=&quot;false&quot;
+      aria-controls=&quot;uni-related-articles-cards__item--4&quot;
+      data-index=&quot;4&quot;
+      aria-live=&quot;polite&quot;
+      data-ga4-analytics-carousel-scroll-click='{
+</code></pre>
+<p>&ldquo;toggle_type_direction&rdquo;: &ldquo;bullet&rdquo;,
+&ldquo;position&rdquo;: &ldquo;4&rdquo;
+}'</p>
+<blockquote>
+</blockquote>
+<pre><code>      &lt;span class=&quot;uni-related-articles-cards__dot-text&quot;&gt;
+        Nhảy tới vị trí 4&lt;/span&gt;
+    &lt;/button&gt;
+  
+    &lt;button
+      class=&quot;uni-related-articles-cards__dot&quot;
+      type=&quot;button&quot;
+      role=&quot;tab&quot;
+      aria-selected=&quot;false&quot;
+      aria-controls=&quot;uni-related-articles-cards__item--5&quot;
+      data-index=&quot;5&quot;
+      aria-live=&quot;polite&quot;
+      data-ga4-analytics-carousel-scroll-click='{
+</code></pre>
+<p>&ldquo;toggle_type_direction&rdquo;: &ldquo;bullet&rdquo;,
+&ldquo;position&rdquo;: &ldquo;5&rdquo;
+}'</p>
+<blockquote>
+</blockquote>
+<pre><code>      &lt;span class=&quot;uni-related-articles-cards__dot-text&quot;&gt;
+        Nhảy tới vị trí 5&lt;/span&gt;
+    &lt;/button&gt;
+  
+    &lt;button
+      class=&quot;uni-related-articles-cards__dot&quot;
+      type=&quot;button&quot;
+      role=&quot;tab&quot;
+      aria-selected=&quot;false&quot;
+      aria-controls=&quot;uni-related-articles-cards__item--6&quot;
+      data-index=&quot;6&quot;
+      aria-live=&quot;polite&quot;
+      data-ga4-analytics-carousel-scroll-click='{
+</code></pre>
+<p>&ldquo;toggle_type_direction&rdquo;: &ldquo;bullet&rdquo;,
+&ldquo;position&rdquo;: &ldquo;6&rdquo;
+}'</p>
+<blockquote>
+</blockquote>
+<pre><code>      &lt;span class=&quot;uni-related-articles-cards__dot-text&quot;&gt;
+        Nhảy tới vị trí 6&lt;/span&gt;
+    &lt;/button&gt;
+  
+  &lt;/div&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>&lt;section class=&quot;h-c-footer__upper&quot;&gt;
+    &lt;section class=&quot;h-c-social&quot;&gt;
+      &lt;div class=&quot;h-c-social__group&quot;&gt;
+        &lt;p class=&quot;h-c-social__title h-c-social__title--inline&quot;&gt;
+          Theo dõi chúng tôi
+        &lt;/p&gt;
+        &lt;ul class=&quot;h-c-social__list h-no-bullet&quot;&gt;
+          
+          
+          &lt;li class=&quot;h-c-social__item&quot;&gt;
+            &lt;a class=&quot;h-c-social__link uni-click-tracker&quot;
+              aria-label=&quot;Instagram&quot;
+              href=&quot;https://www.instagram.com/google/&quot;&gt;
+              &lt;svg
+</code></pre>
+<p>class=&ldquo;h-c-icon h-c-icon&ndash;24px h-c-icon&ndash;social&rdquo;
+aria-hidden=&ldquo;true&rdquo;
+viewBox=&ldquo;0 0 18 18&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>          &lt;li class=&quot;h-c-social__item&quot;&gt;
+            &lt;a class=&quot;h-c-social__link uni-click-tracker&quot;
+              aria-label=&quot;x.com&quot;
+              href=&quot;https://twitter.com/google&quot;&gt;
+              &lt;svg
+</code></pre>
+<p>class=&ldquo;h-c-icon h-c-icon&ndash;24px h-c-icon&ndash;social&rdquo;
+aria-hidden=&ldquo;true&rdquo;
+viewBox=&ldquo;0 0 18 18&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>          &lt;li class=&quot;h-c-social__item&quot;&gt;
+            &lt;a class=&quot;h-c-social__link uni-click-tracker&quot;
+              aria-label=&quot;YouTube&quot;
+              href=&quot;https://www.youtube.com/google&quot;&gt;
+              &lt;svg
+</code></pre>
+<p>class=&ldquo;h-c-icon h-c-icon&ndash;24px h-c-icon&ndash;social&rdquo;
+aria-hidden=&ldquo;true&rdquo;
+viewBox=&ldquo;0 0 18 18&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>          &lt;li class=&quot;h-c-social__item&quot;&gt;
+            &lt;a class=&quot;h-c-social__link uni-click-tracker&quot;
+              aria-label=&quot;Facebook&quot;
+              href=&quot;https://www.facebook.com/Google&quot;&gt;
+              &lt;svg
+</code></pre>
+<p>class=&ldquo;h-c-icon h-c-icon&ndash;24px h-c-icon&ndash;social&rdquo;
+aria-hidden=&ldquo;true&rdquo;
+viewBox=&ldquo;0 0 18 18&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>          &lt;li class=&quot;h-c-social__item&quot;&gt;
+            &lt;a class=&quot;h-c-social__link uni-click-tracker&quot;
+              aria-label=&quot;LinkedIn&quot;
+              href=&quot;https://www.linkedin.com/company/google&quot;&gt;
+              &lt;svg
+</code></pre>
+<p>class=&ldquo;h-c-icon h-c-icon&ndash;24px h-c-icon&ndash;social&rdquo;
+aria-hidden=&ldquo;true&rdquo;
+viewBox=&ldquo;0 0 18 18&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;h-c-footer__global&quot;&gt;
+    &lt;div class=&quot;h-c-footer__logo&quot;&gt;
+      &lt;a class=&quot;uni-click-tracker&quot; href=&quot;https://www.google.com&quot; aria-label=&quot;Logo Google&quot;&gt;
+        &lt;svg
+</code></pre>
+<p>class=&ldquo;h-c-footer__logo-img&rdquo;
+aria-hidden=&ldquo;true&rdquo;
+viewBox=&ldquo;0 0 396 130&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<pre><code>        &lt;a class=&quot;h-c-footer__link uni-click-tracker&quot; href=&quot;https://policies.google.com/privacy&quot;&gt;Quyền riêng tư
+        &lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;h-c-footer__global-links-list-item&quot;&gt;
+        
+        &lt;a class=&quot;h-c-footer__link uni-click-tracker&quot; href=&quot;https://policies.google.com/terms&quot;&gt;Điều khoản
+        &lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;h-c-footer__global-links-list-item&quot;&gt;
+        
+        &lt;a class=&quot;h-c-footer__link uni-click-tracker&quot; href=&quot;https://about.google/&quot;&gt;Giới thiệu về Google
+        &lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;h-c-footer__global-links-list-item&quot;&gt;
+        
+        &lt;a class=&quot;h-c-footer__link uni-click-tracker&quot; href=&quot;https://about.google/products/&quot;&gt;Sản phẩm Google
+        &lt;/a&gt;
+      &lt;/li&gt;
+      
+      
+        &lt;li class=&quot;h-c-footer__global-links-list-item&quot;&gt;
+          &lt;a class=&quot;h-c-footer__link uni-click-tracker&quot; href=&quot;/about/&quot;&gt;Giới thiệu về The Keyword
+          &lt;/a&gt;
+        &lt;/li&gt;
+      
+    &lt;/ul&gt;
+    &lt;ul class=&quot;h-c-footer__global-links h-c-footer__global-links--extra h-no-bullet&quot;&gt;
+      &lt;li class=&quot;h-c-footer__global-links-list-item h-c-footer__global-links-list-item--extra&quot;&gt;
+        
+        &lt;a class=&quot;h-c-footer__link uni-click-tracker&quot; href=&quot;https://support.google.com&quot;&gt;
+          &lt;svg
+</code></pre>
+<p>class=&ldquo;h-c-icon h-c-icon&ndash;24px h-c-icon&ndash;footer&rdquo;
+aria-hidden=&ldquo;true&rdquo;</p>
+<blockquote>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+Trợ giúp
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<pre><code>  &lt;option label=&quot;Toàn cầu (Tiếng Anh)&quot;
+          value=&quot;https://blog.google/innovation-and-ai/models-and-research/google-deepmind/project-genie/&quot;
+          class=&quot;uni-picker__item&quot;
+          selected=&quot;selected&quot;
+          data-selected-index=&quot;0&quot;
+          &gt;
+    Toàn cầu (Tiếng Anh)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Châu Phi (Tiếng Anh)&quot;
+          value=&quot;https://blog.google/intl/en-africa/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Châu Phi (Tiếng Anh)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Úc (Tiếng Anh)&quot;
+          value=&quot;https://blog.google/intl/en-au/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Úc (Tiếng Anh)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Brasil (Tiếng Bồ Đào Nha)&quot;
+          value=&quot;https://blog.google/intl/pt-br/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Brasil (Tiếng Bồ Đào Nha)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Canada (Tiếng Anh)&quot;
+          value=&quot;https://blog.google/intl/en-ca/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Canada (Tiếng Anh)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Canada (Tiếng Pháp)&quot;
+          value=&quot;https://blog.google/intl/fr-ca/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Canada (Tiếng Pháp)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Cộng hòa Séc (Tiếng Séc)&quot;
+          value=&quot;https://blog.google/intl/cs-cz/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Cộng hòa Séc (Tiếng Séc)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Đức (Tiếng Đức)&quot;
+          value=&quot;https://blog.google/intl/de-de/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Đức (Tiếng Đức)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Tây Ban Nha (Tiếng Tây Ban Nha)&quot;
+          value=&quot;https://blog.google/intl/es-es/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Tây Ban Nha (Tiếng Tây Ban Nha)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Pháp (Tiếng Pháp)&quot;
+          value=&quot;https://blog.google/intl/fr-fr/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Pháp (Tiếng Pháp)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Ấn Độ (Tiếng Anh)&quot;
+          value=&quot;https://blog.google/intl/en-in/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Ấn Độ (Tiếng Anh)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Indonesia (Bahasa Indonesia)&quot;
+          value=&quot;https://blog.google/intl/id-id/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Indonesia (Bahasa Indonesia)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Ý (Tiếng Ý)&quot;
+          value=&quot;https://blog.google/intl/it-it/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Ý (Tiếng Ý)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Nhật Bản (Tiếng Nhật)&quot;
+          value=&quot;https://blog.google/intl/ja-jp/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Nhật Bản (Tiếng Nhật)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Hàn Quốc (Tiếng Hàn)&quot;
+          value=&quot;https://blog.google/intl/ko-kr/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Hàn Quốc (Tiếng Hàn)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Mỹ Latinh (Tiếng Tây Ban Nha)&quot;
+          value=&quot;https://blog.google/intl/es-419/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Mỹ Latinh (Tiếng Tây Ban Nha)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Trung Đông và Bắc Phi (Tiếng Ả Rập)&quot;
+          value=&quot;https://blog.google/intl/ar-mena/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Trung Đông và Bắc Phi (Tiếng Ả Rập)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Trung Đông và Bắc Phi (Tiếng Anh)&quot;
+          value=&quot;https://blog.google/intl/en-mena/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Trung Đông và Bắc Phi (Tiếng Anh)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Hà Lan (Hà Lan)&quot;
+          value=&quot;https://blog.google/intl/nl-nl/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Hà Lan (Hà Lan)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;New Zealand (Tiếng Anh)&quot;
+          value=&quot;https://blog.google/intl/en-nz/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    New Zealand (Tiếng Anh)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Ba Lan (Tiếng Ba Lan)&quot;
+          value=&quot;https://blog.google/intl/pl-pl/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Ba Lan (Tiếng Ba Lan)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Bồ Đào Nha (Tiếng Bồ Đào Nha)&quot;
+          value=&quot;https://blog.google/intl/pt-pt/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Bồ Đào Nha (Tiếng Bồ Đào Nha)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Thụy Điển (Tiếng Thụy Điển)&quot;
+          value=&quot;https://blog.google/intl/sv-se/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Thụy Điển (Tiếng Thụy Điển)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Thái Lan (Tiếng Thái)&quot;
+          value=&quot;https://blog.google/intl/th-th/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Thái Lan (Tiếng Thái)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Thổ Nhĩ Kỳ (Tiếng Thổ Nhĩ Kỳ)&quot;
+          value=&quot;https://blog.google/intl/tr-tr/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Thổ Nhĩ Kỳ (Tiếng Thổ Nhĩ Kỳ)
+  &lt;/option&gt;
+
+  &lt;option label=&quot;Đài Loan (Tiếng Trung)&quot;
+          value=&quot;https://blog.google/intl/zh-tw/&quot;
+          class=&quot;uni-picker__item&quot;
+          &gt;
+    Đài Loan (Tiếng Trung)
+  &lt;/option&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>      &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/section&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://blog.google/innovation-and-ai/models-and-research/google-deepmind/project-genie">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/january-2026/">January 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/blog.google/">Blog.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/3fbf92/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/RVgTAOz2sApbCGYBZlO4WDgBPJ4Fi-_CtyCIw01txeqw7vpd9VPMn_qWu2sKfA5-eSD3nQYtHNjiP9TAFFEo22lmZ5Azi5V22KgwBANKiI6unMa2Xg=w352-h352-n-nu" alt="Cách chúng tôi mang xác minh hình ảnh AI đến ứng dụng Gemini" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-31T00:00:00&#43;00:00">Jan 31, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách chúng tôi mang xác minh hình ảnh AI đến ứng dụng Gemini</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Google giới thiệu công nghệ xác minh hình ảnh AI trong ứng dụng Gemini để chống lại thông tin sai lệch</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/889d73/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/bDhAGgYcQMPjS1lEQZaupLkx9A4eIfwnXDmaJntvF_VmThk3Rrwo2-xndepttQGtlC_ng4C0zGEmuy67rz4c9xT6ROFIN0s0-qaD1SP96AIXnbHK0Gk=w352-h352-n-nu" alt="Cải thiện các mô hình âm thanh Gemini cho trải nghiệm giọng nói mạnh mẽ" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-31T00:00:00&#43;00:00">Jan 31, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cải thiện các mô hình âm thanh Gemini cho trải nghiệm giọng nói mạnh mẽ</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Các bản cập nhật cho mô hình âm thanh Gemini giúp cải thiện trải nghiệm giọng nói và tương tác</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/3f2e00/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1583856921041-5dd96eb166059660ed1ee413.png" alt="Các Lựa chọn Kiến trúc trong Hệ sinh thái AI Nguồn mở của Trung Quốc- Xây dựng Vượt ra ngoài DeepSeek" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các Lựa chọn Kiến trúc trong Hệ sinh thái AI Nguồn mở của Trung Quốc- Xây dựng Vượt ra ngoài DeepSeek</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/3fbf92/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/RVgTAOz2sApbCGYBZlO4WDgBPJ4Fi-_CtyCIw01txeqw7vpd9VPMn_qWu2sKfA5-eSD3nQYtHNjiP9TAFFEo22lmZ5Azi5V22KgwBANKiI6unMa2Xg=w352-h352-n-nu" alt="Cách chúng tôi mang xác minh hình ảnh AI đến ứng dụng Gemini" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách chúng tôi mang xác minh hình ảnh AI đến ứng dụng Gemini</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/889d73/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/bDhAGgYcQMPjS1lEQZaupLkx9A4eIfwnXDmaJntvF_VmThk3Rrwo2-xndepttQGtlC_ng4C0zGEmuy67rz4c9xT6ROFIN0s0-qaD1SP96AIXnbHK0Gk=w352-h352-n-nu" alt="Cải thiện các mô hình âm thanh Gemini cho trải nghiệm giọng nói mạnh mẽ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cải thiện các mô hình âm thanh Gemini cho trải nghiệm giọng nói mạnh mẽ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/2f80ef/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Chúng tôi đã khiến Claude xây dựng các Kernel CUDA và dạy các mô hình mở!" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chúng tôi đã khiến Claude xây dựng các Kernel CUDA và dạy các mô hình mở!</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/908108/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://deepmind.google" alt="Dự án Genie- Thử nghiệm với thế giới tương tác vô hạn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dự án Genie- Thử nghiệm với thế giới tương tác vô hạn</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

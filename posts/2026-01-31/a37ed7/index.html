@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Xây dựng với Nano Banana Pro, mô hình Hình ảnh Gemini 3 Pro của chúng tôi | AI Today - SkyAI</title>
+
+<meta name="description" content="Hướng dẫn cho nhà phát triển về cách sử dụng Nano Banana Pro để tạo và chỉnh sửa hình ảnh chi tiết">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Xây dựng với Nano Banana Pro, mô hình Hình ảnh Gemini 3 Pro của chúng tôi</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Hướng dẫn cho nhà phát triển về cách sử dụng Nano Banana Pro để tạo và chỉnh sửa hình ảnh chi tiết </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-01-31T00:00:00&#43;00:00">January 31, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            7 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://lh3.googleusercontent.com/XsgBPA8Cp9oYdY9L0FO1PZPzrN_iErjnj7Co9HJMPo8_lrmTGoy2C0rRbYLdlJz7NVo5kvjBh4CuEizNSkWg6jVyatj118J8OW4B0krnhINmHIu6=w352-h352-n-nu" alt="Xây dựng với Nano Banana Pro, mô hình Hình ảnh Gemini 3 Pro của chúng tôi">
+        <figcaption class="text-center italic text-xs">Hướng dẫn cho nhà phát triển về cách sử dụng Nano Banana Pro để tạo và chỉnh sửa hình ảnh chi tiết</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="các-nhà-phát-triển-có-thể-xây-dựng-với-nano-banana-pro-gemini-3-pro-image">Các nhà phát triển có thể xây dựng với Nano Banana Pro (Gemini 3 Pro Image)</h1>
+<p>Hôm nay, chúng tôi ra mắt Nano Banana Pro (Gemini 3 Pro Image), một mô hình có độ trung thực cao hơn được xây dựng trên Gemini 3 Pro dành cho các nhà phát triển truy cập vào khả năng tạo ảnh chất lượng phòng thu. Điều này tiếp nối việc chúng tôi ra mắt Nano Banana (Gemini 2.5 Flash Image) chỉ vài tháng trước. Kể từ đó, chúng tôi đã rất vui mừng khi thấy cộng đồng ứng dụng các tính năng chính của nó — từ tính nhất quán của nhân vật đến phục hồi ảnh, và thậm chí sử dụng khả năng của nó để thực hiện các chỉnh sửa cục bộ trên một khung vẽ vô hạn.</p>
+<p>Mô hình tạo và chỉnh sửa ảnh tiên tiến này đang bắt đầu được triển khai dưới dạng xem trước trả phí để xây dựng làn sóng ứng dụng đa phương thức, thông minh mới với Gemini API trong Google AI Studio và Vertex AI cho các doanh nghiệp. Mô hình này mở ra khả năng tạo ảnh có độ trung thực cao với độ chính xác cao hơn trong việc hiển thị văn bản và kiến thức thế giới mạnh mẽ, được tăng cường bởi khả năng sử dụng Grounding với Google Search để truy xuất dữ liệu dựa trên lời nhắc của người dùng.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-pro-image__benchmarks__tex.width-100.format-webp_gyKuMj2.webp" alt="Biểu đồ cột so sánh Gemini 3 Pro Image với các đối thủ cạnh tranh hàng đầu khác về điểm chuẩn AI Text to Image">
+<em>Gemini 3 Pro Image vượt trội trên các điểm chuẩn AI Text to Image.</em></p>
+<p>Chúng tôi cũng đang mở rộng phạm vi tiếp cận của Gemini 3 Pro Image trên hệ sinh thái nhà phát triển. Trong Google Antigravity — nền tảng phát triển tác tử mới của chúng tôi — các tác tử lập trình giờ đây có thể tận dụng trực tiếp khả năng tạo ảnh này để tạo ra các bản phác thảo giao diện người dùng chi tiết để xem xét hoặc thậm chí các tài sản hình ảnh mới trước khi triển khai vào mã. Ngoài ra, các nền tảng sáng tạo hàng đầu đang tích hợp mô hình này, bao gồm Adobe và Figma.</p>
+<h2 id="độ-trung-thực-cao-và-kiểm-soát">Độ trung thực cao và kiểm soát</h2>
+<p>Nếu bạn đang xây dựng các công cụ tiên tiến yêu cầu độ chính xác, Gemini 3 Pro Image cung cấp cho bạn quyền kiểm soát vật lý (ánh sáng, camera, lấy nét, phân loại màu sắc) và bố cục của ảnh để đảm bảo đầu ra chất lượng chuyên nghiệp.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Final_NanoBanana_replacelighting.width-100.format-webp.webp" alt="Một hình bóng bị lạc trong biển tia nắng vàng và sương sớm. Lời nhắc: Thay thế ánh sáng khối theo thể tích bằng hiệu ứng bokeh.">
+<em>Một bóng hình lạc giữa biển bokeh vàng và sương sớm.</em></p>
+<p>Với độ phân giải 2K và 4K có sẵn, bạn có thể đảm bảo đầu ra đáp ứng các tiêu chuẩn độ phân giải cần thiết cho sản xuất chuyên nghiệp. Dễ dàng tạo quảng cáo mạch lạc bằng cách kết hợp các yếu tố đa dạng như hình ảnh sản phẩm, logo và tài liệu tham khảo. Đạt được sự tương đồng nhất quán cho tối đa năm cá nhân, tích hợp sáu ảnh có độ trung thực cao hoặc kết hợp tối đa mười bốn đầu vào tiêu chuẩn vào một quảng cáo được đánh bóng duy nhất. Hãy thử ứng dụng demo của chúng tôi — nơi bạn có thể ghép các logo với sản phẩm để tạo thiết kế bản phác thảo của riêng mình.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/original_videos/AIS_SKU_Foundry_v09_1.mp4" alt="Ứng dụng demo cập nhật áo phông với logo theo hiệu ứng phun sơn."></p>
+<h2 id="kết-xuất-văn-bản-và-bản-địa-hóa-nâng-cao">Kết xuất văn bản và bản địa hóa nâng cao</h2>
+<p>Gemini 3 Pro Image mang đến một bước nhảy vọt đáng kể so với 2.5 Flash Image, biến việc tạo ảnh trừu tượng thành các tài sản chức năng. Nó vượt trội trong việc xử lý logic và ngôn ngữ, đồng thời mang lại khả năng kết xuất văn bản tiên tiến, tạo ra văn bản rõ ràng, chính xác được tích hợp trong ảnh của bạn.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/watermarked_s_blob_v1_image_x_t_p.width-100.format-webp.webp" alt="8 logo tối giản, tinh tế, mỗi logo là một từ thú vị về thực phẩm, và các chữ cái được làm từ thực phẩm thật để thể hiện ý nghĩa của từ đó.">
+<em>Nhiếp ảnh thực phẩm sáng tạo, trong đó mỗi từ được viết cách điệu bằng cách sử dụng chính nguyên liệu gắn liền với thực phẩm đó.</em></p>
+<p>Đây cũng là một giải pháp lý tưởng để phát triển tài liệu tiếp thị, nội dung giáo dục và nhiều ứng dụng khác. Hãy thử nghiệm khả năng của mô hình trong trình tạo truyện tranh của chúng tôi trong Google AI Studio, nơi bạn có thể tạo truyện tranh nhiều trang độc đáo với bạn và một người bạn, bao gồm kết xuất và tạo kiểu văn bản nâng cao.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/original_videos/AIS_Comic_v02.mp4" alt="Demo tạo truyện tranh kỹ thuật số với văn bản được kết xuất bên trong bằng AI."></p>
+<p>Với Gemini 3 Pro Image, chúng tôi đã loại bỏ rào cản giữa việc tạo ảnh và logic bản địa hóa. Mô hình tiên tiến này nắm bắt ngữ cảnh ngữ nghĩa của một hình ảnh, cho phép thay đổi ngôn ngữ dễ dàng trên các yếu tố như menu, bảng hiệu hoặc tài liệu bằng cách sử dụng khả năng tạo ảnh-sang-ảnh, giữ nguyên phong cách nghệ thuật hoặc bố cục ban đầu.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Final_NanoBanana_TranslatecansFre.width-100.format-webp.webp" alt="Nghiên cứu về chiến dịch đồ uống làm nổi bật bản dịch và kết xuất văn bản chính xác từ tiếng Anh sang tiếng Pháp.">
+<em>Một ý tưởng chiến dịch đồ uống giới thiệu bản dịch và kết xuất văn bản chính xác từ tiếng Anh sang tiếng Pháp.</em></p>
+<h2 id="tiếp-cận-kiến-thức-thế-giới">Tiếp cận kiến thức thế giới</h2>
+<p>Gemini 3 Pro Image kết nối một cơ sở kiến thức rộng lớn để tạo ra các tài sản thực tế hơn so với các mô hình tạo ảnh trước đó. Ngoài ra, khi được bật, Grounding với Google Search sẽ kết nối mô hình với nội dung web thời gian thực để cho ra các kết quả dựa trên dữ liệu. Điều này đặc biệt có giá trị đối với các ứng dụng yêu cầu biểu diễn chính xác, chẳng hạn như sơ đồ sinh học hoặc bản đồ lịch sử. Hãy tự mình thử điều này với ứng dụng demo của chúng tôi, nơi bạn có thể tạo đồ họa thông tin động về bất kỳ chủ đề nào được tùy chỉnh cho đối tượng của bạn.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/infographic-1763505479307_1.width-100.format-webp.webp" alt="Đồ họa thông tin về các yếu tố cần thiết cho việc chăm sóc và bảo dưỡng xe đạp được tạo bằng một lời nhắc văn bản đơn giản bằng AI.">
+<em>Đồ họa thông tin về việc chăm sóc và bảo dưỡng xe đạp được tạo từ ứng dụng demo để tạo ra các đồ họa thông tin giáo dục.</em></p>
+<h2 id="go-bananas-và-bắt-đầu-xây-dựng-ngay-hôm-nay">&ldquo;Go Bananas&rdquo; và bắt đầu xây dựng ngay hôm nay</h2>
+<p>Việc phát hành mô hình mới này tích hợp nhiều thông tin đầu vào mà bạn đã chia sẻ với chúng tôi, nhưng chúng tôi sẽ không dừng lại ở đó. Để đảm bảo nguồn gốc rõ ràng trong phương tiện do AI tạo ra, chúng tôi đã tích hợp các hình mờ kỹ thuật số SynthID trực tiếp vào mọi hình ảnh được tạo hoặc chỉnh sửa bằng Gemini 3 Pro Image để ghi nhận nguồn gốc do AI tạo ra hoặc chỉnh sửa.</p>
+<p>Hãy bắt đầu bằng cách khám phá bộ sưu tập các ứng dụng của chúng tôi sử dụng Gemini 3 Pro Image để khơi gợi trí tưởng tượng của bạn và xem những gì có thể thực hiện được. Khi bạn đã có cảm hứng, hãy sửa đổi các ứng dụng demo này hoặc tích hợp trực tiếp mô hình vào các dự án của riêng bạn thông qua Gemini API trong Google AI Studio và Vertex AI cho mục đích doanh nghiệp. Để có chi tiết kỹ thuật trong quá trình này, hãy xem tài liệu, hướng dẫn nhắc, cookbook hoặc truy cập diễn đàn nhà phát triển để nhận trợ giúp và chia sẻ phản hồi.</p>
+<p><img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/image_15_xRZEXLr.width-100.format-webp.webp" alt="Bảng so sánh giữa các mô hình Gemini 2 Pro Image và Gemini 2.5 Flash Image về tốc độ, chất lượng và chi phí.">
+<em>Sử dụng Gemini 2.5 Flash Image để tạo ảnh nhanh hơn, chi phí thấp hơn, hoặc Gemini 3 Pro Image để tạo ảnh chất lượng cao hơn, với chi phí và độ trễ cao hơn.</em></p>
+<hr>
+<h2 id="câu-chuyện-liên-quan">Câu chuyện liên quan</h2>
+<h3 id="developer-tools-giới-thiệu-agentic-vision-trong-gemini-3-flash">[Developer tools] Giới thiệu Agentic Vision trong Gemini 3 Flash</h3>
+<ul>
+<li><strong>Bởi</strong> Rohan Doshi - Jan 27, 2026</li>
+<li><a href="https://blog.google/innovation-and-ai/technology/developers-tools/agentic-vision-gemini-3-flash/">Giới thiệu Agentic Vision trong Gemini 3 Flash</a></li>
+</ul>
+<h3 id="developer-tools-công-cụ-nhà-phát-triển-mới-cho-người-đăng-ký-google-ai-pro-và-ultra">[Developer tools] Công cụ nhà phát triển mới cho người đăng ký Google AI Pro và Ultra</h3>
+<ul>
+<li><strong>Bởi</strong> Niv Govindaraju &amp; Bala Muthukrishnan - Jan 27, 2026</li>
+<li><a href="https://blog.google/innovation-and-ai/technology/developers-tools/gdp-premium-ai-pro-ultra/">Công cụ nhà phát triển mới cho Google AI Pro và Ultra</a></li>
+</ul>
+<h3 id="search-chỉ-cần-hỏi-bất-cứ-điều-gì-trải-nghiệm-tìm-kiếm-mới-liền-mạch">[Search] Chỉ cần hỏi bất cứ điều gì: trải nghiệm Tìm kiếm mới liền mạch</h3>
+<ul>
+<li><strong>Bởi</strong> Robby Stein - Jan 27, 2026</li>
+<li><a href="https://blog.google/products-and-platforms/products/search/ai-mode-ai-overviews-updates/">Chỉ cần hỏi bất cứ điều gì</a></li>
+</ul>
+<h3 id="ai-trong-podcast-mới-nhất-của-chúng-tôi-hãy-nghe-cách-nhóm-smoke-jumpers-đưa-gemini-đến-với-hàng-tỷ-người-dùng">[AI] Trong podcast mới nhất của chúng tôi, hãy nghe cách nhóm &ldquo;Smoke Jumpers&rdquo; đưa Gemini đến với hàng tỷ người dùng.</h3>
+<ul>
+<li>Jan 27, 2026</li>
+<li><a href="https://blog.google/products-and-platforms/products/gemini/release-notes-podcast-smokejumpers/">Trong podcast mới nhất của chúng tôi</a></li>
+</ul>
+<h3 id="developer-tools-translategemma-bộ-mô-hình-dịch-thuật-mở-mới">[Developer tools] TranslateGemma: Bộ mô hình dịch thuật mở mới</h3>
+<ul>
+<li><strong>Bởi</strong> David Vilar &amp; Kat Black - Jan 15, 2026</li>
+<li><a href="https://blog.google/innovation-and-ai/technology/developers-tools/translategemma/">TranslateGemma: Bộ mô hình dịch thuật mở mới</a></li>
+</ul>
+<h3 id="developer-tools-giới-thiệu-điểm-chuẩn-cộng-đồng-trên-kaggle">[Developer tools] Giới thiệu Điểm chuẩn Cộng đồng trên Kaggle</h3>
+<ul>
+<li><strong>Bởi</strong> Michael Aaron &amp; Meg Risdal - Jan 14, 2026</li>
+<li><a href="https://blog.google/innovation-and-ai/technology/developers-tools/kaggle-community-benchmarks/">Giới thiệu Điểm chuẩn Cộng đồng trên Kaggle</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://blog.google/technology/developers/gemini-3-pro-image-developers/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/november-2025/">November 2025</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/blog.google/">Blog.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/3fbf92/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/RVgTAOz2sApbCGYBZlO4WDgBPJ4Fi-_CtyCIw01txeqw7vpd9VPMn_qWu2sKfA5-eSD3nQYtHNjiP9TAFFEo22lmZ5Azi5V22KgwBANKiI6unMa2Xg=w352-h352-n-nu" alt="Cách chúng tôi mang xác minh hình ảnh AI đến ứng dụng Gemini" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-31T00:00:00&#43;00:00">Jan 31, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách chúng tôi mang xác minh hình ảnh AI đến ứng dụng Gemini</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Google giới thiệu công nghệ xác minh hình ảnh AI trong ứng dụng Gemini để chống lại thông tin sai lệch</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/cff833/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/sttdfFDwB9HfmV2c6pdN-rjQPkGHBRj5KfixH_oTT89tM_2_HFZMasFedpQUVapBljmx5KGIoH0DPcY_YEDmlcg1-DSpapEu5GHOd76-ZpucS15V=w352-h352-n-nu" alt="Giới thiệu Nano Banana Pro" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-31T00:00:00&#43;00:00">Jan 31, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu Nano Banana Pro</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Nano Banana Pro là mô hình tạo và chỉnh sửa hình ảnh mới nhất của Google, mang lại khả năng sáng tạo và kiểm soát chưa từng có</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/3f2e00/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1583856921041-5dd96eb166059660ed1ee413.png" alt="Các Lựa chọn Kiến trúc trong Hệ sinh thái AI Nguồn mở của Trung Quốc- Xây dựng Vượt ra ngoài DeepSeek" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các Lựa chọn Kiến trúc trong Hệ sinh thái AI Nguồn mở của Trung Quốc- Xây dựng Vượt ra ngoài DeepSeek</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/3fbf92/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/RVgTAOz2sApbCGYBZlO4WDgBPJ4Fi-_CtyCIw01txeqw7vpd9VPMn_qWu2sKfA5-eSD3nQYtHNjiP9TAFFEo22lmZ5Azi5V22KgwBANKiI6unMa2Xg=w352-h352-n-nu" alt="Cách chúng tôi mang xác minh hình ảnh AI đến ứng dụng Gemini" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách chúng tôi mang xác minh hình ảnh AI đến ứng dụng Gemini</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/889d73/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/bDhAGgYcQMPjS1lEQZaupLkx9A4eIfwnXDmaJntvF_VmThk3Rrwo2-xndepttQGtlC_ng4C0zGEmuy67rz4c9xT6ROFIN0s0-qaD1SP96AIXnbHK0Gk=w352-h352-n-nu" alt="Cải thiện các mô hình âm thanh Gemini cho trải nghiệm giọng nói mạnh mẽ" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cải thiện các mô hình âm thanh Gemini cho trải nghiệm giọng nói mạnh mẽ</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/2f80ef/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Chúng tôi đã khiến Claude xây dựng các Kernel CUDA và dạy các mô hình mở!" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chúng tôi đã khiến Claude xây dựng các Kernel CUDA và dạy các mô hình mở!</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-31/908108/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://deepmind.google" alt="Dự án Genie- Thử nghiệm với thế giới tương tác vô hạn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dự án Genie- Thử nghiệm với thế giới tương tác vô hạn</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
