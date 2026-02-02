@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NVIDIA mang đến các agent sự sống với DGX Spark và Reachy Mini | AI Today - SkyAI</title>
+
+<meta name="description" content="NVIDIA mang đến các agent sự sống với DGX Spark và Reachy Mini">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">NVIDIA mang đến các agent sự sống với DGX Spark và Reachy Mini</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">NVIDIA mang đến các agent sự sống với DGX Spark và Reachy Mini </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-02T00:00:00&#43;00:00">February 2, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            14 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1605114051380-noauth.jpeg" alt="NVIDIA mang đến các agent sự sống với DGX Spark và Reachy Mini">
+        <figcaption class="text-center italic text-xs">NVIDIA mang đến các agent sự sống với DGX Spark và Reachy Mini</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="nvidia-mang-các-tác-nhân-ai-vào-đời-thực-với-dgx-spark-và-reachy-mini">NVIDIA mang các tác nhân AI vào đời thực với DGX Spark và Reachy Mini</h1>
+<p>Hôm nay tại CES 2026, NVIDIA đã giới thiệu một thế giới các mô hình mở mới để hiện thực hóa tương lai của các tác nhân AI, trực tuyến và trong thế giới thực. Từ các mô hình ngôn ngữ lớn (LLM) Nemotron của NVIDIA mới ra mắt, đến VLA ngôn ngữ thị giác mở (VLA) NVIDIA Isaac GR00T N1.6 mới và các mô hình nền tảng thế giới Cosmos của NVIDIA, tất cả các khối xây dựng cần thiết đều có sẵn ngay hôm nay để các Nhà xây dựng AI tự tạo ra các tác nhân của riêng mình.</p>
+<p>Nhưng điều gì sẽ xảy ra nếu bạn có thể mang tác nhân của riêng mình vào đời thực, ngay tại bàn làm việc của bạn? Một người bạn AI có thể hữu ích cho bạn và xử lý dữ liệu của bạn một cách riêng tư?</p>
+<p>Trong bài phát biểu chính tại CES hôm nay, Jensen Huang đã cho chúng ta thấy cách chúng ta có thể làm chính xác điều đó, bằng cách sử dụng sức mạnh xử lý của NVIDIA DGX Spark với Reachy Mini để tạo ra R2D2 nhỏ nhắn của riêng bạn mà bạn có thể trò chuyện và cộng tác.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Bài viết này cung cấp hướng dẫn từng bước để tái tạo trải nghiệm tuyệt vời này tại nhà bằng cách sử dụng DGX Spark và Reachy Mini.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Hãy cùng bắt đầu nào!</p>
+<h2 id="nguyên-liệu">Nguyên liệu</h2>
+<p>Nếu bạn muốn bắt tay vào làm ngay, đây là mã nguồn của bản demo.</p>
+<p>Chúng tôi sẽ sử dụng:</p>
+<ul>
+<li>Một mô hình suy luận: bản demo sử dụng NVIDIA Nemotron 3 Nano</li>
+<li>Một mô hình thị giác: bản demo sử dụng NVIDIA Nemotron Nano 2 VL</li>
+<li>Một mô hình chuyển văn bản thành giọng nói: bản demo sử dụng ElevenLabs</li>
+<li>Reachy Mini (hoặc Reachy Mini Simulation)</li>
+<li>Môi trường Python v3.10+, với uv</li>
+</ul>
+<p>Hãy thoải mái điều chỉnh công thức và tự tạo ra phiên bản của riêng bạn - bạn có nhiều cách để tích hợp các mô hình vào ứng dụng của mình:</p>
+<ol>
+<li><strong>Triển khai cục bộ</strong> – Chạy trên phần cứng của bạn (DGX Spark hoặc GPU có đủ VRAM). Bản triển khai của chúng tôi yêu cầu khoảng 65GB dung lượng đĩa cho mô hình suy luận và khoảng 28GB cho mô hình thị giác.</li>
+<li><strong>Triển khai trên đám mây</strong> – Triển khai mô hình trên các GPU đám mây, ví dụ: thông qua NVIDIA Brev hoặc Hugging Face Inference Endpoints.</li>
+<li><strong>Điểm cuối mô hình không máy chủ</strong> – Gửi yêu cầu đến NVIDIA hoặc các Nhà cung cấp suy luận của Hugging Face.</li>
+</ol>
+<h2 id="mang-sức-mạnh-tác-nhân-cho-reachy">Mang sức mạnh tác nhân cho Reachy</h2>
+<p>Biến một tác nhân AI từ giao diện trò chuyện đơn giản thành một thứ gì đó mà bạn có thể tương tác một cách tự nhiên sẽ làm cho các cuộc trò chuyện trở nên chân thực hơn. Khi một tác nhân AI có thể nhìn qua camera, nói thành tiếng và thực hiện hành động, trải nghiệm sẽ trở nên hấp dẫn hơn. Đó là điều mà Reachy Mini có thể làm được.</p>
+<p>Reachy Mini được thiết kế để tùy chỉnh. Với quyền truy cập vào cảm biến, bộ truyền động và API, bạn có thể dễ dàng kết nối nó vào ngăn xếp tác nhân hiện có của mình, bằng cách mô phỏng hoặc điều khiển phần cứng thực tế trực tiếp từ Python.</p>
+<p>Bài viết này tập trung vào việc kết hợp các khối xây dựng hiện có thay vì phát minh lại chúng. Chúng tôi kết hợp các mô hình mở cho suy luận và thị giác, một khuôn khổ tác nhân để điều phối và các trình xử lý công cụ cho hành động. Mỗi thành phần được ghép nối lỏng lẻo, giúp dễ dàng thay đổi mô hình, thay đổi logic định tuyến hoặc thêm các khả năng mới mà không cần viết lại logic cốt lõi.</p>
+<p>Không giống như các trợ lý cá nhân độc quyền, thiết lập này vẫn hoàn toàn mở. Bạn kiểm soát các mô hình, các lời nhắc, các công cụ và hành động của robot. Reachy Mini chỉ đơn giản trở thành điểm cuối vật lý của tác nhân của bạn, nơi nhận thức, suy luận và hành động kết hợp lại với nhau.</p>
+<h2 id="xây-dựng-tác-nhân">Xây dựng tác nhân</h2>
+<p>Trong ví dụ này, chúng tôi sử dụng NVIDIA NeMo Agent Toolkit, một thư viện mã nguồn mở linh hoạt, nhẹ, độc lập với khuôn khổ, để kết nối tất cả các thành phần của tác nhân với nhau. Nó hoạt động liền mạch với các khuôn khổ tác nhân khác, như LangChain, LangGraph, CrewAI, xử lý cách các mô hình tương tác, định tuyến đầu vào và đầu ra giữa chúng, và giúp dễ dàng thử nghiệm với các cấu hình khác nhau hoặc thêm các khả năng mới mà không cần viết lại logic cốt lõi. Bộ công cụ cũng cung cấp các tính năng cấu hình và tối ưu hóa tích hợp sẵn, cho phép bạn theo dõi hiệu quả sử dụng token và độ trễ trên các công cụ và tác nhân, xác định các điểm nghẽn và tự động điều chỉnh siêu tham số để tối đa hóa độ chính xác đồng thời giảm chi phí và độ trễ.</p>
+<h2 id="bước-0-thiết-lập-và-nhận-quyền-truy-cập-vào-các-mô-hình-và-dịch-vụ">Bước 0: Thiết lập và nhận quyền truy cập vào các mô hình và dịch vụ</h2>
+<p>Đầu tiên, hãy sao chép kho lưu trữ chứa tất cả mã bạn cần để làm theo:</p>
+<p>shell
+git clone <a href="mailto:git@github.com">git@github.com</a>/brevdev/reachy-personal-assistant
+cd reachy-personal-assistant</p>
+<p>Để truy cập lớp thông minh của bạn, được cung cấp bởi các mô hình Nemotron của NVIDIA, bạn có thể triển khai chúng bằng NVIDIA NIM hoặc vLLM, hoặc kết nối với chúng thông qua các điểm cuối từ xa có sẵn tại build.nvidia.com.</p>
+<p>Các hướng dẫn sau đây giả định bạn đang truy cập các mô hình Nemotron thông qua các điểm cuối. Tạo một tệp .env trong thư mục chính với khóa API của bạn. Đối với các bản triển khai cục bộ, bạn không cần chỉ định khóa API và có thể bỏ qua bước này.</p>
+<p>shell
+NVIDIA_API_KEY=your_nvidia_api_key_here
+ELEVENLABS_API_KEY=your_elevenlabs_api_key_here</p>
+<h2 id="bước-1-xây-dựng-giao-diện-trò-chuyện">Bước 1: Xây dựng giao diện trò chuyện</h2>
+<p>Hãy bắt đầu bằng cách chạy một quy trình làm việc LLM cơ bản thông qua máy chủ API của NeMo Agent Toolkit. NeMo Agent Toolkit hỗ trợ chạy các quy trình làm việc thông qua <code>nat serve</code> và cung cấp tệp cấu hình. Tệp cấu hình được truyền ở đây chứa tất cả thông tin thiết lập cần thiết cho tác nhân, bao gồm các mô hình được sử dụng để trò chuyện, hiểu hình ảnh, cũng như mô hình định tuyến mà tác nhân sử dụng. Giao diện người dùng NeMo Agent Toolkit có thể kết nối qua HTTP/WebSocket để bạn có thể trò chuyện với quy trình làm việc của mình như một sản phẩm trò chuyện tiêu chuẩn. Trong bản triển khai này, máy chủ NeMo Agent Toolkit được khởi chạy trên cổng 8001 (để bot của bạn có thể gọi nó, và giao diện người dùng cũng vậy):</p>
+<p>shell
+cd nat
+uv venv
+uv sync
+uv run &ndash;env-file ../.env nat serve &ndash;config_file src/ces_tutorial/config.yml &ndash;port 8001</p>
+<p>Tiếp theo, hãy xác minh rằng bạn có thể gửi một lời nhắc văn bản thuần túy thông qua một thiết bị đầu cuối riêng biệt để đảm bảo mọi thứ đã được thiết lập đúng cách:</p>
+<p>shell
+curl -s http://localhost:8001/v1/chat/completions <br>
+-H &ldquo;Content-Type: application/json&rdquo; <br>
+-d &lsquo;{&ldquo;model&rdquo;: &ldquo;test&rdquo;, &ldquo;messages&rdquo;: [{&ldquo;role&rdquo;: &ldquo;user&rdquo;, &ldquo;content&rdquo;: &ldquo;What is the capital of France?&rdquo;}]}&rsquo;</p>
+<p>Xem xét cấu hình tác nhân, bạn sẽ nhận thấy nó định nghĩa nhiều khả năng hơn là chỉ hoàn thành trò chuyện đơn giản. Các bước tiếp theo sẽ đi sâu vào các chi tiết đó.</p>
+<h2 id="bước-2-thêm-tác-nhân-react-tích-hợp-sẵn-của-nemo-agent-toolkit-để-gọi-công-cụ">Bước 2: Thêm tác nhân ReAct tích hợp sẵn của NeMo Agent Toolkit để gọi công cụ</h2>
+<p>Gọi công cụ là một phần thiết yếu của các tác nhân AI. NeMo Agent Toolkit bao gồm một tác nhân ReAct tích hợp sẵn có thể suy luận giữa các lần gọi công cụ và sử dụng nhiều công cụ trước khi trả lời. Chúng tôi định tuyến &ldquo;yêu cầu hành động&rdquo; tới một tác nhân ReAct được phép gọi các công cụ (ví dụ: các công cụ kích hoạt hành vi của robot hoặc lấy trạng thái robot hiện tại).</p>
+<p>Một số lưu ý thực tế cần ghi nhớ:</p>
+<ul>
+<li>Giữ cho lược đồ công cụ chặt chẽ (tên/mô tả/tham số rõ ràng), vì đó là những gì tác nhân sử dụng để quyết định gọi gì.</li>
+<li>Đặt giới hạn cứng cho các bước (max_tool_calls) để tác nhân không thể bị xoắn ốc.</li>
+<li>Nếu sử dụng robot vật lý, hãy xem xét mẫu &ldquo;xác nhận trước khi kích hoạt&rdquo; cho các hành động vật lý để đảm bảo an toàn khi di chuyển.</li>
+</ul>
+<p>Hãy xem phần cấu hình này, nó định nghĩa các công cụ (như tìm kiếm Wikipedia) và chỉ định mẫu tác nhân ReAct được sử dụng để quản lý chúng.</p>
+<p>xml
+functions:
+wikipedia_search:
+_type: wiki_search
+max_results: 2</p>
+<p>..
+react_agent:
+_type: react_agent
+llm_name: agent_llm
+verbose: true
+parse_agent_response_max_retries: 3
+tool_names: [wikipedia_search]</p>
+<p>​​workflow:
+_type: ces_tutorial_router_agent
+agent: react_agent</p>
+<h2 id="bước-3-thêm-bộ-định-tuyến-để-chuyển-hướng-truy-vấn-đến-các-mô-hình-khác-nhau">Bước 3: Thêm bộ định tuyến để chuyển hướng truy vấn đến các mô hình khác nhau</h2>
+<p>Ý tưởng chính: không sử dụng một mô hình cho mọi thứ. Thay vào đó, hãy định tuyến dựa trên ý định:</p>
+<ul>
+<li>Các truy vấn văn bản có thể sử dụng một mô hình văn bản nhanh</li>
+<li>Các truy vấn trực quan phải được xử lý thông qua VLM</li>
+<li>Các yêu cầu hành động/công cụ được định tuyến tới tác nhân ReAct + công cụ</li>
+</ul>
+<p>Bạn có thể triển khai định tuyến theo một vài cách (thuật toán heuristic, bộ phân loại nhẹ hoặc dịch vụ định tuyến chuyên dụng). Nếu bạn muốn phiên bản &ldquo;sản xuất&rdquo; của ý tưởng này, ví dụ nhà phát triển NVIDIA LLM Router là triển khai tham chiếu đầy đủ và bao gồm các mẫu đánh giá và giám sát.</p>
+<p>Một chính sách định tuyến cơ bản có thể hoạt động như sau:</p>
+<ul>
+<li>Nếu người dùng đặt câu hỏi về môi trường của họ, hãy gửi yêu cầu đó tới VLM cùng với hình ảnh được chụp từ camera (hoặc Reachy).</li>
+<li>Nếu người dùng đặt câu hỏi yêu cầu thông tin thời gian thực, hãy gửi đầu vào tới tác nhân ReACT để thực hiện tìm kiếm web thông qua lệnh gọi công cụ.</li>
+<li>Nếu người dùng đặt câu hỏi đơn giản, hãy gửi yêu cầu tới một mô hình nhỏ và nhanh được tối ưu hóa cho việc trò chuyện.</li>
+</ul>
+<p>Các phần của cấu hình này định nghĩa cấu trúc định tuyến và chỉ định mô hình định tuyến.</p>
+<p>xml
+functions:
+..</p>
+<p>router:
+_type: router
+route_config:
+- name: other
+description: Any question that requires careful thought, outside information, image understanding, or tool calling to take actions.
+- name: chit_chat
+description: Any simple chit chat, small talk, or casual conversation.
+- name: image_understanding
+description: A question that requires the assistant to see the user eg a question about their appearance, environment, scene or surroundings. Examples what am I holding, what am I wearing, what do I look like, what is in my surroundings, what does it say on the whiteboard. Questions about attire eg what color is my shirt/hat/jacket/etc
+llm_name: routing_llm</p>
+<p>llms:
+..
+routing_llm:
+_type: nim
+model_name: microsoft/phi-3-mini-128k-instruct
+temperature: 0.0</p>
+<p><strong>LƯU Ý</strong>: Nếu bạn muốn giảm độ trễ/chi phí hoặc chạy ngoại tuyến, bạn có thể tự lưu trữ một trong các mô hình được định tuyến (thường là mô hình văn bản &ldquo;nhanh&rdquo;) và giữ VLM từ xa. Một phương pháp phổ biến là phục vụ thông qua NVIDIA NIM hoặc vLLM và trỏ NeMo Agent Toolkit tới một điểm cuối tương thích OpenAI.</p>
+<h2 id="bước-4-thêm-bot-pipecat-cho-giọng-nói--thị-giác-thời-gian-thực">Bước 4: Thêm bot Pipecat cho giọng nói + thị giác thời gian thực</h2>
+<p>Bây giờ chúng ta chuyển sang thời gian thực. Pipecat là một khuôn khổ được thiết kế cho các tác nhân giọng nói/đa phương thức có độ trễ thấp: nó điều phối các luồng âm thanh/video, dịch vụ AI và các phương tiện vận chuyển để bạn có thể xây dựng các cuộc trò chuyện tự nhiên. Trong kho lưu trữ này, dịch vụ bot chịu trách nhiệm:</p>
+<ul>
+<li>Chụp hình ảnh (camera robot)</li>
+<li>Nhận dạng giọng nói + chuyển văn bản thành giọng nói</li>
+<li>Phối hợp chuyển động của robot và các hành vi biểu cảm</li>
+</ul>
+<p>Bạn sẽ tìm thấy tất cả mã bot pipecat trong thư mục <code>reachy-personal-assistant/bot</code>.</p>
+<h2 id="bước-5-kết-nối-mọi-thứ-với-reachy-phần-cứng-hoặc-mô-phỏng">Bước 5: Kết nối mọi thứ với Reachy (phần cứng hoặc mô phỏng)</h2>
+<p>Reachy Mini cung cấp một daemon mà phần còn lại của hệ thống kết nối tới. Kho lưu trữ chạy daemon ở chế độ mô phỏng theo mặc định (&ndash;sim). Nếu bạn có quyền truy cập vào Reachy thực tế, bạn có thể xóa cờ này và cùng mã sẽ điều khiển robot của bạn.</p>
+<h3 id="chạy-toàn-bộ-hệ-thống">Chạy toàn bộ hệ thống</h3>
+<p>Bạn sẽ cần ba thiết bị đầu cuối để chạy toàn bộ hệ thống:</p>
+<h4 id="thiết-bị-đầu-cuối-1-daemon-reachy">Thiết bị đầu cuối 1: Daemon Reachy</h4>
+<p>bash
+cd bot</p>
+<h1 id="macos">macOS:</h1>
+<p>uv run mjpython -m reachy_mini.daemon.app.main &ndash;sim &ndash;no-localhost-only</p>
+<h1 id="linux">Linux:</h1>
+<p>uv run -m reachy_mini.daemon.app.main &ndash;sim &ndash;no-localhost-only</p>
+<p>Nếu bạn đang sử dụng phần cứng vật lý, hãy nhớ bỏ qua cờ &ndash;sim khỏi lệnh.</p>
+<h4 id="thiết-bị-đầu-cuối-2-dịch-vụ-bot">Thiết bị đầu cuối 2: Dịch vụ bot</h4>
+<p>bash
+cd bot
+uv venv
+uv sync
+uv run &ndash;env-file ../.env python main.py</p>
+<h4 id="thiết-bị-đầu-cuối-3-dịch-vụ-nemo-agent-toolkit">Thiết bị đầu cuối 3: Dịch vụ NeMo Agent Toolkit</h4>
+<p>Nếu dịch vụ NeMo Agent Toolkit chưa chạy từ Bước 1, hãy khởi chạy nó ngay bây giờ trong Thiết bị đầu cuối 3.</p>
+<p>bash
+cd nat
+uv venv
+uv sync
+uv run &ndash;env-file ../.env nat serve &ndash;config_file src/ces_tutorial/config.yml &ndash;port 8001</p>
+<p>Sau khi tất cả các thiết bị đầu cuối được thiết lập, có hai cửa sổ chính cần theo dõi:</p>
+<ol>
+<li><strong>Reachy Sim</strong> – Cửa sổ này xuất hiện tự động khi bạn khởi chạy daemon mô phỏng trong Thiết bị đầu cuối 1. Điều này áp dụng nếu bạn đang chạy mô phỏng Reachy mini thay cho thiết bị vật lý.</li>
+<li><strong>Pipecat Playground</strong> – Đây là giao diện phía máy khách nơi bạn có thể kết nối với tác nhân, bật đầu vào micrô và camera, và xem các bản ghi trực tiếp. Trong Thiết bị đầu cuối 2, hãy mở URL được hiển thị bởi dịch vụ bot: http://localhost:7860/client/. Nhấp vào “CONNECT” trên trình duyệt của bạn. Có thể mất vài giây để khởi tạo và bạn sẽ được nhắc cấp quyền truy cập micrô (và tùy chọn camera).</li>
+</ol>
+<p>Khi cả hai cửa sổ đều hoạt động:</p>
+<ul>
+<li>Các chỉ báo TRẠNG THÁI của Client và Agent sẽ hiển thị SẴN SÀNG.</li>
+<li>Bot sẽ chào bạn bằng tin nhắn chào mừng “Xin chào, tôi có thể giúp gì cho bạn hôm nay?”</li>
+</ul>
+<p>Tại thời điểm này, bạn có thể bắt đầu tương tác với tác nhân của mình!</p>
+<h2 id="hãy-thử-các-lời-nhắc-ví-dụ-này">Hãy thử các lời nhắc ví dụ này</h2>
+<p>Đây là một vài lời nhắc đơn giản để giúp bạn kiểm tra trợ lý cá nhân của mình. Bạn có thể bắt đầu với những lời nhắc này và sau đó thử nghiệm bằng cách thêm lời nhắc của riêng bạn để xem tác nhân phản hồi như thế nào!</p>
+<p><strong>Lời nhắc chỉ văn bản (định tuyến đến mô hình văn bản nhanh)</strong></p>
+<ul>
+<li>&ldquo;Giải thích những gì bạn có thể làm trong một câu.&rdquo;</li>
+<li>&ldquo;Tóm tắt điều cuối cùng tôi đã nói.&rdquo;</li>
+</ul>
+<p><strong>Lời nhắc thị giác (định tuyến đến VLM)</strong></p>
+<ul>
+<li>&ldquo;Bạn đang cầm gì trên camera?&rdquo;</li>
+<li>&ldquo;Đọc văn bản trên trang này và tóm tắt nó.&rdquo;</li>
+</ul>
+<h2 id="đi-tiếp-từ-đâu">Đi tiếp từ đâu</h2>
+<p>Thay vì một trợ lý &ldquo;hộp đen&rdquo;, điều này xây dựng một nền tảng cho một hệ thống riêng tư, có thể hack được, nơi bạn có thể kiểm soát cả trí thông minh và phần cứng. Bạn có thể kiểm tra, mở rộng và chạy nó cục bộ, với khả năng hiển thị đầy đủ luồng dữ liệu, quyền công cụ và cách robot nhận thức và hành động.</p>
+<p>Tùy thuộc vào mục tiêu của bạn, đây là một vài hướng để khám phá tiếp theo:</p>
+<ul>
+<li>Tối ưu hóa hiệu suất: Sử dụng ví dụ nhà phát triển LLM Router để cân bằng chi phí, độ trễ và chất lượng bằng cách định tuyến thông minh các truy vấn giữa các mô hình khác nhau.</li>
+<li>Xem hướng dẫn để xây dựng tác nhân RAG được cung cấp bởi giọng nói với các biện pháp bảo vệ bằng các mô hình mở Nemotron.</li>
+<li>Làm chủ phần cứng: Khám phá SDK Reachy Mini và tài liệu mô phỏng để thiết kế và kiểm tra các hành vi robot nâng cao trước khi triển khai cho hệ thống vật lý của bạn.</li>
+<li>Khám phá và đóng góp vào các ứng dụng được cộng đồng xây dựng cho Reachy.</li>
+</ul>
+<p>Muốn thử ngay? Triển khai toàn bộ môi trường tại đây. Chỉ với một cú nhấp chuột là bạn đã có thể chạy.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/nvidia-reachy-mini">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/05-january-2026/">05 January 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-02/83ac3e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1613114437487-60262a8e0703121c822a80b6.png" alt="NVIDIA Cosmos Reason 2 Mang đến Khả năng Suy luận Nâng cao cho AI Vật lý" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-02T00:00:00&#43;00:00">Feb 02, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">NVIDIA Cosmos Reason 2 Mang đến Khả năng Suy luận Nâng cao cho AI Vật lý</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">NVIDIA Cosmos Reason 2 Mang đến Khả năng Suy luận Nâng cao cho AI Vật lý</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-01-05/0c530f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61a8d1aac664736898ffc84f/AT6cAB5ZNwCcqFMal71WD.jpeg" alt="Giới thiệu Falcon-H1-Arabic- Đẩy lùi ranh giới AI ngôn ngữ Ả Rập với kiến trúc lai" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-01-05T00:00:00&#43;00:00">Jan 05, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu Falcon-H1-Arabic- Đẩy lùi ranh giới AI ngôn ngữ Ả Rập với kiến trúc lai</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu Falcon-H1-Arabic, một mô hình ngôn ngữ lớn tiên tiến được thiết kế đặc biệt cho tiếng Ả Rập. Khám phá kiến trúc lai đột phá và tác động của nó đối với các ứng dụng AI ngôn ngữ Ả Rập.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-02/7ad673/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/d6058e0db8e477dc782dacae46e2ec6663d165d9-1000x1000.svg" alt="Anthropic hợp tác với Allen Institute và Howard Hughes Medical Institute để đẩy nhanh khám phá khoa học" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic hợp tác với Allen Institute và Howard Hughes Medical Institute để đẩy nhanh khám phá khoa học</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-02/90ee26/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Chuyển đổi Tiên phong trong lĩnh vực bán lẻ- Robot AI tự trị đang định nghĩa lại trải nghiệm cửa hàng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chuyển đổi Tiên phong trong lĩnh vực bán lẻ- Robot AI tự trị đang định nghĩa lại trải nghiệm cửa hàng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-02/720a75/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1583646260758-5e64858c87403103f9f1055d.png" alt="Differential Transformer V2" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Differential Transformer V2</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-02/293a1d/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Giới thiệu các đổi mới và chương trình của Microsoft để hỗ trợ giảng dạy và học tập bằng AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu các đổi mới và chương trình của Microsoft để hỗ trợ giảng dạy và học tập bằng AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-02/4e096a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1665155571839-60d35a0307da9c17c7270909.jpeg" alt="Giới thiệu Waypoint-1- Video khuếch tán tương tác thời gian thực từ Overworld" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Waypoint-1- Video khuếch tán tương tác thời gian thực từ Overworld</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
