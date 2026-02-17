@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tính toán và Cạnh tranh trong AI- Các FLOP khác nhau cho những người khác nhau | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết thảo luận về các loại FLOP khác nhau và cách chúng được áp dụng trong AI.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Tính toán và Cạnh tranh trong AI- Các FLOP khác nhau cho những người khác nhau</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết thảo luận về các loại FLOP khác nhau và cách chúng được áp dụng trong AI. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-17T00:00:00&#43;00:00">February 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            14 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/60edd0133e2c73a9a21455f5/yK1G-Fv-YjYb7v_chkz3p.jpeg" alt="Tính toán và Cạnh tranh trong AI- Các FLOP khác nhau cho những người khác nhau">
+        <figcaption class="text-center italic text-xs">Bài viết thảo luận về các loại FLOP khác nhau và cách chúng được áp dụng trong AI.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="ai-và-cạnh-tranh-về-máy-tính-mỗi-nhu-cầu-là-một-cách-tính-flops-khác-nhau">AI và Cạnh tranh về Máy tính: Mỗi Nhu cầu là một Cách tính FLOPs Khác Nhau</h1>
+<p><em>Bài đăng trên blog của Sasha Luccioni trên Hugging Face</em></p>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Cuộc thảo luận công khai về chi phí máy tính trong AI thường xoay quanh những ước tính khổng lồ: hàng trăm nghìn GPU, hàng triệu giờ tính toán, hàng tỷ đô la đầu tư. Công trình của các viện nghiên cứu như Epoch AI là minh chứng cho những xu hướng này: phân tích của họ về các mô hình AI lớn nhất cho thấy sự tăng trưởng ổn định gấp 2-3 lần mỗi năm trong 8 năm qua, đưa chi phí lên mức có thể vượt quá một tỷ đô la vào năm 2026.</p>
+<p>Mặc dù phân tích về các mô hình &ldquo;tiên phong&rdquo; đắt đỏ và &ldquo;hiệu quả&rdquo; nhất này chắc chắn quan trọng, nó cũng có thể làm sai lệch nhận thức của công chúng và các quyết định quản trị về AI nói chung. Như chúng ta đã chứng kiến sự gia tăng chóng mặt về chi phí cho các mô hình được quảng cáo là định hình &ldquo;tiên phong&rdquo;, những bước nhảy tương tự đã đạt được trong việc &ldquo;làm được nhiều hơn với ít hơn&rdquo;, và phần lớn các phương pháp phát triển AI trong các ứng dụng khoa học và thương mại vẫn tuân theo một logic rất khác.</p>
+<h2 id="các-loại-mô-hình-ai-nào-được-sử-dụng-trong-thực-tế">Các loại mô hình AI nào được sử dụng trong thực tế?</h2>
+<p>Các viện nghiên cứu như Epoch AI định nghĩa &ldquo;các mô hình đáng chú ý là những mô hình đạt được cải tiến hàng đầu về một chuẩn đánh giá được công nhận, được trích dẫn nhiều (hơn 1000 lần), có ý nghĩa lịch sử và đã cho thấy sự sử dụng đáng kể&rdquo;. Mặc dù các mô hình này có thể được coi là có ảnh hưởng hoặc dễ nhận biết, chúng không nhất thiết đại diện cho hầu hết các ứng dụng thương mại của AI, vốn thường mang tính đặc thù theo ngữ cảnh và yêu cầu các định dạng dữ liệu có cấu trúc đa dạng như ứng dụng giọng nói, hệ gen học, phân tích hình ảnh hoặc dữ liệu dạng bảng không phù hợp với các mô hình ngôn ngữ.</p>
+<p>Trên thực tế, các lĩnh vực từ y tế đến sản xuất và tài chính yêu cầu các mô hình được tùy chỉnh riêng cho các trường hợp sử dụng của họ, không chỉ về kiến thức chuyên ngành mà còn xem xét các vấn đề như quyền riêng tư dữ liệu và các ràng buộc pháp lý, điều này loại trừ việc sử dụng các mô hình, ví dụ, được lưu trữ ở một khu vực khác.</p>
+<p>Những đặc điểm này làm cho các mô hình nhỏ hơn, hiệu quả hơn và độc lập trở nên hấp dẫn hơn đối với tất cả các bên tham gia hệ sinh thái AI, ngoại trừ những người chơi lớn nhất. Điều này có nghĩa là mặc dù tiêu chí đáng chú ý được sử dụng bởi các kênh như EpochAI có thể là dấu hiệu của các trường hợp sử dụng AI của các công ty công nghệ lớn cung cấp dịch vụ cho nhiều khách hàng và ứng dụng khác nhau, nhưng chúng còn lâu mới phổ biến.</p>
+<h2 id="chi-phí-đào-tạo-một-mô-hình-ai-thương-mại-hiện-tại-là-bao-nhiêu">Chi phí đào tạo một mô hình AI thương mại hiện tại là bao nhiêu?</h2>
+<p>Các công ty &ldquo;tiên phong&rdquo; đào tạo các mô hình lớn nhất đã tỏ ra khá kín tiếng về chi phí của họ. May mắn thay, công việc điều tra của các tác nhân bên ngoài đã cung cấp một số dữ liệu về vấn đề này. Đáng chú ý, theo Epoch AI, chi phí trung bình để đào tạo một &ldquo;mô hình đáng chú ý&rdquo; đã liên tục tăng trong khoảng thời gian từ năm 2022 đến năm 2026, với một số hạng mục <strong>vượt qua mốc 100 triệu USD</strong> trong năm cuối cùng; ngay cả khi không tính đến các chi phí bổ sung phát sinh từ các thử nghiệm và thu thập dữ liệu. Điều này làm cho việc đào tạo các loại mô hình này trở nên tốn kém đến mức không thể thực hiện được không chỉ đối với các doanh nghiệp vừa và nhỏ (SMEs), mà còn đối với hầu hết các nhà đầu tư thương mại lớn trong các ngành.</p>
+<!-- raw HTML omitted -->
+<p>Ngược lại, chi phí đào tạo các mô hình AI - bao gồm cả những mô hình có giá trị khoa học mạnh mẽ và ứng dụng thương mại - được phát triển bởi phần lớn các nhà hoạt động là đa dạng và nhìn chung thấp hơn đáng kể. Trong một <!-- raw HTML omitted -->báo cáo gần đây<!-- raw HTML omitted -->, chúng tôi đã điều tra chi phí đào tạo các mô hình đáng chú ý trên nhiều khía cạnh khác nhau. Ví dụ, một số mô hình tiên phong về hiệu quả đào tạo hoặc kích thước trong khi ngang bằng với hiệu suất của các mô hình thương mại lớn nhất cho các ứng dụng cụ thể, một số khác gần đạt hiệu suất benchmark trên diện rộng trong khi minh bạch và linh hoạt hơn đáng kể, và những mô hình khác lại đẩy giới hạn của các lĩnh vực khoa học hoặc phương thức dữ liệu cụ thể. Chúng tôi thấy rằng việc đào tạo các mô hình này vẫn có thể dao động từ <strong>chỉ vài nghìn đô la</strong> đến <strong>tối đa vài chục triệu đô la</strong>, trong một số trường hợp là chi phí được chia sẻ giữa nhiều tổ chức hợp tác có lợi ích chung.</p>
+<!-- raw HTML omitted -->
+<h2 id="sự-tập-trung-vào-các-mô-hình-một-kích-thước-phù-hợp-cho-tất-cả-kích-thước--rất-lớn">Sự tập trung vào các mô hình &ldquo;một kích thước phù hợp cho tất cả&rdquo; (kích thước = rất lớn)</h2>
+<p>Trong các cuộc thảo luận công khai gần đây, sự trỗi dậy của AI chủ yếu đồng nghĩa với sự nổi lên của một phiên bản công nghệ cụ thể; nơi một mô hình duy nhất được cho là có thể hỗ trợ hàng chục, hàng trăm, hoặc thậm chí theo một số người là một tập hợp &ldquo;tổng quát&rdquo; đầy đủ bao gồm mọi ứng dụng có thể của công nghệ.</p>
+<p>Sự tập trung này đã được phản ánh qua một số sự phát triển thuật ngữ khác nhau, từ &ldquo;mô hình nền tảng&rdquo; được cho là mã hóa kiến thức tổng quát trong quá trình tiền đào tạo để sau này thích ứng với các ứng dụng, đến &ldquo;AI Mục đích Tổng quát&rdquo; như một danh mục pháp lý trong Đạo luật AI của EU, cho đến những gì các nhà phát triển AI lớn trong lĩnh vực doanh nghiệp hiện mô tả là các mô hình &ldquo;tiên phong&rdquo;.</p>
+<p>Để mọi thứ trở nên bớt bối rối hơn, hầu hết người tiêu dùng chủ yếu nhận biết các mô hình này với các hệ thống mà chúng hỗ trợ – ChatGPT, Gemini, Grok, v.v. – thường kết hợp hoặc chuyển đổi giữa các backend tính toán khác nhau và các phiên bản của mô hình cơ bản.</p>
+<p>Do các mô hình này được dự định cho mục đích tổng quát nhất có thể, mô hình đánh giá mô hình AI cũng đã chuyển sang các đánh giá chung chung. Các điểm chuẩn như SWE-Bench và GPQA/MMMLU được thiết kế cố tình để càng rộng càng tốt, và được sử dụng để đánh giá các mô hình mới khi chúng được đào tạo và để công bố kết quả trong các báo cáo kỹ thuật và bài báo truyền thông. Do đó, điều này khuyến khích việc phát triển các mô hình càng tổng quát càng tốt để hoạt động tốt trên các điểm chuẩn này, điều này càng góp phần duy trì câu chuyện về AI mục đích tổng quát.</p>
+<p>Như chúng tôi đã khám phá trong <!-- raw HTML omitted -->bài báo<!-- raw HTML omitted --> gần đây của mình, bài báo nghiên cứu về tác động rộng lớn hơn của mô hình &ldquo;lớn hơn là tốt hơn&rdquo; trong AI, sự tập trung vào tính tổng quát và quy mô là có vấn đề vì nhiều lý do – từ sự <strong>không bền vững về môi trường</strong> (tức là lượng năng lượng cần thiết cho việc đào tạo và triển khai các mô hình ngày càng lớn và phức tạp) đến việc <strong>làm thu hẹp lĩnh vực</strong> về các vấn đề được giải quyết bằng AI (vì chúng bị giới hạn ở những vấn đề có đủ dữ liệu để đào tạo các mô hình lớn hơn), cũng như việc <strong>làm trầm trọng thêm sự tập trung quyền lực</strong> trong lĩnh vực này, điều này dường như làm suy yếu những người thiếu khả năng tiếp cận quỹ và tính toán cần thiết để cạnh tranh với các mô hình ngày càng lớn – tức là các nhà nghiên cứu học thuật, chính phủ và các tổ chức phi lợi nhuận. Bài báo, cũng như <!-- raw HTML omitted -->công việc<!-- raw HTML omitted --> liên quan của chúng tôi, cũng kêu gọi một cách tiếp cận minh bạch hơn trong việc tính toán và báo cáo chi phí của các mô hình AI, và cân bằng các chi phí này với lợi ích tiềm năng mà các mô hình được dự định có. Tuy nhiên, việc hạch toán các chi phí này phức tạp hơn là thoạt nhìn, đặc biệt là do thiếu minh bạch trong lĩnh vực này – hãy khám phá điều này chi tiết hơn bên dưới.</p>
+<h3 id="ai-dễ-tiếp-cận-hơn-bạn-nghĩ">AI dễ tiếp cận hơn bạn nghĩ!</h3>
+<p>Mặc dù phần lớn sự chú ý của giới truyền thông và sự thổi phồng tập trung vào tương đương với những chiếc xe đua Công thức 1 có hiệu suất cao nhất cho AI (tức là LLM với hàng nghìn tỷ tham số), điều đó không có nghĩa là mọi người đều cần lái một chiếc để đi lấy đồ tạp hóa. Giống như bất kỳ phương tiện giao thông nào, có rất nhiều lựa chọn cho các tác vụ hàng ngày, và các thành viên trong cộng đồng AI nên xây dựng và tùy chỉnh các mô hình của riêng họ và lựa chọn sự kết hợp phù hợp giữa dữ liệu, tham số và lựa chọn triển khai phù hợp với ngân sách và bối cảnh của họ.</p>
+<p>Bất chấp thành công và khả năng hiển thị rõ ràng của các mô hình &ldquo;tiên phong&rdquo;, <strong>chúng không cần phải là lựa chọn mặc định</strong> (và có lẽ không nên là vậy) cho hầu hết các trường hợp sử dụng, vốn có phạm vi, mục đích sử dụng và ngữ cảnh cụ thể.</p>
+<p>Thật không may, các chi phí bổ sung của các hệ thống này – dù là tiền bạc, môi trường, xã hội, hay thậm chí là lợi thế cạnh tranh cho các công ty – hiếm khi được tiết lộ cho người dùng (và, khi được tiết lộ, chúng thường <strong>tối đa cũng chỉ là không đầy đủ</strong>); những người hiểu biết có thể bị cám dỗ bỏ qua lợi thế về kinh tế và bền vững môi trường của các phương pháp thay thế (bao gồm cả AI mở và mã nguồn mở 🤗) để đổi lấy sự tiện lợi khi sử dụng các mô hình thường mang lại kết quả ấn tượng hơn ngay lập tức.</p>
+<h3 id="hãy-xem-xét-các-lựa-chọn-trước-khi-cam-kết-với-một-phương-án">Hãy xem xét các lựa chọn trước khi cam kết với một phương án</h3>
+<p>Như chúng tôi đã chỉ ra trong <!-- raw HTML omitted -->công trình gần đây<!-- raw HTML omitted --> của mình (và cuộc thảo luận ở trên), các mô hình nhỏ hơn, ít tốn kém hơn về mặt tính toán đều <strong>có khả năng thương mại</strong> và <strong>thường cạnh tranh ngang bằng</strong> với các đối tác lớn hơn trong các trường hợp sử dụng cụ thể, từ OCR đến giải trình tự bộ gen và thậm chí một số trường hợp sử dụng phổ biến nhất của kỹ thuật phần mềm được hỗ trợ bởi AI. Điều này mạnh mẽ gợi ý rằng chúng ta nên thay đổi cách tiếp cận AI: thay vì bắt đầu với những gì được coi là &ldquo;mô hình AI tốt nhất tổng thể&rdquo; và tìm kiếm các ứng dụng mà nó có thể tự động hóa, hãy bắt đầu với câu hỏi về những gì chúng ta muốn làm, và tìm kiếm công cụ AI phù hợp (và hiệu quả nhất) cho nó!</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->Hugging Face Hub<!-- raw HTML omitted --> thực hiện cách tiếp cận này bằng cách cho phép người dùng lọc mô hình không chỉ dựa trên tác vụ mà chúng thực hiện (bao gồm cả tác vụ đa phương thức, dự báo chuỗi thời gian và thậm chí cả robot!) mà còn dựa trên số lượng tham số và thậm chí cả kết quả đánh giá được báo cáo của chúng. Loại bộ lọc này có thể được sử dụng làm bước đầu tiên để chọn một mô hình cơ sở để tinh chỉnh, hoặc để kiểm tra các mô hình khác nhau sẵn có để xem độ chính xác mà chúng báo cáo trên các tập dữ liệu benchmark chuyển thành hiệu suất trong thế giới thực như thế nào.</p>
+<p>Để hiểu rõ hơn về chi phí môi trường và tài chính của việc triển khai các hệ thống này, các công cụ như <!-- raw HTML omitted -->dự án AI Energy Score<!-- raw HTML omitted --> sử dụng thử nghiệm thực nghiệm để đo lường mức tiêu thụ năng lượng của các mô hình trên các tác vụ và phương thức khác nhau, nhằm giúp người dùng chọn mô hình phù hợp nhất cho một ứng dụng nhất định. Điều này cho thấy sự khác biệt gấp 340.000 lần giữa các mô hình có mức sử dụng năng lượng cao nhất và thấp nhất nói chung, và <!-- raw HTML omitted -->nhóm gần đây nhất<!-- raw HTML omitted --> của các mô hình được thử nghiệm cho thấy các mô hình suy luận sử dụng năng lượng gấp nhiều lần do số lượng token lớn mà chúng xuất ra. Các sáng kiến khác như <!-- raw HTML omitted -->Open LLM Leaderboard<!-- raw HTML omitted --> và <!-- raw HTML omitted -->MLPerf<!-- raw HTML omitted --> cung cấp những hiểu biết tương tự, cũng bao gồm các chỉ số hiệu suất trên các tác vụ và mô hình khác nhau. Chúng tôi cung cấp một cái nhìn tổng quan bổ sung về các chi phí này cho một số mô hình được chọn trong nghiên cứu của chúng tôi.</p>
+<!-- raw HTML omitted -->
+<p>Một trong những ưu điểm và nhược điểm của AI là <strong>sự đa dạng đáng kinh ngạc</strong> của nó - vô số các phương pháp tồn tại và các cách chúng ta có thể sử dụng chúng để giải quyết các vấn đề thực tế. Điều này có thể làm cho các phương pháp &ldquo;một kích thước phù hợp cho tất cả&rdquo; đặc biệt hấp dẫn, vì chúng có thể, ít nhất là về lý thuyết, cho phép giải quyết nhiều tác vụ cùng một lúc và đã cho thấy kết quả cực kỳ hứa hẹn trên nhiều điểm chuẩn. Nhưng cuối cùng, không có tập dữ liệu benchmark hoặc chỉ số hiệu quả năng lượng duy nhất nào có thể thực sự đại diện cho nhiều đặc điểm của việc triển khai trong thế giới thực – vốn đi kèm với các hạn chế về phần cứng, dữ liệu và khả năng sử dụng khác biệt rất lớn giữa các tổ chức.</p>
+<p>Dành thời gian tìm kiếm phương pháp tiếp cận tốt nhất cho nhiệm vụ đang thực hiện thay vì mặc định chọn sản phẩm AI mới nhất và sáng bóng nhất do bên ngoài vận hành có thể giúp ích rất nhiều trong việc giảm thiểu các tác động tiêu cực của AI cũng như thúc đẩy các kết quả tích cực cho những người triển khai (và chịu ảnh hưởng) của các hệ thống AI; cho dù điều đó có nghĩa là chọn mô hình hiện có hiệu quả nhất về chi phí để giải quyết một nhiệm vụ cụ thể, thu thập dữ liệu để điều chỉnh một hệ thống hiện có cho ngữ cảnh triển khai, hoặc tự phát triển ngăn xếp AI của riêng mình – một mình hoặc với các tổ chức khác có lợi ích và yêu cầu tương tự. Chúng tôi hy vọng rằng việc cung cấp một cái nhìn đa dạng hơn về chi phí của AI sẽ khuyến khích các tổ chức thấy được họ có thể (và nên!) có một chiến lược AI mà họ thực sự sở hữu; và phụ thuộc vào.</p>
+<p><em>Xem báo cáo đầy đủ trình bày kết quả của chúng tôi <!-- raw HTML omitted -->tại đây<!-- raw HTML omitted -->!</em></p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/sasha/compute-competition">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/5-days-ago/">5 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn cách sử dụng nhiều GPU với Hugging Face Transformers, so sánh Device Map và Tensor Parallelism.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/c0e927/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">LightOn ra mắt các mô hình truy xuất mã và công cụ tìm kiếm mã tiên tiến.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/cbe1bf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/e07f50d16c5f50a606d3cb408df83dab.svg" alt="🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/c0e927/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/7468a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

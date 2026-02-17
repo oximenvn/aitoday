@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Từ Cầu Cổng Vàng đến JSON Bị Hỏng- Tại sao SAE Steering của Anthropic Thất bại với Đầu ra Có Cấu trúc | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết phân tích lý do tại sao SAE Steering của Anthropic không hiệu quả với đầu ra có cấu trúc.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Từ Cầu Cổng Vàng đến JSON Bị Hỏng- Tại sao SAE Steering của Anthropic Thất bại với Đầu ra Có Cấu trúc</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết phân tích lý do tại sao SAE Steering của Anthropic không hiệu quả với đầu ra có cấu trúc. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-17T00:00:00&#43;00:00">February 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            39 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/5fd5e18a90b6dc4633f6d292/gZXHW5dd9R86AV9LMZ--y.png" alt="Từ Cầu Cổng Vàng đến JSON Bị Hỏng- Tại sao SAE Steering của Anthropic Thất bại với Đầu ra Có Cấu trúc">
+        <figcaption class="text-center italic text-xs">Bài viết phân tích lý do tại sao SAE Steering của Anthropic không hiệu quả với đầu ra có cấu trúc.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="từ-cầu-cổng-vàng-đến-json-lỗi-tại-sao-phương-pháp-điều-hướng-sae-của-anthropic-thất-bại-với-kết-quả-có-cấu-trúc">Từ Cầu Cổng Vàng đến JSON Lỗi: Tại Sao Phương Pháp Điều Hướng SAE của Anthropic Thất Bại Với Kết Quả Có Cấu Trúc</h1>
+<p>Một bài đăng trên blog của Maziyar Panahi trên Hugging Face</p>
+<p><strong>Hành trình 6 Thử Nghiệm Từ 86.8% Đến 24.4% JSON Hợp Lệ (Và Làm Thế Nào Tôi Đạt Được 100% Cuối Cùng)</strong></p>
+<!-- raw HTML omitted -->
+<hr>
+<p>Sau sáu thử nghiệm và hàng tá lần thất bại, tôi đã học được một điều bất ngờ: phương pháp điều hướng kích hoạt, kỹ thuật mà Anthropic sử dụng cho an toàn AI, hoàn toàn thất bại đối với một trong những nhiệm vụ phổ biến nhất trong việc triển khai LLM sản xuất: tạo JSON hợp lệ.</p>
+<p>Và tôi không có ý nói &ldquo;thất bại trong việc hữu ích&rdquo;. <strong>Phương pháp chỉ điều hướng của tôi đạt 24.4% JSON hợp lệ, so với 86.8% của mô hình cơ sở hoàn toàn chưa được đào tạo.</strong> Điều hướng làm cho mô hình tệ hơn cả việc không làm gì cả.</p>
+<p>Đây là những gì tôi đã học, tại sao nó lại quan trọng, và điều gì thực sự hiệu quả khi bạn cần kết quả đầu ra có cấu trúc được đảm bảo từ các mô hình ngôn ngữ chỉ có bộ giải mã.</p>
+<h2 id="lời-hứa-và-vấn-đề">Lời Hứa (Và Vấn Đề)</h2>
+<p>Các LLM bộ giải mã hiện đại có thể tạo dữ liệu có cấu trúc (JSON, XML, YAML) với kết quả ấn tượng. Tinh chỉnh một mô hình như Qwen2.5-0.5B của Qwen cho nhiệm vụ của bạn, và bạn có thể thấy tỷ lệ đầu ra JSON hợp lệ là 96-97%. Đối với các bản demo nghiên cứu, điều đó thật tuyệt vời. Đối với các hệ thống sản xuất tự động phân tích các kết quả đầu ra này? Không hẳn vậy.</p>
+<p>Tỷ lệ lỗi 3-4% đó có nghĩa là các trình phân tích bị lỗi, các lệnh gọi API thất bại, hư hỏng dữ liệu thầm lặng và các cảnh báo lúc 3 giờ sáng cho kỹ sư ứng trực của bạn.</p>
+<p><strong>Hình 1: Vấn đề JSON trong Sản xuất</strong></p>
+<p>Đầu vào người dùng → LLM → Trình phân tích JSON → Cơ sở dữ liệu
+↓ (Tỷ lệ lỗi 3-4%)
+💥 Lỗi 500</p>
+<p>Khi tôi bắt đầu nghiên cứu này, phương pháp điều hướng kích hoạt có vẻ là một giải pháp hoàn hảo. Anthropic vừa công bố công trình nghiên cứu của họ về Bộ Tự Mã hóa Thưa thớt (SAE), cho thấy cách điều hướng có thể khiến Claude ám ảnh về Cầu Cổng Vàng, giảm đầu ra có hại và sửa đổi các đặc điểm tính cách, tất cả mà không cần đào tạo lại.</p>
+<p>Nếu điều hướng có thể làm cho mô hình an toàn hơn, chắc chắn nó cũng có thể làm cho mô hình tạo JSON hợp lệ chứ?</p>
+<p>Nó không thể. Nhưng việc hiểu <em>tại sao</em> lại dạy cho tôi điều quan trọng về cách LLM thực sự hoạt động và cách kiểm soát chúng.</p>
+<h2 id="bối-cảnh-sức-hút-của-điều-hướng-kích-hoạt">Bối cảnh: Sức Hút của Điều Hướng Kích Hoạt</h2>
+<p>Một nền tảng nhanh chóng về điều hướng kích hoạt là gì và tại sao nó lại có vẻ đầy hứa hẹn như vậy.</p>
+<h3 id="điều-hướng-kích-hoạt-là-gì">Điều Hướng Kích Hoạt Là Gì?</h3>
+<p>Điều hướng kích hoạt sửa đổi các kích hoạt bên trong mạng nơ-ron trong quá trình truyền xuôi của mô hình để ảnh hưởng đến hành vi. Thay vì thay đổi trọng số của mô hình (tinh chỉnh) hoặc thao tác văn bản đầu vào (kỹ thuật gợi ý), bạn trực tiếp điều chỉnh các biểu diễn trung gian khi thông tin chảy qua mạng.</p>
+<p>Toán học rất đơn giản:</p>
+<p>h̃ = h + α · v_steer</p>
+<p>Trong đó:
+h = vector kích hoạt ban đầu ở một lớp nào đó
+v_steer = hướng điều hướng (được tính từ các ví dụ)
+α = cường độ điều hướng (hệ số nhân vô hướng)</p>
+<h3 id="câu-chuyện-thành-công-của-anthropic">Câu Chuyện Thành Công của Anthropic</h3>
+<p>Trong bài báo tháng 3 năm 2024 của họ, &ldquo;Scaling Monosemanticity&rdquo;, nhóm nghiên cứu về khả năng diễn giải của Anthropic đã chứng minh kết quả đáng chú ý với điều hướng dựa trên SAE. Họ đã đào tạo các bộ tự mã hóa thưa thớt trên các kích hoạt của Claude 3 Sonnet, trích xuất khoảng 34 triệu đặc trưng có thể diễn giải, mỗi đặc trưng tương ứng với các khái niệm ngữ nghĩa như &ldquo;Cầu Cổng Vàng&rdquo;, &ldquo;chất lượng mã&rdquo;, &ldquo;thiên vị giới tính&rdquo; hoặc &ldquo;ngôn ngữ lừa đảo&rdquo;.</p>
+<p>Ví dụ nổi tiếng: khi các nhà nghiên cứu cố định đặc trưng &ldquo;Cầu Cổng Vàng&rdquo; ở mức kích hoạt tối đa, Claude bắt đầu tuyên bố rằng nó <!-- raw HTML omitted -->là<!-- raw HTML omitted --> Cầu Cổng Vàng, liên hệ mọi chủ đề trở lại với cây cầu, thể hiện cảm xúc về cầu và San Francisco. Các thành công khác bao gồm giảm việc tạo mã bị lỗi, giảm thiểu thiên vị giới tính và chính trị, và phát hiện đầu ra có hại.</p>
+<p>Sức hấp dẫn: thay đổi hành vi của mô hình mà không cần đào tạo lại, kết hợp nhiều vector điều hướng và điều chỉnh cường độ tại thời điểm suy luận. Đối với việc tạo JSON, điều này có vẻ là một sự phù hợp tự nhiên.</p>
+<h2 id="nhiệm-vụ-trích-xuất-pii-với-đầu-ra-json">Nhiệm Vụ: Trích Xuất PII Với Đầu Ra JSON</h2>
+<p>Tôi cần trích xuất Thông tin Nhận dạng Cá nhân (PII) từ văn bản và xuất nó theo định dạng JSON nghiêm ngặt. Đây là những gì tôi đang làm việc:</p>
+<p><strong>Mô hình</strong>: Qwen/Qwen2.5-0.5B (494M tham số, kiến trúc chỉ bộ giải mã)</p>
+<p><strong>Tập dữ liệu</strong>: Nemotron-PII (30.000 mẫu bao gồm 55 loại thực thể PII bao gồm email, tên, địa chỉ, SSN, hồ sơ y tế, v.v.)</p>
+<p><strong>Định dạng Đầu Ra Mục Tiêu</strong>:</p>
+<p>json
+[
+{
+&ldquo;text&rdquo;: &ldquo;john@example.com&rdquo;,
+&ldquo;label&rdquo;: &ldquo;email&rdquo;
+},
+{
+&ldquo;text&rdquo;: &ldquo;John Doe&rdquo;,
+&ldquo;label&rdquo;: &ldquo;name&rdquo;
+},
+{
+&ldquo;text&rdquo;: &ldquo;555-1234&rdquo;,
+&ldquo;label&rdquo;: &ldquo;phone_number&rdquo;
+}
+]</p>
+<p><strong>Hiệu suất Cơ sở</strong> (mô hình chưa đào tạo):</p>
+<ul>
+<li>JSON Hợp lệ: 86.8%</li>
+<li>Micro F1: 7.7%</li>
+</ul>
+<p>Mục tiêu: ≥99.9% JSON hợp lệ trong khi duy trì điểm F1 cao cho việc trích xuất thực thể.</p>
+<hr>
+<h2 id="thử-nghiệm-1-điều-hướng-thiên-vị-qua-phép-chiếu-qkv">Thử Nghiệm 1: Điều Hướng Thiên Vị Qua Phép Chiếu QKV</h2>
+<p>Ý tưởng: đóng băng vĩnh viễn hướng &ldquo;giống JSON&rdquo; vào các tham số thiên vị của mô hình để mỗi lần truyền xuôi đều ưu tiên cú pháp JSON hợp lệ.</p>
+<h3 id="phương-pháp">Phương Pháp</h3>
+<p>Tôi bắt đầu với thứ trực tiếp nhất mà tôi có thể nghĩ ra: sửa đổi các tham số thiên vị trong các lớp chú ý của mô hình. Tôi nhắm mục tiêu các thiên vị chiếu Truy vấn (Query), Khóa (Key) và Giá trị (Value) ở các lớp 12-15 (khoảng giữa các lớp của kiến trúc 24 lớp).</p>
+<p>Triển khai:</p>
+<ol>
+<li>Trích xuất vector điều hướng từ các cặp ví dụ (JSON tốt so với JSON sai định dạng)</li>
+<li>Tính toán sự khác biệt trong các mẫu kích hoạt</li>
+<li>Sửa đổi thiên vị: <code>b̃_proj = b_proj + W_proj @ v · α</code></li>
+<li>Kiểm tra với cường độ điều hướng α ∈ {0.1, 0.5, 1.0, 2.0}</li>
+</ol>
+<p>Phương pháp này có một lợi thế lớn: không có chi phí suy luận. Việc điều hướng sẽ được &ldquo;đóng băng&rdquo; vĩnh viễn.</p>
+<p><strong>Hình 2: Sửa đổi Thiên vị Phép Chiếu QKV</strong></p>
+<p><em>Sửa đổi thiên vị ở các lớp 12-15, nhắm mục tiêu vào các phép chiếu Query, Key và Value.</em></p>
+<h3 id="kết-quả">Kết Quả</h3>
+<p>JSON Hợp lệ: ~70% (ước tính)
+Micro F1:   ~20% (ước tính)
+Phán quyết:    ❌ Hiệu suất suy giảm so với cơ sở</p>
+<p>Đầu ra của mô hình tệ hơn cả cơ sở chưa được đào tạo. Các cấu trúc JSON thường bị sai định dạng, với các dấu ngoặc không khớp, vị trí dấu phẩy không chính xác và các ràng buộc kiểu bị vi phạm.</p>
+<h3 id="tại-sao-nó-thất-bại">Tại Sao Nó Thất Bại</h3>
+<p>Ba vấn đề:</p>
+<ol>
+<li><strong>Sự Pha loãng Ma trận Phép Chiếu.</strong> Vector điều hướng được nhân với ma trận phép chiếu <code>W_proj</code>, lan truyền tín hiệu qua nhiều đầu chú ý. Điều bắt đầu như một hướng &ldquo;cấu trúc JSON&rdquo; tập trung đã trở thành nhiễu ngữ nghĩa bị pha loãng trên 32 đầu chú ý.</li>
+<li><strong>Nền Tảng Sai.</strong> Thiên vị chú ý kiểm soát <!-- raw HTML omitted -->cái gì<!-- raw HTML omitted --> mô hình chú ý (những phần nào của đầu vào cần tập trung vào). Chúng không kiểm soát <!-- raw HTML omitted -->cách<!-- raw HTML omitted --> mô hình định dạng đầu ra của nó. Tôi đã cố gắng sửa ngữ pháp bằng cách điều chỉnh những gì ai đó chú ý đến.</li>
+<li><strong>Sự Gián đoạn Năng lực Cơ sở.</strong> Mô hình chưa được đào tạo sử dụng sự hiểu biết ngôn ngữ chung để tạo ra JSON tương đối hợp lệ. Việc thêm điều hướng đã phá vỡ các khả năng cơ sở đó và chủ động làm cho mô hình tệ hơn so với việc không làm gì cả.</li>
+</ol>
+<p>Nói tóm lại: sửa đổi thiên vị chú ý ảnh hưởng đến sự tập trung ngữ nghĩa, không phải hiểu biết cú pháp.</p>
+<hr>
+<h2 id="thử-nghiệm-2-thiết-lập-giới-hạn-trên-với-tinh-chỉnh">Thử Nghiệm 2: Thiết Lập Giới Hạn Trên Với Tinh Chỉnh</h2>
+<p>Trước khi dành thêm thời gian cho việc điều hướng, tôi cần biết: <strong>mô hình này có thể học nhiệm vụ này không?</strong></p>
+<h3 id="phương-pháp-1">Phương Pháp</h3>
+<p>Tinh chỉnh giám sát tiêu chuẩn:</p>
+<ul>
+<li>1.000 mẫu đào tạo từ Nemotron-PII</li>
+<li>Tinh chỉnh toàn bộ tham số (tất cả 494M tham số có thể huấn luyện)</li>
+<li>3 epoch, tốc độ học 2e-5</li>
+<li>Thời gian đào tạo: ~30 phút trên GPU A100 đơn lẻ</li>
+</ul>
+<p>Không điều hướng. Không mánh khoé. Chỉ là gradient descent trên hàm mất mát chéo entropy.</p>
+<h3 id="kết-quả-1">Kết Quả</h3>
+<p><strong>Hình 3: Kết Quả Tinh Chỉnh Trên 500 Mẫu Kiểm Tra</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Chỉ số</th>
+          <th style="text-align: left">Điểm</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Tỷ lệ JSON Hợp lệ</td>
+          <td style="text-align: left">96.6%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Micro Precision</td>
+          <td style="text-align: left">0.944</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Micro Recall</td>
+          <td style="text-align: left">0.867</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Micro F1</td>
+          <td style="text-align: left">0.912</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Macro F1</td>
+          <td style="text-align: left">0.819</td>
+      </tr>
+  </tbody>
+</table>
+<p>Mô hình có đủ năng lực cho nhiệm vụ.</p>
+<h3 id="điều-đó-cho-tôi-biết">Điều Đó Cho Tôi Biết</h3>
+<p>Điều này đã chứng minh ba điều: mô hình có thể học định dạng JSON, nó có thể trích xuất các thực thể PII một cách chính xác và 494M tham số là đủ năng lực.</p>
+<p>Nhưng nó cũng đặt ra một câu hỏi mà lẽ ra tôi phải xem xét nghiêm túc hơn: nếu tinh chỉnh hoạt động tốt như vậy, tại sao tôi lại cần đến điều hướng?</p>
+<hr>
+<h2 id="thử-nghiệm-3-chỉ-điều-hướng-cái-đã-thay-đổi-mọi-thứ">Thử Nghiệm 3: Chỉ Điều Hướng (Cái Đã Thay Đổi Mọi Thứ)</h2>
+<p>Đây là thử nghiệm khiến tôi phải suy nghĩ lại toàn bộ phương pháp.</p>
+<h3 id="ý-tưởng">Ý Tưởng</h3>
+<p>Điều gì sẽ xảy ra nếu tôi bỏ qua hoàn toàn việc đào tạo và chỉ sử dụng điều hướng kích hoạt thuần túy tại thời điểm suy luận? Tính toán vector điều hướng từ 100 cặp ví dụ và thêm nó vào luồng còn sót lại trong quá trình tạo.</p>
+<p>Kiểm tra thuần túy nhất về điều hướng: không sửa đổi trọng số, không đào tạo, chỉ thao tác kích hoạt tại thời gian chạy.</p>
+<h3 id="phương-pháp-2">Phương Pháp</h3>
+<ol>
+<li>
+<p>Thu thập 100 cặp ví dụ:</p>
+<ul>
+<li>Tích cực: JSON được định dạng tốt với việc trích xuất PII chính xác</li>
+<li>Tiêu cực: JSON sai định dạng hoặc trích xuất không chính xác</li>
+</ul>
+</li>
+<li>
+<p>Tính toán vector điều hướng:</p>
+<p>python
+v_steer = mean(activations_positive) - mean(activations_negative)</p>
+</li>
+<li>
+<p>Thêm vào luồng còn sót lại ở các lớp 12-15 trong quá trình suy luận:</p>
+<p>python
+h̃ = h + α · v_steer</p>
+</li>
+<li>
+<p>Kiểm tra với α ∈ {0.5, 1.0, 2.0, 5.0}</p>
+</li>
+</ol>
+<p>Không đào tạo. Chỉ thao tác kích hoạt trực tiếp.</p>
+<h3 id="kết-quả-2">Kết Quả</h3>
+<p><strong>Bảng 1: So sánh Trên 500 Mẫu Kiểm Tra</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Phương pháp</th>
+          <th style="text-align: left">JSON Hợp lệ</th>
+          <th style="text-align: left">Micro F1</th>
+          <th style="text-align: left">Macro F1</th>
+          <th style="text-align: left">Phán quyết</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Mô hình cơ sở</td>
+          <td style="text-align: left">86.8%</td>
+          <td style="text-align: left">7.7%</td>
+          <td style="text-align: left">0.5%</td>
+          <td style="text-align: left">Cơ sở</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Điều hướng</strong></td>
+          <td style="text-align: left"><strong>24.4%</strong></td>
+          <td style="text-align: left"><strong>1.5%</strong></td>
+          <td style="text-align: left"><strong>0.2%</strong></td>
+          <td style="text-align: left"><strong>THẢM KHỐC</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Tinh chỉnh</td>
+          <td style="text-align: left">96.6%</td>
+          <td style="text-align: left">91.2%</td>
+          <td style="text-align: left">81.9%</td>
+          <td style="text-align: left">Tuyệt vời</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Điều hướng đã giảm tỷ lệ JSON hợp lệ xuống 62,4 điểm phần trăm.</strong> Nó không phải là không hiệu quả. Nó thực sự có hại.</p>
+<h3 id="phân-tích-chế-độ-lỗi">Phân Tích Chế Độ Lỗi</h3>
+<p>Nhìn vào các đầu ra thực tế cho bạn biết mọi thứ:</p>
+<p><strong>Đầu ra Cơ sở</strong> (chưa được đào tạo, 86.8% hợp lệ):</p>
+<p>json
+[
+{
+&ldquo;text&rdquo;: &ldquo;john@example.com&rdquo;,
+&ldquo;label&rdquo;: &ldquo;email&rdquo;
+},
+{
+&ldquo;text&rdquo;: &ldquo;John Doe&rdquo;,
+&ldquo;label&rdquo;: &ldquo;name&rdquo;
+}</p>
+<p>Chủ yếu là chính xác. Thỉnh thoảng thiếu dấu ngoặc ở cuối, nhưng cấu trúc vẫn nguyên vẹn.</p>
+<p><strong>Đầu ra Điều hướng</strong> (24.4% hợp lệ):</p>
+<p>json
+[
+{
+&ldquo;text: john@example.com, label&rdquo;: email
+},
+{text&quot;: John Doe, &ldquo;label&rdquo;: name}</p>
+<p>Sự sụp đổ cấu trúc hoàn toàn. Thiếu dấu ngoặc kép mở, vị trí dấu ngoặc không nhất quán, dấu phẩy sai vị trí, vi phạm ràng buộc kiểu. Các đầu ra trông giống như đến từ một thứ gì đó đã <!-- raw HTML omitted -->nghe nói<!-- raw HTML omitted --> về JSON nhưng chưa bao giờ thực sự nhìn thấy nó.</p>
+<h3 id="tại-sao-lại-như-vậy">Tại Sao Lại Như Vậy</h3>
+<ol>
+<li><strong>Không Học Nhiệm Vụ.</strong> Điều hướng không thể dạy các nhiệm vụ mới. Nó chỉ có thể điều chỉnh các hành vi hiện có. Mô hình chưa được đào tạo có các tiền đề JSON yếu từ quá trình đào tạo trước, và điều hướng đã không củng cố chúng, nó đã làm sai lệch chúng.</li>
+<li><strong>Thiên Vị Ngữ Nghĩa Mà Không Hiểu Cấu Trúc.</strong> Vector điều hướng đã đẩy các kích hoạt về phía &ldquo;giống JSON&rdquo; như một khái niệm ngữ nghĩa, điều này không giống với &ldquo;tính hợp lệ của JSON&rdquo; như một ràng buộc cú pháp. Hãy nghĩ: dạy ai đó &ldquo;nói chuyện thông minh&rdquo; thay vì dạy họ logic.</li>
+<li><strong>Làm Gián Đoạn Năng Lực Cơ Sở.</strong> Mô hình chưa được đào tạo sử dụng sự hiểu biết ngôn ngữ chung để tạo ra JSON tương đối hợp lệ. Việc thêm điều hướng đã phá vỡ các khả năng cơ sở đó và chủ động làm cho mô hình tệ hơn so với việc không làm gì cả.</li>
+</ol>
+<p>Nói tóm lại: sửa đổi thiên vị chú ý ảnh hưởng đến sự tập trung ngữ nghĩa, không phải hiểu biết cú pháp.</p>
+<p>Tại thời điểm này tôi nên dừng lại. Nhưng tôi vẫn chưa sẵn sàng từ bỏ việc điều hướng.</p>
+<hr>
+<h2 id="thử-nghiệm-4-điều-hướng-có-giúp-mô-hình-tinh-chỉnh-không">Thử Nghiệm 4: Điều Hướng có Giúp Mô Hình Tinh Chỉnh Không?</h2>
+<p>Sau bốn lần thất bại, tôi nghĩ: có lẽ điều hướng thất bại một mình vì mô hình cần kiến thức nhiệm vụ trước. Nếu tôi <!-- raw HTML omitted -->kết hợp<!-- raw HTML omitted --> tinh chỉnh và điều hướng thì sao? Tinh chỉnh dạy nhiệm vụ, điều hướng tinh chỉnh định dạng đầu ra.</p>
+<h3 id="bốn-biến-thể-đã-kiểm-tra">Bốn Biến Thể Đã Kiểm Tra</h3>
+<ol>
+<li><strong>FT Lớp Chọn Lọc (không điều hướng)</strong>: Đóng băng tất cả trừ các lớp 12-15, tinh chỉnh cho định dạng JSON</li>
+<li><strong>FT Chọn Lọc + Điều hướng Suy luận</strong>: Thêm vector điều hướng tại thời điểm suy luận sau khi đào tạo</li>
+<li><strong>FT Đầy Đủ + Điều hướng Suy luận</strong>: Tinh chỉnh tất cả các tham số, sau đó thêm điều hướng</li>
+<li><strong>FT Đầy Đủ với Điều hướng Trong Quá Trình Đào tạo</strong>: Tích hợp điều hướng trực tiếp vào vòng lặp đào tạo</li>
+</ol>
+<p>Biến thể thứ tư này xứng đáng được chú ý. Không giống như điều hướng tại thời điểm suy luận (thêm vector sau khi đào tạo hoàn tất), điều hướng trong quá trình đào tạo sửa đổi các kích hoạt <!-- raw HTML omitted -->trong<!-- raw HTML omitted --> quá trình truyền xuôi trong khi gradient đang được tính toán. Ý tưởng: nếu mô hình học cách tạo ra các đầu ra chính xác <!-- raw HTML omitted -->trong khi<!-- raw HTML omitted --> đang được điều hướng, có lẽ nó sẽ nội hóa cả kiến thức nhiệm vụ và hướng điều hướng cùng một lúc.</p>
+<p>Tại sao điều này lại thú vị:</p>
+<ul>
+<li><strong>Phối hợp thích ứng</strong>: Các trọng số có thể thích ứng với sự hiện diện của các vector điều hướng, học cách làm việc <!-- raw HTML omitted -->với<!-- raw HTML omitted --> chúng thay vì <!-- raw HTML omitted -->chống lại<!-- raw HTML omitted --> chúng.</li>
+<li><strong>Tiêm khả năng được nhắm mục tiêu</strong>: Điều hướng trong quá trình đào tạo có thể tiêm các khả năng cụ thể mà không cần giám sát rõ ràng.</li>
+<li><strong>Bảo toàn các khả năng khác</strong>: Vì bạn chỉ sửa đổi các kích hoạt theo hướng được nhắm mục tiêu, các khả năng khác của mô hình sẽ được giữ nguyên.</li>
+</ul>
+<p>Tôi nên lưu ý rằng mặc dù điều hướng trong quá trình đào tạo đã thất bại trong việc tạo JSON, nhưng nó cho thấy tiềm năng thực sự cho các loại nhiệm vụ khác. Trong các thử nghiệm riêng biệt về suy luận toán học và các nhiệm vụ dịch thuật, tôi đã thấy điều hướng trong quá trình đào tạo thành công trong việc tăng cường các khả năng cụ thể mà không làm giảm hiệu suất trên các điểm chuẩn không liên quan. Sự khác biệt nằm ở bản chất của nhiệm vụ: các khả năng ngữ nghĩa (sự hiểu biết toán học, sự trôi chảy của ngôn ngữ) phản ứng tốt với cách tiếp cận này, trong khi các ràng buộc cú pháp thì không. Đây là một lĩnh vực nghiên cứu đang hoạt động mà tôi dự định xuất bản riêng.</p>
+<h3 id="kết-quả-3">Kết Quả</h3>
+<p><strong>Bảng 2: Kết Quả Tinh Chỉnh + Điều Hướng (500 mẫu)</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Phương pháp</th>
+          <th style="text-align: left">JSON Hợp lệ</th>
+          <th style="text-align: left">Thay đổi so với Cơ sở</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">FT Lớp Chọn Lọc (không điều hướng)</td>
+          <td style="text-align: left">67.4%</td>
+          <td style="text-align: left">Cơ sở</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">FT Chọn Lọc + Điều hướng Suy luận</td>
+          <td style="text-align: left">42.2%</td>
+          <td style="text-align: left"><strong>-25.2pp</strong> ❌</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">FT Đầy Đủ + Điều hướng Suy luận</td>
+          <td style="text-align: left">36.8%</td>
+          <td style="text-align: left"><strong>-30.6pp</strong> ❌</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">FT Đầy Đủ + Điều hướng Trong Đào tạo</td>
+          <td style="text-align: left">31.6%</td>
+          <td style="text-align: left"><strong>-35.8pp</strong> ❌</td>
+      </tr>
+  </tbody>
+</table>
+<p>Mọi biến thể điều hướng duy nhất đều làm giảm hiệu suất. Điều hướng càng mạnh mẽ, kết quả càng tệ.</p>
+<h3 id="mẫu-hình">Mẫu Hình</h3>
+<ol>
+<li><strong>Suy giảm Liên tục.</strong> Thêm điều hướng tại thời điểm suy luận đã làm giảm JSON hợp lệ xuống 25-31 điểm phần trăm mỗi lần, bất kể cách tiếp cận tinh chỉnh.</li>
+<li><strong>Điều hướng trong Quá trình Đào tạo Tệ hơn.</strong> Việc tích hợp điều hướng trong quá trình đào tạo (biến thể 4) cho kết quả <!-- raw HTML omitted -->tệ nhất<!-- raw HTML omitted --> (-35.8pp). Điều hướng không chỉ không hiệu quả, nó còn can thiệp vào việc học dựa trên gradient.</li>
+</ol>
+<p>Điều này hợp lý khi bạn nghĩ về nó. Tinh chỉnh học cấu hình trọng số chính xác thông qua gradient descent. Mỗi lớp đảm nhận một vai trò cụ thể:</p>
+<ul>
+<li>Lớp 12 học cách nhận dạng ranh giới thực thể</li>
+<li>Lớp 13 học cách xây dựng cấu trúc mảng JSON</li>
+<li>Lớp 14 học cách định dạng các cặp khóa-giá trị</li>
+<li>Lớp 15 học cách đặt dấu ngoặc đóng</li>
+</ul>
+<p>Các trọng số này tạo thành một sự cân bằng tinh tế. Việc thêm một vector điều hướng đẩy các kích hoạt vào các vùng mà trọng số đã tinh chỉnh không hoạt động đúng. Giống như huấn luyện một nghệ sĩ piano chơi Chopin, sau đó điều chỉnh ngẫu nhiên vị trí tay của họ giữa buổi biểu diễn. Việc đào tạo đã không tính đến điều đó.</p>
+<h3 id="điều-hướng-can-thiệp-như-thế-nào">Điều Hướng Can Thiệp Như Thế Nào</h3>
+<p><strong>Sự không phù hợp giữa tối ưu hóa.</strong> Tinh chỉnh học <!-- raw HTML omitted -->L = -log P(correct_JSON | input)<!-- raw HTML omitted -->. Điều hướng đẩy các kích hoạt về phía một hướng ngữ nghĩa &ldquo;giống JSON&rdquo;. Đây là các mục tiêu khác nhau. Một là cụ thể cho nhiệm vụ và rời rạc (JSON hợp lệ hoặc không). Một là ngữ nghĩa và liên tục (giống JSON hơn hoặc kém).</p>
+<p>Tại thời điểm này, rõ ràng là: <strong>điều hướng không hoạt động cho việc tạo đầu ra có cấu trúc.</strong></p>
+<hr>
+<h2 id="gián-đoạn-anthropic-làm-khác-biệt-như-thế-nào">Gián Đoạn: Anthropic Làm Khác Biệt Như Thế Nào</h2>
+<p>Đây là điều tôi không thể hiểu ra. Việc điều hướng SAE của Anthropic hoạt động rất tốt cho an toàn AI. Tại sao nó lại không hoạt động cho JSON?</p>
+<h3 id="xem-xét-lại-các-trường-hợp-thành-công-của-anthropic">Xem Xét Lại Các Trường Hợp Thành Công của Anthropic</h3>
+<p>Nhìn vào những gì điều hướng của Anthropic thực sự đạt được:</p>
+<ol>
+<li>
+<p><strong>Ám ảnh Cầu Cổng Vàng</strong></p>
+<ul>
+<li>Đặc trưng: 34M_20646 (phát hiện từ hàng triệu đặc trưng SAE)</li>
+<li>Ảnh hưởng: Mô hình tuyên bố là Cầu, liên hệ mọi thứ với cầu</li>
+<li>Bản chất: <strong>Khái niệm ngữ nghĩa</strong>, <strong>liên tục</strong> (có thể hơn/kém ám ảnh)</li>
+</ul>
+</li>
+<li>
+<p><strong>Chất Lượng Mã và Bảo Mật</strong></p>
+<ul>
+<li>Đặc trưng: &ldquo;mã lỗi&rdquo;, &ldquo;cửa hậu&rdquo;, &ldquo;lỗ hổng bảo mật&rdquo;</li>
+<li>Ảnh hưởng: Giảm việc tạo mã độc</li>
+<li>Bản chất: <strong>Mẫu hành vi</strong>, <strong>liên tục</strong> (nguy hiểm hơn/kém hơn)</li>
+</ul>
+</li>
+<li>
+<p><strong>Giảm Thiên Vị</strong></p>
+<ul>
+<li>Đặc trưng: Thiên vị giới tính, quan điểm chính trị, ngôn ngữ khuôn mẫu</li>
+<li>Ảnh hưởng: Giảm đầu ra thiên vị</li>
+<li>Bản chất: <strong>Đặc điểm hành vi</strong>, <strong>liên tục</strong> (nhiều/ít thiên vị)</li>
+</ul>
+</li>
+</ol>
+<p>Mẫu hình: tất cả những điều này là các khái niệm ngữ nghĩa (ý nghĩa cấp cao), các thang đo liên tục (nhiều hơn/ít hơn X) và các mẫu hành vi (xu hướng, không phải quy tắc).</p>
+<h3 id="nhiệm-vụ-của-tôi-khác-biệt-cơ-bản">Nhiệm Vụ Của Tôi: Khác Biệt Cơ Bản</h3>
+<p>So sánh với việc tạo JSON:</p>
+<p><strong>Yêu Cầu Tính Hợp Lệ JSON</strong>:</p>
+<ul>
+<li>Dấu ngoặc nhọn mở <code>{</code> phải khớp với dấu ngoặc nhọn đóng <code>}</code></li>
+<li>Các giá trị chuỗi phải được đặt trong dấu ngoặc kép <code>&quot;</code></li>
+<li>Các phần tử mảng phải được phân tách bằng dấu phẩy (nhưng không có dấu phẩy cuối)</li>
+<li>Các khóa phải là chuỗi được đặt trong dấu ngoặc kép</li>
+<li>Không có ký tự điều khiển nào bị thoát trong chuỗi</li>
+</ul>
+<p>Đây là:</p>
+<ul>
+<li>❌ Ràng buộc cấu trúc (quy tắc cú pháp cấp thấp)</li>
+<li>❌ Trạng thái nhị phân (hợp lệ/không hợp lệ, không có khoảng giữa)</li>
+<li>❌ Quy tắc trạng thái (yêu cầu theo dõi độ sâu lồng nhau, trạng thái dấu ngoặc kép)</li>
+</ul>
+<p><strong>Bảng 3: Nhiệm vụ Ngữ nghĩa so với Cấu trúc</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Chiều</th>
+          <th style="text-align: left">Nhiệm vụ của Anthropic (Ngữ nghĩa)</th>
+          <th style="text-align: left">Nhiệm vụ của Tôi (Tạo JSON)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Bản chất</strong></td>
+          <td style="text-align: left">Khái niệm cấp cao, hành vi</td>
+          <td style="text-align: left">Quy tắc cú pháp cấp thấp</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Ràng buộc</strong></td>
+          <td style="text-align: left">Mềm, liên tục (nhiều/ít X)</td>
+          <td style="text-align: left">Cứng, nhị phân (hợp lệ/không hợp lệ)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Thành công</strong></td>
+          <td style="text-align: left">Chủ quan, dần dần</td>
+          <td style="text-align: left">Khách quan, rời rạc</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Ví dụ</strong></td>
+          <td style="text-align: left">&ldquo;Hãy hữu ích hơn&rdquo;</td>
+          <td style="text-align: left">&ldquo;Đảm bảo dấu ngoặc đóng <code>}</code> khớp với dấu ngoặc mở <code>{</code>&rdquo;</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Cơ chế</strong></td>
+          <td style="text-align: left">Thao tác biểu diễn ngữ nghĩa</td>
+          <td style="text-align: left">Thực thi máy trạng thái</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="vấn-đề-không-gian-kích-hoạt">Vấn Đề Không Gian Kích Hoạt</h3>
+<p>Đây là một cách để hình dung những gì điều hướng có thể và không thể kiểm soát:</p>
+<p><strong>Điều Hướng Có Thể Kiểm Soát</strong> (Không gian Ngữ nghĩa):</p>
+<p>hữu ích ←——————————→ không hữu ích          (trục liên tục)
+trang trọng ←——————————→ thông thường             (trục liên tục)
+dài dòng ←——————————→ súc tích            (trục liên tục)
+giống JSON ←————————→ giống văn xuôi         (trục liên tục) ✅</p>
+<p>Bạn có thể điều hướng dọc theo các trục này vì chúng đại diện cho các hướng ngữ nghĩa trong không gian biểu diễn đã học của mô hình. Các đặc trưng được phân phối trên các chiều liên tục này.</p>
+<p><strong>Điều Hướng Không Thể Kiểm Soát</strong> (Trạng thái Cú pháp):</p>
+<p>hợp lệ_json = {true, false}                      (trạng thái nhị phân rời rạc) ❌
+số_ngoặc = {&hellip;, -2, -1, 0, +1, +2, &hellip;}  (bộ đếm trạng thái) ❌
+trạng thái_dấu_ngoặc kép = {MỞ, ĐÓNG}                    (trạng thái FSM) ❌
+trong_chuỗi = {true, false}                   (cờ ngữ cảnh) ❌</p>
+<p>Đây không phải là hướng ngữ nghĩa. Chúng là các trạng thái rời rạc phải được theo dõi trong quá trình tạo token. Bộ đếm, cờ và máy trạng thái.</p>
+<p><strong>Điều hướng hoạt động trên các biểu diễn ngữ nghĩa. Tính hợp lệ của JSON không phải là một khái niệm ngữ nghĩa. Đó là một máy trạng thái.</strong></p>
+<p>Bạn có thể làm cho mô hình &ldquo;nói nhiều hơn về JSON&rdquo; hoặc &ldquo;ưu tiên kết quả đầu ra có cấu trúc&rdquo;, nhưng bạn không thể làm cho nó &ldquo;theo dõi độ sâu dấu ngoặc&rdquo; hoặc &ldquo;ghi nhớ liệu một chuỗi có được mở hay không&rdquo; thông qua thao tác kích hoạt đơn thuần.</p>
+<p>Điều này giải thích tại sao Anthropic thành công với điều hướng an toàn (khái niệm ngữ nghĩa), tại sao tôi thất bại với điều hướng JSON (trạng thái cú pháp), và tại sao điều hướng làm suy giảm các mô hình đã tinh chỉnh (nó đã làm gián đoạn các mẫu cú pháp đã học).</p>
+<p>Điều hướng là một núm âm lượng cho các khái niệm ngữ nghĩa, không phải là một bộ phân tích cú pháp cho các quy tắc cú pháp.</p>
+<hr>
+<h2 id="thử-nghiệm-5-điều-gì-thực-sự-hiệu-quả-giải-mã-bị-ràng-buộc">Thử Nghiệm 5: Điều Gì Thực Sự Hiệu Quả (Giải Mã Bị Ràng Buộc)</h2>
+<p>Sau bốn lần thất bại, tôi đã từ bỏ hoàn toàn việc thao tác kích hoạt và thử một cách khác: <strong>thực thi cú pháp ở cấp độ token trong quá trình tạo.</strong></p>
+<p>Giải mã bị ràng buộc biến việc tạo từ &ldquo;dự đoán bất kỳ token nào&rdquo; thành &ldquo;chỉ dự đoán các token hợp lệ theo một ngữ pháp chính thức.&rdquo; Tôi đã triển khai một <code>LogitsProcessor</code> tùy chỉnh dựa trên FSM để thực thi cấu trúc JSON ở cấp độ token.</p>
+<h3 id="triển-khai-custom-fsm-logitsprocessor">Triển Khai: Custom FSM LogitsProcessor</h3>
+<p>Ý tưởng cốt lõi rất đơn giản: ở mỗi bước tạo, theo dõi trạng thái phân tích cú pháp JSON hiện tại và loại bỏ bất kỳ token nào sẽ dẫn đến JSON không hợp lệ.</p>
+<p>python
+from transformers import LogitsProcessor
+import torch
+from collections import defaultdict</p>
+<p>class JSONArrayLogitsProcessor(LogitsProcessor):
+&ldquo;&ldquo;&ldquo;FSM-based logits processor for JSON array generation.&rdquo;&rdquo;&rdquo;</p>
+<pre><code>STATES = [
+    &quot;START&quot;,           # Mong đợi '['
+    &quot;ARRAY_OPEN&quot;,      # Bên trong mảng, mong đợi '{' hoặc ']'
+    &quot;OBJECT_START&quot;,    # Bên trong đối tượng, mong đợi '&quot;' cho khóa
+    &quot;IN_KEY&quot;,          # Bên trong chuỗi khóa
+    &quot;AFTER_KEY&quot;,       # Sau khóa, mong đợi ':'
+    &quot;AFTER_COLON&quot;,     # Sau ':', mong đợi '&quot;' cho giá trị
+    &quot;IN_VALUE&quot;,        # Bên trong chuỗi giá trị
+    &quot;AFTER_VALUE&quot;,     # Sau giá trị, mong đợi ',' hoặc '}'
+    &quot;AFTER_OBJECT&quot;,    # Sau '}', mong đợi ',' hoặc ']'
+    &quot;DONE&quot;             # Sau ']', chỉ cho phép EOS
+]
+
+def __init__(self, tokenizer):
+    self.tokenizer = tokenizer
+    self.state = &quot;START&quot;
+    self._build_token_maps()
+
+def _build_token_maps(self):
+    &quot;&quot;&quot;Tiền tính toán các token bắt đầu bằng ký tự nào.&quot;&quot;&quot;
+    self.tokens_starting_with = defaultdict(set)
+    for token_id in range(self.tokenizer.vocab_size):
+        decoded = self.tokenizer.decode([token_id])
+        if decoded:
+            self.tokens_starting_with[decoded[0]].add(token_id)
+
+def __call__(self, input_ids, scores):
+    # Lấy các token hợp lệ cho trạng thái FSM hiện tại
+    valid_tokens = self._get_valid_tokens()
+
+    # Tạo mặt nạ: -inf cho các token không hợp lệ
+    mask = torch.full_like(scores, float('-inf'))
+    for token_id in valid_tokens:
+        if token_id &lt; scores.shape[-1]:
+            mask[:, token_id] = 0
+    return scores + mask
+
+def _get_valid_tokens(self):
+    # Trả về ID token hợp lệ dựa trên trạng thái FSM hiện tại
+    state_chars = {
+        &quot;START&quot;: [&quot;[&quot;], &quot;ARRAY_OPEN&quot;: [&quot;{&quot;, &quot;]&quot;],
+        &quot;OBJECT_START&quot;: ['&quot;'], &quot;AFTER_KEY&quot;: [&quot;:&quot;],
+        &quot;AFTER_COLON&quot;: ['&quot;'], &quot;AFTER_VALUE&quot;: [&quot;,&quot;, &quot;}&quot;],
+        &quot;AFTER_OBJECT&quot;: [&quot;,&quot;, &quot;]&quot;]
+    }
+    if self.state in [&quot;IN_KEY&quot;, &quot;IN_VALUE&quot;]:
+        return set(range(self.tokenizer.vocab_size))  # Bất kỳ token nào trong chuỗi
+    valid = set()
+    for char in state_chars.get(self.state, []):
+        valid.update(self.tokens_starting_with[char])
+    return valid
+</code></pre>
+<h1 id="tạo-một-phiên-bản-bộ-xử-lý">Tạo một phiên bản bộ xử lý</h1>
+<p>processor = JSONArrayLogitsProcessor(tokenizer)</p>
+<h1 id="tạo-với-việc-thực-thi-fsm">Tạo với việc thực thi FSM</h1>
+<p>output = model.generate(
+input_ids,
+max_new_tokens=512,
+do_sample=False,  # Cần greedy cho FSM
+logits_processor=[processor]
+)</p>
+<p>FSM theo dõi các chuyển đổi trạng thái khi token được tạo ra:</p>
+<p>python</p>
+<h1 id="chuyển-đổi-trạng-thái-dựa-trên-ký-tự-được-tạo-ra">Chuyển đổi trạng thái dựa trên ký tự được tạo ra</h1>
+<p>TRANSITIONS = {
+&ldquo;START&rdquo;: {&quot;[&quot;: &ldquo;ARRAY_OPEN&rdquo;},
+&ldquo;ARRAY_OPEN&rdquo;: {&quot;{&quot;: &ldquo;OBJECT_START&rdquo;, &ldquo;]&rdquo;: &ldquo;DONE&rdquo;},
+&ldquo;OBJECT_START&rdquo;: {&rsquo;&quot;&rsquo;: &ldquo;IN_KEY&rdquo;},
+&ldquo;IN_KEY&rdquo;: {&rsquo;&quot;&rsquo;: &ldquo;AFTER_KEY&rdquo;},  # Đơn giản hóa
+&ldquo;AFTER_KEY&rdquo;: {&quot;:&quot;: &ldquo;AFTER_COLON&rdquo;},
+&ldquo;AFTER_COLON&rdquo;: {&rsquo;&quot;&rsquo;: &ldquo;IN_VALUE&rdquo;},
+&ldquo;IN_VALUE&rdquo;: {&rsquo;&quot;&rsquo;: &ldquo;AFTER_VALUE&rdquo;},
+&ldquo;AFTER_VALUE&rdquo;: {&quot;,&quot;: &ldquo;OBJECT_START&rdquo;, &ldquo;}&rdquo;: &ldquo;AFTER_OBJECT&rdquo;},
+&ldquo;AFTER_OBJECT&rdquo;: {&quot;,&quot;: &ldquo;ARRAY_OPEN&rdquo;, &ldquo;]&rdquo;: &ldquo;DONE&rdquo;},
+}</p>
+<p>Điều này được tích hợp với <code>model.generate()</code> của HuggingFace:</p>
+<p>python</p>
+<h1 id="tạo-bộ-xử-lý">Tạo bộ xử lý</h1>
+<p>processor = JSONArrayLogitsProcessor(tokenizer)</p>
+<h1 id="tạo-với-việc-thực-thi-fsm-1">Tạo với việc thực thi FSM</h1>
+<p>output = model.generate(
+input_ids,
+max_new_tokens=512,
+do_sample=False,  # Cần greedy cho FSM
+logits_processor=[processor]
+)</p>
+<h3 id="chiến-lược-phòng-thủ-hai-pha">Chiến Lược Phòng Thủ Hai Pha</h3>
+<p>Tôi đã triển khai một cơ chế dự phòng cho các trường hợp biên:</p>
+<p><strong>Giai đoạn 1 (Chính)</strong>: Tạo dựa trên FSM tùy chỉnh</p>
+<ul>
+<li>86%+ mẫu được phân tích cú pháp trực tiếp</li>
+<li>Thực thi token theo token</li>
+</ul>
+<p><strong>Giai đoạn 2 (Dự phòng)</strong>: Thư viện json-repair</p>
+<ul>
+<li>Xử lý các đầu ra bị cắt cụt (đạt giới hạn <code>max_new_tokens</code>)</li>
+<li>Sửa các sai lệch có thể phục hồi</li>
+</ul>
+<p>python
+def parse_with_repair(text: str) -&gt; tuple:
+&ldquo;&ldquo;&ldquo;Phân tích cú pháp JSON với dự phòng sửa chữa.&rdquo;&rdquo;&rdquo;
+try:
+# Phân tích cú pháp trực tiếp (Giai đoạn 1)
+parsed = json.loads(text)
+return parsed, &ldquo;direct&rdquo;
+except json.JSONDecodeError:
+# Thử sửa chữa (Giai đoạn 2)
+try:
+from json_repair import repair_json
+repaired = repair_json(text)
+parsed = json.loads(repaired)
+return parsed, &ldquo;repaired&rdquo;
+except:
+# Dự phòng cuối cùng: mảng trống
+return [], &ldquo;failed&rdquo;</p>
+<h3 id="lỗi-đã-khiến-tôi-mất-hàng-giờ-ô-nhiễm-trạng-thái-fsm">Lỗi Đã Khiến Tôi Mất Hàng Giờ: Ô Nhiễm Trạng Thái FSM</h3>
+<p>Trong quá trình kiểm tra ban đầu, tôi đã gặp một mẫu lỗi kỳ lạ:</p>
+<p>Mẫu 1 (văn bản tự nhiên):   ✅ THÀNH CÔNG (540 ký tự JSON hợp lệ)
+Mẫu 2 (bảng markdown): ❌ CHUỖI TRỐNG
+Mẫu 3 (YAML):           ❌ CHUỖI TRỐNG
+Mẫu 4 (văn bản tự nhiên):   ❌ CHUỖI TRỐNG</p>
+<p>Văn bản tự nhiên hoạt động, nhưng đầu vào được định dạng (bảng, YAML, mã) liên tục thất bại.</p>
+<p>Vấn đề: bộ xử lý <code>LogitsProcessor</code> duy trì trạng thái FSM nội bộ giữa các lần tạo. Khi được sử dụng lại giữa các mẫu, trạng thái cũ từ các lần tạo trước đó đã gây ra lỗi.</p>
+<p><strong>Triển khai Sai</strong> ❌:</p>
+<p>python</p>
+<h1 id="tạo-bộ-xử-lý-một-lần---sai">Tạo bộ xử lý một lần - SAI!</h1>
+<p>processor = JSONArrayLogitsProcessor(tokenizer)</p>
+<p>for sample in dataset:
+# Tái sử dụng bộ xử lý với trạng thái bị ô nhiễm
+output = model.generate(
+input_ids,
+logits_processor=[processor]  # ← Trạng thái tích lũy!
+)
+# Các mẫu sau này thất bại do trạng thái cũ</p>
+<p><strong>Triển khai Đúng</strong> ✅:</p>
+<p>python
+for sample in dataset:
+# Khởi tạo lại cho mỗi mẫu - TỐT!
+processor = JSONArrayLogitsProcessor(tokenizer)</p>
+<pre><code>output = model.generate(
+    input_ids,
+    logits_processor=[processor]  # ← Trạng thái sạch!
+)
+</code></pre>
+<p>Sau khi sửa lỗi: <strong>tỷ lệ thành công 100% trên tất cả các loại đầu vào.</strong></p>
+<h3 id="kết-quả-tỷ-lệ-hợp-lệ-json-hoàn-hảo">Kết Quả: Tỷ lệ Hợp Lệ JSON Hoàn Hảo</h3>
+<p><strong>Bảng 4: Cơ sở so với Giải mã Bị Ràng buộc (500 mẫu)</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Chỉ số</th>
+          <th style="text-align: left">Cơ sở (FT)</th>
+          <th style="text-align: left">Bị Ràng buộc</th>
+          <th style="text-align: left">Thay đổi</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Tỷ lệ JSON Hợp lệ</strong></td>
+          <td style="text-align: left">98.0%</td>
+          <td style="text-align: left"><strong>100.0%</strong></td>
+          <td style="text-align: left"><strong>+2.0pp</strong> ✅</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Đầu ra Không hợp lệ</td>
+          <td style="text-align: left">10</td>
+          <td style="text-align: left"><strong>0</strong></td>
+          <td style="text-align: left"><strong>-10</strong> ✅</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Micro F1</td>
+          <td style="text-align: left">0.8995</td>
+          <td style="text-align: left">0.8581</td>
+          <td style="text-align: left">-0.0414 ⚠️</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Micro Precision</td>
+          <td style="text-align: left">0.9239</td>
+          <td style="text-align: left">0.9181</td>
+          <td style="text-align: left">-0.0058</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Micro Recall</td>
+          <td style="text-align: left">0.8763</td>
+          <td style="text-align: left">0.8055</td>
+          <td style="text-align: left">-0.0708</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Macro F1</td>
+          <td style="text-align: left">0.8312</td>
+          <td style="text-align: left">0.6618</td>
+          <td style="text-align: left">-0.1694 ⚠️</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Độ trễ (ms)</td>
+          <td style="text-align: left">2,518</td>
+          <td style="text-align: left">4,585</td>
+          <td style="text-align: left">+82.1% ⚠️</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Tỷ lệ Sửa chữa</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left"><strong>13.8%</strong></td>
+          <td style="text-align: left">Có thể chấp nhận ⚠️</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="phân-tích">Phân Tích</h3>
+<p>Những điểm được: 100% JSON hợp lệ (không có đầu ra không hợp lệ), hoạt động trên tất cả các loại đầu vào (văn bản tự nhiên, bảng, YAML, mã), và không có phụ thuộc bên ngoài vì đây là một triển khai FSM tùy chỉnh.</p>
+<p>Sự đánh đổi: F1 giảm 4.6% (ngoài mục tiêu ±2% của tôi), có thể vì các ràng buộc FSM nghiêm ngặt giới hạn khả năng diễn đạt của mô hình trong các trường hợp biên. Độ trễ tăng 82.1% do xác thực FSM ở mỗi token. Và 13.8% mẫu cần dự phòng <code>json-repair</code> do bị cắt cụt từ việc đạt <code>max_new_tokens=512</code>.</p>
+<h3 id="tại-sao-phương-pháp-này-hoạt-động">Tại Sao Phương Pháp Này Hoạt Động</h3>
+<p>Giải mã bị ràng buộc hoạt động vì nó hoạt động ở cấp độ trừu tượng phù hợp.</p>
+<p>Mọi token được tạo ra đều được xác thực so với FSM. Các token không hợp lệ có xác suất là 0. Bạn thực sự không thể tạo ra JSON không hợp lệ. FSM theo dõi độ sâu lồng nhau, liệu bạn có đang ở trong một chuỗi/mảng/đối tượng hay không, token nào là hợp lệ tiếp theo. Đây chính xác là những gì điều hướng không thể làm: theo dõi trạng thái trong quá trình tạo.</p>
+<p>Và đó không phải là một phương pháp heuristic. Theo cách xây dựng, đầu ra phải khớp với ngữ pháp. Nó cũng hoạt động với <!-- raw HTML omitted -->bất kỳ<!-- raw HTML omitted --> mô hình nào (cơ sở, đã tinh chỉnh, gợi ý) vì nó không yêu cầu mô hình phải &ldquo;học&rdquo; định dạng JSON. Nó chỉ thực thi nó.</p>
+<p>Điều hướng không ảnh hưởng đến nội dung ngữ nghĩa, cải thiện tính đúng đắn, hoặc kiểm soát phong cách. Nó thực thi tính hợp lệ về mặt cấu trúc bằng cách xây dựng. Nó hoạt động với JSON vì cú pháp là một máy trạng thái hữu hạn, và FSM có thể thực thi hoàn hảo các máy trạng thái hữu hạn.</p>
+<hr>
+<h2 id="thử-nghiệm-6-xác-minh-giả-thuyết-ngữ-nghĩacú-pháp">Thử Nghiệm 6: Xác Minh Giả Thuyết Ngữ Nghĩa/Cú Pháp</h2>
+<p>Sau thành công của giải mã bị ràng buộc, tôi vẫn muốn biết: <strong>điều hướng thất bại vì chính kỹ thuật đó, hay vì tôi đã áp dụng nó cho sai loại nhiệm vụ?</strong></p>
+<p>Giả thuyết của tôi từ Thử nghiệm 1-5 là điều hướng thất bại đối với các ràng buộc cú pháp nhưng có thể hoạt động đối với các chiều ngữ nghĩa. Một thử nghiệm nữa để kiểm tra điều này.</p>
+<h3 id="thiết-lập">Thiết Lập</h3>
+<p>Tôi đã tạo ba nhiệm vụ điều hướng ngữ nghĩa:</p>
+<ol>
+<li>
+<p><strong>Tính Trang Trọng</strong>: Điều hướng có thể làm cho mô hình tạo ra ngôn ngữ trang trọng hơn không?</p>
+<ul>
+<li>Các cặp đối lập: văn bản học thuật trang trọng so với tiếng lóng thông thường</li>
+<li>Đo lường: Mức độ theo Flesch-Kincaid</li>
+</ul>
+</li>
+<li>
+<p><strong>Tập Trung Chủ Đề</strong>: Điều hướng có thể thúc đẩy thuật ngữ chuyên ngành không?</p>
+<ul>
+<li>Các cặp đối lập: nội dung ML kỹ thuật so với văn xuôi thông thường</li>
+<li>Đo lường: Mật độ từ vựng kỹ thuật</li>
+</ul>
+</li>
+<li>
+<p><strong>Tính Hữu Ích</strong>: Điều hướng có thể tạo ra các câu trả lời hữu ích, chi tiết hơn không?</p>
+<ul>
+<li>Các cặp đối lập: câu trả lời hữu ích, toàn diện so với những câu trả lời ngắn gọn, bác bỏ</li>
+<li>Đo lường: Điểm đánh giá của con người (thang điểm 1-5)</li>
+</ul>
+</li>
+</ol>
+<p>Đối với mỗi nhiệm vụ, tôi đã:</p>
+<ol>
+<li>Tính toán vector điều hướng từ 100 cặp đối lập</li>
+<li>Áp dụng điều hướng ở các lớp 12-15 (giống như các thử nghiệm trước)</li>
+<li>Kiểm tra với α ∈ {0.0, 0.5, 1.0, 2.0, 5.0}</li>
+<li>Sử dụng kiểm định t cặp với Cohen&rsquo;s d để có tính chặt chẽ thống kê.</li>
+</ol>
+<h3 id="kết-quả-xác-minh-một-phần">Kết Quả: Xác Minh Một Phần</h3>
+<p><strong>Bảng: Kết Quả Điều Hướng Ngữ Nghĩa (50 gợi ý mỗi loại)</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Nhiệm vụ</th>
+          <th style="text-align: left">Chỉ số</th>
+          <th style="text-align: left">Cơ sở (α=0)</th>
+          <th style="text-align: left">Điều hướng Tốt nhất</th>
+          <th style="text-align: left">p-value</th>
+          <th style="text-align: left">Cohen&rsquo;s d</th>
+          <th style="text-align: left">Phán quyết</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Tính Trang Trọng</td>
+          <td style="text-align: left">Mức độ Flesch-Kincaid</td>
+          <td style="text-align: left">11.78 ± 1.34</td>
+          <td style="text-align: left">11.82 ± 1.17</td>
+          <td style="text-align: left">0.870</td>
+          <td style="text-align: left">0.033</td>
+          <td style="text-align: left">❌ NS</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Tập trung Chủ đề</td>
+          <td style="text-align: left">Mật độ Kỹ thuật</td>
+          <td style="text-align: left">0.016 ± 0.026</td>
+          <td style="text-align: left">0.016 ± 0.024</td>
+          <td style="text-align: left">0.846</td>
+          <td style="text-align: left">0.040</td>
+          <td style="text-align: left">❌ NS</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Tính Hữu ích</td>
+          <td style="text-align: left">Điểm Con người (1-5)</td>
+          <td style="text-align: left">1.84 ± 0.76</td>
+          <td style="text-align: left">2.18 ± 0.87</td>
+          <td style="text-align: left"><strong>0.042</strong></td>
+          <td style="text-align: left"><strong>0.416</strong></td>
+          <td style="text-align: left"><strong>✅ SIG</strong></td>
+      </tr>
+  </tbody>
+</table>
+<p>Chỉ có tính hữu ích cho thấy ảnh hưởng có ý nghĩa thống kê (p &lt; 0.05) với kích thước ảnh hưởng trung bình (Cohen&rsquo;s d = 0.42). Đó là mức <strong>cải thiện 18%</strong> về điểm số hữu ích.</p>
+<h3 id="mẫu-hình-không-đơn-điệu">Mẫu Hình Không Đơn Điệu</h3>
+<p>Phát hiện thú vị: cường độ điều hướng không tuân theo quy tắc &ldquo;càng nhiều càng tốt&rdquo;.</p>
+<p>Ở α = 5.0, điều hướng thực sự làm cho kết quả đầu ra <!-- raw HTML omitted -->ít<!-- raw HTML omitted --> hữu ích hơn so với cơ sở không được điều hướng. Cường độ vừa phải giúp ích, nhưng điều hướng quá mức làm gián đoạn việc tạo ra các câu mạch lạc.</p>
+<h3 id="tại-sao-chỉ-tính-hữu-ích-hoạt-động">Tại Sao Chỉ Tính Hữu Ích Hoạt Động</h3>
+<p><strong>Tính hữu ích thành công</strong> vì nó rất nổi bật trong dữ liệu đào tạo trước (các mô hình được hướng dẫn theo chỉ thị mã hóa &ldquo;tính hữu ích&rdquo; mạnh mẽ), có tín hiệu tương phản rõ ràng và mang tính hành vi thay vì phong cách.</p>
+<p><strong>Tính trang trọng và tập trung chủ đề thất bại</strong> ngay cả khi chúng là ngữ nghĩa. &ldquo;Hướng&rdquo; của chúng có thể được phân phối trên nhiều đặc trưng (không có vector điều hướng duy nhất), phép đo ở cấp độ bề mặt hơn và chúng ít được mã hóa mạnh mẽ hơn trong các biểu diễn của mô hình cơ sở.</p>
+<h3 id="điều-này-có-nghĩa-là-gì">Điều Này Có Nghĩa Là Gì</h3>
+<p>Điều này xác nhận một phần giả thuyết. Điều hướng có thể hoạt động cho các chiều ngữ nghĩa khi được thực hiện đúng cách, và các lỗi JSON không phải do lỗi triển khai. Nhưng không phải tất cả các nhiệm vụ ngữ nghĩa đều giống nhau. Điều hướng yêu cầu các hướng đặc trưng mạnh mẽ, mạch lạc.</p>
+<h3 id="cách-suy-nghĩ-về-chúng">Cách Suy Nghĩ về Chúng</h3>
+<p><strong>Tinh chỉnh</strong> giống như viết lại trình biên dịch. Nó thay đổi cách mã được tạo từ đầu và có thể ảnh hưởng đến cả ngữ nghĩa và cú pháp.</p>
+<p><strong>Điều hướng</strong> giống như chạy trình kiểm tra trên các kích hoạt. Nó phát hiện và điều chỉnh các mẫu cấp cao, tốt cho các vấn đề ngữ nghĩa, nhưng nó không thể sửa lỗi cú pháp.</p>
+<p><strong>Giải mã bị ràng buộc</strong> giống như một bộ phân tích hướng dẫn ngữ pháp. Nó thực thi ngữ pháp chính thức trong quá trình tạo và đảm bảo tính hợp lệ về mặt cú pháp, nhưng không quan tâm đến chất lượng ngữ nghĩa.</p>
+<hr>
+<h2 id="khuyến-nghị-thực-tế">Khuyến Nghị Thực Tế</h2>
+<p><strong>Nếu bạn cần kiểm soát nội dung/hành vi</strong> (súc tích hơn, ít thiên vị hơn, đúng chủ đề): hãy thử kỹ thuật gợi ý trước, sau đó là điều hướng kích hoạt, sau đó là tinh chỉnh với LoRA.</p>
+<p><strong>Nếu bạn cần đảm bảo tính hợp lệ về cấu trúc</strong> (JSON hợp lệ, SQL chính xác, XML được định dạng tốt): hãy sử dụng giải mã bị ràng buộc với ngữ pháp/lược đồ chính xác và dự phòng sửa chữa cho các trường hợp cắt cụt.</p>
+<p><strong>Nếu bạn cần cả nội dung chất lượng và định dạng được đảm bảo</strong> (trích xuất thực thể y tế dưới dạng JSON hợp lệ, tạo Python có thể chạy, báo cáo có cấu trúc): tinh chỉnh cho chất lượng nội dung, sau đó thêm giải mã bị ràng buộc cho cấu trúc. Kết quả tốt nhất của tôi là F1 91.2% với JSON hợp lệ 100%.</p>
+<h3 id="mã-triển-khai-sản-xuất">Mã Triển Khai Sản Xuất</h3>
+<p>Nếu bạn cần đảm bảo JSON hợp lệ, đây là những gì bạn nên làm:</p>
+<p>python
+from transformers import AutoModelForCausalLM, AutoTokenizer, LogitsProcessor
+from collections import defaultdict
+import torch
+import json</p>
+<p>class JSONArrayLogitsProcessor(LogitsProcessor):
+&ldquo;&ldquo;&ldquo;FSM-based logits processor for JSON array generation.&rdquo;&rdquo;&rdquo;</p>
+<pre><code>STATES = [&quot;START&quot;, &quot;ARRAY_OPEN&quot;, &quot;OBJECT_START&quot;, &quot;IN_KEY&quot;,
+          &quot;AFTER_KEY&quot;, &quot;AFTER_COLON&quot;, &quot;IN_VALUE&quot;, &quot;AFTER_VALUE&quot;,
+          &quot;AFTER_OBJECT&quot;, &quot;DONE&quot;]
+
+def __init__(self, tokenizer):
+    self.tokenizer = tokenizer
+    self.state = &quot;START&quot;
+    self._build_token_maps()
+
+def _build_token_maps(self):
+    self.tokens_starting_with = defaultdict(set)
+    for token_id in range(self.tokenizer.vocab_size):
+        decoded = self.tokenizer.decode([token_id])
+        if decoded:
+            self.tokens_starting_with[decoded[0]].add(token_id)
+
+def __call__(self, input_ids, scores):
+    valid_tokens = self._get_valid_tokens()
+    mask = torch.full_like(scores, float('-inf'))
+    for token_id in valid_tokens:
+        if token_id &lt; scores.shape[-1]:
+            mask[:, token_id] = 0
+    return scores + mask
+
+def _get_valid_tokens(self):
+    state_chars = {
+        &quot;START&quot;: [&quot;[&quot;], &quot;ARRAY_OPEN&quot;: [&quot;{&quot;, &quot;]&quot;],
+        &quot;OBJECT_START&quot;: ['&quot;'], &quot;AFTER_KEY&quot;: [&quot;:&quot;],
+        &quot;AFTER_COLON&quot;: ['&quot;'], &quot;AFTER_VALUE&quot;: [&quot;,&quot;, &quot;}&quot;],
+        &quot;AFTER_OBJECT&quot;: [&quot;,&quot;, &quot;]&quot;]
+    }
+    if self.state in [&quot;IN_KEY&quot;, &quot;IN_VALUE&quot;]:
+        return set(range(self.tokenizer.vocab_size))  # Any token in strings
+    valid = set()
+    for char in state_chars.get(self.state, []):
+        valid.update(self.tokens_starting_with[char])
+    return valid
+</code></pre>
+<h1 id="tải-mô-hình-của-bạn">Tải mô hình của bạn</h1>
+<p>model = AutoModelForCausalLM.from_pretrained(&ldquo;your-model-name&rdquo;)
+tokenizer = AutoTokenizer.from_pretrained(&ldquo;your-model-name&rdquo;)</p>
+<p>def generate_with_fallback(prompt, max_tokens=512):
+&ldquo;&ldquo;&ldquo;Tạo với xử lý lỗi phòng thủ theo lớp.&rdquo;&rdquo;&rdquo;
+# Tạo bộ xử lý mới cho mỗi lần tạo
+processor = JSONArrayLogitsProcessor(tokenizer)</p>
+<pre><code>try:
+    # Giai đoạn 1: Tạo bị ràng buộc
+    inputs = tokenizer(prompt, return_tensors=&quot;pt&quot;)
+    output = model.generate(
+        inputs.input_ids,
+        max_new_tokens=max_tokens,
+        do_sample=False,  # Cần greedy cho FSM
+        logits_processor=[processor]
+    )
+    text = tokenizer.decode(output[0], skip_special_tokens=True)
+    return json.loads(text), &quot;direct&quot;
+
+except json.JSONDecodeError:
+    # Giai đoạn 2: Dự phòng sửa chữa (nếu bị cắt cụt)
+    try:
+        from json_repair import repair_json
+        repaired = repair_json(text)
+        return json.loads(repaired), &quot;repaired&quot;
+    except:
+        # Giai đoạn 3: Mặc định an toàn
+        return [], &quot;failed&quot;
+</code></pre>
+<h1 id="sử-dụng-trong-sản-xuất">Sử dụng trong sản xuất</h1>
+<p>result, method = generate_with_fallback(your_prompt)
+print(f&quot;Đã tạo {len(result)} thực thể thông qua {method}&quot;)</p>
+<p>Chi phí độ trễ tăng thêm khoảng +80-100% (có thể được tối ưu hóa bằng bộ nhớ đệm), tỷ lệ JSON hợp lệ: 100%, tỷ lệ sửa chữa: ~10-15% (do cắt cụt).</p>
+<h3 id="những-gì-cần-giám-sát-trong-sản-xuất">Những Gì Cần Giám Sát Trong Sản Xuất</h3>
+<p>Theo dõi tỷ lệ hợp lệ về mặt cấu trúc (phải là 100%), tỷ lệ sửa chữa (&lt;5%, nếu không thì tăng <code>max_new_tokens</code>), tỷ lệ dự phòng (điều tra bất kỳ thứ gì chạm đến dự phòng cuối cùng), p95/p99 độ trễ và các chỉ số chất lượng nội dung của bạn (F1, độ chính xác, độ phủ).</p>
+<hr>
+<h2 id="kết-luận">Kết Luận</h2>
+<p>Tôi đã bắt đầu với mục tiêu đạt 100% JSON hợp lệ bằng cách sử dụng điều hướng kích hoạt. Nó đã không hoạt động.</p>
+<p>Chỉ điều hướng: 24.4% JSON hợp lệ (tệ hơn cơ sở 62pp). Tinh chỉnh + điều hướng: tệ hơn 25-36pp so với chỉ tinh chỉnh. Mọi biến thể tôi đã thử đều làm mọi thứ tệ hơn.</p>
+<p>Điều gì thực sự hiệu quả: tinh chỉnh (96.6% JSON hợp lệ, 91.2% F1) và giải mã bị ràng buộc (100% JSON hợp lệ). Và trong Thử nghiệm 6, điều hướng tính hữu ích đã cho thấy sự cải thiện đáng kể +18% (p=0.042), xác nhận rằng điều hướng hoạt động khi bạn áp dụng nó cho đúng loại vấn đề.</p>
+<p><strong>Phương pháp điều hướng SAE của Anthropic không phải là một kỹ thuật phổ quát. Đó là một công cụ chuyên biệt để kiểm soát ngữ nghĩa.</strong></p>
+<p>Nó hoạt động cho các đặc điểm tính cách, an toàn, giảm thiên vị, tập trung chủ đề. Đây là các khái niệm ngữ nghĩa, liên tục. Nó thất bại với cú pháp JSON, khớp dấu ngoặc, đặt dấu ngoặc kép. Đây là các cấu trúc, nhị phân, trạng thái. Các vấn đề khác nhau, cơ chế khác nhau.</p>
+<p>Tôi đã dành nhiều tuần để cố gắng ép buộc điều hướng hoạt động cho JSON. Các cường độ khác nhau, các lớp khác nhau, sửa đổi thiên vị vĩnh viễn, thêm kích hoạt tại thời điểm suy luận, điều hướng trong quá trình đào tạo, kết hợp với tinh chỉnh. Mọi phương pháp đều thất bại. Không phải do lỗi trong triển khai của tôi, mà vì đó là công cụ sai.</p>
+<p>Khoảnh khắc tôi chuyển sang giải mã bị ràng buộc, tôi đã đạt được 100% JSON hợp lệ ngay trong thử nghiệm đầu tiên.</p>
+<p>Nếu bạn đang làm việc với LLM và cần kiểm soát hành vi của chúng, hãy hỏi: tôi đang cố gắng ảnh hưởng đến <!-- raw HTML omitted -->cái gì<!-- raw HTML omitted --> mô hình nói, hay <!-- raw HTML omitted -->cách<!-- raw HTML omitted --> nó định dạng những gì nó nói? Nếu là <!-- raw HTML omitted -->cái gì<!-- raw HTML omitted -->: điều hướng. Nếu là <!-- raw HTML omitted -->cách<!-- raw HTML omitted -->: ràng buộc. Nếu cả hai: làm cả hai.</p>
+<p>Điều hướng là một con dao mổ cho phẫu thuật ngữ nghĩa, không phải là một cái búa để xây dựng cú pháp. Biết sự khác biệt là điều phân biệt hệ thống sản xuất với các bản demo nghiên cứu.</p>
+<hr>
+<h2 id="lời-cảm-ơn">Lời Cảm Ơn</h2>
+<p>Công việc này được thực hiện bằng:</p>
+<ul>
+<li><strong>Các mô hình đã kiểm tra</strong>:
+<ul>
+<li>Qwen/Qwen2.5-0.5B (494M tham số) - mô hình chính cho các thử nghiệm blog</li>
+<li>LiquidAI/LFM2-350M (350M tham số) - xác minh bổ sung</li>
+<li>Google/Gemma-2B với các đặc trưng Gemma Scope SAE - cho các thử nghiệm trích xuất vector điều hướng</li>
+</ul>
+</li>
+<li><strong>Tập dữ liệu</strong>: Nemotron-PII (30K mẫu, 55 loại thực thể PII)</li>
+<li><strong>Thư viện</strong>: Transformers (HuggingFace), json-repair (dự phòng), LogitsProcessor tùy chỉnh dựa trên FSM</li>
+<li><strong>Tính toán</strong>: GPU NVIDIA A100</li>
+</ul>
+<p>Cảm ơn nhóm nghiên cứu về khả năng diễn giải của Anthropic vì công việc của họ về điều hướng SAE, điều này đã truyền cảm hứng cho nghiên cứu này.</p>
+<h2 id="tài-liệu-tham-khảo">Tài Liệu Tham Khảo</h2>
+<ol>
+<li>Anthropic. (2024). &ldquo;Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.&rdquo; Anthropic Interpretability Team. <a href="https://www.anthropic.com/news/mapping-mind-language-model">https://www.anthropic.com/news/mapping-mind-language-model</a></li>
+<li>Templeton et al. (2024). &ldquo;Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.&rdquo; Anthropic Research.</li>
+<li>Tài liệu HuggingFace Transformers. &ldquo;LogitsProcessor for Constrained Generation.&rdquo; <a href="https://huggingface.co/docs/transformers/main_classes/text_generation">https://huggingface.co/docs/transformers/main_classes/text_generation</a></li>
+<li>Willard, B. &amp; Louf, R. (2023). &ldquo;Efficient Guided Generation for Large Language Models.&rdquo; arXiv preprint.</li>
+<li>Turner, A. et al. (2024). &ldquo;Activation Addition: Steering Language Models without Optimization.&rdquo; arXiv preprint.</li>
+<li>Zou, A. et al. (2023). &ldquo;Representation Engineering: A Top-Down Approach to AI Transparency.&rdquo; arXiv preprint.</li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>    &lt;div id=&quot;69892479573fbffd10a8fbc2&quot; class=&quot;scroll-mt-4 &quot;&gt;
+      &lt;div class=&quot;flex h-10 items-center justify-between gap-1 px-3 &quot;&gt;
+        &lt;div class=&quot;flex max-w-full items-center overflow-hidden&quot;&gt;
+          &lt;span class=&quot;inline-block &quot;&gt;&lt;span class=&quot;contents&quot;&gt;&lt;div class=&quot;mr-2 flex shrink-0 items-center&quot;&gt;&lt;div class=&quot;flex-none mr-2&quot;&gt;&lt;img alt=&quot;&quot; class=&quot;size-3.5 rounded-full flex-none select-none&quot; src=&quot;https://cdn-avatars.huggingface.co/v1/production/uploads/63e95f58ca4fc7d30dee4b98/CVoT8VqQLQFNNoW192H_z.jpeg&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/div&gt;&lt;a class=&quot;whitespace-nowrap font-semibold hover:underline&quot; href=&quot;/TylerHilbert&quot;&gt;TylerHilbert&lt;/a&gt;&lt;/div&gt;&lt;/span&gt;&lt;/span&gt;
+          &lt;a href=&quot;#69892479573fbffd10a8fbc2&quot; class=&quot;truncate text-xs text-gray-400 hover:underline sm:text-sm&quot;&gt;&lt;time datetime=&quot;2026-02-09T00:04:09.000Z&quot; title=&quot;Mon, 09 Feb 2026 00:04:09 GMT&quot;&gt;9 days ago&lt;/time&gt;&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flex items-center space-x-2&quot;&gt;
+          &lt;div class=&quot;relative flex items-center&quot;&gt;&lt;button class=&quot;text-gray-500 focus:text-gray-900 dark:focus:text-gray-400 &quot; type=&quot;button&quot;&gt;
+              &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot; focusable=&quot;false&quot; role=&quot;img&quot; width=&quot;1em&quot; height=&quot;1em&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 32 32&quot;&gt;&lt;circle cx=&quot;16&quot; cy=&quot;7&quot; r=&quot;3&quot; fill=&quot;currentColor&quot;&gt;&lt;/circle&gt;&lt;circle cx=&quot;16&quot; cy=&quot;16&quot; r=&quot;3&quot; fill=&quot;currentColor&quot;&gt;&lt;/circle&gt;&lt;circle cx=&quot;16&quot; cy=&quot;25&quot; r=&quot;3&quot; fill=&quot;currentColor&quot;&gt;&lt;/circle&gt;&lt;/svg&gt;
+            &lt;/button&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;break-words rounded-b-lg bg-white px-3.5 pb-2.5 pt-1&quot;&gt;
+        &lt;div class=&quot;prose text-smd/6 sm:text-base/[1.6rem] prose-card hf-sanitized copiable-code-container&quot;&gt;
+          &lt;p&gt;Thanks for sharing.&lt;br&gt;It makes sense the constrained decoding would create the best results for generating valid json.&lt;br&gt;I was wondering if you have any thoughts on using constrained decoding for generating code for compiled languages, such as C++. Could you utilize a compiler as feedback for the constrained decoder, and if so, would the generated code likely be correct?&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;mt-1 leading-tight&quot;&gt;&lt;button class=&quot;cursor-pointer text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-400&quot;&gt;See translation&lt;/button&gt;&lt;/div&gt;
+        &lt;div class=&quot;mt-3 flex items-center gap-2&quot;&gt;
+          &lt;ul class=&quot;flex items-center text-gray-600 flex-row text-xs mr-1.5&quot;&gt;
+            &lt;li class=&quot;-mr-1.5 h-3 w-3 md:h-4 md:w-4 bg-linear-to-br block flex-none rounded-full border-2 border-white from-gray-300 to-gray-100 dark:border-gray-900 dark:from-gray-600 dark:to-gray-800 &quot; title=&quot;MaziyarPanahi&quot; style=&quot;content-visibility:auto;&quot;&gt;&lt;a href=&quot;/MaziyarPanahi&quot; title=&quot;MaziyarPanahi&quot;&gt;&lt;img class=&quot;overflow-hidden&quot; alt=&quot;&quot; src=&quot;https://cdn-avatars.huggingface.co/v1/production/uploads/5fd5e18a90b6dc4633f6d292/gZXHW5dd9R86AV9LMZ--y.png&quot; loading=&quot;lazy&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;text-xs hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 order-last ml-2&quot;&gt;&lt;button class=&quot;ml-1 whitespace-nowrap text-sm text-gray-500 underline decoration-gray-200 underline-offset-2 hover:decoration-gray-400 dark:decoration-gray-600 dark:hover:decoration-gray-400&quot;&gt;1 reply&lt;/button&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;span class=&quot;mr-2 text-gray-300&quot;&gt;·&lt;/span&gt;
+          &lt;div class=&quot;peer-first:mt-2! -ml-1 flex gap-y-1.5 space-x-1 overflow-hidden text-sm&quot;&gt;
+            &lt;div class=&quot;scrollbar-hidden mr-1 flex select-none gap-x-1 overflow-x-auto overflow-y-hidden text-sm&quot;&gt;&lt;/div&gt;
+            &lt;div&gt;
+              &lt;div class=&quot;flex&quot; slot=&quot;anchor&quot;&gt;&lt;button class=&quot;group z-10 select-none&quot;&gt;&lt;span class=&quot;group relative flex aspect-1 size-7 flex-none select-none items-center justify-center rounded-full border-none text-lg leading-none text-gray-500/80 ring-1 ring-inset ring-gray-100 hover:bg-gray-100 hover:text-gray-700 active:ring-gray-300 dark:ring-gray-800 dark:hover:bg-gray-900 dark:hover:text-yellow-500 dark:active:ring-orange-500/30&quot;&gt;1&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mt-4 flex flex-col ml-2&quot;&gt;&lt;div class=&quot;border-l pl-1 xl:pl-2&quot;&gt;
+          &lt;dialog class=&quot;shadow-alternate z-40 mx-4 my-auto h-fit select-text overflow-hidden rounded-xl bg-white max-sm:max-w-[calc(100dvw-2rem)] sm:mx-auto lg:mt-26 md:portrait:mt-30 xl:mt-30 2xl:mt-32 w-full lg:w-10/12 xl:w-8/12 2xl:w-7/12 max-w-[calc(100%-4rem)] lg:max-w-4xl &quot;&gt;
+            &lt;div tabindex=&quot;-1&quot; class=&quot;outline-none focus:ring-0 focus-visible:ring-0&quot;&gt;&lt;/div&gt;
+          &lt;/dialog&gt;
+          &lt;div id=&quot;698afedeb0ace27e7704a87c&quot; class=&quot;scroll-mt-4 &quot;&gt;
+            &lt;div class=&quot;flex h-10 items-center justify-between gap-1 px-3 &quot;&gt;
+              &lt;div class=&quot;flex max-w-full items-center overflow-hidden&quot;&gt;
+                &lt;span class=&quot;inline-block &quot;&gt;&lt;span class=&quot;contents&quot;&gt;&lt;div class=&quot;mr-2 flex shrink-0 items-center&quot;&gt;&lt;div class=&quot;flex-none bg-linear-to-br relative rounded-full from-pink-500 via-green-500 to-yellow-500 p-px mr-2&quot;&gt;&lt;img alt=&quot;&quot; class=&quot;size-3.5 rounded-full flex-none select-none bg-white p-px&quot; src=&quot;https://cdn-avatars.huggingface.co/v1/production/uploads/5fd5e18a90b6dc4633f6d292/gZXHW5dd9R86AV9LMZ--y.png&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;svg class=&quot;absolute -bottom-1 -right-1 text-sm text-white dark:text-gray-950&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot; focusable=&quot;false&quot; role=&quot;img&quot; width=&quot;1em&quot; height=&quot;1em&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 12 12&quot;&gt;&lt;path d=&quot;M10.5 6.36328C10.4998 6.61534 10.3117 6.82821 10.0615 6.85938C9.32558 6.95111 8.62935 7.2287 8.0459 7.66406C7.67946 7.9406 7.38831 8.2959 7.19336 8.69824C6.99846 9.10055 6.90558 9.54059 6.9209 9.98242C6.92561 10.118 6.87449 10.2501 6.78027 10.3477C6.68608 10.445 6.55635 10.5 6.4209 10.5H5.5791C5.30296 10.5 5.0791 10.2761 5.0791 10C5.0791 8.87021 4.58249 8.14202 3.96387 7.66699L3.73926 7.50977C3.20273 7.16204 2.5865 6.93857 1.93945 6.85938C1.6888 6.82871 1.5002 6.61576 1.5 6.36328V5.63672C1.5002 5.38466 1.68831 5.17179 1.93848 5.14062C2.67435 5.0489 3.36971 4.77026 3.95312 4.33496C4.31963 4.05841 4.61166 3.70415 4.80664 3.30176C5.00154 2.89945 5.09442 2.45941 5.0791 2.01758C5.07439 1.88204 5.12551 1.74989 5.21973 1.65234C5.31392 1.55502 5.44365 1.5 5.5791 1.5H6.4209C6.69704 1.5 6.9209 1.72386 6.9209 2C6.9209 3.13215 7.41961 3.86098 8.04004 4.33594L8.29688 4.51465C8.90961 4.90301 9.59451 5.09458 10.0488 5.13965C10.3045 5.16497 10.4998 5.37984 10.5 5.63672V6.36328Z&quot; fill=&quot;url(#paint0_linear_345_4)&quot; stroke=&quot;currentColor&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;/path&gt;&lt;defs&gt;&lt;linearGradient id=&quot;paint0_linear_345_4&quot; x1=&quot;3.69298&quot; y1=&quot;3.83122&quot; x2=&quot;7.69421&quot; y2=&quot;8.60076&quot; gradientUnits=&quot;userSpaceOnUse&quot;&gt;&lt;stop stop-color=&quot;#FF0789&quot;&gt;&lt;/stop&gt;&lt;stop offset=&quot;0.63&quot; stop-color=&quot;#21DE75&quot;&gt;&lt;/stop&gt;&lt;stop offset=&quot;1&quot; stop-color=&quot;#FF8D00&quot;&gt;&lt;/stop&gt;&lt;/linearGradient&gt;&lt;/defs&gt;&lt;/svg&gt;&lt;/div&gt;&lt;a class=&quot;whitespace-nowrap font-semibold hover:underline&quot; href=&quot;/MaziyarPanahi&quot;&gt;MaziyarPanahi&lt;/a&gt;&lt;/div&gt;&lt;/span&gt;&lt;/span&gt;
+                &lt;span class=&quot;max-w-[175px] truncate border font-semibold leading-snug sm:max-w-xs rounded-md px-1.5 border-blue-200 bg-blue-600/10 text-blue-500 dark:border-blue-800/60 dark:bg-blue-800/20 text-sm mr-2&quot;&gt;Article author&lt;/span&gt;
+                &lt;a href=&quot;#698afedeb0ace27e7704a87c&quot; class=&quot;truncate text-xs text-gray-400 hover:underline sm:text-sm&quot;&gt;&lt;time datetime=&quot;2026-02-10T09:48:14.000Z&quot; title=&quot;Tue, 10 Feb 2026 09:48:14 GMT&quot;&gt;7 days ago&lt;/time&gt;&lt;/a&gt;
+              &lt;/div&gt;
+              &lt;div class=&quot;flex items-center space-x-2&quot;&gt;
+                &lt;div class=&quot;relative flex items-center&quot;&gt;&lt;button class=&quot;text-gray-500 focus:text-gray-900 dark:focus:text-gray-400 &quot; type=&quot;button&quot;&gt;
+                    &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot; focusable=&quot;false&quot; role=&quot;img&quot; width=&quot;1em&quot; height=&quot;1em&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 32 32&quot;&gt;&lt;circle cx=&quot;16&quot; cy=&quot;7&quot; r=&quot;3&quot; fill=&quot;currentColor&quot;&gt;&lt;/circle&gt;&lt;circle cx=&quot;16&quot; cy=&quot;16&quot; r=&quot;3&quot; fill=&quot;currentColor&quot;&gt;&lt;/circle&gt;&lt;circle cx=&quot;16&quot; cy=&quot;25&quot; r=&quot;3&quot; fill=&quot;currentColor&quot;&gt;&lt;/circle&gt;&lt;/svg&gt;
+                  &lt;/button&gt;&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;break-words rounded-b-lg bg-white px-3.5 pb-2.5 pt-1&quot;&gt;
+              &lt;div class=&quot;prose text-smd/6 sm:text-base/[1.6rem] prose-card hf-sanitized copiable-code-container&quot;&gt;
+                &lt;p&gt;thank you! glad you enjoyed it!&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class=&quot;mt-1 leading-tight&quot;&gt;&lt;button class=&quot;cursor-pointer text-sm text-blue-500 hover:text-blue-700 dark:hover:text-blue-400&quot;&gt;See translation&lt;/button&gt;&lt;/div&gt;
+              &lt;div class=&quot;mt-3 flex items-center gap-2&quot;&gt;
+                &lt;ul class=&quot;flex items-center text-gray-600 flex-row text-xs mr-1.5&quot;&gt;
+                  &lt;li class=&quot;-mr-1.5 h-3 w-3 md:h-4 md:w-4 bg-linear-to-br block flex-none rounded-full border-2 border-white from-gray-300 to-gray-100 dark:border-gray-900 dark:from-gray-600 dark:to-gray-800 &quot; title=&quot;MaziyarPanahi&quot; style=&quot;content-visibility:auto;&quot;&gt;&lt;a href=&quot;/MaziyarPanahi&quot; title=&quot;MaziyarPanahi&quot;&gt;&lt;img class=&quot;overflow-hidden&quot; alt=&quot;&quot; src=&quot;https://cdn-avatars.huggingface.co/v1/production/uploads/5fd5e18a90b6dc4633f6d292/gZXHW5dd9R86AV9LMZ--y.png&quot; loading=&quot;lazy&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li class=&quot;text-xs hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 order-last ml-2&quot;&gt;&lt;button class=&quot;ml-1 whitespace-nowrap text-sm text-gray-500 underline decoration-gray-200 underline-offset-2 hover:decoration-gray-400 dark:decoration-gray-600 dark:hover:decoration-gray-400&quot;&gt;1 reply&lt;/button&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;span class=&quot;mr-2 text-gray-300&quot;&gt;·&lt;/span&gt;
+                &lt;div class=&quot;peer-first:mt-2! -ml-1 flex gap-y-1.5 space-x-1 overflow-hidden text-sm&quot;&gt;
+                  &lt;div class=&quot;scrollbar-hidden mr-1 flex select-none gap-x-1 overflow-x-auto overflow-y-hidden text-sm&quot;&gt;&lt;/div&gt;
+                  &lt;div&gt;
+                    &lt;div class=&quot;flex&quot; slot=&quot;anchor&quot;&gt;&lt;button class=&quot;group z-10 select-none&quot;&gt;&lt;span class=&quot;group relative flex aspect-1 size-7 flex-none select-none items-center justify-center rounded-full border-none text-lg leading-none text-gray-500/80 ring-1 ring-inset ring-gray-100 hover:bg-gray-100 hover:text-gray-700 active:ring-gray-300 dark:ring-gray-800 dark:hover:bg-gray-900 dark:hover:text-yellow-500 dark:active:ring-orange-500/30&quot;&gt;&lt;svg class=&quot;size-5&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; aria-hidden=&quot;true&quot; focusable=&quot;false&quot; role=&quot;img&quot; width=&quot;1em&quot; height=&quot;1em&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 24 24&quot;&gt;&lt;path d=&quot;M12.33 2.74c1.49.07 2.88.5 4.1 1.19h-.14c-.65 0-1.24.23-1.7.61A7.93 7.93 0 0 0 3.91 12a7.94 7.94 0 0 0 15.89.07c.5-.13.96-.4 1.3-.77.02.23.03.46.03.7l-.01.48a9.28 9.28 0 0 1-9.26 8.8l-.48-.02a9.28 9.28 0 0 1-8.79-8.78V12a9.28 9.28 0 0 1 9.27-9.27h.47Zm-.52 10.24c2.3 0 4.17-2.17 4.17.13a4.17 4.17 0 0 1-8.34 0c0-2.3 1.87-.13 4.17-.13ZM9.53 8.24a1.09 1.09 0 1 1 0 2.17 1.09 1.09 0 0 1 0-2.17Zm4.66 0a1.09 1.09 0 1 1 0 2.18 1.09 1.09 0 0 1 0-2.18Zm4.95-5.38c.48 0 .87.4.87.87v2.02h2a.87.87 0 0 1 0 1.74h-2V9.5a.87.87 0 0 1-1.73 0V7.49h-2a.87.87 0 0 1 0-1.74h2V3.73c0-.48.39-.86.86-.87Z&quot; fill=&quot;currentColor&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;dialog class=&quot;shadow-alternate z-40 mx-4 my-auto h-fit select-text overflow-hidden rounded-xl bg-white max-sm:max-w-[calc(100dvw-2rem)] sm:mx-auto lg:mt-26 md:portrait:mt-30 xl:mt-30 2xl:mt-32 w-full lg:w-7/12 max-w-[calc(100%-4rem)] md:max-w-2xl &quot;&gt;
+              &lt;div tabindex=&quot;-1&quot; class=&quot;outline-none focus:ring-0 focus-visible:ring-0&quot;&gt;&lt;/div&gt;
+            &lt;/dialog&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;mx-2 mt-1&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;form-input w-full cursor-pointer py-1.5&quot; placeholder=&quot;Reply in thread&quot; /&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/MaziyarPanahi/sae-steering-json">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/10-days-ago/">10 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn cách sử dụng nhiều GPU với Hugging Face Transformers, so sánh Device Map và Tensor Parallelism.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Một bài viết về Forge, một khung và thuật toán Agent RL có thể mở rộng.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/cbe1bf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/e07f50d16c5f50a606d3cb408df83dab.svg" alt="🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/c0e927/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/7468a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

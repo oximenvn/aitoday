@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Xây dựng Công cụ Đề xuất Phim dựa trên Tâm trạng với Voyage-4-nano, Hugging Face và MongoDB Atlas Vector Search | AI Today - SkyAI</title>
+
+<meta name="description" content="Hướng dẫn cách xây dựng công cụ đề xuất phim dựa trên tâm trạng sử dụng Voyage-4-nano, Hugging Face và MongoDB Atlas Vector Search.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Xây dựng Công cụ Đề xuất Phim dựa trên Tâm trạng với Voyage-4-nano, Hugging Face và MongoDB Atlas Vector Search</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Hướng dẫn cách xây dựng công cụ đề xuất phim dựa trên tâm trạng sử dụng Voyage-4-nano, Hugging Face và MongoDB Atlas Vector Search. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-17T00:00:00&#43;00:00">February 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            16 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/5dd96eb166059660ed1ee413/h-374tE9JbA29Mywaob2l.webp" alt="Xây dựng Công cụ Đề xuất Phim dựa trên Tâm trạng với Voyage-4-nano, Hugging Face và MongoDB Atlas Vector Search">
+        <figcaption class="text-center italic text-xs">Hướng dẫn cách xây dựng công cụ đề xuất phim dựa trên tâm trạng sử dụng Voyage-4-nano, Hugging Face và MongoDB Atlas Vector Search.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="xây-dựng-công-cụ-gợi-ý-phim-dựa-trên-tâm-trạng-với-voyage-4-nano-hugging-face-và-mongodb-atlas-vector-search">Xây dựng công cụ gợi ý phim dựa trên tâm trạng với Voyage-4-nano, Hugging Face và MongoDB Atlas Vector Search</h1>
+<p>Các công cụ tìm kiếm phim truyền thống thường lọc theo thể loại, diễn viên hoặc tên phim. Nhưng điều gì sẽ xảy ra nếu bạn có thể tìm kiếm dựa trên tâm trạng của mình? Hãy tưởng tượng bạn có thể nhập:</p>
+<ul>
+<li>&ldquo;Thứ gì đó mang lại sự phấn chấn sau một ngày làm việc tồi tệ&rdquo;</li>
+<li>&ldquo;Một bộ phim khiến tôi phải rơi lệ&rdquo;</li>
+<li>&ldquo;Tôi cần sự hứng khởi, dù sao cũng không ngủ được&rdquo;</li>
+<li>&ldquo;Thứ gì đó để xem cùng bà, người ghét bạo lực&rdquo;</li>
+</ul>
+<p>Đây là <strong>tìm kiếm ngữ nghĩa dựa trên tâm trạng</strong>: kết hợp trạng thái cảm xúc của bạn với mô tả cốt truyện phim bằng cách sử dụng các embedding AI.</p>
+<p>Trong hướng dẫn này, bạn sẽ xây dựng một công cụ gợi ý phim dựa trên tâm trạng bằng cách sử dụng ba công nghệ mạnh mẽ: <strong>Voyage-4-nano</strong> (một mô hình embedding nguồn mở hiện đại), <strong>Hugging Face</strong> (để lưu trữ mô hình và tập dữ liệu), và <strong>MongoDB Atlas Vector Search</strong> (để lưu trữ và truy vấn embedding ở quy mô lớn).</p>
+<h2 id="tại-sao-tìm-kiếm-dựa-trên-tâm-trạng">Tại sao tìm kiếm dựa trên tâm trạng?</h2>
+<p>Các thẻ thể loại chỉ mang tính tương đối. Một bộ phim &ldquo;chính kịch&rdquo; có thể ấm áp lòng người hoặc bi thương. Một bộ phim &ldquo;hài&rdquo; có thể là sự giải trí nhẹ nhàng hoặc châm biếm sâu cay. Các bộ lọc truyền thống không thể nắm bắt được những sắc thái này.</p>
+<p>Tìm kiếm ngữ nghĩa giải quyết vấn đề này bằng cách hiểu ý nghĩa. Khi bạn tìm kiếm &ldquo;bộ phim tạo cảm giác tốt cho một ngày chủ nhật mưa&rdquo;, hệ thống sẽ không tìm kiếm chính xác các từ đó. Nó hiểu ý định và khớp nó với các mô tả cốt truyện gợi lên những cảm xúc tương tự.</p>
+<h2 id="tổng-quan-kiến-trúc">Tổng quan kiến trúc</h2>
+<p>Hệ thống kết hợp ba thành phần từ hệ sinh thái Hugging Face với MongoDB:</p>
+<ul>
+<li><strong>Voyage-4-nano (Hugging Face Hub)</strong>: Chuyển đổi văn bản thành embedding (tối đa 2048 chiều, chúng tôi sử dụng 1024)</li>
+<li><strong>MongoDB/embedded_movies (Hugging Face Datasets)</strong>: Hơn 1500 phim với tóm tắt cốt truyện, thể loại, diễn viên</li>
+</ul>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/692d46a01dcd4562191b1346/YRniZhbnjk6vkmTQju7ge.png" alt="Dữ liệu phim"></p>
+<ul>
+<li><strong>MongoDB Atlas Vector Search</strong>: Lưu trữ embedding và thực hiện tìm kiếm tương tự</li>
+</ul>
+<h2 id="hiểu-về-voyage-4-nano">Hiểu về Voyage-4-nano</h2>
+<p>Voyage-4-nano là mô hình nhỏ nhất trong loạt mô hình embedding mới nhất của <strong>Voyage AI</strong>, được phát hành dưới dạng nguồn mở theo giấy phép Apache 2.0. Voyage AI đã được MongoDB mua lại, và các mô hình loạt Voyage 4 hiện có sẵn thông qua MongoDB Atlas.</p>
+<p>Tất cả các mô hình trong loạt (voyage-4-large, voyage-4, voyage-4-lite và voyage-4-nano) đều tạo ra các embedding tương thích trong một không gian embedding chung, cho phép bạn kết hợp các mô hình cho các trường hợp sử dụng khác nhau.</p>
+<p>Mặc dù Voyage-4-nano hỗ trợ native các embedding có chiều lên đến 2048, chúng tôi cố tình cắt bớt chúng xuống còn 1024 chiều bằng thuộc tính embedding Matryoshka của nó. Trên thực tế, điều này mang lại sự cân bằng mạnh mẽ giữa chất lượng ngữ nghĩa, hiệu quả lưu trữ và độ trễ tìm kiếm vector, đồng thời duy trì hành vi xếp hạng ổn định.</p>
+<h2 id="sentence-transformers">Sentence Transformers</h2>
+<p>Hướng dẫn này sử dụng <strong>Sentence Transformers</strong>, một thư viện Python được xây dựng dựa trên <strong>Transformers</strong> của Hugging Face. Nó được thiết kế đặc biệt để làm việc với các mô hình embedding và cung cấp một API đơn giản để tạo embedding văn bản.</p>
+<p>Tại sao lại dùng Sentence Transformers thay vì Transformers gốc? Khi làm việc với các mô hình embedding, bạn cần xử lý tokenization, pooling, chuẩn hóa và định dạng prompt. Sentence Transformers thực hiện tất cả những điều này một cách tự động trong một lần gọi phương thức. Mã rõ ràng hơn, ít lỗi tiềm ẩn hơn và bạn nhận được các tính năng tích hợp sẵn như xử lý theo lô với thanh tiến trình.</p>
+<p>Về bản chất, Sentence Transformers vẫn sử dụng Transformers của Hugging Face để tải và chạy mô hình.</p>
+<h2 id="cấu-hình-môi-trường-phát-triển">Cấu hình môi trường phát triển</h2>
+<p>Hãy bắt đầu!</p>
+<h3 id="tạo-cấu-trúc-dự-án">Tạo cấu trúc dự án</h3>
+<p>bash
+mkdir mood-movie-search
+cd mood-movie-search
+mkdir src
+touch requirements.txt .env</p>
+<h3 id="cài-đặt-các-dependency">Cài đặt các dependency</h3>
+<p>Tạo tệp <code>requirements.txt</code>:</p>
+<p>bash
+cat &laquo;&lsquo;EOF&rsquo; &gt; requirements.txt
+fastapi&gt;=0.109.0
+uvicorn&gt;=0.27.0
+pymongo&gt;=4.6.1
+sentence-transformers&gt;=3.0.0
+python-dotenv&gt;=1.0.0
+datasets&gt;=2.16.0
+torch
+EOF</p>
+<p>Tạo môi trường ảo Python và cài đặt các dependency:</p>
+<p>bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt</p>
+<h3 id="chạy-mongodb-atlas-cục-bộ">Chạy MongoDB Atlas cục bộ</h3>
+<p>Sử dụng Atlas CLI để tạo một triển khai cục bộ có hỗ trợ Vector Search:</p>
+<p>bash
+brew install mongodb-atlas-cli
+atlas deployments setup</p>
+<p>Chọn <code>local</code> khi được nhắc. Khi sẵn sàng, bạn sẽ nhận được một chuỗi kết nối như:</p>
+<p>Deployment created!
+Connection string:
+&ldquo;mongodb://localhost:52955/?directConnection=true&rdquo;</p>
+<h3 id="cấu-hình-biến-môi-trường">Cấu hình biến môi trường</h3>
+<p>Tạo tệp <code>.env</code>:</p>
+<p>bash
+cat &laquo;&lsquo;EOF&rsquo; &gt; .env
+MONGO_URI=mongodb://localhost:52955/?directConnection=true
+DB_NAME=movies_db
+COLLECTION_NAME=movies
+MODEL_NAME=voyageai/voyage-4-nano
+EMBEDDING_DIM=1024
+EOF</p>
+<p>Tôi sử dụng 1024 chiều làm sự cân bằng giữa chất lượng và hiệu quả lưu trữ. Bạn có thể thử nghiệm với 2048 (chất lượng tối đa) hoặc 512 (truy vấn nhanh hơn).</p>
+<h2 id="triển-khai-các-thành-phần-hệ-thống">Triển khai các thành phần hệ thống</h2>
+<h3 id="mô-đun-cơ-sở-dữ-liệu">Mô-đun cơ sở dữ liệu</h3>
+<p>Mô-đun cơ sở dữ liệu quản lý kết nối MongoDB và tạo chỉ mục tìm kiếm vector. Chỉ mục phải khớp với các chiều embedding được chỉ định trong cấu hình của chúng ta.</p>
+<p>python</p>
+<h1 id="srcdatabasepy">src/database.py</h1>
+<p>import os
+from pymongo import MongoClient
+from pymongo.operations import SearchIndexModel
+from dotenv import load_dotenv</p>
+<p>load_dotenv()</p>
+<p>class MongoManager:
+def <strong>init</strong>(self):
+self.client = MongoClient(os.getenv(&ldquo;MONGO_URI&rdquo;))
+self.db = self.client[os.getenv(&ldquo;DB_NAME&rdquo;)]
+self.collection = self.db[os.getenv(&ldquo;COLLECTION_NAME&rdquo;)]
+self.embedding_dim = int(os.getenv(&ldquo;EMBEDDING_DIM&rdquo;, 1024))</p>
+<pre><code>def get_collection(self):
+    return self.collection
+
+def create_vector_index(self):
+    &quot;&quot;&quot;Creates a Vector Search index for mood-based queries&quot;&quot;&quot;
+    search_index_model = SearchIndexModel(
+        definition={
+            &quot;fields&quot;: [
+                {
+                    &quot;type&quot;: &quot;vector&quot;,
+                    &quot;path&quot;: &quot;plot_embedding&quot;,
+                    &quot;numDimensions&quot;: self.embedding_dim,
+                    &quot;similarity&quot;: &quot;cosine&quot;
+                },
+                {
+                    &quot;type&quot;: &quot;filter&quot;,
+                    &quot;path&quot;: &quot;genres&quot;
+                },
+                {
+                    &quot;type&quot;: &quot;filter&quot;, 
+                    &quot;path&quot;: &quot;year&quot;
+                }
+            ]
+        },
+        name=&quot;mood_search_index&quot;,
+        type=&quot;vectorSearch&quot;
+    )
+    try:
+        self.collection.create_search_index(model=search_index_model)
+        print(f&quot;Vector index created with {self.embedding_dim} dimensions.&quot;)
+    except Exception as e:
+        print(f&quot;Index status: {e}&quot;)
+</code></pre>
+<h3 id="mô-đun-ai-với-voyage-4-nano">Mô-đun AI với Voyage-4-nano</h3>
+<p>Mô-đun AI tải Voyage-4-nano từ Hugging Face Hub và cung cấp các phương thức để tạo embedding. Chúng tôi sử dụng thư viện sentence-transformers cho một API sạch sẽ.</p>
+<p>python</p>
+<h1 id="srcaipy">src/ai.py</h1>
+<p>import os
+import torch
+from sentence_transformers import SentenceTransformer
+from dotenv import load_dotenv</p>
+<p>load_dotenv()</p>
+<p>class MoodEmbedder:
+def <strong>init</strong>(self):
+model_name = os.getenv(&ldquo;MODEL_NAME&rdquo;, &ldquo;voyageai/voyage-4-nano&rdquo;)
+self.embedding_dim = int(os.getenv(&ldquo;EMBEDDING_DIM&rdquo;, 1024))</p>
+<pre><code>    print(f&quot;Loading {model_name} from Hugging Face Hub...&quot;)
+    
+    # Load with GPU optimization if available
+    if torch.cuda.is_available():
+        self.model = SentenceTransformer(
+            model_name,
+            trust_remote_code=True,
+            truncate_dim=self.embedding_dim,
+            model_kwargs={
+                &quot;attn_implementation&quot;: &quot;flash_attention_2&quot;,
+                &quot;torch_dtype&quot;: torch.bfloat16
+            }
+        )
+        print(f&quot;Model loaded on GPU with Flash Attention 2&quot;)
+    else:
+        self.model = SentenceTransformer(
+            model_name,
+            trust_remote_code=True,
+            truncate_dim=self.embedding_dim
+        )
+        print(f&quot;Model loaded on CPU&quot;)
+    
+    print(f&quot;Embedding dimension: {self.embedding_dim}&quot;)
+
+def embed_query(self, mood_description: str) -&gt; list:
+    &quot;&quot;&quot;
+    Embed a mood query. Uses query-specific prompt for better retrieval.
+    Example: &quot;something uplifting after a bad day&quot;
+    &quot;&quot;&quot;
+    if not mood_description:
+        return []
+    embedding = self.model.encode_query(mood_description)
+    return embedding.tolist()
+
+def embed_document(self, plot: str) -&gt; list:
+    &quot;&quot;&quot;
+    Embed a movie plot description. Uses document-specific prompt.
+    &quot;&quot;&quot;
+    if not plot:
+        return []
+    embedding = self.model.encode_document(plot)
+    return embedding.tolist()
+
+def embed_documents_batch(self, plots: list[str], batch_size: int = 32) -&gt; list:
+    &quot;&quot;&quot;
+    Embed multiple plots efficiently in batches.
+    &quot;&quot;&quot;
+    embeddings = self.model.encode_document(
+        plots, 
+        batch_size=batch_size,
+        show_progress_bar=True
+    )
+    return [emb.tolist() for emb in embeddings]
+</code></pre>
+<p>Voyage-4-nano sử dụng các prompt khác nhau cho truy vấn và tài liệu:</p>
+<ul>
+<li><code>encode_query()</code> thêm tiền tố: &ldquo;Represent the query for retrieving supporting documents:&rdquo;</li>
+<li><code>encode_document()</code> thêm tiền tố: &ldquo;Represent the document for retrieval: &quot;</li>
+</ul>
+<p>Việc mã hóa không đối xứng này cải thiện chất lượng truy xuất.</p>
+<h3 id="mô-đun-lập-chỉ-mục-dữ-liệu">Mô-đun lập chỉ mục dữ liệu</h3>
+<p>Bộ lập chỉ mục tải tập dữ liệu phim từ Hugging Face, tạo các embedding mới với Voyage-4-nano và lưu trữ mọi thứ vào MongoDB.</p>
+<p>python</p>
+<h1 id="srcindexerpy">src/indexer.py</h1>
+<p>import os
+from datasets import load_dataset
+from src.database import MongoManager
+from src.ai import MoodEmbedder</p>
+<p>def extract_year(date_str):
+&ldquo;&ldquo;&ldquo;Extract year from various date formats&rdquo;&rdquo;&rdquo;
+if not date_str:
+return None
+try:
+if isinstance(date_str, dict) and &lsquo;$date&rsquo; in date_str:
+from datetime import datetime
+ts = date_str[&rsquo;$date&rsquo;].get(&rsquo;$numberLong&rsquo;, 0)
+return datetime.fromtimestamp(int(ts) / 1000).year
+return int(str(date_str)[:4])
+except:
+return None</p>
+<p>def run_indexing():
+print(&quot;=&rdquo; * 60)
+print(&quot;🎬 MOOD-BASED MOVIE SEARCH - INDEXING&quot;)
+print(&quot;=&quot; * 60)</p>
+<pre><code>print(&quot;\n[1/6] Connecting to MongoDB...&quot;)
+db = MongoManager()
+collection = db.get_collection()
+print(&quot;✓ Connected&quot;)
+
+print(&quot;\n[2/6] Loading Voyage-4-nano from Hugging Face Hub...&quot;)
+embedder = MoodEmbedder()
+print(&quot;✓ Model ready&quot;)
+
+print(&quot;\n[3/6] Downloading movie dataset from Hugging Face...&quot;)
+dataset = load_dataset(&quot;MongoDB/embedded_movies&quot;, split=&quot;train&quot;)
+print(f&quot;✓ Downloaded {len(dataset)} movies&quot;)
+
+# Sample for demo (use full dataset in production)
+sample_size = min(500, len(dataset))
+sample_data = dataset.shuffle(seed=42).select(range(sample_size))
+print(f&quot;\n[4/6] Processing {sample_size} movies...&quot;)
+
+collection.delete_many({})
+print(&quot;✓ Cleared existing data&quot;)
+
+# Prepare documents
+movies_to_embed = []
+plots_to_embed = []
+
+for item in sample_data:
+    plot = item.get(&quot;plot&quot;, &quot;&quot;)
+    if not plot or len(plot) &lt; 50:
+        continue
+        
+    movie = {
+        &quot;title&quot;: item.get(&quot;title&quot;, &quot;Unknown&quot;),
+        &quot;plot&quot;: plot,
+        &quot;genres&quot;: item.get(&quot;genres&quot;, []),
+        &quot;year&quot;: extract_year(item.get(&quot;released&quot;)),
+        &quot;runtime&quot;: item.get(&quot;runtime&quot;),
+        &quot;cast&quot;: item.get(&quot;cast&quot;, [])[:5],
+        &quot;directors&quot;: item.get(&quot;directors&quot;, []),
+        &quot;imdb_rating&quot;: item.get(&quot;imdb&quot;, {}).get(&quot;rating&quot;) if isinstance(item.get(&quot;imdb&quot;), dict) else None,
+    }
+    movies_to_embed.append(movie)
+    plots_to_embed.append(plot)
+
+print(f&quot;  Found {len(movies_to_embed)} movies with valid plots&quot;)
+
+print(&quot;\n[5/6] Generating embeddings with Voyage-4-nano...&quot;)
+embeddings = embedder.embed_documents_batch(plots_to_embed)
+
+for movie, embedding in zip(movies_to_embed, embeddings):
+    movie[&quot;plot_embedding&quot;] = embedding
+
+if movies_to_embed:
+    print(f&quot;\n  Inserting {len(movies_to_embed)} movies into MongoDB...&quot;)
+    collection.insert_many(movies_to_embed)
+    print(f&quot;✓ Inserted {len(movies_to_embed)} movies&quot;)
+
+print(&quot;\n[6/6] Creating vector search index...&quot;)
+db.create_vector_index()
+
+print(&quot;\n&quot; + &quot;=&quot; * 60)
+print(&quot;✓ INDEXING COMPLETE!&quot;)
+print(f&quot;  Movies indexed: {len(movies_to_embed)}&quot;)
+print(f&quot;  Embedding dimensions: {embedder.embedding_dim}&quot;)
+print(&quot;=&quot; * 60)
+</code></pre>
+<p>if <strong>name</strong> == &ldquo;<strong>main</strong>&rdquo;:
+run_indexing()</p>
+<h3 id="api-tìm-kiếm">API Tìm kiếm</h3>
+<p>Ứng dụng FastAPI cung cấp điểm cuối tìm kiếm dựa trên tâm trạng. Người dùng mô tả tâm trạng của họ và hệ thống trả về các phim khớp về mặt ngữ nghĩa.</p>
+<p>python</p>
+<h1 id="srcmainpy">src/main.py</h1>
+<p>from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, field_validator
+from typing import Optional
+from src.database import MongoManager
+from src.ai import MoodEmbedder</p>
+<p>app = FastAPI(title=&ldquo;Mood-Based Movie Search API&rdquo;)</p>
+<h1 id="initialize-components">Initialize components</h1>
+<p>db = MongoManager()
+embedder = MoodEmbedder()
+collection = db.get_collection()</p>
+<p>class MoodSearchRequest(BaseModel):
+mood: str
+limit: int = 5
+min_rating: Optional[float] = None
+genre_filter: Optional[str] = None</p>
+<pre><code>@field_validator('mood')
+@classmethod
+def mood_must_not_be_empty(cls, v):
+    if not v or not v.strip():
+        raise ValueError('Mood description cannot be empty')
+    return v.strip()
+
+@field_validator('limit')
+@classmethod
+def limit_must_be_reasonable(cls, v):
+    if v &lt; 1 or v &gt; 20:
+        raise ValueError('Limit must be between 1 and 20')
+    return v
+</code></pre>
+<p>@app.post(&quot;/search&quot;)
+def search_by_mood(request: MoodSearchRequest):
+&quot;&quot;&quot;
+Search for movies based on your current mood.</p>
+<pre><code>Examples:
+- &quot;I need something uplifting after a rough day&quot;
+- &quot;want to cry and feel cathartic&quot;
+- &quot;exciting adventure for movie night with friends&quot;
+- &quot;something calm and beautiful to fall asleep to&quot;
+&quot;&quot;&quot;
+
+query_embedding = embedder.embed_query(request.mood)
+
+if not query_embedding:
+    raise HTTPException(status_code=400, detail=&quot;Failed to process mood description&quot;)
+
+vector_search_stage = {
+    &quot;$vectorSearch&quot;: {
+        &quot;index&quot;: &quot;mood_search_index&quot;,
+        &quot;path&quot;: &quot;plot_embedding&quot;,
+        &quot;queryVector&quot;: query_embedding,
+        &quot;numCandidates&quot;: 150,
+        &quot;limit&quot;: request.limit * 2
+    }
+}
+
+match_stage = {&quot;$match&quot;: {}}
+if request.min_rating:
+    match_stage[&quot;$match&quot;][&quot;imdb_rating&quot;] = {&quot;$gte&quot;: request.min_rating}
+if request.genre_filter:
+    match_stage[&quot;$match&quot;][&quot;genres&quot;] = request.genre_filter
+
+project_stage = {
+    &quot;$project&quot;: {
+        &quot;_id&quot;: 0,
+        &quot;title&quot;: 1,
+        &quot;plot&quot;: 1,
+        &quot;genres&quot;: 1,
+        &quot;year&quot;: 1,
+        &quot;imdb_rating&quot;: 1,
+        &quot;cast&quot;: 1,
+        &quot;directors&quot;: 1,
+        &quot;mood_match_score&quot;: {&quot;$meta&quot;: &quot;vectorSearchScore&quot;}
+    }
+}
+
+pipeline = [vector_search_stage]
+if match_stage[&quot;$match&quot;]:
+    pipeline.append(match_stage)
+pipeline.append(project_stage)
+pipeline.append({&quot;$limit&quot;: request.limit})
+
+try:
+    results = list(collection.aggregate(pipeline))
+    
+    return {
+        &quot;mood_query&quot;: request.mood,
+        &quot;results_count&quot;: len(results),
+        &quot;movies&quot;: results
+    }
+except Exception as e:
+    raise HTTPException(status_code=500, detail=f&quot;Search failed: {str(e)}&quot;)
+</code></pre>
+<p>@app.get(&quot;/examples&quot;)
+def get_example_queries():
+&ldquo;&ldquo;&ldquo;Returns example mood queries to try&rdquo;&rdquo;&rdquo;
+return {
+&ldquo;examples&rdquo;: [
+{&ldquo;mood&rdquo;: &ldquo;something uplifting after a rough day at work&rdquo;, &ldquo;category&rdquo;: &ldquo;Feel Good&rdquo;},
+{&ldquo;mood&rdquo;: &ldquo;I want to cry and have a good emotional release&rdquo;, &ldquo;category&rdquo;: &ldquo;Emotional&rdquo;},
+{&ldquo;mood&rdquo;: &ldquo;edge-of-seat thriller I can&rsquo;t pause&rdquo;, &ldquo;category&rdquo;: &ldquo;Exciting&rdquo;},
+{&ldquo;mood&rdquo;: &ldquo;slow beautiful film to relax to&rdquo;, &ldquo;category&rdquo;: &ldquo;Calm&rdquo;},
+{&ldquo;mood&rdquo;: &ldquo;something to watch with kids on Sunday&rdquo;, &ldquo;category&rdquo;: &ldquo;Family&rdquo;},
+{&ldquo;mood&rdquo;: &ldquo;mind-bending movie that makes you think&rdquo;, &ldquo;category&rdquo;: &ldquo;Thought-provoking&rdquo;},
+{&ldquo;mood&rdquo;: &ldquo;nostalgic 80s vibe adventure&rdquo;, &ldquo;category&rdquo;: &ldquo;Nostalgic&rdquo;},
+{&ldquo;mood&rdquo;: &ldquo;dark and disturbing but artistic&rdquo;, &ldquo;category&rdquo;: &ldquo;Art House&rdquo;},
+]
+}</p>
+<p>@app.get(&quot;/&quot;)
+def health_check():
+return {
+&ldquo;status&rdquo;: &ldquo;ok&rdquo;,
+&ldquo;service&rdquo;: &ldquo;Mood-Based Movie Search API&rdquo;,
+&ldquo;model&rdquo;: &ldquo;voyage-4-nano&rdquo;,
+&ldquo;embedding_dim&rdquo;: embedder.embedding_dim
+}</p>
+<h3 id="khởi-tạo-gói">Khởi tạo gói</h3>
+<p>bash
+touch src/<strong>init</strong>.py</p>
+<h3 id="cấu-trúc-dự-án">Cấu trúc dự án</h3>
+<p>Cấu trúc dự án cuối cùng của bạn sẽ trông như thế này:</p>
+<p>mood-movie-search/
+├── src/
+│   ├── <strong>init</strong>.py
+│   ├── ai.py           # Logic embedding của Voyage-4-nano
+│   ├── database.py     # Kết nối và lập chỉ mục MongoDB
+│   ├── indexer.py      # Tải dữ liệu và tạo embedding
+│   └── main.py         # Ứng dụng FastAPI
+├── requirements.txt
+├── .env
+└── venv/</p>
+<h2 id="chạy-và-kiểm-tra">Chạy và Kiểm tra</h2>
+<h3 id="lập-chỉ-mục-dữ-liệu">Lập chỉ mục dữ liệu</h3>
+<p>Đầu tiên, chạy bộ lập chỉ mục để tải phim từ Hugging Face và tạo embedding:</p>
+<p>bash
+python -m src.indexer</p>
+<p>Kết quả mong đợi:</p>
+<h1 id="-mood-based-movie-search---indexing">=======================================
+🎬 MOOD-BASED MOVIE SEARCH - INDEXING</h1>
+<p>[1/6] Connecting to MongoDB&hellip;
+✓ Connected</p>
+<p>[2/6] Loading Voyage-4-nano from Hugging Face Hub&hellip;
+Loading voyageai/voyage-4-nano from Hugging Face Hub&hellip;
+Model loaded on CPU
+Embedding dimension: 1024
+✓ Model ready</p>
+<p>[3/6] Downloading movie dataset from Hugging Face&hellip;
+✓ Downloaded 1525 movies</p>
+<p>[4/6] Processing 500 movies&hellip;
+✓ Cleared existing data
+Found 487 movies with valid plots</p>
+<p>[5/6] Generating embeddings
+with Voyage-4-nano&hellip;
+Batches: 100%|██████████████████|</p>
+<p>Inserting 487 movies into MongoDB&hellip;
+✓ Inserted 487 movies</p>
+<p>[6/6] Creating vector search index&hellip;
+Vector index created with 1024 dimensions.</p>
+<h1 id="embedding-dimensions-1024">====================================
+✓ INDEXING COMPLETE!
+Movies indexed: 487
+Embedding dimensions: 1024</h1>
+<h3 id="khởi-động-máy-chủ-api">Khởi động máy chủ API</h3>
+<p>bash
+python -m uvicorn src.main:app &ndash;reload</p>
+<h3 id="kiểm-tra-các-truy-vấn-dựa-trên-tâm-trạng">Kiểm tra các truy vấn dựa trên tâm trạng</h3>
+<h4 id="truy-vấn-1-phim-tạo-cảm-giác-tốt-sau-một-ngày-làm-việc-khó-khăn">Truy vấn 1: Phim tạo cảm giác tốt sau một ngày làm việc khó khăn</h4>
+<p>bash
+curl -X POST &ldquo;http://localhost:8000/search&rdquo; <br>
+-H &ldquo;Content-Type: application/json&rdquo; <br>
+-d &lsquo;{&ldquo;mood&rdquo;: &ldquo;something uplifting after a rough day at work&rdquo;}&rsquo;</p>
+<p>Phản hồi:</p>
+<p>json
+{
+&ldquo;mood_query&rdquo;: &ldquo;something uplifting after a rough day at work&rdquo;,
+&ldquo;results_count&rdquo;: 5,
+&ldquo;movies&rdquo;: [
+{
+&ldquo;title&rdquo;: &ldquo;The Long Kiss Goodnight&rdquo;,
+&ldquo;plot&rdquo;: &ldquo;A woman suffering from amnesia begins to recover her memories&hellip;&rdquo;,
+&ldquo;genres&rdquo;: [&ldquo;Action&rdquo;, &ldquo;Crime&rdquo;, &ldquo;Drama&rdquo;],
+&ldquo;imdb_rating&rdquo;: 6.7,
+&ldquo;mood_match_score&rdquo;: 0.662
+},
+{
+&ldquo;title&rdquo;: &ldquo;Villain&rdquo;,
+&ldquo;plot&rdquo;: &ldquo;Shiva a bus conductor has another face of life in which he helps the physically challenged&hellip;&rdquo;,
+&ldquo;genres&rdquo;: [&ldquo;Action&rdquo;, &ldquo;Drama&rdquo;, &ldquo;Romance&rdquo;],
+&ldquo;imdb_rating&rdquo;: 7.0,
+&ldquo;mood_match_score&rdquo;: 0.659
+},
+{
+&ldquo;title&rdquo;: &ldquo;The Blade&rdquo;,
+&ldquo;plot&rdquo;: &ldquo;After the master of the Sharp Manufacturer saber factory abdicates&hellip;&rdquo;,
+&ldquo;genres&rdquo;: [&ldquo;Drama&rdquo;, &ldquo;Action&rdquo;],
+&ldquo;imdb_rating&rdquo;: 7.2,
+&ldquo;mood_match_score&rdquo;: 0.656
+}
+]
+}</p>
+<p>Hệ thống đã trả về các phim hành động với chủ đề biến đổi cá nhân và giúp đỡ người khác. Điểm số khoảng 0.65 cho thấy sự tương đồng vừa phải vì &ldquo;phấn chấn&rdquo; là một khái niệm trừu tượng không xuất hiện trực tiếp trong văn bản cốt truyện.</p>
+<h4 id="truy-vấn-2-cảm-xúc-thăng-hoa">Truy vấn 2: Cảm xúc thăng hoa</h4>
+<p>bash
+curl -X POST &ldquo;http://localhost:8000/search&rdquo; <br>
+-H &ldquo;Content-Type: application/json&rdquo; <br>
+-d &lsquo;{&ldquo;mood&rdquo;: &ldquo;I want to cry and feel emotionally moved&rdquo;}&rsquo;</p>
+<p>Phản hồi:</p>
+<p>json
+{
+&ldquo;mood_query&rdquo;: &ldquo;I want to cry and feel emotionally moved&rdquo;,
+&ldquo;results_count&rdquo;: 5,
+&ldquo;movies&rdquo;: [
+{
+&ldquo;title&rdquo;: &ldquo;The Wedding Party&rdquo;,
+&ldquo;plot&rdquo;: &ldquo;Screaming, shooting, tears and blood changes the party into a nightmare.&rdquo;,
+&ldquo;genres&rdquo;: [&ldquo;Action&rdquo;, &ldquo;Comedy&rdquo;, &ldquo;Drama&rdquo;],
+&ldquo;imdb_rating&rdquo;: 6.6,
+&ldquo;mood_match_score&rdquo;: 0.666
+},
+{
+&ldquo;title&rdquo;: &ldquo;Split Decisions&rdquo;,
+&ldquo;plot&rdquo;: &ldquo;When a boxer is killed because he wouldn&rsquo;t take a dive, his brother tries to find a way to avenge him&hellip;&rdquo;,
+&ldquo;genres&rdquo;: [&ldquo;Action&rdquo;, &ldquo;Drama&rdquo;],
+&ldquo;imdb_rating&rdquo;: 5.2,
+&ldquo;mood_match_score&rdquo;: 0.625
+},
+{
+&ldquo;title&rdquo;: &ldquo;Tae Guk Gi: The Brotherhood of War&rdquo;,
+&ldquo;plot&rdquo;: &ldquo;A drama about the fate of brothers forced to fight in the Korean War.&rdquo;,
+&ldquo;genres&rdquo;: [&ldquo;Action&rdquo;, &ldquo;Drama&rdquo;, &ldquo;War&rdquo;],
+&ldquo;imdb_rating&rdquo;: 8.2,
+&ldquo;mood_match_score&rdquo;: 0.618
+}
+]
+}</p>
+<p>Hệ thống đã tìm thấy các bộ phim có chủ đề cảm xúc nặng nề. &ldquo;Tae Guk Gi&rdquo; là một bộ phim chiến tranh về những người anh em bị buộc phải chiến đấu chống lại nhau. &ldquo;Split Decisions&rdquo; nói về sự mất mát và trả thù sau cái chết của một võ sĩ quyền anh. Từ &ldquo;nước mắt&rdquo; trong cốt truyện của &ldquo;The Wedding Party&rdquo; đã khớp trực tiếp với ý định cảm xúc của truy vấn.</p>
+<h4 id="truy-vấn-3-với-bộ-lọc">Truy vấn 3: Với bộ lọc</h4>
+<p>bash
+curl -X POST &ldquo;http://localhost:8000/search&rdquo; <br>
+-H &ldquo;Content-Type: application/json&rdquo; <br>
+-d &lsquo;{
+&ldquo;mood&rdquo;: &ldquo;exciting adventure movie&rdquo;,
+&ldquo;min_rating&rdquo;: 7.5,
+&ldquo;genre_filter&rdquo;: &ldquo;Action&rdquo;
+}&rsquo;</p>
+<p>Phản hồi:</p>
+<p>json
+{
+&ldquo;mood_query&rdquo;: &ldquo;exciting adventure movie&rdquo;,
+&ldquo;results_count&rdquo;: 1,
+&ldquo;movies&rdquo;: [
+{
+&ldquo;title&rdquo;: &ldquo;Project A&rdquo;,
+&ldquo;plot&rdquo;: &ldquo;Fighting against pirates in old Hong Kong. Chinese costume drama with plenty of over-the-top tongue in cheek action and music.&rdquo;,
+&ldquo;genres&rdquo;: [&ldquo;Action&rdquo;, &ldquo;Comedy&rdquo;],
+&ldquo;cast&rdquo;: [&ldquo;Jackie Chan&rdquo;, &ldquo;Sammo Kam-Bo Hung&rdquo;],
+&ldquo;imdb_rating&rdquo;: 7.5,
+&ldquo;mood_match_score&rdquo;: 0.761
+}
+]
+}</p>
+<p>Với các bộ lọc nghiêm ngặt (điểm đánh giá &gt;= 7.5, thể loại = Action), chỉ có một bộ phim khớp. Lưu ý điểm số cao hơn đáng kể là 0.761 so với các truy vấn trước đó. Cụm từ &ldquo;exciting adventure&rdquo; đã khớp trực tiếp với &ldquo;over-the-top action&rdquo; trong mô tả cốt truyện. Điều này cho thấy các truy vấn tâm trạng cụ thể, mô tả rõ ràng tạo ra các kết quả khớp ngữ nghĩa mạnh mẽ hơn các truy vấn cảm xúc trừu tượng.</p>
+<h3 id="quan-sát-chính">Quan sát chính</h3>
+<ul>
+<li>Các truy vấn tâm trạng trừu tượng (&ldquo;phấn chấn&rdquo;, &ldquo;cảm động&rdquo;) đạt điểm 0.62 đến 0.67</li>
+<li>Các mô tả cụ thể (&ldquo;phiêu lưu thú vị&rdquo;) đạt điểm 0.75+</li>
+<li>Các bộ lọc giúp tìm các kết quả khớp tốt hơn ngay cả với ít kết quả hơn</li>
+<li>Hệ thống hiểu chủ đề ngay cả khi không khớp từ chính xác</li>
+</ul>
+<h2 id="so-sánh-các-chiều-embedding">So sánh các chiều embedding</h2>
+<p>Một lợi thế độc đáo của các embedding Matryoshka của Voyage-4-nano là khả năng thử nghiệm với các chiều khác nhau. Hãy so sánh cách lựa chọn chiều ảnh hưởng đến kết quả.</p>
+<p>Tạo một tập lệnh kiểm tra:</p>
+<p>python</p>
+<h1 id="test_dimensionspy">test_dimensions.py</h1>
+<p>from sentence_transformers import SentenceTransformer
+import numpy as np</p>
+<p>model_2048 = SentenceTransformer(&ldquo;voyageai/voyage-4-nano&rdquo;, trust_remote_code=True, truncate_dim=2048)
+model_512 = SentenceTransformer(&ldquo;voyageai/voyage-4-nano&rdquo;, trust_remote_code=True, truncate_dim=512)
+model_256 = SentenceTransformer(&ldquo;voyageai/voyage-4-nano&rdquo;, trust_remote_code=True, truncate_dim=256)</p>
+<p>query = &ldquo;heartwarming story about friendship&rdquo;
+plots = [
+&ldquo;Two elderly men rediscover their friendship during a road trip across America.&rdquo;,
+&ldquo;A violent revenge thriller set in the criminal underworld.&rdquo;,
+&ldquo;A young girl and her robot companion explore a magical forest.&rdquo;,
+]</p>
+<p>for dim, model in [(2048, model_2048), (512, model_512), (256, model_256)]:
+q_emb = model.encode_query(query)
+d_embs = model.encode_document(plots)</p>
+<pre><code>similarities = np.dot(d_embs, q_emb) / (np.linalg.norm(d_embs, axis=1) * np.linalg.norm(q_emb))
+
+print(f&quot;\n=== {dim} dimensions ===&quot;)
+for plot, sim in zip(plots, similarities):
+    print(f&quot;  {sim:.4f}: {plot[:50]}...&quot;)
+</code></pre>
+<p>Chạy tập lệnh:</p>
+<p>bash
+python test_dimensions.py</p>
+<p>Kết quả:</p>
+<p>=== 2048 dimensions ===
+0.4496: Two elderly men rediscover their friendship during&hellip;
+0.1472: A violent revenge thriller set in the criminal und&hellip;
+0.3726: A young girl and her robot companion explore a mag&hellip;</p>
+<p>=== 512 dimensions ===
+0.4350: Two elderly men rediscover their friendship during&hellip;
+0.0953: A violent revenge thriller set in the criminal und&hellip;
+0.3487: A young girl and her robot companion explore a mag&hellip;</p>
+<p>=== 256 dimensions ===
+0.4139: Two elderly men rediscover their friendship during&hellip;
+0.0168: A violent revenge thriller set in the criminal und&hellip;
+0.3310: A young girl and her robot companion explore a mag&hellip;</p>
+<p>Cả ba cài đặt chiều đều xếp hạng cốt truyện theo đúng thứ tự: câu chuyện về tình bạn có điểm cao nhất, câu chuyện về người bạn đồng hành robot đứng thứ hai (liên quan về mặt chủ đề thông qua tình bạn), và bộ phim kinh dị bạo lực có điểm thấp nhất.</p>
+<h3 id="sự-khác-biệt-chính">Sự khác biệt chính:</h3>
+<ul>
+<li><strong>Khoảng cách phân biệt</strong> (Discrimination gap): Với 2048 chiều, khoảng cách giữa kết quả khớp tốt nhất (0.4496) và tệ nhất (0.1472) là 0.302. Với 256 chiều, khoảng cách lớn hơn ở mức 0.397 (0.4139 trừ 0.0168). Thật thú vị, các chiều thấp hơn có thể tạo ra khoảng cách lớn hơn do nén không gian embedding mạnh mẽ hơn, nhưng điều này không nhất thiết có nghĩa là chất lượng tốt hơn. Các điểm tương tự tuyệt đối thấp hơn và kém tin cậy hơn.</li>
+<li><strong>Tính ổn định xếp hạng</strong>: Tất cả các chiều đều tạo ra cùng một thứ hạng. Đối với các tác vụ truy xuất đơn giản, ngay cả 256 chiều cũng hoạt động tốt.</li>
+<li><strong>Khi các chiều quan trọng</strong>: Nếu ứng dụng của bạn yêu cầu điểm tương tự chi tiết, hãy sử dụng các chiều cao hơn. Nếu bạn chỉ cần xếp hạng chính xác, các chiều thấp hơn sẽ tiết kiệm dung lượng lưu trữ và thời gian truy vấn.</li>
+<li><strong>Khuyến nghị thực tế</strong>: Bắt đầu với 1024 chiều làm mặc định cân bằng. Giảm xuống 512 nếu dung lượng lưu trữ là mối quan tâm. Chỉ sử dụng 2048 khi bạn cần độ chính xác tối đa cho các truy vấn tinh tế.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/mongodb-community/hugging-face-mongodb-voyage-4-nano">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/9-days-ago/">9 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn cách sử dụng nhiều GPU với Hugging Face Transformers, so sánh Device Map và Tensor Parallelism.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Một bài viết về Forge, một khung và thuật toán Agent RL có thể mở rộng.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/cbe1bf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/e07f50d16c5f50a606d3cb408df83dab.svg" alt="🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/c0e927/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/7468a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

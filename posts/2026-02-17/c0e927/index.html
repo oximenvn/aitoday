@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại | AI Today - SkyAI</title>
+
+<meta name="description" content="LightOn ra mắt các mô hình truy xuất mã và công cụ tìm kiếm mã tiên tiến.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">LightOn ra mắt các mô hình truy xuất mã và công cụ tìm kiếm mã tiên tiến. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-17T00:00:00&#43;00:00">February 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            29 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại">
+        <figcaption class="text-center italic text-xs">LightOn ra mắt các mô hình truy xuất mã và công cụ tìm kiếm mã tiên tiến.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="lateon-code--colgrep-lighton-công-bố-các-mô-hình-truy-xuất-mã-và-công-cụ-tìm-kiếm-mã-tiên-tiến">LateOn-Code &amp; ColGrep: LightOn công bố các mô hình truy xuất mã và công cụ tìm kiếm mã tiên tiến</h1>
+<p>Hôm nay, chúng tôi xin giới thiệu <strong>LateOn-Code</strong>, hai mô hình truy xuất tương tác muộn tiên tiến cho mã nguồn, và <strong>ColGrep</strong>, một công cụ tìm kiếm di động, cắm và chạy trực tiếp vào các trợ lý lập trình. LateOn-Code có hai kích cỡ thân thiện với người dùng cục bộ: LateOn-Code-edge (17 triệu tham số) cho việc sử dụng siêu nhanh, luôn bật và LateOn-Code (130 triệu tham số) cho chất lượng tối đa trong khi vẫn giữ được sự nhẹ nhàng. Cả hai đều được đào tạo chuyên biệt cho truy xuất mã và <strong>vượt trội hơn các mô hình lớn hơn nhiều</strong>.</p>
+<p>ColGrep là một công cụ dòng lệnh Rust bắt chước giao diện grep quen thuộc nhưng thay thế việc khớp mẫu thuần túy bằng xếp hạng ngữ nghĩa được cung cấp bởi LateOn-Code. Nó chạy hoàn toàn cục bộ, hỗ trợ các truy vấn kết hợp regex và ngữ nghĩa, và tích hợp trực tiếp vào các tác nhân như Claude Code, OpenCode hoặc Codex — <strong>chiến thắng 70% các so sánh đối đầu với grep thông thường đồng thời cắt giảm 15,7% lượng token sử dụng</strong>.</p>
+<hr>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Các mô hình tương tác muộn đã cho thấy khả năng <strong>vượt trội ngoài miền ứng dụng</strong>, <strong>hỗ trợ ngữ cảnh dài</strong> và <strong>truy xuất đòi hỏi suy luận cao</strong>. Như Antoine đã trình bày chi tiết trong buổi nói chuyện này, chúng có nhiều điểm tương đồng với các phương pháp từ vựng như BM25: biểu diễn trên mỗi token tránh được việc nén mạnh của các mô hình đơn vector, mang lại cho chúng những điểm mạnh tương tự về truy xuất ngoài miền và ngữ cảnh dài. Nhưng chúng cũng khắc phục được điểm yếu của tìm kiếm từ vựng bằng cách tận dụng học sâu để thực hiện khớp mềm, giúp chúng mạnh mẽ khi truy vấn và tài liệu liên quan không chia sẻ các thuật ngữ chính xác.</p>
+<p>Truy xuất mã là một lĩnh vực mà các thuộc tính này đặc biệt liên quan — và nơi tìm kiếm từ vựng vẫn chiếm ưu thế. Nhiều tác nhân lập trình vẫn dựa vào grep cơ bản để điều hướng cơ sở mã, và vì những lý do chính đáng: tìm kiếm ngữ nghĩa thường yêu cầu lưu trữ từ xa mã nhạy cảm và giữ cho chỉ mục đồng bộ với cơ sở mã thay đổi nhanh chóng là khó khăn. Tuy nhiên, những thách thức truy xuất mà các tác nhân gặp phải — tìm kiếm các triển khai liên quan trên các kho lưu trữ không quen thuộc, khớp ý định thay vì từ khóa chính xác — chính là những lĩnh vực mà các mô hình tương tác muộn xuất sắc. Theo hiểu biết của chúng tôi, các mô hình kiểu ColBERT chưa từng được nghiên cứu công khai cho truy xuất mã.</p>
+<p>Để lấp đầy khoảng trống này, chúng tôi giới thiệu LateOn-Code, hai mô hình tương tác muộn chuyên biệt cho truy xuất mã. Vì chúng tôi tin rằng truy xuất mã nên được thực hiện cục bộ, cả hai mô hình đều đủ nhỏ để chạy hiệu quả trên CPU trong khi dẫn đầu các bảng xếp hạng vượt xa trọng lượng của chúng. Sau đó, chúng tôi giới thiệu ColGrep, một công cụ dòng lệnh Rust giúp các mô hình này trở nên thiết thực: nó tái tạo giao diện grep mà các tác nhân đã biết, bổ sung nó bằng xếp hạng ngữ nghĩa và truy vấn kết hợp regex + ngữ nghĩa, và chạy hoàn toàn cục bộ với các bản cập nhật chỉ mục tăng dần nhanh chóng. Khi được tích hợp vào các tác nhân lập trình, nó giúp cung cấp câu trả lời tốt hơn đồng thời làm cho nó nhanh hơn và tiêu thụ ít token hơn. Chúng tôi tin rằng đây là những gì tìm kiếm mã cho các tác nhân nên trông như thế nào.</p>
+<hr>
+<h2 id="mô-hình-lateon-code">Mô hình LateOn-Code</h2>
+<p>Chúng tôi đã tiền huấn luyện các mô hình LateOn-Code theo phương pháp <strong>CoRNStack</strong>, sau đó là giai đoạn tinh chỉnh dành riêng cho tác vụ. Thay vì đào tạo từ đầu, chúng tôi bắt đầu với các mô hình đã mạnh về tìm kiếm miền chung, vì truy xuất mã thường liên quan đến ngôn ngữ tự nhiên: người dùng và tác nhân viết truy vấn bằng tiếng Anh thuần túy và tài liệu là văn bản thông thường.</p>
+<h3 id="mô-hình-cơ-sở">Mô hình cơ sở</h3>
+<p>Chúng tôi bắt đầu với hai mô hình ColBERT tốt nhất trên điểm chuẩn MTEB (Code) tương ứng với kích thước của chúng. Mô hình đầu tiên là mô hình LateOn nội bộ của chúng tôi, một phiên bản mới của <a href="https://huggingface.co/lightonai/GTE-ModernColBERT-v1">GTE-ModernColBERT-v1</a> được xây dựng trên ModernBERT-base (cũng được phát triển tại LightOn). Phiên bản này đã trải qua quá trình đào tạo sâu hơn đáng kể, đạt điểm 57 trên BEIR, cải thiện gần 2,5 điểm và do đó dẫn đầu bảng xếp hạng với biên độ lớn. Chúng tôi sẽ phát hành mô hình cơ sở này cùng với dữ liệu đào tạo và các mẫu boilerplate trong tương lai gần, vì vậy hãy theo dõi!</p>
+<p>LateOn-Code-edge là một mô hình nhỏ hơn dựa trên <strong>gia đình mô hình edge-colbert từ mixedbread</strong>, sử dụng biến thể nhỏ nhất (Ettin-17M) để đạt hiệu quả tối đa.</p>
+<p>Ngoài việc là các mô hình ColBERT mạnh mẽ, chúng tôi đã chọn các mô hình này vì cả hai đều dựa trên ModernBERT, và ngoài sự hài lòng khi tiếp tục nâng cao các mô hình của riêng mình, chúng tôi biết rằng các mô hình này đã được chế tạo cẩn thận với sự hỗ trợ mã ngay từ đầu.</p>
+<h3 id="đào-tạo">Đào tạo</h3>
+<p>Chúng tôi sử dụng dữ liệu <strong>CoRNStack</strong> để tiền huấn luyện các mô hình của chúng tôi, bao gồm 6 ngôn ngữ (Go, Java, JavaScript, PHP, Python và Ruby). Mỗi mẫu ghép nối một docstring văn bản với hàm tương ứng của nó làm tài liệu tích cực, cùng với các ví dụ tiêu cực được khai thác. Chúng tôi giới thiệu người đọc đến bài báo CoRNStack để biết chi tiết về quy trình tạo dữ liệu.</p>
+<p>Vì các ví dụ tiêu cực được khai thác cẩn thận loại bỏ nhu cầu về kích thước batch lớn, chúng tôi đào tạo với thiết lập tinh chỉnh giám sát tiêu chuẩn sử dụng kích thước batch 128. Truy xuất mã liên quan đến các truy vấn và tài liệu dài hơn đáng kể so với các thiết lập truy xuất thông thường. Các mô hình đa vector được biết là có khả năng khái quát hóa tốt cho các tài liệu dài hơn so với trong quá trình đào tạo, điều này ít được thiết lập hơn cho các truy vấn (mặc dù chúng tôi đã quan sát thấy một số khả năng khái quát hóa). Do đó, việc đào tạo trên các đầu vào dài khi có thể vẫn là ưu tiên. Chúng tôi nhận thấy rằng độ dài truy vấn và tài liệu là 256 và 2048 tương ứng bao phủ phần lớn dữ liệu đào tạo. Các giá trị này không đáp ứng được các bộ dữ liệu đánh giá, nhưng chúng tôi không có dữ liệu đào tạo dài hơn.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/609bbe2f4932693ca2009d6a/9D7VgtG8i5zSH8ujL6NMu.png" alt="Query and document lengths for the different training splits"></p>
+<p>Chúng tôi đào tạo với học tương phản tiêu chuẩn, đảm bảo mỗi batch chứa các mẫu từ một phân chia ngôn ngữ duy nhất để ngăn chặn việc học phím tắt giữa các ngôn ngữ. Sự khác biệt chính so với thiết lập tương phản PyLate thông thường là lấy mẫu tiêu cực dựa trên softmax từ CoRNStack: thay vì chỉ giữ lại top-k ví dụ tiêu cực hoặc lấy mẫu ngẫu nhiên, chúng tôi sử dụng điểm số khai thác để suy ra xác suất lấy mẫu thông qua softmax. Điều này giữ cho sự tập trung vào các ví dụ tiêu cực khó nhất trong khi vẫn bảo tồn một số sự đa dạng. Chúng tôi lấy mẫu 15 ví dụ tiêu cực cho mỗi truy vấn tại mỗi bước với nhiệt độ 0,05 (tập trung mạnh vào các ví dụ tiêu cực khó nhất). Các tác giả CoRNStack báo cáo rằng một chương trình giảng dạy về nhiệt độ, bắt đầu cao để đa dạng hóa và giảm dần trong quá trình đào tạo, là có lợi. Các bài kiểm tra nhanh của chúng tôi cho thấy không có sự khác biệt đáng kể, vì vậy chúng tôi đã giữ nhiệt độ cố định, mặc dù thử nghiệm kỹ lưỡng hơn có thể mang lại lợi ích trên một số bộ dữ liệu.</p>
+<h3 id="tinh-chỉnh">Tinh chỉnh</h3>
+<p>Mặc dù các mô hình tiền huấn luyện của chúng tôi đã đạt được kết quả rất cạnh tranh trên MTEB Code (đặc biệt là trên CodeSearchNetwork), một số đối thủ cạnh tranh đã đạt điểm cao hơn nhiều trên bộ dữ liệu AppsRetrieval trong khi kém hơn hoặc bằng trên các phân chia khác, một khoảng cách ẩn bởi điểm số trung bình. Vì điều này rất có thể là một vấn đề về miền, chúng tôi đã tinh chỉnh trên các tập đào tạo của các bộ dữ liệu CoIR khác nhau. Theo phương pháp luận <a href="https://arxiv.org/abs/2407.15831">nv-retriever</a>, chúng tôi lọc bỏ các ví dụ tiêu cực được khai thác với điểm tương tự trên 99% so với điểm tích cực. Chúng tôi giữ lại 50 ví dụ tiêu cực cho mỗi truy vấn, lấy mẫu ngẫu nhiên 15 ví dụ mỗi bước và đào tạo với kích thước batch 128. Để cho phép tái tạo và mở rộng, chúng tôi phát hành <a href="https://huggingface.co/datasets/lightonai/nv-embed-supervised-distill-dedup-code">dữ liệu chưa lọc</a> với 2048 ví dụ tiêu cực được khai thác cùng với điểm số của chúng, vì vậy bất kỳ ai cũng có thể chọn ngưỡng lọc của riêng mình. Việc tinh chỉnh này cải thiện đáng kể hiệu suất, cả bằng cách thêm các khả năng mới (đào tạo trên các tác vụ ngoài việc chuyển đổi tài liệu sang mã) và bằng cách đưa mô hình vào miền.</p>
+<h3 id="kết-quả">Kết quả</h3>
+<p>Chúng tôi báo cáo kết quả trên điểm chuẩn MTEB (Code, v1) cho cả hai mô hình LateOn-Code cùng với các đối thủ cạnh tranh chính. Do các hạn chế về bộ nhớ, chúng tôi đánh giá các mô hình LateOn với giới hạn độ dài truy vấn và tài liệu tối đa lần lượt là 1024 và 2048. Chúng tôi cũng bao gồm điểm số BM25 làm điểm tham chiếu cho tìm kiếm từ vựng (tương tự grep). Mô tả bộ dữ liệu được cung cấp bên dưới.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Model</th>
+          <th style="text-align: left">Params</th>
+          <th style="text-align: left">Type</th>
+          <th style="text-align: left"><strong>Avg</strong></th>
+          <th style="text-align: left">Apps</th>
+          <th style="text-align: left">COIR CSNet</th>
+          <th style="text-align: left">CodeEdit</th>
+          <th style="text-align: left">CodeFB MT</th>
+          <th style="text-align: left">CodeFB ST</th>
+          <th style="text-align: left">CSNet CC</th>
+          <th style="text-align: left">CSNet</th>
+          <th style="text-align: left">CodeTrans Contest</th>
+          <th style="text-align: left">CodeTrans DL</th>
+          <th style="text-align: left">CosQA</th>
+          <th style="text-align: left">StackOF QA</th>
+          <th style="text-align: left">Synth T2SQL</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Baseline</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">BM25</td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">Lexical</td>
+          <td style="text-align: left">44.41</td>
+          <td style="text-align: left">4.76</td>
+          <td style="text-align: left">40.86</td>
+          <td style="text-align: left">49.85</td>
+          <td style="text-align: left">59.19</td>
+          <td style="text-align: left">68.15</td>
+          <td style="text-align: left">53.97</td>
+          <td style="text-align: left">60.01</td>
+          <td style="text-align: left">47.78</td>
+          <td style="text-align: left">34.42</td>
+          <td style="text-align: left">18.75</td>
+          <td style="text-align: left">70.26</td>
+          <td style="text-align: left">24.94</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Small (≤50M)</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">granite-embedding-small-english-r2</td>
+          <td style="text-align: left">47M</td>
+          <td style="text-align: left">Single vector</td>
+          <td style="text-align: left">55.84</td>
+          <td style="text-align: left">13.54</td>
+          <td style="text-align: left">60.46</td>
+          <td style="text-align: left">57.16</td>
+          <td style="text-align: left">52.19</td>
+          <td style="text-align: left">76.85</td>
+          <td style="text-align: left">48.42</td>
+          <td style="text-align: left">78.28</td>
+          <td style="text-align: left"><strong>77.63</strong></td>
+          <td style="text-align: left">33.63</td>
+          <td style="text-align: left">35.58</td>
+          <td style="text-align: left"><strong>90.04</strong></td>
+          <td style="text-align: left">46.33</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><a href="https://huggingface.co/lightonai/LateOn-Code-edge-pretrain">LateOn-Code-edge-pretrain</a></td>
+          <td style="text-align: left">17M</td>
+          <td style="text-align: left">Multi vector</td>
+          <td style="text-align: left">57.50</td>
+          <td style="text-align: left">10.81</td>
+          <td style="text-align: left">73.78</td>
+          <td style="text-align: left">62.07</td>
+          <td style="text-align: left">51.92</td>
+          <td style="text-align: left">76.65</td>
+          <td style="text-align: left">63.22</td>
+          <td style="text-align: left"><strong>88.03</strong></td>
+          <td style="text-align: left">71.31</td>
+          <td style="text-align: left">33.16</td>
+          <td style="text-align: left">30.53</td>
+          <td style="text-align: left">74.63</td>
+          <td style="text-align: left">53.83</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><a href="https://huggingface.co/lightonai/LateOn-Code-edge">LateOn-Code-edge</a></td>
+          <td style="text-align: left">17M</td>
+          <td style="text-align: left">Multi vector</td>
+          <td style="text-align: left"><strong>66.64</strong></td>
+          <td style="text-align: left"><strong>26.22</strong></td>
+          <td style="text-align: left"><strong>81.60</strong></td>
+          <td style="text-align: left"><strong>62.21</strong></td>
+          <td style="text-align: left"><strong>74.25</strong></td>
+          <td style="text-align: left"><strong>87.12</strong></td>
+          <td style="text-align: left"><strong>79.26</strong></td>
+          <td style="text-align: left">87.85</td>
+          <td style="text-align: left">75.36</td>
+          <td style="text-align: left"><strong>37.08</strong></td>
+          <td style="text-align: left"><strong>40.54</strong></td>
+          <td style="text-align: left">85.63</td>
+          <td style="text-align: left"><strong>62.57</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><em>Δ (fine-tune - pretrain)</em></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"><em>+9.14</em></td>
+          <td style="text-align: left"><em>+15.41</em></td>
+          <td style="text-align: left"><em>+7.82</em></td>
+          <td style="text-align: left"><em>+0.14</em></td>
+          <td style="text-align: left"><em>+22.33</em></td>
+          <td style="text-align: left"><em>+10.47</em></td>
+          <td style="text-align: left"><em>+16.04</em></td>
+          <td style="text-align: left"><em>-0.18</em></td>
+          <td style="text-align: left"><em>+4.05</em></td>
+          <td style="text-align: left"><em>+3.92</em></td>
+          <td style="text-align: left"><em>+10.01</em></td>
+          <td style="text-align: left"><em>+11.00</em></td>
+          <td style="text-align: left"><em>+8.74</em></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Medium (100M–300M)</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">granite-embedding-english-r2</td>
+          <td style="text-align: left">149M</td>
+          <td style="text-align: left">Single vector</td>
+          <td style="text-align: left">57.22</td>
+          <td style="text-align: left">13.96</td>
+          <td style="text-align: left">64.65</td>
+          <td style="text-align: left">59.35</td>
+          <td style="text-align: left">52.54</td>
+          <td style="text-align: left">77.18</td>
+          <td style="text-align: left">47.67</td>
+          <td style="text-align: left">80.79</td>
+          <td style="text-align: left">77.07</td>
+          <td style="text-align: left">35.03</td>
+          <td style="text-align: left">37.01</td>
+          <td style="text-align: left">91.80</td>
+          <td style="text-align: left">49.55</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">CodeRankEmbed</td>
+          <td style="text-align: left">137M</td>
+          <td style="text-align: left">Single vector</td>
+          <td style="text-align: left">60.47</td>
+          <td style="text-align: left">23.45</td>
+          <td style="text-align: left">83.20</td>
+          <td style="text-align: left">59.98</td>
+          <td style="text-align: left">42.61</td>
+          <td style="text-align: left">78.10</td>
+          <td style="text-align: left">68.89</td>
+          <td style="text-align: left">89.50</td>
+          <td style="text-align: left">66.43</td>
+          <td style="text-align: left">34.49</td>
+          <td style="text-align: left">35.17</td>
+          <td style="text-align: left">80.53</td>
+          <td style="text-align: left">63.27</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">GTE-ModernBERT</td>
+          <td style="text-align: left">149M</td>
+          <td style="text-align: left">Single vector</td>
+          <td style="text-align: left">71.66</td>
+          <td style="text-align: left">57.72</td>
+          <td style="text-align: left">83.10</td>
+          <td style="text-align: left">55.83</td>
+          <td style="text-align: left"><strong>86.15</strong></td>
+          <td style="text-align: left">86.00</td>
+          <td style="text-align: left"><strong>93.61</strong></td>
+          <td style="text-align: left">88.76</td>
+          <td style="text-align: left">72.35</td>
+          <td style="text-align: left">37.27</td>
+          <td style="text-align: left">43.36</td>
+          <td style="text-align: left">91.14</td>
+          <td style="text-align: left"><strong>64.61</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">embeddinggemma-300m</td>
+          <td style="text-align: left">300M</td>
+          <td style="text-align: left">Single vector</td>
+          <td style="text-align: left">68.76</td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->84.39<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left">75.54</td>
+          <td style="text-align: left">62.10</td>
+          <td style="text-align: left">51.42</td>
+          <td style="text-align: left">80.26</td>
+          <td style="text-align: left">73.71</td>
+          <td style="text-align: left">90.15</td>
+          <td style="text-align: left">85.51</td>
+          <td style="text-align: left">33.52</td>
+          <td style="text-align: left">43.60</td>
+          <td style="text-align: left">86.47</td>
+          <td style="text-align: left">58.42</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><a href="https://huggingface.co/lightonai/LateOn-Code-pretrain">LateOn-Code-pretrain</a></td>
+          <td style="text-align: left">149M</td>
+          <td style="text-align: left">Multi vector</td>
+          <td style="text-align: left">63.77</td>
+          <td style="text-align: left">23.09</td>
+          <td style="text-align: left">80.27</td>
+          <td style="text-align: left"><strong>68.74</strong></td>
+          <td style="text-align: left">50.21</td>
+          <td style="text-align: left">82.66</td>
+          <td style="text-align: left">71.47</td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->91.05<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left">82.20</td>
+          <td style="text-align: left">34.46</td>
+          <td style="text-align: left">34.15</td>
+          <td style="text-align: left">85.61</td>
+          <td style="text-align: left">61.34</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><a href="https://huggingface.co/lightonai/LateOn-Code">LateOn-Code</a></td>
+          <td style="text-align: left">149M</td>
+          <td style="text-align: left">Multi vector</td>
+          <td style="text-align: left"><strong>74.12</strong></td>
+          <td style="text-align: left">54.76</td>
+          <td style="text-align: left"><strong>86.57</strong></td>
+          <td style="text-align: left">64.99</td>
+          <td style="text-align: left"><strong>82.22</strong></td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->90.40<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left">89.32</td>
+          <td style="text-align: left">90.40</td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->87.44<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->41.00<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->45.23<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->93.43<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left">63.67</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><em>Δ (fine-tune - pretrain)</em></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"><em>+10.35</em></td>
+          <td style="text-align: left"><em>+31.67</em></td>
+          <td style="text-align: left"><em>+6.30</em></td>
+          <td style="text-align: left"><em>-3.75</em></td>
+          <td style="text-align: left"><em>+32.01</em></td>
+          <td style="text-align: left"><em>+7.74</em></td>
+          <td style="text-align: left"><em>+17.85</em></td>
+          <td style="text-align: left"><em>-0.65</em></td>
+          <td style="text-align: left"><em>+5.24</em></td>
+          <td style="text-align: left"><em>+6.54</em></td>
+          <td style="text-align: left"><em>+11.08</em></td>
+          <td style="text-align: left"><em>+7.82</em></td>
+          <td style="text-align: left"><em>+2.33</em></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Large (≥500M)</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">C2LLM-0.5B</td>
+          <td style="text-align: left">500M</td>
+          <td style="text-align: left">Single vector</td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->75.46<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left">61.02</td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->86.71<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->71.39<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->92.29<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left">88.63</td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->96.29<!-- raw HTML omitted --></strong></td>
+          <td style="text-align: left">89.20</td>
+          <td style="text-align: left">84.27</td>
+          <td style="text-align: left"><strong>33.99</strong></td>
+          <td style="text-align: left"><strong>38.30</strong></td>
+          <td style="text-align: left">89.40</td>
+          <td style="text-align: left">74.08</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Qwen3-Embedding-0.6B</td>
+          <td style="text-align: left">600M</td>
+          <td style="text-align: left">Single vector</td>
+          <td style="text-align: left">75.42</td>
+          <td style="text-align: left"><strong>75.34</strong></td>
+          <td style="text-align: left">84.69</td>
+          <td style="text-align: left">64.42</td>
+          <td style="text-align: left">90.82</td>
+          <td style="text-align: left"><strong>86.39</strong></td>
+          <td style="text-align: left">91.72</td>
+          <td style="text-align: left"><strong>91.01</strong></td>
+          <td style="text-align: left"><strong>86.05</strong></td>
+          <td style="text-align: left"><strong>31.36</strong></td>
+          <td style="text-align: left">36.48</td>
+          <td style="text-align: left"><strong>89.99</strong></td>
+          <td style="text-align: left"><strong><!-- raw HTML omitted -->76.74<!-- raw HTML omitted --></strong></td>
+      </tr>
+  </tbody>
+</table>
+<p><em>Kết quả tốt nhất trên tất cả các kích thước được <!-- raw HTML omitted -->gạch chân<!-- raw HTML omitted -->. Kết quả tốt nhất trong mỗi danh mục kích thước được <!-- raw HTML omitted -->in đậm<!-- raw HTML omitted -->.</em></p>
+<p>Tin vào kết quả và muốn thử nghiệm các mô hình/sử dụng dữ liệu? Hãy xem bộ sưu tập <a href="https://huggingface.co/collections/lightonai/lateon-code">HuggingFace</a>.</p>
+<hr>
+<h2 id="colgrep">ColGrep</h2>
+<!-- raw HTML omitted -->
+<p>Các tác nhân lập trình tự động như Claude Code tìm kiếm cơ sở mã bằng grep. Chúng tránh tìm kiếm ngữ nghĩa vì những lý do chính đáng: nó thường yêu cầu lưu trữ từ xa mã nhạy cảm và giữ cho chỉ mục đồng bộ với cơ sở mã thay đổi nhanh chóng là khó khăn. Mặc dù tìm kiếm ngữ nghĩa chứng tỏ là hữu ích, đặc biệt đối với các cơ sở mã lớn, các tác nhân vẫn quản lý để tìm thấy những gì họ cần thông qua thử và sai, vậy tại sao phải bận tâm?</p>
+<p>ColGrep là câu trả lời của chúng tôi. Đây là một chương trình dòng lệnh Rust tái tạo giao diện grep mà các tác nhân đã biết, nhưng bổ sung nó với các khả năng phát hiện ý định và ngữ nghĩa của các mô hình tương tác muộn. Được cung cấp bởi LateOn-Code và Next-Plaid, cơ sở dữ liệu đa vector của chúng tôi được viết bằng Rust, ColGrep chạy hoàn toàn cục bộ: không có lưu trữ từ xa, không có dịch vụ API riêng biệt và các bản cập nhật chỉ mục tăng dần nhanh chóng được kích hoạt bởi bất kỳ thay đổi tệp nào. Nó được thiết kế đặc biệt cho các tác nhân lập trình như Claude Code, OpenCode hoặc Codex, những người tìm kiếm các chi tiết triển khai liên quan trước khi đề xuất chỉnh sửa hoặc tạo bản vá. Quan trọng là, ColGrep cũng hỗ trợ các truy vấn kết hợp: tác nhân có thể áp dụng các ràng buộc regex trước, giống như họ làm với grep, và sau đó để mô hình ngữ nghĩa xếp hạng các kết quả đã lọc theo ý định, nhận được những điều tốt nhất từ cả hai thế giới.</p>
+<!-- raw HTML omitted -->
+<h1 id="lập-chỉ-mục-dự-án-của-bạn">Lập chỉ mục dự án của bạn</h1>
+<p>colgrep init ./path/to/your/project</p>
+<h1 id="tìm-kiếm">Tìm kiếm</h1>
+<p>colgrep &ldquo;kết nối nhóm cơ sở dữ liệu&rdquo;</p>
+<h1 id="tích-hợp-với-claude-code">Tích hợp với Claude Code</h1>
+<p>colgrep &ndash;install-claude-code
+<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>Một phiên điển hình bắt đầu bằng một truy vấn được diễn đạt bằng ngôn ngữ tự nhiên:</p>
+<!-- raw HTML omitted -->
+<p>Tác nhân lập trình có thể chuyển sang chế độ chi tiết theo yêu cầu và chọn số dòng cần hiển thị:</p>
+<!-- raw HTML omitted -->
+<h4 id="phân-tích-cú-pháp">Phân tích cú pháp</h4>
+<p>Lần đầu tiên bạn truy vấn ColGrep, nó sẽ quét thư mục hiện tại, mã hóa mọi khối mã tìm thấy và lưu trữ các biểu diễn kết quả trong cơ sở dữ liệu đa vector trên đĩa. Bởi vì cơ sở dữ liệu được nhúng trong client, cả người dùng con người lẫn tác nhân lập trình không cần khởi động hoặc quản lý một dịch vụ API riêng biệt. Giao tiếp giữa client, mô hình và cơ sở dữ liệu vector diễn ra trực tiếp trong Rust thay vì qua HTTP.</p>
+<p>Colgrep phân tích cú pháp thư mục hiện tại trong khi tôn trọng các quy tắc bị bỏ qua (từ .gitignore) và loại trừ các thư mục chủ yếu chứa nội dung được tạo hoặc của bên thứ ba. Nó cũng thực thi giới hạn kích thước tệp, làm giảm xác suất các gói được tối ưu hóa hoặc đầu ra máy chiếm ưu thế trong phân phối token. Kết quả là việc lập chỉ mục tập trung vào các phần của kho lưu trữ thường mang lại ý nghĩa.</p>
+<p>Phân tích cú pháp Colgrep chuyển đổi các tệp thành các đơn vị mã. Đối với các ngôn ngữ lập trình được hỗ trợ, tree-sitter tạo ra một AST được sử dụng để trích xuất các đơn vị như hàm, phương thức và khối loại. Đối với tài liệu và tệp cấu hình, ColGrep quay trở lại các đơn vị kiểu tài liệu để các tạo tác này vẫn có thể tìm kiếm được. Ở những nơi mà việc trích xuất cấu trúc để lại khoảng trống, hệ thống sẽ phát ra các đơn vị RawCode bổ sung để các câu lệnh cấp cao nhất, các phần nhập khẩu và logic khởi tạo rời rạc vẫn được lập chỉ mục. Thuộc tính phạm vi này rất quan trọng đối với truy xuất, bởi vì nhiều truy vấn &ldquo;X được cấu hình ở đâu?&rdquo; sẽ giải quyết các đoạn không nằm trong hàm.</p>
+<p>Biểu diễn được gửi đến mô hình không chỉ là mã thô. ColGrep thực hiện phân tích tĩnh theo lớp và tuần tự hóa kết quả thành một dạng văn bản có cấu trúc. Lớp AST cung cấp bằng chứng về giao diện như tên, chữ ký, danh sách tham số, chú thích trả về và nhận xét tài liệu. Lớp đồ thị cuộc gọi thêm ngữ cảnh quan hệ: các lệnh gọi được thu thập trong mỗi đơn vị trong quá trình duyệt AST và sau đó được giải quyết toàn cục để điền vào các trường &ldquo;gọi&rdquo; và &ldquo;được gọi bởi&rdquo;. Các lớp bổ sung thêm các bản tóm tắt thô về luồng điều khiển, ràng buộc biến và phụ thuộc, với các phụ thuộc được lọc để nhấn mạnh những phụ thuộc được tham chiếu trong đơn vị. Đầu ra là một bản ghi nhỏ gọn nhằm mục đích làm cho đơn vị có thể tìm kiếm theo ý định mà không yêu cầu truy vấn khớp với cú pháp chính xác.</p>
+<p><em>ColGrep hỗ trợ Python, TypeScript, JavaScript, Go, Rust, Java, C, C++, Ruby, C#, Kotlin, Swift, Scala, PHP, Lua, Elixir, Haskell, OCaml, R, Zig, Julia, SQL, Vue và Svelte với phân tích cú pháp tree-sitter đầy đủ để trích xuất cấu trúc, cùng với HTML, Markdown, Văn bản thuần túy, YAML, TOML, JSON, Dockerfile, Makefile, Shell/Bash, PowerShell, AsciiDoc và Org dưới dạng định dạng kiểu tài liệu.</em></p>
+<p>Một ví dụ đơn giản hóa về văn bản được xây dựng trông như thế này:</p>
+<!-- raw HTML omitted -->
+<p>Vì cơ sở dữ liệu đa vector hỗ trợ cập nhật tăng dần, ColGrep tránh việc lập chỉ mục lại các tệp không thay đổi. Lần đầu tiên chạy, ColGrep tính toán một hàm băm nội dung cho mỗi tệp được lập chỉ mục và lưu trữ nó cùng với các biểu diễn. Các lần chạy tiếp theo, nó so sánh hàm băm hiện tại của mỗi tệp với hàm băm đã lưu. Các tệp có hàm băm khớp sẽ bị bỏ qua hoàn toàn: không phân tích cú pháp, không gọi biểu diễn, không ghi cơ sở dữ liệu. Chỉ các tệp mới hoặc đã sửa đổi mới trải qua toàn bộ quy trình.</p>
+<p>Điều này giữ cho chi phí tìm kiếm phù hợp với mẫu phát triển phổ biến là các chỉnh sửa nhỏ và các truy vấn thường xuyên. Một nhà phát triển kéo một nhánh với một vài tệp đã thay đổi chỉ trả tiền cho những thay đổi đó, không phải cho toàn bộ kho lưu trữ. Điều tương tự cũng áp dụng cho các tác nhân lập trình gọi ColGrep lặp đi lặp lại trong một phiên: truy vấn đầu tiên xây dựng chỉ mục, và các truy vấn sau đó được hưởng lợi từ việc khởi động gần như tức thời. Lần tiếp theo tác nhân sẽ tạo ra, nó sẽ tái sử dụng chỉ mục hiện có.</p>
+<p>Phương pháp dựa trên hàm băm cũng xử lý việc xóa một cách duyên dáng. Khi một tệp biến mất khỏi cây làm việc, các mục của nó sẽ bị cắt tỉa khỏi cơ sở dữ liệu để các kết quả lỗi thời không bao giờ xuất hiện trong các truy vấn.</p>
+<h4 id="suy-luận">Suy luận</h4>
+<p>ColGrep sử dụng LateOn-Code-edge làm mô hình mặc định, mặc dù nó có thể được thay thế. Nó chạy trên ONNX Runtime và được lượng tử hóa int8 theo mặc định.</p>
+<p>Để hỗ trợ xếp hạng đa vector ở độ trễ tương tác, ColGrep sử dụng Next-Plaid. Nó nhóm các vector token thành các tâm và lưu trữ chúng trong một cấu trúc đảo ngược để truy xuất các ứng cử viên mà không cần quét toàn bộ kho ngữ liệu. Nó cũng lượng tử hóa các phần dư để giảm dung lượng lưu trữ và giữ cho việc xếp hạng gần đúng phải chăng. Chỉ mục kết quả được lưu dưới dạng các tệp ánh xạ bộ nhớ, vì vậy các truy vấn có thể chạy mà không cần tải trước mọi thứ vào bộ nhớ và hệ điều hành có thể tải vào chỉ những phần thực sự được truy cập.</p>
+<p>Siêu dữ liệu được lưu trữ trong SQLite và ColGrep sử dụng bộ lọc SQL trước khi xếp hạng vector. Điều này hỗ trợ việc sử dụng kết hợp, nơi một ràng buộc từ vựng được áp dụng trước và xếp hạng ngữ nghĩa được áp dụng sau. <em>Ví dụ: một tác nhân có thể yêu cầu các đơn vị ứng cử viên chứa chữ ký hàm bất đồng bộ Rust cụ thể, sau đó yêu cầu xếp hạng ngữ nghĩa trong tập hợp con đó:</em></p>
+<!-- raw HTML omitted -->
+<p>Trong thực tế, giai đoạn lọc này cũng là nơi các biểu thức chính quy phức tạp hơn trở nên hữu ích, bởi vì bộ lọc được áp dụng trước khi xếp hạng ngữ nghĩa. Ví dụ, một regex tìm mã đợi futures (có hoặc không có truyền lỗi), sử dụng runtime tokio, hoặc tạo các closure bất đồng bộ chiếm quyền sở hữu môi trường của chúng:</p>
+<!-- raw HTML omitted -->
+<p>Mặc dù regex không thân thiện với con người, các tác nhân lập trình phần lớn hưởng lợi từ tính năng này và háo hức sử dụng nó. Grep mang đến cho các tác nhân một cách để giảm không gian tìm kiếm xuống các ứng cử viên có liên quan cao. Trong ColGrep, Grep được mô phỏng bằng các truy vấn lọc Sqlite chống lại cơ sở dữ liệu đa vector của chúng tôi.</p>
+<p><em>Một ví dụ khác là tìm kiếm các mẫu thử lại theo kiểu Rust, đồng thời xếp hạng theo ý định về logic quay số lại. Regex giới hạn tập hợp ứng cử viên cho các vòng lặp vô hạn chứa các từ khóa liên quan đến thời gian (sleep, elapsed, timeout, retry, attempt), sau đó truy vấn ngữ nghĩa ưu tiên những thứ triển khai backoff theo cấp số nhân hoặc phục hồi lỗi tạm thời:</em></p>
+<!-- raw HTML omitted -->
+<p>Giống như grep, các tìm kiếm có thể được phạm vi theo thư mục, đường dẫn tệp hoặc mẫu phần mở rộng. <em>Tìm 3 hàm công khai hàng đầu trong thư mục xử lý API có liên quan ngữ nghĩa nhất đến việc xử lý điểm cuối, chỉ lọc mã Rust:</em></p>
+<!-- raw HTML omitted -->
+<p>Để viết tập lệnh và đánh giá, đầu ra JSON hiển thị siêu dữ liệu tệp, đơn vị và điểm số:</p>
+<!-- raw HTML omitted -->
+<p>Khi cung cấp cờ -n cho tìm kiếm để chuyển sang chế độ chi tiết, ColGrep chọn các dòng đại diện bằng cách xếp hạng sự chồng chéo token giữa các thuật ngữ truy vấn và văn bản mã. Sau đó, nó tính toán các cửa sổ ngữ cảnh xung quanh các dòng đó, hợp nhất các cửa sổ chồng chéo và đảm bảo rằng chữ ký vẫn hiển thị ngay cả khi dòng đại diện nằm sâu trong thân hàm, chẳng hạn.</p>
+<p>Toàn bộ hệ thống được hiểu tốt nhất như một quy trình: duyệt kho lưu trữ xác định kho ngữ liệu, phân tích cú pháp phân chia các tệp thành các đơn vị, phân tích chuyển đổi các đơn vị thành biểu diễn có cấu trúc, biểu diễn tạo ra các tính năng đa vector và chỉ mục kiểu PLAID hỗ trợ xếp hạng tương tác muộn ở độ trễ thấp. Bề mặt dòng lệnh vẫn nhỏ gọn, nhưng trình tự nội bộ được thiết kế rõ ràng để làm cho các truy vấn ở cấp độ ý định trở nên khả thi trên các kho lưu trữ thực tế.</p>
+<h4 id="đánh-giá">Đánh giá</h4>
+<p>Chúng tôi đã xây dựng ColGrep để cung cấp cho các tác nhân lập trình một công cụ tìm kiếm hiểu ý định và ngữ nghĩa cũng như hỗ trợ khớp mẫu mờ, để họ có thể tìm mã liên quan mà không cần biết nhận dạng chính xác. Trong thực tế, nhiều tác nhân vẫn dựa vào grep lặp đi lặp lại vì nó thường hoạt động tốt như, hoặc tốt hơn, tìm kiếm vector. Vậy câu hỏi quan trọng là: ColGrep có vượt trội hơn grep truyền thống không? Để trả lời, chúng tôi đã chạy đánh giá có hệ thống trên một số cơ sở mã nguồn mở tiêu chuẩn.</p>
+<p>Chúng tôi đã thiết kế điểm chuẩn để trả lời ba câu hỏi. Đầu tiên, ColGrep có giúp tác nhân tìm mã phù hợp không? Thứ hai, ColGrep có giảm tiêu thụ tài nguyên không? Thứ ba, ColGrep có tăng tốc điều hướng không?</p>
+<p>Chúng tôi đã sử dụng Claude Opus 4.5 trong Claude Code với hai cài đặt khác biệt để thực hiện đánh giá.</p>
+<ol>
+<li><strong>Baseline</strong>: Claude Opus 4.5 với Claude Code thông thường.</li>
+<li><strong>ColGrep</strong>: Claude Opus 4.5 với Claude Code đã cài đặt ColGrep và mô hình LateOn-Code-edge.</li>
+</ol>
+<p>Đánh giá của chúng tôi sẽ tập trung vào việc trả lời câu hỏi về các kho lưu trữ phổ biến có sẵn trên github.</p>
+<!-- raw HTML omitted -->
+<p>Chúng tôi yêu cầu Claude Code tạo 135 câu hỏi truy xuất mã trải dài ba cấp độ khó. Các câu hỏi <strong>dễ</strong> yêu cầu các điểm vào đã biết. Các câu hỏi <strong>trung bình</strong> yêu cầu hiểu ranh giới mô-đun. Các câu hỏi <strong>khó</strong> mô tả chức năng mà không đặt tên cho việc triển khai. Chúng tôi tạo một phiên Claude Code dành riêng cho mỗi câu hỏi.</p>
+<!-- raw HTML omitted -->
+<p>Chúng tôi đã tính toán tỷ lệ thắng trên tác vụ trả lời câu hỏi bằng cách phân tích các dấu vết của tác nhân lập trình với Opus 4.5 làm người đánh giá. Nó đã trao điểm cho tác nhân lập trình có dấu vết tốt nhất dẫn đến câu trả lời chính xác.</p>
+<p><a href="https://cdn-uploads.huggingface.co/production/uploads/61dd91afdb45389905634d35/wuzwMKYe0VMQj1_SbK1e5.png"><!-- raw HTML omitted --></a></p>
+<p>Cả baseline và ColGrep đều trả lời thành công hầu hết các câu hỏi, nhưng chúng khác biệt rõ rệt về nỗ lực cần thiết để đạt được điều đó. Trong các so sánh đối đầu trực tiếp, Opus 4.5 đánh giá câu trả lời của ColGrep tốt hơn trong 70% trường hợp. Hơn nữa, khi ColGrep được ưu tiên, nó đạt được những chiến thắng đó với ít tương tác hơn đáng kể, giảm khoảng 60.000 token cho mỗi câu hỏi trung bình.</p>
+<!-- raw HTML omitted -->
+<p>Hiệu suất thay đổi theo kho lưu trữ. ColGrep chiếm ưu thế trong kho lưu trữ <!-- raw HTML omitted --><!-- raw HTML omitted -->Datasets<!-- raw HTML omitted --><!-- raw HTML omitted -->, nơi nó thắng mọi câu hỏi. Nó cũng hoạt động tốt trên các kho lưu trữ <!-- raw HTML omitted --><!-- raw HTML omitted -->Accelerate, Optimum và Transformers<!-- raw HTML omitted --><!-- raw HTML omitted -->. Chúng tôi nghĩ rằng các cơ sở mã này thưởng cho sự hiểu biết ngữ nghĩa vì chúng sử dụng quy ước đặt tên mô tả nhưng không rõ ràng.</p>
+<!-- raw HTML omitted -->
+<h4 id="chiến-thắng-lớn-nhất">Chiến thắng lớn nhất</h4>
+<p>Một số câu hỏi cho thấy tiết kiệm token đáng kể. 10 trường hợp thành công hàng đầu tiết kiệm từ 159.000 đến 324.000 token mỗi trường hợp: giảm 50% đến 72% so với baseline.</p>
+<p><a href="https://cdn-uploads.huggingface.co/production/uploads/61dd91afdb45389905634d35/45KUn0k_TaBzIN_2AYkjR.png"><!-- raw HTML omitted --></a></p>
+<p>Các câu hỏi khái niệm về bộ nhớ đệm, đồng bộ hóa và cấu hình hưởng lợi nhiều nhất từ tìm kiếm ngữ nghĩa. Các truy vấn này mô tả hành vi thay vì đặt tên trực tiếp cho các hàm.</p>
+<h4 id="ngoại-lệ-trl">Ngoại lệ TRL</h4>
+<p>TRL là kho lưu trữ duy nhất nơi baseline liên tục vượt trội hơn ColGrep. TRL sử dụng tên hàm mô tả rất chi tiết mà grep khớp trực tiếp. Khi câu hỏi chứa bộ nhận dạng chính xác, khớp mẫu sẽ tìm thấy nó ngay lập tức. Tìm kiếm ngữ nghĩa trả về kết quả rộng hơn cần phải tinh chỉnh.</p>
+<p><a href="https://cdn-uploads.co/production/uploads/61dd91afdb45389905634d35/o-cvopi2ehwsegc6c3__K.png"><!-- raw HTML omitted --></a></p>
+<p>Các câu hỏi khó hơn cho thấy lợi ích lớn hơn. Đối với các câu hỏi dễ, ColGrep thắng 65% trường hợp với mức tiết kiệm khiêm tốn. Đối với các câu hỏi khó, tỷ lệ thắng là 69% nhưng mức tiết kiệm trung bình gần gấp ba lần. Mẫu này có ý nghĩa. Các câu hỏi dễ thường có khớp từ khóa trực tiếp. Các câu hỏi khó mô tả chức năng bằng ngôn ngữ tự nhiên, đó chính xác là những gì các biểu diễn ngữ nghĩa nắm bắt được.</p>
+<!-- raw HTML omitted -->
+<p>Đối với các nhóm chạy hàng nghìn truy vấn tác nhân mỗi ngày, mức giảm 15,7% cộng lại nhanh chóng. Tuy nhiên, đánh giá của chúng tôi đo lường việc trả lời câu hỏi trên một cơ sở mã lớn, vì vậy kết quả có thể không áp dụng trực tiếp cho các tác vụ lập trình, hoặc chúng có thể mở rộng quy mô khác nhau trong cài đặt đó. Chúng tôi cũng bỏ qua bộ nhớ đệm có thể giảm chi phí để có các so sánh tương đương.</p>
+<!-- raw HTML omitted -->
+<p>Không phải mọi câu hỏi đều tạo ra lợi ích lớn. ColGrep tiết kiệm token trong 70% câu hỏi. Các chiến thắng tập trung ở nhóm tiết kiệm vừa phải (0–50k), nhưng các chiến thắng lớn (&gt;50k) chiếm 27,5% trường hợp và thúc đẩy phần lớn lợi ích tổng hợp.</p>
+<!-- raw HTML omitted -->
+<p>ColGrep giảm số lượng thao tác tìm kiếm cần thiết để trả lời một câu hỏi. Các tác nhân baseline liên tục đưa ra các lệnh grep và glob, tinh chỉnh các mẫu cho đến khi chúng tìm thấy những gì chúng cần. ColGrep thường trả về kết quả hữu ích ngay từ truy vấn đầu tiên hoặc thứ hai. ColGrep yêu cầu ít thao tác tìm kiếm hơn 56% so với baseline. Hiệu quả này cộng dồn: ít tìm kiếm hơn có nghĩa là ít lệnh gọi công cụ hơn, ít token hơn được sử dụng cho kết quả trung gian và hội tụ nhanh hơn đến câu trả lời.</p>
+<p>ColGrep tiết kiệm nhiều token nhất trong hai tình huống. Đầu tiên, đối với các câu hỏi phức tạp, đặc biệt là những câu hỏi có nhiều token dưới baseline, nơi tìm kiếm ngữ nghĩa giúp điều hướng. Thứ hai, khi nó giảm số lượng lượt, nó thường cũng giảm token vì tìm kiếm trực tiếp hơn.</p>
+<p>Nhìn chung, ColGrep thắng cả về số lượt ít hơn và token ít hơn trong 49% câu hỏi. Ngay cả trong 13% trường hợp mất nhiều lượt hơn, nó vẫn tiết kiệm token tổng thể vì mỗi lượt truy xuất các kết quả hữu ích hơn.</p>
+<h4 id="tìm-kiếm-kết-hợp">Tìm kiếm kết hợp</h4>
+<p>ColGrep tránh việc buộc phải đánh đổi giữa tìm kiếm ngữ nghĩa và từ vựng bằng cách hỗ trợ các truy vấn kết hợp. Nó trước tiên áp dụng một ràng buộc regex, giống như grep, và sau đó thực hiện xếp hạng ngữ nghĩa trên các kết quả còn lại.</p>
+<p>Điều này đặc biệt hữu ích cho các tác nhân lập trình. Một tác nhân có thể yêu cầu các ứng cử viên bao gồm một mẫu cụ thể, chẳng hạn như chữ ký hàm bất đồng bộ hoặc một trình trang trí cụ thể, và sau đó yêu cầu xếp hạng ngữ nghĩa trong tập hợp đã lọc đó. Giai đoạn regex thu hẹp không gian tìm kiếm thành các ứng cử viên có liên quan cao, và sau đó mô hình ngữ nghĩa xếp hạng các kết quả khớp với ý định tốt nhất.</p>
+<p>Ví dụ, nếu một tác nhân đang tìm kiếm logic thử lại với backoff theo cấp số nhân, nó có thể bắt đầu bằng cách lọc mã chứa các từ khóa liên quan đến thời gian như sleep, timeout, retry, hoặc attempt, và sau đó xếp hạng các kết quả khớp đó theo sự tương tự với &ldquo;backoff theo cấp số nhân với phục hồi lỗi tạm thời&rdquo;. Bộ lọc regex loại bỏ nhiều kết quả dương giả, trong khi xếp hạng ngữ nghĩa đưa các triển khai liên quan nhất lên đầu.</p>
+<p>Thiết kế kết hợp này cũng là lý do tại sao ColGrep không chỉ đơn giản thay thế grep. Nó kết hợp điểm mạnh của grep đồng thời mở rộng chúng. Các tác nhân kết hợp lọc từ vựng theo sau là xếp hạng ngữ nghĩa có thể vượt trội hơn cả hai phương pháp được sử dụng riêng lẻ.</p>
+<h4 id="giới-hạn">Giới hạn</h4>
+<p>Tác nhân lập trình ColGrep đã nhận được các hướng dẫn được chèn tự động qua một móc nối về cách sử dụng ColGrep thay vì grep. Tuy nhiên, ngay cả với hướng dẫn rõ ràng, các tác nhân vẫn chưa tận dụng đầy đủ khả năng của ColGrep, điều này cho thấy một cơ hội. Một tác nhân được đào tạo đặc biệt hoặc được nhắc nhở mạnh mẽ hơn để sử dụng khám phá ngữ nghĩa, lọc kết hợp và chế độ đầu ra nhẹ nhàng có thể sẽ làm tăng thêm khoảng cách. Tỷ lệ thắng 70% của chúng tôi đến từ một tác nhân đa năng khám phá giá trị của ColGrep một cách hữu cơ, và một tác nhân chuyên biệt có thể đẩy nó cao hơn.</p>
+<h4 id="chế-độ-chi-tiết-nghiên-cứu-điển-hình">Chế độ chi tiết, nghiên cứu điển hình</h4>
+<p>ColGrep cung cấp tùy chọn -n chi tiết, bổ sung số dòng và ngữ cảnh mã rộng hơn cho đầu ra của nó. Chúng tôi đã đánh giá cả hai cài đặt và kết quả rõ ràng ủng hộ chế độ nhẹ nhàng mà không cần -n.</p>
+<!-- raw HTML omitted -->
+<p>Trong thử nghiệm của chúng tôi, chế độ chi tiết tạo ra lượng văn bản gấp khoảng chín lần cho mỗi truy vấn mà không cải thiện độ chính xác. Ngữ cảnh bổ sung đó làm tăng cuộc trò chuyện, thúc đẩy các yêu cầu theo dõi dài hơn và cuối cùng tiêu thụ nhiều token hơn để đạt được câu trả lời tương tự. Khi ColGrep trả về các khối mã lớn hơn, tác nhân cuối cùng sẽ sàng lọc qua tài liệu dư thừa và thường xuyên xem lại cùng một nội dung.</p>
+<hr>
+<h2 id="điểm-chính">Điểm chính</h2>
+<p>ColGrep cung cấp những lợi ích rõ ràng cho việc tìm kiếm mã ngữ nghĩa. Trong các so sánh đối đầu, nó thắng 70% trường hợp, giảm 15,7% lượng token sử dụng trung bình và xử lý các câu hỏi khái niệm khó tốt hơn so với khớp mẫu thuần túy. Chế độ chi tiết làm tăng chi phí mà không mang lại lợi ích tương ứng, trong khi đầu ra nhẹ nhàng cộng với việc đọc tệp có mục tiêu luôn vượt trội hơn việc mở rộng mã nội tuyến. Đầu ra tối thiểu nên là mặc định.</p>
+<p>ColGrep cũng cho phép các truy vấn kết hợp kết hợp lọc regex kiểu grep với xếp hạng ngữ nghĩa. Điều này mở rộng và về cơ bản bao trùm việc khớp mẫu truyền thống thay vì thay thế nó. Các tác nhân kết hợp lọc ban đầu bằng các ràng buộc regex và sau đó áp dụng xếp hạng ngữ nghĩa có thể đạt được kết quả mà không phương pháp nào đạt được riêng lẻ.</p>
+<p>Chiến lược tác nhân tốt nhất kết hợp các ý tưởng này: sử dụng ColGrep để khám phá ngữ nghĩa, chuyển sang lọc kết hợp khi bạn biết các mẫu một phần và giữ cho đầu ra nhẹ nhàng trừ khi bạn cần độ chính xác ở cấp độ dòng ngay lập tức. Một tác nhân được đào tạo đặc biệt về các hành vi này có thể vượt qua tỷ lệ thắng 70% đạt được với nhắc chung chung.</p>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/lightonai/colgrep-lateon-code">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/5-days-ago/">5 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn cách sử dụng nhiều GPU với Hugging Face Transformers, so sánh Device Map và Tensor Parallelism.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/1f2ed8/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/60edd0133e2c73a9a21455f5/yK1G-Fv-YjYb7v_chkz3p.jpeg" alt="Tính toán và Cạnh tranh trong AI- Các FLOP khác nhau cho những người khác nhau" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Tính toán và Cạnh tranh trong AI- Các FLOP khác nhau cho những người khác nhau</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết thảo luận về các loại FLOP khác nhau và cách chúng được áp dụng trong AI.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/cbe1bf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/e07f50d16c5f50a606d3cb408df83dab.svg" alt="🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/c0e927/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/7468a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

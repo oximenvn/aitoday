@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Qwen3.5- Không Ai Đồng Ý Về Attention Nữa | AI Today - SkyAI</title>
+
+<meta name="description" content="Bài viết thảo luận về sự bất đồng quan điểm xung quanh cơ chế Attention trong mô hình Qwen3.5.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Qwen3.5- Không Ai Đồng Ý Về Attention Nữa</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Bài viết thảo luận về sự bất đồng quan điểm xung quanh cơ chế Attention trong mô hình Qwen3.5. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-17T00:00:00&#43;00:00">February 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            8 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/61b8e2ba285851687028d395/Rq3xWG7mJ3aCRoBsq340h.jpeg" alt="Qwen3.5- Không Ai Đồng Ý Về Attention Nữa">
+        <figcaption class="text-center italic text-xs">Bài viết thảo luận về sự bất đồng quan điểm xung quanh cơ chế Attention trong mô hình Qwen3.5.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="qwen35-không-ai-còn-đồng-ý-về-attention-nữa">Qwen3.5: Không ai còn đồng ý về Attention nữa</h1>
+<p>Vào ngày 16 tháng 2 năm 2026, nhóm Qwen của Alibaba đã ra mắt <strong>Qwen3.5-397B-A17B</strong>, mô hình nền tảng thế hệ tiếp theo của họ. Nếu bạn cảm thấy quen thuộc với thời điểm phát hành gần các ngày lễ, thì đó là điều dễ hiểu. GLM-5 ra mắt vào ngày 11 tháng 2. MiniMax M2.5 cũng xuất hiện cùng ngày. Kimi K2.5 đến vào ngày 27 tháng 1. Và bây giờ Qwen3.5 kết thúc giai đoạn trước kỳ nghỉ lễ. Hãy xem nó so sánh như thế nào với các sản phẩm khác.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/61b8e2ba285851687028d395/gfyAn6UrS5h7wZ2oNrIuA.jpeg" alt="Qwen3.5 release timing"></p>
+<h2 id="qwen35-thực-sự-là-gì">Qwen3.5 Thực sự là gì</h2>
+<p>Qwen3.5-397B-A17B là một mô hình Mixture-of-Experts (MoE) với 397 tỷ tham số, chỉ sử dụng 17 tỷ tham số hoạt động trên mỗi token. Phiên bản API được lưu trữ có tên là Qwen3.5-Plus, với cửa sổ ngữ cảnh 1 triệu token, tích hợp sẵn các công cụ và khả năng sử dụng công cụ thích ứng ngay lập tức.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/61b8e2ba285851687028d395/rvhZECILOG3cLpMyrimbl.png" alt="Qwen3.5 architecture diagram"></p>
+<p>Các cải tiến chính bao gồm:</p>
+<ul>
+<li>
+<p><strong>Kiến trúc Attention Lai (Hybrid Attention Architecture).</strong> Đây là một bước đột phá lớn về kiến trúc. Qwen3.5 kế thừa từ dòng Qwen3-Next, kết hợp Gated Delta Networks (một biến thể của linear attention) với Mixture-of-Experts thưa thớt. Mô hình luân phiên giữa các lớp Gated DeltaNet (linear attention) và các lớp attention đầy đủ theo tỷ lệ khoảng 3:1. Sebastian Raschka đã có một bài viết xuất sắc về cách thức hoạt động của nó, nhưng tóm lại là: cứ bốn khối transformer thì ba khối sử dụng linear attention (tỷ lệ với độ dài chuỗi gần như tuyến tính), và cứ khối thứ tư thì sử dụng attention đầy đủ tiêu chuẩn. Kết quả là một mô hình có thể xử lý ngữ cảnh dài hiệu quả hơn so với attention đầy đủ.
+Cơ chế Gated DeltaNet tự nó rút ra từ bài báo “Gated Delta Networks: Improving Mamba2 with Delta Rule”. Nó kết hợp cơ chế gated decay của Mamba2 với quy tắc delta để cập nhật các trạng thái ẩn. Gating đầu ra attention giúp loại bỏ các điểm tập trung attention (attention sinks) và các kích hoạt lớn, cải thiện sự ổn định khi huấn luyện ở quy mô lớn.</p>
+</li>
+<li>
+<p><strong>RL có khả năng mở rộng ở quy mô Agent.</strong> Qwen3.5 được huấn luyện bằng học tăng cường (reinforcement learning) được mở rộng trên những gì nhóm mô tả là &ldquo;môi trường triệu agent với các phân phối tác vụ ngày càng phức tạp&rdquo;. Điều này theo xu hướng mà chúng ta đã thấy từ Forge của MiniMax và Slime của Zhipu: cơ sở hạ tầng RL không đồng bộ được thiết kế để xử lý bản chất dài hạn, nhiều bước của các tác vụ agentic. Chi tiết ở đây còn khá ít trong bản phát hành ban đầu, nhưng sự nhấn mạnh vào &ldquo;khả năng thích ứng mạnh mẽ với thế giới thực&rdquo; cho thấy họ đã đầu tư rất nhiều vào sự đa dạng của môi trường trong quá trình hậu huấn luyện RL.</p>
+</li>
+<li>
+<p><strong>Nền tảng Vision-Language Thống nhất.</strong> Không giống như Qwen3, vốn có các dòng mô hình văn bản và hình ảnh riêng biệt (Qwen3 và Qwen3-VL), Qwen3.5 là mô hình đa phương thức tự nhiên ngay từ đầu. Huấn luyện tích hợp sớm trên các token đa phương thức có nghĩa là mô hình không cần bộ điều hợp hình ảnh riêng biệt. Nhóm tuyên bố hiệu suất tương đương thế hệ trước với Qwen3 trên các tác vụ văn bản trong khi vượt trội hơn Qwen3-VL về khả năng hiểu hình ảnh.</p>
+</li>
+<li>
+<p><strong>201 Ngôn ngữ.</strong> Mở rộng từ 119 ngôn ngữ của Qwen3 lên 201 ngôn ngữ và phương ngữ. Đây là phạm vi hỗ trợ ngôn ngữ rộng nhất so với bất kỳ mô hình mở nào mà tôi biết. Lưu ý rằng Qwen có xu hướng rất hào phóng với định nghĩa &ldquo;hỗ trợ ngôn ngữ&rdquo; của mình, và chất lượng không được đảm bảo cho các ngôn ngữ có tài nguyên thấp.</p>
+</li>
+</ul>
+<h2 id="attention--sparsity">Attention &amp; Sparsity</h2>
+<p>Cơ chế attention hiệu quả và tăng cường sparsity là hai xu hướng phổ biến với các bản phát hành gần đây. Mặc dù DeepSeek tiên phong trong lĩnh vực này, mọi phòng thí nghiệm lớn của Trung Quốc đều có cách tiếp cận riêng về cách xử lý attention:</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/61b8e2ba285851687028d395/VTdzZ6v38xlb5VVPWsXCS.png" alt="Attention mechanism comparison"></p>
+<p>Qwen3.5 và Kimi K2.5 đều áp dụng tỷ lệ lai 3:1 của linear-to-full attention, nhưng cách triển khai của chúng khác nhau: Qwen sử dụng <strong>scalar gating</strong> trên các lớp DeltaNet với attention có cổng cho các khối attention đầy đủ, trong khi Kimi sử dụng <strong>channel-wise gating</strong> (KDA) và kết hợp Multi-Head Latent Attention (MLA) từ DeepSeek V3. GLM-5 giữ nguyên Transformer quen thuộc nhưng bổ sung DeepSeek Sparse Attention ( <!-- raw HTML omitted -->DSA<!-- raw HTML omitted --> ) cho sparsity ở cấp độ token, cộng với <!-- raw HTML omitted -->MLA<!-- raw HTML omitted -->. MiniMax hoàn toàn sử dụng linear với <strong>Lightning Attention</strong> độc quyền.</p>
+<p>Số lượng tham số hoạt động cũng rất đáng để xem xét. Với 17B tham số hoạt động, Qwen3.5 thưa thớt hơn nhiều so với Qwen3-235B-A22B, nhưng tương đương với các bản phát hành gần đây khác:</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/61b8e2ba285851687028d395/YBDex6YmsAbMhbn-1jzP5.jpeg" alt="Active parameter count comparison"></p>
+<p>Đáng chú ý, MiniMax M2.5 có số lượng tham số hoạt động nhỏ nhất ở mức 10B và tỷ lệ kích hoạt tương tự Qwen3.5. Kimi K2.5 thậm chí còn thưa thớt hơn nhưng cũng lớn hơn đáng kể với 1T tham số tổng.</p>
+<h2 id="benchmarks">Benchmarks</h2>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/61b8e2ba285851687028d395/9oTtToO8BKZZO-NL0j-5l.png" alt="Reasoning and Math scores"></p>
+<ul>
+<li>
+<p><strong>Lập luận và Toán học.</strong> Qwen3.5 đạt 91.3 trên AIME 2026 và 94.8 trên HMMT Feb 25, đây là mức cạnh tranh nhưng thấp hơn các mô hình hoạt động tốt nhất (GPT-5.2 đạt 96.7 trên AIME 2026, Claude 93.3). Khả năng toán học tốt nhưng không chiếm ưu thế.</p>
+</li>
+<li>
+<p><strong>Kiến thức và Tuân thủ Hướng dẫn.</strong> Trên IFBench, nó đạt 76.5, vượt qua mọi mô hình trong so sánh, bao gồm cả GPT-5.2 (75.4) và bỏ xa Claude (58.0). MultiChallenge cho thấy câu chuyện tương tự: 67.6 so với 57.9 của GPT-5.2 và 54.2 của Claude. Mô hình có vẻ cực kỳ giỏi trong việc tuân theo các hướng dẫn phức tạp nhưng cần được xác nhận bằng kiểm tra thực tế.</p>
+</li>
+</ul>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/61b8e2ba285851687028d395/7uvi0r_uG5r_TA-wKu2P7.png" alt="Instruction Following and Knowledge scores"></p>
+<ul>
+<li>
+<p><strong>Agents.</strong> Các benchmark agentic vẽ nên một bức tranh thú vị. Qwen3.5 đạt 86.7 trên Tau2-Bench, chỉ đứng sau Claude (91.6). Trên MCPMark, nó đạt 46.1 so với 57.5 của GPT-5.2 và 42.3 của Claude. Trên BrowseComp, Qwen3.5 báo cáo hai con số tùy thuộc vào chiến lược: 69.0 với chiến lược gấp ngữ cảnh đơn giản và 78.6 sử dụng cùng chiến lược loại bỏ tất cả như DeepSeek-V3.2 và K2.5. Sự chia tách BrowseComp đáng chú ý vì nó nhấn mạnh mức độ điểm số agentic ngày càng phụ thuộc vào các lựa chọn scaffolding, chứ không chỉ khả năng thô.</p>
+</li>
+<li>
+<p><strong>Lập trình.</strong> Qwen3.5 đạt 76.4 trên SWE-bench Verified, về cơ bản ngang bằng với K2.5 (76.8) và Gemini 3 Pro (76.2), nhưng sau GPT-5.2 (80.0) và Claude (80.9). Trên SWE-bench Multilingual, nó làm tốt hơn với 72.0, ngang bằng GPT-5.2. SecCodeBench là một điểm mạnh: 68.3, ngang bằng GPT-5.2 (68.7) và Claude (68.6).</p>
+</li>
+<li>
+<p><strong>Vision.</strong> Là một mô hình đa phương thức tự nhiên, Qwen3.5 vượt trội ở đây. Nó đạt 85.0 trên MMMU (tăng từ 80.6 của Qwen3-VL!), 88.6 trên MathVision (vượt trước 86.6 của Gemini 3 Pro) và 90.8 trên OmniDocBench. Kết quả agent thị giác cũng vững chắc: 62.2 trên OSWorld-Verified và 66.8 trên AndroidWorld. Kết quả ZEROBench là 12 (so với 10 của Gemini và 9 của GPT-5.2) đáng chú ý với độ khó cực cao của benchmark này.</p>
+</li>
+</ul>
+<p>Qwen3.5 không phải là tốt nhất ở bất kỳ danh mục nào, nhưng nó cực kỳ toàn diện và dẫn đầu về khả năng tuân thủ hướng dẫn. Nó vượt trội đáng kể so với Qwen3-Max-Thinking của chính nó trên tất cả các phương diện mặc dù nhỏ hơn nhiều (397B so với 1T+).</p>
+<h2 id="bức-tranh-lớn-hơn">Bức tranh lớn hơn</h2>
+<ul>
+<li>
+<p><strong>Cơ chế attention là chiến trường mới.</strong> Một năm trước, câu hỏi là &ldquo;MoE hay dense?&rdquo;. Điều đó đã được giải quyết (và chúng ta có thể cảm ơn Llama 4 vì điều này). Bây giờ sự khác biệt nằm ở cách bạn xử lý attention: lai linear-full (Qwen3.5, K2.5), hoàn toàn linear (MiniMax), lựa chọn sparse (GLM-5). Dấu ấn của DeepSeek có mặt ở khắp mọi nơi (MLA trong K2.5 và GLM-5, DSA trong GLM-5), nhưng Gated DeltaNet hybrid từ Qwen3.5 (và được khởi xướng trong Qwen3-Next) mang đến một hướng đi mới.</p>
+</li>
+<li>
+<p><strong>Bối cảnh benchmark đã thay đổi để phù hợp với các khối lượng công việc agentic.</strong> Cả bốn sản phẩm ra mắt đều nhắm đến các tác vụ agentic. Các mô hình được đánh giá trên SWE-bench, BrowseComp, HLE với công cụ, TAU2-Bench và MCPMark. Kỷ nguyên của các benchmark chatbot với tư cách là trục đánh giá chính đã kết thúc. Sự phân tách BrowseComp của Qwen3.5 (69.0 so với 78.6 tùy thuộc vào chiến lược) là một lời nhắc nhở rằng điểm số agentic ngày càng là một hàm của scaffolding và quản lý ngữ cảnh, chứ không chỉ là trí thông minh thô.</p>
+</li>
+</ul>
+<h2 id="sắp-tới">Sắp tới</h2>
+<p>Việc Qwen3.5 chỉ ra mắt phiên bản 397B-A17B vào ngày đầu tiên (&ldquo;sẽ có thêm nhiều kích cỡ&rdquo;) cho thấy chúng ta sẽ thấy một loạt sản phẩm tương tự như Qwen3. Sẽ rất thú vị để xem liệu các biến thể nhỏ hơn cũng sẽ áp dụng kiến trúc DeltaNet lai hay không. Đối với bản phát hành này, có vẻ như Qwen3-Next đã hé lộ hướng đi này (trở lại tháng 9), nhưng Qwen3.5 là sự xác nhận ở quy mô sản xuất.</p>
+<p><strong>Liên kết nhanh:</strong></p>
+<ul>
+<li>Trọng lượng mô hình: <a href="https://huggingface.co/Qwen/Qwen3.5-397B-A17B">https://huggingface.co/Qwen/Qwen3.5-397B-A17B</a></li>
+<li>GitHub: <a href="https://github.com/QwenLM/Qwen3.5">https://github.com/QwenLM/Qwen3.5</a></li>
+<li>Blog: <a href="https://qwen.ai/blog?id=qwen3.5">https://qwen.ai/blog?id=qwen3.5</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/mlabonne/qwen35">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/about-2-hours-ago/">About 2 Hours Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn cách sử dụng nhiều GPU với Hugging Face Transformers, so sánh Device Map và Tensor Parallelism.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Một bài viết về Forge, một khung và thuật toán Agent RL có thể mở rộng.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/cbe1bf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/e07f50d16c5f50a606d3cb408df83dab.svg" alt="🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/c0e927/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/7468a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

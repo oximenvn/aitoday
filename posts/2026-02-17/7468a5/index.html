@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối | AI Today - SkyAI</title>
+
+<meta name="description" content="Giới thiệu LightOnOCR-2-1B, một họ mô hình OCR nhẹ và hiệu quả.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Giới thiệu LightOnOCR-2-1B, một họ mô hình OCR nhẹ và hiệu quả. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-17T00:00:00&#43;00:00">February 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            7 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối">
+        <figcaption class="text-center italic text-xs">Giới thiệu LightOnOCR-2-1B, một họ mô hình OCR nhẹ và hiệu quả.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="lightonocr-2-1b-bộ-mô-hình-ocr-hiệu-suất-cao-nhẹ-và-kết-thúc-đến-kết-thúc">LightOnOCR-2-1B: Bộ mô hình OCR hiệu suất cao, nhẹ và kết thúc-đến-kết thúc</h1>
+<p>Chúng tôi giới thiệu <strong>LightOnOCR-2-1B</strong>, thế hệ thứ hai của mô hình OCR thị giác-ngôn ngữ với 1 tỷ tham số, được tối ưu hóa để chuyển đổi các trang tài liệu (dưới dạng ảnh PDF) thành văn bản sạch, có thứ tự một cách tự nhiên mà <!-- raw HTML omitted -->không cần các quy trình nhiều bước<!-- raw HTML omitted -->. Ngoài khả năng nhận dạng văn bản, nó còn có thể xuất ra các hộp giới hạn (bounding box) cho các hình ảnh/đồ họa nhúng để các quy trình cần các chỉ dẫn bố cục nhẹ nhàng. LightOnOCR-2 được phát hành theo giấy phép Apache 2.0, cùng với một loạt các mô hình có trọng số mở (tập trung vào OCR và các biến thể có khả năng tạo hộp giới hạn, cộng với các mô hình cơ sở) mà cộng đồng có thể sử dụng để tinh chỉnh, điều chỉnh theo miền dữ liệu và các ứng dụng hướng bố cục.</p>
+<p><!-- raw HTML omitted -->Cập nhật ngày 26/01:<!-- raw HTML omitted --> Bài báo đã được công bố! Bài báo bao gồm toàn bộ công thức đào tạo bao gồm quy trình dữ liệu/chuẩn hóa, RLVR và chi tiết hợp nhất. Đọc nó <!-- raw HTML omitted -->tại đây<!-- raw HTML omitted -->.</p>
+<!-- raw HTML omitted -->
+<h2 id="điểm-nổi-bật">Điểm nổi bật:</h2>
+<ul>
+<li><strong>OCR tốt hơn:</strong> LightOnOCR-2-1B cải thiện đáng kể so với phiên bản đầu tiên của chúng tôi <!-- raw HTML omitted -->LightonOCR-1B-1025<!-- raw HTML omitted --> và hiện là công nghệ tiên tiến trên bảng xếp hạng OlmOCR, <!-- raw HTML omitted -->vượt trội hơn Chandra-9B hơn 1.5 điểm phần trăm về tổng thể<!-- raw HTML omitted -->, trong khi nhỏ hơn <!-- raw HTML omitted -->gần 9 lần và không cần sử dụng các quy trình<!-- raw HTML omitted -->.</li>
+<li><strong>Tốc độ:</strong> Nhanh hơn 3.3 lần so với Chandra OCR, 1.7 lần so với OlmOCR, 5 lần so với dots.ocr, 2 lần so với PaddleOCR-VL-0.9B, 1.73 lần so với DeepSeekOCR.</li>
+<li><strong>Gia đình mô hình:</strong> Chúng tôi cũng phát hành các mô hình bổ sung, bao gồm các <!-- raw HTML omitted -->biến thể hộp giới hạn<!-- raw HTML omitted --> (để định vị hình ảnh nhúng) và <!-- raw HTML omitted -->mô hình cơ sở<!-- raw HTML omitted --> dành cho việc tinh chỉnh / hợp nhất / các công thức sau đào tạo.</li>
+<li>**Tập dữ liệu đào tạo<!-- raw HTML omitted -->: Chúng tôi phát hành hai tập dữ liệu chú thích mở được sử dụng trong quá trình đào tạo: <!-- raw HTML omitted --><!-- raw HTML omitted -->lightonai/LightOnOCR-mix-0126<!-- raw HTML omitted --><!-- raw HTML omitted --> bao gồm hơn 16 triệu trang tài liệu được chú thích chất lượng cao, và <!-- raw HTML omitted --><!-- raw HTML omitted -->lightonai/LightOnOCR-bbox-mix-0126<!-- raw HTML omitted --><!-- raw HTML omitted --> bao gồm gần 500 nghìn chú thích chất lượng cao bao gồm cả hộp giới hạn cho hình ảnh và đồ họa.</li>
+</ul>
+<h2 id="liên-kết">Liên kết:</h2>
+<ul>
+<li><!-- raw HTML omitted -->Mô hình:<!-- raw HTML omitted -->
+<ul>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->LightOnOCR-2-1B<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (mặc định; chỉ OCR, nhận dạng văn bản tốt nhất)</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->LightOnOCR-2-1B-bbox<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (tập trung vào bbox; OCR + định vị hình ảnh nhúng)</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->LightOnOCR-2-1B-ocr-soup<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (mô hình cân bằng, kết hợp OCR + bbox)</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->LightOnOCR-2-1B-base<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (mô hình cơ sở, chỉ OCR; để tinh chỉnh / hợp nhất)</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->LightOnOCR-2-1B-bbox-base<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (mô hình cơ sở có khả năng xuất hộp giới hạn hình ảnh; có thể dùng làm cơ sở cho đào tạo RLVR)</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->LightOnOCR-2-1B-bbox-soup<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (biến thể bbox đã hợp nhất. Kết hợp các cải tiến RLVR tập trung vào OCR vào mô hình bbox, cân bằng chất lượng OCR và định vị hình ảnh.)</li>
+</ul>
+</li>
+<li><!-- raw HTML omitted -->Tập dữ liệu:<!-- raw HTML omitted -->
+<ul>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->lightonai/LightOnOCR-mix-0126<!-- raw HTML omitted --><!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->lightonai/LightOnOCR-bbox-mix-0126<!-- raw HTML omitted --><!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->LightOnOCR-bbox-bench<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->: Bảng xếp hạng để đánh giá định vị hình ảnh trong tài liệu.</li>
+</ul>
+</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Bài đăng blog v1<!-- raw HTML omitted --><!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Bản thảo<!-- raw HTML omitted --><!-- raw HTML omitted --></li>
+</ul>
+<h2 id="khả-năng">Khả năng:</h2>
+<p>LightonOCR-2-1B thể hiện hiệu suất tổng thể được cải thiện đáng kể, nhờ vào chất lượng chú thích tốt hơn, tính nhất quán và quy mô; một tập dữ liệu đa dạng hơn tập trung vào các ngôn ngữ châu Âu với sự nhấn mạnh vào việc xử lý ảnh quét và khả năng chống chịu suy giảm chất lượng ảnh; cùng với các quy trình chuyên dụng để giảm thiểu vòng lặp.
+Chúng tôi cung cấp ở đây một số ví dụ được chọn lọc về nhận dạng văn bản cho <!-- raw HTML omitted -->LightOnOCR-2-1B<!-- raw HTML omitted -->, <!-- raw HTML omitted -->LightOnOCR-2-1B-bbox<!-- raw HTML omitted --> và để tham khảo, phiên bản đầu tiên của chúng tôi <!-- raw HTML omitted -->LightOnOCR-1-1025<!-- raw HTML omitted -->.</p>
+<!-- raw HTML omitted -->
+<p>Hãy thử nghiệm với tài liệu của riêng bạn trên <!-- raw HTML omitted -->khu vực demo<!-- raw HTML omitted --> của chúng tôi!</p>
+<h2 id="bảng-xếp-hạng-chính">Bảng xếp hạng chính:</h2>
+<h3 id="chất-lượng-nhận-dạng-văn-bản">Chất lượng nhận dạng văn bản</h3>
+<p>Kết quả chính. LightOnOCR-2-1B đạt 83.2 ± 0.9 trên OlmOCR-Bench — tốt nhất trong số các hệ thống chúng tôi đã đánh giá — trong khi chỉ sử dụng 1 tỷ tham số. Các cải tiến nhất quán trên tất cả các danh mục, với những bước đột phá đáng chú ý trên ArXiv, ảnh quét cũ có chứa công thức toán học và bảng biểu, nhờ vào hỗn hợp đào tạo sạch hơn/lớn hơn, phạm vi bao phủ khoa học mạnh mẽ hơn và đào tạo ở độ phân giải cao hơn.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->Bảng 1: Kết quả OlmOCR-Bench (không bao gồm danh mục tiêu đề/chân trang). Kết quả tốt nhất theo từng cột được làm nổi bật bằng màu xanh lam và tốt thứ hai được in đậm. Kết quả được lấy từ các công trình đã xuất bản tương ứng; chúng tôi cũng đánh giá DeepSeekOCR và API Mistral OCR 3 vì chúng không báo cáo số liệu OlmOCR-Bench.<!-- raw HTML omitted --></p>
+<h3 id="tốc-độ">Tốc độ</h3>
+<p>LightOnOCR được thiết kế để tích hợp vào các quy trình tài liệu quy mô lớn trong sản xuất, nơi năng suất thường quan trọng như độ chính xác. Để nắm bắt được ràng buộc thực tế đó, chúng tôi đo lường hiệu quả suy luận bằng cách chạy toàn bộ đánh giá OlmOCR-Bench từ đầu đến cuối (1.403 trang) và báo cáo số trang mỗi giây: tổng số trang chia cho thời gian thực tế cần thiết để hoàn thành việc đánh giá.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->Bảng 2: Thông lượng suy luận trên một NVIDIA H100 (80GB).<!-- raw HTML omitted --></p>
+<h2 id="chúng-tôi-đang-phát-hành-gì">Chúng tôi đang phát hành gì:</h2>
+<p>LightOnOCR-2 được phát hành dưới dạng một gia đình mô hình nhỏ để bạn có thể chọn sự cân bằng phù hợp cho quy trình làm việc của mình thay vì ép mọi thứ vào một mô hình duy nhất.</p>
+<h3 id="mô-hình-mặc-định-ocr-tốt-nhất">Mô hình mặc định: OCR tốt nhất</h3>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->LightOnOCR-2-1B<!-- raw HTML omitted --><!-- raw HTML omitted --> là mô hình <!-- raw HTML omitted -->chỉ OCR<!-- raw HTML omitted --> và là khuyến nghị mặc định của chúng tôi cho hầu hết các trường hợp sử dụng. Nếu nhiệm vụ của bạn là “chuyển đổi PDF thành văn bản/Markdown sạch một cách đáng tin cậy”, thì đây là lựa chọn tốt nhất để sử dụng vì nó là lựa chọn mạnh mẽ nhất về chất lượng nhận dạng văn bản.</p>
+<h3 id="ocr--chỉ-dẫn-bố-cục-nhẹ-nhàng-các-biến-thể-có-khả-năng-tạo-hộp-giới-hạn-bbox">OCR + chỉ dẫn bố cục nhẹ nhàng: các biến thể có khả năng tạo hộp giới hạn (bbox)</h3>
+<p>Chúng tôi cũng phát hành các mô hình có khả năng bbox có thể xuất <!-- raw HTML omitted -->hộp giới hạn cho các hình ảnh/đồ họa nhúng<!-- raw HTML omitted --> (ngoài OCR). Điều này hữu ích khi bạn muốn định vị nhẹ nhàng (ví dụ: “trích xuất văn bản, và cho tôi biết vị trí của các hình ảnh”), mà không cần chuyển sang một quy trình bố cục tài liệu đầy đủ.</p>
+<p>Vì mục tiêu OCR và bbox có thể kéo mô hình theo các hướng hơi khác nhau, chúng tôi cung cấp hai tùy chọn thay vì làm quá tải mô hình mặc định:</p>
+<ul>
+<li><!-- raw HTML omitted -->LightOnOCR-2-1B-bbox<!-- raw HTML omitted -->: mô hình <!-- raw HTML omitted -->tập trung vào bbox<!-- raw HTML omitted --> (định vị tốt nhất).</li>
+<li><!-- raw HTML omitted -->LightOnOCR-2-1B-bbox-soup<!-- raw HTML omitted -->: mô hình <!-- raw HTML omitted -->cân bằng đã hợp nhất<!-- raw HTML omitted --> (OCR + bbox cân bằng).</li>
+</ul>
+<h2 id="mô-hình-cơ-sở-để-tinh-chỉnh--nghiên-cứu">Mô hình cơ sở (để tinh chỉnh / nghiên cứu):</h2>
+<p>Cuối cùng, chúng tôi phát hành hai mô hình <!-- raw HTML omitted -->cơ sở<!-- raw HTML omitted --> (một có bbox, một không có). Chúng dành cho những người muốn:</p>
+<ul>
+<li>Tinh chỉnh trên dữ liệu/miền riêng của họ.</li>
+<li>Tái tạo hoặc mở rộng các bước sau đào tạo của chúng tôi (bao gồm cả các công thức RL được mô tả trong bản thảo).</li>
+<li>Thử nghiệm hợp nhất để xây dựng các biến thể mạnh mẽ hơn nữa.</li>
+</ul>
+<p>Chúng tôi cung cấp <!-- raw HTML omitted -->công thức tại đây<!-- raw HTML omitted --> để tinh chỉnh bằng các mô hình.</p>
+<!-- raw HTML omitted -->
+<h1 id="hỗ-trợ-transformers-dễ-dàng-chạy-và-tinh-chỉnh">Hỗ trợ Transformers: dễ dàng chạy và tinh chỉnh</h1>
+<p>LightOnOCR hiện có thể sử dụng trực tiếp thông qua <!-- raw HTML omitted -->hệ sinh thái Hugging Face Transformers<!-- raw HTML omitted --> (hỗ trợ đã được hợp nhất vào mã nguồn chính). Trên thực tế, điều đó có nghĩa là:</p>
+<ul>
+<li>Bạn có thể chạy nó với các công cụ Transformers tiêu chuẩn (không yêu cầu bắt đầu với vLLM).</li>
+<li>Việc tinh chỉnh rất đơn giản với các quy trình làm việc HF phổ biến (<!-- raw HTML omitted -->LoRA / PEFT / Trainer<!-- raw HTML omitted -->).</li>
+<li>Việc sử dụng CPU/máy tính cá nhân là khả thi cho các cài đặt thông lượng thấp hơn (tùy thuộc vào phần cứng, nhưng dễ tiếp cận hơn nhiều so với “chỉ có GPU”).</li>
+</ul>
+<!-- raw HTML omitted -->
+<p>Hãy theo dõi để biết liên kết bản thảo!</p>
+<h2 id="cộng-đồng">Cộng đồng</h2>
+<!-- raw HTML omitted -->
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/lightonai/lightonocr-2">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/29-days-ago/">29 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn cách sử dụng nhiều GPU với Hugging Face Transformers, so sánh Device Map và Tensor Parallelism.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Một bài viết về Forge, một khung và thuật toán Agent RL có thể mở rộng.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/cbe1bf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/e07f50d16c5f50a606d3cb408df83dab.svg" alt="🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/c0e927/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/7468a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

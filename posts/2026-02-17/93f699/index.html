@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Forge- Khung và Thuật toán Agent RL có thể mở rộng | AI Today - SkyAI</title>
+
+<meta name="description" content="Một bài viết về Forge, một khung và thuật toán Agent RL có thể mở rộng.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Một bài viết về Forge, một khung và thuật toán Agent RL có thể mở rộng. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-17T00:00:00&#43;00:00">February 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            21 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng">
+        <figcaption class="text-center italic text-xs">Một bài viết về Forge, một khung và thuật toán Agent RL có thể mở rộng.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="forge-khung-và-thuật-toán-rl-có-khả-năng-mở-rộng-cho-tác-tử">Forge: Khung và Thuật toán RL có khả năng mở rộng cho Tác tử</h1>
+<p>Bài viết trên blog bởi MiniMax trên Hugging Face</p>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>Việc mở rộng RL cho các tác tử phức tạp, trong thế giới thực đối mặt với một tam giác nghịch lý cơ bản: cân bằng giữa <!-- raw HTML omitted -->thông lượng hệ thống<!-- raw HTML omitted -->, <!-- raw HTML omitted -->tính ổn định của việc huấn luyện<!-- raw HTML omitted --> và <!-- raw HTML omitted -->tính linh hoạt của tác tử<!-- raw HTML omitted -->. Những ràng buộc mâu thuẫn này từ lâu đã cản trở việc áp dụng RL quy mô lớn trong các hệ thống cấp công nghiệp.</p>
+<p>Trong bài viết này, chúng tôi tiết lộ cách chúng tôi đã giải quyết &ldquo;tam giác bất khả thi&rdquo; này thông qua một cách tiếp cận toàn diện trong khung RL nội bộ của chúng tôi, <!-- raw HTML omitted -->Forge<!-- raw HTML omitted -->, kết hợp kiến trúc hệ thống linh hoạt, thiết kế thuật toán, lập lịch bất đồng bộ được tối ưu hóa và hiệu quả huấn luyện-suy luận cực cao. Bằng cách tận dụng các giao thức tương tác được tiêu chuẩn hóa, Forge hỗ trợ việc huấn luyện các khung tác tử tùy ý, cho phép RL quy mô lớn dẫn đến các khả năng đột phá của mô hình MiniMax M2.5.</p>
+<p>Trong quá trình phát triển MiniMax M2.5, hệ thống RL của chúng tôi đã xử lý hơn một trăm nghìn khung tác tử và môi trường thực tế riêng biệt. Hoạt động với độ dài ngữ cảnh lên tới 200k, hệ thống duy trì thông lượng xử lý hàng ngày ở quy mô hàng triệu mẫu, hiện thực hóa sự hội tụ phần thưởng nhất quán và cải thiện khả năng thực tế cho mô hình cơ bản. Tích hợp với thuật toán CISPO của chúng tôi và khung phần thưởng tổng hợp, M2.5 đẩy ranh giới cho năng suất thực tế hiệu quả và đáng tin cậy, đạt được sứ mệnh của chúng tôi &ldquo;Trí tuệ với Mọi người&rdquo;.</p>
+<!-- raw HTML omitted -->
+<h2 id="1-định-hình-vấn-đề">1. Định hình vấn đề</h2>
+<p>Trước khi đi sâu vào thiết kế kiến trúc của chúng tôi, trước tiên chúng tôi sẽ định hình mục tiêu tối ưu hóa của hệ thống Agent RL của chúng tôi là tối đa hóa <!-- raw HTML omitted -->Năng suất Huấn luyện Tác tử Hiệu quả (J)<!-- raw HTML omitted -->, được định nghĩa là:</p>
+<p>$$
+\begin{aligned} \max_{\theta} J(\mathcal{\theta}) = &amp; \text{Throughput}(\mathcal{A}) \times \text{Sample Efficiency}(\mathcal{A}) \ \text{s.t.} \quad &amp; \forall \mathcal{A} \in \Omega_{\text{agent}} \quad (\text{Arbitrary Agent}) \ &amp; \mathbb{E}[\text{Update Variance}] &lt; \delta \quad (\text{Stability}) \ &amp; \mathbb{E}[|J^{(T)} - J^*|] &lt; \epsilon \quad (\text{Convergence}) \end{aligned}
+$$</p>
+<p>trong đó <!-- raw HTML omitted -->Thông lượng Hệ thống<!-- raw HTML omitted --> đề cập đến số lượng mã thông báo thô được xử lý mỗi giây, bị giới hạn bởi 4 thành phần của toàn bộ hệ thống RL: rollout, huấn luyện, xử lý dữ liệu và I/O. <!-- raw HTML omitted -->Hiệu quả Mẫu<!-- raw HTML omitted --> đề cập đến sự cải thiện hiệu suất trung bình cho mỗi mẫu được xác định bởi phân phối dữ liệu, chất lượng dữ liệu, hiệu quả thuật toán và tính chất ngoại lai. Chúng tôi chọn các ràng buộc cụ thể của mình bằng cách sử dụng các chỉ báo proxy cho cả tính ổn định và cân nhắc hội tụ, như được ghi chú trong phương trình. Việc đạt được <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->J<!-- raw HTML omitted --><!-- raw HTML omitted -->J<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->J<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> tối đa bị cản trở bởi ba thách thức cấu trúc, mà chúng tôi giải thích chi tiết dưới đây.</p>
+<h3 id="11-tính-mở-rộng-của-tác-tử-và-tính-linh-hoạt-của-khung">1.1. Tính mở rộng của Tác tử và tính linh hoạt của Khung</h3>
+<p>Các mô hình RL hiện tại áp đặt một &ldquo;Trần kính&rdquo; đối với độ phức tạp của tác tử do hai lỗi cấu trúc:</p>
+<p><!-- raw HTML omitted -->Sự tự chủ hạn chế của Tác tử:<!-- raw HTML omitted --> Các khung tiêu chuẩn coi các tác tử là các hàm hộp trắng với trạng thái được chia sẻ giữa tác tử và bộ huấn luyện. Sự cứng nhắc này làm cho việc mô hình hóa <!-- raw HTML omitted -->kiến trúc nhận thức phức tạp<!-- raw HTML omitted --> (ví dụ: Quản lý Ngữ cảnh Động, Hợp tác Đa Tác tử) trở nên khó khăn và do đó ngăn mô hình có khả năng tổng quát hóa hiệu quả trên một tác tử hộp đen tùy ý mà không có các ràng buộc cấu trúc được giả định này.</p>
+<p><!-- raw HTML omitted -->Rào cản tính nhất quán của Mã thông báo:<!-- raw HTML omitted --> Các kiến trúc TITO (Token-In-Token-Out) hiện có buộc Tác tử phải gắn bó sâu sắc với logic mã thông báo cơ bản. Việc duy trì tính nhất quán nghiêm ngặt giữa <!-- raw HTML omitted -->Trừu tượng Hóa Suy luận<!-- raw HTML omitted --> (logic cấp cao) và <!-- raw HTML omitted -->Biểu diễn Huấn luyện<!-- raw HTML omitted --> (dữ liệu cấp mã thông báo) dưới Quản lý Ngữ cảnh (CM) phức tạp là không khả thi về mặt tính toán.</p>
+<h3 id="12-hiệu-quả-hệ-thống-và-dự-phòng-tính-toán">1.2. Hiệu quả Hệ thống và Dự phòng Tính toán</h3>
+<p>Thời gian hoàn thành quá trình lăn của tác tử cho thấy sự biến thiên cực lớn, từ vài giây (lời gọi API đơn giản) đến vài giờ (chuỗi suy luận phức tạp). Điều này tạo ra tình trạng tắc nghẽn lập lịch:</p>
+<p><!-- raw HTML omitted -->Bộ điều khiển bất đồng bộ:<!-- raw HTML omitted --> Các hệ thống đối mặt với sự đánh đổi quan trọng giữa hiệu quả phần cứng và tính ổn định của việc huấn luyện: trong khi lập lịch FIFO/Đồng bộ nghiêm ngặt phải chịu Hiệu ứng Straggler, trong đó một tác vụ có độ trễ cao duy nhất gây ra Tắc nghẽn Head-of-Line (HoL) và khiến cụm bị trống, các chế độ Tham lam/FFFO tối đa hóa thông lượng với chi phí là Sự dịch chuyển Phân phối Dữ liệu nghiêm trọng. Sự dịch chuyển này tạo ra một môi trường huấn luyện không ổn định — ban đầu bị chi phối bởi các tác vụ ngắn, &ldquo;dễ dàng&rdquo; và sau đó bởi các tác vụ &ldquo;khó&rdquo; được nhóm lại — dẫn đến sự bất ổn định trong tối ưu hóa và dao động gradient.</p>
+<p><!-- raw HTML omitted -->Sự dư thừa tiền tố:<!-- raw HTML omitted --> Trong các kịch bản Tác tử, sự tương tác giữa cơ chế bộ mã hóa và Quản lý Ngữ cảnh vốn có dẫn đến một khối lượng yêu cầu đáng kể chia sẻ các tiền tố giống hệt nhau. Sự dư thừa này gây lãng phí tính toán đáng kể trong quá trình huấn luyện, do đó đưa ra các thách thức kỹ thuật riêng biệt.</p>
+<h3 id="13-thách-thức-thuật-toán-phân-công-tín-dụng-và-tính-ổn-định-tối-ưu-hóa">1.3. Thách thức Thuật toán: Phân công Tín dụng và Tính ổn định Tối ưu hóa</h3>
+<p><!-- raw HTML omitted -->Phần thưởng thưa thớt và Phương sai Gradient cao:<!-- raw HTML omitted --> Các tác vụ tác tử thường liên quan đến các đường chân trời kéo dài với phản hồi chậm trễ, nơi một kết quả duy nhất phụ thuộc vào một chuỗi hàng nghìn hành động. Việc phân công tín dụng cho các mã thông báo cụ thể hoặc việc gọi công cụ trong cửa sổ ngữ cảnh 200k về mặt toán học là không chắc chắn. Sự thưa thớt này dẫn đến tỷ lệ tín hiệu trên nhiễu thấp trong phép tính trả về, gây ra phương sai gradient cao làm mất ổn định việc huấn luyện các mô hình quy mô lớn.</p>
+<p><!-- raw HTML omitted -->Tối ưu hóa không nhạy cảm với độ trễ:<!-- raw HTML omitted --> Các mục tiêu RL truyền thống chỉ tập trung vào tính chính xác (phần thưởng theo bước hoặc theo kết quả) trong khi bỏ qua <!-- raw HTML omitted -->chi phí thực thi theo thời gian thực<!-- raw HTML omitted -->. Trong các kịch bản tác tử trong thế giới thực, tồn tại nhiều quỹ đạo hợp lệ, nhưng chúng khác biệt đáng kể về độ trễ do chi phí thực thi công cụ và xử lý nối tiếp. Các mô hình truyền thống không khuyến khích song song hóa hoặc sử dụng công cụ hiệu quả, dẫn đến các tác tử hoạt động chính xác về mặt chức năng nhưng chậm về mặt thực tế.</p>
+<h2 id="2-kiến-trúc-hệ-thống-và-mô-hình-rl-tác-tử">2. Kiến trúc Hệ thống và Mô hình RL Tác tử</h2>
+<p>Để giảm thiểu sự đánh đổi giữa &ldquo;Hiệu quả và Tính ngoại lai&rdquo; và giảm thiểu sự dư thừa, chúng tôi giới thiệu các cải tiến kiến trúc sau.</p>
+<h3 id="21-thiết-kế-hệ-thống-rl">2.1. Thiết kế Hệ thống RL</h3>
+<p>Để đạt được kiến trúc thực sự có thể mở rộng, chúng tôi vượt ra ngoài các triển khai cụ thể để thiết kế &ldquo;Middleware&rdquo; tổng quát. Điều này tách rời logic suy luận của Tác tử khỏi cơ sở hạ tầng huấn luyện cơ bản.</p>
+<p>Hệ thống RL của chúng tôi bao gồm 3 mô-đun:</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->Bên Tác tử:<!-- raw HTML omitted --> Lớp này trừu tượng hóa <!-- raw HTML omitted -->Tác tử Tổng quát<!-- raw HTML omitted --> — bao gồm cả <!-- raw HTML omitted -->kiến trúc hộp trắng và hộp đen<!-- raw HTML omitted --> — và môi trường hoạt động của nó. Nó điều phối các tương tác môi trường đệ quy, cho phép Tác tử hoạt động như một nhà sản xuất quỹ đạo thuần túy. Bằng cách tách rời phản hồi môi trường khỏi chi phí hệ thống, Tác tử có thể tập trung hoàn toàn vào logic nghiệp vụ cốt lõi (như Quản lý Ngữ cảnh và Chuỗi Suy luận), không phụ thuộc vào cơ chế huấn luyện và suy luận cơ bản.</p>
+<p><!-- raw HTML omitted -->Lớp Trừu tượng Middleware:<!-- raw HTML omitted --> Hoạt động như một cầu nối, lớp này cô lập vật lý <!-- raw HTML omitted -->Bên Tác tử<!-- raw HTML omitted --> khỏi <!-- raw HTML omitted -->Bên Huấn luyện/Suy luận<!-- raw HTML omitted -->, bao gồm <!-- raw HTML omitted -->máy chủ Gateway<!-- raw HTML omitted --> và <!-- raw HTML omitted -->Kho dữ liệu<!-- raw HTML omitted -->.</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->Bên Huấn luyện và Suy luận:<!-- raw HTML omitted --> Lớp này quản lý công việc tính toán nặng, bao gồm <!-- raw HTML omitted -->Công cụ LLM<!-- raw HTML omitted --> và <!-- raw HTML omitted -->Công cụ Huấn luyện<!-- raw HTML omitted -->.</p>
+<!-- raw HTML omitted -->
+<p>Trong quá trình đánh giá ngoại tuyến, chúng tôi đã quan sát thấy sự khác biệt đáng kể về hiệu suất do sự khác biệt về khung. Tận dụng thiết kế mô-đun của khung RL của chúng tôi, chúng tôi có thể tiến hành huấn luyện bằng cách sử dụng một loạt các khung mở rộng mà không yêu cầu sửa đổi nội bộ đối với Tác tử. Cách tiếp cận này cho phép mô hình tổng quát hóa hiệu quả trên các khung đa dạng, hay còn gọi là môi trường. Kiến trúc của chúng tôi đạt được sự tách biệt hoàn toàn giữa các công cụ và tác tử, đảm bảo tích hợp liền mạch các tác tử khác nhau. Tổng cộng, chúng tôi đã tích hợp hàng trăm loại khung và hàng nghìn định dạng gọi công cụ riêng biệt.</p>
+<h3 id="22-rl-tác-tử-hộp-trắng-cho-quản-lý-ngữ-cảnh-cm">2.2. RL Tác tử Hộp trắng cho Quản lý Ngữ cảnh (CM)</h3>
+<p>Đối với các tác tử hộp trắng, việc thiết kế và tăng cường khung toàn diện cho phép chúng tôi quan sát và tối ưu hóa trực tiếp hiệu suất của mô hình trên các kiến trúc tác tử cụ thể. Trong quá trình phát triển MiniMax M2.5, chúng tôi đặc biệt giải quyết một số vấn đề quan trọng đã ảnh hưởng đến các mô hình trước đó trong các tác vụ đường chân trời dài đòi hỏi quản lý ngữ cảnh chủ động (chẳng hạn như DeepSearch):</p>
+<p><!-- raw HTML omitted -->Thách thức về Quay vòng Ngữ cảnh:<!-- raw HTML omitted --> Khi số lượng lượt tương tác tăng lên, sự tích lũy các bước suy luận trung gian và các quan sát dư thừa tạo ra hiệu ứng &ldquo;pha loãng sự chú ý&rdquo;. Nhiễu tích lũy này khiến mô hình mất tập trung vào thông tin quan trọng, ngay cả khi hoạt động nghiêm ngặt trong giới hạn cửa sổ ngữ cảnh tuyệt đối của nó.</p>
+<p><!-- raw HTML omitted -->Sự không khớp giữa Suy luận và Huấn luyện:<!-- raw HTML omitted --> Mặc dù quản lý ngữ cảnh có thể mở rộng hiệu quả đường chân trời tương tác và tăng cường hiệu suất của tác tử trong các kịch bản ngữ cảnh dài, việc áp dụng nó chỉ trong quá trình suy luận sẽ tạo ra sự dịch chuyển phân phối nghiêm trọng từ dữ liệu huấn luyện RL. Sự khác biệt này buộc mô hình phải đột ngột thích ứng với các chuyển đổi ngữ cảnh không mong muốn và xử lý các cấu trúc ngữ cảnh dài không quen thuộc khi đang bay, cuối cùng làm suy giảm hiệu suất tổng thể của nó.</p>
+<p>Để <!-- raw HTML omitted -->giải quyết sự dịch chuyển phân phối này và duy trì tính trung thực của suy luận<!-- raw HTML omitted -->, chúng tôi tích hợp cơ chế CM trực tiếp vào vòng lặp tương tác RL, coi Quản lý Ngữ cảnh như một hành động chức năng thúc đẩy các chuyển đổi trạng thái:</p>
+<p><!-- raw HTML omitted -->Các chuyển đổi trạng thái do CM điều khiển:<!-- raw HTML omitted --> Chúng tôi mô hình hóa CM như một hành động tác tử rõ ràng, với các chuyển đổi ngữ cảnh được nhúng tự nhiên trong động lực của môi trường. Sự chuyển đổi trạng thái từ <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->S<!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->S_t<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->S<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> sang <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->S<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->S_{t+1}<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->S<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->t<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> bao gồm một cách tự nhiên logic chuyển đổi ngữ cảnh, gấp gọn việc thích ứng ngữ cảnh trực tiếp vào mục tiêu huấn luyện của mô hình.</p>
+<p><!-- raw HTML omitted -->Các mẫu suy luận thích ứng:<!-- raw HTML omitted --> Bằng cách tối ưu hóa chính sách <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->π<!-- raw HTML omitted --><!-- raw HTML omitted -->\pi<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->π<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> trong khuôn khổ này, mô hình học cách nội hóa sự dịch chuyển phân phối. Điều này thúc đẩy sự xuất hiện của các mẫu suy luận mạnh mẽ vốn ưu tiên các mã thông báo &ldquo;quan trọng về trạng thái&rdquo;.</p>
+<p><!-- raw HTML omitted -->Chiến lược Quản lý Nhận biết Ngữ cảnh:<!-- raw HTML omitted --> Theo mô hình này, mô hình được huấn luyện để dự đoán các hoạt động quản lý ngữ cảnh và các thay đổi tiềm năng trong quá trình tạo RL. Bằng cách chủ động giữ lại thông tin quan trọng của tác vụ đồng thời cắt bỏ nhiễu ngữ cảnh không liên quan, mô hình cải thiện đáng kể hiệu suất của nó khi được triển khai trong các khung Tác tử Quản lý Ngữ cảnh.</p>
+<h3 id="23-rl-tác-tử-hộp-đen-tính-mạnh-mẽ-trên-các-khung-không-đồng-nhất">2.3. RL Tác tử Hộp đen: Tính mạnh mẽ trên các Khung không đồng nhất</h3>
+<p>Trong quá trình triển khai thực tế, một phần đáng kể cơ sở người dùng của chúng tôi vận hành các kiến trúc tác tử độc quyền hoặc phức tạp hoạt động như <!-- raw HTML omitted -->&ldquo;Hộp đen&rdquo;.<!-- raw HTML omitted --> Chúng tôi đã quan sát thấy hiệu suất mô hình thường thay đổi mạnh mẽ tùy thuộc vào khung tác tử cơ bản, vì các mô hình huấn luyện tiêu chuẩn không khái quát hóa được trên các kiến trúc tác tử khác nhau. Để giải quyết vấn đề này, chúng tôi đã xác thực khung của mình thông qua một <!-- raw HTML omitted -->Thử nghiệm Tác tử Hộp đen<!-- raw HTML omitted --> chuyên dụng, đảm bảo tối ưu hóa nhất quán bất kể sự mờ đục nội bộ của tác tử.</p>
+<p><!-- raw HTML omitted -->Tích hợp không xâm phạm và Tương thích:<!-- raw HTML omitted --> Forge hoàn toàn không phụ thuộc vào các chi tiết triển khai nội bộ của tác tử. Các tác tử chỉ cần định tuyến yêu cầu của chúng đến Gateway RL của dịch vụ và khung tự động xử lý việc thu thập dữ liệu và huấn luyện ngầm. Do đó, trong quá trình huấn luyện RL thực tế, Forge hỗ trợ liền mạch các thao tác ngữ cảnh tùy ý (như nén bộ nhớ và viết lại lịch sử) cùng với bất kỳ Vòng lặp Tác tử nội bộ phức tạp nào (ví dụ: Deep Think, kiến trúc Đa Tác tử).</p>
+<p><!-- raw HTML omitted -->Tổng quát hóa Đa Khung:<!-- raw HTML omitted --> Bằng cách tách vòng lặp huấn luyện khỏi trạng thái nội bộ của tác tử, MiniMax M2.5 đạt được khả năng tương thích rộng rãi với vô số tác tử hộp đen. Khả năng thích ứng này trải dài từ các tác tử dựa trên mã mạnh mẽ dựa vào môi trường Sandbox và Giao thức Ngữ cảnh Mô hình (MCP) — ví dụ, huấn luyện Tác tử OpenCode của chúng tôi hoàn toàn như một hộp đen — đến các tác tử sử dụng các chiến lược giảm ngữ cảnh tích cực, chẳng hạn như Truncate BC. Các kết quả thực nghiệm chứng minh rằng phương pháp này mang lại những cải thiện nhất quán, ổn định ngay cả trên các hệ thống hộp đen hoàn toàn mờ đục.</p>
+<!-- raw HTML omitted -->
+<h2 id="3-tối-ưu-hóa-kỹ-thuật">3. Tối ưu hóa Kỹ thuật</h2>
+<h3 id="31-chiến-lược-lập-lịch-lai-fifo-theo-cửa-sổ">3.1. Chiến lược Lập lịch Lai: FIFO theo Cửa sổ</h3>
+<p>Để giải quyết xung đột giữa <!-- raw HTML omitted -->Thông lượng Hệ thống<!-- raw HTML omitted --> và <!-- raw HTML omitted -->Tính nhất quán Phân phối<!-- raw HTML omitted -->, chúng tôi giới thiệu <!-- raw HTML omitted -->FIFO theo Cửa sổ<!-- raw HTML omitted -->. Chiến lược này áp đặt một ràng buộc trượt cho <!-- raw HTML omitted -->Bộ lập lịch Huấn luyện<!-- raw HTML omitted -->, hoạt động như một &ldquo;trung gian&rdquo; giữa thứ tự đồng bộ nghiêm ngặt và thực thi bất đồng bộ tham lam.</p>
+<p>Logic cốt lõi điều chỉnh cách Bộ lập lịch Huấn luyện lấy mẫu từ hàng đợi tạo toàn cầu. Ngay cả khi một lô lớn các yêu cầu (ví dụ: Kích thước lô Tạo <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->N<!-- raw HTML omitted --><!-- raw HTML omitted -->N<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->N<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->) được gửi đi, bộ lập lịch bị giới hạn ở cửa sổ hiển thị có kích thước <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (ví dụ: <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->0.3<!-- raw HTML omitted --><!-- raw HTML omitted -->N<!-- raw HTML omitted --><!-- raw HTML omitted -->W = 0.3N<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->0.3<!-- raw HTML omitted --><!-- raw HTML omitted -->N<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->).</p>
+<p><!-- raw HTML omitted -->Phạm vi hiển thị hạn chế:<!-- raw HTML omitted --> Gọi hàng đợi tạo là <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted -->[<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted -->0<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->N<!-- raw HTML omitted --><!-- raw HTML omitted -->−<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->]<!-- raw HTML omitted --><!-- raw HTML omitted -->Q = [T_0, T_1, &hellip;, T_{N-1}]<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Q<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->=<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->[<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->0<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->&hellip;<!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->N<!-- raw HTML omitted --><!-- raw HTML omitted -->−<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->]<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->, với đầu hiện tại ở chỉ số <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->. Bộ lập lịch Huấn luyện bị giới hạn nghiêm ngặt trong việc lấy các quỹ đạo đã hoàn thành từ phạm vi <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->[<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted -->−<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->]<!-- raw HTML omitted --><!-- raw HTML omitted -->[T_i, T_{i+W-1}]<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->[<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted -->−<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->]<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->.<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->Rối loạn &ldquo;Tham lam&rdquo; cục bộ (Trong Cửa sổ):<!-- raw HTML omitted --> Bên trong cửa sổ hoạt động <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->[<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted -->−<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->]<!-- raw HTML omitted --><!-- raw HTML omitted -->[T_i, T_{i+W-1}]<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->[<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->,<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->T<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted -->−<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->​<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->]<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->, bộ lập lịch có thể truy xuất bất kỳ quỹ đạo nào đã hoàn thành ngay lập tức. Điều này làm giảm thiểu hiệu ứng tắc nghẽn Head-of-Line (HoL), vì các tác vụ nhanh trong cửa sổ không cần phải chờ đợi tác vụ đầu tiên hoàn thành.</p>
+<p><!-- raw HTML omitted -->Chặn nghiêm ngặt toàn cầu (Ranh giới cửa sổ):<!-- raw HTML omitted --> Quan trọng nhất, ngay cả khi một tác vụ ở chỉ số <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->j<!-- raw HTML omitted --><!-- raw HTML omitted -->&gt;<!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted -->j &gt; i+W<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->j<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->&gt;<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->W<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> (bên ngoài cửa sổ) đã hoàn thành — phổ biến đối với các tác vụ đơn giản, nhanh chóng trong một lô tạo lớn — bộ lập lịch bị <!-- raw HTML omitted -->cấm<!-- raw HTML omitted --> truy xuất nó.</p>
+<p><!-- raw HTML omitted -->Triển khai Ràng buộc:<!-- raw HTML omitted --> Cửa sổ dịch chuyển về phía trước <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted -->→<!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted -->( i \rightarrow i+1 )<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->→<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->i<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->1<!-- raw HTML omitted --><!-- raw HTML omitted -->)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --> chỉ khi các tác vụ ở đầu được tiêu thụ. Cơ chế này buộc bộ lập lịch phải đợi các &ldquo;tác vụ chậm&rdquo; (tác vụ đường chân trời dài, phức tạp) trong cửa sổ hiện tại, ngăn phân phối huấn luyện trôi dạt về phía các mẫu &ldquo;nhanh và dễ&rdquo; được tìm thấy sau trong hàng đợi.</p>
+<!-- raw HTML omitted -->
+<h3 id="32-tăng-tốc-huấn-luyện-quỹ-đạo-tác-tử-bằng-hợp-nhất-cây-tiền-tố">3.2. Tăng tốc Huấn luyện Quỹ đạo Tác tử bằng Hợp nhất Cây Tiền tố</h3>
+<p>Trong quá trình huấn luyện tác tử, tập dữ liệu thường bao gồm các mẫu hội thoại đa lượt mở rộng. Về mặt cấu trúc, các mẫu này thể hiện mức độ trùng lặp cao.</p>
+<h4 id="thách-thức-sự-dư-thừa-trong-các-phương-pháp-truyền-thống">Thách thức: Sự dư thừa trong các Phương pháp Truyền thống</h4>
+<p><!-- raw HTML omitted -->Trùng lặp Tiền tố:<!-- raw HTML omitted --> Trong các hội thoại đa lượt ngây thơ, tin nhắn được nối tiếp nhau. Với một bộ mã hóa nhất quán, nhiều kết quả hoàn chỉnh chia sẻ cùng một lịch sử có thể được hợp nhất về mặt lý thuyết.</p>
+<p><!-- raw HTML omitted -->Quản lý Ngữ cảnh Phức tạp:<!-- raw HTML omitted --> Các tác tử thường sử dụng các chiến lược quản lý ngữ cảnh tinh vi, chẳng hạn như loại bỏ các kết quả trung gian không liên quan hoặc thực hiện tự tóm tắt. Do đó, các kết quả hoàn chỉnh riêng biệt thường chia sẻ các tiền tố chung rộng rãi.</p>
+<p><!-- raw HTML omitted -->Hạn chế của Phương pháp Ngây thơ:<!-- raw HTML omitted --> Các phương pháp huấn luyện truyền thống coi mỗi mẫu là một thực thể độc lập, liên tục tính toán lại các tiền tố chung này. Trong các kịch bản ngữ cảnh dài, sự dư thừa tính toán này dẫn đến lãng phí TFLOPS khổng lồ và hạn chế nghiêm trọng thông lượng huấn luyện.</p>
+<!-- raw HTML omitted -->
+<h4 id="hợp-nhất-cây-tiền-tố">Hợp nhất Cây Tiền tố</h4>
+<p>Để loại bỏ sự dư thừa này, chúng tôi đề xuất một sơ đồ Hợp nhất Cây Tiền tố, chuyển đổi quá trình huấn luyện từ &ldquo;xử lý tuyến tính&rdquo; sang phương pháp &ldquo;cấu trúc cây&rdquo;.</p>
+<p><!-- raw HTML omitted -->Hợp nhất Cây Tiền tố:<!-- raw HTML omitted --> Giải quyết quản lý ngữ cảnh phức tạp trong các kịch bản Tác tử (như được minh họa bởi &ldquo;ngữ cảnh chung dài&rdquo;), nhiều kết quả hoàn chỉnh có thể được hợp nhất thành một cây tiền tố ở cấp độ mẫu — ngay cả khi các phản hồi tiếp theo khác nhau đôi chút hoặc thuộc các nhánh lấy mẫu khác nhau — miễn là chúng chia sẻ một tiền tố cơ bản.</p>
+<p>Bằng cách sử dụng các nguyên tắc chú ý (như Chú ý Magi), chúng tôi đảm bảo rằng việc thực thi logic vẫn nhất quán với một lượt truyền xuôi tiêu chuẩn. Sau lượt truyền xuôi, cây tiền tố được phân rã dựa trên siêu dữ liệu để tính toán tổn thất thông thường, đảm bảo không có tác động nào đến logic hạ nguồn.</p>
+<p>Bằng cách loại bỏ việc điền tiền tố dư thừa, giải pháp này đạt được <!-- raw HTML omitted -->tốc độ huấn luyện gấp 40 lần<!-- raw HTML omitted --> và giảm đáng kể chi phí bộ nhớ để hỗ trợ các chuỗi dài hơn hoặc lô lớn hơn, tất cả trong khi đảm bảo sự tương đương toán học nghiêm ngặt với các phương pháp tiêu chuẩn mà không ảnh hưởng đến việc tính toán tổn thất hoặc các chỉ số.</p>
+<h3 id="33-tăng-tốc-suy-luận-cực-cao">3.3. Tăng tốc Suy luận Cực cao</h3>
+<p>Chúng tôi tối ưu hóa đường ống tạo thông qua ba cải tiến kiến trúc:</p>
+<p><!-- raw HTML omitted -->Giải mã theo Suy đoán dựa trên MTP:<!-- raw HTML omitted --> Thay vì các mô hình bản nháp tĩnh, chúng tôi sử dụng các đầu <!-- raw HTML omitted -->Dự đoán Nhiều Mã thông báo (MTP)<!-- raw HTML omitted --> được tinh chỉnh liên tục thông qua <!-- raw HTML omitted -->tổn thất KL Top-K<!-- raw HTML omitted -->. Điều này đảm bảo sự phù hợp với phân phối chính sách RL đang phát triển, duy trì tỷ lệ chấp nhận cao và tăng tốc đáng kể bằng cách giảm thiểu sự dịch chuyển phân phối.</p>
+<p><!-- raw HTML omitted -->Phân tán PD không đồng nhất:<!-- raw HTML omitted --> Chúng tôi tách Prefill và Decode để loại bỏ sự can thiệp của PD vào lập lịch MoE hỗn hợp và cho phép các chiến lược song song hóa độc lập cho mỗi phiên bản, đồng thời tối đa hóa thông lượng toàn cầu và tối ưu hóa độ trễ đuôi cho các tác vụ đường chân trời dài.</p>
+<p><!-- raw HTML omitted -->Hồ sơ KV L3 Toàn cầu:<!-- raw HTML omitted --> Để ngăn chặn việc điền tiền tố dư thừa trong RL tác tử đa lượt và tối đa hóa tỷ lệ truy cập bộ nhớ cache tiền tố với việc lăn cấp nhóm, chúng tôi giới thiệu Hồ sơ L3 Toàn cầu dựa trên DFS. <!-- raw HTML omitted -->Bộ lập lịch nhận biết chi phí<!-- raw HTML omitted --> động định tuyến các yêu cầu bằng cách cân bằng độ trễ xếp hàng với chi phí di chuyển bộ nhớ cache, tối đa hóa tính cục bộ của bộ nhớ cache mà không làm quá tải các phiên bản.</p>
+<h2 id="4-thuật-toán-rl-tác-tử-có-khả-năng-mở-rộng">4. Thuật toán RL Tác tử có khả năng mở rộng</h2>
+<h3 id="41-thuật-toán-rl">4.1. Thuật toán RL</h3>
+<p>Chúng tôi tận dụng <!-- raw HTML omitted -->CISPO<!-- raw HTML omitted --> làm thuật toán cốt lõi, được điều chỉnh đặc biệt cho các đặc điểm của Tác tử đường chân trời dài.</p>
+<p><!-- raw HTML omitted -->Huấn luyện Miền Hỗn hợp Hợp nhất:<!-- raw HTML omitted --> Không giống như học tăng cường nhiều giai đoạn, thường dẫn đến chuyển giao tiêu cực hoặc can thiệp giữa các miền, chúng tôi áp dụng chiến lược huấn luyện hợp nhất. Chúng tôi kết hợp các tác vụ trên các miền <!-- raw HTML omitted -->Suy luận<!-- raw HTML omitted -->, <!-- raw HTML omitted -->QA Tổng quát<!-- raw HTML omitted --> và <!-- raw HTML omitted -->Tác tử<!-- raw HTML omitted --> đồng thời. Cách tiếp cận huấn luyện chung này giảm thiểu sự suy giảm hiệu suất thường thấy trong huấn luyện tuần tự và tăng cường đáng kể khả năng tổng quát hóa của mô hình trên các tác vụ đa dạng.</p>
+<p>$$
+\mathcal{J}<em>{\text{CISPO}}(\theta) = \mathbb{E}</em>{(q,a)\sim\mathcal{D}, {o_i}<em>{i=1}^G \sim \pi</em>{\theta_{\text{old}}}(\cdot|q)}
+\left[ \frac{1}{\sum_{i=1}^G |o_i|} \sum_{i=1}^G \sum_{t=1}^{|o_i|} \mathbf{sg}(\hat{r}<em>{i,t}(\theta)) \hat{A}</em>{i,t} \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right]
+$$</p>
+<p>trong đó:</p>
+<p>$$
+\begin{aligned}
+\hat{r}<em>{i,t}(\theta) &amp;= \text{clip}\left( r</em>{i,t}(\theta), 0, 1 + \epsilon_{high}^{IS} \right) \
+\widehat{A}<em>{i,t} &amp;= \sum</em>{p=t}^T (r_p^{\text{speed}} + r_p^{\text{perf}}) - B_i
+\end{aligned}
+$$</p>
+<h3 id="42-phần-thưởng-tích-cực-và-nhận-biết-hiệu-quả">4.2. Phần thưởng Tích cực và Nhận biết Hiệu quả</h3>
+<p>Chúng tôi đề xuất một <!-- raw HTML omitted -->khung phần thưởng tổng hợp<!-- raw HTML omitted --> được thiết kế để giải quyết các thách thức phân công tín dụng của ngữ cảnh cực dài (lên tới 200k) đồng thời đảm bảo tính ổn định của việc huấn luyện:</p>
+<p><!-- raw HTML omitted -->Phần thưởng Quy trình:<!-- raw HTML omitted --> Để cung cấp phản hồi dày đặc, chúng tôi nhắm mục tiêu các hành vi trung gian (ví dụ: phạt việc trộn lẫn ngôn ngữ hoặc lỗi gọi công cụ cụ thể) thay vì chỉ dựa vào kết quả cuối cùng.</p>
+<p><!-- raw HTML omitted -->Phần thưởng Thời gian Hoàn thành Tác vụ:<!-- raw HTML omitted --> Trong các kịch bản tác tử, tồn tại nhiều quỹ đạo để hoàn thành tác vụ. Tổng thời lượng không chỉ phụ thuộc vào việc tạo mã thông báo mà còn phụ thuộc vào độ trễ liên quan đến việc thực thi công cụ cụ thể và lời gọi tác tử con. Vì thời gian hoàn thành rất quan trọng đối với trải nghiệm người dùng thực tế, chúng tôi kết hợp <!-- raw HTML omitted -->thời gian hoàn thành tương đối<!-- raw HTML omitted --> làm tín hiệu phần thưởng. Điều này khuyến khích tác tử tận dụng song song hóa, do đó tăng tốc việc thực thi tác vụ.</p>
+<p><!-- raw HTML omitted -->Phần thưởng-cho-đi để Giảm phương sai:<!-- raw HTML omitted --> Phần thưởng thưa thớt tiêu chuẩn thường dẫn đến phương sai gradient cao trong các tác vụ đường chân trời dài. Chúng tôi sử dụng công thức <!-- raw HTML omitted -->Phần thưởng-cho-đi<!-- raw HTML omitted --> để chuẩn hóa kết quả trả về. Điều này có hiệu quả làm giảm phương sai gradient và cải thiện độ chính xác của việc phân công tín dụng, ổn định quá trình tối ưu hóa.</p>
+<h2 id="5-kết-luận">5. Kết luận</h2>
+<p>Chúng tôi đã giải quyết thành công &ldquo;tam giác bất khả thi&rdquo; của việc mở rộng quy mô RL cho tác tử. Thông qua Forge, chúng tôi đã đạt được một bước đột phá về thông lượng hệ thống RL trong khi đảm bảo khả năng tổng quát hóa mạnh mẽ trên các Khung Tác tử tùy ý. Bằng cách tích hợp kiến trúc linh hoạt này với thuật toán CISPO ổn định của chúng tôi, chúng tôi đã cho phép huấn luyện quy mô lớn đằng sau MiniMax M2.5. Cách tiếp cận toàn diện này vượt qua các ràng buộc trước đây, mang lại các khả năng tác tử hiệu quả, trong thế giới thực và thúc đẩy sứ mệnh của chúng tôi là &ldquo;Trí tuệ với Mọi người&rdquo;.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/MiniMax-AI/forge-scalable-agent-rl-framework-and-algorithm">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/4-days-ago/">4 Days Ago</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/1d9616/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/6960726836e3626a52efa54a/ZsIbkgqr5WPNkqgByOsh_.jpeg" alt="Siêu năng lực nào Kimi-K2.5 mang lại?" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-17T00:00:00&#43;00:00">Feb 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Siêu năng lực nào Kimi-K2.5 mang lại?</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Bài viết khám phá những khả năng đặc biệt mà mô hình Kimi-K2.5 sở hữu.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2025-11-23/3e003f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/5fe16a29e69f7b521398f73b/qKx7SKgZrs0y5YbbQZcdQ.png" alt="Giới thiệu Cogito v2.1" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2025-11-23T00:00:00&#43;00:00">Nov 23, 2025</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu Cogito v2.1</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Mô tả ngắn gọn</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/cbe1bf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://avatars.huggingface.co/v1/production/uploads/e07f50d16c5f50a606d3cb408df83dab.svg" alt="🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">🚀 DTS- Một Ứng cử viên cho Khả năng Suy luận Song song Tốt nhất trong LLMs</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/b4d981/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/608aabf24955d2bfc3cd99c6/-YxmtpzEmf3NKOTktODRP.jpeg" alt="Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cách Sử dụng Nhiều GPU trong Hugging Face Transformers- Device Map so với Tensor Parallelism</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/93f699/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/676e38ad04af5bec20bc9faf/AG8Q9wAUzGtPWyjd5QO2l.jpeg" alt="Forge- Khung và Thuật toán Agent RL có thể mở rộng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Forge- Khung và Thuật toán Agent RL có thể mở rộng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/c0e927/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LateOn-Code &amp; ColGrep- LightOn giới thiệu các mô hình truy xuất mã và công cụ tìm kiếm mã hiện đại</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-17/7468a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://cdn-avatars.huggingface.co/v1/production/uploads/1651597775471-62715572ab9243b5d40cbb1d.png" alt="LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LightOnOCR-2-1B- một họ mô hình OCR nhẹ, hiệu suất cao, đầu cuối</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
