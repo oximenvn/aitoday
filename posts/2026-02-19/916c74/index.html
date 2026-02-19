@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST | AI Today - SkyAI</title>
+
+<meta name="description" content="IBM và UC Berkeley đã hợp tác để tạo ra một bộ công cụ có tên IT-Bench và MAST để giúp các nhà nghiên cứu hiểu và cải thiện hiệu suất của các tác nhân AI.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">IBM và UC Berkeley đã hợp tác để tạo ra một bộ công cụ có tên IT-Bench và MAST để giúp các nhà nghiên cứu hiểu và cải thiện hiệu suất của các tác nhân AI. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-19T00:00:00&#43;00:00">February 19, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            17 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/637bfdf60dc13843b468ac20/npxapKcW-cXX3J2JBl2vY.png" alt="IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST">
+        <figcaption class="text-center italic text-xs">IBM và UC Berkeley đã hợp tác để tạo ra một bộ công cụ có tên IT-Bench và MAST để giúp các nhà nghiên cứu hiểu và cải thiện hiệu suất của các tác nhân AI.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="ibm-và-uc-berkeley-chẩn-đoán-nguyên-nhân-thất-bại-của-đại-lý-doanh-nghiệp-sử-dụng-it-bench-và-mast">IBM và UC Berkeley Chẩn đoán Nguyên nhân Thất bại của Đại lý Doanh nghiệp Sử dụng IT-Bench và MAST</h1>
+<p><strong>Tác giả:</strong> Ayhan Sebin, Rohan Arora, Saurabh Jha</p>
+<p><strong>Ngày đăng:</strong> 18 tháng 2 năm 2026</p>
+<h2 id="giới-thiệu">Giới thiệu</h2>
+<p>IBM Research và UC Berkeley đã hợp tác để nghiên cứu cách các hệ thống LLM dựa trên tác nhân (agent) gặp sự cố trong tự động hóa CNTT trong thế giới thực, với các tác vụ liên quan đến phân loại sự cố, truy vấn nhật ký/chỉ số và hành động Kubernetes trong vòng lặp công cụ dài hạn.</p>
+<p>Các điểm chuẩn thường giảm hiệu suất xuống một con số duy nhất, cho bạn biết tác nhân có thất bại hay không, nhưng không bao giờ biết tại sao. Để giải quyết vấn đề &ldquo;hộp đen&rdquo; này, chúng tôi đã áp dụng MAST (Multi-Agent System Failure Taxonomy - Phân loại Thất bại Hệ thống Đa Tác nhân), một thực tiễn mới nổi để chẩn đoán độ tin cậy của tác nhân. Bằng cách tận dụng MAST để phân tích ITBench - điểm chuẩn ngành cho tự động hóa SRE, Bảo mật và FinOps - chúng tôi đã biến các dấu vết thực thi thô thành các mẫu lỗi có cấu trúc, làm rõ chính xác điều gì đã hỏng và cách khắc phục. Chúng tôi đã chú thích 310 dấu vết ITBench SRE trên ba lớp mô hình khác nhau: Gemini-3-Flash, Kimi-K2 và GPT-OSS-120B.</p>
+<h2 id="phát-hiện-chính">Phát hiện chính</h2>
+<ul>
+<li><strong>Các mô hình tiên tiến như Gemini-3-Flash</strong> thất bại một cách sạch sẽ (trung bình 2,6 chế độ lỗi/dấu vết), thường gặp các điểm nghẽn riêng biệt như xác minh. Các mô hình mở lớn như GPT-OSS-120B gặp phải các mẫu lỗi chồng chéo (trung bình 5,3 chế độ lỗi/dấu vết). Một sự không khớp trong suy luận sớm trong quá trình xử lý sẽ làm ảnh hưởng đến ngữ cảnh, dẫn đến các lỗi ảo hóa chồng chéo.</li>
+<li>Trong tất cả các mô hình, yếu tố dự báo mạnh nhất cho sự thất bại là <strong>FM-3.3 (Xác minh không chính xác)</strong>. Tác nhân liên tục &ldquo;tuyên bố chiến thắng&rdquo; mà không kiểm tra sự thật.</li>
+<li>Kimi-K2 gặp khó khăn trong việc nhận ra khi nào một tác vụ đã hoàn thành. Nó cho thấy sự gia tăng lớn về <strong>Chấm dứt Sớm (+46%)</strong> và <strong>Không nhận thức được Điều kiện Chấm dứt (+43%)</strong>, thường dừng lại ngay trước khi giải quyết vấn đề hoặc lặp vô hạn.</li>
+</ul>
+<h2 id="bài-học-kinh-nghiệm-khi-xây-dựng-tác-nhân">Bài học kinh nghiệm khi xây dựng tác nhân</h2>
+<ul>
+<li><strong>Đối với các mô hình tiên tiến như Gemini:</strong> <strong>Cần ngoại suy hóa việc xác minh.</strong> Không bao giờ để LLM tự đánh giá bài làm của mình. Yêu cầu bằng chứng công cụ cứng trước khi thoát.</li>
+<li><strong>Kiểm soát việc chấm dứt và lặp lại ngoài mô hình:</strong> Các vấn đề chấm dứt là nguyên nhân gây ra sự cố phổ biến (FM-1.5). Thêm các điều kiện dừng rõ ràng và bộ dò lặp cho các lệnh/hành động công cụ lặp lại hoặc triển khai Máy trạng thái hữu hạn.</li>
+<li><strong>Buộc làm rõ hoặc chỉ đọc khi đầu vào không rõ ràng:</strong> Các lỗi làm rõ (FM-2.2) là một động lực gây lỗi lớn cho các mô hình nhỏ hơn. Biến sự không rõ ràng thành một nhánh hạng nhất trong biểu đồ tác nhân của bạn.</li>
+</ul>
+<p>Nếu bạn đang xây dựng tác nhân cho quy trình làm việc CNTT doanh nghiệp, đây là loại đánh giá bạn muốn: không chỉ là &ldquo;nó đã vượt qua chưa?&rdquo;, mà là &ldquo;điều gì đã hỏng, ở đâu và biện pháp can thiệp nào có đòn bẩy lớn nhất?&rdquo;</p>
+<hr>
+<h2 id="vấn-đề-hộp-đen-của-các-điểm-chuẩn-tác-nhân">Vấn đề &ldquo;Hộp Đen&rdquo; của các Điểm chuẩn Tác nhân</h2>
+<p>Các điểm chuẩn như <strong>ITBench</strong> đang trở thành tiêu chuẩn để đo lường hiệu suất tác nhân trong các tác vụ tự động hóa CNTT có rủi ro cao. Trong ITBench, tác nhân hoạt động như Kỹ sư Độ tin cậy Trang web (SRE) hoặc Nhà phân tích Bảo mật có nhiệm vụ chẩn đoán sự cố Kubernetes, vá lỗ hổng bảo mật hoặc quản lý chi phí đám mây trong môi trường sản xuất.</p>
+<p>Các điểm chuẩn này sử dụng tỷ lệ thành công làm thước đo chính để đánh giá tác nhân. Tuy nhiên, thước đo này không đủ để kỹ thuật các hệ thống mạnh mẽ. Biết rằng một hệ thống tác nhân đạt tỷ lệ thành công 14% trên ITBench cho chúng ta biết <em>rằng</em> nó đã thất bại, nhưng không phải tại sao: <strong>Nó thất bại vì nó quên ngữ cảnh? Vì nó ảo giác một lệnh? Hay vì nó đơn giản là không dừng lại?</strong></p>
+<p>Nếu không có cách tiếp cận toàn diện để chẩn đoán các lỗi này, các nhà phát triển sẽ phải đoán mò, thường quay trở lại việc điều chỉnh các lời nhắc một cách mù quáng chỉ giải quyết được một vấn đề này nhưng lại tạo ra một vấn đề khác.</p>
+<p>Là một tiêu chuẩn mới để phân tích các chế độ lỗi của các hệ thống tác nhân phức tạp, chúng tôi đã phát triển <strong>MAST (Multi-Agent System Failure Taxonomy - Phân loại Thất bại Hệ thống Đa Tác nhân)</strong>. MAST mang lại nhiều hiểu biết sâu sắc hơn và mở ra quá trình đánh giá mờ ám của các điểm chuẩn này. Được phát triển từ phân tích nghiêm ngặt hơn 1.600 dấu vết trên bảy khuôn khổ khác nhau, MAST cung cấp một phân loại tiêu chuẩn cho các lỗi của tác nhân.</p>
+<p>MAST chuyển đổi các nhật ký thực thi không có cấu trúc thành &ldquo;<!-- raw HTML omitted -->véc-tơ lỗi<!-- raw HTML omitted -->&rdquo; có cấu trúc dựa trên 14 mẫu riêng biệt trên ba danh mục chính:</p>
+<ul>
+<li><strong>FC1: Vấn đề Thiết kế Hệ thống</strong> (The &ldquo;Skeleton&rdquo;)
+<ul>
+<li>Các lỗi ở đây bắt nguồn từ kiến trúc và định nghĩa vai trò của tác nhân.</li>
+<li><em>Ví dụ:</em> <strong>FM-1.3 Lặp lại Bước</strong> (lặp lại), <strong>FM-1.4 Mất Lịch sử Hội thoại</strong> (rò rỉ bộ nhớ), <strong>FM-1.5 Không Nhận thức được Chấm dứt</strong> (không dừng lại).</li>
+</ul>
+</li>
+<li><strong>FC2: Sai lệch giữa các Tác nhân</strong> (The &ldquo;Communication&rdquo;)
+<ul>
+<li>Các lỗi phát sinh trong thời gian chạy từ cách các tác nhân giao tiếp với nhau hoặc với môi trường.</li>
+<li><em>Ví dụ:</em> <strong>FM-2.2 Không Yêu cầu Làm rõ</strong> (giả định thay vì hỏi), <strong>FM-2.3 Lạc đề Nhiệm vụ</strong> (lạc đề).</li>
+</ul>
+</li>
+<li><strong>FC3: Xác minh Nhiệm vụ</strong> (The &ldquo;Quality Control&rdquo;)
+<ul>
+<li>Các lỗi trong đảm bảo chất lượng đầu ra của tác nhân.</li>
+<li><em>Ví dụ:</em> <strong>FM-3.1 Chấm dứt Sớm</strong> (bỏ cuộc quá sớm), <strong>FM-3.3 Xác minh không Chính xác</strong> (ảo giác thành công).</li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="thí-nghiệm-chẩn-đoán-tác-nhân-itbench">Thí nghiệm: Chẩn đoán Tác nhân ITBench</h2>
+<p>Chúng tôi đã kiểm tra nghiêm ngặt ý tưởng sử dụng MAST để làm cho các đánh giá tác nhân có thể hành động được và thu thập thông tin chi tiết về các chế độ lỗi bằng cách áp dụng nó cho ITBench, một bộ công cụ đánh giá phổ biến cho các tác vụ tự động hóa CNTT trên <strong>SRE</strong>, <strong>Bảo mật/Tuân thủ</strong> và <strong>FinOps</strong>.</p>
+<p>Chúng tôi đã chú thích 310 dấu vết thực thi SRE của ITBench được tạo ra bởi một tác nhân SRE được xây dựng với Codex trong môi trường thực tế. Các dấu vết này ghi lại các tương tác ngôn ngữ tự nhiên giữa các tác nhân và công cụ của chúng trên ba mô hình đại diện cho các cấp độ khả năng khác nhau: Gemini-3-Flash, Kimi-K2 và GPT-OSS-120B. Điều này cho phép chúng ta xem xét sâu hơn các số liệu thành công đơn giản và điều tra các mẫu lỗi riêng biệt thúc đẩy các kết quả này. Chúng tôi sử dụng điểm số thu hồi (recall scores), vì theo thiết kế, các mô hình chỉ xuất ra tối đa 3-5 đầu ra và các SRE ưu tiên điểm số thu hồi hơn điểm F-1.</p>
+<ul>
+<li><strong>Gemini-3-Flash:</strong> 100 dấu vết (75,5% Điểm thu hồi trung bình)</li>
+<li><strong>Kimi-K2:</strong> 105 dấu vết (28,6% Điểm thu hồi trung bình)</li>
+<li><strong>GPT-OSS-120B:</strong> 105 dấu vết (12,4% Điểm thu hồi trung bình)</li>
+</ul>
+<p>Dưới đây, chúng tôi trình bày chi tiết các phát hiện từ phân tích chẩn đoán này.</p>
+<h2 id="phát-hiện-1-các-mô-hình-mạnh-mẽ-hơn-như-gemini-3-flash-cho-thấy-các-chế-độ-lỗi-mang-tính-phẫu-thuật-riêng-biệt-trên-mỗi-dấu-vết-trong-khi-kimi-k2-và-gpt-oss-120b-mã-nguồn-mở-lại-thể-hiện-các-mẫu-lỗi-chồng-chéo">Phát hiện 1: Các mô hình mạnh mẽ hơn như Gemini-3-Flash cho thấy các chế độ lỗi mang tính phẫu thuật (riêng biệt) trên mỗi dấu vết, trong khi Kimi-K2 và GPT-oss-120b mã nguồn mở lại thể hiện các mẫu lỗi chồng chéo.</h2>
+<p>Khi chúng ta xem xét các dấu vết bị lỗi, một sự phân cấp rõ ràng về độ phức tạp xuất hiện giữa ba mô hình. Điều này được đo bằng số lượng chế độ lỗi riêng biệt được quan sát trên mỗi lần chạy bị lỗi.</p>
+<ul>
+<li><strong>Gemini-3-Flash:</strong> 2,6 chế độ lỗi trên mỗi dấu vết bị lỗi</li>
+<li><strong>Kimi-K2:</strong> 4,7 chế độ lỗi trên mỗi dấu vết bị lỗi</li>
+<li><strong>GPT-OSS-120B:</strong> 5,3 chế độ lỗi trên mỗi dấu vết bị lỗi</li>
+</ul>
+<p>Sự khác biệt về mật độ chế độ lỗi này cho thấy sự khác biệt cơ bản trong cách các hệ thống này gặp sự cố. Gemini-3-Flash thể hiện một hồ sơ lỗi mang tính phẫu thuật. Ngay cả trong các lần chạy không thành công, nó vẫn duy trì sự mạch lạc nội bộ cao và thường thất bại do một lỗi riêng biệt duy nhất, chẳng hạn như bước xác minh không chính xác. Những lỗi này là chính xác và dễ chẩn đoán hơn nhiều.</p>
+<p>Ở phía đối diện của phổ, GPT-OSS-120B gặp phải sự sụp đổ theo tầng. Trong các dấu vết này, chúng ta quan sát thấy các lỗi có xu hướng chồng chéo theo thời gian. Một sự không khớp nhỏ trong suy luận sớm trong quy trình thường dẫn đến sự sai lệch so với đặc tả nhiệm vụ, điều này đến lượt nó lại dẫn đến sự lệch hướng hoàn toàn của tác nhân. Kimi-K2 đại diện cho khoảng giữa, nơi các lỗi thường xuyên hơn và phức tạp hơn so với mô hình tiên tiến, nhưng không đạt đến sự bất ổn hệ thống được thấy ở mô hình trọng số mở 120B.</p>
+<p>Ý nghĩa của phát hiện này là tỷ lệ thành công cao hơn thường đi kèm với các lỗi riêng biệt. Các hệ thống gặp sự cố với ít vấn đề đồng thời hơn có thể dự đoán được hơn nhiều và đơn giản hơn để cải thiện thông qua các biện pháp can thiệp kỹ thuật có mục tiêu.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="phát-hiện-2-lỗi-không-tử-vong-so-với-lỗi-tử-vong">Phát hiện 2: Lỗi &ldquo;Không Tử vong&rdquo; so với Lỗi &ldquo;Tử vong&rdquo;</h2>
+<p>Có lẽ hiểu biết sâu sắc nhất từ MAST là phân biệt giữa các lỗi mà hệ thống có thể <em>chịu đựng</em> so với các lỗi làm tử vong nhiệm vụ. Bằng cách so sánh phân phối các chế độ lỗi trong <strong>Dấu vết Thành công</strong> so với <strong>Dấu vết Thất bại</strong>, chúng ta có thể phân loại chúng thành ba loại.</p>
+<h3 id="các-lỗi-không-tử-vong-vô-hại">Các Lỗi &ldquo;Không Tử vong&rdquo; (Vô hại)</h3>
+<p>Trong cả ba mô hình, một số chế độ lỗi xuất hiện thường xuyên ngay cả trong các lần chạy cuối cùng cũng thành công. Đây thường là những trục trặc về cấu trúc chứ không phải là lỗi thiết bị đầu cuối.</p>
+<ul>
+<li><strong>FM-1.3 Lặp lại Bước:</strong> Chế độ này có mặt trong hơn 90% các lần chạy thành công của Kimi-K2. Trong lĩnh vực SRE, việc lặp lại thường là cần thiết. Một tác nhân có thể truy vấn cùng một chỉ số nhiều lần để xác minh xem một dịch vụ có đang ổn định hay không hoặc liệu một bản sửa lỗi có có hiệu lực hay không. Gemini-3-Flash thực sự cho thấy sự lặp lại ít hơn trong các dấu vết lỗi của nó, cho thấy rằng nó đôi khi thất bại vì nó không lặp lại đủ.</li>
+<li><strong>FM-1.1 Không tuân thủ Đặc tả Nhiệm vụ:</strong> Các tác nhân thường đi chệch khỏi định dạng công cụ nghiêm ngặt hoặc các hướng dẫn tuần tự nhưng vẫn xác định được nguyên nhân gốc rễ chính xác.</li>
+</ul>
+<p>Sự tách biệt này là nơi MAST chứng tỏ giá trị của nó. Nó cho phép chúng ta bỏ qua các lỗi vô hại như lặp lại, thường xảy ra trong quá trình khắc phục sự cố, và thay vào đó tập trung vào các lỗi tử vong đã làm hỏng một lần chạy.</p>
+<h3 id="các-lỗi-tử-vong">Các Lỗi &ldquo;Tử vong&rdquo;</h3>
+<p>Một số hành vi phân biệt mạnh mẽ giữa thành công và thất bại. Khi các chế độ này xuất hiện, xác suất kết quả thành công giảm mạnh. Ví dụ nổi bật nhất là <strong>FM-3.3 (Xác minh không Chính xác)</strong>. Chế độ này cho thấy mức tăng 52% lỗi trong các dấu vết Gemini-3-Flash bị lỗi so với các dấu vết thành công của nó. Các chế độ lỗi nổi bật khác là 1.5 (Không Nhận thức được Điều kiện Chấm dứt) và 2.6 (Sai lệch Suy luận-Hành động).</p>
+<p>Nếu những điều này xảy ra, lần chạy có thể đã chết; hướng dẫn các chuyên gia phát triển các chiến lược quản lý ngữ cảnh mạnh mẽ trên các tác nhân trong hệ thống và nhiều lượt tương tác.</p>
+<h4 id="nghiên-cứu-tình-huống-gemini-3-flash-quyết-đoán-nhưng-tự-tin-quá-mức">Nghiên cứu tình huống: Gemini-3-Flash (Quyết đoán nhưng Tự tin quá mức)</h4>
+<p>Gemini-3-Flash rất hiệu quả, nhưng điểm nghẽn chính của nó là xu hướng giả định thành công mà không có bằng chứng nghiêm ngặt. Dấu hiệu lỗi của nó bị chi phối bởi sự chênh lệch lớn về lỗi xác minh. Nó thường xác định đúng các tín hiệu nhưng kết thúc trước khi đối chiếu chúng với sự thật cơ bản. Để khắc phục điều này, các nhà phát triển nên triển khai một cổng xác minh bên ngoài. Bằng cách yêu cầu bằng chứng dựa trên công cụ như xóa cảnh báo hoặc ngưỡng chỉ số lành mạnh trước khi cho phép tác nhân thoát, chúng ta có thể giảm thiểu sự tự tin thái quá cố hữu của mô hình này.</p>
+<ul>
+<li><strong>Khắc phục:</strong> Để cải thiện Gemini-3-Flash trên ITBench, việc kỹ thuật lời nhắc sẽ không giúp ích nhiều. Đặc biệt, các thí nghiệm chúng tôi trình bày trong bài báo NeurIPS 2025 của chúng tôi cho thấy rằng với các biện pháp can thiệp thủ công như kỹ thuật lời nhắc cho các lỗi liên quan đến bộ nhớ, chúng ta chỉ có thể cải thiện hiệu suất lên tới khoảng 15,6%, trong khi trong một bài đăng trên blog trước đó về MAST, chúng tôi đã chỉ ra rằng bằng cách giới thiệu các tác nhân mới như một <strong>Tác nhân Tóm tắt</strong> để nhắc nhở các tác nhân khác về những gì đang diễn ra và liên tục bổ sung trạng thái của chúng (khắc phục FM-1.4) hoặc bằng cách giới thiệu các cơ chế quản lý ngữ cảnh (chẳng hạn như <strong>Máy trạng thái</strong> chặt chẽ hơn để thực thi việc chấm dứt để khắc phục FM-1.5), chúng ta có thể cải thiện hiệu suất lên tới 53% vì chúng giải quyết các vấn đề cơ bản hơn với hệ thống.</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h4 id="nghiên-cứu-tình-huống-kimi-k2-khủng-hoảng-chấm-dứt">Nghiên cứu tình huống: Kimi-K2 (Khủng hoảng Chấm dứt)</h4>
+<p>Mặc dù sự nhầm lẫn về việc chấm dứt (FM-3.1 và FM-1.5) là chế độ lỗi phổ biến nhất đối với Kimi-K2, các quỹ đạo lỗi của nó được xác định bởi <strong>Sai lệch Hành động-Suy luận (FM-2.6)</strong>, có mặt trong <strong>92% lỗi</strong> của nó.</p>
+<ul>
+<li><strong>Khoảng cách Thực thi:</strong> Mặc dù các phần suy luận nội bộ của nó thường chính xác, nhưng nó gặp sự cố phổ biến 92% với <strong>FM-2.6 (Sai lệch Hành động-Suy luận)</strong>. Nó thường xác định bước tiếp theo chính xác nhưng sau đó thực hiện một lệnh dư thừa hoặc không liên quan.</li>
+<li><strong>Cạm bẫy Meta-Vòng lặp:</strong> Khoảng 25% dấu vết lỗi liên quan đến <strong>FM-2.3 (Lạc đề Nhiệm vụ)</strong>. Khi một lệnh công cụ trả về lỗi nhỏ, tác nhân thường từ bỏ sự cố chính để bước vào một chu kỳ gỡ lỗi các tập lệnh điều tra của chính nó.</li>
+</ul>
+<p>Kimi-K2 là một ví dụ điển hình về một mô hình suy nghĩ quá nhiều, chuỗi suy luận của nó thường quá dài nhưng có thể gặp lỗi trong quá trình thực thi.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h4 id="nghiên-cứu-tình-huống-gpt-oss-120b">Nghiên cứu tình huống: GPT-OSS-120B</h4>
+<p>GPT-OSS-120B thể hiện hồ sơ lỗi không ổn định nhất trong nhóm. Mô hình này thể hiện trung bình 5,3 chế độ lỗi riêng biệt trên mỗi dấu vết lỗi, cho thấy sự bất lực cơ bản trong việc duy trì trạng thái nội bộ.</p>
+<ul>
+<li><strong>Mất Lịch sử Hội thoại (FM-1.4):</strong> Đây là lỗi tử vong duy nhất đối với mô hình 120B. Nó mất lịch sử hội thoại trong <strong>24%</strong> dấu vết, trong khi Gemini-3-Flash không gặp lỗi bộ nhớ và Kimi-K2 chỉ 7%. Khi các dấu vết SRE ngày càng dài, GPT-OSS-120B thực sự &ldquo;quên&rdquo; các cảnh báo mà nó ban đầu đang phân loại, dẫn đến sự lạc đề hoàn toàn của nhiệm vụ.</li>
+<li><strong>Ngắt kết nối Suy luận (FM-2.6):</strong> Một con số đáng kinh ngạc <strong>94%</strong> dấu vết cho thấy sự tách rời giữa suy luận và hành động. Nó có khả năng gấp gần 3 lần Gemini (31%) để mô tả một kế hoạch chính xác nhưng sau đó lại thực thi một lệnh hoàn toàn không liên quan hoặc dư thừa.</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="một-cách-đọc-các-biểu-đồ-khác-và-hữu-ích-hơn-tử-vong-so-với-không-tử-vong">Một cách đọc các biểu đồ khác (và hữu ích hơn): &ldquo;tử vong&rdquo; so với &ldquo;không tử vong&rdquo;</h2>
+<p>Tóm lại, MAST cho phép bạn chia các chế độ lỗi thành hai nhóm:</p>
+<h3 id="có-thể-phục-hồi--cấu-trúc-xuất-hiện-ngay-cả-trong-các-dấu-vết-thành-công">Có thể phục hồi / cấu trúc (xuất hiện ngay cả trong các dấu vết thành công)</h3>
+<p>Đây là những lỗi không gây tử vong và hệ thống có thể phục hồi để hoàn thành nhiệm vụ thành công.</p>
+<ul>
+<li><strong>FM-1.3 Lặp lại bước</strong></li>
+<li><strong>FM-3.3 Xác minh không chính xác</strong> (sự khác biệt quan trọng: hệ thống <em>có</em> xác minh; nó chỉ xác minh kém)</li>
+<li><strong>FM-2.6 Sai lệch suy luận-hành động</strong> (thường có mặt, nhưng không phải lúc nào cũng quyết định)</li>
+</ul>
+<h3 id="tử-vong--quyết-định-gắn-chặt-mạnh-mẽ-với-các-dấu-vết-bị-lỗi">Tử vong / quyết định (gắn chặt mạnh mẽ với các dấu vết bị lỗi)</h3>
+<p>Đây là những lỗi mà hệ thống thường không thể phục hồi.</p>
+<ul>
+<li><strong>FM-1.5 Không nhận thức được điều kiện chấm dứt</strong></li>
+<li><strong>FM-3.1 Chấm dứt sớm</strong></li>
+<li><strong>FM-1.4 Mất lịch sử hội thoại</strong></li>
+<li><strong>FM-2.3 Lạc đề nhiệm vụ</strong> (hiếm nhưng cực kỳ chẩn đoán khi nó xuất hiện)</li>
+<li><strong>FM-2.2 Không yêu cầu làm rõ</strong> (đặc biệt đối với các chế độ Granite/Llama)</li>
+</ul>
+<p>Đây là phần &ldquo;hiểu biết phong phú hơn&rdquo;: <strong>hai mô hình có thể có cùng tỷ lệ thành công trên một phần nhỏ, nhưng lại thất bại vì những lý do hoàn toàn khác nhau - đòi hỏi các bản sửa lỗi khác nhau.</strong></p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>MAST là một công cụ kiểm tra các dấu vết hệ thống tác nhân để xác định các loại lỗi chi tiết hỗ trợ phát triển và gỡ lỗi hệ thống. Trong bài đăng này, chúng tôi chỉ ra rằng bằng cách áp dụng MAST cho ITBench, chúng tôi chuyển từ các quan sát chung (&ldquo;Các mô hình mở gặp khó khăn&rdquo;) sang một lộ trình kỹ thuật cụ thể giúp cải thiện hiệu suất của các hệ thống tác nhân dựa vào các mô hình này, ví dụ:</p>
+<ol>
+<li><strong>Đối với Gemini-3-Flash:</strong> Lỗi xác minh (<strong>FM-3.3</strong>) là lỗi tử vong phổ biến nhất đối với các mô hình phẫu thuật. Không bao giờ cho phép tác nhân tự kết thúc; yêu cầu bằng chứng được điều chỉnh bằng công cụ (ví dụ: xóa cảnh báo của AlertManager hoặc thay đổi trạng thái K8s) trước khi một lần chạy được coi là thành công.</li>
+<li><strong>Đối với Kimi-K2:</strong> Sử dụng một máy trạng thái xác định để khắc phục sự vật lộn thường xuyên của mô hình trong việc nhận ra việc hoàn thành nhiệm vụ. Chuỗi suy luận của mô hình này có thể quá dài và gặp khó khăn trong việc chấm dứt, vì vậy nó có thể được hưởng lợi đáng kể từ việc kiểm soát chặt chẽ hơn về thời điểm kết thúc.</li>
+<li><strong>Đối với GPT-oss-120b:</strong> Sự sụp đổ hệ thống xảy ra khi các sự không khớp suy luận nhỏ (<strong>FM-2.6</strong>) làm ảnh hưởng đến lịch sử nhiệm vụ. Triển khai vệ sinh ngữ cảnh tích cực và phát hiện lỗi sớm để đảm bảo rằng các sự không khớp nhỏ không chồng chéo thành sự lạc đề hoàn toàn.</li>
+</ol>
+<ul>
+<li><strong>Bài báo IT-Bench:</strong> <a href="https://arxiv.org/pdf/2502.05352">https://arxiv.org/pdf/2502.05352</a></li>
+<li><strong>Mã IT-Bench:</strong> <a href="https://github.com/itbench-hub/ITBench">https://github.com/itbench-hub/ITBench</a></li>
+<li><strong>Bài báo MAST:</strong> <a href="https://arxiv.org/abs/2503.13657">https://arxiv.org/abs/2503.13657</a></li>
+<li><strong>Mã MAST:</strong> <a href="https://github.com/multi-agent-systems-failure-taxonomy/MAST">https://github.com/multi-agent-systems-failure-taxonomy/MAST</a></li>
+<li><strong>MAST-Data:</strong> <a href="https://huggingface.co/datasets/mcemri/MAST-Data">🤗 MAST-Data (1600+ Dấu vết)</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/ibm-research/itbenchandmast">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/18-february-2026/">18 February 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/259694/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1624431552569-noauth.jpeg" alt="Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-19T00:00:00&#43;00:00">Feb 19, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu cách sử dụng gr.HTML để tạo các ứng dụng web chỉ với một lần nhấn bằng Gradio.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-14/1b132c/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/63d3095c2727d7888cbb54e2/Uv-Lx8PVGviqokfOyYlCN.png" alt="Giới thiệu SyGra Studio" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-14T00:00:00&#43;00:00">Feb 14, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Giới thiệu SyGra Studio</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu SyGra Studio</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/e7afe6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic và Chính phủ Rwanda ký biên bản ghi nhớ về AI trong y tế và giáo dục" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic và Chính phủ Rwanda ký biên bản ghi nhớ về AI trong y tế và giáo dục</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/eeb824/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/f475e7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Giới thiệu Claude Sonnet 4.6" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Claude Sonnet 4.6</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/259694/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1624431552569-noauth.jpeg" alt="Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/916c74/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/637bfdf60dc13843b468ac20/npxapKcW-cXX3J2JBl2vY.png" alt="IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

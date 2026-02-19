@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude | AI Today - SkyAI</title>
+
+<meta name="description" content="Hướng dẫn cách tạo các kernel CUDA tùy chỉnh cho các mô hình AI bằng cách sử dụng Codex và Claude.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Hướng dẫn cách tạo các kernel CUDA tùy chỉnh cho các mô hình AI bằng cách sử dụng Codex và Claude. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-19T00:00:00&#43;00:00">February 19, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            9 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude">
+        <figcaption class="text-center italic text-xs">Hướng dẫn cách tạo các kernel CUDA tùy chỉnh cho các mô hình AI bằng cách sử dụng Codex và Claude.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="tích-hợp-kernel-tùy-chỉnh-cho-mọi-người-từ-codex-và-claude">Tích hợp Kernel Tùy Chỉnh cho Mọi Người từ Codex và Claude</h1>
+<p>tl;dr: Chúng tôi đã phát triển một kỹ năng cho agent, giúp agent mã hóa học cách viết các kernel CUDA chuyên nghiệp. Sau đó, chúng tôi hướng Claude và Codex vào hai mục tiêu thực tế: một quy trình của <!-- raw HTML omitted -->diffusers<!-- raw HTML omitted --> và một mô hình <!-- raw HTML omitted -->transformers<!-- raw HTML omitted -->. Các agent đã tạo ra các kernel hoạt động cho cả hai, với các liên kết PyTorch và điểm chuẩn chính xác, từ đầu đến cuối.</p>
+<p>Việc viết kernel CUDA rất khó. Việc viết kernel CUDA tích hợp chính xác với <!-- raw HTML omitted -->transformers<!-- raw HTML omitted --> và <!-- raw HTML omitted -->diffusers<!-- raw HTML omitted --> còn khó hơn. Có các mẫu truy cập bộ nhớ đặc thù theo kiến trúc, chiến lược vector hóa, giảm thiểu warp shuffle và hàng tá cạm bẫy tích hợp có thể làm nản lòng cả những nhà phát triển có kinh nghiệm. Đây chính xác là loại vấn đề chuyên biệt, có rủi ro cao mà các kỹ năng của agent rất phù hợp.</p>
+<p>Chúng tôi đã cung cấp cho các agent mã hóa kiến thức chuyên ngành cần thiết, như kiến trúc GPU nào cần nhắm mục tiêu, cách cấu trúc một dự án trình tạo kernel, khi nào nên sử dụng bộ nhớ chia sẻ thay vì thanh ghi và cách viết các liên kết PyTorch. Các agent đã làm phần còn lại. Nếu bạn đã sử dụng <!-- raw HTML omitted -->kỹ năng huấn luyện LLM<!-- raw HTML omitted --> hoặc đọc <!-- raw HTML omitted -->Chúng tôi đã nhờ Claude dạy các mô hình mở<!-- raw HTML omitted -->, bạn sẽ thấy quen thuộc với quy trình: đóng gói kiến thức chuyên ngành thành một kỹ năng, hướng agent vào một vấn đề và để nó tự làm việc.</p>
+<h2 id="tại-sao-lại-cần-kỹ-năng-cho-kernel">Tại sao lại cần kỹ năng cho kernel?</h2>
+<p><!-- raw HTML omitted -->Kernel Hub<!-- raw HTML omitted --> đã giải quyết vấn đề phân phối các kernel phần cứng tùy chỉnh. Bạn có thể tải các kernel được biên dịch sẵn từ Hub chỉ với một lệnh gọi <!-- raw HTML omitted -->get_kernel<!-- raw HTML omitted --> duy nhất. Không cần biên dịch, không cần cờ lệnh. Tuy nhiên, vẫn cần có người nào đó để <!-- raw HTML omitted -->viết các kernel<!-- raw HTML omitted -->. Đây là khoảng trống mà kỹ năng này lấp đầy.</p>
+<p>Phát triển kernel CUDA có một bề mặt rất lớn:</p>
+<ul>
+<li>Hướng dẫn tối ưu hóa theo kiến trúc phần cứng cho từng thế hệ GPU. H100, A100 và T4 mỗi loại có các khả năng tính toán, kích thước bộ nhớ chia sẻ và hồ sơ băng thông khác nhau.</li>
+<li>Trong Thư viện, <!-- raw HTML omitted -->diffusers<!-- raw HTML omitted --> và <!-- raw HTML omitted -->transformers<!-- raw HTML omitted --> có các cấu trúc mô-đun khác nhau, quy ước chuẩn hóa và mẫu tích hợp. Kernel tùy chỉnh cần được đăng ký trong PyTorch để <!-- raw HTML omitted -->torch.compile<!-- raw HTML omitted --> nhận dạng.</li>
+<li>Để phân phối, kernel có thể phụ thuộc vào các phiên bản CUDA, Pytorch và Python, tạo ra các ma trận môi trường khổng lồ.</li>
+</ul>
+<p>Đây là kiến thức chuyên ngành bị mất trong các tab tài liệu và câu trả lời trên Stack Overflow. Kỹ năng agent đóng gói kiến thức này thành ngữ cảnh được tải theo yêu cầu.</p>
+<p>Đầu tiên, hãy xem cách sử dụng kỹ năng ngay lập tức, sau đó chúng ta sẽ đi sâu vào chi tiết về cách chúng tôi đánh giá hiệu năng của các kernel.</p>
+<h2 id="cài-đặt-kỹ-năng">Cài đặt kỹ năng</h2>
+<p>Kỹ năng này được đi kèm với thư viện <!-- raw HTML omitted -->kernels<!-- raw HTML omitted -->. Cài đặt nó vào agent mã hóa của bạn chỉ với một lệnh:</p>
+<p>shell</p>
+<h1 id="chúng-ta-cần-cài-đặt-kernels-từ-main-cho-việc-này">Chúng ta cần cài đặt kernels từ main cho việc này</h1>
+<p>pip install git+https://github.com/huggingface/kernels.git#subdirectory=kernels
+kernels skills add cuda-kernels &ndash;claude</p>
+<p>Lệnh này sẽ đặt kỹ năng vào <!-- raw HTML omitted -->.claude/skills/cuda-kernels/<!-- raw HTML omitted -->, nơi Claude Code và Cursor sẽ nhận diện tự động. Đối với các agent khác:</p>
+<p>shell</p>
+<h1 id="codex">Codex</h1>
+<p>kernels skills add cuda-kernels &ndash;codex</p>
+<h1 id="opencode">OpenCode</h1>
+<p>kernels skills add cuda-kernels &ndash;opencode</p>
+<h1 id="đến-đích-tùy-chỉnh">Đến đích tùy chỉnh</h1>
+<p>kernels skills add cuda-kernels &ndash;dest ./my-agent/skills/</p>
+<h1 id="cài-đặt-toàn-cục-sẵn-dùng-trên-mọi-dự-án">Cài đặt toàn cục (sẵn dùng trên mọi dự án)</h1>
+<p>kernels skills add cuda-kernels &ndash;global</p>
+<h1 id="ghi-đè-cài-đặt-hiện-có">Ghi đè cài đặt hiện có</h1>
+<p>kernels skills add cuda-kernels &ndash;claude &ndash;force</p>
+<p>Sau khi cài đặt, hãy yêu cầu agent của bạn:</p>
+<p>Xây dựng kernel RMSNorm được vector hóa cho H100, nhắm mục tiêu mô hình Qwen3-8B trong transformers.</p>
+<p>Hoặc, bạn có thể đưa ra một yêu cầu mở hơn:</p>
+<p>Xây dựng kernel attention được tối ưu hóa cho H100, nhắm mục tiêu mô hình Qwen3-8B trong transformers. Đánh giá hiệu năng của nó so với baseline của PyTorch và xác nhận sự cải thiện về hiệu suất đầu cuối.</p>
+<p>Agent có thể đọc kỹ năng, chọn các tham số kiến trúc phù hợp, tạo mã CUDA, viết các liên kết PyTorch, thiết lập <!-- raw HTML omitted -->build.toml<!-- raw HTML omitted --> và tạo một script đánh giá hiệu năng.</p>
+<p>Nếu bạn đang làm việc với các kernel phức tạp hơn, hoặc các tối ưu hóa đặc thù kiến trúc mà không có trong kỹ năng, thì kỹ năng cung cấp các khối xây dựng và mẫu cơ bản để bạn bắt đầu. Chúng tôi cũng sẵn sàng đón nhận đóng góp cho <!-- raw HTML omitted -->chính kỹ năng đó<!-- raw HTML omitted -->.</p>
+<h2 id="nội-dung-trong-kỹ-năng">Nội dung trong kỹ năng</h2>
+<p>Kỹ năng này có khoảng <!-- raw HTML omitted -->550 token<!-- raw HTML omitted --> hướng dẫn có cấu trúc cùng với các script tham khảo, hướng dẫn tối ưu hóa GPU, tài liệu khắc phục sự cố và các ví dụ hoàn chỉnh. Các công cụ mã hóa mang tính tác nhân như Codex và Claude có thể đọc thông tin này và tạo ra một dự án kernel có thể xây dựng.</p>
+<p>Nó bao gồm:</p>
+<ul>
+<li>Tối ưu hóa theo kiến trúc GPU NVIDIA cho H100, A100 và T4 (khả năng tính toán, băng thông bộ nhớ, kích thước bộ nhớ chia sẻ, kích thước khối)</li>
+<li>Các mẫu tích hợp cho cả <!-- raw HTML omitted -->diffusers<!-- raw HTML omitted --> và <!-- raw HTML omitted -->transformers<!-- raw HTML omitted -->, bao gồm cả những cạm bẫy cụ thể cho từng thư viện</li>
+<li>Các mẫu kernel với các mẫu truy cập bộ nhớ vector hóa cho BF16, FP16 và FP32</li>
+<li>Quy trình đánh giá hiệu năng cho cả các benchmark vi mô kernel riêng lẻ và so sánh quy trình đầu cuối</li>
+<li>Tích hợp HuggingFace Kernel Hub thông qua <!-- raw HTML omitted -->get_kernel<!-- raw HTML omitted --> để tải các kernel cộng đồng</li>
+</ul>
+<p>.claude/skills/cuda-kernels/
+├── SKILL.md                              # Hướng dẫn chính (~550 tokens)
+├── scripts/
+│   ├── benchmark_example.py              # Mẫu benchmark đầu cuối
+│   ├── benchmark_rmsnorm.py              # Benchmark vi mô kernel riêng lẻ
+│   ├── ltx_kernel_injection_example.py   # Mẫu tích hợp Diffusers
+│   ├── transformers_injection_example.py # Mẫu tích hợp Transformers
+│   └── huggingface_kernels_example.py    # Tích hợp Kernel Hub
+└── references/
+├── diffusers-integration.md          # Hướng dẫn Diffusers với cạm bẫy
+├── transformers-integration.md       # Hướng dẫn Transformers
+├── huggingface-kernels-integration.md
+├── h100-optimization-guide.md
+├── a100-optimization-guide.md
+├── t4-optimization-guide.md
+├── kernel-templates.md
+└── troubleshooting.md</p>
+<p>Khi agent tải kỹ năng này, nó sẽ nhận được mọi thứ cần thiết để đi từ &ldquo;viết cho tôi một kernel RMSNorm&rdquo; đến một dự án có thể xây dựng và đánh giá hiệu năng. Agent sẽ tìm kiếm và lọc kỹ năng để tìm các tệp và thư mục liên quan. Vì vậy, điều quan trọng là phải cấu trúc kỹ năng theo cách dễ tìm.</p>
+<p>Agent được hướng dẫn tạo các kernel tuân thủ các mẫu trong <!-- raw HTML omitted -->references/kernel-templates.md<!-- raw HTML omitted --> và tạo một dự án kernel hoàn chỉnh:</p>
+<p>examples/your_model/
+├── kernel_src/
+│   └── rmsnorm.cu              # Mã kernel CUDA
+├── torch-ext/
+│   ├── your_kernels/<strong>init</strong>.py
+│   └── torch_binding.cpp       # Liên kết C++ PyTorch
+├── benchmark_rmsnorm.py        # Script benchmark vi mô
+├── build.toml                  # Cấu hình kernel-builder
+├── setup.py                    # pip install -e .
+└── pyproject.toml</p>
+<p>Chúng tôi đã thử nghiệm điều này trên hai mục tiêu thực tế.</p>
+<h2 id="đánh-giá-kernel-diffusers-ltx-video-trên-h100">Đánh giá kernel: Diffusers (LTX-Video trên H100)</h2>
+<p>Agent đã xây dựng các kernel RMSNorm, RoPE 3D, GEGLU và AdaLN cho <!-- raw HTML omitted -->LTX-Video<!-- raw HTML omitted -->, một quy trình tạo video từ <!-- raw HTML omitted -->diffusers<!-- raw HTML omitted -->. Ví dụ đầy đủ có tại <!-- raw HTML omitted -->examples/ltx_video/<!-- raw HTML omitted -->. Chúng tôi đã tối ưu hóa kernel RMSNorm cho H100. Cả hai benchmark đều được chạy trên H100 80GB HBM3 ở độ chính xác BFloat16.</p>
+<p>Nếu bạn muốn xem kernel đã tạo, hãy truy cập <!-- raw HTML omitted -->ví dụ này<!-- raw HTML omitted --></p>
+<h3 id="benchmark-rmsnorm-riêng-lẻ">Benchmark RMSNorm riêng lẻ</h3>
+<p>Đầu tiên, chúng tôi so sánh hiệu năng kernel RMSNorm riêng lẻ với baseline của PyTorch. Đây là sự tăng tốc chính trong quy trình được tối ưu hóa.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>	&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<h3 id="tạo-video-đầu-cuối-49-khung-hình-30-bước-h100-80gb">Tạo video đầu cuối (49 khung hình, 30 bước, H100 80GB)</h3>
+<p>Tiếp theo, chúng tôi so sánh hiệu năng tạo video đầu cuối của các kernel được tối ưu hóa so với baseline (không biên dịch) và baseline <!-- raw HTML omitted -->torch.compile<!-- raw HTML omitted -->.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>	&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<p>RMSNorm chiếm khoảng 5% tổng thời gian tính toán trong LTX-Video. Thời gian còn lại dành cho attention, phép chiếu tuyến tính và giải mã VAE. Mức tăng tốc 6% đầu cuối từ một loại kernel duy nhất phù hợp với hồ sơ đó.</p>
+<h2 id="đánh-giá-kernel-transformers-qwen3-8b-trên-h100">Đánh giá kernel: Transformers (Qwen3-8B trên H100)</h2>
+<p>Agent đã xây dựng kernel RMSNorm cho <!-- raw HTML omitted -->Qwen3-8B<!-- raw HTML omitted -->, một mô hình ngôn ngữ lớn từ <!-- raw HTML omitted -->transformers<!-- raw HTML omitted --> với 65 mô-đun RMSNorm trên 32 lớp. Ví dụ đầy đủ có tại <!-- raw HTML omitted -->examples/qwen3_8b/<!-- raw HTML omitted -->. Chúng tôi đã tối ưu hóa kernel RMSNorm cho H100. Cả hai benchmark đều được chạy trên H100 80GB HBM3 ở độ chính xác BFloat16.</p>
+<p>Nếu bạn muốn khám phá kernel, hãy xem nó <!-- raw HTML omitted -->ở đây<!-- raw HTML omitted -->.</p>
+<h3 id="benchmark-rmsnorm-riêng-lẻ-1">Benchmark RMSNorm riêng lẻ</h3>
+<p>Một lần nữa, chúng tôi so sánh hiệu năng kernel RMSNorm riêng lẻ với baseline của PyTorch.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>	&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<p>Tốc độ tăng lên theo độ dài chuỗi: 1.58x ở 128 token, 2.47x ở 8192 token. Đối với suy luận ngữ cảnh dài, kernel tùy chỉnh làm giảm một nửa độ trễ RMSNorm.</p>
+<h2 id="xuất-kernel-của-bạn-lên-hub">Xuất kernel của bạn lên Hub</h2>
+<p>Sau khi xuất bản, mọi người đều có thể sử dụng kernel của bạn mà không cần biên dịch:</p>
+<p>python
+from kernels import get_kernel</p>
+<p>rmsnorm = get_kernel(&ldquo;your-org/your-kernel&rdquo;)</p>
+<p><!-- raw HTML omitted -->get_kernel<!-- raw HTML omitted --> phát hiện phiên bản Python, PyTorch và CUDA của người dùng và tải về bản nhị phân được biên dịch sẵn phù hợp. Không cần biên dịch, không cần cờ lệnh, thường sẵn sàng trong vài giây.</p>
+<p>Kỹ năng và Hub là bổ trợ cho nhau. Kỹ năng xử lý quá trình phát triển. Hub xử lý việc phân phối. Xây dựng kernel bằng kỹ năng, xác thực nó bằng các script benchmark, xuất bản nó lên Hub và nó sẽ trở thành một dòng lệnh duy nhất cho mọi người khác.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Chúng tôi đã xây dựng một kỹ năng agent dạy các agent mã hóa cách viết các kernel CUDA chuyên nghiệp. Sau đó, chúng tôi đã hướng Claude và Codex vào hai mục tiêu thực tế: một quy trình <!-- raw HTML omitted -->diffusers<!-- raw HTML omitted --> và một mô hình <!-- raw HTML omitted -->transformers<!-- raw HTML omitted -->. Các agent đã tạo ra các kernel hoạt động cho cả hai, với các liên kết PyTorch và benchmark chính xác, từ đầu đến cuối. Chúng tôi đã đánh giá hiệu năng của các kernel và nhận thấy rằng các kernel được tối ưu hóa có thể mang lại sự tăng tốc cả trong hiệu năng riêng lẻ và đầu cuối.</p>
+<h2 id="tài-nguyên">Tài nguyên</h2>
+<ul>
+<li><!-- raw HTML omitted -->Kỹ năng Kernel CUDA trong <!-- raw HTML omitted -->kernels<!-- raw HTML omitted --><!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Blog HuggingFace Kernel Hub<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Chúng tôi đã nhờ Claude Tinh chỉnh một LLM Mã Nguồn Mở<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Chúng tôi đã nhờ Claude Dạy các Mô hình Mở<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Cộng đồng Kernel HuggingFace<!-- raw HTML omitted --></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/custom-cuda-kernels-agent-skills">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/13-february-2026/">13 February 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/259694/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1624431552569-noauth.jpeg" alt="Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-19T00:00:00&#43;00:00">Feb 19, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu cách sử dụng gr.HTML để tạo các ứng dụng web chỉ với một lần nhấn bằng Gradio.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/916c74/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/637bfdf60dc13843b468ac20/npxapKcW-cXX3J2JBl2vY.png" alt="IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-19T00:00:00&#43;00:00">Feb 19, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">IBM và UC Berkeley đã hợp tác để tạo ra một bộ công cụ có tên IT-Bench và MAST để giúp các nhà nghiên cứu hiểu và cải thiện hiệu suất của các tác nhân AI.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/e7afe6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic và Chính phủ Rwanda ký biên bản ghi nhớ về AI trong y tế và giáo dục" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic và Chính phủ Rwanda ký biên bản ghi nhớ về AI trong y tế và giáo dục</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/eeb824/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/f475e7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Giới thiệu Claude Sonnet 4.6" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Claude Sonnet 4.6</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/259694/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1624431552569-noauth.jpeg" alt="Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/916c74/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/637bfdf60dc13843b468ac20/npxapKcW-cXX3J2JBl2vY.png" alt="IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

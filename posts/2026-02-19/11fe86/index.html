@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>transformers.js v4 Preview- Hiện đã có trên NPM! | AI Today - SkyAI</title>
+
+<meta name="description" content="Thông báo về bản xem trước Transformers.js v4, hiện đã có trên NPM, cho phép các nhà phát triển sử dụng các mô hình Transformer trực tiếp trong trình duyệt.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">transformers.js v4 Preview- Hiện đã có trên NPM!</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Thông báo về bản xem trước Transformers.js v4, hiện đã có trên NPM, cho phép các nhà phát triển sử dụng các mô hình Transformer trực tiếp trong trình duyệt. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-19T00:00:00&#43;00:00">February 19, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            9 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://cdn-avatars.huggingface.co/v1/production/uploads/61b253b7ac5ecaae3d1efe0c/hwiQ0uvz3t-L5a-NtBIO6.png" alt="transformers.js v4 Preview- Hiện đã có trên NPM!">
+        <figcaption class="text-center italic text-xs">Thông báo về bản xem trước Transformers.js v4, hiện đã có trên NPM, cho phép các nhà phát triển sử dụng các mô hình Transformer trực tiếp trong trình duyệt.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="transformersjs-v4-preview-đã-có-trên-npm">Transformers.js v4 Preview: Đã có trên NPM!</h1>
+<p>Chúng tôi vui mừng thông báo Transformers.js v4 (bản xem trước) hiện đã có trên NPM! Sau gần một năm phát triển (chúng tôi bắt đầu vào tháng 3 năm 2025 🤯), cuối cùng chúng tôi đã sẵn sàng để bạn dùng thử. Trước đây, người dùng phải cài đặt v4 trực tiếp từ mã nguồn qua GitHub, nhưng giờ đây, mọi thứ đơn giản chỉ là chạy một lệnh duy nhất!</p>
+<p>sh
+npm i @huggingface/transformers@next</p>
+<p>Chúng tôi sẽ tiếp tục xuất bản các bản phát hành v4 dưới thẻ <code>next</code> trên NPM cho đến khi phát hành đầy đủ, vì vậy hãy mong đợi các bản cập nhật thường xuyên!</p>
+<h2 id="cải-thiện-hiệu-suất--thời-gian-chạy">Cải thiện Hiệu suất &amp; Thời gian chạy</h2>
+<p>Thay đổi lớn nhất chắc chắn là việc áp dụng Runtime WebGPU mới, được viết lại hoàn toàn bằng C++. Chúng tôi đã làm việc chặt chẽ với nhóm ONNX Runtime để kiểm tra kỹ lưỡng Runtime này trên khoảng 200 kiến trúc mô hình được hỗ trợ, cũng như nhiều kiến trúc độc quyền của v4.</p>
+<p>Ngoài hỗ trợ toán tử tốt hơn (cho hiệu suất, độ chính xác và phạm vi bao phủ), Runtime WebGPU mới này cho phép sử dụng cùng một mã transformers.js trên nhiều môi trường JavaScript khác nhau, bao gồm trình duyệt, môi trường chạy phía máy chủ và ứng dụng máy tính. Đúng vậy, giờ đây bạn có thể chạy các mô hình được tăng tốc WebGPU trực tiếp trên Node, Bun và Deno!</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformersjs-v4/webgpu.png" alt="WebGPU Overview"></p>
+<p>Chúng tôi đã chứng minh rằng có thể chạy các mô hình AI hiện đại 100% cục bộ trong trình duyệt, và bây giờ chúng tôi tập trung vào hiệu suất: làm cho các mô hình này chạy nhanh nhất có thể, ngay cả trong môi trường bị hạn chế tài nguyên. Điều này đòi hỏi phải suy nghĩ lại hoàn toàn chiến lược xuất khẩu của chúng tôi, đặc biệt là đối với các mô hình ngôn ngữ lớn. Chúng tôi đạt được điều này bằng cách triển khai lại các mô hình mới từng toán tử một, tận dụng các <strong>Contrib Operators</strong> chuyên biệt của ONNX Runtime như <a href="https://github.com/microsoft/onnxruntime/blob/main/docs/ContribOperators.md#com.microsoft.GroupQueryAttention">com.microsoft.GroupQueryAttention</a>, <a href="https://github.com/microsoft/onnxruntime/blob/main/docs/ContribOperators.md#com.microsoft.MatMulNBits">com.microsoft.MatMulNBits</a>, hoặc <a href="https://github.com/microsoft/onnxruntime/blob/main/docs/ContribOperators.md#com.microsoft.QMoE">com.microsoft.QMoE</a> để tối đa hóa hiệu suất.</p>
+<p>Ví dụ, bằng cách áp dụng toán tử <a href="https://github.com/microsoft/onnxruntime/blob/main/docs/ContribOperators.md#com.microsoft.MultiHeadAttention">com.microsoft.MultiHeadAttention</a>, chúng tôi đã đạt được tốc độ nhanh hơn ~4 lần cho các mô hình nhúng dựa trên BERT.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformersjs-v4/speedups.png" alt="Optimized ONNX Exports"></p>
+<p>Bản cập nhật này cho phép hỗ trợ ngoại tuyến hoàn toàn bằng cách lưu trữ các tệp WASM cục bộ trong trình duyệt, cho phép người dùng chạy các ứng dụng Transformers.js mà không cần kết nối internet sau lần tải xuống ban đầu.</p>
+<h2 id="cấu-trúc-lại-kho-chứa">Cấu trúc lại Kho chứa</h2>
+<p>Việc phát triển một phiên bản chính mới đã mang đến cho chúng tôi cơ hội đầu tư vào cơ sở mã và thực hiện các công việc tái cấu trúc đã bị trì hoãn từ lâu.</p>
+<h3 id="pnpm-workspaces">PNPM Workspaces</h3>
+<p>Cho đến nay, kho chứa GitHub là gói npm của chúng tôi. Điều này hoạt động tốt miễn là kho chứa chỉ hiển thị một thư viện duy nhất. Tuy nhiên, nhìn về tương lai, chúng tôi nhận thấy sự cần thiết của nhiều gói phụ thuộc nặng nề vào lõi Transformers.js nhưng giải quyết các trường hợp sử dụng khác nhau, chẳng hạn như triển khai cụ thể của thư viện hoặc các tiện ích nhỏ hơn mà hầu hết người dùng không cần nhưng lại cần thiết cho một số người.</p>
+<p>Đó là lý do tại sao chúng tôi chuyển kho chứa thành một monorepo bằng cách sử dụng pnpm workspaces. Điều này cho phép chúng tôi xuất các gói nhỏ hơn phụ thuộc vào <code>@huggingface/transformers</code> mà không gặp phải chi phí quản lý kho chứa riêng biệt.</p>
+<h3 id="cấu-trúc-lớp-mô-đun">Cấu trúc Lớp Mô-đun</h3>
+<p>Một nỗ lực tái cấu trúc lớn khác nhằm vào tệp <code>models.js</code> ngày càng phình to. Trong v3, tất cả các mô hình có sẵn đều được định nghĩa trong một tệp duy nhất trải dài hơn 8.000 dòng, ngày càng khó bảo trì. Đối với v4, chúng tôi đã chia tệp này thành các mô-đun nhỏ hơn, tập trung với sự phân biệt rõ ràng giữa các hàm tiện ích, logic cốt lõi và việc triển khai cụ thể của mô hình. Cấu trúc mới này cải thiện khả năng đọc và giúp việc thêm các mô hình mới trở nên dễ dàng hơn nhiều. Giờ đây, các nhà phát triển có thể tập trung vào logic cụ thể của mô hình mà không cần điều hướng qua hàng nghìn dòng mã không liên quan.</p>
+<h3 id="kho-chứa-ví-dụ">Kho chứa Ví dụ</h3>
+<p>Trong v3, nhiều dự án ví dụ Transformers.js nằm trực tiếp trong kho chứa chính. Đối với v4, chúng tôi đã chuyển chúng sang một <a href="https://github.com/huggingface/transformers.js-examples">kho chứa riêng</a>, cho phép chúng tôi duy trì cơ sở mã sạch sẽ hơn tập trung vào thư viện cốt lõi. Điều này cũng giúp người dùng dễ dàng tìm kiếm và đóng góp vào các ví dụ mà không cần xem xét lại kho chứa chính.</p>
+<h3 id="prettier">Prettier</h3>
+<p>Chúng tôi đã cập nhật cấu hình Prettier và định dạng lại tất cả các tệp trong kho chứa. Điều này đảm bảo định dạng nhất quán trên toàn bộ cơ sở mã, với tất cả các PR trong tương lai sẽ tự động tuân theo cùng một kiểu. Không còn tranh cãi về định dạng nữa&hellip; Prettier xử lý tất cả, giữ cho mã sạch sẽ và dễ đọc cho mọi người.</p>
+<h2 id="mô-hình-và-kiến-trúc-mới">Mô hình và Kiến trúc Mới</h2>
+<p>Nhờ chiến lược xuất khẩu mới của chúng tôi và sự hỗ trợ ngày càng tăng của ONNX Runtime đối với các toán tử tùy chỉnh, chúng tôi đã có thể bổ sung nhiều mô hình và kiến trúc mới vào Transformers.js v4. Bao gồm các mô hình phổ biến như GPT-OSS, Chatterbox, GraniteMoeHybrid, LFM2-MoE, HunYuanDenseV1, Apertus, Olmo3, FalconH1 và Youtu-LLM. Nhiều mô hình trong số này đòi hỏi chúng tôi phải triển khai hỗ trợ cho các mẫu kiến trúc tiên tiến, bao gồm Mamba (mô hình không gian trạng thái), Multi-head Latent Attention (MLA) và Mixture of Experts (MoE). Có lẽ quan trọng nhất, các mô hình này đều tương thích với WebGPU, cho phép người dùng chạy chúng trực tiếp trong trình duyệt hoặc môi trường JavaScript phía máy chủ với tăng tốc phần cứng. Hãy theo dõi các bản demo thú vị giới thiệu các mô hình mới này!</p>
+<h2 id="hệ-thống-xây-dựng-mới">Hệ thống Xây dựng Mới</h2>
+<p>Chúng tôi đã di chuyển hệ thống xây dựng của mình từ Webpack sang esbuild, và kết quả thật đáng kinh ngạc. Thời gian xây dựng giảm từ 2 giây xuống chỉ còn 200 mili giây, cải thiện gấp 10 lần giúp tăng tốc đáng kể quá trình lặp lại phát triển. Tuy nhiên, tốc độ không phải là lợi ích duy nhất: kích thước gói cũng giảm trung bình 10% trên tất cả các bản dựng. Cải thiện đáng chú ý nhất là đối với <code>transformers.web.js</code>, mặc định xuất khẩu của chúng tôi, giờ đây nhỏ hơn 53%, có nghĩa là thời gian tải nhanh hơn và thời gian khởi động nhanh hơn cho người dùng.</p>
+<h2 id="thư-viện-tokenizersjs-độc-lập">Thư viện Tokenizers.js Độc lập</h2>
+<p>Một yêu cầu thường xuyên từ người dùng là trích xuất logic mã hóa thành một thư viện riêng biệt, và với v4, đó chính là điều chúng tôi đã làm. <a href="https://www.npmjs.com/package/@huggingface/tokenizers">@huggingface/tokenizers</a> là một bản tái cấu trúc hoàn chỉnh logic mã hóa, được thiết kế để hoạt động liền mạch trên trình duyệt và môi trường chạy phía máy chủ. Với kích thước chỉ 8,8kB (đã nén) và không có phụ thuộc, nó cực kỳ nhẹ trong khi vẫn giữ được độ an toàn kiểu hoàn chỉnh.</p>
+<!-- raw HTML omitted -->
+<p>javascript
+import { Tokenizer } from &ldquo;@huggingface/tokenizers&rdquo;;</p>
+<p>// Tải từ Hugging Face Hub
+const modelId = &ldquo;HuggingFaceTB/SmolLM3-3B&rdquo;;
+const tokenizerJson = await fetch(
+<code>https://huggingface.co/${modelId}/resolve/main/tokenizer.json</code>
+).then(res =&gt; res.json());</p>
+<p>const tokenizerConfig = await fetch(
+<code>https://huggingface.co/${modelId}/resolve/main/tokenizer_config.json</code>
+).then(res =&gt; res.json());</p>
+<p>// Tạo tokenizer
+const tokenizer = new Tokenizer(tokenizerJson, tokenizerConfig);</p>
+<p>// Mã hóa văn bản
+const tokens = tokenizer.tokenize(&ldquo;Hello World&rdquo;);
+// [&lsquo;Hello&rsquo;, &lsquo;ĠWorld&rsquo;]</p>
+<p>const encoded = tokenizer.encode(&ldquo;Hello World&rdquo;);
+// { ids: [9906, 4435], tokens: [&lsquo;Hello&rsquo;, &lsquo;ĠWorld&rsquo;], &hellip; }</p>
+<!-- raw HTML omitted -->
+<p>Sự tách biệt này giữ cho lõi của Transformers.js tập trung và gọn nhẹ, đồng thời cung cấp một công cụ độc lập, linh hoạt mà bất kỳ dự án WebML nào cũng có thể sử dụng độc lập.</p>
+<h2 id="cải-tiến-khác">Cải tiến Khác</h2>
+<p>Chúng tôi đã thực hiện nhiều cải tiến về chất lượng cuộc sống trên toàn thư viện. Hệ thống kiểu đã được tăng cường với các kiểu pipeline động thích ứng dựa trên đầu vào, mang lại trải nghiệm nhà phát triển tốt hơn và độ an toàn kiểu.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformersjs-v4/types.png" alt="Type Improvements"></p>
+<p>Việc ghi nhật ký đã được cải thiện để cung cấp cho người dùng nhiều quyền kiểm soát hơn và phản hồi rõ ràng hơn trong quá trình thực thi mô hình. Ngoài ra, chúng tôi đã thêm hỗ trợ cho các mô hình lớn hơn vượt quá 8 tỷ tham số. Trong các thử nghiệm của chúng tôi, chúng tôi đã có thể chạy GPT-OSS 20B (q4f16) ở tốc độ ~60 token mỗi giây trên M4 Pro Max.</p>
+<h2 id="lời-cảm-ơn">Lời cảm ơn</h2>
+<p>Chúng tôi muốn gửi lời cảm ơn chân thành đến tất cả những người đã đóng góp vào bản phát hành lớn này, đặc biệt là nhóm ONNX Runtime vì công việc tuyệt vời của họ trên Runtime WebGPU mới và sự hỗ trợ của họ trong quá trình phát triển, cũng như tất cả những người đóng góp bên ngoài và người thử nghiệm sớm.</p>
+<hr>
+<h2 id="các-bài-viết-khác-từ-blog-của-chúng-tôi">Các Bài viết Khác từ Blog của chúng tôi</h2>
+<p><a href="https://huggingface.co/blog/transformersjs-v3">Transformers.js v3: Hỗ trợ WebGPU, Mô hình &amp; Tác vụ Mới, và Nhiều hơn nữa…</a>
+<em>announcement, transformers.js, transformers, javascript, webgpu</em>
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->82*   October 22, 2024*   <!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->298*   December 1, 2025*   Hot</p>
+<p><a href="https://huggingface.co/blog/transformers-v5">Transformers v5: Định nghĩa mô hình đơn giản cung cấp năng lượng cho hệ sinh thái AI</a>
+<em>transformers, v5, community, python, announcement, open-source</em>
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->298*   December 1, 2025*   Hot</p>
+<hr>
+<h3 id="cộng-đồng">Cộng đồng</h3>
+<p>[an_avatar_of_juanpin] [an_avatar_of_SuperPauly]</p>
+<ul>
+<li>
+<p><strong>juanpin</strong> 8 days ago
+any examples yet in Spaces?</p>
+<ul>
+<li><strong>SuperPauly</strong> 5 days ago
+Yeah bro, here <a href="https://huggingface.co/collections/webml-community/transformersjs-v4-demos">https://huggingface.co/collections/webml-community/transformersjs-v4-demos</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="công-ty">Công ty</h2>
+<ul>
+<li>
+<p><a href="https://huggingface.co/terms-of-service">TOS</a></p>
+</li>
+<li>
+<p><a href="https://huggingface.co/privacy">Quyền riêng tư</a></p>
+</li>
+<li>
+<p><a href="https://huggingface.co/">Giới thiệu về Hugging Face</a></p>
+</li>
+<li>
+<p><a href="https://apply.workable.com/huggingface/">Tuyển dụng</a></p>
+</li>
+<li>
+<p><a href="https://huggingface.co/models">Mô hình</a></p>
+</li>
+<li>
+<p><a href="https://huggingface.co/datasets">Dữ liệu</a></p>
+</li>
+<li>
+<p><a href="https://huggingface.co/spaces">Không gian</a></p>
+</li>
+<li>
+<p><a href="https://huggingface.co/pricing">Giá cả</a></p>
+</li>
+<li>
+<p><a href="https://huggingface.co/docs">Tài liệu</a></p>
+</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/transformersjs-v4">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/9-february-2026/">9 February 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/eeb824/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-19T00:00:00&#43;00:00">Feb 19, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn cách tạo các kernel CUDA tùy chỉnh cho các mô hình AI bằng cách sử dụng Codex và Claude.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/259694/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1624431552569-noauth.jpeg" alt="Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-19T00:00:00&#43;00:00">Feb 19, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu cách sử dụng gr.HTML để tạo các ứng dụng web chỉ với một lần nhấn bằng Gradio.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/e7afe6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www-cdn.anthropic.com/images/4zrzovbb/website/6e00dbffcddc82df5e471c43453abfc74ca94e8d-1000x1000.svg" alt="Anthropic và Chính phủ Rwanda ký biên bản ghi nhớ về AI trong y tế và giáo dục" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Anthropic và Chính phủ Rwanda ký biên bản ghi nhớ về AI trong y tế và giáo dục</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/eeb824/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/62d648291fa3e4e7ae3fa6e8/oatOwf8Xqe5eDbCSuYqCd.png" alt="Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Các kernel CUDA tùy chỉnh cho tất cả mọi người từ Codex và Claude</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/f475e7/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Giới thiệu Claude Sonnet 4.6" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Claude Sonnet 4.6</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/259694/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/1624431552569-noauth.jpeg" alt="Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gradio gr.HTML- Một ứng dụng web chỉ với một lần nhấn bằng cách sử dụng gr.HTML</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-19/916c74/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://cdn-avatars.huggingface.co/v1/production/uploads/637bfdf60dc13843b468ac20/npxapKcW-cXX3J2JBl2vY.png" alt="IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">IBM và UC Berkeley chẩn đoán lý do các tác nhân doanh nghiệp thất bại bằng cách sử dụng IT-Bench và MAST</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
