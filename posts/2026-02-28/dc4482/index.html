@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hỗn hợp Chuyên gia (MoE) trong Transformers | AI Today - SkyAI</title>
+
+<meta name="description" content="Tối ưu hóa MoE trong Transformers">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Hỗn hợp Chuyên gia (MoE) trong Transformers</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Tối ưu hóa MoE trong Transformers </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-28T00:00:00&#43;00:00">February 28, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://image-link" alt="Hỗn hợp Chuyên gia (MoE) trong Transformers">
+        <figcaption class="text-center italic text-xs">Tối ưu hóa MoE trong Transformers</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="mixture-of-experts-moes-in-transformers">Mixture of Experts (MoEs) in Transformers</h1>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>Trong những năm gần đây, việc mở rộng quy mô các mô hình ngôn ngữ lớn (LLMs) dày đặc đã thúc đẩy phần lớn tiến bộ trong LLMs. Từ các mô hình ban đầu như ULMFiT (~30 triệu tham số) hoặc GPT-2 (1.5 tỷ tham số, từng bị coi là &ldquo;quá nguy hiểm để phát hành&rdquo; 🧌), cho đến các hệ thống hàng trăm tỷ tham số ngày nay, công thức rất đơn giản:</p>
+<blockquote>
+<p>Nhiều dữ liệu + nhiều tham số mang lại hiệu suất tốt hơn.</p></blockquote>
+<p>Các định luật về quy mô (Scaling laws) đã củng cố xu hướng này, nhưng việc mở rộng quy mô dày đặc có những giới hạn thực tế:</p>
+<ul>
+<li>Việc đào tạo ngày càng tốn kém.</li>
+<li>Độ trễ suy luận tăng lên.</li>
+<li>Việc triển khai đòi hỏi bộ nhớ và phần cứng đáng kể.</li>
+</ul>
+<p>Đây là nơi Mixture of Experts (MoEs) xuất hiện.</p>
+<!-- raw HTML omitted -->
+<h2 id="from-dense-to-sparse-what-are-moes">From Dense to Sparse: What Are MoEs?</h2>
+<p>Mô hình Mixture of Experts giữ lại cấu trúc Transformer cơ bản, nhưng thay thế các lớp feed-forward dày đặc bằng một tập hợp các <strong>chuyên gia (experts)</strong>. &ldquo;Chuyên gia&rdquo; không phải là một mô-đun chuyên biệt theo chủ đề (ví dụ: &ldquo;chuyên gia toán học&rdquo;, &ldquo;chuyên gia mã&rdquo;). Nó chỉ đơn giản là một mạng con có thể học được. Đối với mỗi token, một <strong>bộ định tuyến (router)</strong> sẽ chọn một tập hợp nhỏ các chuyên gia để xử lý nó.</p>
+<!-- raw HTML omitted -->
+<p>Các token khác nhau kích hoạt các chuyên gia khác nhau, dựa trên biểu diễn ẩn của chúng.</p>
+<!-- raw HTML omitted -->
+<p>Đây là ý tưởng cốt lõi.</p>
+<p>Ví dụ, hãy xem xét <!-- raw HTML omitted --><!-- raw HTML omitted -->gpt-oss-20b<!-- raw HTML omitted --><!-- raw HTML omitted -->. Nó có tổng cộng 21 tỷ tham số, nhưng sử dụng 4 chuyên gia đang hoạt động cho mỗi token, trong tổng số 32 chuyên gia. Tính cả các thành phần được chia sẻ cộng với các chuyên gia đang hoạt động, mô hình này sử dụng ~3.6 tỷ tham số đang hoạt động cho mỗi token. Chạy mô hình này trên Mac M3 Ultra, có băng thông bộ nhớ khoảng 800 GB, chúng ta có thể ước tính tốc độ tạo là ~ <!-- raw HTML omitted -->800 / (3.6 * 2)<!-- raw HTML omitted --> ở định dạng <!-- raw HTML omitted -->bfloat16<!-- raw HTML omitted -->, nơi mỗi tham số chiếm 2 byte. Điều này cho ra khoảng <strong>111 token mỗi giây</strong>. Con số hiệu suất thực tế chúng ta nhận được là ~115 tok/s, rất gần với tính toán ước lượng.</p>
+<!-- raw HTML omitted -->
+<p>Tốc độ siêu nhanh này xác nhận mô hình hoạt động gần như là một mô hình 3.6 tỷ tham số, nhưng nó có năng lực tương đương (hoặc chất lượng) như một mô hình 21 tỷ tham số.</p>
+<p><em>(Lưu ý: Tốc độ sẽ còn nhanh hơn nữa nếu chúng ta sử dụng các kernel cho lượng tử hóa mxfp4 gốc mà mô hình sử dụng).</em></p>
+<p>MoEs hấp dẫn vì những lý do sau:</p>
+<ol>
+<li>
+<p><strong>Hiệu quả tính toán tốt hơn</strong>
+Với một ngân sách FLOP đào tạo cố định, MoEs thường vượt trội hơn các đối thủ dày đặc.</p>
+<!-- raw HTML omitted -->
+</li>
+<li>
+<p><strong>Một Trục Song Song Tự nhiên</strong>
+Các chuyên gia cung cấp một ranh giới cấu trúc trong đồ thị tính toán. Vì các token khác nhau sử dụng các chuyên gia khác nhau, chúng ta có thể song song hóa trên các chuyên gia (chúng ta sẽ thảo luận điều này sau trong phần <!-- raw HTML omitted -->Expert Parallelism<!-- raw HTML omitted -->).</p>
+</li>
+<li>
+<p><strong>Áp dụng trong Ngành</strong>
+Các bản phát hành MoE lớn gần đây của các mô hình mở trong vài tuần qua bao gồm <!-- raw HTML omitted -->Qwen 3.5<!-- raw HTML omitted -->, <!-- raw HTML omitted -->MiniMax M2<!-- raw HTML omitted -->, <!-- raw HTML omitted -->GLM-5<!-- raw HTML omitted -->, hoặc <!-- raw HTML omitted -->Kimi K2.5<!-- raw HTML omitted -->.
+Xu hướng này tăng tốc sau thành công của <!-- raw HTML omitted -->DeepSeek R1<!-- raw HTML omitted --> vào tháng 1 năm 2025, dựa trên các hệ thống trước đó như <!-- raw HTML omitted -->DeepSeek V2<!-- raw HTML omitted -->. Một MoE sớm khác là <!-- raw HTML omitted -->Mixtral-8x7B<!-- raw HTML omitted -->, được phát hành vào tháng 12 năm 2023.</p>
+<!-- raw HTML omitted -->
+</li>
+</ol>
+<!-- raw HTML omitted -->
+<h2 id="transformers-and-moes">Transformers and MoEs</h2>
+<p>Hầu hết các công cụ trong hệ sinh thái, bao gồm tải mô hình, đặt thiết bị, lượng tử hóa và thực thi backend, ban đầu được thiết kế cho các mô hình <strong>dày đặc</strong>. MoEs thách thức những giả định này.</p>
+<p>Việc biến MoEs thành <strong>công dân hạng nhất</strong> trong <!-- raw HTML omitted -->transformers<!-- raw HTML omitted --> có nghĩa là thiết kế lại các phần của quy trình tải, mô hình thực thi và các trừu tượng phân tán, chứ không chỉ thêm các lớp mô hình mới. Chúng ta sẽ tập trung vào cách thư viện <!-- raw HTML omitted -->transformers<!-- raw HTML omitted --> đã phát triển để hỗ trợ các kiến trúc thưa thớt trên:</p>
+<ul>
+<li><!-- raw HTML omitted -->Tái cấu trúc tải trọng<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Backend Chuyên gia<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Song song hóa Chuyên gia<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Đào tạo MoE với transformers<!-- raw HTML omitted --></li>
+</ul>
+<h2 id="weight-loading-refactor">Weight Loading Refactor</h2>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->AutoModelForCausalLM.from_pretrained(&ldquo;model_id&rdquo;)<!-- raw HTML omitted --><!-- raw HTML omitted --> tải xuống và tải trọng mô hình vào một mô hình PyTorch. Đối với các mô hình dày đặc, việc tải là tương đối đơn giản, trong đó mỗi tensor trong checkpoint ánh xạ một-đến-một với một tham số trong mô-đun thời gian chạy.</p>
+<p>Đối với MoEs, nó phức tạp hơn. Trong hầu hết các checkpoint MoE, mỗi chuyên gia được tuần tự hóa độc lập. Nếu bạn xem bên trong <!-- raw HTML omitted -->chỉ mục checkpoint DeepSeek-V3<!-- raw HTML omitted -->, bạn sẽ thấy các khóa như:</p>
+<p>bash
+model.layers.3.mlp.experts.0.gate_proj.weight
+&hellip;
+model.layers.3.mlp.experts.255.gate_proj.weight</p>
+<p>Mỗi chuyên gia có bộ ma trận trọng số riêng, về cơ bản là 256 (tổng cộng từ 0 đến 255, lấy ví dụ DeepSeek-V3) các mạng chuyển tiếp nhỏ được lưu trữ cạnh nhau. Tuy nhiên, tại thời gian chạy, các kernel GPU được tối ưu hóa. Các kernel MoE hiện đại như <!-- raw HTML omitted -->GEMM nhóm và các triển khai MoE hợp nhất<!-- raw HTML omitted --> được thiết kế để xử lý <strong>tất cả các chuyên gia trong một thao tác duy nhất</strong>, chứ không phải bằng cách lặp qua chúng từng cái một.</p>
+<p>Để làm điều đó một cách hiệu quả, chúng đòi hỏi các trọng số chuyên gia phải được đóng gói vào một <strong>tensor liên tục duy nhất</strong>.</p>
+<p>Vì vậy, chúng ta có một sự không khớp:</p>
+<ul>
+<li><strong>Checkpoint:</strong> 256 tensor riêng biệt</li>
+<li><strong>Thời gian chạy:</strong> 1 tensor được đóng gói</li>
+</ul>
+<p>Việc kết nối khoảng trống này một cách có hệ thống là điều mà <!-- raw HTML omitted -->tái cấu trúc tải trọng<!-- raw HTML omitted --> cho phép.</p>
+<p>Với sự ra đời của một <!-- raw HTML omitted --><!-- raw HTML omitted -->WeightConverter<!-- raw HTML omitted --><!-- raw HTML omitted --> chung, mô hình tư duy đã chuyển từ:</p>
+<!-- raw HTML omitted -->
+<p>thành:</p>
+<!-- raw HTML omitted -->
+<h3 id="dynamic-weight-loading-with-weightconverter">Dynamic Weight Loading with <!-- raw HTML omitted -->WeightConverter<!-- raw HTML omitted --></h3>
+<p>Trừu tượng trung tâm được giới thiệu bởi việc tái cấu trúc này là <strong>tải trọng động</strong> thông qua một <!-- raw HTML omitted --><!-- raw HTML omitted -->WeightConverter<!-- raw HTML omitted --><!-- raw HTML omitted -->.</p>
+<p><!-- raw HTML omitted -->WeightConverter<!-- raw HTML omitted --> cho phép chúng tôi định nghĩa:</p>
+<p>python
+source key patterns → target key(s) + operations</p>
+<p>Các thao tác nguyên thủy (chunk, concatenate, v.v.) có thể được kết hợp. Hai thao tác đặc biệt hữu ích cho MoEs:</p>
+<ul>
+<li>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->MergeModulelist<!-- raw HTML omitted --><!-- raw HTML omitted --> hợp nhất một danh sách các tensor thành một tensor duy nhất. Ví dụ, bạn có thể kết hợp <!-- raw HTML omitted -->MergeModulelist<!-- raw HTML omitted --> với <!-- raw HTML omitted -->Concatenate<!-- raw HTML omitted --> để xếp chồng các chuyên gia trong MoE và đóng gói chúng thành một tensor.</p>
+<p>python
+WeightConverter(
+[&ldquo;block_sparse_moe.experts.<em>.w1.weight&rdquo;, &ldquo;block_sparse_moe.experts.</em>.w3.weight&rdquo;,],
+&ldquo;mlp.experts.gate_up_proj&rdquo;,
+operations=[
+MergeModulelist(dim=0),
+Concatenate(dim=1),
+],
+)</p>
+</li>
+<li>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->SplitModulelist<!-- raw HTML omitted --><!-- raw HTML omitted --> tách một tensor trở lại thành một danh sách các tensor. Ví dụ, bạn có thể tách một chồng chuyên gia trở lại thành các chuyên gia riêng lẻ.</p>
+<p>python
+WeightConverter(
+&ldquo;mlp.experts.down_proj&rdquo;,
+&ldquo;block_sparse_moe.experts.*.w2.weight&rdquo;,
+operations=[SplitModulelist(dim=0)],
+)</p>
+</li>
+</ul>
+<h3 id="lazy-materialization-of-tensors">Lazy Materialization of Tensors</h3>
+<p>Việc tái cấu trúc không chỉ cải thiện <strong>những gì</strong> các chuyển đổi tồn tại, mà còn <strong>cách thức</strong> chúng được lên lịch.</p>
+<p>Bộ tải quét các khóa checkpoint một lần, khớp chúng với các mẫu bộ chuyển đổi và nhóm các tensor cho mỗi bộ chuyển đổi. Một khi một khóa được xác định là cần thiết, nó sẽ được đăng ký dưới dạng một <strong>tương lai</strong> và được hiện thực hóa thông qua một nhóm luồng. Các hoạt động chuyển đổi chỉ chạy khi các phụ thuộc của chúng sẵn sàng. Ví dụ, <!-- raw HTML omitted -->MergeModulelist<!-- raw HTML omitted --> đợi cho đến khi tất cả các chuyên gia cho một lớp được tải.</p>
+<p>Điều này tránh quét lại và giảm các đỉnh bộ nhớ.</p>
+<h3 id="benchmark-weight-loading-pipeline-improvements">Benchmark: Weight-Loading Pipeline Improvements</h3>
+<p>Để đánh giá các cải tiến được giới thiệu bởi quy trình tải trọng mới, chúng tôi đã so sánh hiệu suất giữa các phiên bản v4 và v5 của <!-- raw HTML omitted -->transformers<!-- raw HTML omitted -->. Trọng tâm là tốc độ tải các mô hình MoE lớn, đây thường là nút thắt cổ chai trong quá trình đào tạo và suy luận.</p>
+<p>Chúng tôi đã so sánh hiệu suất v4 so với v5 sử dụng:</p>
+<ul>
+<li>Nhánh v4: <a href="https://github.com/ariG23498/transformers/tree/bench-v4">https://github.com/ariG23498/transformers/tree/bench-v4</a></li>
+<li>Nhánh v5: <a href="https://github.com/ariG23498/transformers/tree/bench-v5">https://github.com/ariG23498/transformers/tree/bench-v5</a></li>
+</ul>
+<p>Ví dụ:</p>
+<p>python
+from transformers import AutoModelForCausalLM</p>
+<p>model_id = &ldquo;Qwen/Qwen1.5-110B-Chat&rdquo;
+model = AutoModelForCausalLM.from_pretrained(model_id)</p>
+<p>Hai biến môi trường liên quan:</p>
+<ul>
+<li><!-- raw HTML omitted -->HF_ENABLE_PARALLEL_LOADING<!-- raw HTML omitted -->: Kích hoạt tải shard song song thông qua các luồng.</li>
+<li><!-- raw HTML omitted -->HF_DEACTIVATE_ASYNC_LOAD<!-- raw HTML omitted -->: Vô hiệu hóa quy trình bất đồng bộ mới (lối thoát v5).</li>
+</ul>
+<h4 id="results">Results</h4>
+<p><strong>Model:</strong> <!-- raw HTML omitted -->Qwen/Qwen1.5-110B-Chat<!-- raw HTML omitted -->
+<strong>GPU:</strong> 1× A100 (80GB)</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Version</th>
+          <th style="text-align: left">Strategy</th>
+          <th style="text-align: left">Loading Mode</th>
+          <th style="text-align: left">Time</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">v4.57.6</td>
+          <td style="text-align: left"><code>device_map=&quot;auto&quot;</code></td>
+          <td style="text-align: left">Threadpool</td>
+          <td style="text-align: left">66.24s</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">v4.57.6</td>
+          <td style="text-align: left"><code>device_map=&quot;auto&quot;</code></td>
+          <td style="text-align: left">Sequential</td>
+          <td style="text-align: left">67.29s</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">v4.57.6</td>
+          <td style="text-align: left">TP</td>
+          <td style="text-align: left">—</td>
+          <td style="text-align: left">OOM</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">v5</td>
+          <td style="text-align: left"><code>device_map=&quot;auto&quot;</code></td>
+          <td style="text-align: left">Async (default)</td>
+          <td style="text-align: left">20.71s</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">v5</td>
+          <td style="text-align: left"><code>device_map=&quot;auto&quot;</code></td>
+          <td style="text-align: left">Sync</td>
+          <td style="text-align: left">45.3s</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">v5</td>
+          <td style="text-align: left">TP</td>
+          <td style="text-align: left">Async</td>
+          <td style="text-align: left">10.1s</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">v5</td>
+          <td style="text-align: left">TP</td>
+          <td style="text-align: left">Sync</td>
+          <td style="text-align: left">19.28s</td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<p>Tốc độ tăng lên không chỉ đơn thuần là &ldquo;nhiều luồng hơn&rdquo;.</p>
+<p>Đó là sự kết hợp của <strong>Định tuyến một lượt</strong>, <strong>Hiện thực hóa bất đồng bộ</strong>, và <strong>Lập lịch nhận biết chuyển đổi</strong> cùng nhau tránh hiện thực hóa không cần thiết và đỉnh bộ nhớ, đồng thời cho phép đóng gói chuyên gia và hợp nhất phép chiếu tại thời điểm tải.</p>
+<h3 id="where-quantization-fits-in">Where Quantization Fits In</h3>
+<p>Với việc tái cấu trúc này, chúng ta có thể tạo cấu trúc mô hình thời gian chạy trước và sau đó chuyển đổi trọng số vào cấu trúc đó. Chúng ta có thể tùy chọn đính kèm lượng tử hóa trong quy trình chuyển đổi, làm cho lượng tử hóa trở thành một phần của chính quy trình tải trọng. Điều này rất quan trọng vì việc lượng tử hóa &ldquo;theo từng chuyên gia&rdquo; chỉ có ý nghĩa khi các chuyên gia tồn tại trong bố cục đóng gói có thể dự đoán được.</p>
+<p>Quy trình đầu cuối này trước đây không khả thi và bây giờ nó được cung cấp cho người dùng dưới dạng một API hiển thị.</p>
+<h2 id="expert-backend">Expert Backend</h2>
+<p>Khi các chuyên gia đã được đóng gói vào một tensor thời gian chạy duy nhất, một câu hỏi khác nảy sinh:</p>
+<!-- raw HTML omitted -->
+<p>Trong mô hình Mixture of Experts, mỗi token được định tuyến đến các chuyên gia khác nhau. Điều này có nghĩa là thời gian chạy phải điều phối các token đến các trọng số chuyên gia đã chọn của chúng, thực thi các phép chiếu một cách hiệu quả, áp dụng các trọng số định tuyến và sau đó thu thập và sắp xếp lại kết quả.</p>
+<p>Đây là những gì <!-- raw HTML omitted -->Hệ thống Backend Chuyên gia<!-- raw HTML omitted --> (được giới thiệu trong <!-- raw HTML omitted -->PR #42697<!-- raw HTML omitted -->) giải quyết. Backend Chuyên gia giới thiệu một <strong>kiến trúc thực thi có thể cắm được</strong> tách biệt tính toán chuyên gia khỏi việc triển khai mô hình. Thay vì mã hóa cứng một chiến lược điều phối duy nhất bên trong mỗi mô hình MoE, hệ thống cho phép các lớp chuyên gia chọn backend một cách động tại thời gian chạy.</p>
+<p>Điều này được thực hiện thông qua một mẫu decorator:</p>
+<p>python
+@use_experts_implementation</p>
+<p>Decorator này gói các lớp chuyên gia và tự động điều phối tính toán đến backend đã chọn.</p>
+<p>Ba backend hiện được cung cấp:</p>
+<ol>
+<li><!-- raw HTML omitted -->eager<!-- raw HTML omitted -->: lặp qua các chuyên gia đã chọn và áp dụng các phép chiếu cho mỗi chuyên gia. Backend này được sử dụng để tham chiếu độ chính xác và gỡ lỗi.</li>
+<li><!-- raw HTML omitted -->batched_mm<!-- raw HTML omitted -->: sử dụng API <!-- raw HTML omitted --><!-- raw HTML omitted -->torch.bmm<!-- raw HTML omitted --><!-- raw HTML omitted -->. Backend này nhân đôi các trọng số chuyên gia đã chọn cho mỗi token và thực hiện một phép GEMM theo lô duy nhất. Backend này rất phù hợp cho các tải trọng nặng GPU, lô nhỏ, nơi có bộ nhớ.</li>
+<li><!-- raw HTML omitted -->grouped_mm<!-- raw HTML omitted -->: sử dụng API <!-- raw HTML omitted --><!-- raw HTML omitted -->torch._grouped_mm<!-- raw HTML omitted --><!-- raw HTML omitted -->. Ở đây, chúng tôi sắp xếp các token theo ID chuyên gia, nhóm chúng và sau đó thực hiện một phép GEMM theo nhóm duy nhất. Backend này tỏa sáng với các lô lớn hoặc các thiết lập bị giới hạn bộ nhớ.</li>
+</ol>
+<!-- raw HTML omitted -->
+<h2 id="expert-parallelism">Expert Parallelism</h2>
+<p>Mixture of Experts (MoE) có thể có hàng trăm tỷ tham số (nhiều hơn nhiều so với những gì có thể nằm trên một GPU duy nhất). Song song hóa chuyên gia (EP) giải quyết vấn đề này bằng cách phân phối các chuyên gia trên nhiều thiết bị. Mỗi thiết bị chỉ tải tập hợp con các chuyên gia được chỉ định, tính toán cho các chuyên gia đó và sau đó tham gia vào việc tổng hợp kết quả. Phương pháp này mở rộng quy mô mô hình đến số lượng tham số lớn hơn nhiều mà không làm tăng chi phí tính toán vì mỗi token chỉ kích hoạt một vài chuyên gia.</p>
+<p>Song song hóa chuyên gia được kích hoạt thông qua <!-- raw HTML omitted -->enable_expert_parallel<!-- raw HTML omitted -->:</p>
+<p>python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers.distributed.configuration_utils import DistributedConfig</p>
+<p>distributed_config = DistributedConfig(enable_expert_parallel=True)</p>
+<p>model = AutoModelForCausalLM.from_pretrained(
+&ldquo;openai/gpt-oss-120b&rdquo;,
+dtype=&ldquo;auto&rdquo;,
+distributed_config=distributed_config,
+)</p>
+<p>Khởi chạy với:</p>
+<p>bash
+torchrun &ndash;nproc-per-node N script.py</p>
+<p>Ở đây <!-- raw HTML omitted -->N<!-- raw HTML omitted --> chia đều cho tổng số chuyên gia, và có thể khớp với số lượng GPU trên nút của bạn.</p>
+<p>Khi <!-- raw HTML omitted -->enable_expert_parallel=True<!-- raw HTML omitted -->, mô hình chuyển từ kế hoạch song song hóa tensor (TP) tiêu chuẩn sang kế hoạch song song hóa chuyên gia (EP) với các chiến lược phân chia chuyên dụng.</p>
+<p>Các thành phần cốt lõi của EP nằm trong:</p>
+<ol>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->GroupedGemmParallel<!-- raw HTML omitted --><!-- raw HTML omitted -->: Điều này tách các trọng số chuyên gia dọc theo chiều chuyên gia (<!-- raw HTML omitted -->dim=0<!-- raw HTML omitted -->). Ở đây mỗi thiết bị chỉ tải <!-- raw HTML omitted -->num_experts / num_devices<!-- raw HTML omitted -->.</li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->RouterParallel<!-- raw HTML omitted --><!-- raw HTML omitted -->: Điều này ánh xạ lại các chỉ số chuyên gia toàn cục sang các chỉ số cục bộ, loại bỏ các chuyên gia không được gán cho thứ hạng hiện tại, đảm bảo mỗi thiết bị chỉ tính toán với các chuyên gia cục bộ của nó và sử dụng tất cả các giảm để kết hợp các kết quả đầu ra một phần trên các thiết bị.</li>
+</ol>
+<h2 id="training-moes-with-transformers">Training MoEs with Transformers</h2>
+<p>MoEs rất tuyệt vời để mở rộng quy mô suy luận, nhưng việc đào tạo chúng phức tạp hơn đáng kể.</p>
+<p>MoEs có số lượng tham số khổng lồ, giao tiếp chuyên gia phân tán rất phức tạp, có sự bất ổn định trong định tuyến cần được xử lý. Để giải quyết vấn đề này, chúng tôi đã hợp tác với <strong>Unsloth</strong> để cho phép đào tạo Mixture-of-Experts nhanh hơn đáng kể:</p>
+<ul>
+<li>~12 lần đào tạo MoE nhanh hơn</li>
+<li>Giảm &gt;35% VRAM</li>
+<li>Ngữ cảnh dài hơn ~6 lần</li>
+<li>Tăng tốc tổng thể gấp 12–30 lần so với v4</li>
+</ul>
+<p>Chúng tôi tận dụng trừu tượng Backend Chuyên gia, tiêu chuẩn hóa trên API <!-- raw HTML omitted -->torch._grouped_mm<!-- raw HTML omitted --> của PyTorch và sử dụng các kernel Triton grouped-GEMM + LoRA tùy chỉnh. Unsloth xây dựng dựa trên các tối ưu hóa của Transformers (và TRL) để đẩy hiệu suất xa hơn.</p>
+<!-- raw HTML omitted -->
+<h2 id="conclusion">Conclusion</h2>
+<p>Khi các kiến trúc thưa thớt tiếp tục phát triển, chúng tôi muốn thư viện transformers phát triển cùng chúng. Nếu bạn đang xây dựng với MoEs hoặc thử nghiệm các ý tưởng thưa thớt mới, chúng tôi rất muốn nghe ý kiến của bạn. Hãy cho chúng tôi biết bạn muốn thấy những trừu tượng, kernel hoặc quy trình làm việc nào tiếp theo trong <!-- raw HTML omitted -->transformers<!-- raw HTML omitted -->.</p>
+<hr>
+<h3 id="more-articles-from-our-blog">More Articles from our Blog</h3>
+<ul>
+<li><a href="https://huggingface.co/blog/continuous_batching">Continuous batching from first principles</a></li>
+<li><a href="https://huggingface.co/blog/faster-transformers">Tricks from OpenAI gpt-oss YOU 🫵 can use with transformers</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/moe-transformers">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/february-26-2026/">February 26, 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/18797/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-28T00:00:00&#43;00:00">Feb 28, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tìm hiểu cách các tổ chức tài chính đang sử dụng các tác nhân AI để giảm thiểu sự cố, giải quyết tranh chấp nhanh hơn, hợp lý hóa quy trình giới thiệu và cung cấp trải nghiệm khách hàng an toàn, thông minh ở quy mô lớn.</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/8fc7a5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-28T00:00:00&#43;00:00">Feb 28, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Triển khai các mô hình ngôn ngữ thị giác nguồn mở trên Jetson</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/34e93c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/eAKlJGJ89-ul4RG9KNxg3B8gTN5iEyrhUzGtppi7B5cfqSWwdomRI4QT0WEA6H8SDssLNgHUKG4TpEJVIEVNQsyp325Ba9BUyihX-vYgf-BN0w0q=w352-h352-n-nu" alt="Gemini 3 Deep Think- Thúc đẩy khoa học, nghiên cứu và kỹ thuật" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini 3 Deep Think- Thúc đẩy khoa học, nghiên cứu và kỹ thuật</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/dc4482/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Hỗn hợp Chuyên gia (MoE) trong Transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Hỗn hợp Chuyên gia (MoE) trong Transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/18797/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/67b033/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/MNlOW_zVZ4eTMzs4GySN6gbaCiN7WA4MVb_dc4F78apzf9pfnG8_ZyjrJvxFbCDMc58m_BE0PZJz-Oz0mkJRV9cqI1V3vCw3ezGO0ghaYoRQOOuTJw=w352-h352-n-nu" alt="Nano Banana 2- Kết hợp khả năng chuyên nghiệp với tốc độ cực nhanh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nano Banana 2- Kết hợp khả năng chuyên nghiệp với tốc độ cực nhanh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/8fc7a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

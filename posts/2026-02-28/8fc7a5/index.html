@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson | AI Today - SkyAI</title>
+
+<meta name="description" content="Triển khai các mô hình ngôn ngữ thị giác nguồn mở trên Jetson">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Triển khai các mô hình ngôn ngữ thị giác nguồn mở trên Jetson </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-28T00:00:00&#43;00:00">February 28, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            9 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://image-link" alt="Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson">
+        <figcaption class="text-center italic text-xs">Triển khai các mô hình ngôn ngữ thị giác nguồn mở trên Jetson</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="triển-khai-mô-hình-ngôn-ngữ-thị-giác-vlm-mã-nguồn-mở-trên-jetson">Triển khai Mô hình Ngôn ngữ Thị giác (VLM) Mã nguồn Mở trên Jetson</h1>
+<p>Các Mô hình Ngôn ngữ Thị giác (VLM) đánh dấu một bước tiến lớn trong AI bằng cách kết hợp nhận thức thị giác với suy luận ngữ nghĩa. Vượt ra ngoài các mô hình truyền thống bị giới hạn bởi nhãn cố định, VLM sử dụng không gian nhúng chung để diễn giải và thảo luận về các môi trường phức tạp, mở ra bằng ngôn ngữ tự nhiên.</p>
+<p>Tốc độ phát triển nhanh chóng về độ chính xác và hiệu quả suy luận đã làm cho các mô hình này trở nên lý tưởng cho các thiết bị biên. Gia đình NVIDIA Jetson, từ AGX Thor và AGX Orin hiệu năng cao đến Orin Nano Super nhỏ gọn, được chế tạo đặc biệt để thúc đẩy các ứng dụng tăng tốc cho AI vật lý và robot, cung cấp thời gian chạy được tối ưu hóa cần thiết cho các <strong>mô hình mã nguồn mở hàng đầu</strong>.</p>
+<p>Trong hướng dẫn này, chúng tôi sẽ trình bày cách triển khai mô hình <strong>NVIDIA Cosmos Reason 2B</strong> trên dòng Jetson bằng cách sử dụng framework <strong>vLLM</strong>. Chúng tôi cũng sẽ hướng dẫn bạn cách kết nối mô hình này với <strong>Live VLM WebUI</strong>, cho phép giao diện thời gian thực dựa trên webcam để tương tác AI vật lý.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/658e083904cd2b7fd5f530d6/lrsP6RhYbwj0hBeuLjV_k.png" alt="robot_pick_place"></p>
+<h2 id="tiền-đề">Tiền đề</h2>
+<p><strong>Thiết bị được hỗ trợ:</strong></p>
+<ul>
+<li>Jetson AGX Thor Developer Kit</li>
+<li>Jetson AGX Orin (64GB / 32GB)</li>
+<li>Jetson Orin Super Nano</li>
+</ul>
+<p><strong>Phiên bản JetPack:</strong></p>
+<ul>
+<li>JetPack 6 (L4T r36.x) — dành cho thiết bị Orin</li>
+<li>JetPack 7 (L4T r38.x) — dành cho Thor</li>
+</ul>
+<p><strong>Lưu trữ:</strong> Yêu cầu SSD NVMe</p>
+<ul>
+<li>~5 GB cho trọng số mô hình FP8</li>
+<li>~8 GB cho ảnh container vLLM</li>
+</ul>
+<p><strong>Tài khoản:</strong></p>
+<ul>
+<li>Tạo tài khoản NVIDIA NGC (miễn phí) để tải xuống cả mô hình và container vLLM.</li>
+</ul>
+<hr>
+<h2 id="tổng-quan">Tổng quan</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left"></th>
+          <th style="text-align: left">Jetson AGX Thor</th>
+          <th style="text-align: left">Jetson AGX Orin</th>
+          <th style="text-align: left">Orin Super Nano</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Container vLLM</strong></td>
+          <td style="text-align: left"><code>nvcr.io/nvidia/vllm:26.01-py3</code></td>
+          <td style="text-align: left"><code>ghcr.io/nvidia-ai-iot/vllm:r36.4-tegra-aarch64-cu126-22.04</code></td>
+          <td style="text-align: left"><code>ghcr.io/nvidia-ai-iot/vllm:r36.4-tegra-aarch64-cu126-22.04</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Model</strong></td>
+          <td style="text-align: left">FP8 qua NGC (mount volume)</td>
+          <td style="text-align: left">FP8 qua NGC (mount volume)</td>
+          <td style="text-align: left">FP8 qua NGC (mount volume)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Độ dài Mô hình Tối đa</strong></td>
+          <td style="text-align: left">8192 token</td>
+          <td style="text-align: left">8192 token</td>
+          <td style="text-align: left">256 token (giới hạn bộ nhớ)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Sử dụng Bộ nhớ GPU</strong></td>
+          <td style="text-align: left">0.8</td>
+          <td style="text-align: left">0.8</td>
+          <td style="text-align: left">0.65</td>
+      </tr>
+  </tbody>
+</table>
+<p>Quy trình giống nhau cho cả hai thiết bị:</p>
+<ol>
+<li><strong>Tải xuống</strong> checkpoint mô hình FP8 qua NGC CLI</li>
+<li><strong>Tải về</strong> ảnh Docker vLLM cho thiết bị của bạn</li>
+<li><strong>Khởi chạy</strong> container với mô hình được mount dưới dạng volume</li>
+<li><strong>Kết nối</strong> Live VLM WebUI với endpoint vLLM</li>
+</ol>
+<hr>
+<h2 id="bước-1-cài-đặt-ngc-cli">Bước 1: Cài đặt NGC CLI</h2>
+<p>NGC CLI cho phép bạn tải xuống các checkpoint mô hình từ Danh mục NVIDIA NGC.</p>
+<h3 id="tải-xuống-và-cài-đặt">Tải xuống và cài đặt</h3>
+<p>bash
+mkdir -p ~/Projects/CosmosReason
+cd ~/Projects/CosmosReason</p>
+<h1 id="tải-xuống-ngc-cli-cho-arm64">Tải xuống NGC CLI cho ARM64</h1>
+<h1 id="lấy-url-trình-cài-đặt-mới-nhất-từ">Lấy URL trình cài đặt mới nhất từ: <a href="https://org.ngc.nvidia.com/setup/installers/cli">https://org.ngc.nvidia.com/setup/installers/cli</a></h1>
+<p>wget -O ngccli_arm64.zip <a href="https://api.ngc.nvidia.com/v2/resources/nvidia/ngc-apps/ngc_cli/versions/4.13.0/files/ngccli_arm64.zip">https://api.ngc.nvidia.com/v2/resources/nvidia/ngc-apps/ngc_cli/versions/4.13.0/files/ngccli_arm64.zip</a>
+unzip ngccli_arm64.zip
+chmod u+x ngc-cli/ngc</p>
+<h1 id="thêm-vào-path">Thêm vào PATH</h1>
+<p>export PATH=&quot;$PATH:$(pwd)/ngc-cli&quot;</p>
+<h3 id="cấu-hình-cli">Cấu hình CLI</h3>
+<p>bash
+ngc config set</p>
+<p>Bạn sẽ được nhắc nhập:</p>
+<ul>
+<li><strong>API Key</strong> — tạo một tại Thiết lập khóa API NGC</li>
+<li><strong>Định dạng đầu ra CLI</strong> — chọn <code>json</code> hoặc <code>ascii</code></li>
+<li><strong>org</strong> — nhấn Enter để chấp nhận mặc định</li>
+</ul>
+<hr>
+<h2 id="bước-2-tải-xuống-mô-hình">Bước 2: Tải xuống Mô hình</h2>
+<p>Tải xuống checkpoint <strong>FP8 đã được lượng tử hóa</strong>. Cái này được sử dụng trên tất cả các thiết bị Jetson:</p>
+<p>bash
+cd ~/Projects/CosmosReason
+ngc registry model download-version &ldquo;nim/nvidia/cosmos-reason2-2b:1208-fp8-static-kv8&rdquo;</p>
+<p>Thao tác này sẽ tạo một thư mục có tên <code>cosmos-reason2-2b_v1208-fp8-static-kv8/</code> chứa trọng số mô hình. Lưu ý đường dẫn đầy đủ — bạn sẽ mount nó vào container Docker dưới dạng một volume.</p>
+<hr>
+<h2 id="bước-3-tải-về-ảnh-docker-vllm">Bước 3: Tải về ảnh Docker vLLM</h2>
+<h3 id="dành-cho-jetson-agx-thor">Dành cho Jetson AGX Thor</h3>
+<p>bash
+docker pull nvcr.io/nvidia/vllm:26.01-py3</p>
+<h3 id="dành-cho-jetson-agx-orin--orin-super-nano">Dành cho Jetson AGX Orin / Orin Super Nano</h3>
+<p>bash
+docker pull ghcr.io/nvidia-ai-iot/vllm:r36.4-tegra-aarch64-cu126-22.04</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<hr>
+<h2 id="bước-4-phục-vụ-cosmos-reason-2b-với-vllm">Bước 4: Phục vụ Cosmos Reason 2B với vLLM</h2>
+<h3 id="tùy-chọn-a-jetson-agx-thor">Tùy chọn A: Jetson AGX Thor</h3>
+<p>Thor có đủ bộ nhớ GPU và có thể chạy mô hình với độ dài ngữ cảnh lớn.</p>
+<p>Đặt đường dẫn đến mô hình đã tải xuống của bạn và giải phóng bộ nhớ đệm trên máy chủ:</p>
+<p>bash
+MODEL_PATH=&quot;$HOME/Projects/CosmosReason/cosmos-reason2-2b_v1208-fp8-static-kv8&quot;
+sudo sysctl -w vm.drop_caches=3</p>
+<p><strong>Khởi chạy container với mô hình được mount:</strong></p>
+<p>bash
+docker run &ndash;rm -it <br>
+&ndash;runtime nvidia <br>
+&ndash;network host <br>
+&ndash;ipc host <br>
+-v &ldquo;$MODEL_PATH:/models/cosmos-reason2-2b:ro&rdquo; <br>
+-e NVIDIA_VISIBLE_DEVICES=all <br>
+-e NVIDIA_DRIVER_CAPABILITIES=compute,utility <br>
+nvcr.io/nvidia/vllm:26.01-py3 <br>
+bash</p>
+<p><strong>Bên trong container, kích hoạt môi trường và phục vụ mô hình:</strong></p>
+<p>bash
+vllm serve /models/cosmos-reason2-2b <br>
+&ndash;max-model-len 8192 <br>
+&ndash;media-io-kwargs &lsquo;{&ldquo;video&rdquo;: {&ldquo;num_frames&rdquo;: -1}}&rsquo; <br>
+&ndash;reasoning-parser qwen3 <br>
+&ndash;gpu-memory-utilization 0.8</p>
+<p><strong>Lưu ý:</strong> Cờ <code>--reasoning-parser qwen3</code> cho phép trích xuất suy luận theo chuỗi tư duy. Cờ <code>--media-io-kwargs</code> cấu hình xử lý khung video.</p>
+<p>Chờ cho đến khi bạn thấy:</p>
+<p>bash
+INFO:     Uvicorn running on http://0.0.0.0:8000</p>
+<h3 id="tùy-chọn-b-jetson-agx-orin">Tùy chọn B: Jetson AGX Orin</h3>
+<p>AGX Orin có đủ bộ nhớ để chạy mô hình với các tham số hào phóng tương tự như Thor.</p>
+<p>Đặt đường dẫn đến mô hình đã tải xuống của bạn và giải phóng bộ nhớ đệm trên máy chủ:</p>
+<p>bash
+MODEL_PATH=&quot;$HOME/Projects/CosmosReason/cosmos-reason2-2b_v1208-fp8-static-kv8&quot;
+sudo sysctl -w vm.drop_caches=3</p>
+<p><strong>1. Khởi chạy container:</strong></p>
+<p>bash
+docker run &ndash;rm -it <br>
+&ndash;runtime nvidia <br>
+&ndash;network host <br>
+-v &ldquo;$MODEL_PATH:/models/cosmos-reason2-2b:ro&rdquo; <br>
+-e NVIDIA_VISIBLE_DEVICES=all <br>
+-e NVIDIA_DRIVER_CAPABILITIES=compute,utility <br>
+ghcr.io/nvidia-ai-iot/vllm:r36.4-tegra-aarch64-cu126-22.04 <br>
+bash</p>
+<p><strong>2. Bên trong container, kích hoạt môi trường và phục vụ:</strong></p>
+<p>bash
+cd /opt/
+source venv/bin/activate</p>
+<p>vllm serve /models/cosmos-reason2-2b <br>
+&ndash;max-model-len 8192 <br>
+&ndash;media-io-kwargs &lsquo;{&ldquo;video&rdquo;: {&ldquo;num_frames&rdquo;: -1}}&rsquo; <br>
+&ndash;reasoning-parser qwen3 <br>
+&ndash;gpu-memory-utilization 0.8</p>
+<p>Chờ cho đến khi bạn thấy:</p>
+<p>bash
+INFO:     Uvicorn running on http://0.0.0.0:8000</p>
+<h3 id="tùy-chọn-c-jetson-orin-super-nano-giới-hạn-bộ-nhớ">Tùy chọn C: Jetson Orin Super Nano (giới hạn bộ nhớ)</h3>
+<p>Orin Super Nano có ít RAM hơn đáng kể, vì vậy chúng tôi cần các cờ tối ưu hóa bộ nhớ mạnh mẽ.</p>
+<p>Đặt đường dẫn đến mô hình đã tải xuống của bạn và giải phóng bộ nhớ đệm trên máy chủ:</p>
+<p>bash
+MODEL_PATH=&quot;$HOME/Projects/CosmosReason/cosmos-reason2-2b_v1208-fp8-static-kv8&quot;
+sudo sysctl -w vm.drop_caches=3</p>
+<p><strong>1. Khởi chạy container:</strong></p>
+<p>bash
+docker run &ndash;rm -it <br>
+&ndash;runtime nvidia <br>
+&ndash;network host <br>
+-v &ldquo;$MODEL_PATH:/models/cosmos-reason2-2b:ro&rdquo; <br>
+-e NVIDIA_VISIBLE_DEVICES=all <br>
+-e NVIDIA_DRIVER_CAPABILITIES=compute,utility <br>
+ghcr.io/nvidia-ai-iot/vllm:r36.4-tegra-aarch64-cu126-22.04 <br>
+bash</p>
+<p><strong>2. Bên trong container, kích hoạt môi trường và phục vụ:</strong></p>
+<p>bash
+cd /opt/
+source venv/bin/activate</p>
+<p>vllm serve /models/cosmos-reason2-2b <br>
+&ndash;host 0.0.0.0 <br>
+&ndash;port 8000 <br>
+&ndash;trust-remote-code <br>
+&ndash;enforce-eager <br>
+&ndash;max-model-len 256 <br>
+&ndash;max-num-batched-tokens 256 <br>
+&ndash;gpu-memory-utilization 0.65 <br>
+&ndash;max-num-seqs 1 <br>
+&ndash;enable-chunked-prefill <br>
+&ndash;limit-mm-per-prompt &lsquo;{&ldquo;image&rdquo;:1,&ldquo;video&rdquo;:1}&rsquo; <br>
+&ndash;mm-processor-kwargs &lsquo;{&ldquo;num_frames&rdquo;:2,&ldquo;max_pixels&rdquo;:150528}&rsquo;</p>
+<p><strong>Các cờ chính được giải thích (Chỉ dành cho Orin Super Nano):</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Cờ</th>
+          <th style="text-align: left">Mục đích</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>--enforce-eager</code></td>
+          <td style="text-align: left">Tắt biểu đồ CUDA để tiết kiệm bộ nhớ</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>--max-model-len 256</code></td>
+          <td style="text-align: left">Giới hạn ngữ cảnh để phù hợp với bộ nhớ có sẵn</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>--max-num-batched-tokens 256</code></td>
+          <td style="text-align: left">Khớp với giới hạn độ dài mô hình</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>--gpu-memory-utilization 0.65</code></td>
+          <td style="text-align: left">Dự phòng khoảng trống cho các quy trình hệ thống</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>--max-num-seqs 1</code></td>
+          <td style="text-align: left">Chỉ một yêu cầu tại một thời điểm để giảm thiểu bộ nhớ</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>--enable-chunked-prefill</code></td>
+          <td style="text-align: left">Xử lý prefill theo các phần để tiết kiệm bộ nhớ</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>--limit-mm-per-prompt</code></td>
+          <td style="text-align: left">Giới hạn chỉ 1 hình ảnh và 1 video cho mỗi prompt</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>--mm-processor-kwargs</code></td>
+          <td style="text-align: left">Giảm số khung video và độ phân giải hình ảnh</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>--VLLM_SKIP_WARMUP=true</code></td>
+          <td style="text-align: left">Bỏ qua khởi động để tiết kiệm thời gian và bộ nhớ</td>
+      </tr>
+  </tbody>
+</table>
+<p>Chờ cho đến khi bạn thấy máy chủ sẵn sàng:</p>
+<p>bash
+INFO:     Uvicorn running on http://0.0.0.0:8000</p>
+<h3 id="xác-minh-máy-chủ-đang-chạy">Xác minh máy chủ đang chạy</h3>
+<p>Từ một terminal khác trên Jetson:</p>
+<p>bash
+curl http://localhost:8000/v1/models</p>
+<p>Bạn sẽ thấy mô hình được liệt kê trong phản hồi.</p>
+<hr>
+<h2 id="bước-5-kiểm-tra-bằng-lệnh-gọi-api-nhanh">Bước 5: Kiểm tra bằng lệnh gọi API nhanh</h2>
+<p>Trước khi kết nối WebUI, hãy xác minh rằng mô hình phản hồi chính xác:</p>
+<p>bash
+curl -s http://localhost:8000/v1/chat/completions <br>
+-H &ldquo;Content-Type: application/json&rdquo; <br>
+-d &lsquo;{
+&ldquo;model&rdquo;: &ldquo;/models/cosmos-reason2-2b&rdquo;,
+&ldquo;messages&rdquo;: [
+{
+&ldquo;role&rdquo;: &ldquo;user&rdquo;,
+&ldquo;content&rdquo;: &ldquo;What capabilities do you have?&rdquo;
+}
+],
+&ldquo;max_tokens&rdquo;: 128
+}&rsquo; | python3 -m json.tool</p>
+<blockquote>
+<p><strong>Mẹo:</strong> Tên mô hình được sử dụng trong yêu cầu API phải khớp với những gì vLLM báo cáo. Hãy xác minh bằng <code>curl http://localhost:8000/v1/models</code>.</p></blockquote>
+<hr>
+<h2 id="bước-6-kết-nối-với-live-vlm-webui">Bước 6: Kết nối với Live VLM WebUI</h2>
+<p><a href="https://github.com/NVIDIA-AI-IOT/live-vlm-webui">Live VLM WebUI</a> cung cấp giao diện webcam-to-VLM thời gian thực. Với vLLM phục vụ Cosmos Reason 2B, bạn có thể truyền phát webcam của mình và nhận phân tích AI trực tiếp với suy luận.</p>
+<h3 id="cài-đặt-live-vlm-webui">Cài đặt Live VLM WebUI</h3>
+<p>Cách dễ nhất là dùng pip (Mở một terminal khác):</p>
+<p>bash
+curl -LsSf <a href="https://astral.sh/uv/install.sh">https://astral.sh/uv/install.sh</a> | sh
+source $HOME/.local/bin/env
+cd ~/Projects/CosmosReason
+uv venv .live-vlm &ndash;python 3.12
+source .live-vlm/bin/activate
+uv pip install live-vlm-webui
+live-vlm-webui</p>
+<p>Hoặc sử dụng Docker:</p>
+<p>bash
+git clone <a href="https://github.com/nvidia-ai-iot/live-vlm-webui.git">https://github.com/nvidia-ai-iot/live-vlm-webui.git</a>
+cd live-vlm-webui
+./scripts/start_container.sh</p>
+<h3 id="cấu-hình-webui">Cấu hình WebUI</h3>
+<ol>
+<li>Mở <strong><code>https://localhost:8090</code></strong> trong trình duyệt của bạn</li>
+<li>Chấp nhận chứng chỉ tự ký (nhấp vào <strong>Advanced</strong> → <strong>Proceed</strong>)</li>
+<li>Trong phần <strong>VLM API Configuration</strong> ở thanh bên trái:
+<ul>
+<li>Đặt <strong>API Base URL</strong> thành <code>http://localhost:8000/v1</code></li>
+<li>Nhấp vào nút <strong>Refresh</strong> để phát hiện mô hình</li>
+<li>Chọn mô hình Cosmos Reason 2B từ danh sách thả xuống</li>
+</ul>
+</li>
+<li>Chọn camera của bạn và nhấp vào <strong>Start</strong></li>
+</ol>
+<p>WebUI giờ đây sẽ truyền phát các khung hình webcam của bạn tới Cosmos Reason 2B và hiển thị phân tích của mô hình theo thời gian thực.</p>
+<h3 id="cài-đặt-webui-được-đề-xuất-cho-orin">Cài đặt WebUI được đề xuất cho Orin</h3>
+<p>Vì Orin chạy với độ dài ngữ cảnh ngắn hơn, hãy điều chỉnh các cài đặt này trong WebUI:</p>
+<ul>
+<li><strong>Max Tokens</strong>: Đặt thành <strong>100–150</strong> (các phản hồi ngắn hơn hoàn thành nhanh hơn)</li>
+<li><strong>Frame Processing Interval</strong>: Đặt thành <strong>60+</strong> (cho phép mô hình xử lý giữa các khung hình)</li>
+</ul>
+<hr>
+<h2 id="khắc-phục-sự-cố">Khắc phục sự cố</h2>
+<h3 id="hết-bộ-nhớ-trên-orin">Hết bộ nhớ trên Orin</h3>
+<p><strong>Vấn đề:</strong> vLLM bị lỗi với các lỗi hết bộ nhớ CUDA.</p>
+<p><strong>Giải pháp:</strong></p>
+<ol>
+<li>
+<p>Giải phóng bộ nhớ hệ thống trước khi bắt đầu:
+bash
+sudo sysctl -w vm.drop_caches=3</p>
+</li>
+<li>
+<p>Giảm <code>--gpu-memory-utilization</code> (thử <code>0.55</code> hoặc <code>0.50</code>)</p>
+</li>
+<li>
+<p>Giảm thêm <code>--max-model-len</code> (thử <code>128</code>)</p>
+</li>
+<li>
+<p>Đảm bảo không có quy trình nào khác sử dụng nhiều GPU đang chạy</p>
+</li>
+</ol>
+<h3 id="mô-hình-không-tìm-thấy-trong-webui">Mô hình không tìm thấy trong WebUI</h3>
+<p><strong>Vấn đề:</strong> Mô hình không xuất hiện trong danh sách thả xuống của Live VLM WebUI.</p>
+<p><strong>Giải pháp:</strong></p>
+<ol>
+<li>Xác minh vLLM đang chạy: <code>curl http://localhost:8000/v1/models</code></li>
+<li>Đảm bảo URL cơ sở API của WebUI được đặt thành <code>http://localhost:8000/v1</code> (không phải <code>https</code>)</li>
+<li>Nếu vLLM và WebUI ở các container riêng biệt, hãy sử dụng <code>http://&amp;lt;jetson-ip&amp;gt;:8000/v1</code> thay vì <code>localhost</code></li>
+</ol>
+<h3 id="suy-luận-chậm-trên-orin">Suy luận chậm trên Orin</h3>
+<p><strong>Vấn đề:</strong> Mỗi phản hồi mất rất nhiều thời gian.</p>
+<p><strong>Giải pháp:</strong></p>
+<ul>
+<li>Điều này là mong đợi với cấu hình giới hạn bộ nhớ. Cosmos Reason 2B FP8 trên Orin ưu tiên khớp bộ nhớ hơn tốc độ.</li>
+<li>Giảm <code>max_tokens</code> trong WebUI để nhận các phản hồi ngắn hơn, nhanh hơn.</li>
+<li>Tăng khoảng thời gian giữa các khung hình để mô hình không liên tục xử lý các khung hình mới.</li>
+</ul>
+<h3 id="vllm-không-tải-được-mô-hình">vLLM không tải được mô hình</h3>
+<p><strong>Vấn đề:</strong> vLLM báo cáo rằng đường dẫn mô hình không tồn tại hoặc không thể tải.</p>
+<p><strong>Giải pháp:</strong></p>
+<ul>
+<li>Xác minh tải xuống NGC đã hoàn tất thành công: <code>ls ~/Projects/CosmosReason/cosmos-reason2-2b_v1208-fp8-static-kv8/</code></li>
+<li>Đảm bảo đường dẫn mount volume chính xác trong lệnh <code>docker run</code> của bạn</li>
+<li>Kiểm tra xem thư mục mô hình có được mount ở chế độ chỉ đọc (<code>:ro</code>) và đường dẫn bên trong container khớp với những gì bạn truyền cho <code>vllm serve</code> hay không.</li>
+</ul>
+<hr>
+<h2 id="tóm-tắt">Tóm tắt</h2>
+<p>Trong hướng dẫn này, chúng tôi đã trình bày cách triển khai mô hình <strong>NVIDIA Cosmos Reason 2B</strong> trên các thiết bị thuộc dòng Jetson bằng vLLM.</p>
+<p>Sự kết hợp giữa khả năng suy luận theo chuỗi tư duy của Cosmos Reason 2B với WebUI Live VLM thời gian thực làm cho nó trở nên lý tưởng để tạo mẫu và đánh giá các ứng dụng AI thị giác tại biên.</p>
+<p><img src="https://github.com/NVIDIA-AI-IOT/live-vlm-webui/raw/main/docs/images/chrome_app-running_light-theme.jpg" alt="Alt text"></p>
+<hr>
+<h2 id="tài-nguyên-bổ-sung">Tài nguyên bổ sung</h2>
+<ul>
+<li><strong>Cosmos Reason 2B trên NVIDIA Build</strong>: <a href="https://huggingface.co/nvidia/Cosmos-Reason2-2B">https://huggingface.co/nvidia/Cosmos-Reason2-2B</a></li>
+<li><strong>Danh mục Mô hình NGC</strong>: <a href="https://catalog.ngc.nvidia.com/">https://catalog.ngc.nvidia.com/</a></li>
+<li><strong>Live VLM WebUI</strong>: <a href="https://github.com/NVIDIA-AI-IOT/live-vlm-webui">https://github.com/NVIDIA-AI-IOT/live-vlm-webui</a></li>
+<li><strong>Container vLLM cho Jetson Thor</strong>: <a href="https://ghcr.io/nvidia-ai-iot/vllm:r36.4-tegra-aarch64-cu126-22.04">https://ghcr.io/nvidia-ai-iot/vllm:r36.4-tegra-aarch64-cu126-22.04</a></li>
+<li><strong>Container vLLM cho Jetson AGX Orin và Orin Super Nano</strong>: <a href="https://nvcr.io/nvidia/vllm:26.01-py3">https://nvcr.io/nvidia/vllm:26.01-py3</a></li>
+<li><strong>Trình cài đặt NGC CLI</strong>: <a href="https://org.ngc.nvidia.com/setup/installers/cli">https://org.ngc.nvidia.com/setup/installers/cli</a></li>
+<li><strong>Mô hình Mở được hỗ trợ trên Jetson</strong>: <a href="https://www.jetson-ai-lab.com/models/">https://www.jetson-ai-lab.com/models/</a></li>
+<li><strong>Bắt đầu với Jetson</strong>: <a href="https://www.jetson-ai-lab.com/tutorials/">https://www.jetson-ai-lab.com/tutorials/</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/nvidia/cosmos-on-jetson">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/february-24-2026/">February 24, 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/dc4482/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Hỗn hợp Chuyên gia (MoE) trong Transformers" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-28T00:00:00&#43;00:00">Feb 28, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Hỗn hợp Chuyên gia (MoE) trong Transformers</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tối ưu hóa MoE trong Transformers</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-22/56c34f/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="GGML và llama.cpp tham gia HF để đảm bảo sự tiến bộ lâu dài của AI cục bộ" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-22T00:00:00&#43;00:00">Feb 22, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">GGML và llama.cpp tham gia HF để đảm bảo sự tiến bộ lâu dài của AI cục bộ</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">GGML và llama.cpp đang tham gia HF để đảm bảo sự tiến bộ lâu dài của AI cục bộ</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/34e93c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/eAKlJGJ89-ul4RG9KNxg3B8gTN5iEyrhUzGtppi7B5cfqSWwdomRI4QT0WEA6H8SDssLNgHUKG4TpEJVIEVNQsyp325Ba9BUyihX-vYgf-BN0w0q=w352-h352-n-nu" alt="Gemini 3 Deep Think- Thúc đẩy khoa học, nghiên cứu và kỹ thuật" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini 3 Deep Think- Thúc đẩy khoa học, nghiên cứu và kỹ thuật</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/dc4482/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Hỗn hợp Chuyên gia (MoE) trong Transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Hỗn hợp Chuyên gia (MoE) trong Transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/18797/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/67b033/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/MNlOW_zVZ4eTMzs4GySN6gbaCiN7WA4MVb_dc4F78apzf9pfnG8_ZyjrJvxFbCDMc58m_BE0PZJz-Oz0mkJRV9cqI1V3vCw3ezGO0ghaYoRQOOuTJw=w352-h352-n-nu" alt="Nano Banana 2- Kết hợp khả năng chuyên nghiệp với tốc độ cực nhanh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nano Banana 2- Kết hợp khả năng chuyên nghiệp với tốc độ cực nhanh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/8fc7a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

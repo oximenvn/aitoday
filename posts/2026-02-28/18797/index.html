@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn | AI Today - SkyAI</title>
+
+<meta name="description" content="Tìm hiểu cách các tổ chức tài chính đang sử dụng các tác nhân AI để giảm thiểu sự cố, giải quyết tranh chấp nhanh hơn, hợp lý hóa quy trình giới thiệu và cung cấp trải nghiệm khách hàng an toàn, thông minh ở quy mô lớn.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Tìm hiểu cách các tổ chức tài chính đang sử dụng các tác nhân AI để giảm thiểu sự cố, giải quyết tranh chấp nhanh hơn, hợp lý hóa quy trình giới thiệu và cung cấp trải nghiệm khách hàng an toàn, thông minh ở quy mô lớn. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-02-28T00:00:00&#43;00:00">February 28, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            14 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://image-link" alt="Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn">
+        <figcaption class="text-center italic text-xs">Tìm hiểu cách các tổ chức tài chính đang sử dụng các tác nhân AI để giảm thiểu sự cố, giải quyết tranh chấp nhanh hơn, hợp lý hóa quy trình giới thiệu và cung cấp trải nghiệm khách hàng an toàn, thông minh ở quy mô lớn.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="trí-tuệ-nhân-tạo-agentic-trong-ngân-hàng-bản-thiết-kế-cho-trải-nghiệm-khách-hàng-hiện-đại">Trí tuệ nhân tạo Agentic trong Ngân hàng: Bản thiết kế cho trải nghiệm khách hàng hiện đại</h1>
+<p>Trí tuệ nhân tạo Agentic (Agentic AI) trong lĩnh vực ngân hàng đang dần chuyển đổi từ các dự án thử nghiệm sang triển khai thực tế. Bài viết này sẽ khám phá các trường hợp sử dụng thực tế và đưa ra một bản thiết kế để triển khai AI một cách an toàn và có khả năng mở rộng.</p>
+<p><strong>Tác giả:</strong> Tyler Pichach, Trưởng phòng chiến lược AI và GTM toàn cầu, Dịch vụ Tài chính Toàn cầu.</p>
+<p><strong>Ngày đăng:</strong> 26 tháng 2, 2026</p>
+<hr>
+<p>Dù đã đầu tư vào công nghệ kỹ thuật số trong nhiều năm, ngành ngân hàng vẫn đối mặt với một sự thật khó khăn: trải nghiệm khách hàng còn nhiều hạn chế. Khoảng cách giữa kỳ vọng ngày càng tăng của khách hàng và khả năng đáp ứng của ngân hàng thông qua các trải nghiệm kỹ thuật số ngày càng lớn, khi người dùng gặp khó khăn trong việc hoàn thành các tác vụ cơ bản từ đầu đến cuối. Khi hành trình kỹ thuật số thất bại, khách hàng quay trở lại trung tâm liên lạc, làm tăng chi phí và làm xói mòn niềm tin.</p>
+<p>Tuy nhiên, một phương pháp kiến trúc mới đang dần xuất hiện, đó là Agentic AI. Sự phát triển nhanh chóng của Agentic AI đánh dấu một bước tiến hóa từ các tương tác thụ động sang các trải nghiệm hướng mục tiêu trong mọi khía cạnh của ngân hàng. Không giống như các bot dựa trên từ khóa truyền thống, trợ lý agentic có thể hiểu được ý định, duy trì bộ nhớ, chủ động hành động và điều phối các tác vụ trên nhiều hệ thống. Chúng có thể hỗ trợ các quy trình làm việc đa bước, hoạt động trong phạm vi các chính sách đã định và hỗ trợ khách hàng trong một giao diện thông minh duy nhất.</p>
+<p>Đối với ngành ngân hàng, những khả năng tiên tiến này cuối cùng đã phù hợp với kỳ vọng ngày càng cao của khách hàng, biến Agentic AI không chỉ khả thi mà còn ngày càng được các ngân hàng hàng đầu áp dụng.</p>
+<h2 id="tại-sao-ngành-ngân-hàng-cần-một-mô-hình-mới">Tại sao ngành ngân hàng cần một mô hình mới?</h2>
+<p>Hầu hết các giải pháp tự động hóa tương tác với khách hàng trong lĩnh vực ngân hàng hiện nay đều dựa trên quy tắc. Các chatbot truyền thống chỉ đơn thuần trả lời câu hỏi. Chúng không hoàn thành nhiệm vụ, chứ chưa nói đến việc giải quyết các nhu cầu quan trọng. Chúng dựa vào việc khớp từ khóa, cung cấp khả năng cá nhân hóa tối thiểu và hoạt động như các giao diện đơn kênh thường đẩy vấn đề lên cấp cao hơn thay vì giải quyết chúng. Điều này thường dẫn đến tỷ lệ hỗ trợ không thành công, thời gian xử lý kéo dài và sự thất vọng của khách hàng.</p>
+<p>Agentic AI assistants đã thay đổi cuộc chơi. Chúng có thể tích hợp sâu vào các hệ thống cốt lõi, hiểu chính sách về danh tính và sự đồng ý, đồng thời cung cấp khả năng điều phối quy trình làm việc đầu cuối mang lại kết quả tích cực hơn.</p>
+<p>Các mô hình AI hiện nay hỗ trợ suy luận đa bước, các API bảo mật cho phép thực hiện các hành động tuân thủ chính sách, và môi trường đám mây cho phép xác minh danh tính, sự đồng ý và kiểm toán ở cấp độ doanh nghiệp.</p>
+<h2 id="thời-điểm-vàng-cho-agentic-ai">Thời điểm vàng cho Agentic AI</h2>
+<p>Sự chấp nhận nhanh chóng các giải pháp Agentic AI quy mô lớn trong ngành ngân hàng là kết quả của sự hội tụ của một số xu hướng mạnh mẽ:</p>
+<ul>
+<li><strong>Trải nghiệm lấy AI làm trung tâm đã thiết lập lại kỳ vọng của khách hàng</strong>: Người tiêu dùng ngày càng mong đợi các tương tác kỹ thuật số chủ động, cá nhân hóa và liền mạch.</li>
+<li><strong>Cạnh tranh trong ngành ngày càng gay gắt</strong>: Các ngân hàng và tổ chức tài chính có tính đổi mới cao đang mở rộng quy mô các khả năng AI cho khách hàng, nâng cao tiêu chuẩn cho toàn bộ thị trường.</li>
+<li><strong>Khả năng điều phối an toàn đã trở nên khả thi</strong>: Các ngân hàng đã xây dựng các nền tảng vững chắc cho sự đồng ý, quản trị, tuân thủ và xác định danh tính, tất cả đều cần thiết cho các hành động agentic an toàn.</li>
+<li><strong>Các mô hình hiện có thể thực hiện các tác vụ đa bước</strong>: Ngành ngân hàng không còn phải chấp nhận các quy trình tĩnh và tương tác hạn chế; trợ lý có thể hoàn thành các hành trình phức tạp, từ giải quyết tranh chấp đến giới thiệu khách hàng mới.</li>
+</ul>
+<p>Khi các yếu tố này tăng tốc, Agentic Banking đang nhanh chóng giành được đà. Trên thực tế, nó đã hoạt động hiệu quả ngay hôm nay cho nhiều tổ chức tài chính.</p>
+<h2 id="bản-thiết-kế-ba-bước-cho-các-giải-pháp-agentic">Bản thiết kế ba bước cho các giải pháp Agentic</h2>
+<p>Bản thiết kế của Microsoft giúp các ngân hàng phát triển các đổi mới mang tính đột phá bao gồm một lộ trình có cấu trúc, có chủ đích để áp dụng Agentic AI trong các tình huống nội bộ và tương tác với khách hàng. Thay vì chồng AI lên các quy trình làm việc lỗi thời, các tổ chức phải thiết kế lại trải nghiệm với mục tiêu là kết quả. Điều này có thể được thực hiện thông qua việc phát triển ba bước đổi mới AI:</p>
+<h3 id="bước-1-trợ-lý-nhân-viên-nội-bộ">Bước 1: Trợ lý nhân viên nội bộ</h3>
+<p>Trong bước này, các ngân hàng củng cố sự trưởng thành của các đổi mới AI trong nội bộ, bằng cách cải thiện năng suất của nhân viên và hỗ trợ các quy trình làm việc back office như định tuyến Chống rửa tiền (AML), thu thập tài liệu và hoạt động thanh toán. Giai đoạn này thiết lập sự sẵn sàng của tổ chức cần thiết cho các trải nghiệm bên ngoài.</p>
+<h3 id="bước-2-trợ-lý-khách-hàng-bên-ngoài-kênh-sở-hữu">Bước 2: Trợ lý khách hàng bên ngoài (kênh sở hữu)</h3>
+<p>Ở bước này, các ngân hàng giới thiệu các trợ lý hướng tới khách hàng trong các tài sản kỹ thuật số của họ, chẳng hạn như trang web và ứng dụng di động. Các giải pháp này ban đầu nhắm mục tiêu một tập hợp các hành trình hạn chế để giúp xác thực các kết quả có thể đo lường và xây dựng sự tự tin, tạo tiền đề cho việc mở rộng quy mô, bao gồm cả các trường hợp sử dụng giao dịch sâu hơn.</p>
+<h3 id="bước-3-trợ-lý-khách-hàng-bên-ngoài-trên-các-nền-tảng-bên-thứ-ba">Bước 3: Trợ lý khách hàng bên ngoài trên các nền tảng bên thứ ba</h3>
+<p>Khi đã tự tin, các ngân hàng có thể cung cấp các trải nghiệm AI phong phú, mới mẻ ngoài các tài sản kỹ thuật số của riêng họ, giúp duy trì vị trí dẫn đầu trong mối quan hệ khách hàng. Ngay cả khi cửa trước chuyển sang các nền tảng không thuộc ngân hàng, các ngân hàng có thể duy trì sự tương tác chính bằng cách neo giữ danh tính và việc thực thi trong các giải pháp được quản lý, dựa trên chính sách, có thể tích hợp các trợ lý Agentic AI từ nhiều nền tảng (ChatGPT, Gemini, Microsoft Copilot, v.v.).</p>
+<p><a href="https://www.microsoft.com/en-us/ai/financial-services/banking">Khám phá cách các Công ty Tiên phong trong lĩnh vực ngân hàng dẫn đầu bằng AI</a></p>
+<h3 id="tác-động-thực-tế-trong-ngân-hàng-agentic-đã-diễn-ra-mạnh-mẽ">Tác động thực tế trong Ngân hàng Agentic đã diễn ra mạnh mẽ</h3>
+<p>Trên hành trình khách hàng, các trải nghiệm agentic đang tạo ra sự thay đổi về kết quả. Dưới đây là bốn lĩnh vực mà chúng tôi hợp tác với khách hàng để mang lại lợi ích có thể đo lường được.</p>
+<h4 id="giải-quyết-tranh-chấp-và-gian-lận">Giải quyết tranh chấp và gian lận</h4>
+<p>Sự cố tranh chấp và gian lận là một trong những tương tác căng thẳng và khẩn cấp nhất của khách hàng trong lĩnh vực ngân hàng. Những khoảnh khắc này đòi hỏi sự chính xác, sự đồng cảm và tốc độ — mà các chatbot truyền thống thường không thể đáp ứng. Trợ lý agentic thay đổi trải nghiệm này bằng cách hiểu ngữ cảnh giao dịch theo thời gian thực, dự đoán nhu cầu của khách hàng, giải thích các bước tiếp theo một cách rõ ràng và điều phối các hành động phức hợp trên các hệ thống tuân thủ, gian lận và hoạt động. Chúng giúp quản lý việc leo thang một cách thông minh, đồng thời giữ cho khách hàng được thông báo với sự minh bạch đàm thoại.</p>
+<p><a href="https://www.microsoft.com/en/customers/story/25676-commerzbank-ag-azure-ai-foundry-agent-service">Commerzbank</a> với sự ra mắt của trợ lý AI có tên “Ava”, minh chứng cho tác động của sự thay đổi này. Được xây dựng với <a href="https://azure.microsoft.com/en-us/products/ai-foundry/agent-service">Microsoft Foundry Agent Service</a>, Ava hiện được cho là giải quyết khoảng 75% các cuộc trò chuyện của khách hàng một cách tự động. Kết quả là giảm đáng kể thời gian phản hồi, xử lý gian lận nhất quán hơn và giảm nhẹ đáng kể cho các đại lý con người, những người có thể tập trung vào các trường hợp có độ phức tạp cao đòi hỏi chuyên môn và phán đoán.</p>
+<h4 id="khám-phá-sản-phẩm-và-giới-thiệu-khách-hàng">Khám phá sản phẩm và giới thiệu khách hàng</h4>
+<p>Ngay cả khi các ngân hàng cung cấp các sản phẩm mạnh mẽ, khách hàng thường gặp khó khăn trong việc hiểu sự khác biệt, đánh giá đủ điều kiện hoặc điều hướng các quy trình giới thiệu. Các biểu đồ so sánh tĩnh và các biểu mẫu cứng nhắc tạo ra các rào cản gây ra sự bỏ ngang. Trợ lý agentic giải quyết khoảng trống này bằng cách cung cấp khả năng khám phá theo ngữ cảnh, đàm thoại. Chúng có thể phân tích điều kiện đủ điều kiện, hành vi tài chính và các mục tiêu dài hạn để hướng dẫn khách hàng đến các sản phẩm phù hợp nhất, rút ngắn thời gian từ lúc quan tâm đến lúc hoàn thành.</p>
+<p>Ví dụ, <a href="https://www.microsoft.com/en/customers/story/19754-abn-amro-bank-microsoft-copilot-studio">ABN AMRO</a> với việc di chuyển sang <a href="https://www.microsoft.com/en-us/microsoft-365-copilot/microsoft-copilot-studio/">Microsoft Copilot Studio</a>, thể hiện những lợi ích này ở quy mô lớn. Trợ lý hướng tới khách hàng của họ, “Anna”, hiện hỗ trợ hàng triệu lượt tương tác của khách hàng hàng năm, tự động hóa hơn một nửa trong số đó. Khách hàng nhận được các đề xuất được cá nhân hóa và quy trình giới thiệu liền mạch, trong khi ngân hàng được hưởng lợi từ việc giảm tỷ lệ bỏ ngang và tăng tỷ lệ chuyển đổi trên các sản phẩm chính.</p>
+<h4 id="thanh-toán-và-di-chuyển-tiền">Thanh toán và di chuyển tiền</h4>
+<p>Khách hàng ngày nay đơn giản mong đợi rằng các khoản thanh toán sẽ nhanh chóng, trực quan và không có lỗi. Thay vào đó, nhiều người thường gặp phải các biểu mẫu đa màn hình, các bước xác thực khó hiểu và các giao diện dễ mắc lỗi. Agentic AI giúp loại bỏ phần lớn những ma sát này. Khách hàng chỉ cần nói những gì họ muốn làm—ví dụ: “gửi tiền thuê nhà”, “chuyển đến tài khoản tiết kiệm của tôi”, “thanh toán thẻ tín dụng của tôi”—và trợ lý sẽ xác định phương thức tối ưu, xác nhận chi tiết và áp dụng các biện pháp bảo vệ tự động.</p>
+<p>Một ví dụ điển hình là việc <a href="https://www.microsoft.com/en/customers/story/19177-banco-bradesco-sa-azure-ai-services">Bradesco</a> triển khai generative AI vào trợ lý ảo của họ, “BIA”. Sau khi tích hợp các dịch vụ Microsoft Azure OpenAI và Data Lake, BIA được báo cáo đã đạt tỷ lệ giải quyết cấp độ đầu tiên là 82% và tỷ lệ giữ chân khách hàng là 89% trong tuần đầu tiên. Thời gian phản hồi giảm từ vài ngày xuống vài giờ và mức sử dụng tăng vọt. Các khoản thanh toán trở nên đàm thoại, an toàn và đáng tin cậy, giúp xây dựng niềm tin lâu dài của khách hàng đồng thời cải thiện hiệu quả hoạt động.</p>
+<h4 id="tư-vấn-và-dịch-vụ-tài-chính">Tư vấn và dịch vụ tài chính</h4>
+<p>Các quyết định tài chính mang tính cá nhân sâu sắc và thường phức tạp. Khách hàng muốn sự rõ ràng, sự trấn an và cảm giác rằng tổ chức của họ hiểu bức tranh tài chính rộng lớn hơn của họ. Trợ lý agentic hỗ trợ điều này bằng cách kết hợp chuyên môn của tổ chức với bối cảnh cá nhân hóa. Chúng có thể ghi nhớ các sự kiện cuộc sống, thích ứng với các mục tiêu thay đổi và giúp khám phá các kịch bản, hiểu các lựa chọn và cập nhật thông tin về các cam kết tài chính của họ.</p>
+<p><a href="https://www.microsoft.com/en/customers/story/1795836141096013038-virgin-money-dynamics-365-customer-service-banking-and-capital-markets-en-united-kingdom">Virgin Money</a> thể hiện sự phát triển này thông qua trợ lý được trao giải thưởng của họ, “Redi”. Được xây dựng với Microsoft Copilot Studio và <a href="https://www.microsoft.com/en-us/dynamics-365/products/customer-service">Dynamics 365 Customer Service</a>, Redi hiện được cho là hỗ trợ hàng triệu khách hàng và đáp ứng những gì họ cần hơn 90% thời gian. Lời khuyên có vẻ có kiến thức và phù hợp, củng cố niềm tin và làm sâu sắc thêm các mối quan hệ lâu dài. Nhân viên báo cáo quy trình làm việc suôn sẻ hơn, trong khi khách hàng trải nghiệm sự nhất quán và rõ ràng trên nhiều kênh.</p>
+<h2 id="thúc-đẩy-chuyển-đổi-kỹ-thuật-số-với-agentic-ai">Thúc đẩy chuyển đổi kỹ thuật số với Agentic AI</h2>
+<p>Đối với các ngân hàng, công nghệ cuối cùng đã bắt kịp với kỳ vọng của khách hàng. Sự thay đổi này đang biến đổi các trải nghiệm kỹ thuật số từ hỗ trợ phản ứng sang tương tác chủ động.</p>
+<p>Các giải pháp Agentic AI đang định hình thế hệ tiếp theo của trải nghiệm khách hàng, và các ngân hàng hành động ngay bây giờ có thể định vị tốt hơn để đạt được lợi thế cạnh tranh bền vững bằng cách hiện đại hóa hoạt động từ trong ra ngoài và tương tác với khách hàng theo những cách chưa từng có trước đây.</p>
+<p>Microsoft cung cấp <a href="https://azure.microsoft.com/en-us/products/ai-foundry">một bộ nền tảng và dịch vụ unmatched</a> kết hợp trí tuệ dữ liệu, điều phối và khả năng quan sát để giúp xây dựng, triển khai, quản trị và mở rộng quy mô trợ lý agentic. Các khoản đầu tư của chúng tôi vào <a href="https://www.microsoft.com/en-us/security/business/solutions/security-for-ai">Security for AI</a>, <a href="https://www.microsoft.com/en-us/security/blog/2025/05/19/microsoft-extends-zero-trust-to-secure-the-agentic-workforce/">Zero Trust</a>, và <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai-agents/governance-security-across-organization">AI governance</a>, giúp các ngân hàng giữ cho trải nghiệm agentic an toàn và đáng tin cậy trong suốt vòng đời AI. Điều này có nghĩa là với bản thiết kế phù hợp, các ngân hàng có thể điều hướng thời điểm này với sự tự tin, rõ ràng và kiểm soát.</p>
+<h2 id="khám-phá-cách-agentic-ai-hiện-đại-hóa-trải-nghiệm-ngân-hàng">Khám phá cách Agentic AI hiện đại hóa trải nghiệm ngân hàng</h2>
+<ul>
+<li>Nhận một khuôn khổ chuyển đổi thực tế và xem cách các Công ty Tiên phong dẫn đầu bằng Agentic AI trong sách điện tử <a href="https://info.microsoft.com/ww-landing-becoming-a-frontier-firm-ai-in-financial-services.html?lcid=EN-US">Becoming a Frontier Firm: AI in Financial Services</a> của chúng tôi.</li>
+<li>Xem <a href="https://videos.microsoft.com/Leading-at-the-Frontier-AI-in-Financial-Services">Leading at the Frontier: AI in Financial Services</a> để xem cách các nhà lãnh đạo trong lĩnh vực dịch vụ tài chính đang sử dụng AI thành công để biến sự phức tạp thành cơ hội.</li>
+<li>Truy cập blog của chúng tôi để xem các câu chuyện về cách Microsoft for Financial Services <a href="https://www.microsoft.com/en-us/industry/blog/financial-services/">giúp các công ty đẩy nhanh giá trị kinh doanh</a></li>
+</ul>
+<hr>
+<h3 id="về-tác-giả">Về tác giả</h3>
+<p><strong>Tyler Pichach</strong></p>
+<p>Là trưởng phòng toàn cầu phụ trách thanh toán và ngân hàng trong nhóm Dịch vụ Tài chính Toàn cầu của Microsoft, Tyler Pichach lãnh đạo việc phát triển và thực hiện các chiến lược AI tăng trưởng và cạnh tranh đa năm của Microsoft trong toàn ngành dịch vụ tài chính. Với hơn 25 năm kinh nghiệm trong ngành, ông hợp tác chặt chẽ với các tổ chức hàng đầu để phát triển và triển khai các công nghệ thanh toán tiên tiến, hỗ trợ các trải nghiệm liền mạch và an toàn cho cả doanh nghiệp và người tiêu dùng.</p>
+<hr>
+<h3 id="bài-viết-liên-quan">Bài viết liên quan</h3>
+<ul>
+<li><strong>Microsoft được vinh danh là Nhà lãnh đạo trong Báo cáo The Forrester Wave™: Giải pháp Cloud theo Ngành, Khu vực Công, Quý 1 năm 2026</strong>
+<ul>
+<li>25 tháng 2, 2026 | 4 phút đọc</li>
+</ul>
+</li>
+<li><strong>Microsoft đẩy nhanh lợi tức đầu tư thông minh của ngành viễn thông với nền tảng AI hợp nhất, đáng tin cậy</strong>
+<ul>
+<li>24 tháng 2, 2026 | 11 phút đọc</li>
+</ul>
+</li>
+<li><strong>Microsoft Azure đạt được cột mốc GxP, củng cố niềm tin cho các khối lượng công việc được quản lý</strong>
+<ul>
+<li>19 tháng 2, 2026 | 4 phút đọc</li>
+</ul>
+</li>
+<li><strong>Từ tắc nghẽn đến đột phá: Agentic AI đang định hình lại ngành bảo hiểm như thế nào</strong>
+<ul>
+<li>18 tháng 2, 2026 | 5 phút đọc</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="khám-phá-các-giải-pháp-ngành-của-microsoft">Khám phá các giải pháp ngành của Microsoft</h2>
+<p>Vượt qua mọi rào cản với các giải pháp ngành tùy chỉnh. Tăng tốc thời gian tạo ra giá trị, đẩy nhanh đổi mới và mang lại lợi ích cho khách hàng, nhân viên và tổ chức của bạn.</p>
+<p><a href="https://www.microsoft.com/en-us/industry">Tìm hiểu thêm</a></p>
+<hr>
+<p><strong>Theo dõi chúng tôi:</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> (<a href="https://twitter.com/mscloud">https://twitter.com/mscloud</a>)</li>
+<li><a href="https://www.youtube.com/c/microsoftcloud">YouTube</a></li>
+<li><a href="https://www.linkedin.com/showcase/microsoft-cloud-platform/">LinkedIn</a></li>
+</ul>
+<p>© Microsoft 2026</p>
+<p><a href="https://aka.ms/yourcaliforniaprivacychoices">Lựa chọn Riêng tư của Bạn</a></p>
+<p><a href="https://go.microsoft.com/fwlink/?linkid=2259814">Quyền riêng tư về Sức khỏe Người tiêu dùng</a></p>
+<p><a href="https://www.microsoft.com/en-us/sitemap1.aspx">Sơ đồ trang web</a> | <a href="https://support.microsoft.com/contactus">Liên hệ với Microsoft</a> | <a href="https://go.microsoft.com/fwlink/?LinkId=521839">Quyền riêng tư</a> | <a href="https://go.microsoft.com/fwlink/?LinkID=206977">Điều khoản sử dụng</a> | <a href="https://go.microsoft.com/fwlink/?linkid=2196228">Thương hiệu</a> | <a href="https://go.microsoft.com/fwlink/?linkid=2196227">An toàn &amp; Môi trường</a> | <a href="https://www.microsoft.com/en-us/legal/compliance/recycling">Tái chế</a> | <a href="https://choice.microsoft.com">Về quảng cáo của chúng tôi</a></p>
+<h3 id="link-bài-viết-gốc"><a href="https://www.microsoft.com/en-us/industry/blog/financial-services/banking/2026/02/26/the-agentic-moment-in-banking-a-blueprint-for-better-customer-experiences/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/february-26-2026/">February 26, 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.microsoft.com/">Www.microsoft.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/dc4482/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Hỗn hợp Chuyên gia (MoE) trong Transformers" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-28T00:00:00&#43;00:00">Feb 28, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Hỗn hợp Chuyên gia (MoE) trong Transformers</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tối ưu hóa MoE trong Transformers</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-22/dadee0/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2026/02/Hero-image-for-Blog-%e2%80%93-16x9-1-scaled-1-300x168.webp" alt="80% Fortune 500 sử dụng Tác nhân AI chủ động- Khả năng quan sát, quản trị và bảo mật định hình biên giới mới" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-02-22T00:00:00&#43;00:00">Feb 22, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">80% Fortune 500 sử dụng Tác nhân AI chủ động- Khả năng quan sát, quản trị và bảo mật định hình biên giới mới</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Đọc báo cáo Cyber Pulse mới của Microsoft để có những hiểu biết và hướng dẫn thẳng thắn, thực tế về các rủi ro an ninh mạng mới.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/34e93c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/eAKlJGJ89-ul4RG9KNxg3B8gTN5iEyrhUzGtppi7B5cfqSWwdomRI4QT0WEA6H8SDssLNgHUKG4TpEJVIEVNQsyp325Ba9BUyihX-vYgf-BN0w0q=w352-h352-n-nu" alt="Gemini 3 Deep Think- Thúc đẩy khoa học, nghiên cứu và kỹ thuật" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini 3 Deep Think- Thúc đẩy khoa học, nghiên cứu và kỹ thuật</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/dc4482/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Hỗn hợp Chuyên gia (MoE) trong Transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Hỗn hợp Chuyên gia (MoE) trong Transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/18797/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Khoảnh khắc tác nhân trong ngân hàng- Một bản thiết kế cho trải nghiệm khách hàng tốt hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/67b033/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/MNlOW_zVZ4eTMzs4GySN6gbaCiN7WA4MVb_dc4F78apzf9pfnG8_ZyjrJvxFbCDMc58m_BE0PZJz-Oz0mkJRV9cqI1V3vCw3ezGO0ghaYoRQOOuTJw=w352-h352-n-nu" alt="Nano Banana 2- Kết hợp khả năng chuyên nghiệp với tốc độ cực nhanh" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Nano Banana 2- Kết hợp khả năng chuyên nghiệp với tốc độ cực nhanh</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-02-28/8fc7a5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Triển khai các Mô hình Ngôn ngữ Thị giác Nguồn mở (VLM) trên Jetson</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
