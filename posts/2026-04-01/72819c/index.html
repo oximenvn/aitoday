@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Xây dựng AI đáng tin cậy- Khung thực tế cho quản trị thích ứng | AI Today - SkyAI</title>
+
+<meta name="description" content="Nếu quản trị chỉ là một danh sách những điều mọi người không được làm, thì đó không phải là quản trị—đó là một danh sách các giải pháp tạm thời đang chờ xảy ra.">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Xây dựng AI đáng tin cậy- Khung thực tế cho quản trị thích ứng</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Nếu quản trị chỉ là một danh sách những điều mọi người không được làm, thì đó không phải là quản trị—đó là một danh sách các giải pháp tạm thời đang chờ xảy ra. </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-04-01T00:00:00&#43;00:00">April 1, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            9 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="http://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2026/04/MSC24-ASEAN-developer-Getty-1451309464-rgb-1024x576.jpg" alt="Xây dựng AI đáng tin cậy- Khung thực tế cho quản trị thích ứng">
+        <figcaption class="text-center italic text-xs">Nếu quản trị chỉ là một danh sách những điều mọi người không được làm, thì đó không phải là quản trị—đó là một danh sách các giải pháp tạm thời đang chờ xảy ra.</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="xây-dựng-ai-đáng-tin-cậy-khung-thực-tế-cho-quản-trị-thích-ứng">Xây dựng AI đáng tin cậy: Khung thực tế cho quản trị thích ứng</h1>
+<p>Gần đây, tôi đã có buổi trò chuyện với chuyên gia phân tích Fernando Montenegro của Futurum để thảo luận về việc triển khai các tác nhân (agents) AI trong các tổ chức thực tế—không phải là các bản demo hay những lời thổi phồng, mà là thực trạng phức tạp của các hệ thống sản xuất, công tác quản trị và quy mô.</p>
+<p>Thông qua cuộc trò chuyện đó, một điểm sáng rõ ràng là: hầu hết các tổ chức không gặp khó khăn trong việc áp dụng tác nhân AI vì công nghệ thiếu an toàn. Họ gặp khó khăn vì các mô hình quản trị của họ được xây dựng cho một thế giới không còn tồn tại.</p>
+<p>Mặc dù các mô hình bảo mật truyền thống vẫn dựa vào sự phân biệt rõ ràng giữa &ldquo;bên trong&rdquo; và &ldquo;bên ngoài&rdquo;, và ranh giới đó vẫn cực kỳ quan trọng, nhưng điều đã thay đổi chính là tốc độ. Các tác nhân giờ đây di chuyển linh hoạt qua các ứng dụng, nguồn dữ liệu và quy trình làm việc, thường bao trùm các môi trường được thiết kế với tư duy về hệ thống tự chủ hoặc bán tự chủ.</p>
+<p><img src="https://www.microsoft.com/en-us/power-platform/blog/wp-content/uploads/2026/04/MSC24-ASEAN-developer-Getty-1451309464-rgb-scaled.jpg" alt="Một lập trình viên đang sử dụng máy tính để viết code, ngồi tại bàn làm việc với nhiều màn hình trong khi uống cà phê."></p>
+<p>Khi việc xây dựng một tác nhân hoặc ứng dụng chỉ mất vài phút, việc áp đặt các mô hình quản trị dựa trên các quy trình đánh giá thủ công kéo dài hàng tuần sẽ nhanh chóng thất bại. Thách thức không nằm ở chỗ có nên quản trị hay không—mà là làm thế nào để quản trị. Quản trị phải tính đến những ranh giới bị mờ nhạt và áp dụng sự giám sát phù hợp để các đội ngũ có thể tiến hành nhanh chóng mà không mất quyền kiểm soát.</p>
+<p>Khi các chiến lược quản trị chỉ tóm gọn lại là &ldquo;khóa mọi thứ lại&rdquo; hoặc &ldquo;chúng ta sẽ tính sau&rdquo;, kết quả là điều dễ đoán: hoặc là sự áp dụng không kiểm soát, hoặc là công nghệ bóng tối (shadow IT) không có sự giám sát. Cả hai đều không phải là chiến thắng.</p>
+<h2 id="những-câu-hỏi-quản-trị-mà-mọi-tác-nhân-ai-cần-trả-lời">Những câu hỏi quản trị mà mọi tác nhân AI cần trả lời</h2>
+<p>Các tổ chức hiệu quả nhất không cố gắng ngăn chặn các tác nhân. Họ đang tìm cách để <strong>phân loại rủi ro rõ ràng và áp dụng các biện pháp kiểm soát phù hợp vào đúng thời điểm</strong>.</p>
+<p>Nếu quản trị chỉ là một danh sách những điều mọi người không được làm, đó không phải là quản trị—đó là một danh sách các giải pháp thay thế đang chờ để xảy ra. Những nhà đổi mới và phá cách luôn tìm ra cách—dù là bên trong hệ thống hay ngoài tầm kiểm soát của bạn. Khi không có con đường hỗ trợ để làm đúng, công nghệ bóng tối không phải là sự thất bại của kỷ luật, mà là kết quả tự nhiên. Những hạn chế mà không có lựa chọn thay thế sẽ không ngăn cản sự đổi mới, chúng chỉ đẩy nó vào &ldquo;bóng tối&rdquo;, khuyến khích công nghệ bóng tối.</p>
+<p>Quản trị thực sự thiết lập các ranh giới cho phép các đội ngũ tiến nhanh <em>và</em> giữ an toàn:</p>
+<ul>
+<li>Tác nhân có thể truy cập những nguồn dữ liệu nào?</li>
+<li>Nó có thể được triển khai hoặc chia sẻ rộng rãi đến mức nào?</li>
+<li>Nó được phép thực hiện những hành động nào?</li>
+<li>Nó chạy dưới định danh nào?</li>
+<li>Mức độ giám sát nào được áp dụng khi rủi ro tăng lên?</li>
+</ul>
+<p>Một tác nhân năng suất cá nhân rủi ro thấp không giống như một tác nhân kết nối với hệ thống kinh doanh cốt lõi. Đối xử với chúng như thể chúng giống nhau sẽ dẫn đến những điểm thất bại có thể dự đoán trước. Bạn hoặc là hạn chế quá mức mọi thứ và làm đình trệ sự đổi mới, hoặc là bảo vệ thiếu sót những gì thực sự quan trọng, khiến các hệ thống quan trọng bị phơi bày. Quản trị chỉ hiệu quả khi nó phản ánh đúng sự khác biệt về rủi ro.</p>
+<h2 id="rủi-ro-không-phải-là-nhị-phânvà-quản-trị-ai-cần-một-mô-hình-dựa-trên-rủi-ro">Rủi ro không phải là nhị phân—và quản trị AI cần một mô hình dựa trên rủi ro</h2>
+<p>Một cách thiết thực để vận hành điều này là một mô hình dựa trên rủi ro đơn giản. Không phải lý thuyết. Mà là vận hành. Hãy nghĩ theo các <strong>vùng rủi ro tốt nghiệp (graduated risk zones)</strong>:</p>
+<ul>
+<li><strong>Rủi ro thấp</strong>: Các kịch bản tự phục vụ, bị hạn chế, nơi mọi người có thể xây dựng và sử dụng các tác nhân với các rào chắn chặt chẽ—truy cập dữ liệu hạn chế, chia sẻ hạn chế. Trong kịch bản này, những người tạo ra (makers) không cần phải mở phiếu yêu cầu cho mọi ý tưởng, và bộ phận CNTT không cần phải quản lý vi mô. Các đội có thể di chuyển nhanh chóng, xây dựng với sự tự tin, không có ma sát, và CNTT có thể đứng ngoài con đường quan trọng.</li>
+<li><strong>Rủi ro trung bình</strong>: Chia sẻ rộng hơn, dữ liệu nhạy cảm hơn, các hành động có ý nghĩa hơn. Những kịch bản này kích hoạt quy trình đánh giá và giám sát—nhưng không làm mất đà hoặc buộc quản trị nặng nề lên mọi ý tưởng.</li>
+<li><strong>Rủi ro cao</strong>: Các quy trình kinh doanh quan trọng gắn liền với các hệ thống cốt lõi. Những điều này cần sự kiểm soát có chủ đích ngay từ ngày đầu tiên. Không phải là &ldquo;không ai được xây dựng&rdquo;, mà là &ldquo;những người phù hợp xây dựng trong những ranh giới phù hợp, với sự giám sát phù hợp&rdquo;.</li>
+</ul>
+<p>Điểm mấu chốt không phải là nhãn dán. Điểm mấu chốt là sự rõ ràng. Rủi ro mang tính ngữ cảnh. Quản trị cũng nên như vậy.</p>
+<h2 id="nơi-quản-trị-thực-sự-được-thực-thi-nền-tảng">Nơi quản trị thực sự được thực thi: Nền tảng</h2>
+<p>Quản trị chỉ hoạt động khi nó được thực thi <strong>vốn có bởi nền tảng</strong>, chứ không phải được lớp phủ lên thông qua các tài liệu chính sách, email hoặc bảng tính.</p>
+<p>Đó là lý do tại sao khái niệm về nền tảng được quản lý (managed platform) lại quan trọng: Hãy biến bảo mật, quản trị và vận hành trở thành một phần của trải nghiệm nền tảng—kho hàng, thông tin sử dụng, chia sẻ được kiểm soát, quản trị kết nối và quản lý vòng đời—thay vì một quy trình bên ngoài được duy trì bởi những ý định tốt nhất.</p>
+<p>Các môi trường được quản lý (Managed environments)—sự áp dụng thực tế của chúng tôi về khái niệm nền tảng được quản lý—là một khả năng của <strong>Microsoft Power Platform</strong>, không phải thứ gì đó giới hạn ở một sản phẩm hoặc khối lượng công việc duy nhất. Các môi trường được quản lý cho phép các đội quản lý ứng dụng, tự động hóa, trang web và thậm chí cả các tác nhân được xây dựng trong <strong>Microsoft Copilot Studio</strong>.</p>
+<p>Một trong những biện pháp kiểm soát sạch sẽ nhất cũng là một trong những biện pháp đơn giản nhất: <strong>giới hạn chia sẻ kết hợp với lộ trình rõ ràng</strong>.</p>
+<p>Nếu ai đó xây dựng thứ gì đó cho chính họ hoặc cho đồng đội trực tiếp của họ, đó là một hồ sơ rủi ro. Nếu họ muốn chia sẻ giải pháp của họ rộng rãi hơn, đó là một hồ sơ khác. Nền tảng cần phải phân biệt giữa các trường hợp đó. Khi làm được điều đó, bạn có thể để mọi người thử nghiệm tự do—và yêu cầu sự thúc đẩy, đánh giá và trách nhiệm giải trình có chủ đích khi thứ gì đó sẵn sàng để mở rộng quy mô.</p>
+<h2 id="các-tác-nhân-không-tạo-ra-vấn-đề-về-quyền-hạnchúng-làm-lộ-chúng">Các tác nhân không tạo ra vấn đề về quyền hạn—chúng làm lộ chúng</h2>
+<p>Điều này rất đáng để nhắc lại, vì nó quan trọng: các tác nhân thường hoạt động với tư cách là người dùng gọi chúng. Chúng không tự nhiên có được các quyền hạn mới. Điều này có nghĩa là các tác nhân không tạo ra vấn đề về truy cập; chúng làm lộ những vấn đề bạn đã có, nhanh hơn.</p>
+<p>Nếu người dùng có quyền hạn quá rộng ngày hôm nay, các tác nhân cũng sẽ như vậy. Đó không phải là vấn đề của tác nhân—đó là vấn đề về kỷ luật danh tính và truy cập. Quản trị tác nhân hiệu quả chỉ hoạt động khi nó được xây dựng trên những nền tảng vững chắc.</p>
+<h2 id="tin-tưởng-theo-thiết-kế-với-sự-xác-minh-được-tích-hợp-sẵn">Tin tưởng theo thiết kế, với sự xác minh được tích hợp sẵn</h2>
+<p>Các biện pháp kiểm soát chủ động mạnh mẽ rất quan trọng, nhưng chúng không đủ nếu chỉ đứng một mình. Bạn vẫn cần các biện pháp kiểm soát phản ứng: giám sát, chẩn đoán và các dấu vết kiểm toán, đặc biệt là khi các tác nhân thực hiện các hành động có ý nghĩa về tuân thủ.</p>
+<p>&ldquo;Tin tưởng nhưng phải xác minh&rdquo; vẫn áp dụng. Hãy nhìn vào sự tương đồng quen thuộc của quy trình phê duyệt chi phí: con người vô tình phê duyệt các thứ không chính xác mọi lúc. Chúng ta quản lý rủi ro đó bằng các cuộc kiểm toán, các biện pháp kiểm soát bù đắp và giới hạn phạm vi ảnh hưởng (blast radius). Rủi ro của tác nhân nên được xử lý theo cùng một cách: biết những gì đã xảy ra, hiểu lý do tại sao nó xảy ra và ngăn chặn tác động khi nó không diễn ra như kế hoạch.</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Tương lai không phải là &ldquo;các tác nhân ở khắp mọi nơi mà không có sự kiểm soát&rdquo;, và cũng không phải là &ldquo;không có tác nhân nào vì rủi ro&rdquo;. Cả hai đều thất bại.</p>
+<p>Con đường thực tế là <strong>quản trị thích ứng</strong>: phân loại rủi ro rõ ràng, thực thi nó thông qua nền tảng và tạo ra các lộ trình thúc đẩy để các ý tưởng tốt có thể mở rộng quy mô mà không biến thành sự cố cần ứng phó của ngày mai.</p>
+<p>Đó là cách các tổ chức ngừng chơi trò phòng thủ. Nếu bạn muốn tìm hiểu cách bắt đầu nói &ldquo;có&rdquo; một cách an toàn, hãy xem toàn bộ cuộc phỏng vấn với Fernando.</p>
+<blockquote>
+<p><a href="https://www.microsoft.com/en-us/power-platform#video">Tìm hiểu cách các giải pháp low-code truyền cảm hứng cho sự đổi mới giữa các nhóm</a></p></blockquote>
+<h3 id="link-bài-viết-gốc"><a href="https://www.microsoft.com/en-us/power-platform/blog/2026/04/01/building-trustworthy-ai-a-practical-framework-for-adaptive-governance/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/01-april-2026/">01 April 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/www.microsoft.com/">Www.microsoft.com</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-01/b81e31/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Falcon Perception" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-04-01T00:00:00&#43;00:00">Apr 01, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Falcon Perception</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Nhận thức Falcon</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-03-25/20dcce/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2026/03/1102355_CAI_Digital-Sovereignty_Creative-Assets_BlogHero_1920x1080-300x169.webp" alt="Điều hướng chủ quyền kỹ thuật số tại biên giới của sự chuyển đổi" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-03-25T00:00:00&#43;00:00">Mar 25, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Điều hướng chủ quyền kỹ thuật số tại biên giới của sự chuyển đổi</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chủ quyền kỹ thuật số đã trở thành một nguyên tắc lãnh đạo thực tế dựa trên quản lý rủi ro, lập kế hoạch liên tục và trách nhiệm giải trình lâu dài.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-01/b81e31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Falcon Perception" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Falcon Perception</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-01/72819c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2026/04/MSC24-ASEAN-developer-Getty-1451309464-rgb-1024x576.jpg" alt="Xây dựng AI đáng tin cậy- Khung thực tế cho quản trị thích ứng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Xây dựng AI đáng tin cậy- Khung thực tế cho quản trị thích ứng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-03-25/b4c03a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Đánh giá mới cho các tác nhân giọng nói (EVA)" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đánh giá mới cho các tác nhân giọng nói (EVA)</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-03-25/20dcce/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2026/03/1102355_CAI_Digital-Sovereignty_Creative-Assets_BlogHero_1920x1080-300x169.webp" alt="Điều hướng chủ quyền kỹ thuật số tại biên giới của sự chuyển đổi" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Điều hướng chủ quyền kỹ thuật số tại biên giới của sự chuyển đổi</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-03-25/b2f65e/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2026/03/christine-andrew-kpmg-en2.jpg" alt="Đối với Christine Andrew của KPMG Canada, Copilot không chỉ giúp tiết kiệm thời gian—nó còn mở ra tác động giá trị cao" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đối với Christine Andrew của KPMG Canada, Copilot không chỉ giúp tiết kiệm thời gian—nó còn mở ra tác động giá trị cao</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
