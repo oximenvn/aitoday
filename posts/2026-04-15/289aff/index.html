@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gemini Robotics-ER 1.6- Thúc đẩy các tác vụ robot trong thế giới thực thông qua suy luận hiện thân tăng cường | AI Today - SkyAI</title>
+
+<meta name="description" content="Cung cấp sức mạnh cho các tác vụ robot thực tế thông qua suy luận hiện thân được nâng cao">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Gemini Robotics-ER 1.6- Thúc đẩy các tác vụ robot trong thế giới thực thông qua suy luận hiện thân tăng cường</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Cung cấp sức mạnh cho các tác vụ robot thực tế thông qua suy luận hiện thân được nâng cao </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-04-15T00:00:00&#43;00:00">April 15, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            8 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://lh3.googleusercontent.com/dYD-i6FPRANVusjS-plnDlS7VytrArpqf-Y1STUmNL5Id4iLJbuCDzBK8eh12Pw4O0QyxCNo4sxqItj9c1xFRpPxBq01_c4vKWSmXQTqnYmoIV8=w704-h704-n-nu" alt="Gemini Robotics-ER 1.6- Thúc đẩy các tác vụ robot trong thế giới thực thông qua suy luận hiện thân tăng cường">
+        <figcaption class="text-center italic text-xs">Cung cấp sức mạnh cho các tác vụ robot thực tế thông qua suy luận hiện thân được nâng cao</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="gemini-robotics-er-16-thúc-đẩy-các-tác-vụ-robot-trong-thế-giới-thực-thông-qua-lý-luận-hiện-thân-nâng-cao">Gemini Robotics-ER 1.6: Thúc đẩy các tác vụ robot trong thế giới thực thông qua lý luận hiện thân nâng cao</h1>
+<p><strong>Ngày đăng:</strong> 14 tháng 4, 2026
+<strong>Tác giả:</strong> Laura Graesser và Peng Xu</p>
+<p><img src="https://lh3.googleusercontent.com/Ta2yt0YDLre0HKHK1fbBA0Zg2LkRHJN8mL4iXhuHDVBIKQcJtjvAgLbsx9l2mDJfP2w4n7PMqLBeTDEEzRaNwmoJhwxtPwgEZ7u6G2FPKAvTbvul=w1440-h810-n-nu" alt="Hình ảnh minh họa khả năng phát hiện đối tượng và thị giác máy tính của Gemini Robotics-ER 1.6 trong môi trường gara"></p>
+<p>Để robot thực sự hữu ích trong cuộc sống hàng ngày và trong công nghiệp, chúng không chỉ đơn thuần là làm theo chỉ dẫn mà còn phải có khả năng lý luận về thế giới vật lý. Từ việc điều hướng trong một cơ sở phức tạp đến việc đọc kim trên đồng hồ áp suất, &ldquo;lý luận hiện thân&rdquo; (embodied reasoning) chính là cầu nối giúp robot chuyển hóa trí tuệ kỹ thuật số thành hành động vật lý.</p>
+<p>Hôm nay, chúng tôi giới thiệu <strong>Gemini Robotics-ER 1.6</strong>, một bản nâng cấp quan trọng cho mô hình ưu tiên lý luận của chúng tôi, cho phép robot hiểu môi trường xung quanh với độ chính xác chưa từng có. Bằng cách tăng cường khả năng lý luận không gian và hiểu đa góc nhìn, chúng tôi đang mang đến một cấp độ tự chủ mới cho thế hệ tác nhân vật lý tiếp theo.</p>
+<p>Mô hình này chuyên sâu vào các khả năng lý luận quan trọng đối với robot, bao gồm: hiểu thị giác và không gian, lập kế hoạch tác vụ và phát hiện mức độ thành công. Nó đóng vai trò là mô hình lý luận cấp cao cho robot, có khả năng thực hiện các tác vụ bằng cách gọi trực tiếp các công cụ như Google Search để tìm thông tin, các mô hình thị giác-ngôn ngữ-hành động (VLA) hoặc bất kỳ hàm nào khác do người dùng định nghĩa.</p>
+<p>Gemini Robotics-ER 1.6 cho thấy sự cải thiện đáng kể so với Gemini Robotics-ER 1.5 và Gemini 3.0 Flash, đặc biệt là trong các khả năng lý luận không gian và vật lý như chỉ điểm (pointing), đếm và phát hiện thành công. Chúng tôi cũng mở khóa một khả năng mới: <strong>đọc thông số thiết bị</strong>, cho phép robot đọc các đồng hồ đo và kính quan sát mức chất lỏng phức tạp — một trường hợp sử dụng mà chúng tôi phát hiện ra thông qua sự hợp tác chặt chẽ với đối tác Boston Dynamics.</p>
+<p>Kể từ hôm nay, Gemini Robotics-ER 1.6 đã sẵn sàng cho các nhà phát triển thông qua Gemini API và Google AI Studio.</p>
+<p><img src="https://lh3.googleusercontent.com/_dicgE2AAgiQBrY1zvNrdLqTsE5oNi3vbp95Zo4-vp809tdsRitsV4uOQHLBJES4QFjdqrJEW0gFUvwnYVDrbqcE6yd_wuigVj2Xxi-9Q-KA1UjodQ=w1440-h810-n-nu" alt="Biểu đồ so sánh tỷ lệ thành công (%) giữa Gemini Robotics-ER 1.6, Gemini 3.0 Flash và Gemini Robotics-ER 1.5 trên 4 tác vụ khác nhau">
+<em>Hình 1: Kết quả đối chuẩn cho thấy Gemini Robotics-ER 1.6 vượt trội hơn hẳn các phiên bản trước.</em></p>
+<h2 id="chỉ-điểm-nền-tảng-của-lý-luận-không-gian">Chỉ điểm: Nền tảng của lý luận không gian</h2>
+<p>Chỉ điểm là một khả năng cơ bản của mô hình lý luận hiện thân. Việc xác định các điểm tọa độ có thể được dùng để diễn đạt nhiều khái niệm, bao gồm:</p>
+<ul>
+<li><strong>Lý luận không gian:</strong> Phát hiện đối tượng và đếm với độ chính xác cao.</li>
+<li><strong>Logic quan hệ:</strong> Thực hiện các so sánh (ví dụ: xác định vật nhỏ nhất trong một nhóm); định nghĩa mối quan hệ &ldquo;từ-đến&rdquo; (ví dụ: di chuyển vật X đến vị trí Y).</li>
+<li><strong>Lý luận chuyển động:</strong> Lập bản đồ quỹ đạo và xác định các điểm cầm nắm tối ưu.</li>
+<li><strong>Tuân thủ ràng buộc:</strong> Lý luận thông qua các yêu cầu phức tạp như &ldquo;hãy chỉ ra mọi đồ vật đủ nhỏ để đặt vừa trong chiếc cốc màu xanh&rdquo;.</li>
+</ul>
+<p>Gemini Robotics-ER 1.6 có thể sử dụng các điểm chỉ dẫn như những bước trung gian để lý luận về các tác vụ phức tạp hơn. Ví dụ, nó có thể dùng các điểm này để đếm vật phẩm trong ảnh hoặc xác định các điểm quan trọng để thực hiện các phép toán giúp cải thiện ước tính khoảng cách thực tế.</p>
+<p><img src="https://lh3.googleusercontent.com/wX1QYLrafPEhOPLVaFTsvztVDlTW4g7YglaDK1Ex4fO-4spBmnEYOcHFzLyDvzFQsfEbCwRqlSWCtBcCu4ou5xvIipQ-a3nnxkGzo55dhhOFJHJ0Ug=w1440-h810-n-nu" alt="So sánh khả năng chỉ điểm giữa các mô hình. Gemini Robotics-ER 1.6 xác định chính xác số lượng búa, kéo, cọ vẽ và kìm, đồng thời không bị &ldquo;ảo giác&rdquo; về các vật không có trong ảnh">
+<em>Ví dụ về khả năng chỉ điểm chính xác của Gemini Robotics-ER 1.6 so với sự thiếu chính xác của ER 1.5 và Gemini 3.0 Flash.</em></p>
+<h2 id="phát-hiện-thành-công-động-cơ-của-sự-tự-chủ">Phát hiện thành công: Động cơ của sự tự chủ</h2>
+<p>Trong robot học, việc biết khi nào một tác vụ kết thúc cũng quan trọng như việc biết cách bắt đầu. Phát hiện thành công là nền tảng của sự tự chủ, đóng vai trò là bộ máy ra quyết định quan trọng để robot chọn giữa việc thử lại một lần thất bại hoặc tiến tới giai đoạn tiếp theo của kế hoạch.</p>
+<p>Việc đạt được sự hiểu biết về thị giác trong robot học rất thách thức, đòi hỏi khả năng nhận thức và lý luận tinh vi kết hợp với kiến thức rộng về thế giới để xử lý các yếu tố gây nhiễu như vật cản, ánh sáng kém và chỉ dẫn mơ hồ. Ngoài ra, hầu hết các hệ thống robot hiện đại đều sử dụng nhiều camera (như camera góc rộng phía trên và camera gắn ở cổ tay). Điều này có nghĩa là hệ thống cần hiểu cách kết hợp các góc nhìn khác nhau để tạo ra một bức tranh nhất quán tại mỗi thời điểm và theo thời gian.</p>
+<p>Gemini Robotics-ER 1.6 cải tiến lý luận đa góc nhìn, giúp hệ thống hiểu tốt hơn các luồng camera và mối quan hệ giữa chúng, ngay cả trong môi trường động hoặc bị che khuất.</p>
+<!-- raw HTML omitted -->
+<h2 id="đọc-thông-số-thiết-bị-lý-luận-thị-giác-trong-thế-giới-thực">Đọc thông số thiết bị: Lý luận thị giác trong thế giới thực</h2>
+<p>Một ví dụ điển hình về sức mạnh của Gemini Robotics-ER 1.6 là khả năng kết hợp lý luận không gian và kiến thức thế giới để giải quyết các vấn đề thực tế: đọc thông số thiết bị.</p>
+<p>Yêu cầu này xuất phát từ nhu cầu kiểm tra cơ sở hạ tầng, một trọng tâm quan trọng của đối tác Boston Dynamics. Các cơ sở công nghiệp chứa nhiều thiết bị như nhiệt kế, đồng hồ áp suất, kính quan sát mức hóa chất&hellip; cần được theo dõi liên tục. Robot Spot của Boston Dynamics có thể đi thăm các thiết bị này và chụp ảnh chúng.</p>
+<!-- raw HTML omitted -->
+<p>Việc đọc thông số thiết bị đòi hỏi lý luận thị giác phức tạp. Robot phải nhận diện chính xác các đầu vào — bao gồm kim đo, mức chất lỏng, ranh giới bình chứa, vạch chia độ — và hiểu mối quan hệ giữa chúng. Đối với kính quan sát, robot phải ước tính mức chất lỏng trong khi tính đến sự biến dạng do góc chụp của camera. Các đồng hồ đo thường có văn bản mô tả đơn vị cần được đọc và giải mã, và một số có nhiều kim chỉ các chữ số thập phân khác nhau cần được kết hợp lại.</p>
+<blockquote>
+<p>&ldquo;Các khả năng như đọc thông số thiết bị và lý luận tác vụ đáng tin cậy hơn sẽ cho phép Spot nhìn, hiểu và phản ứng với các thách thức thực tế một cách hoàn toàn tự chủ.&rdquo;
+— <strong>Marco da Silva</strong>, Phó Chủ tịch và Tổng Giản đốc mảng Spot tại Boston Dynamics.</p></blockquote>
+<p>Gemini Robotics-ER 1.6 đạt được độ chính xác cao nhờ sử dụng <strong>thị giác tác nhân (agentic vision)</strong>, kết hợp lý luận thị giác với thực thi mã. Mô hình thực hiện qua các bước trung gian: đầu tiên là phóng to (zoom) vào ảnh để đọc rõ các chi tiết nhỏ trên đồng hồ, sau đó sử dụng chỉ điểm và thực thi mã để ước tính tỷ lệ và khoảng cách, và cuối cùng áp dụng kiến thức thế giới để giải mã ý nghĩa.</p>
+<p><img src="https://lh3.googleusercontent.com/RvYAY_w1ZJfrVeEtxg3oh6YjyQuvSgFcIammormuzrUixbvwlNjFLLFRpUULIG153bgevZaZtnEjNZNaM_U2YKXHTRbZBDYvjxadsqIMAeTcuz6X=w1440-h810-n-nu" alt="Biểu đồ cho thấy hiệu suất đọc thông số thiết bị tăng vọt khi sử dụng Gemini Robotics-ER 1.6, đặc biệt là khi kết hợp với thị giác tác nhân đạt 93% thành công">
+<em>Hình 2: Các thành phần khác nhau của Gemini Robotics-ER 1.6 đóng góp vào hiệu suất cao trong tác vụ đọc thông số thiết bị.</em></p>
+<h3 id="đọc-đồng-hồ-analog-với-độ-chính-xác-cao">Đọc đồng hồ analog với độ chính xác cao</h3>
+<!-- raw HTML omitted -->
+<h2 id="mô-hình-robot-an-toàn-nhất-từ-trước-đến-nay">Mô hình robot an toàn nhất từ trước đến nay</h2>
+<p>An toàn được tích hợp vào mọi cấp độ của mô hình lý luận hiện thân. Gemini Robotics-ER 1.6 là mô hình robot an toàn nhất của chúng tôi cho đến nay, cho thấy sự tuân thủ vượt trội đối với các chính sách an toàn của Gemini trong các tác vụ lý luận không gian đối kháng.</p>
+<p>Mô hình cũng cải thiện đáng kể khả năng tuân thủ các ràng buộc an toàn vật lý. Ví dụ, nó đưa ra các quyết định an toàn hơn thông qua các đầu ra không gian (như chỉ điểm) về việc đối tượng nào có thể được thao tác an toàn dựa trên ràng buộc của kẹp gắp hoặc vật liệu (ví dụ: &ldquo;không chạm vào chất lỏng&rdquo;, &ldquo;không nhấc vật nặng quá 20kg&rdquo;).</p>
+<p>Chúng tôi cũng thử nghiệm khả năng xác định các mối nguy hiểm an toàn trong các tình huống văn bản và video dựa trên các báo cáo chấn thương thực tế. Trong các tác vụ này, các mô hình Gemini Robotics-ER cải thiện hơn so với Gemini 3.0 Flash (+6% trong văn bản, +10% trong video) về khả năng nhận diện chính xác rủi ro gây chấn thương.</p>
+<p><img src="https://lh3.googleusercontent.com/JzklnvIzHI-kFlxFia447n9ZeMHmAlqrg4sA4CL4PURVcnvMbx-DWMSWLgOR3bQ9MdeNTLNhlOc-soMWNWpZnkwx6aOYu-jBp6QyW_VLZZa18Xh6LQ=w1440-h810-n-nu" alt="Biểu đồ ASIMOV về tuân thủ hướng dẫn an toàn, cho thấy Gemini Robotics-ER 1.6 cải thiện đáng kể so với phiên bản 1.5">
+<em>Hình 3: Gemini Robotics-ER 1.6 cải thiện đáng kể khả năng tuân thủ các ràng buộc an toàn vật lý.</em></p>
+<h2 id="hợp-tác-cùng-chúng-tôi-cải-thiện-lý-luận-hiện-thân-cho-robot">Hợp tác cùng chúng tôi cải thiện lý luận hiện thân cho robot</h2>
+<p>Chúng tôi cam kết đảm bảo Gemini Robotics-ER mang lại giá trị tối đa cho cộng đồng robot. Nếu các khả năng hiện tại còn hạn chế đối với ứng dụng chuyên biệt của bạn, chúng tôi mời bạn gửi phản hồi thông qua biểu mẫu (kèm 10–50 hình ảnh được gắn nhãn minh họa các lỗi cụ thể) để giúp chúng tôi xây dựng các tính năng lý luận mạnh mẽ hơn.</p>
+<p>Hãy thử <strong>Gemini Robotics-ER 1.6 ngay bây giờ trên Google AI Studio</strong>.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://deepmind.google/blog/gemini-robotics-er-1-6/">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/april-2026/">April 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/deepmind.google/">Deepmind.google</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-03/ef49cf/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/KVYCjJ-L8ZrKP6nkzJPdqnEfhFyFHJ25d8a6jxkRQhox1SNuBGh3ADx3LcrCOqESeUzKhHRX5NXEWFU3yU9b8ucWuS2IiQpz4OncXhwa9wN3gGboaw=w704-h704-n-nu" alt="Gemma 4" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-04-03T00:00:00&#43;00:00">Apr 03, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Gemma 4</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Từng byte một, những mô hình mở có khả năng nhất</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-03-12/18339e/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://lh3.googleusercontent.com/diA8csnVScwyth1ocrgiwsj5cMpyCUdoCtoxwJz66DAIS6ZTzvT6bYHQhZK7mZzMkH5R4iMfE6IEkNT47YIrwf6qF9W0PHfnCHqdDuZlayMRb0NWmg=w352-h352-n-nu" alt="Từ trò chơi đến sinh học và hơn thế nữa- 10 năm tác động của AlphaGo" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-03-12T00:00:00&#43;00:00">Mar 12, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Từ trò chơi đến sinh học và hơn thế nữa- 10 năm tác động của AlphaGo</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Nhìn lại một thập kỷ kể từ cột mốc quan trọng của AlphaGo trong lĩnh vực nghiên cứu AI</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-15/69476b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/microsoft-cloud/blog/wp-content/uploads/2026/04/Screenshot-2026-04-09-170345.webp" alt="Chuyển đổi Tiên phong đang thúc đẩy tăng trưởng và đổi mới trong nhiều ngành công nghiệp" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chuyển đổi Tiên phong đang thúc đẩy tăng trưởng và đổi mới trong nhiều ngành công nghiệp</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-15/289aff/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/dYD-i6FPRANVusjS-plnDlS7VytrArpqf-Y1STUmNL5Id4iLJbuCDzBK8eh12Pw4O0QyxCNo4sxqItj9c1xFRpPxBq01_c4vKWSmXQTqnYmoIV8=w704-h704-n-nu" alt="Gemini Robotics-ER 1.6- Thúc đẩy các tác vụ robot trong thế giới thực thông qua suy luận hiện thân tăng cường" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini Robotics-ER 1.6- Thúc đẩy các tác vụ robot trong thế giới thực thông qua suy luận hiện thân tăng cường</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-03/ef49cf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/KVYCjJ-L8ZrKP6nkzJPdqnEfhFyFHJ25d8a6jxkRQhox1SNuBGh3ADx3LcrCOqESeUzKhHRX5NXEWFU3yU9b8ucWuS2IiQpz4OncXhwa9wN3gGboaw=w704-h704-n-nu" alt="Gemma 4" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemma 4</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-01/b81e31/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Falcon Perception" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Falcon Perception</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-01/72819c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="http://www.microsoft.com/en-us/ai/blog/wp-content/uploads/2026/04/MSC24-ASEAN-developer-Getty-1451309464-rgb-1024x576.jpg" alt="Xây dựng AI đáng tin cậy- Khung thực tế cho quản trị thích ứng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Xây dựng AI đáng tin cậy- Khung thực tế cho quản trị thích ứng</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
