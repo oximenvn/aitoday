@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Huấn luyện và Tinh chỉnh các Mô hình Embedding &amp; Reranker Đa phương thức với Sentence Transformers | AI Today - SkyAI</title>
+
+<meta name="description" content="Huấn luyện và tinh chỉnh các mô hình Embedding và Reranker đa phương thức bằng Sentence Transformers">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Huấn luyện và Tinh chỉnh các Mô hình Embedding &amp; Reranker Đa phương thức với Sentence Transformers</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Huấn luyện và tinh chỉnh các mô hình Embedding và Reranker đa phương thức bằng Sentence Transformers </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-04-16T00:00:00&#43;00:00">April 16, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            15 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/front/thumbnails/blog.png" alt="Huấn luyện và Tinh chỉnh các Mô hình Embedding &amp; Reranker Đa phương thức với Sentence Transformers">
+        <figcaption class="text-center italic text-xs">Huấn luyện và tinh chỉnh các mô hình Embedding và Reranker đa phương thức bằng Sentence Transformers</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="huấn-luyện-và-tinh-chỉnh-mô-hình-embedding--reranker-đa-phương-thức-với-sentence-transformers">Huấn luyện và Tinh chỉnh Mô hình Embedding &amp; Reranker Đa phương thức với Sentence Transformers</h1>
+<p><a href="https://sbert.net/">Sentence Transformers</a> là một thư viện Python dùng để sử dụng và huấn luyện các mô hình embedding và reranker cho các ứng dụng như tạo truy xuất tăng cường (RAG), tìm kiếm ngữ nghĩa và nhiều ứng dụng khác. Trong <a href="https://huggingface.co/blog/multimodal-sentence-transformers">bài viết trước</a>, tôi đã giới thiệu các khả năng đa phương thức mới, hướng dẫn cách sử dụng các mô hình embedding và reranker có thể xử lý văn bản, hình ảnh, âm thanh và video. Trong bài viết này, tôi sẽ hướng dẫn bạn cách <strong>huấn luyện hoặc tinh chỉnh (finetune)</strong> các mô hình đa phương thức này trên dữ liệu của riêng bạn.</p>
+<p>Để làm ví dụ thực tế, tôi sẽ hướng dẫn tinh chỉnh mô hình <a href="https://huggingface.co/Qwen/Qwen3-VL-Embedding-2B"><code>Qwen/Qwen3-VL-Embedding-2B</code></a> cho bài toán Truy xuất Tài liệu Hình ảnh (Visual Document Retrieval - VDR). Đây là tác vụ tìm kiếm các trang tài liệu liên quan (dưới dạng hình ảnh, giữ nguyên biểu đồ, bảng biểu và bố cục) cho một truy vấn văn bản cho trước. Mô hình kết quả <a href="https://huggingface.co/tomaarsen/Qwen3-VL-Embedding-2B-vdr"><code>tomaarsen/Qwen3-VL-Embedding-2B-vdr</code></a> cho thấy hiệu suất tăng lên đáng kể khi được tinh chỉnh trên miền dữ liệu cụ thể. Trên dữ liệu đánh giá của tôi, mô hình tinh chỉnh đạt NDCG@10 là 0,947 so với 0,888 của mô hình gốc, và vượt qua tất cả các mô hình VDR hiện có mà tôi đã thử nghiệm, bao gồm cả những mô hình lớn gấp 4 lần.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/multimodal-sentence-transformers/vdr_plot.png" alt="Kích thước mô hình so với NDCG cho các mô hình VDR"></p>
+<blockquote>
+<p><strong>Mẹo:</strong> Nếu bạn mới làm quen với các mô hình đa phương thức trong Sentence Transformers, tôi khuyên bạn nên đọc bài <a href="https://huggingface.co/blog/multimodal-sentence-transformers">Multimodal Embedding &amp; Reranker Models with Sentence Transformers</a> trước. Để huấn luyện các mô hình embedding, reranker hoặc sparse embedding chỉ dành cho văn bản, hãy xem phần <strong>Tài nguyên bổ sung</strong> ở cuối bài.</p></blockquote>
+<h2 id="mục-lục">Mục lục</h2>
+<ol>
+<li><a href="#t%E1%BA%A1i-sao-c%E1%BA%A7n-tinh-ch%E1%BB%89nh">Tại sao cần tinh chỉnh?</a></li>
+<li><a href="#c%C3%A1c-th%C3%A0nh-ph%E1%BA%A7n-hu%E1%BA%A5n-luy%E1%BB%87n">Các thành phần huấn luyện</a></li>
+<li><a href="#m%C3%B4-h%C3%ACnh">Mô hình</a></li>
+<li><a href="#dataset">Dataset</a>
+<ul>
+<li><a href="#dataset-truy-xu%E1%BA%A5t-t%C3%A0i-li%E1%BB%87u-h%C3%ACnh-%E1%BA%A3nh">Dataset Truy xuất Tài liệu Hình ảnh</a></li>
+<li><a href="#%C4%91%E1%BB%8Bnh-d%E1%BA%A1ng-dataset">Định dạng Dataset</a></li>
+</ul>
+</li>
+<li><a href="#h%C3%A0m-m%E1%BA%A5t-m%C3%A1t-loss-function">Hàm mất mát (Loss Function)</a>
+<ul>
+<li><a href="#cachedmultiplenegativesrankingloss">CachedMultipleNegativesRankingLoss</a></li>
+<li><a href="#matryoshkaloss">MatryoshkaLoss</a></li>
+</ul>
+</li>
+<li><a href="#%C4%91%E1%BB%91i-s%E1%BB%91-hu%E1%BA%A5n-luy%E1%BB%87n">Đối số huấn luyện</a></li>
+<li><a href="#b%E1%BB%99-%C4%91%C3%A1nh-gi%C3%A1-evaluator">Bộ đánh giá (Evaluator)</a></li>
+<li><a href="#b%E1%BB%99-hu%E1%BA%A5n-luy%E1%BB%87n-trainer">Bộ huấn luyện (Trainer)</a></li>
+<li><a href="#k%E1%BA%BFt-qu%E1%BA%A3">Kết quả</a>
+<ul>
+<li><a href="#k%C3%ADch-th%C6%B0%E1%BB%9Bc-m%C3%B4-h%C3%ACnh-vs-ndcg10">Kích thước mô hình vs NDCG@10</a></li>
+<li><a href="#chi%E1%BB%81u-matryoshka-vs-ndcg10">Chiều Matryoshka vs NDCG@10</a></li>
+</ul>
+</li>
+<li><a href="#hu%E1%BA%A5n-luy%E1%BB%87n-m%C3%B4-h%C3%ACnh-reranker-%C4%91a-ph%C6%B0%C6%A1ng-th%E1%BB%A9c">Huấn luyện mô hình Reranker đa phương thức</a></li>
+<li><a href="#t%C3%A0i-nguy%C3%AAn-b%E1%BB%95-sung">Tài nguyên bổ sung</a></li>
+</ol>
+<!-- raw HTML omitted -->
+<p>Các mô hình embedding đa phương thức tổng quát như <code>Qwen/Qwen3-VL-Embedding-2B</code> được huấn luyện trên dữ liệu đa dạng để hoạt động tốt trên nhiều ngôn ngữ và tác vụ: khớp hình ảnh-văn bản, trả lời câu hỏi trực quan, hiểu tài liệu, v.v. Tuy nhiên, tính tổng quát này có nghĩa là mô hình hiếm khi là lựa chọn tốt nhất cho một tác vụ cụ thể.</p>
+<p>Hãy xem xét bài toán Truy xuất Tài liệu Hình ảnh: với một truy vấn văn bản như &ldquo;Doanh thu quý 3 của công ty là bao nhiêu?&rdquo;, mô hình phải tìm thấy ảnh chụp màn hình tài liệu liên quan nhất từ một kho lưu trữ hàng nghìn tấm ảnh. Điều này đòi hỏi khả năng hiểu bố cục tài liệu, biểu đồ, bảng biểu và văn bản, vốn là một kỹ năng rất khác với việc khớp hình ảnh đôi giày với mô tả sản phẩm.</p>
+<p>Bằng cách tinh chỉnh trên dữ liệu đặc thù của miền, mô hình có thể học được những đặc điểm chuyên biệt này. Trong thử nghiệm của tôi, việc tinh chỉnh đã cải thiện NDCG@10 từ 0,888 lên 0,947, vượt qua mọi mô hình đa phương thức gần đây mà tôi đã thử nghiệm, kể cả những mô hình lớn hơn gấp 4 lần.</p>
+<!-- raw HTML omitted -->
+<p>Huấn luyện các mô hình Sentence Transformer đa phương thức bao gồm các thành phần tương tự như huấn luyện mô hình chỉ có văn bản:</p>
+<ol>
+<li><strong>Mô hình (Model)</strong>: Mô hình đa phương thức cần huấn luyện hoặc tinh chỉnh.</li>
+<li><strong>Dataset</strong>: Dữ liệu dùng để huấn luyện và đánh giá.</li>
+<li><strong>Hàm mất mát (Loss Function)</strong>: Hàm định lượng hiệu suất của mô hình và dẫn dắt quá trình tối ưu hóa.</li>
+<li><strong>Đối số huấn luyện (Training Arguments)</strong> (tùy chọn): Các tham số ảnh hưởng đến hiệu suất huấn luyện và theo dõi/gỡ lỗi.</li>
+<li><strong>Bộ đánh giá (Evaluator)</strong> (tùy chọn): Công cụ để đánh giá mô hình trước, trong hoặc sau khi huấn luyện.</li>
+<li><strong>Bộ huấn luyện (Trainer)</strong>: Kết hợp mô hình, dataset, hàm mất mát và các thành phần khác để tiến hành huấn luyện.</li>
+</ol>
+<p>Luồng huấn luyện đa phương thức sử dụng cùng một <code>SentenceTransformerTrainer</code> như huấn luyện văn bản. Điểm khác biệt chính là dataset của bạn chứa hình ảnh (hoặc các phương thức khác) cùng với văn bản, và bộ xử lý (processor) của mô hình sẽ tự động xử lý tiền xử lý hình ảnh.</p>
+<!-- raw HTML omitted -->
+<p>Cách phổ biến nhất là tinh chỉnh một mô hình embedding đa phương thức hiện có, hoặc bắt đầu từ một checkpoint của Mô hình Ngôn ngữ - Thị giác (Vision-Language Model - VLM). Module <code>Transformer</code> sẽ tự động phát hiện các phương thức được hỗ trợ từ bộ xử lý của mô hình.</p>
+<p>Để tinh chỉnh một mô hình embedding đa phương thức hiện có (ví dụ: mô hình đã có tệp <code>modules.json</code>), bạn có thể truyền <code>processor_kwargs</code> và <code>model_kwargs</code> để kiểm soát tiền xử lý và tải mô hình. <code>processor_kwargs</code> được truyền trực tiếp đến <code>AutoProcessor.from_pretrained(...)</code> (ví dụ: giới hạn độ phân giải hình ảnh: <code>max_pixels</code> cao hơn nghĩa là chất lượng cao hơn nhưng tốn nhiều bộ nhớ hơn), trong khi <code>model_kwargs</code> được truyền đến <code>AutoModel.from_pretrained(...)</code> (ví dụ: độ chính xác, triển khai attention):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SentenceTransformer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SentenceTransformer(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Qwen/Qwen3-VL-Embedding-2B&#34;</span>,
+</span></span><span style="display:flex;"><span>    model_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;attn_implementation&#34;</span>: <span style="color:#e6db74">&#34;flash_attention_2&#34;</span>, <span style="color:#e6db74">&#34;torch_dtype&#34;</span>: <span style="color:#e6db74">&#34;bfloat16&#34;</span>},
+</span></span><span style="display:flex;"><span>    processor_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;min_pixels&#34;</span>: <span style="color:#ae81ff">28</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">28</span>, <span style="color:#e6db74">&#34;max_pixels&#34;</span>: <span style="color:#ae81ff">600</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">600</span>},
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Bạn cũng có thể bắt đầu từ một checkpoint VLM mới chưa được huấn luyện cho embedding. Sentence Transformers sẽ cố gắng nhận diện kiến trúc, suy luận các phương thức được hỗ trợ và thiết lập phương thức forward và pooling phù hợp.</p>
+<p>Trong cả hai trường hợp, module <code>Transformer</code> sẽ kiểm tra bộ xử lý để xác định phương thức khả dụng, và <code>Pooling</code> sẽ được tự động thêm vào nếu cần. Bạn có thể kiểm tra các phương thức được hỗ trợ:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(model<span style="color:#f92672">.</span>modalities)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># [&#39;text&#39;, &#39;image&#39;, &#39;video&#39;, &#39;message&#39;]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(model<span style="color:#f92672">.</span>supports(<span style="color:#e6db74">&#34;image&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># True</span>
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Thay vì dùng một backbone VLM duy nhất, bạn có thể kết hợp các encoder riêng biệt cho các phương thức khác nhau bằng module <code>Router</code>. Điều này cho phép bạn kết hợp bất kỳ encoder hiện có nào và điều hướng đầu vào đến encoder phù hợp:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SentenceTransformer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.modules <span style="color:#f92672">import</span> Dense, Pooling, Router, Transformer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Tạo encoder riêng cho từng phương thức</span>
+</span></span><span style="display:flex;"><span>text_encoder <span style="color:#f92672">=</span> Transformer(<span style="color:#e6db74">&#34;sentence-transformers/all-MiniLM-L6-v2&#34;</span>)
+</span></span><span style="display:flex;"><span>text_pooling <span style="color:#f92672">=</span> Pooling(text_encoder<span style="color:#f92672">.</span>get_embedding_dimension(), pooling_mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mean&#34;</span>)
+</span></span><span style="display:flex;"><span>text_projection <span style="color:#f92672">=</span> Dense(text_encoder<span style="color:#f92672">.</span>get_embedding_dimension(), <span style="color:#ae81ff">768</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># SigLIP xuất ra embedding đã pooled trực tiếp, nên không cần module Pooling riêng</span>
+</span></span><span style="display:flex;"><span>image_encoder <span style="color:#f92672">=</span> Transformer(<span style="color:#e6db74">&#34;google/siglip2-base-patch16-224&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Điều hướng đầu vào dựa trên phương thức</span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> Router(
+</span></span><span style="display:flex;"><span>    sub_modules<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;text&#34;</span>: [text_encoder, text_pooling, text_projection],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;image&#34;</span>: [image_encoder],
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SentenceTransformer(modules<span style="color:#f92672">=</span>[router])
+</span></span></code></pre></div><blockquote>
+<p><strong>Cảnh báo:</strong> Vì các mô hình đa phương thức dựa trên Router sử dụng các encoder riêng cho mỗi phương thức, không gian embedding của chúng ban đầu không đồng nhất. Cần huấn luyện để căn chỉnh các không gian này. Lớp chiếu <code>Dense</code> ở trên giúp ánh xạ embedding từ các encoder khác nhau vào một không gian chung.</p></blockquote>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Trong ví dụ này, tôi sử dụng dataset <code>tomaarsen/llamaindex-vdr-en-train-preprocessed</code>, một tập con tiếng Anh đã được tiền xử lý từ <code>llamaindex/vdr-multilingual-train</code>. Dataset gốc bao gồm khoảng 500k mẫu truy vấn-hình ảnh đa ngôn ngữ từ các tệp PDF công khai, với các truy vấn được tạo tổng hợp bằng VLM (gemini-1.5-pro và Qwen2-VL-72B). Phiên bản tiền xử lý của tôi lọc ra 53,512 mẫu tiếng Anh và giải quyết 4 trong số 16 mẫu negative cứng dựa trên ID thành hình ảnh chụp màn hình tài liệu thực tế:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;tomaarsen/llamaindex-vdr-en-train-preprocessed&#34;</span>, <span style="color:#e6db74">&#34;train&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> train_dataset<span style="color:#f92672">.</span>select_columns([<span style="color:#e6db74">&#34;query&#34;</span>, <span style="color:#e6db74">&#34;image&#34;</span>, <span style="color:#e6db74">&#34;negative_0&#34;</span>])
+</span></span><span style="display:flex;"><span>eval_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;tomaarsen/llamaindex-vdr-en-train-preprocessed&#34;</span>, <span style="color:#e6db74">&#34;eval&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span></code></pre></div><p>Tôi chọn <code>query</code>, <code>image</code> và <code>negative_0</code> để tạo thành các bộ ba (anchor, positive, hard negative). Việc thêm nhiều negative cứng hơn có thể cải thiện tín hiệu huấn luyện, nhưng mỗi negative thêm vào sẽ làm tăng mức sử dụng bộ nhớ và thời gian huấn luyện.</p>
+<!-- raw HTML omitted -->
+<p>Tương tự như huấn luyện chỉ văn bản, định dạng dataset phải khớp với hàm mất mát bạn chọn:</p>
+<ol>
+<li>Nếu hàm mất mất yêu cầu một <em>Label</em>, dataset phải có cột tên là <strong>&ldquo;label&rdquo;</strong> hoặc <strong>&ldquo;score&rdquo;</strong>.</li>
+<li>Tất cả các cột khác ngoài &ldquo;label&rdquo; hoặc &ldquo;score&rdquo; được coi là <em>Inputs</em>. Số lượng các cột này phải khớp với số lượng đầu vào hợp lệ của hàm mất mát.</li>
+</ol>
+<p>Đối với dataset đa phương thức, đầu vào có thể chứa:</p>
+<ul>
+<li><strong>Văn bản</strong>: chuỗi (strings).</li>
+<li><strong>Hình ảnh</strong>: ảnh PIL, đường dẫn tệp, URL, hoặc mảng numpy/torch.</li>
+<li><strong>Âm thanh</strong>: đường dẫn tệp, mảng numpy/torch, hoặc dict chứa <code>&quot;array&quot;</code> và <code>&quot;sampling_rate&quot;</code>.</li>
+<li><strong>Video</strong>: đường dẫn tệp, mảng numpy/torch, hoặc dict chứa <code>&quot;array&quot;</code> và <code>&quot;video_metadata&quot;</code>.</li>
+<li><strong>Dict đa phương thức</strong>: một dict ánh xạ tên phương thức tới giá trị, ví dụ: <code>{&quot;text&quot;: ..., &quot;image&quot;: ...}</code>.</li>
+</ul>
+<p>Bộ collator dữ liệu sẽ tự động gọi <code>model.preprocess()</code>, tự phát hiện phương thức của mỗi đầu vào và áp dụng tiền xử lý phù hợp. Bạn không cần tokenization hay xử lý ảnh thủ công.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Tôi sử dụng <code>CachedMultipleNegativesRankingLoss</code>, một lựa chọn phổ biến cho các tác vụ truy xuất. Nó chấp nhận các cặp (truy vấn, positive) cùng với bất kỳ số lượng cột negative cứng nào. Trong quá trình huấn luyện, hàm này đẩy độ tương đồng giữa truy vấn và mẫu positive <em>lên</em> và đẩy độ tương đồng với mọi mẫu negative <em>xuống</em>. Các mẫu negative đến từ hai nguồn:</p>
+<ol>
+<li><strong>Hard negatives</strong>: các cột negative được cung cấp rõ ràng trong dataset.</li>
+<li><strong>In-batch negatives</strong>: các mẫu positive và negative cứng từ mọi mẫu <em>khác</em> trong cùng một batch.</li>
+</ol>
+<p>Batch size càng lớn thì tín hiệu huấn luyện càng mạnh. Biến thể &ldquo;cached&rdquo; sử dụng gradient caching để cho phép batch size hiệu dụng lớn ngay cả khi bộ nhớ GPU hạn chế.</p>
+<p>Tham số <code>mini_batch_size</code> kiểm soát số lượng mẫu được xử lý cùng lúc trong các lượt forward cached. Với các mô hình đa phương thức lớn, nên đặt giá trị này nhỏ (ví dụ: 1) để tránh lỗi hết bộ nhớ (OOM):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.losses <span style="color:#f92672">import</span> CachedMultipleNegativesRankingLoss
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> CachedMultipleNegativesRankingLoss(model, mini_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Để tạo ra các embedding hoạt động tốt ở nhiều mức chiều khác nhau, tôi bao bọc hàm mất mát cơ bản bằng <code>MatryoshkaLoss</code>. Điều này huấn luyện mô hình sao cho việc cắt bớt embedding xuống số chiều nhỏ hơn vẫn mang lại hiệu suất tốt:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.losses <span style="color:#f92672">import</span> CachedMultipleNegativesRankingLoss, MatryoshkaLoss
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> CachedMultipleNegativesRankingLoss(model, mini_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> MatryoshkaLoss(model, loss, matryoshka_dims<span style="color:#f92672">=</span>[<span style="color:#ae81ff">2048</span>, <span style="color:#ae81ff">1536</span>, <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">512</span>, <span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">128</span>, <span style="color:#ae81ff">64</span>])
+</span></span></code></pre></div><p>Điều này đặc biệt hữu ích cho các mô hình đa phương thức có embedding lớn (ví dụ: 2048 chiều của Qwen3-VL). Khi triển khai, bạn có thể dùng embedding đã cắt (ví dụ: 256 hoặc 128 chiều) để tìm kiếm nhanh hơn với tổn thất chất lượng tối thiểu.</p>
+<!-- raw HTML omitted -->
+<p>Lớp <code>SentenceTransformerTrainingArguments</code> cho phép kiểm soát các siêu tham số. Dưới đây là cấu hình cho VDR:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.training_args <span style="color:#f92672">import</span> SentenceTransformerTrainingArguments, BatchSamplers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>run_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Qwen3-VL-Embedding-2B-vdr&#34;</span>
+</span></span><span style="display:flex;"><span>args <span style="color:#f92672">=</span> SentenceTransformerTrainingArguments(
+</span></span><span style="display:flex;"><span>    output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;models/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    num_train_epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    per_device_train_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>,
+</span></span><span style="display:flex;"><span>    per_device_eval_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>,
+</span></span><span style="display:flex;"><span>    learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">2e-5</span>,
+</span></span><span style="display:flex;"><span>    warmup_ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>    fp16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    bf16<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    batch_sampler<span style="color:#f92672">=</span>BatchSamplers<span style="color:#f92672">.</span>NO_DUPLICATES,
+</span></span><span style="display:flex;"><span>    eval_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>    eval_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>    save_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>    save_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>    save_total_limit<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    logging_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>,
+</span></span><span style="display:flex;"><span>    run_name<span style="color:#f92672">=</span>run_name,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p><strong>Lưu ý cho huấn luyện đa phương thức:</strong></p>
+<ul>
+<li><code>bf16=True</code>: bfloat16 thường được ưu tiên hơn float16 vì độ ổn định số học tốt hơn.</li>
+<li><code>batch_sampler=BatchSamplers.NO_DUPLICATES</code>: Đảm bảo không có mẫu trùng lặp trong một batch, giúp các in-batch negatives thực sự khác biệt.</li>
+<li><code>per_device_train_batch_size=64</code>: Có vẻ lớn cho một VLM 2B, nhưng <code>CachedMultipleNegativesRankingLoss</code> với <code>mini_batch_size=1</code> sẽ xử lý giới hạn bộ nhớ thông qua gradient caching.</li>
+</ul>
+<!-- raw HTML omitted -->
+<p>Tôi sử dụng <code>InformationRetrievalEvaluator</code> để theo dõi hiệu suất truy xuất, tính toán các chỉ số như NDCG@10, MAP và Recall@k:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.evaluation <span style="color:#f92672">import</span> InformationRetrievalEvaluator
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Xây dựng dữ liệu đánh giá từ eval_dataset</span>
+</span></span><span style="display:flex;"><span>eval_queries <span style="color:#f92672">=</span> {qid: sample[<span style="color:#e6db74">&#34;query&#34;</span>] <span style="color:#66d9ef">for</span> qid, sample <span style="color:#f92672">in</span> enumerate(eval_dataset)}
+</span></span><span style="display:flex;"><span>eval_corpus <span style="color:#f92672">=</span> {did: sample[<span style="color:#e6db74">&#34;image&#34;</span>] <span style="color:#66d9ef">for</span> did, sample <span style="color:#f92672">in</span> enumerate(eval_dataset)}
+</span></span><span style="display:flex;"><span>num_eval <span style="color:#f92672">=</span> len(eval_dataset)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Thêm negative cứng vào corpus</span>
+</span></span><span style="display:flex;"><span>negative_columns <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;negative_0&#34;</span>, <span style="color:#e6db74">&#34;negative_1&#34;</span>, <span style="color:#e6db74">&#34;negative_2&#34;</span>, <span style="color:#e6db74">&#34;negative_3&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> neg_idx, neg_col <span style="color:#f92672">in</span> enumerate(negative_columns):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> did, sample <span style="color:#f92672">in</span> enumerate(eval_dataset):
+</span></span><span style="display:flex;"><span>        eval_corpus[num_eval <span style="color:#f92672">*</span> (neg_idx <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> did] <span style="color:#f92672">=</span> sample[neg_col]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>eval_relevant_docs <span style="color:#f92672">=</span> {idx: [idx] <span style="color:#66d9ef">for</span> idx <span style="color:#f92672">in</span> range(len(eval_dataset))}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>eval_evaluator <span style="color:#f92672">=</span> InformationRetrievalEvaluator(
+</span></span><span style="display:flex;"><span>    queries<span style="color:#f92672">=</span>eval_queries,
+</span></span><span style="display:flex;"><span>    corpus<span style="color:#f92672">=</span>eval_corpus,
+</span></span><span style="display:flex;"><span>    relevant_docs<span style="color:#f92672">=</span>eval_relevant_docs,
+</span></span><span style="display:flex;"><span>    batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    show_progress_bar<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vdr-eval-hard&#34;</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p><code>SentenceTransformerTrainer</code> kết nối mọi thứ lại với nhau. Đây là script huấn luyện đầy đủ:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datasets <span style="color:#f92672">import</span> load_dataset
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers <span style="color:#f92672">import</span> SentenceTransformer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.evaluation <span style="color:#f92672">import</span> InformationRetrievalEvaluator
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.losses <span style="color:#f92672">import</span> CachedMultipleNegativesRankingLoss, MatryoshkaLoss
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.model_card <span style="color:#f92672">import</span> SentenceTransformerModelCardData
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.trainer <span style="color:#f92672">import</span> SentenceTransformerTrainer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.sentence_transformer.training_args <span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    BatchSamplers,
+</span></span><span style="display:flex;"><span>    SentenceTransformerTrainingArguments,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Tải mô hình để tinh chỉnh</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> SentenceTransformer(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Qwen/Qwen3-VL-Embedding-2B&#34;</span>,
+</span></span><span style="display:flex;"><span>    model_card_data<span style="color:#f92672">=</span>SentenceTransformerModelCardData(
+</span></span><span style="display:flex;"><span>        language<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>,
+</span></span><span style="display:flex;"><span>        license<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;apache-2.0&#34;</span>,
+</span></span><span style="display:flex;"><span>        model_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Qwen3-VL-Embedding-2B model trained on Visual Document Retrieval query-document screenshot pairs&#34;</span>,
+</span></span><span style="display:flex;"><span>    ),
+</span></span><span style="display:flex;"><span>    model_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;attn_implementation&#34;</span>: <span style="color:#e6db74">&#34;flash_attention_2&#34;</span>, <span style="color:#e6db74">&#34;torch_dtype&#34;</span>: <span style="color:#e6db74">&#34;bfloat16&#34;</span>},
+</span></span><span style="display:flex;"><span>    processor_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;min_pixels&#34;</span>: <span style="color:#ae81ff">28</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">28</span>, <span style="color:#e6db74">&#34;max_pixels&#34;</span>: <span style="color:#ae81ff">600</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">600</span>},
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Tải dataset</span>
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;tomaarsen/llamaindex-vdr-en-train-preprocessed&#34;</span>, <span style="color:#e6db74">&#34;train&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span><span style="display:flex;"><span>train_dataset <span style="color:#f92672">=</span> train_dataset<span style="color:#f92672">.</span>select_columns([<span style="color:#e6db74">&#34;query&#34;</span>, <span style="color:#e6db74">&#34;image&#34;</span>, <span style="color:#e6db74">&#34;negative_0&#34;</span>])
+</span></span><span style="display:flex;"><span>eval_dataset <span style="color:#f92672">=</span> load_dataset(<span style="color:#e6db74">&#34;tomaarsen/llamaindex-vdr-en-train-preprocessed&#34;</span>, <span style="color:#e6db74">&#34;eval&#34;</span>, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;train&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Định nghĩa hàm mất mát</span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> CachedMultipleNegativesRankingLoss(model, mini_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> MatryoshkaLoss(model, loss, matryoshka_dims<span style="color:#f92672">=</span>[<span style="color:#ae81ff">2048</span>, <span style="color:#ae81ff">1536</span>, <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">512</span>, <span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">128</span>, <span style="color:#ae81ff">64</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. Đối số huấn luyện</span>
+</span></span><span style="display:flex;"><span>run_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Qwen3-VL-Embedding-2B-vdr&#34;</span>
+</span></span><span style="display:flex;"><span>args <span style="color:#f92672">=</span> SentenceTransformerTrainingArguments(
+</span></span><span style="display:flex;"><span>    output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;models/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    num_train_epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    per_device_train_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>,
+</span></span><span style="display:flex;"><span>    per_device_eval_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>,
+</span></span><span style="display:flex;"><span>    learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">2e-5</span>,
+</span></span><span style="display:flex;"><span>    warmup_ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>    fp16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    bf16<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    batch_sampler<span style="color:#f92672">=</span>BatchSamplers<span style="color:#f92672">.</span>NO_DUPLICATES,
+</span></span><span style="display:flex;"><span>    eval_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>    eval_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>    save_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;steps&#34;</span>,
+</span></span><span style="display:flex;"><span>    save_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>,
+</span></span><span style="display:flex;"><span>    save_total_limit<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    logging_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>,
+</span></span><span style="display:flex;"><span>    run_name<span style="color:#f92672">=</span>run_name,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. Tạo bộ đánh giá</span>
+</span></span><span style="display:flex;"><span>eval_queries <span style="color:#f92672">=</span> {qid: sample[<span style="color:#e6db74">&#34;query&#34;</span>] <span style="color:#66d9ef">for</span> qid, sample <span style="color:#f92672">in</span> enumerate(eval_dataset)}
+</span></span><span style="display:flex;"><span>eval_corpus <span style="color:#f92672">=</span> {did: sample[<span style="color:#e6db74">&#34;image&#34;</span>] <span style="color:#66d9ef">for</span> did, sample <span style="color:#f92672">in</span> enumerate(eval_dataset)}
+</span></span><span style="display:flex;"><span>num_eval <span style="color:#f92672">=</span> len(eval_dataset)
+</span></span><span style="display:flex;"><span>negative_columns <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;negative_0&#34;</span>, <span style="color:#e6db74">&#34;negative_1&#34;</span>, <span style="color:#e6db74">&#34;negative_2&#34;</span>, <span style="color:#e6db74">&#34;negative_3&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> neg_idx, neg_col <span style="color:#f92672">in</span> enumerate(negative_columns):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> did, sample <span style="color:#f92672">in</span> enumerate(eval_dataset):
+</span></span><span style="display:flex;"><span>        eval_corpus[num_eval <span style="color:#f92672">*</span> (neg_idx <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> did] <span style="color:#f92672">=</span> sample[neg_col]
+</span></span><span style="display:flex;"><span>eval_relevant_docs <span style="color:#f92672">=</span> {idx: [idx] <span style="color:#66d9ef">for</span> idx <span style="color:#f92672">in</span> range(len(eval_dataset))}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>eval_evaluator <span style="color:#f92672">=</span> InformationRetrievalEvaluator(
+</span></span><span style="display:flex;"><span>    queries<span style="color:#f92672">=</span>eval_queries,
+</span></span><span style="display:flex;"><span>    corpus<span style="color:#f92672">=</span>eval_corpus,
+</span></span><span style="display:flex;"><span>    relevant_docs<span style="color:#f92672">=</span>eval_relevant_docs,
+</span></span><span style="display:flex;"><span>    batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    show_progress_bar<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vdr-eval-hard&#34;</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>eval_evaluator(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 6. Tạo trainer và huấn luyện</span>
+</span></span><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> SentenceTransformerTrainer(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>    args<span style="color:#f92672">=</span>args,
+</span></span><span style="display:flex;"><span>    train_dataset<span style="color:#f92672">=</span>train_dataset,
+</span></span><span style="display:flex;"><span>    eval_dataset<span style="color:#f92672">=</span>eval_dataset,
+</span></span><span style="display:flex;"><span>    loss<span style="color:#f92672">=</span>loss,
+</span></span><span style="display:flex;"><span>    evaluator<span style="color:#f92672">=</span>eval_evaluator,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>trainer<span style="color:#f92672">.</span>train()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 7. Đánh giá tại mỗi chiều Matryoshka</span>
+</span></span><span style="display:flex;"><span>eval_evaluator(model)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> dim <span style="color:#f92672">in</span> [<span style="color:#ae81ff">2048</span>, <span style="color:#ae81ff">1536</span>, <span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">512</span>, <span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">128</span>, <span style="color:#ae81ff">64</span>]:
+</span></span><span style="display:flex;"><span>    dim_evaluator <span style="color:#f92672">=</span> InformationRetrievalEvaluator(
+</span></span><span style="display:flex;"><span>        queries<span style="color:#f92672">=</span>eval_queries,
+</span></span><span style="display:flex;"><span>        corpus<span style="color:#f92672">=</span>eval_corpus,
+</span></span><span style="display:flex;"><span>        relevant_docs<span style="color:#f92672">=</span>eval_relevant_docs,
+</span></span><span style="display:flex;"><span>        truncate_dim<span style="color:#f92672">=</span>dim,
+</span></span><span style="display:flex;"><span>        batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        show_progress_bar<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        name<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;vdr-eval-hard-</span><span style="color:#e6db74">{</span>dim<span style="color:#e6db74">}</span><span style="color:#e6db74">d&#34;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    dim_evaluator(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 8. Lưu mô hình</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>save_pretrained(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;models/</span><span style="color:#e6db74">{</span>run_name<span style="color:#e6db74">}</span><span style="color:#e6db74">/final&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 9. Đẩy lên Hugging Face Hub</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>push_to_hub(<span style="color:#e6db74">&#34;Qwen3-VL-Embedding-2B-vdr&#34;</span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Sau 1 epoch huấn luyện, mô hình <code>tomaarsen/Qwen3-VL-Embedding-2B-vdr</code> đạt NDCG@10 là <strong>0,947</strong> trên tập đánh giá. Đây là sự cải thiện đáng kể so với mức 0,888 của mô hình gốc <code>Qwen/Qwen3-VL-Embedding-2B</code> và vượt qua tất cả các mô hình VDR hiện có:</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/multimodal-sentence-transformers/vdr_plot.png" alt="Kích thước mô hình so với NDCG cho các mô hình VDR"></p>
+<p><strong>Chi tiết NDCG@10 theo mô hình (Top mẫu):</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Mô hình</th>
+          <th style="text-align: center">Tham số</th>
+          <th style="text-align: center">NDCG@10</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>tomaarsen/Qwen3-VL-Embedding-2B-vdr</strong></td>
+          <td style="text-align: center"><strong>2.1B</strong></td>
+          <td style="text-align: center"><strong>0.947</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Qwen/Qwen3-VL-Embedding-8B</td>
+          <td style="text-align: center">8.1B</td>
+          <td style="text-align: center">0.923</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">nvidia/omni-embed-nemotron-3b</td>
+          <td style="text-align: center">4.7B</td>
+          <td style="text-align: center">0.915</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">nvidia/llama-nemotron-embed-vl-1b-v2</td>
+          <td style="text-align: center">1.7B</td>
+          <td style="text-align: center">0.912</td>
+      </tr>
+  </tbody>
+</table>
+<p>Mô hình 2B tinh chỉnh thậm chí còn vượt qua cả mô hình Qwen3-VL-Embedding 8B, chứng minh sức mạnh của việc tinh chỉnh cho tác vụ cụ thể.</p>
+<!-- raw HTML omitted -->
+<p>Nhờ huấn luyện Matryoshka, mô hình vẫn giữ được hiệu suất cao khi bị cắt bớt chiều, cho phép bạn đánh đổi giữa kích thước embedding và chất lượng truy xuất:</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/multimodal-sentence-transformers/vdr_plot_mrl.png" alt="Chiều MRL so với NDCG@10"></p>
+<blockquote>
+<p><strong>Ghi chú:</strong> Hiệu suất đỉnh đạt được ở 2048 chiều (0,948), nhưng vẫn duy trì trong khoảng 0,3% so với đỉnh cho đến khi giảm xuống 512 chiều (nhỏ hơn 4 lần), và giữ được hơn 92% hiệu suất ngay cả ở 64 chiều (nhỏ hơn 32 lần).</p></blockquote>
+<p>Khoảng cách giữa 1024 và 2048 chiều là rất nhỏ (0,946 so với 0,948), vì vậy tôi đã lưu mô hình với <code>truncate_dim=1024</code>. Điều này giúp giảm một nửa dung lượng lưu trữ so với bản đầy đủ.</p>
+<!-- raw HTML omitted -->
+<p>Bạn cũng có thể tinh chỉnh các mô hình Cross Encoder (reranker) đa phương thức. Điểm khác biệt chính là sử dụng <code>CrossEncoderTrainer</code> và các hàm mất mát đặc thù cho Cross Encoder.</p>
+<p>Ví dụ đơn giản hóa dựa trên script huấn luyện doodles (khớp hình ảnh với chú thích văn bản):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder <span style="color:#f92672">import</span> CrossEncoder
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder.losses <span style="color:#f92672">import</span> BinaryCrossEntropyLoss
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder.modules <span style="color:#f92672">import</span> LogitScore, Transformer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder.trainer <span style="color:#f92672">import</span> CrossEncoderTrainer
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sentence_transformers.cross_encoder.training_args <span style="color:#f92672">import</span> CrossEncoderTrainingArguments
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. Xây dựng mô hình từ các module</span>
+</span></span><span style="display:flex;"><span>transformer <span style="color:#f92672">=</span> Transformer(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Qwen/Qwen3.5-0.8B&#34;</span>,
+</span></span><span style="display:flex;"><span>    transformer_task<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;any-to-any&#34;</span>,
+</span></span><span style="display:flex;"><span>    model_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;torch_dtype&#34;</span>: <span style="color:#e6db74">&#34;bfloat16&#34;</span>, <span style="color:#e6db74">&#34;device_map&#34;</span>: <span style="color:#e6db74">&#34;auto&#34;</span>, <span style="color:#e6db74">&#34;attn_implementation&#34;</span>: <span style="color:#e6db74">&#34;flash_attention_2&#34;</span>},
+</span></span><span style="display:flex;"><span>    processing_kwargs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;chat_template&#34;</span>: {<span style="color:#e6db74">&#34;add_generation_prompt&#34;</span>: <span style="color:#66d9ef">True</span>}},
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Mở rộng chat template để hỗ trợ vai trò &#34;query&#34; và &#34;document&#34;</span>
+</span></span><span style="display:flex;"><span>transformer<span style="color:#f92672">.</span>processor<span style="color:#f92672">.</span>chat_template <span style="color:#f92672">=</span> transformer<span style="color:#f92672">.</span>processor<span style="color:#f92672">.</span>chat_template<span style="color:#f92672">.</span>replace(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;message.role == &#34;user&#34;&#39;</span>, <span style="color:#e6db74">&#39;message.role in [&#34;user&#34;, &#34;query&#34;, &#34;document&#34;]&#39;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># LogitScore: score = log(P(&#34;1&#34;)) - log(P(&#34;0&#34;))</span>
+</span></span><span style="display:flex;"><span>score_head <span style="color:#f92672">=</span> LogitScore(
+</span></span><span style="display:flex;"><span>    true_token_id<span style="color:#f92672">=</span>transformer<span style="color:#f92672">.</span>tokenizer<span style="color:#f92672">.</span>convert_tokens_to_ids(<span style="color:#e6db74">&#34;1&#34;</span>),
+</span></span><span style="display:flex;"><span>    false_token_id<span style="color:#f92672">=</span>transformer<span style="color:#f92672">.</span>tokenizer<span style="color:#f92672">.</span>convert_tokens_to_ids(<span style="color:#e6db74">&#34;0&#34;</span>),
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> CrossEncoder(
+</span></span><span style="display:flex;"><span>    modules<span style="color:#f92672">=</span>[transformer, score_head],
+</span></span><span style="display:flex;"><span>    num_labels<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    prompts<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;image_to_text&#34;</span>: <span style="color:#e6db74">&#34;Given the image, judge whether the text matches it. Respond with 1 if they match, 0 if they don&#39;t.&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;text_to_image&#34;</span>: <span style="color:#e6db74">&#34;Given the text, judge whether the image matches it. Respond with 1 if they match, 0 if they don&#39;t.&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Định nghĩa hàm mất mát</span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> BinaryCrossEntropyLoss(model)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Huấn luyện đa dataset với các hướng khác nhau</span>
+</span></span><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> CrossEncoderTrainer(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>    args<span style="color:#f92672">=</span>args,
+</span></span><span style="display:flex;"><span>    train_dataset<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;image_to_text&#34;</span>: train_image_to_text, <span style="color:#e6db74">&#34;text_to_image&#34;</span>: train_text_to_image},
+</span></span><span style="display:flex;"><span>    eval_dataset<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;image_to_text&#34;</span>: eval_image_to_text, <span style="color:#e6db74">&#34;text_to_image&#34;</span>: eval_text_to_image},
+</span></span><span style="display:flex;"><span>    loss<span style="color:#f92672">=</span>loss,
+</span></span><span style="display:flex;"><span>    evaluator<span style="color:#f92672">=</span>[image_to_text_evaluator, text_to_image_evaluator],
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>trainer<span style="color:#f92672">.</span>train()
+</span></span></code></pre></div><p>Có nhiều lựa chọn kiến trúc cho reranker đa phương thức, bao gồm:</p>
+<ol>
+<li><strong>Any-to-Any + LogitScore</strong>: Sử dụng LLM đa phương thức để tạo ra một token, sau đó tính log-odds của &ldquo;1&rdquo; so với &ldquo;0&rdquo;.</li>
+<li><strong>Feature Extraction + Pooling + Dense</strong>: Chỉ sử dụng mô hình cơ sở, trích xuất hidden state của token cuối cùng và chiếu nó thành điểm số qua lớp Dense.</li>
+</ol>
+<!-- raw HTML omitted -->
+<h3 id="các-bài-viết-trước">Các bài viết trước</h3>
+<ul>
+<li><a href="https://huggingface.co/blog/multimodal-sentence-transformers">Multimodal Embedding &amp; Reranker Models with Sentence Transformers</a>: Suy luận đa phương thức.</li>
+<li><a href="https://huggingface.co/blog/train-sentence-transformers">Training and Finetuning Embedding Models with Sentence Transformers v3</a>: Huấn luyện mô hình embedding.</li>
+<li><a href="https://huggingface.co/blog/train-reranker">Training and Finetuning Reranker Models with Sentence Transformers v4</a>: Huấn luyện mô hình reranker.</li>
+<li><a href="https://huggingface.co/blog/train-sparse-encoder">Training and Finetuning Sparse Embedding Models with Sentence Transformers v5</a>: Huấn luyện mô hình sparse embedding.</li>
+</ul>
+<h3 id="ví-dụ-huấn-luyện">Ví dụ huấn luyện</h3>
+<ul>
+<li><a href="https://github.com/huggingface/sentence-transformers/blob/main/examples/sentence_transformer/training/multimodal/training_visual_document_retrieval.py">Visual Document Retrieval</a>: Script dùng trong bài viết này.</li>
+<li><a href="https://github.com/huggingface/sentence-transformers/blob/main/examples/cross_encoder/training/multimodal/training_doodles_any_to_any.py">Multimodal Reranker (Any-to-Any)</a>: Huấn luyện reranker dùng LogitScore.</li>
+<li><a href="https://github.com/huggingface/sentence-transformers/blob/main/examples/cross_encoder/training/multimodal/training_doodles_feature_extraction.py">Multimodal Reranker (Feature Extraction)</a>: Huấn luyện reranker dùng Pooling + Dense.</li>
+</ul>
+<h3 id="tài-liệu">Tài liệu</h3>
+<ul>
+<li><a href="https://sbert.net/docs/sentence_transformer/training_overview.html">Tổng quan huấn luyện Sentence Transformer</a></li>
+<li><a href="https://sbert.net/docs/sentence_transformer/loss_overview.html">Tổng quan hàm mất mát Sentence Transformer</a></li>
+<li><a href="https://sbert.net/docs/cross_encoder/training_overview.html">Tổng quan huấn luyện Cross Encoder</a></li>
+<li><a href="https://sbert.net/docs/cross_encoder/loss_overview.html">Tổng quan hàm mất mát Cross Encoder</a></li>
+<li><a href="https://sbert.net/docs/sentence_transformer/dataset_overview.html">Tổng quan về Dataset</a></li>
+<li><a href="https://sbert.net/docs/package_reference/sentence_transformer/index.html">Tham chiếu API</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/train-multimodal-sentence-transformers">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/16-april-2026/">16 April 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-01/b81e31/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Falcon Perception" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-04-01T00:00:00&#43;00:00">Apr 01, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Falcon Perception</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Nhận thức Falcon</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-03-25/b4c03a/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="http://image-link" alt="Đánh giá mới cho các tác nhân giọng nói (EVA)" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-03-25T00:00:00&#43;00:00">Mar 25, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Đánh giá mới cho các tác nhân giọng nói (EVA)</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu một khuôn khổ mới để đánh giá các tác nhân giọng nói.</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-16/79fa12/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/slKuvAfTzlk5ibUzM9JUkmcGPTVtw_A39xO2JIJmEFNC3xUWzCCN22HtT_QllV-77CMZIM581Jaa_HG7B4smdRAvBuoNwMHuY8hYTpW_6RRrI-uHvQ=w704-h704-n-nu" alt="Gemini 3.1 Flash TTS- thế hệ tiếp theo của giọng nói AI biểu cảm" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini 3.1 Flash TTS- thế hệ tiếp theo của giọng nói AI biểu cảm</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-16/406609/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="Huấn luyện và Tinh chỉnh các Mô hình Embedding &amp; Reranker Đa phương thức với Sentence Transformers" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Huấn luyện và Tinh chỉnh các Mô hình Embedding &amp; Reranker Đa phương thức với Sentence Transformers</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-15/69476b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://www.microsoft.com/en-us/microsoft-cloud/blog/wp-content/uploads/2026/04/Screenshot-2026-04-09-170345.webp" alt="Chuyển đổi Tiên phong đang thúc đẩy tăng trưởng và đổi mới trong nhiều ngành công nghiệp" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Chuyển đổi Tiên phong đang thúc đẩy tăng trưởng và đổi mới trong nhiều ngành công nghiệp</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-15/289aff/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/dYD-i6FPRANVusjS-plnDlS7VytrArpqf-Y1STUmNL5Id4iLJbuCDzBK8eh12Pw4O0QyxCNo4sxqItj9c1xFRpPxBq01_c4vKWSmXQTqnYmoIV8=w704-h704-n-nu" alt="Gemini Robotics-ER 1.6- Thúc đẩy các tác vụ robot trong thế giới thực thông qua suy luận hiện thân tăng cường" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemini Robotics-ER 1.6- Thúc đẩy các tác vụ robot trong thế giới thực thông qua suy luận hiện thân tăng cường</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-03/ef49cf/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/KVYCjJ-L8ZrKP6nkzJPdqnEfhFyFHJ25d8a6jxkRQhox1SNuBGh3ADx3LcrCOqESeUzKhHRX5NXEWFU3yU9b8ucWuS2IiQpz4OncXhwa9wN3gGboaw=w704-h704-n-nu" alt="Gemma 4" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Gemma 4</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
