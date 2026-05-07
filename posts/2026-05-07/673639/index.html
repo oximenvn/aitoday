@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cải thiện độ bền vững của Depth Anything V2 đối với nén video | AI Today - SkyAI</title>
+
+<meta name="description" content="Cải thiện độ bền vững của Depth Anything V2 đối với nén video">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Cải thiện độ bền vững của Depth Anything V2 đối với nén video</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Cải thiện độ bền vững của Depth Anything V2 đối với nén video </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-05-07T00:00:00&#43;00:00">May 7, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            22 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Cải thiện độ bền vững của Depth Anything V2 đối với nén video">
+        <figcaption class="text-center italic text-xs">Cải thiện độ bền vững của Depth Anything V2 đối với nén video</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="cải-thiện-độ-bền-vững-của-depth-anything-v2-đối-với-nén-video">Cải thiện độ bền vững của Depth Anything V2 đối với nén video</h1>
+<h2 id="tóm-tắt-điều-hành">Tóm tắt điều hành</h2>
+<p>Việc quản lý dữ liệu video tổng hợp và thời gian thực cho xe tự hành (AV) ở quy mô petabyte đòi hỏi phải nén dữ liệu. Đồng thời, việc áp dụng nén vào quy trình dữ liệu AV yêu cầu sự đảm bảo rằng độ chính xác của các mô hình hạ nguồn vẫn được duy trì. Như một bước tiến trong việc phát triển xử lý dữ liệu video an toàn cho ML, nghiên cứu này chứng minh rằng việc coi nén dữ liệu như một chiến lược huấn luyện cho phép các đội xe tự hành mở rộng quy mô hiệu quả trong khi vẫn bảo toàn độ chính xác của hệ thống nhận diện. Nghiên cứu này tập trung vào ước tính độ sâu — một tác vụ nhận diện tạo ra bản đồ độ sâu và là một trong những tác vụ nhạy cảm nhất với bất kỳ thay đổi nào của đầu vào.</p>
+<p>Các codec thường dùng vốn dĩ là nén có mất dữ liệu (lossy). Mặc dù thường không thể nhận ra bằng mắt thường, chúng có thể làm biến dạng hình học không gian, đặc biệt là đối với thông tin tần số cao mà các mô hình học máy thường dựa vào. Cụ thể, các tác vụ dày đặc, chi tiết đến từng pixel trong hệ thống nhận diện AV — chẳng hạn như ước tính độ sâu đơn nhãn — cực kỳ nhạy cảm với bất kỳ sự biến đổi video nào, bao gồm cả các hiện tượng nhiễu do nén (compression artifacts).</p>
+<p>Chúng tôi đề xuất một phương pháp mới: nén video nên được sử dụng như một kỹ thuật tăng cường dữ liệu (data augmentation) trong quá trình huấn luyện mô hình để cải thiện hiệu quả việc học và độ bền vững của mô hình. Tương tự như cách các mô hình được huấn luyện với độ mờ hoặc nhiễu tổng hợp để xử lý thời tiết xấu, việc đưa các nhiễu nén vào quy trình huấn luyện buộc mạng thần kinh phải học các biểu diễn hình học có khả năng chống chịu tự nhiên với các thách thức về viễn tin (telematics), trong đó nén video là một yếu tố nổi bật.</p>
+<p>Vì nén có mất dữ liệu vốn dĩ loại bỏ các chi tiết không gian mịn bất kể sử dụng codec nào, việc xử lý các đầu vào nén này sẽ làm giảm chất lượng dự đoán độ sâu của mô hình so với mức cơ sở (baseline) khi dùng đầu vào sạch. Để khắc phục điều này, chúng tôi đã thực hiện tinh chỉnh (fine-tuning) mô hình có mục tiêu bằng các video nén và đạt được kết quả giảm đáng kể sai số trong tập kiểm tra.</p>
+<h2 id="1-thiết-lập-thí-nghiệm">1. Thiết lập thí nghiệm</h2>
+<p>Trong các thử nghiệm trước đó, các mô hình độ sâu cho thấy sự nhạy cảm rõ rệt với đầu vào nén — ngay cả khi việc nén không gây ra thay đổi nào có thể nhìn thấy được trong video. Để xác thực phương pháp &ldquo;nén như một hình thức tăng cường&rdquo;, chúng tôi đã xem xét tác động của nén video đối với <a href="https://huggingface.co/depth-anything/Depth-Anything-V2-Base">Depth Anything V2 (Base)</a>, một mô hình ước tính độ sâu tương đối đơn nhãn hiện đại. Mô hình này sử dụng Vision Transformer DINOv2 (ViT-B) đã được huấn luyện trước làm backbone để trích xuất các đặc trưng ngữ nghĩa toàn cục phong phú từ các khung hình camera 2D đơn lẻ. Các đặc trưng này sau đó được xử lý hệ thống thông qua một đầu Dense Prediction Transformer (DPT), giúp hợp nhất các biểu diễn đa quy mô để hồi quy ra một bản đồ độ sâu liên tục với độ phân giải cao.</p>
+<p>Để xây dựng quy trình huấn luyện, trước tiên chúng tôi đưa các khung hình video gốc, không nén vào mô hình &ldquo;giáo viên&rdquo; (teacher) để tạo ra các bản đồ độ sâu tham chiếu. Sau đó, chúng tôi mã hóa các chuỗi video gốc này bằng công nghệ mã hóa tăng tốc phần cứng NVENC CABR HEVC để tạo ra các video nén tối ưu. So với mã hóa NVENC HEVC tiêu chuẩn ở cùng chất lượng, CABR đạt được mức giảm tổng thể 35,2% kích thước tệp trên tập kiểm tra, bao gồm 43 video AV từ các tập dữ liệu công khai <a href="https://www.cvlibs.net/datasets/kitti/raw_data.php">Kitti</a>, <a href="https://www.a2d2.audi/en/">A2D2</a> và <a href="https://pandaset.org/">PandaSet</a>. Cuối cùng, chúng tôi sử dụng các khung hình nén tối ưu này làm đầu vào chính để tinh chỉnh mạng &ldquo;học sinh&rdquo; (student), buộc mô hình học cách khôi phục đầu ra độ sâu độ trung thực cao trực tiếp từ các video nén.</p>
+<h2 id="2-tinh-chỉnh-để-cải-thiện-độ-bền-vững">2. Tinh chỉnh để cải thiện độ bền vững</h2>
+<p>Vì dữ liệu độ sâu thực tế (ground-truth) không có sẵn trên nhiều tập dữ liệu lái xe khác nhau, chúng tôi áp dụng phương pháp tự chưng cất (self-distillation). Một mô hình &ldquo;giáo viên&rdquo; cố định xử lý các khung hình không nén để tạo ra các bản đồ độ sâu giả lập (pseudo ground-truth). Một mô hình &ldquo;học sinh&rdquo; — được khởi tạo từ cùng các trọng số — sẽ học cách khôi phục hình học độ sâu trung thực đó bằng cách sử dụng các khung hình nén làm đầu vào.</p>
+<h3 id="21-cấu-hình-huấn-luyện">2.1 Cấu hình huấn luyện</h3>
+<ul>
+<li><strong>Mô hình cơ sở</strong>: Depth Anything V2 Base (~100 triệu tham số).</li>
+<li><strong>Thích ứng</strong>: Sử dụng <a href="https://huggingface.co/docs/peft/package_reference/lora">LoRA</a> (rank 16, alpha 32) áp dụng cho tất cả các lớp attention và MLP của backbone, cùng với việc tinh chỉnh toàn bộ phần cổ (neck) và đầu (head). Tổng cộng, cấu hình này chỉ cập nhật 13,5% tổng số tham số của mạng.</li>
+<li><strong>Hàm mất mát (Loss Function)</strong>: Masked L1. Chúng tôi bỏ qua vùng bầu trời và các pixel cực xa (độ sâu chuẩn hóa &lt; 0,02) để tránh phạt mô hình trên các vùng hình học không xác định. Mặc dù AbsRel là chỉ số đánh giá chính, chúng tôi tối ưu hóa bằng Masked L1 để phạt đồng đều tất cả các phần sai lệch của hình ảnh độ sâu, nhằm bảo toàn hành vi của mô hình giáo viên nhiều nhất có thể.</li>
+<li><strong>Tăng cường nén</strong>: Tập dữ liệu đa nguồn (A2D2, Kitti, PandaSet) được chia thành <strong>309 video huấn luyện (38.361 khung hình) và 43 video kiểm tra (6.513 khung hình)</strong>, huấn luyện qua 50 epoch. Chúng tôi sử dụng nén CABR làm phương thức tăng cường không gian chính. Bằng cách đưa đầu vào nén cho mô hình học sinh trong khi nhắm tới mục tiêu là nhãn giả từ khung hình sạch, mạng sẽ học cách đảo ngược các nhiễu lượng tử hóa một cách ngầm định.</li>
+<li><strong>Duy trì miền dữ liệu</strong>: Kết hợp 20% khung hình sạch trong khi huấn luyện để ngăn chặn hiện tượng &ldquo;quên thảm họa&rdquo; (catastrophic forgetting) và đảm bảo mô hình vẫn hoạt động tốt nếu được cung cấp đầu vào không nén.</li>
+<li><strong>Suy luận không tốn chi phí (Zero-Overhead Inference)</strong>: Sau khi huấn luyện, các trọng số LoRA đã học được hợp nhất hoàn toàn trở lại mô hình cơ sở. Do đó, mô hình học sinh khôi phục độ sâu bị suy giảm do nén mà không tốn thêm độ trễ suy luận hay bộ nhớ VRAM so với mô hình giáo viên cơ sở.</li>
+</ul>
+<h2 id="3-phân-biệt-nhiễu-nén-và-sự-không-chắc-chắn-tự-nhiên-của-ml">3. Phân biệt Nhiễu nén và Sự không chắc chắn tự nhiên của ML</h2>
+<p>Để đo lường chính xác tác động của nén video, trước tiên chúng tôi phải xác định độ nhạy tự nhiên của mô hình giáo viên đối với các biến thể đầu vào tiêu chuẩn. Trong môi trường AV thực tế, ngay cả các luồng camera không nén cũng chịu ảnh hưởng bởi các biến đổi quang học nhỏ (như nhiễu ISO hoặc nhiễu nhiệt) cũng như nhiễu hiệu chuẩn cơ học (như sự dịch chuyển pixel ngang nhỏ mô phỏng chuyển động vật lý của camera trên xe). Vì mô hình độ sâu cơ sở phản ứng rất mạnh với những dịch chuyển quang học và hình học nhỏ này, các dự đoán của nó tự nhiên sẽ có một mức phương sai cơ sở, ngay cả trước khi áp dụng nén.</p>
+<p>Vì sự biến thiên vốn có này, việc đo lường mô hình học sinh so với mức cơ sở không sai số tuyệt đối sẽ không phản ánh đúng hiệu suất thực tế. Thay vào đó, một cách tiếp cận thực tế hơn là đánh giá xem sự suy giảm do nén gây ra có thực sự vượt quá mức không chắc chắn tự nhiên của mô hình dưới tác động của nhiễu cảm biến và nhiễu cơ học điển hình hay không.</p>
+<p>Để trả lời câu hỏi này, chúng tôi định khung đánh giá sai số nén bằng cách đo lường &ldquo;ngưỡng nhiễu&rdquo; (noise floor) của mô hình giáo viên. Với mỗi khung hình kiểm tra sạch, chúng tôi tạo ra 30 biến thể nhiễu — kết hợp nhiễu quang học (nhiễu Gaussian, thay đổi độ sáng/độ tương phản) với các dịch chuyển hình học nhỏ (lên đến 2 pixel ngang). Những nhiễu này được thiết kế để mô phỏng các biến động cảm biến và hiệu chuẩn thực tế. Sau đó, chúng tôi tính độ lệch chuẩn (σ) cho mỗi pixel của các dự đoán độ sâu từ mô hình giáo viên trên 30 biến thể nhiễu này.</p>
+<p>Chúng tôi đánh giá xem sai số do nén có nằm trong khoảng $2\sigma$ (dải không chắc chắn tự nhiên của giáo viên) hay không. Chỉ số <strong>$P_{valid}$</strong> biểu thị tỷ lệ phần trăm các pixel có sai số nằm trong dải biến thiên tự nhiên này. Nếu dự đoán của mô hình học sinh trên khung hình nén nằm trong dải $2\sigma$, đầu ra của nó về mặt thống kê là không thể phân biệt được với hiệu suất của giáo viên dưới nhiễu cảm biến tự nhiên. Phương pháp này tách biệt về mặt toán học những hư hại thực sự do nén gây ra khỏi độ nhạy đầu vào cơ sở của mô hình, chứng minh liệu mô hình học sinh có thực sự trung hòa được các nhiễu nén để đạt tiêu chuẩn triển khai an toàn hay không.</p>
+<h2 id="4-kết-quả-và-đánh-giá-ngữ-nghĩa">4. Kết quả và Đánh giá Ngữ nghĩa</h2>
+<h3 id="41-chỉ-số-đánh-giá">4.1 Chỉ số Đánh giá</h3>
+<p>Depth Anything V2 dự đoán độ sâu <em>tương đối</em> (bất biến với phép biến đổi affine) thay vì khoảng cách mét tuyệt đối. Do đó, Sai số Tương đối Tuyệt đối (AbsRel) đóng vai trò là chỉ số đánh giá chính, vì nó đo lường tỷ lệ phần trăm khác biệt giữa dự đoán của học sinh và mức cơ sở của giáo viên, có chuẩn hóa theo quy mô.</p>
+<p>Điều này rất quan trọng đối với quy trình AV: các hệ thống nhận diện hạ nguồn thực hiện hiệu chuẩn trước để chuyển đổi các bản đồ độ sâu tương đối này thành khoảng cách vật lý. Nếu hình học độ sâu tương đối của một người đi bộ bị biến dạng do nén (dẫn đến AbsRel cao), sai số đó sẽ lan truyền trực tiếp khi chuyển sang đơn vị mét, dẫn đến những tính toán sai lầm nguy hiểm. Bằng cách giảm thiểu AbsRel, mô hình học sinh đảm bảo rằng hình học 3D cơ bản vẫn nguyên vẹn, đảm bảo việc tính toán quy mô mét hạ nguồn là an toàn và chính xác.</p>
+<h3 id="42-khôi-phục-trực-quan-định-tính">4.2 Khôi phục trực quan định tính</h3>
+<p>Chúng tôi trực quan hóa tác động trực tiếp của nén và khả năng khôi phục sau đó của mô hình học sinh trên các khung hình lái xe riêng lẻ.
+Đọc theo chiều dọc từ trên xuống dưới, các hình ảnh này bao gồm: (1) đầu vào RGB gốc và nén CABR, (2) bản đồ độ sâu của Giáo viên trên hình sạch (GT) so với ngưỡng nhiễu $\sigma_{Teacher}$, (3) bản đồ độ sâu từ Giáo viên so với Học sinh khi xử lý khung hình nén, (4) bản đồ nhiệt Sai số Tương đối Tuyệt đối (AbsRel) tương ứng, và cuối cùng là (5) mặt nạ an toàn $P_{valid}$ tương ứng (trong đó các pixel màu đỏ biểu thị sự biến dạng hình học vượt quá ngưỡng nhiễu $2\sigma$ tự nhiên của mô hình).</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/eztPwza-fcNSTN6aEgZy9.jpeg" alt="Hình 1"></p>
+<p><strong>Hình 1: So sánh định tính về ước tính độ sâu trong một cảnh có các phương tiện.</strong> Mô hình giáo viên cơ sở (bên trái) bị biến dạng hình học toàn cục khi nén video, đặc biệt là trên bề mặt xe và hậu cảnh phức tạp (dẫn đến mặt nạ $P_{valid}$ màu đỏ đậm với tỷ lệ 13%). Mô hình học sinh (bên phải) trung hòa hiệu quả các nhiễu này, giảm sai số AbsRel hơn 3 lần và khôi phục an toàn 77,1% các pixel của cảnh trở lại ngưỡng nhiễu vận hành $2\sigma$ tự nhiên.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/PZdioD0LAuXPZzQA--rle.jpeg" alt="Hình 2"></p>
+<p><strong>Hình 2: So sánh định tính về ước tính độ sâu trong một cảnh có VRU (Người tham gia giao thông dễ bị tổn thương) quan trọng đối với an toàn.</strong> Mô hình giáo viên cơ sở (bên trái) bị biến dạng nghiêm trọng ở người đi bộ và các cấu trúc tòa nhà khi nén video (thể hiện qua sai số AbsRel sáng và mặt nạ $P_{valid}$ màu đỏ). Mô hình học sinh (bên phải) trung hòa thành công các nhiễu này, khôi phục hình học VRU quan trọng về an toàn để nằm an toàn trong ngưỡng nhiễu $2\sigma$ tự nhiên của mô hình.</p>
+<h3 id="43-khôi-phục-độ-sâu-tổng-hợp">4.3 Khôi phục độ sâu tổng hợp</h3>
+<p>Mô hình học sinh được đánh giá trên 43 video kiểm tra (6.513 khung hình). Tất cả các chỉ số được tính toán chỉ trên các pixel hợp lệ (đã loại bỏ vùng bầu trời).</p>
+<!-- raw HTML omitted -->
+<p><em>Lưu ý: Khi so sánh trực tiếp Học sinh trên đầu vào nén với Giáo viên trên đầu vào sạch, mô hình học sinh đạt được các chỉ số: AbsRel = 0,0178 và RMSE = 0,1289.</em></p>
+<h3 id="44-phân-tích-sai-số-ngữ-nghĩa-theo-từng-lớp">4.4 Phân tích sai số ngữ nghĩa theo từng lớp</h3>
+<p>Để hiểu thành phần nào trong cảnh bị ảnh hưởng nhiều nhất bởi nén, chúng tôi đã chạy phân đoạn ngữ nghĩa (<a href="https://huggingface.co/nvidia/segformer-b2-finetuned-cityscapes-1024-1024">SegFormer-B2</a>, Cityscapes) trên tập kiểm tra. <em>Tham chiếu: Giáo viên trên đầu vào sạch đóng vai trò là ground truth.</em></p>
+<!-- raw HTML omitted -->
+<p>Phân tích ngữ nghĩa cho thấy sự suy giảm do nén và khả năng khôi phục của mô hình học sinh thay đổi tùy thuộc vào tần số không gian và độ phức tạp hình học của các thành phần trong cảnh. Đáng chú ý nhất là những Người tham gia giao thông dễ bị tổn thương (VRUs), những đối tượng chi tiết nhất và quan trọng nhất đối với an toàn trong môi trường AV, bị ảnh hưởng nặng nề nhất bởi nén nhưng lại đạt được sự khôi phục tương đối lớn nhất từ mô hình học sinh (giảm 30,7% AbsRel và 29,0% RMSE). Các thành phần cấu trúc tần số cao như tòa nhà, hàng rào và thực vật cũng cho thấy sự khôi phục hình học khổng lồ, với mức giảm RMSE vượt quá 30%. Ngược lại, các vùng lớn, đồng nhất với tần số không gian thấp như bề mặt đường vốn có sai số nén cơ sở thấp hơn nhiều (Teacher AbsRel chỉ 0,0101), nhưng mô hình học sinh vẫn giảm thêm sai số này 23,0%. Sự cải thiện nhất quán trên cả các đối tượng tiền cảnh phức tạp và các mặt phẳng hậu cảnh phẳng xác nhận rằng quá trình tự chưng cất đã học được một sự hiểu biết tổng quát, bền vững về hình học 3D thay vì chỉ đơn thuần là khớp với kết cấu đối tượng cụ thể.</p>
+<h3 id="45-phân-tích-ngưỡng-nhiễu-và-sự-không-chắc-chắn">4.5 Phân tích Ngưỡng nhiễu và Sự không chắc chắn</h3>
+<p>Để đặt sự khôi phục của mô hình học sinh vào đúng ngữ cảnh, chúng tôi đã đo lường sự không chắc chắn cơ sở của cả mô hình giáo viên và học sinh. Bằng cách áp dụng các nhiễu cụ thể cho đầu vào không nén, chúng tôi thiết lập &ldquo;ngưỡng nhiễu&rdquo; ($\sigma$) tự nhiên cho mỗi mạng. Chúng tôi thực hiện ba thí nghiệm tăng dần: chỉ nhiễu quang học, tiếp theo là thêm dịch chuyển ngang $\pm 1$ pixel và $\pm 2$ pixel để mô phỏng rung lắc cơ học của camera.</p>
+<h4 id="451-tăng-cường-độ-ổn-định-nội-tại-so-sánh-sigma">4.5.1 Tăng cường độ ổn định nội tại (So sánh $\sigma$)</h4>
+<p>Phân tích ban đầu tách biệt biến thiên quang học, mô phỏng các biến động tự nhiên của cảm biến camera. Chúng tôi đánh giá cả hai mô hình trên 30 biến thể nhiễu mỗi khung hình, áp dụng nhiễu Gaussian ($\sigma=0,015$) và thay đổi độ sáng/độ tương phản ($\pm 5%$). Sau đó, chúng tôi đưa vào các dịch chuyển ngang $\pm 1$ và $\pm 2$ pixel, mô phỏng nhiễu hiệu chuẩn và chuyển động tự nhiên của camera khi lái xe.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/dTMo3yoXerIRMWD6fPpib.png" alt="Hình 3"></p>
+<p><strong>Hình 3: So sánh ngưỡng nhiễu tự nhiên ($\sigma$) giữa mô hình Giáo viên và Học sinh qua các mức độ nhiễu không gian tăng dần.</strong> Trục x đại diện cho bảy lớp ngữ nghĩa, trong khi trục y biểu thị độ lệch chuẩn trung bình trên mỗi pixel (ngưỡng nhiễu) theo đơn vị độ sâu tương đối.</p>
+<p>Phân tích nhiễu quang học và không gian tiết lộ lợi ích kép của phương pháp tăng cường nén. Như minh họa trong cả ba bảng của Hình 3, mô hình học sinh (màu xanh) cho thấy ngưỡng nhiễu tự nhiên ($\sigma_{Student}$) chặt chẽ hơn nhất quán so với giáo viên cơ sở (màu đỏ). Trên mọi lớp ngữ nghĩa, phương sai cơ sở của học sinh thấp hơn từ 15% đến 20%. Điều này xác nhận rằng việc huấn luyện với các nhiễu nén đã buộc mạng thần kinh trở nên bền vững hơn về cơ bản, học được một biểu diễn xác định có khả năng chống lại cả biến đổi ánh sáng và chuyển động vật lý của camera. Đúng như mong đợi, cả hai ngưỡng nhiễu đều tăng khi nhiễu không gian tăng lên (từ bảng A sang C), đặc biệt đối với các lớp có nhiều cạnh như Hạ tầng giao thông, nhưng mô hình học sinh vẫn duy trì được độ ổn định vượt trội.</p>
+<h4 id="452-xác-thực-khôi-phục-so-với-mức-cơ-sở-của-giáo-viên-p_valid-rightarrow-sigma_teacher">4.5.2 Xác thực khôi phục so với mức cơ sở của Giáo viên ($P_{valid} \rightarrow \sigma_{Teacher}$)</h4>
+<p>Sau khi thiết lập các ngưỡng nhiễu, chúng tôi đo lường tỷ lệ phần trăm các pixel ($P_{valid}$) có sai số do nén nằm an toàn trong dải biến thiên $2\sigma$ tự nhiên của giáo viên.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/i6ysq-V2PPwUVusUfgUMf.png" alt="Hình 4a">
+<strong>Hình 4a: Độ hợp lệ của Pixel trong Dải không chắc chắn tự nhiên của Giáo viên - Chỉ Nhiễu Quang học</strong></p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/7nuJz28d32gxdqXzIMEQY.png" alt="Hình 4b">
+<strong>Hình 4b: Độ hợp lệ của Pixel trong Dải không chắc chắn tự nhiên của Giáo viên - Nhiễu Quang học + Dịch chuyển $\pm 1$px</strong></p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/uBIClZG1SdWTZhUw7hu3Y.png" alt="Hình 4c">
+<strong>Hình 4c: Độ hợp lệ của Pixel trong Dải không chắc chắn tự nhiên của Giáo viên - Nhiễu Quang học + Dịch chuyển $\pm 2$px</strong></p>
+<p>Các biểu đồ này đánh giá hiệu suất so với ngưỡng nhiễu của giáo viên cơ sở.</p>
+<ul>
+<li><strong>Cột đỏ (Cơ sở):</strong> Mô hình giáo viên được đánh giá trên video nén tối ưu.</li>
+<li><strong>Cột xanh dương (Cải thiện):</strong> Mô hình học sinh được đánh giá trên video nén tối ưu, đẩy tỷ lệ nhiễu trở lại dải biến thiên an toàn cao hơn.</li>
+<li><strong>Cột xanh lá (Kiểm tra an toàn):</strong> Mô hình học sinh được đánh giá trên video không nén.</li>
+</ul>
+<p>Những chỉ số này làm nổi bật hai thành tựu kỹ thuật quan trọng nhất của nghiên cứu:</p>
+<ul>
+<li><strong>Khôi phục nhiễu quan trọng đối với an toàn (Xanh dương &gt; Đỏ):</strong> Giáo viên cơ sở gặp khó khăn trong việc duy trì hình học tin cậy khi nén. Ví dụ, dưới nhiễu quang học thuần túy, chỉ 36,0% các pixel VRU nén nằm trong dải không chắc chắn $2\sigma$ của chính giáo viên. Học sinh sửa chữa hư hại này hiệu quả, vượt xa mức cơ sở bằng cách đưa 53,0% các pixel đó trở lại ngưỡng an toàn. Khi đánh giá dưới khung rung cơ học $\pm 2$ pixel thực tế hơn, sự khôi phục này tăng vọt: gần 3/4 (74,5%) dự đoán VRU của học sinh trên các khung hình nén nặng là không thể phân biệt được với rung lắc camera tự nhiên.</li>
+<li><strong>Không bị quên (Xanh lá &gt; Xanh dương):</strong> Một yêu cầu quan trọng cho triển khai AV là các mô hình không được suy giảm khi có sẵn luồng không nén. Mô hình học sinh được đánh giá trên đầu vào sạch (cột xanh lá) có độ hợp lệ cao nhất trên tất cả các lớp. Dưới khung dịch chuyển $\pm 2$ pixel, học sinh đạt 95,5% độ hợp lệ cho cả VRU và Hạ tầng giao thông. Điều này chứng minh về mặt toán học rằng việc pha trộn 20% khung hình sạch khi huấn luyện đã bảo toàn thành công độ trung thực băng thông cao.</li>
+</ul>
+<h4 id="453-xác-thực-tự-nhất-quán-p_valid-rightarrow-sigma_student">4.5.3 Xác thực tự nhất quán ($P_{valid} \rightarrow \sigma_{Student}$)</h4>
+<p>Cuối cùng, chúng tôi đánh giá mô hình học sinh so với ngưỡng nhiễu $2\sigma$ chặt chẽ hơn nhiều của chính nó.</p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/Lb2JtD7LBWmAN5D78C8o0.png" alt="Hình 5a">
+<strong>Hình 5a: Độ hợp lệ của Pixel trong Dải không chắc chắn chặt chẽ hơn của Học sinh - Chỉ Nhiễu Quang học</strong></p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/2h0leInxMnpV5QS_Tovcv.png" alt="Hình 5b">
+<strong>Hình 5b: Độ hợp lệ của Pixel trong Dải không chắc chắn chặt chẽ hơn của Học sinh - Chỉ Nhiễu Quang học + Dịch chuyển $\pm 1$px</strong></p>
+<p><img src="https://cdn-uploads.huggingface.co/production/uploads/690c74467dbb6022820e91c0/e7_wM4UXzHdK7_af-YrqO.png" alt="Hình 5c">
+<strong>Hình 5c: Độ hợp lệ của Pixel trong Dải không chắc chắn chặt chẽ hơn của Học sinh - Chỉ Nhiễu Quang học + Dịch chuyển $\pm 2$px</strong></p>
+<p>Ngay cả với khung nội bộ nghiêm ngặt này, mô hình vẫn cho thấy sự tự nhất quán đáng kinh ngạc. Như trong các hình, 44% đến 49% dự đoán nén của học sinh nằm trong ngưỡng nhiễu chặt chẽ của chính nó dưới nhiễu quang học thuần túy. Khi tính đến dịch chuyển cơ học $\pm 2$ pixel, độ hợp lệ này tăng lên 63%–78% trên các khung hình nén, và đạt mức đặc biệt là 76%–94% trên đầu vào sạch. Điều này xác nhận rằng học sinh không chỉ đơn thuần ghi nhớ và khớp với đầu ra của giáo viên, mà đang tạo ra hình học chính xác và nhất quán nội bộ hơn trên cả dữ liệu nén và không nén.</p>
+<h3 id="46-các-phát-hiện-chính-và-tác-động-kỹ-thuật">4.6 Các phát hiện chính và Tác động kỹ thuật</h3>
+<ol>
+<li><strong>Tinh chỉnh tăng độ ổn định của mô hình (Ngưỡng nhiễu chặt chẽ hơn):</strong> Ngoài việc sửa chữa các nhiễu không gian, việc sử dụng nén như một cơ chế tăng cường đã ổn định hóa toàn bộ mô hình một cách cơ bản. Trên tất cả các lớp ngữ nghĩa, ngưỡng nhiễu của học sinh ($\sigma_{Student}$) thấp hơn từ 15% đến 20% so với giáo viên. Tinh chỉnh LoRA đã buộc mạng phải học một biểu diễn hình học bất biến và xác định hơn, có khả năng chống chịu cao với nhiễu cảm biến tự nhiên.</li>
+<li><strong>Khôi phục các đối tượng quan trọng đối với an toàn (VRUs):</strong> Người tham gia giao thông dễ bị tổn thương (VRUs) hưởng lợi nhiều nhất từ phương pháp này, đạt mức giảm AbsRel 30,7% và giảm RMSE 29,0%. Dưới mức nén cơ sở, VRUs có tỷ lệ pixel hợp lệ thấp nhất (36,0%), cho thấy nén làm suy giảm hình học tần số cao của chúng. Khi tính đến rung lắc camera cơ học thực tế, học sinh đẩy thành công 74,5% các pixel nén này trở lại dải không chắc chắn $2\sigma$ tự nhiên của giáo viên.</li>
+<li><strong>Không quên dữ liệu sạch:</strong> Yêu cầu then chốt cho triển khai AV là mô hình không được giảm chất lượng khi có luồng không nén. Việc pha trộn 20% khung hình sạch trong khi huấn luyện đã hoàn toàn thành công. Khi đánh giá trên các khung hình sạch, AbsRel của học sinh thấp hơn từ 2 đến 5 lần so với sai số nén, và lên đến 95,5% các pixel nằm thoải mái trong ngưỡng nhiễu cơ sở của giáo viên.</li>
+</ol>
+<h2 id="5-kết-luận-và-tác-động">5. Kết luận và Tác động</h2>
+<p>Nghiên cứu này chứng minh rằng việc sử dụng nén video như một bước tăng cường dữ liệu thiết yếu trong quá trình huấn luyện mô hình giúp cải thiện độ bền vững của mô hình. Bằng cách trung hòa tổn thất do nén thông qua việc tăng cường có mục tiêu tương ứng, các quy trình AV có thể an toàn áp dụng nén và đạt được các giới hạn độ sâu chặt chẽ và chính xác hơn cho các tác vụ nhận diện hạ nguồn.</p>
+<p>Trên toàn bộ tập kiểm tra, việc tinh chỉnh đã tạo ra những cải thiện nhất quán ở ba cấp độ: độ ổn định của mô hình, khôi phục hình học và khôi phục các đối tượng quan trọng đối với an toàn, mà không làm tổn hại đến hiệu suất đầu vào sạch:</p>
+<ul>
+<li><strong>Tách biệt Chi phí khỏi An toàn:</strong> Bằng cách kết hợp mã hóa Beamr CABR với phương pháp tự chưng cất này, các quy trình AV có thể giảm tổng thể 35,2% kích thước video so với mã hóa tiêu chuẩn, đồng thời khôi phục tới 30,7% hình học không gian thường bị mất trên các đối tượng quan trọng như VRUs.</li>
+<li><strong>Khôi phục Hình học Toàn cầu:</strong> Trên mọi lớp tiền cảnh và hậu cảnh, mô hình học sinh đã đẩy thành công tỷ lệ pixel cao hơn trở lại dải không chắc chắn $2\sigma$ tự nhiên của giáo viên, chứng minh mô hình đã trung hòa các nhiễu nén trên toàn cầu thay vì chỉ áp dụng làm mịn thuật toán cục bộ.</li>
+<li><strong>Chứng minh khái niệm hiệu quả về tham số:</strong> Đáng chú ý, các chỉ số khôi phục này đạt được thông qua tinh chỉnh nhẹ, hiệu quả về tham số, chỉ cập nhật ~14% tổng trọng số mô hình, thay vì huấn luyện lại mạng 100 triệu tham số từ đầu. Vì sự thích ứng đơn giản và ít tốn kém này trung hòa hiệu quả những hư hại nén nghiêm trọng, nó cho thấy rằng việc tích hợp tăng cường nén một cách tự nhiên vào giai đoạn huấn luyện trước (pre-training) của các mô hình nền tảng AV trong tương lai sẽ mang lại độ bền vững cơ bản và sâu sắc hơn đối với các nút thắt viễn tin.</li>
+</ul>
+<p>Cuối cùng, sự thay đổi tư duy này cho phép các đội xe AV mở rộng an toàn các quy trình dữ liệu và cắt giảm mạnh chi phí cơ sở hạ tầng mà không làm tổn hại đến các KPI không gian độ tin cậy cao cần thiết cho nhận diện dựa trên thị giác an toàn.</p>
+<h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h2>
+<ol>
+<li>Yang, L., Kang, B., Huang, Z., et al. (2024). &ldquo;Depth Anything V2&rdquo;. <em>arXiv preprint arXiv:2406.09414</em>.</li>
+<li>Oquab, M., Darcet, T., Moutakanni, T., et al. (2023). &ldquo;DINOv2: Learning Robust Visual Features without Supervision&rdquo;. <em>arXiv preprint arXiv:2304.07193</em>.</li>
+<li>Geiger, A., Lenz, P., &amp; Urtasun, R. (2012). &ldquo;Are we ready for autonomous driving? The KITTI vision benchmark suite&rdquo;. <em>CVPR</em>.</li>
+<li>Geyer, W., Kassahun, Y., Mahmudi, M., et al. (2020). &ldquo;A2D2: Audi Autonomous Driving Dataset&rdquo;. <em>arXiv preprint arXiv:2004.06320</em>.</li>
+<li>Xiao, P., Shao, Z., Hao, S., et al. (2021). &ldquo;PandaSet: Advanced Sensor Suite Dataset for Autonomous Driving&rdquo;. <em>IEEE ITSC</em>.</li>
+<li>Hu, E. J., Shen, Y., Wallis, P., et al. (2021). &ldquo;LoRA: Low-Rank Adaptation of Large Language Models&rdquo;. <em>ICLR</em>.</li>
+<li>Xie, E., Wang, W., Yu, Z., et al. (2021). &ldquo;SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers&rdquo;. <em>NeurIPS</em>.</li>
+<li>Cordts, M., Omran, M., Ramos, S., et al. (2016). &ldquo;The Cityscapes Dataset for Semantic Urban Scene Understanding&rdquo;. <em>CVPR</em>.</li>
+</ol>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/BEAMR-LTD/improving-dav2-robustness-to-video-compression">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/07-may-2026/">07 May 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-07/a311c1/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Học Toán lần cuối cùng" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-07T00:00:00&#43;00:00">May 07, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Học Toán lần cuối cùng</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Học Toán lần cuối cùng</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-06/8b2ff9/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="Thêm chất xua đuổi Benchmaxxer vào Bảng xếp hạng ASR Mở" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-06T00:00:00&#43;00:00">May 06, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Thêm chất xua đuổi Benchmaxxer vào Bảng xếp hạng ASR Mở</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Cập nhật Bảng xếp hạng ASR Mở để ngăn chặn Benchmaxxer</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-07/673639/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Cải thiện độ bền vững của Depth Anything V2 đối với nén video" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cải thiện độ bền vững của Depth Anything V2 đối với nén video</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-07/a311c1/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Học Toán lần cuối cùng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Học Toán lần cuối cùng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-06/8b2ff9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="Thêm chất xua đuổi Benchmaxxer vào Bảng xếp hạng ASR Mở" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thêm chất xua đuổi Benchmaxxer vào Bảng xếp hạng ASR Mở</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-01/d0682a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Huấn luyện các mô hình ternary bit thấp với Axolotl" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Huấn luyện các mô hình ternary bit thấp với Axolotl</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-04-23/838777/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/DmBZ3hZd4jEjaUFFCFBS03_QeFxBxtxx3EOP1TKsZLK9ypiTP0PYREVJ8kTXuLV6Ge_IuAtt4wDVN4qF4V5IAw9aVwnPbz2oFBEBSQMenv6yvlC1Sw=w704-h704-n-nu" alt="Hợp tác với các nhà lãnh đạo trong ngành để tăng tốc chuyển đổi AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Hợp tác với các nhà lãnh đạo trong ngành để tăng tốc chuyển đổi AI</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
