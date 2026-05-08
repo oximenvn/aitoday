@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA | AI Today - SkyAI</title>
+
+<meta name="description" content="Tinh chỉnh mô hình AI lâm sàng trên nền tảng AMD ROCm mà không cần sử dụng CUDA">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Tinh chỉnh mô hình AI lâm sàng trên nền tảng AMD ROCm mà không cần sử dụng CUDA </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-05-08T00:00:00&#43;00:00">May 8, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            10 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA">
+        <figcaption class="text-center italic text-xs">Tinh chỉnh mô hình AI lâm sàng trên nền tảng AMD ROCm mà không cần sử dụng CUDA</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="medqa-tinh-chỉnh-ai-lâm-sàng-trên-amd-rocm--không-cần-cuda">MedQA: Tinh chỉnh AI Lâm sàng trên AMD ROCm — Không cần CUDA</h1>
+<p><em>Hướng dẫn chi tiết về quy trình tinh chỉnh LoRA cho mô hình Qwen3-1.7B trên tập dữ liệu MedMCQA sử dụng AMD MI300X, được xây dựng cho cuộc thi AMD Developer Hackathon trên lablab.ai.</em></p>
+<hr>
+<h2 id="ý-tưởng">Ý tưởng</h2>
+<p>Giải đáp câu hỏi y tế là một trong những nhiệm vụ có mức độ rủi ro thực sự cao. Một mô hình tự tin chọn sai đáp án trong một câu hỏi trắc nghiệm lâm sàng không chỉ đơn thuần là sai — mà còn gây nguy hiểm. Đồng thời, hầu hết các công trình AI y tế mã nguồn mở đều giả định rằng bạn có GPU NVIDIA. CUDA là mặc định, và mọi thứ khác chỉ là phụ.</p>
+<p>Dự án này thách thức giả định đó.</p>
+<p><strong>MedQA</strong> là một mô hình giải đáp câu hỏi lâm sàng được tinh chỉnh bằng LoRA, xây dựng hoàn toàn trên phần cứng AMD sử dụng ROCm. Mô hình tiếp nhận một câu hỏi y tế trắc nghiệm và trả về cả chữ cái của đáp án đúng <em>cùng với</em> lời giải thích lâm sàng về lập luận. Toàn bộ quy trình huấn luyện — từ tải dữ liệu đến xuất adapter — đều chạy trên AMD Instinct MI300X mà không phụ thuộc vào bất kỳ thư viện CUDA nào.</p>
+<ul>
+<li>🤗 <strong>Mô hình trên HuggingFace Hub:</strong> <a href="https://huggingface.co/HK2184/medqa-qwen3-lora">HK2184/medqa-qwen3-lora</a></li>
+<li>🚀 <strong>Demo trực tiếp:</strong> <a href="https://huggingface.co/spaces/lablab-ai-amd-developer-hackathon/MedQA-Medical-AI-on-AMD-ROCm">HuggingFace Spaces</a></li>
+<li>💻 <strong>GitHub:</strong> <a href="https://github.com/HK2184/MedQA-Medical-AI-on-AMD-ROCm">MedQA-Medical-AI-on-AMD-ROCm</a></li>
+</ul>
+<hr>
+<h2 id="tại-sao-chọn-amd-rocm">Tại sao chọn AMD ROCm?</h2>
+<p>AMD Instinct MI300X là một phần cứng đáng kinh ngạc: 192 GB bộ nhớ HBM3 trong một thiết bị duy nhất. Đối với việc tinh chỉnh LLM, VRAM thường là rào cản chính — nó quyết định kích thước batch (batch size), độ dài chuỗi và việc bạn có cần lượng tử hóa (quantization) hay không. Với 192 GB khả dụng, chúng tôi đã huấn luyện Qwen3-1.7B với LoRA ở định dạng fp16 đầy đủ mà không cần đến các thủ thuật lượng tử hóa 4-bit hay 8-bit.</p>
+<p>Quan trọng hơn, mục tiêu là chứng minh rằng hệ sinh thái HuggingFace — Transformers, PEFT, TRL, Accelerate — hoạt động mượt mà trên ROCm. Và thực tế là như vậy. Cùng một mã huấn luyện chạy trên CUDA cũng sẽ chạy trên ROCm nếu thiết lập ba biến môi trường sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#34;ROCR_VISIBLE_DEVICES&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#34;HIP_VISIBLE_DEVICES&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#34;HSA_OVERRIDE_GFX_VERSION&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;9.4.2&#34;</span>
+</span></span></code></pre></div><p>Chỉ vậy thôi. Không thay đổi mã nguồn. Không cần kernel tùy chỉnh. Không cần các lớp tương thích CUDA.</p>
+<hr>
+<h2 id="tập-dữ-liệu-medmcqa">Tập dữ liệu: MedMCQA</h2>
+<p><a href="https://huggingface.co/datasets/openlifescienceai/medmcqa">MedMCQA</a> là một tập dữ liệu câu hỏi trắc nghiệm quy mô lớn được trích xuất từ các kỳ thi đầu vào y khoa của Ấn Độ (kiểu AIIMS, USMLE). Mỗi ví dụ bao gồm:</p>
+<ul>
+<li>Một câu hỏi lâm sàng.</li>
+<li>Bốn lựa chọn trả lời (A–D).</li>
+<li>Chỉ số của đáp án đúng.</li>
+<li>Một lời giải thích bằng văn bản tự do tùy chọn (trường <code>exp</code>).</li>
+</ul>
+<p>Trong dự án này, chúng tôi sử dụng 2.000 mẫu huấn luyện — một phần nhỏ được chọn chủ đích để chứng minh rằng việc tinh chỉnh có ý nghĩa có thể đạt được một cách nhanh chóng. Quá trình huấn luyện mất khoảng 5 phút trên MI300X.</p>
+<hr>
+<h2 id="mô-hình-qwen3-17b">Mô hình: Qwen3-1.7B</h2>
+<p>Mô hình cơ sở là <a href="https://huggingface.co/Qwen/Qwen3-1.7B">Qwen/Qwen3-1.7B</a> — mô hình ngôn ngữ quy mô nhỏ mới nhất của Alibaba. Với 1,7 tỷ tham số, nó đủ nhỏ để tinh chỉnh với chi phí thấp nhưng đủ mạnh để đưa ra các lập luận lâm sàng mạch lạc. Mô hình hỗ trợ <code>trust_remote_code=True</code> và tải mượt mà thông qua HuggingFace Transformers.</p>
+<hr>
+<h2 id="định-dạng-prompt">Định dạng Prompt</h2>
+<p>Sự nhất quán trong định dạng prompt là cực kỳ quan trọng đối với tinh chỉnh hướng dẫn (instruction fine-tuning). Mọi ví dụ huấn luyện và mọi lời gọi suy luận đều sử dụng cùng một mẫu:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>### Question:
+</span></span><span style="display:flex;"><span>{question}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>### Options:
+</span></span><span style="display:flex;"><span>A) {opa}
+</span></span><span style="display:flex;"><span>B) {opb}
+</span></span><span style="display:flex;"><span>C) {opc}
+</span></span><span style="display:flex;"><span>D) {opd}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>### Answer:
+</span></span><span style="display:flex;"><span>{answer_letter}) {answer_text}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>### Explanation:
+</span></span><span style="display:flex;"><span>{explanation}
+</span></span></code></pre></div><p>Trong khi huấn luyện, mô hình nhìn thấy toàn bộ chuỗi bao gồm cả đáp án và lời giải thích. Khi suy luận, chúng tôi cung cấp mọi thứ cho đến phần <code>### Answer:\n</code> và để mô hình tự hoàn thiện phần còn lại.</p>
+<hr>
+<h2 id="huấn-luyện-với-lora">Huấn luyện với LoRA</h2>
+<p>Thay vì tinh chỉnh toàn bộ 1,5 tỷ tham số, chúng tôi sử dụng <strong>LoRA (Low-Rank Adaptation)</strong> thông qua thư viện PEFT. LoRA chèn các ma trận phân rã hạng thấp có thể huấn luyện vào các lớp attention, trong khi giữ nguyên các trọng số cơ sở.</p>
+<h3 id="cấu-hình-lora">Cấu hình LoRA</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> peft <span style="color:#f92672">import</span> LoraConfig, get_peft_model, TaskType
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lora_config <span style="color:#f92672">=</span> LoraConfig(
+</span></span><span style="display:flex;"><span>    task_type<span style="color:#f92672">=</span>TaskType<span style="color:#f92672">.</span>CAUSAL_LM,
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>,
+</span></span><span style="display:flex;"><span>    lora_alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>,
+</span></span><span style="display:flex;"><span>    lora_dropout<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>,
+</span></span><span style="display:flex;"><span>    target_modules<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;q_proj&#34;</span>, <span style="color:#e6db74">&#34;v_proj&#34;</span>],
+</span></span><span style="display:flex;"><span>    bias<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;none&#34;</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> get_peft_model(model, lora_config)
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>print_trainable_parameters()
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># trainable params: 2,228,224 || all params: 1,543,901,184 || trainable%: 0.1443</span>
+</span></span></code></pre></div><p>Chỉ khoảng <strong>2,2 triệu</strong> trong số 1,5 tỷ tham số của mô hình được huấn luyện. Điều này giúp giảm mức sử dụng bộ nhớ và tăng tốc độ huấn luyện.</p>
+<h3 id="đối-số-huấn-luyện-training-arguments">Đối số huấn luyện (Training Arguments)</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> TrainingArguments
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>args <span style="color:#f92672">=</span> TrainingArguments(
+</span></span><span style="display:flex;"><span>    output_dir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./outputs&#34;</span>,
+</span></span><span style="display:flex;"><span>    num_train_epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    per_device_train_batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>    gradient_accumulation_steps<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,     <span style="color:#75715e"># effective batch size = 16</span>
+</span></span><span style="display:flex;"><span>    learning_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">2e-4</span>,
+</span></span><span style="display:flex;"><span>    fp16<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    bf16<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    eval_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;epoch&#34;</span>,
+</span></span><span style="display:flex;"><span>    save_strategy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;epoch&#34;</span>,
+</span></span><span style="display:flex;"><span>    load_best_model_at_end<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    gradient_checkpointing<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    optim<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;adamw_torch&#34;</span>,
+</span></span><span style="display:flex;"><span>    warmup_ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">0.05</span>,
+</span></span><span style="display:flex;"><span>    lr_scheduler_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cosine&#34;</span>,
+</span></span><span style="display:flex;"><span>    report_to<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;none&#34;</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Một vài điểm đáng lưu ý:</p>
+<ul>
+<li><strong><code>fp16=True, bf16=False</code></strong>: Chúng tôi sử dụng fp16 tiêu chuẩn. Trong các thử nghiệm ban đầu với bfloat16, chúng tôi gặp lỗi <code>NaN loss</code>; việc chuyển sang fp16 đã giải quyết hoàn toàn vấn đề này.</li>
+<li><strong><code>gradient_checkpointing=True</code></strong>: Đổi tài nguyên tính toán để lấy bộ nhớ. Điều này không thực sự cần thiết trên MI300X vì có 192 GB VRAM, nhưng là thói quen tốt để đảm bảo khả năng tái lập trên các GPU nhỏ hơn.</li>
+<li><strong><code>gradient_accumulation_steps=4</code></strong>: Kích thước batch hiệu dụng là 16 với batch vật lý là 4.</li>
+<li><strong>Lịch trình LR Cosine với warmup</strong>: Giúp hội tụ mượt mà hơn so với lịch trình phẳng cho các đợt huấn luyện ngắn.</li>
+</ul>
+<h3 id="toàn-bộ-vòng-lặp-huấn-luyện">Toàn bộ vòng lặp huấn luyện</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> DataCollatorForSeq2Seq, Trainer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>collator <span style="color:#f92672">=</span> DataCollatorForSeq2Seq(
+</span></span><span style="display:flex;"><span>    tokenizer,
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>    padding<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    pad_to_multiple_of<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> Trainer(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span>model,
+</span></span><span style="display:flex;"><span>    args<span style="color:#f92672">=</span>args,
+</span></span><span style="display:flex;"><span>    train_dataset<span style="color:#f92672">=</span>train_ds,
+</span></span><span style="display:flex;"><span>    eval_dataset<span style="color:#f92672">=</span>val_ds,
+</span></span><span style="display:flex;"><span>    data_collator<span style="color:#f92672">=</span>collator,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>trainer<span style="color:#f92672">.</span>train()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Lưu adapter + tokenizer</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>save_pretrained(<span style="color:#e6db74">&#34;./outputs&#34;</span>)
+</span></span><span style="display:flex;"><span>tokenizer<span style="color:#f92672">.</span>save_pretrained(<span style="color:#e6db74">&#34;./outputs&#34;</span>)
+</span></span></code></pre></div><p>Sau khi huấn luyện, thư mục <code>./outputs</code> sẽ chứa các trọng số của LoRA adapter — chỉ là vài MB tệp thay vì một bản checkpoint mô hình đầy đủ nặng nhiều GB.</p>
+<hr>
+<h2 id="suy-luận-inference">Suy luận (Inference)</h2>
+<p>Khi suy luận, chúng tôi tải mô hình cơ sở, gắn adapter LoRA và tùy chọn hợp nhất (merge) các trọng số:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoTokenizer, AutoModelForCausalLM
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> peft <span style="color:#f92672">import</span> PeftModel
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;./outputs&#34;</span>, trust_remote_code<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>tokenizer<span style="color:#f92672">.</span>pad_token <span style="color:#f92672">=</span> tokenizer<span style="color:#f92672">.</span>eos_token
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>base_model <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Qwen/Qwen3-1.7B&#34;</span>,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float16,
+</span></span><span style="display:flex;"><span>    device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>,
+</span></span><span style="display:flex;"><span>    trust_remote_code<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> PeftModel<span style="color:#f92672">.</span>from_pretrained(base_model, <span style="color:#e6db74">&#34;./outputs&#34;</span>)
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>eval()
+</span></span></code></pre></div><p>Quá trình tạo văn bản sử dụng giải mã tham lam (<code>do_sample=False</code>) với hình phạt lặp lại (repetition penalty) để ngăn mô hình bị lặp từ:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate</span>(prompt, model, tokenizer):
+</span></span><span style="display:flex;"><span>    inputs <span style="color:#f92672">=</span> tokenizer(prompt, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>)<span style="color:#f92672">.</span>to(model<span style="color:#f92672">.</span>device)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        output <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>generate(
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">**</span>inputs,
+</span></span><span style="display:flex;"><span>            max_new_tokens<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>,
+</span></span><span style="display:flex;"><span>            do_sample<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>            temperature<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>,
+</span></span><span style="display:flex;"><span>            repetition_penalty<span style="color:#f92672">=</span><span style="color:#ae81ff">1.1</span>,
+</span></span><span style="display:flex;"><span>            eos_token_id<span style="color:#f92672">=</span>tokenizer<span style="color:#f92672">.</span>eos_token_id,
+</span></span><span style="display:flex;"><span>            pad_token_id<span style="color:#f92672">=</span>tokenizer<span style="color:#f92672">.</span>eos_token_id,
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    new_tokens <span style="color:#f92672">=</span> output[<span style="color:#ae81ff">0</span>][inputs[<span style="color:#e6db74">&#34;input_ids&#34;</span>]<span style="color:#f92672">.</span>shape[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]:]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> tokenizer<span style="color:#f92672">.</span>decode(new_tokens, skip_special_tokens<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><h3 id="ví-dụ-kết-quả-đầu-ra">Ví dụ kết quả đầu ra</h3>
+<p><strong>Câu hỏi:</strong> Điều nào sau đây là phương pháp điều trị hàng đầu cho tình trạng cấp cứu tăng huyết áp (hypertensive emergency)?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>A) Amlodipine đường uống
+</span></span><span style="display:flex;"><span>B) Labetalol IV hoặc Nitroprusside IV
+</span></span><span style="display:flex;"><span>C) Nifedipine ngậm dưới lưỡi
+</span></span><span style="display:flex;"><span>D) Hydralazine tiêm bắp
+</span></span></code></pre></div><p><strong>Kết quả từ mô hình:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>B) Labetalol IV hoặc Nitroprusside IV
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Giải thích:
+</span></span><span style="display:flex;"><span>Labetalol đường tĩnh mạch (thuốc chẹn beta) hoặc nitroprusside giúp giảm nhanh huyết áp trong các tình huống cấp cứu. Các thuốc đường uống tác dụng quá chậm đối với các trường hợp cấp cứu tăng huyết áp cần kiểm soát huyết áp ngay lập tức để ngăn tổn thương cơ quan đích.
+</span></span></code></pre></div><p>Mô hình không chỉ đưa ra một chữ cái — nó giải thích <em>tại sao</em>, điều này làm cho nó trở nên hữu ích trong lâm sàng.</p>
+<hr>
+<h2 id="tải-từ-huggingface-hub">Tải từ HuggingFace Hub</h2>
+<p>Adapter đã tinh chỉnh được cung cấp công khai. Bạn có thể tải trực tiếp mà không cần clone repo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoTokenizer, AutoModelForCausalLM
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> peft <span style="color:#f92672">import</span> PeftModel
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Qwen/Qwen3-1.7B&#34;</span>, trust_remote_code<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>base <span style="color:#f92672">=</span> AutoModelForCausalLM<span style="color:#f92672">.</span>from_pretrained(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Qwen/Qwen3-1.7B&#34;</span>,
+</span></span><span style="display:flex;"><span>    torch_dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16,
+</span></span><span style="display:flex;"><span>    device_map<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;auto&#34;</span>,
+</span></span><span style="display:flex;"><span>    trust_remote_code<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> PeftModel<span style="color:#f92672">.</span>from_pretrained(base, <span style="color:#e6db74">&#34;HK2184/medqa-qwen3-lora&#34;</span>)
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>merge_and_unload()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>eval()
+</span></span></code></pre></div><hr>
+<h2 id="thách-thức-và-cách-khắc-phục">Thách thức và Cách khắc phục</h2>
+<p>Không dự án AMD ROCm nào hoàn tất mà thiếu phần kể về những &ldquo;trận chiến&rdquo;. Đây là những gì chúng tôi đã gặp phải:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Thách thức</th>
+          <th style="text-align: left">Nguyên nhân gốc rễ</th>
+          <th style="text-align: left">Cách khắc phục</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>NaN loss</strong></td>
+          <td style="text-align: left">Độ mất ổn định của độ chính xác hỗn hợp (mixed precision)</td>
+          <td style="text-align: left">Chuyển từ bfloat16 $\rightarrow$ fp16</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Không phát hiện GPU</strong></td>
+          <td style="text-align: left">Thiếu các biến môi trường ROCm</td>
+          <td style="text-align: left">Thiết lập <code>ROCR_VISIBLE_DEVICES</code>, <code>HIP_VISIBLE_DEVICES</code>, <code>HSA_OVERRIDE_GFX_VERSION</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>bitsandbytes không hỗ trợ</strong></td>
+          <td style="text-align: left">Không có bản build bitsandbytes cho ROCm</td>
+          <td style="text-align: left">Loại bỏ hoàn toàn lượng tử hóa — MI300X có đủ VRAM</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Kết quả suy luận rác</strong></td>
+          <td style="text-align: left">Cấu hình padding của tokenizer sai</td>
+          <td style="text-align: left">Thiết lập <code>pad_token = eos_token</code> và sửa <code>padding_side</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Lỗi đánh giá của Trainer</strong></td>
+          <td style="text-align: left">Sai lệch phiên bản Transformers</td>
+          <td style="text-align: left">Cố định phiên bản <code>transformers&gt;=4.40.0</code></td>
+      </tr>
+  </tbody>
+</table>
+<p>Vấn đề về <code>bitsandbytes</code> đáng được lưu ý: trên phần cứng NVIDIA, lượng tử hóa 4-bit thường là <em>bắt buộc</em> để nhét mô hình vào bộ nhớ. Trên MI300X với 192 GB HBM3, điều này đơn giản là không cần thiết. Đây là một lợi thế phần cứng thực sự — huấn luyện sạch hơn, không có sai số do lượng tử hóa.</p>
+<hr>
+<h2 id="kết-quả">Kết quả</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Chỉ số</th>
+          <th style="text-align: left">Giá trị</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Tham số có thể huấn luyện</td>
+          <td style="text-align: left">~2.2M (0.15% tổng số)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Thời gian huấn luyện trên MI300X</td>
+          <td style="text-align: left">~5 phút</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Kích thước tập dữ liệu sử dụng</td>
+          <td style="text-align: left">2.000 mẫu</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Độ chính xác cơ sở MedMCQA</td>
+          <td style="text-align: left">~45%</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Framework</td>
+          <td style="text-align: left">PyTorch + ROCm 6.1</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="tự-trải-nghiệm">Tự trải nghiệm</h2>
+<p><strong>Không có GPU? Không vấn đề gì.</strong> Bản demo Gradio trực tiếp chạy trên HuggingFace Spaces (suy luận bằng CPU):</p>
+<p>👉 <a href="https://huggingface.co/spaces/lablab-ai-amd-developer-hackathon/MedQA-Medical-AI-on-AMD-ROCm">Demo trực tiếp trên HuggingFace Spaces</a></p>
+<p><strong>Có phần cứng AMD?</strong> Clone repo và chạy trực tiếp:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/HK2184/MedQA-Medical-AI-on-AMD-ROCm.git
+</span></span><span style="display:flex;"><span>cd MedQA-Medical-AI-on-AMD-ROCm
+</span></span><span style="display:flex;"><span>pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.1
+</span></span><span style="display:flex;"><span>pip install transformers datasets peft accelerate trl gradio
+</span></span><span style="display:flex;"><span>python train.py   <span style="color:#75715e"># ~5 phút</span>
+</span></span><span style="display:flex;"><span>python infer.py   <span style="color:#75715e"># chạy các câu hỏi mẫu</span>
+</span></span><span style="display:flex;"><span>python app.py     <span style="color:#75715e"># khởi chạy giao diện Gradio</span>
+</span></span></code></pre></div><hr>
+<h2 id="bước-tiếp-theo">Bước tiếp theo</h2>
+<p>Dự án này chứng minh quy trình hoạt động ổn định. Các bước tiếp theo là mở rộng và hoàn thiện:</p>
+<ul>
+<li><strong>Tập dữ liệu lớn hơn</strong> — Huấn luyện trên toàn bộ kho dữ liệu MedMCQA (~180k câu hỏi) và thêm PubMedQA.</li>
+<li><strong>Chấm điểm độ tin cậy</strong> — Thêm các ước tính độ tin cậy đã được hiệu chuẩn bên cạnh các câu trả lời.</li>
+<li><strong>Tích hợp RAG</strong> — Căn cứ câu trả lời vào việc truy xuất tài liệu y khoa thời gian thực.</li>
+<li><strong>Bộ khung đánh giá</strong> — Xây dựng benchmark độ chính xác trên tập dữ liệu độc lập (held-out) thay vì chỉ dùng tập huấn luyện.</li>
+</ul>
+<hr>
+<h2 id="kết-luận">Kết luận</h2>
+<p>MedQA cho thấy việc xây dựng một AI y tế có năng lực và có khả năng giải thích trên phần cứng mã nguồn mở của AMD không chỉ khả thi mà còn đơn giản. Khả năng tương thích ROCm của hệ sinh thái HuggingFace thực sự tốt. Dung lượng bộ nhớ của MI300X loại bỏ hoàn toàn một nhóm các vấn đề kỹ thuật phức tạp. Và LoRA giúp việc tinh chỉnh một mô hình 1.7B trở thành công việc chỉ mất 5 phút.</p>
+<p>Nếu bạn đang xây dựng trên AMD ROCm và gặp khó khăn, những cách khắc phục trên sẽ giúp bạn tiết kiệm nhiều giờ làm việc. Và nếu bạn xây dựng AI y tế, việc nhấn mạnh vào &ldquo;lời giải thích&rdquo; thay vì chỉ là &ldquo;độ chính xác thuần túy&rdquo; là điều cực kỳ quan trọng.</p>
+<hr>
+<p><em>Xây dựng cho cuộc thi AMD Developer Hackathon trên <a href="https://lablab.ai">lablab.ai</a> · Hỗ trợ bởi AMD ROCm + Hệ sinh thái HuggingFace</em></p>
+<p><em>— Harikrishna Sivanand Iyer và Srijan Sivaram A</em></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/lablab-ai-amd-developer-hackathon/medqa">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/may-8-2026/">May 8, 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-07/673639/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Cải thiện độ bền vững của Depth Anything V2 đối với nén video" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-07T00:00:00&#43;00:00">May 07, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cải thiện độ bền vững của Depth Anything V2 đối với nén video</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Cải thiện độ bền vững của Depth Anything V2 đối với nén video</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-07/a311c1/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Học Toán lần cuối cùng" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-07T00:00:00&#43;00:00">May 07, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Học Toán lần cuối cùng</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Học Toán lần cuối cùng</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-08/f8e5c4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-07/673639/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Cải thiện độ bền vững của Depth Anything V2 đối với nén video" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Cải thiện độ bền vững của Depth Anything V2 đối với nén video</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-07/a311c1/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Học Toán lần cuối cùng" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Học Toán lần cuối cùng</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-06/8b2ff9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="Thêm chất xua đuổi Benchmaxxer vào Bảng xếp hạng ASR Mở" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thêm chất xua đuổi Benchmaxxer vào Bảng xếp hạng ASR Mở</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-01/d0682a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Huấn luyện các mô hình ternary bit thấp với Axolotl" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Huấn luyện các mô hình ternary bit thấp với Axolotl</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
