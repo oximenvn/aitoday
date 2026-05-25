@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững | AI Today - SkyAI</title>
+
+<meta name="description" content="Tìm hiểu về Harness, Scaffold và các thuật ngữ quan trọng liên quan đến AI Agent">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Tìm hiểu về Harness, Scaffold và các thuật ngữ quan trọng liên quan đến AI Agent </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-05-25T00:00:00&#43;00:00">May 25, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            12 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3" alt="Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững">
+        <figcaption class="text-center italic text-xs">Tìm hiểu về Harness, Scaffold và các thuật ngữ quan trọng liên quan đến AI Agent</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="harness-scaffold-và-các-thuật-ngữ-về-ai-agent-cần-được-hiểu-đúng">Harness, Scaffold và các thuật ngữ về AI Agent cần được hiểu đúng</h1>
+<p>Khi một lĩnh vực phát triển nhanh chóng, hệ thống từ vựng của nó thường tiến hóa nhanh hơn cả sự hiểu biết chung của cộng đồng. Các thuật ngữ bắt đầu trở nên mờ nhạt, bị tái sử dụng trong nhiều ngữ cảnh khác nhau, hoặc trở thành cách gọi tắt cho những ý tưởng chưa bao giờ được giải thích đầy đủ. Chúng ta đang thấy điều này xảy ra trong lĩnh vực AI Agent, nơi các khái niệm bị trộn lẫn, một số bị đổi tên và số khác được sử dụng rộng rãi trong vài tháng rồi lặng lẽ biến mất.</p>
+<p>Điều này có thể gây choáng ngợp cho những người mới bắt đầu, và thậm chí cả với những chuyên gia đang cố gắng theo kịp các phát triển mới nhất. Sau hội nghị ICLR 2026, một trong chúng tôi (@ariG23498) đã đăng một câu hỏi phản ánh rõ sự nhầm lẫn này:</p>
+<blockquote>
+<p><em>&ldquo;Bạn hiểu thế nào về các thuật ngữ &lsquo;harness&rsquo; và &lsquo;scaffold&rsquo; trong ngữ cảnh của agent? Tôi đã nghe rất nhiều lời giải thích khi ở ICLR, nhưng tôi không hiểu tại sao họ không thống nhất về một định nghĩa duy nhất.&rdquo;</em></p></blockquote>
+<p>Bảng thuật ngữ này là nỗ lực của chúng tôi nhằm định nghĩa rõ ràng những thuật ngữ thường xuyên xuất hiện nhưng thiếu sự giải thích nhất quán. Đây không phải là một cuốn từ điển toàn diện cho mọi thuật ngữ trong lĩnh vực này. Thay vào đó, chúng tôi tập trung vào các khái niệm thường bị nhầm lẫn, bị tái sử dụng sai cách, hoặc bị coi là hiển nhiên trong khi thực tế thì không.</p>
+<p>Hầu hết các thuật ngữ này đều xuất hiện dù bạn đang xây dựng, triển khai hay chỉ đơn thuần là sử dụng các công cụ như Claude Code, Codex hoặc Hermes Agent. Phần cuối cùng sẽ đề cập đến các khái niệm dành riêng cho việc huấn luyện mô hình.</p>
+<blockquote>
+<p><strong>Lưu ý:</strong> Nhiều thuật ngữ trong số này vẫn chưa có định nghĩa được chấp nhận rộng rãi trên toàn cầu, và các framework khác nhau có thể sử dụng cùng một từ với ý nghĩa khác nhau. Mục tiêu ở đây không phải là áp đặt một bộ từ vựng &ldquo;đúng&rdquo; duy nhất, mà là cung cấp một mô hình tư duy thực tế để các cuộc thảo luận trở nên dễ theo dõi hơn.</p></blockquote>
+<p>Hãy cùng bắt đầu.</p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#model">Model</a></li>
+<li><a href="#scaffolding">Scaffolding</a></li>
+<li><a href="#harness">Harness</a></li>
+<li><a href="#agent">Agent</a></li>
+<li><a href="#context-engineering">Context Engineering</a></li>
+<li><a href="#policy">Policy</a></li>
+<li><a href="#tool-use">Tool Use</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#sub-agents">Sub-agents</a></li>
+<li><a href="#training">Training</a>
+<ul>
+<li><a href="#rl-environment">RL Environment</a></li>
+<li><a href="#trainer">Trainer</a></li>
+<li><a href="#rollout">Rollout</a></li>
+<li><a href="#reward">Reward</a></li>
+</ul>
+</li>
+<li><a href="#learn-more">Tìm hiểu thêm</a></li>
+</ul>
+<h2 id="model-mô-hình">Model (Mô hình)</h2>
+<p>Model chính là LLM: nó nhận văn bản đầu vào và tạo ra văn bản đầu ra (ví dụ: Claude, Qwen, GPT, Kimi, DeepSeek…). Bản thân model không có bộ nhớ giữa các lần gọi và không có vòng lặp. Model có thể thể hiện ý định gọi một công cụ (tool), nhưng nó cần một <strong>harness</strong> để thực sự thực thi công cụ đó. Nó trả lời một prompt rồi dừng lại. Khi được bao bọc trong <strong>scaffolding</strong> và một <strong>harness</strong>, nó trở thành một <strong>agent</strong>.</p>
+<h2 id="scaffolding-khung-định-hình">Scaffolding (Khung định hình)</h2>
+<p>Đây là lớp định nghĩa hành vi bao quanh model: bao gồm system prompt, mô tả công cụ, cách phân tích phản hồi của model và những gì model ghi nhớ qua các bước (quản lý ngữ cảnh). Nó định hình cách model nhìn nhận thế giới và hành động trong đó, dù là trong quá trình huấn luyện hay khi suy luận (inference).</p>
+<p>Các sản phẩm như Claude Code, Codex và Antigravity CLI gọi toàn bộ hệ thống này là một <strong>harness</strong>. Tài liệu của Claude Code nói thẳng rằng: <em>&ldquo;Claude Code đóng vai trò như một agentic harness bao quanh Claude.&rdquo;</em> Đó là cách dùng nghĩa rộng: harness nghĩa là tất cả mọi thứ không phải là model. Sự phân biệt giữa scaffold và harness quan trọng nhất khi bạn cần lập luận về chúng một cách riêng biệt, chẳng hạn như trong một pipeline huấn luyện. Bạn cũng sẽ thấy từ &ldquo;scaffold&rdquo; được dùng rộng hơn để chỉ bất kỳ cơ sở hạ tầng nào mà harness dựa vào: các hook, cấu hình runtime, thậm chí là cấu trúc thư mục.</p>
+<p>Một số sản phẩm như Claude Code và Codex gắn chặt với model của nhà cung cấp. Những sản phẩm khác như Antigravity CLI và Hermes Agent cho phép bạn cắm bất kỳ model nào vào.</p>
+<h2 id="harness-khung-vận-hành">Harness (Khung vận hành)</h2>
+<p>Đây là lớp thực thi bên trong agent: nó gọi model, xử lý các lời gọi công cụ của model và quyết định khi nào nên dừng lại. Harness là thứ khiến agent vận hành được. Scaffolding (đã định nghĩa ở trên) là những gì model làm việc cùng: các hướng dẫn, công cụ và định dạng của nó.</p>
+<p><strong>Harness engineering</strong> (Kỹ thuật khung vận hành) là kỷ luật thiết kế lớp này một cách hiệu quả: quyết định khi nào agent nên dừng, cách xử lý lỗi và các rào chắn (guardrails) để giữ agent đi đúng hướng. Điều này áp dụng cho cả huấn luyện và suy luận. Bài viết của Addy Osmani và chia sẻ của OpenAI về việc xây dựng với Codex đều đề cập đến điều này từ góc độ suy luận.</p>
+<p>Khi đánh giá, mô hình tương tự xuất hiện dưới dạng <strong>eval harness</strong> (khung đánh giá): thay vì thu thập dữ liệu huấn luyện, nó chạy một tập hợp các kịch bản cố định tại một điểm kiểm tra (checkpoint) của model và ghi lại các chỉ số thay vì cập nhật trọng số.</p>
+<h2 id="agent-tác-nhân">Agent (Tác nhân)</h2>
+<p>Thuật ngữ này đến từ học tăng cường (Reinforcement Learning - RL), nơi một agent đơn giản là một hàm nhận vào một quan sát (observation) và trả về một hành động (action). Môi trường nhận hành động đó và trả về một quan sát mới, và vòng lặp này lặp lại. Vòng lặp đó vẫn là cốt lõi trong cách các LLM agent hoạt động.</p>
+<p>Trong thế giới LLM, thuật ngữ này đã mở rộng. Một agent là một model cộng với tất cả mọi thứ xung quanh cho phép nó hành động, chứ không chỉ là phản hồi. Nó biến việc tạo văn bản thô thành một thứ có thể hoạt động trong một vòng lặp: tiếp nhận thông tin, quyết định phải làm gì và hành động dựa trên kết quả.</p>
+<p>Ví dụ cụ thể về một coding agent: System prompt, mô tả công cụ và định dạng đầu ra mà model tuân theo tạo thành <strong>scaffolding</strong>. Vòng lặp gọi model, xử lý các lời gọi công cụ và quyết định khi nào dừng lại là <strong>harness</strong>. Khi huấn luyện, harness cũng chạy nhiều vòng lặp này song song và đưa kết quả trở lại để cập nhật model.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/agent-glossary/agent-diagram.png" alt="Sơ đồ Agent cho thấy Harness, Scaffold và Model là các thành phần bên trong Agent, với Sub-agent ở phía dưới"></p>
+<p>Trong cộng đồng, công thức thường được tóm gọn là: <strong>Agent = Model + Harness</strong>. Nếu bạn không phải là model, bạn chính là harness. Sự phân biệt tinh tế giữa harness và scaffold (đã nêu ở hai phần trên) là điều gây ra hầu hết sự nhầm lẫn.</p>
+<p>Khi mọi người nói về các sản phẩm như Claude Code, Codex hay Cursor, họ đang nói đến một harness cụ thể được xây dựng trên một model cụ thể, được thiết kế và tối ưu hóa cùng nhau. Hai sản phẩm sử dụng cùng một model cơ sở có thể mang lại cảm giác hoàn toàn khác nhau vì harness của chúng đưa ra những lựa chọn khác nhau. Và việc thay thế một model tốt hơn vào cùng một harness cũng thay đổi trải nghiệm. Model, harness và sản phẩm là ba thứ khác nhau.</p>
+<h2 id="context-engineering-kỹ-thuật-ngữ-cảnh">Context Engineering (Kỹ thuật Ngữ cảnh)</h2>
+<p>Thiết kế những gì đưa vào cửa sổ ngữ cảnh (context window) của agent: những gì model thấy ở mỗi bước, system prompt, mô tả công cụ, lịch sử trò chuyện, kiến thức được truy xuất. Đây không phải là quyết định một lần: khi model chạy, các lượt trước sẽ định hình những gì đưa vào các lần gọi sau, và harness chủ động quản lý điều này trong suốt quá trình chạy. Nó áp dụng cho cả huấn luyện và suy luận, nhưng cái giá của việc làm sai là rất khác nhau. Khi huấn luyện, những gì model thấy sẽ định hình những gì được học; nếu sai, bạn phải huấn luyện lại. Khi suy luận, đó chỉ là văn bản: thay đổi prompt và triển khai lại.</p>
+<p>Bộ nhớ (Memory) là một phần của bức tranh này. <strong>Bộ nhớ ngắn hạn</strong> là những gì nằm trong cửa sổ ngữ cảnh trong một lượt chạy đơn lẻ: lịch sử trò chuyện, kết quả công cụ, lập luận trước đó. <strong>Bộ nhớ dài hạn</strong> tồn tại xuyên suốt các phiên làm việc, được lưu trữ bên ngoài và truy xuất khi cần, sau đó được đưa ngược lại vào ngữ cảnh khi có liên quan.</p>
+<h2 id="policy-chiến-lượcchính-sách">Policy (Chiến lược/Chính sách)</h2>
+<p>Một policy là hành vi mà một agent tuân theo: trong bất kỳ tình huống nào, nó xác định xác suất thực hiện mỗi hành động có thể. Trong các hệ thống LLM, một phần của policy được học trong trọng số của model, nhưng hành vi cũng phụ thuộc vào scaffolding và harness xung quanh. Cùng một model có thể hành xử rất khác nhau tùy thuộc vào prompt, công cụ, bộ nhớ và vòng lặp thực thi của nó.</p>
+<p>Một policy không phải là một agent. Policy định nghĩa hành vi; agent là toàn bộ hệ thống hoạt động trong một môi trường. Khi bạn bao bọc một checkpoint trong scaffolding và một harness rồi triển khai, bạn có một agent với hành vi chính là policy đó.</p>
+<h2 id="tool-use-sử-dụng-công-cụ">Tool Use (Sử dụng Công cụ)</h2>
+<p>Cách agent tương tác ra thế giới bên ngoài: API, trình thông dịch mã (code interpreters), cơ sở dữ liệu, tìm kiếm web, hệ thống tệp. Model thể hiện ý định sử dụng công cụ dưới một định dạng có cấu trúc. Các API suy luận hiện đại cung cấp điều này như một đối tượng chính thức: harness nhận lời gọi trực tiếp và điều hướng nó đến hàm chính xác. Kết quả được đưa ngược lại vào ngữ cảnh và vòng lặp tiếp tục.</p>
+<h2 id="skills-kỹ-năng">Skills (Kỹ năng)</h2>
+<p>Các gói kiến thức có cấu trúc, có thể tái sử dụng để thực hiện các tác vụ nhiều bước. Trong khi một <strong>tool</strong> là một hành động (&ldquo;chạy lệnh này&rdquo;), thì một <strong>skill</strong> đóng gói mọi thứ cần thiết để đạt được một mục tiêu (&ldquo;điều tra lỗi này, đưa ra giả thuyết, viết bản sửa lỗi&rdquo;). Chúng có thể di chuyển giữa các agent và được tải lên khi cần. Ranh giới giữa tool, skill và sub-agent thay đổi tùy theo framework.</p>
+<h2 id="sub-agents-agent-con">Sub-agents (Agent con)</h2>
+<p>Một agent được gọi bởi một agent khác để xử lý một tác vụ con cụ thể. Nó có model và scaffold riêng, lập luận độc lập và trả về kết quả. Agent gọi không cần biết cách nó hoạt động bên trong. Đây là điều phân biệt <strong>sub-agent</strong> với <strong>tool</strong> (một lời gọi hàm) hoặc <strong>skill</strong> (kiến thức đóng gói): một sub-agent có thể tự lập luận, sử dụng công cụ và gọi các sub-agent khác.</p>
+<h2 id="training-huấn-luyện">Training (Huấn luyện)</h2>
+<p>Các thuật ngữ trên áp dụng cho cả huấn luyện và triển khai. Bốn thuật ngữ sau đây dành riêng cho huấn luyện, nơi agent thực hiện các tác vụ, được chấm điểm và trọng số của model được cập nhật. Mọi hệ thống huấn luyện RL cho LLM đều được xây dựng quanh cùng một pipeline:</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/agent-glossary/rl-pipeline.png" alt="Pipeline huấn luyện RL cho thấy Môi trường RL, Bộ huấn luyện và Phần thưởng được kết nối bởi rollout và cập nhật policy"></p>
+<h3 id="rl-environment-môi-trường-rl">RL Environment (Môi trường RL)</h3>
+<p>Môi trường là bất cứ thứ gì bạn có thể tương tác: một đối tượng có trạng thái (stateful) nhận một hành động làm đầu vào, cập nhật trạng thái nội bộ và trả về một quan sát. Trong ngữ cảnh LLM, các hành động thường là lời gọi công cụ. Một hệ thống tệp là ví dụ đơn giản: hành động <code>touch foo.txt</code> cập nhật trạng thái bằng cách tạo tệp, và quan sát có thể là danh sách tệp đã cập nhật.</p>
+<h3 id="trainer-bộ-huấn-luyện">Trainer (Bộ huấn luyện)</h3>
+<p>Trainer là thứ khiến agent trở nên tốt hơn: nó chạy nhiều tập (episode) của agent, chấm điểm kết quả và sử dụng chúng để cập nhật trọng số của model bên trong. <code>GRPOTrainer</code> của TRL là một ví dụ cụ thể: một lớp duy nhất xử lý việc tạo episode, chấm điểm phần thưởng và cập nhật trọng số.</p>
+<h3 id="rollout-lượt-thực-thi">Rollout (Lượt thực thi)</h3>
+<p>Một rollout là một lượt chạy đầy đủ của agent từ đầu đến cuối: những gì agent đã thấy, những gì nó đã làm và phần thưởng nó nhận được ở mỗi bước. Nó cũng được gọi là một <em>quỹ đạo</em> (trajectory) hoặc <em>vết thực thi</em> (trace), tùy vào ngữ cảnh. Đây là dữ liệu thô mà các thuật toán RL học từ đó.</p>
+<h3 id="reward-phần-thưởng">Reward (Phần thưởng)</h3>
+<p>Điểm số cho thuật toán huấn luyện biết model có đang tốt lên hay không. Nó có thể là <em>có thể xác minh</em> (test đạt/trượt, câu trả lời khớp), hoặc <em>được học</em> (tùy chọn của con người, LLM-as-judge), <em>thưa thớt</em> (một điểm số ở cuối episode), hoặc <em>dày</em> (điểm số ở mỗi bước). Đây là thứ mà trainer sử dụng để thực sự cập nhật trọng số của model.</p>
+<p><strong>Rubrics</strong> (Tiêu chí chấm điểm) chia phần thưởng thành các chiều rõ ràng với trọng số, thay vì một con số duy nhất. OpenEnv và Verifiers triển khai rubrics dưới dạng các đối tượng có thể kết hợp (<code>WeightedSum</code>, <code>Sequential</code>, <code>Gate</code>).</p>
+<h2 id="tìm-hiểu-thêm">Tìm hiểu thêm</h2>
+<ul>
+<li><a href="https://x.com/Vtrivedy10/status/2031408954517971368">@Vtrivedy10: The Anatomy of an Agent Harness</a>: Phân tích chi tiết các thành phần của harness và lý do tồn tại của chúng.</li>
+<li><a href="https://www.oreilly.com/radar/agent-harness-engineering/">Agent Harness Engineering</a>: Khung tư duy thống nhất về Agent = Model + Harness, với các ví dụ về coding agent.</li>
+<li><a href="https://openai.com/index/harness-engineering/">Harness Engineering: leveraging Codex in an agent-first world</a>: Chia sẻ thực tế về việc xây dựng sản phẩm hoàn toàn bằng Codex agents, bao gồm scaffolding, vòng lặp phản hồi và quản lý ngữ cảnh khi suy luận.</li>
+<li><a href="https://huggingface.co/spaces/evalstate/tool-research">Tool Schema Rendering Atlas (evalstate)</a>: Cách các schema của công cụ trở thành văn bản prompt trên các model khác nhau.</li>
+<li><a href="https://simonwillison.net/guides/agentic-engineering-patterns/how-coding-agents-work/">Blog của Simon Willison về cách coding agents hoạt động</a>: Cách một coding agent vận hành như một harness.</li>
+<li><a href="https://www.youtube.com/watch?v=C_GG5g38vLU">Video: Harnesses in AI: A Deep Dive</a>: Harness là gì và cách xây dựng một cái.</li>
+<li><a href="https://huggingface.co/spaces/AdithyaSK/rl-environments-guide">The Ultimate Guide to RL Environments</a>: So sánh giữa các framework và dịch thuật ngữ.</li>
+<li><a href="https://cursor.com/blog/continually-improving-agent-harness">Continually improving our agent harness (Cursor)</a>: Cách Cursor cải tiến harness của họ như một sản phẩm.</li>
+<li><a href="https://github.com/EleutherAI/lm-evaluation-harness">lm-evaluation-harness</a>: Khung đánh giá chuẩn.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/agent-glossary">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/25-may-2026/">25 May 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-11/956aa9/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.cokh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Hai năm sử dụng AI cục bộ trên laptop- Khi các mô hình mở vượt xa định luật Moore" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-11T00:00:00&#43;00:00">May 11, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Hai năm sử dụng AI cục bộ trên laptop- Khi các mô hình mở vượt xa định luật Moore</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chia sẻ về trải nghiệm sử dụng AI cục bộ trên máy tính xách tay trong hai năm qua</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-08/f8e5c4/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-08T00:00:00&#43;00:00">May 08, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tinh chỉnh mô hình AI lâm sàng trên nền tảng AMD ROCm mà không cần sử dụng CUDA</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-25/43b721/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3" alt="Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-15/f0037a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/jWCnXbTk4WOb4I-UCpEX8rGzMlm_OklNPajrFu8pIZgfXZy1Y5e3KBB7OpwY24qZLUb-d7XkNBVvHrKX3Feslhzd7sk-kep69PWmkiKatr11bdWRImM=w704-h704-n-nu" alt="AlphaEvolve- Cách tác nhân lập trình hỗ trợ bởi Gemini mở rộng tầm ảnh hưởng trên nhiều lĩnh vực" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AlphaEvolve- Cách tác nhân lập trình hỗ trợ bởi Gemini mở rộng tầm ảnh hưởng trên nhiều lĩnh vực</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-15/171df5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/-vq4-6YwC_q2Cvmf0sWvACgIa4effjxRf_BQ_JTFiUN26n6sPB9wpEQ92qls93CFJ9B15ZclMTh8bXrf21J6Wl9tpZFVySijDwaGlzHztwcI0zk7cw=w2464-h2464-n-nu" alt="Tái hình dung con trỏ chuột cho kỷ nguyên AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tái hình dung con trỏ chuột cho kỷ nguyên AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-11/956aa9/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.cokh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Hai năm sử dụng AI cục bộ trên laptop- Khi các mô hình mở vượt xa định luật Moore" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Hai năm sử dụng AI cục bộ trên laptop- Khi các mô hình mở vượt xa định luật Moore</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-08/f8e5c4/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">MedQA- Tinh chỉnh AI lâm sàng trên AMD ROCm — Không yêu cầu CUDA</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
