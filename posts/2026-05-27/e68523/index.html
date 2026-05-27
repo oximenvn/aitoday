@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL | AI Today - SkyAI</title>
+
+<meta name="description" content="Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-05-27T00:00:00&#43;00:00">May 27, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            23 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL">
+        <figcaption class="text-center italic text-xs">Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="truyền-tải-một-nghìn-tỷ-tham-số-với-hub-bucket-đồng-bộ-hóa-delta-weight-trong-trl">Truyền tải một nghìn tỷ tham số với Hub Bucket: Đồng bộ hóa Delta Weight trong TRL</h1>
+<p><strong>Tóm tắt (TL;DR)</strong> dành cho những ai đang bận huấn luyện mô hình:</p>
+<ul>
+<li>RL bất đồng bộ (Async RL) có một &ldquo;bí mật&rdquo; khó chịu: ở mỗi bước, bộ huấn luyện (trainer) phải gửi toàn bộ mô hình sang công cụ suy luận (inference engine). Với mô hình 7B ở định dạng bf16, con số này là 14 GB. Với một checkpoint mô hình 1T (nghìn tỷ tham số), con số này lên tới hàng terabyte. Cho mỗi bước huấn luyện.</li>
+<li>Thực tế là bạn không cần làm vậy. Giữa hai bước tối ưu hóa RL liên tiếp, <strong>khoảng 99% trọng số bf16 là giống hệt nhau</strong> (và trong trường hợp tệ nhất cũng không dưới 98%). Phần thay đổi (delta) thực tế là rất nhỏ.</li>
+<li>Chúng tôi đã triển khai một <a href="https://github.com/huggingface/trl/pull/5417">PR trong TRL</a> để mã hóa chỉ những phần tử thay đổi dưới dạng <strong>tệp safetensors thưa (sparse safetensors)</strong>, tải chúng lên một <strong>Hugging Face Bucket</strong>, và thông báo cho vLLM để tải về. Trên mô hình Qwen3-0.6B, lượng dữ liệu truyền tải mỗi bước giảm từ 1,2 GB xuống còn <strong>20 đến 35 MB</strong>.</li>
+<li>Điểm đặc biệt nhất: chúng tôi đã chạy một quá trình huấn luyện phân tách hoàn toàn, trong đó <strong>bộ huấn luyện nằm trên một máy</strong>, <strong>vLLM nằm trong một Hugging Face Space</strong>, <strong>môi trường Wordle nằm trong một Space khác</strong>, và trọng số được luân chuyển thông qua một Hub bucket duy nhất. Không cần cụm máy chủ chung, không cần RDMA, không cần VPN.</li>
+</ul>
+<p>RL bất đồng bộ vừa trở nên rẻ hơn rất nhiều. Hãy cùng tìm hiểu chi tiết.</p>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="1-bài-toán-một-terabyte">1. Bài toán một Terabyte</h2>
+<p>Nếu bạn đã đọc bài viết trước của chúng tôi về <a href="https://huggingface.co/blog/async-rl-landscape">toàn cảnh huấn luyện RL bất đồng bộ</a>, bạn đã biết vấn đề cốt lõi: mọi thư viện RL bất đồng bộ, bất kể cách họ gọi &ldquo;actor model&rdquo; hay sử dụng backend NCCL màu gì, cuối cùng đều vấp phải cùng một rào cản: <strong>đồng bộ hóa trọng số</strong>.</p>
+<p>Công cụ suy luận đang sử dụng chính sách của bước N. Bộ huấn luyện vừa hoàn thành bước N+1. Các trọng số mới phải được chuyển từ bên này sang bên kia trước khi công cụ suy luận bị lệch khỏi chính sách (off-policy) một cách nghiêm trọng. Việc này nằm trên đường găng (critical path) dù bạn chạy đồng bộ hay bất đồng bộ: một quá trình truyền tải gây nghẽn là <em>lãng phí tài nguyên tính toán</em> của GPU khi chúng không tạo ra token. Với phương pháp truyền tải delta thưa, bạn giảm thời gian chờ đó xuống còn vài giây, và bộ huấn luyện thậm chí không cần đợi công cụ suy luận sẵn sàng: nó chỉ cần công bố &ldquo;trọng số đã sẵn sàng&rdquo; và tải trọng số lên bucket dùng chung ngay khi bước tối ưu hóa kết thúc, còn công cụ suy luận sẽ tự tải về khi nó rảnh.</p>
+<p>Fireworks đã đưa ra một con số đáng nhớ trong bài viết <a href="https://fireworks.ai/blog/frontier-rl-is-cheaper-than-you-think">Frontier RL Is Cheaper Than You Think</a>: đối với một checkpoint mô hình 1T tham số ở định dạng fp8, một bản snapshot đầy đủ là <strong>1024 GiB</strong>, và theo quan niệm thông thường, đó là những gì bạn phải truyền tải mỗi khi cập nhật dàn máy rollout. Con số này khiến mọi người phải vẽ ra những sơ đồ với các siêu cụm máy chủ (mega-clusters), hạ tầng RDMA và các đường truyền chuyên dụng xuyên vùng. Tuy nhiên, delta trung bình mà họ đo được giữa các checkpoint liền kề chỉ là <strong>20,3 GiB, tương đương 1,98% mô hình đầy đủ</strong>, và &ldquo;hơn 98% trọng số ở định dạng bf16 vẫn giữ nguyên giá trị bit giữa các checkpoint liên tiếp&rdquo;.</p>
+<p>Báo cáo <a href="https://huggingface.co/papers/2603.24477">Composer 2 của Cursor</a> cũng kể một câu chuyện tương tự. Họ chạy huấn luyện và suy luận ở các vùng khác nhau và kết nối chúng bằng một <strong>S3 bucket dùng chung</strong>, nơi bộ huấn luyện tải lên các sai biệt trọng số (weight diffs) đã nén <em>sau mỗi bước huấn luyện</em>. Mỗi cụm máy chủ độc lập tải xuống và tái cấu trúc từ chuỗi delta dùng chung, &ldquo;không yêu cầu kết nối trực tiếp với cụm huấn luyện&rdquo;. Hai bên không bao giờ trao đổi tham số trực tiếp với nhau. Bucket chính là đường truyền.</p>
+<p>Cả hai bài báo đều đồng ý về ba điều, và chúng tôi muốn nhấn mạnh lại vì phần còn lại của bài viết này thực chất là một bản chuyển thể mã nguồn mở trung thành với những ý tưởng đó:</p>
+<ol>
+<li>Hầu hết các trọng số không thực sự thay đổi giữa hai bước RL liên tiếp.</li>
+<li>Nếu bạn chỉ gửi những phần thay đổi, chi phí băng thông sẽ giảm khoảng hai lần (100 lần).</li>
+<li>Nếu bạn định tuyến những sai biệt nhỏ đó thông qua một kho lưu trữ đối tượng (object store) dùng chung, bạn không còn cần bộ huấn luyện và cụm suy luận phải nằm trong cùng một trung tâm dữ liệu.</li>
+</ol>
+<p>Điều duy nhất còn thiếu là một phiên bản của câu chuyện này mà bạn có thể cài đặt qua <code>pip install</code>. Vì vậy, chúng tôi đã viết nó.</p>
+<h2 id="2-tại-sao-trọng-số-rl-định-dạng-bf16-hầu-như-luôn-thưa">2. Tại sao trọng số RL định dạng bf16 hầu như luôn thưa?</h2>
+<p>Trước khi thiết lập, cần hiểu tại sao phương pháp này lại khả thi. Tuyên bố &ldquo;98% trọng số không thay đổi&rdquo; nghe có vẻ giống như những con số chỉ đúng trong bản demo và sẽ thất bại trong thực tế. Nhưng không phải vậy. Điều này xuất phát từ cách tính toán bf16 hoạt động với tốc độ học (learning rate) mà RL sử dụng.</p>
+<p>Một số bf16 có 7 bit phần phân số (mantissa). Giữa hai lũy thừa của hai liên tiếp, có đúng $2^7 = 128$ giá trị có thể biểu diễn, vì vậy khoảng cách giữa các số bf16 liền kề xung quanh $|w|$ là khoảng $|w| \cdot 2^{-7}$. Một bản cập nhật sẽ bị &ldquo;hấp thụ&rdquo; bởi việc ép kiểu bf16 bất cứ khi nào nó nhỏ hơn <em>một nửa</em> khoảng cách đó, tức là khi $|\Delta w| &lt; |w|/256$. Đây là &ldquo;ngưỡng hiển thị bf16&rdquo; (bf16 visibility threshold) mà PULSE vẽ trong Hình 3 của họ.</p>
+<p>Bây giờ hãy nhìn vào những gì Adam làm. Với tốc độ học RL, ví dụ $3 \times 10^{-6}$, bản cập nhật cho một trọng số duy nhất là:</p>
+<p>$$\Delta w = -\eta \cdot \frac{\hat{m}}{\sqrt{\hat{v}} + \epsilon}$$</p>
+<p>Bước chuẩn hóa $\hat{m}/(\sqrt{\hat{v}}+\epsilon)$ xấp xỉ bằng 1, vì vậy $|\Delta w| \approx \eta \approx 3 \times 10^{-6}$. Đối với hầu hết các trọng số, $|w|$ nằm trong khoảng $10^{-2}$ đến $10^{-1}$ (PULSE báo cáo trung vị là 0,019 cho các trọng số LLM điển hình). Ngưỡng $|w|/256$ ở mức độ đó là khoảng $4 \times 10^{-5}$ đến $4 \times 10^{-4}$, vốn <em>lớn hơn</em> bản cập nhật.</p>
+<p>Nói cách khác: bộ tối ưu hóa đang &ldquo;thì thầm&rdquo;, và bf16 không thể nghe thấy. Bản cập nhật bị hấp thụ bởi việc làm tròn, biểu diễn byte của $w$ không thay đổi, và từ góc nhìn của công cụ suy luận, trọng số này không hề di chuyển. Nhân con số đó với vài trăm triệu tham số, bạn sẽ có con số độ thưa &gt;99% một cách tự nhiên, không cần xấp xỉ.</p>
+<p>Đây chính là lập luận được chính thức hóa trong bài báo PULSE (<a href="https://huggingface.co/papers/2602.03839">Mihai &amp; Belilovsky, 2026</a>). Họ định nghĩa hai ngưỡng. <strong>Ngưỡng hấp thụ (absorption bound)</strong> $10\eta$ là trường hợp tệ nhất cho một bản cập nhật Adam, và <strong>ngưỡng hiệu quả (effective bound)</strong> $\eta$ là chế độ bạn thực sự hoạt động. <strong>Ngưỡng hiển thị bf16</strong> là $|w|/256$. Bất cứ khi nào bản cập nhật nằm dưới ngưỡng hiển thị, nó sẽ bị hấp thụ và byte bf16 không thay đổi. Hình 3 của họ vẽ cả hai ngưỡng so với một đám mây các trọng số LLM đại diện, và kết luận là rõ ràng: tại $\eta = 3 \times 10^{-6}$, ngay cả ngưỡng hấp thụ cũng nằm dưới ngưỡng hiển thị cho hầu hết mọi trọng số trong mô hình. Họ đo lường điều này thực tế trên Qwen2.5 (0.5B/1.5B/7B), Llama-3.2-3B và Gemma-3-4B, và nhất quán tìm thấy độ thưa trung bình mỗi bước là <strong>~99%, với độ lệch chuẩn từ 0,2 đến 0,4% qua 400 bước huấn luyện</strong>. Bước tệ nhất vẫn trên 98%. Vì vậy, việc dưới 1% thay đổi không phải là một phép đo may mắn; đó là điều mà số học đảm bảo.</p>
+<p>Chúng tôi không cần dự đoán điều này bằng phân tích (thực tế, chúng tôi đã thử dự đoán mặt nạ thay đổi từ thống kê $m$ và $v$ của Adam, nhưng tỷ lệ thu hồi chỉ đạt 30% đáng buồn). Chúng tôi chỉ cần <strong>quan sát xem byte nào đã bị đảo</strong>. Đó là một tensor boolean nhỏ cho mỗi tham số, được tính toán ngay sau bước tối ưu hóa.</p>
+<!-- raw HTML omitted -->
+<h2 id="3-hf-buckets-và-kiến-trúc">3. HF Buckets và Kiến trúc</h2>
+<p>Đây là nơi mảnh ghép thứ hai xuất hiện, và là lúc bài viết này không còn là bản dịch từ Fireworks/Cursor mà trở thành giải pháp của Hugging Face.</p>
+<h3 id="31-hub-bucket-là-gì">3.1 Hub Bucket là gì?</h3>
+<p>Một <strong>Bucket</strong> là một loại repo trên Hub được thiết kế để lưu trữ đối tượng tần suất cao. Không có quy trình commit rườm rà, không có quy trình PR, không có những rắc rối của LFS. Bạn thêm tệp, liệt kê tệp, tải tệp. Giao diện Python chỉ gồm hai hàm:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> huggingface_hub <span style="color:#f92672">import</span> batch_bucket_files, download_bucket_files
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Phía Trainer (Bộ huấn luyện)</span>
+</span></span><span style="display:flex;"><span>batch_bucket_files(<span style="color:#e6db74">&#34;my-org/wordle-deltas&#34;</span>, add<span style="color:#f92672">=</span>[(buffer, <span style="color:#e6db74">&#34;deltas/step_000042.safetensors&#34;</span>)])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Phía Inference (Suy luận)</span>
+</span></span><span style="display:flex;"><span>download_bucket_files(<span style="color:#e6db74">&#34;my-org/wordle-deltas&#34;</span>, files<span style="color:#f92672">=</span>[(<span style="color:#e6db74">&#34;deltas/step_000042.safetensors&#34;</span>, local_path)])
+</span></span></code></pre></div><p>Chỉ vậy thôi. Hai lời gọi hàm và trọng số của bạn đã được vận chuyển.</p>
+<p>Đằng sau đó, các bucket được hỗ trợ bởi <strong>Xet</strong>, lớp lưu trữ phân đoạn theo nội dung (content-defined chunking) của Hub. Xet xem xét mọi tệp bạn tải lên, chia nó thành các phân đoạn dựa trên nội dung thực tế (không phải theo offset cố định) và loại bỏ trùng lặp với mọi thứ đã có trong bucket. Kết quả thực tế là, ngay cả khi chúng tôi quá lười để viết mã hóa thưa và chỉ tải lên các anchor đầy đủ mỗi bước, Xet <em>vẫn</em> sẽ chỉ truyền tải các phân đoạn đã thay đổi. Kết hợp mã hóa thưa + ngăn xếp Xet: chúng ta chỉ trả phí cho những gì di chuyển, và chỉ trả một lần.</p>
+<p>Đây là phiên bản mã nguồn mở tương đương với &ldquo;S3 bucket dùng chung&rdquo; mà cả Fireworks và Cursor sử dụng, ngoại trừ việc lớp lưu trữ đã biết về băm nội dung, token HF hiện có của bạn đã có quyền truy cập, và nó kết hợp tự nhiên với phần còn lại của hệ sinh thái (Spaces, datasets, models).</p>
+<h3 id="32-ba-chiếc-hộp">3.2 Ba chiếc hộp</h3>
+<p>Kiến trúc đầy đủ có chính xác ba chiếc hộp và một nền tảng dùng chung:</p>
+<ul>
+<li><strong>Trainer.</strong> Bất cứ nơi nào bạn muốn. Một GPU, tám GPU, một laptop gắn H100 qua USB, chúng tôi không phán xét. Nắm giữ trọng số mô hình, chạy bộ tối ưu hóa, tạo ra các delta thưa.</li>
+<li><strong>HF Bucket.</strong> Một repo duy nhất, hai tiền tố: <code>anchors/</code> cho các bản snapshot đầy đủ thỉnh thoảng và <code>deltas/</code> cho các bản vá thưa ở giữa. Đây là điều duy nhất cả hai bên cùng thống nhất.</li>
+<li><strong>vLLM rollout server.</strong> Bất cứ nơi nào bạn muốn, và quan trọng là <em>không nhất thiết phải ở cùng nơi với bộ huấn luyện</em>. Tải dữ liệu từ bucket, áp dụng delta và cung cấp kết quả rollout.</li>
+<li><strong>Environment (Môi trường).</strong> Kết nối với rollout server theo cách thông thường (HTTP, gọi hàm, v.v.).</li>
+</ul>
+<p>Điểm mấu chốt cần ghi nhớ, điều mà bài báo của Cursor nhấn mạnh và cũng đúng y hệt ở đây: <strong>bộ huấn luyện và rollout server không bao giờ nói chuyện trực tiếp với nhau về trọng số</strong>. Chúng trao đổi một yêu cầu POST nhỏ chứa <code>{&quot;repo_id&quot;: ..., &quot;filename&quot;: ...}</code>, và đó là toàn bộ mặt phẳng điều khiển (control plane). Việc truyền tải byte thực tế diễn ra giữa mỗi bên và bucket, song song, không cần hạ tầng mạng dùng chung.</p>
+<p>Tại sao điều này lại quan trọng trong thực tế:</p>
+<ul>
+<li>Rollout server có thể ở một vùng khác, một đám mây khác, hoặc nằm sau NAT bên trong một Hugging Face Space. Nó không quan tâm.</li>
+<li>N bản sao suy luận có thể tải cùng một delta từ cùng một bucket, và Xet loại bỏ trùng lặp byte cho tất cả họ.</li>
+<li>Bộ huấn luyện không bao giờ phải biết có bao nhiêu bản sao suy luận tồn tại, ở đâu, hay liệu một trong số chúng vừa bị sập.</li>
+</ul>
+<p>Bộ huấn luyện ghi. Các bản sao đọc. Hub làm nhiệm vụ dẫn đường.</p>
+<h2 id="4-giao-thức">4. Giao thức</h2>
+<p>Bây giờ chúng ta hãy cùng &ldquo;mở nắp ca-pô&rdquo;. Giao thức gồm bốn phần: định dạng truyền tải, bố cục bucket, một bản mở rộng vLLM dài 30 dòng và một bộ phát hiện thay đổi phía bộ huấn luyện. Thực ra nó ít mã hơn bạn tưởng.</p>
+<h3 id="41-safetensors-làm-định-dạng-truyền-tải">4.1 Safetensors làm định dạng truyền tải</h3>
+<p>Chúng tôi chọn <a href="https://github.com/huggingface/safetensors">safetensors</a> cho định dạng trên đĩa và trên đường truyền. Nó đã là định dạng checkpoint chuẩn trên Hub, mọi framework hợp lý đều có thể đọc được, và phần tiêu đề (header) có thể mang theo siêu dữ liệu chuỗi tùy ý. Trường siêu dữ liệu đó chính là nơi chúng tôi giấu giao thức.</p>
+<p>Có hai loại tệp trong bucket.</p>
+<p><strong>Anchors</strong> trông giống như một checkpoint bình thường: một tensor cho mỗi tham số, trọng số bf16 đầy đủ, được ghi sau mỗi $N$ lần đồng bộ (mặc định $N=10$).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>anchors/step_000010.safetensors
+</span></span><span style="display:flex;"><span>  ├── model.layers.0.self_attn.q_proj.weight   (bf16, đầy đủ)
+</span></span><span style="display:flex;"><span>  ├── model.layers.0.self_attn.k_proj.weight   (bf16, đầy đủ)
+</span></span><span style="display:flex;"><span>  └── ...
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  sparse=False, model_version=10, sparsity=0.0
+</span></span></code></pre></div><p><strong>Deltas</strong> là phần thú vị. Đối với mỗi tham số thực sự thay đổi, chúng tôi lưu trữ hai mục: một tensor int32 phẳng chứa các chỉ số của phần tử (indices), và một tensor bf16 chứa các giá trị tại các chỉ số đó.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>deltas/step_000011.safetensors
+</span></span><span style="display:flex;"><span>  ├── model.layers.0.self_attn.q_proj.weight.indices   (int32, [số_lượng_thay_đổi])
+</span></span><span style="display:flex;"><span>  ├── model.layers.0.self_attn.q_proj.weight.values    (bf16,  [số_lượng_thay_đổi])
+</span></span><span style="display:flex;"><span>  ├── model.layers.0.mlp.gate_proj.weight.indices
+</span></span><span style="display:flex;"><span>  ├── model.layers.0.mlp.gate_proj.weight.values
+</span></span><span style="display:flex;"><span>  └── ...
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  sparse=True, model_version=11, sparsity=0.9938, changed_params=[...]
+</span></span></code></pre></div><p>Một vài hệ quả tốt từ lựa chọn này:</p>
+<ul>
+<li>Một delta là một <em>tệp</em>. Bạn có thể mở nó bằng <code>safe_open(...)</code> trong Python và kiểm tra mọi tensor trong đó. Không có khung đóng gói độc quyền, không có tiền tố độ dài, không có bắt tay phiên bản.</li>
+<li>Siêu dữ liệu tự mô tả. Bên nhận đọc <code>sparse=True/False</code> và rẽ nhánh xử lý. Không cần một tệp danh mục (manifest) riêng biệt.</li>
+<li>Nó là zero-copy thông qua mmap ở phía suy luận, điều này rất quan trọng khi bạn thực hiện việc này sau mỗi vài giây.</li>
+</ul>
+<p>Nhịp độ rất đơn giản: tạo anchor mỗi bước thứ N, tạo delta cho các bước ở giữa. Cả hai đều nằm trong cùng một bucket dưới tiền tố <code>anchors/</code> và <code>deltas/</code>. Mỗi bản sao suy luận mới chỉ cần lấy anchor gần nhất và sau đó tái hiện lại các delta kể từ đó.</p>
+<!-- raw HTML omitted -->
+<h3 id="42-phía-bộ-huấn-luyện-mặt-nạ-boolean-từ-optimizer-hook">4.2 Phía Bộ huấn luyện: Mặt nạ Boolean từ Optimizer Hook</h3>
+<p>Bộ huấn luyện cần biết phần tử bf16 nào thực sự bị đảo. Chúng tôi thực hiện điều này bằng một <code>BF16ChangeDetector</code> nhỏ, đăng ký một hook trước bước (pre-step) và sau bước (post-step) trên bộ tối ưu hóa:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BF16ChangeDetector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, model, optimizer):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_pre_step_bf16: dict[str, torch<span style="color:#f92672">.</span>Tensor] <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>_validated_masks: dict[str, torch<span style="color:#f92672">.</span>Tensor] <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>        optimizer<span style="color:#f92672">.</span>register_step_pre_hook(self<span style="color:#f92672">.</span>_pre_step_hook)
+</span></span><span style="display:flex;"><span>        optimizer<span style="color:#f92672">.</span>register_step_post_hook(self<span style="color:#f92672">.</span>_post_step_hook)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_pre_step_hook</span>(self, opt, args, kwargs):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> p <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>_params:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>_pre_step_bf16[name_of(p)] <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>detach()<span style="color:#f92672">.</span>to(torch<span style="color:#f92672">.</span>bfloat16)<span style="color:#f92672">.</span>cpu()<span style="color:#f92672">.</span>clone()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_post_step_hook</span>(self, opt, args, kwargs):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> p <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>_params:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>_validated_masks[name_of(p)] <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>                p<span style="color:#f92672">.</span>detach()<span style="color:#f92672">.</span>to(torch<span style="color:#f92672">.</span>bfloat16)<span style="color:#f92672">.</span>cpu() <span style="color:#f92672">!=</span> self<span style="color:#f92672">.</span>_pre_step_bf16[name_of(p)]
+</span></span><span style="display:flex;"><span>            )
+</span></span></code></pre></div><p>Mã thực tế trong PR có thêm một chút chi tiết kỹ thuật (khớp đối tượng tham số của optimizer với tham số mô hình qua <code>data_ptr()</code>), nhưng ý tưởng rất đơn giản: chụp snapshot $\rightarrow$ thực hiện bước $\rightarrow$ tìm sai biệt.</p>
+<p>Đây là sự thật khách quan. Chúng tôi đã <em>thử</em> con đường thanh thoát hơn là dự đoán mặt nạ từ thống kê $m$ và $v$ của Adam, sử dụng trực tiếp ngưỡng ULP của bf16. Về nguyên tắc thì nó hoạt động, nhưng trong thực tế, tỷ lệ thu hồi chỉ khoảng 30%, nghĩa là chúng tôi sẽ gửi một delta thiếu mất hai phần ba các bản cập nhật thực tế. Việc chuẩn hóa của Adam đủ phức tạp khiến ngưỡng phân tích không đủ chặt chẽ. Vì vậy, chúng tôi chỉ so sánh các byte. Việc này tốn một bản snapshot CPU bf16 của mô hình ở phía bộ huấn luyện, và chúng tôi chấp nhận chi phí này.</p>
+<p>Bốn giai đoạn của luồng <code>_sync_weight</code> mới là:</p>
+<ol>
+<li><strong>Tải lên trong khi suy luận vẫn chạy.</strong> Bộ huấn luyện mã hóa các phần tử theo mặt nạ thành một buffer safetensors và đẩy lên bucket. vLLM vẫn vui vẻ phục vụ chính sách cũ trong suốt bước này.</li>
+<li><strong>Tạm dừng vLLM.</strong> Một lời gọi HTTP ngắn, vài trăm mili giây.</li>
+<li><strong>Phát tín hiệu <code>/update_weights</code>.</strong> Gửi tọa độ bucket. vLLM tải về, áp dụng, rồi phản hồi.</li>
+<li><strong>Tiếp tục.</strong> vLLM hoạt động trở lại.</li>
+</ol>
+<p>Các dòng log kể lại câu chuyện này:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Delta: 1234567/200000000 elements changed (sparsity=99.38%)
+</span></span><span style="display:flex;"><span>[delta_engine] uploaded user/wordle-deltas/deltas/step_000042.safetensors (27.4 MB, ...)
+</span></span><span style="display:flex;"><span>Weight sync: done. Total 9.4s (inference paused 1.1s)
+</span></span></code></pre></div><p>Dòng quan trọng nhất là phần trong ngoặc. Suy luận bị tạm dừng trong <strong>1,1 giây</strong>. 9,4 giây còn lại được dành cho việc tải lên, việc này diễn ra trong khi rollout server vẫn đang tạo token. Với NCCL, chúng tôi phải trả toàn bộ thời gian đồng bộ dưới dạng thời gian tạm dừng. Ở đây, chúng tôi coi đó là thời gian chạy nền.</p>
+<!-- raw HTML omitted -->
+<h3 id="43-phía-vllm-bản-mở-rộng-30-dòng">4.3 Phía vLLM: Bản mở rộng 30 dòng</h3>
+<p>vLLM có một trừu tượng sạch sẽ cho việc này gọi là <code>WeightTransferEngine</code>. Chúng tôi triển khai một <code>DeltaWeightTransferEngine</code> với phương thức <code>receive_weights</code> có nội dung cốt lõi là:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">receive_weights</span>(self, update_info, load_weights):
+</span></span><span style="display:flex;"><span>    download_bucket_files(update_info<span style="color:#f92672">.</span>repo_id, files<span style="color:#f92672">=</span>[(update_info<span style="color:#f92672">.</span>filename, local_path)])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> safe_open(local_path, framework<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pt&#34;</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cpu&#34;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>        meta <span style="color:#f92672">=</span> PatchMetadata<span style="color:#f92672">.</span>from_metadata_dict(f<span style="color:#f92672">.</span>metadata())
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> meta<span style="color:#f92672">.</span>sparse:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Anchor: nạp mọi tensor và snapshot cho các delta tương lai</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> name <span style="color:#f92672">in</span> f<span style="color:#f92672">.</span>keys():
+</span></span><span style="display:flex;"><span>                tensor <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>get_tensor(name)
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>_bf16_snapshot[name] <span style="color:#f92672">=</span> tensor<span style="color:#f92672">.</span>clone()
+</span></span><span style="display:flex;"><span>                load_weights([(name, tensor)])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Delta: áp dụng (indices, values) vào snapshot, đưa tensor đầy đủ cho vLLM</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> name <span style="color:#f92672">in</span> json<span style="color:#f92672">.</span>loads(meta<span style="color:#f92672">.</span>changed_params):
+</span></span><span style="display:flex;"><span>                indices <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>get_tensor(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">.indices&#34;</span>)<span style="color:#f92672">.</span>long()
+</span></span><span style="display:flex;"><span>                values <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>get_tensor(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">.values&#34;</span>)
+</span></span><span style="display:flex;"><span>                snap <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_bf16_snapshot[name]<span style="color:#f92672">.</span>flatten()
+</span></span><span style="display:flex;"><span>                snap[indices] <span style="color:#f92672">=</span> values
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>_bf16_snapshot[name] <span style="color:#f92672">=</span> snap<span style="color:#f92672">.</span>reshape(self<span style="color:#f92672">.</span>_bf16_snapshot[name]<span style="color:#f92672">.</span>shape)
+</span></span><span style="display:flex;"><span>                load_weights([(name, self<span style="color:#f92672">.</span>_bf16_snapshot[name])])
+</span></span></code></pre></div><p>Chúng tôi đăng ký nó thông qua cờ <code>--worker-extension-cls</code> của vLLM, nghĩa là <strong>không cần fork vLLM</strong>. Bạn chỉ cần cài đặt TRL vào cùng một image với vLLM, trỏ CLI đến lớp (class) của chúng tôi là xong.</p>
+<p>Đáng nhắc tới: bản thân vLLM đang có một nỗ lực tích hợp sẵn việc truyền tải trọng số thưa, <a href="https://github.com/vllm-project/vllm/pull/40096">vllm-project/vllm#40096</a>. Nó thêm <code>receive_sparse_weights()</code> và <code>trainer_send_sparse_weights()</code> trực tiếp vào lớp cơ sở <code>WeightTransferEngine</code>, với các bản vá được mã hóa dưới dạng <code>(indices, values)</code> và được áp dụng tại chỗ thông qua <code>index_copy_()</code>, loại bỏ hoàn toàn chu kỳ xác thực GPU/CPU. PR này báo cáo truyền tải <strong>0,16 MB trong 0,40 ms</strong> cho một bản vá thưa trên Qwen3-1.7B so với <strong>942 MB trong 192 ms</strong> cho việc gửi đầy đủ.</p>
+<p>Một lưu ý thành thật về triển khai của chúng tôi ở phía suy luận: chúng tôi giữ một snapshot bf16 trên CPU của mô hình để có thể tái cấu trúc các tensor đầy đủ từ các bản vá thưa <code>(indices, values)</code>, vì hàm <code>load_weights</code> trong vLLM hiện nay yêu cầu tensor đầy đủ. Khi <a href="https://github.com/vllm-project/vllm/pull/40096">#40096</a> (hoặc phiên bản kế nhiệm) được triển khai và cung cấp đường dẫn <code>load_weights</code> thưa tại chỗ, chúng tôi có thể áp dụng các chỉ số trực tiếp trên GPU và loại bỏ bản snapshot này!</p>
+<h2 id="5-triển-khai-thực-tế-trên-spaces">5. Triển khai thực tế trên Spaces</h2>
+<p>Đây là phần mà chúng tôi cảm thấy tự hào nhất. Mọi thứ chúng tôi mô tả cho đến nay đều chạy được trên laptop, nhưng mục đích của việc định tuyến trọng số qua Hub bucket là để bộ huấn luyện và rollout server không cần phải ở gần nhau. Vì vậy, chúng tôi đã chạy một quá trình huấn luyện phân tách hoàn toàn với ba máy, không máy nào chia sẻ mạng nội bộ:</p>
+<ul>
+<li>Một máy với một GPU chạy <strong>bộ huấn luyện (trainer)</strong>.</li>
+<li>Một <strong>Hugging Face Space</strong> (Docker SDK, L4 GPU) chạy <strong>vLLM</strong> với lớp mở rộng của chúng tôi.</li>
+<li>Một <strong>Hugging Face Space</strong> thứ hai (CPU) chạy server <strong>môi trường Wordle</strong> với khả năng đáp ứng 256 phiên đồng thời.</li>
+<li>Một <strong>Hub bucket</strong> ở giữa.</li>
+</ul>
+<p>Việc thiết lập này thực sự chỉ mất vài lệnh gọi <code>hf</code> CLI. <code>Dockerfile</code> của vLLM Space về cơ bản là image vLLM gốc cộng với <code>pip install trl@...</code> và entrypoint:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> vllm/vllm-openai:latest</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install <span style="color:#e6db74">&#34;trl @ git+https://github.com/huggingface/trl.git@delta-weight-sync&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> VLLM_SERVER_DEV_MODE<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 7860</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;vllm&#34;</span>, <span style="color:#e6db74">&#34;serve&#34;</span>, <span style="color:#e6db74">&#34;Qwen/Qwen3-1.7B&#34;</span>, <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#e6db74">&#34;--host&#34;</span>, <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>, <span style="color:#e6db74">&#34;--port&#34;</span>, <span style="color:#e6db74">&#34;7860&#34;</span>, <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#e6db74">&#34;--worker-extension-cls&#34;</span>, <span style="color:#e6db74">&#34;trl.experimental.async_grpo.delta_engine.DeltaWorkerExtension&#34;</span>, <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#e6db74">&#34;--weight-transfer-config&#34;</span>, <span style="color:#e6db74">&#34;{\&#34;backend\&#34;:\&#34;nccl\&#34;}&#34;</span>, <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#e6db74">&#34;--max-model-len&#34;</span>, <span style="color:#e6db74">&#34;32768&#34;</span>, <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#e6db74">&#34;--gpu-memory-utilization&#34;</span>, <span style="color:#e6db74">&#34;0.8&#34;</span><span style="color:#f92672">]</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>Triển khai nó dưới dạng một Space:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hf repos create $USER/vllm-wordle-inference <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --type space --space-sdk docker --flavor l4x1 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --secrets HF_TOKEN<span style="color:#f92672">=</span>$HF_TOKEN
+</span></span><span style="display:flex;"><span>hf upload $USER/vllm-wordle-inference examples/scripts/openenv/vllm_space/ --type space
+</span></span></code></pre></div><p>Và bắt đầu huấn luyện từ bất cứ nơi nào trên hành tinh có thể kết nối HTTPS:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python examples/scripts/openenv/async_wordle.py <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --vllm-server-url https://$USER-vllm-wordle-inference.hf.space <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --env-url https://openenv-wordle.hf.space <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --delta-sync-repo-id $USER/wordle-deltas <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --model Qwen/Qwen3-1.7B
+</span></span></code></pre></div><p>Bộ huấn luyện không bao giờ mở cổng. Space không bao giờ thấy IP của bộ huấn luyện. Môi trường Wordle không biết sự tồn tại của cả hai. Tất cả chúng đều nói chuyện với Hub. Quá trình huấn luyện đã hội tụ ở bài kiểm tra sanity check &ldquo;immediate-EOS&rdquo;, sau đó là trên các bản rollout Wordle thực tế: phần thưởng tăng lên, dữ liệu delta duy trì trong khoảng 20 đến 35 MB, và cửa sổ tạm dừng suy luận mỗi lần đồng bộ duy trì ở mức khoảng một giây. Toàn bộ log chạy được liên kết trong PR đi kèm.</p>
+<h2 id="6-điều-này-thực-sự-mở-ra-khả-năng-gì">6. Điều này thực sự mở ra khả năng gì?</h2>
+<p>Một vài điều, và chúng tôi nghĩ chúng rất lớn.</p>
+<p><strong>Huấn luyện RL bất đồng bộ không cần cụm máy chủ (cluster).</strong> Nếu bạn có một GPU và một tài khoản Hugging Face, giờ đây bạn có thể thực hiện huấn luyện phân tách thực sự. Bộ huấn luyện nằm trên GPU; dàn máy rollout nằm trong Spaces; môi trường nằm trong một Space khác; trọng số di chuyển qua một bucket. Điều này trước đây yêu cầu một thiết lập đặt cạnh nhau (colocated) với tất cả những thỏa hiệp về thông lượng mà nó mang lại, hoặc một cụm máy chủ thực sự với mạng chia sẻ. Bây giờ thì không cần nữa.</p>
+<p><strong>Suy luận đa bản sao, miễn phí.</strong> Thiết lập hai vLLM Spaces, hoặc mười cái. Tất cả cùng tải từ một bucket. Xet lưu trữ theo địa chỉ nội dung nên các anchor liên tiếp chia sẻ các phân đoạn khi lưu trữ (giúp bucket không bị phình to), và bộ nhớ đệm biên (edge cache) của Hub giúp việc tải lặp lại cùng một tệp trở nên rẻ hơn. Muốn một dàn máy rollout phân phối toàn cầu? Giờ đây đó là một bài tập DevOps nhỏ, không còn là một dự án nghiên cứu.</p>
+<p><strong>Một định dạng truyền tải có thể gỡ lỗi bằng các công cụ hiện có.</strong> Một delta là một tệp safetensors. Bạn có thể <code>safe_open</code> nó từ một notebook, liệt kê các khóa, kiểm tra các chỉ số, tự tính toán độ thưa. Chúng tôi đã dành đủ số giờ trong tcpdump cho các luồng NCCL mờ mịt để biết trân trọng điều này.</p>
+<p><strong>Một con đường tiến tới quy mô frontier.</strong> Con số 20 đến 35 MB là dành cho Qwen3-0.6B. Câu hỏi thú vị là đường cong sẽ trông như thế nào khi ta tăng quy mô. Hãy làm một phép tính nhanh.</p>
+<p>Lấy Llama-3.1-405B. Ở định dạng bf16, nó nặng <strong>810 GB</strong> trên đĩa. PULSE đo được độ thưa trung bình mỗi bước là 99% ở tốc độ học RL, vì vậy delta thực tế nằm ở khoảng 1% tham số. Mã hóa đo được khi triển khai của họ đạt <strong>108 MB trên mô hình 7B</strong>, tương ứng với mức giảm <strong>130 lần</strong> mà PULSE báo cáo. Tỷ lệ tuyến tính với 405B, delta sẽ nằm ở mức khoảng <strong>6 GB mỗi bước</strong>.</p>
+<p>Điều đó mang lại lợi ích gì về thời gian thực? NCCL nhanh trong một cụm, chắc chắn rồi. Giả sử băng thông phát sóng tổng hợp hào phóng là 100 GB/s (đa nút, RDMA, đầy đủ). Một lần đồng bộ đầy đủ là <code>810 GB / 100 GB/s ≈ 8 giây</code> tạm dừng suy luận, mỗi bước. Với đường dẫn delta, bộ huấn luyện truyền 6 GB vào một bucket <em>ở chế độ nền</em> trong khi việc tạo token vẫn tiếp tục, và cửa sổ tạm dừng thực tế của rollout server chỉ là bước áp dụng, ở quy mô này mất vài giây. Vì vậy, ngay cả trước khi rời khỏi cụm, delta cắt giảm thời gian tạm dừng hiển nhiên đi 4 lần và giảm lượng byte trên đường truyền khoảng 130 lần.</p>
+<p>Bây giờ hãy rời khỏi cụm. NCCL hoàn toàn không hoạt động xuyên đám mây. Một khi bạn muốn một dàn máy rollout ở <code>us-east</code>, một cái ở <code>eu-west</code>, có thể một cái trong Hugging Face Space, đường dẫn dựa trên bucket là đường dẫn <em>duy nhất</em>. Với băng thông internet khả dụng 1 GB/s, một lần phát sóng đầy đủ sẽ mất 13 phút; delta thực hiện điều đó trong 6 giây.</p>
+<p>Đối với một mô hình cấp 1 TB trong khung của Fireworks, số liệu họ đo được cho thấy <strong>delta 20,3 GiB so với snapshot đầy đủ 1024 GiB</strong>, giảm khoảng 50 lần. Mã hóa thưa chặt chẽ hơn của PULSE sẽ đẩy con số đó đi xa hơn (ngoại suy khoảng 15 GB mỗi delta, gần 65 lần). Dù thế nào, bạn đang ở trong chế độ mà việc truyền tải trọng số thông qua lưu trữ đối tượng thông dụng không còn là một &ldquo;mẹo&rdquo; mà trở thành kiến trúc hợp lý duy nhất.</p>
+<h2 id="7-những-gì-còn-lại-trên-bàn-làm-việc">7. Những gì còn lại trên bàn làm việc</h2>
+<p>Chúng tôi không giả vờ rằng điều này đã hoàn tất. Đây là danh sách thành thật.</p>
+<ul>
+<li><strong>Hai bản snapshot CPU bf16, thừa một cái.</strong> Bộ huấn luyện giữ một bản (cho bộ phát hiện thay đổi) và rollout server giữ một bản (để tái cấu trúc tensor đầy đủ cho <code>load_weights</code> của vLLM). Bản đầu tiên chúng tôi phải chấp nhận cho đến khi ai đó tìm ra một mặt nạ phân tích chặt chẽ, điều này khó hơn vẻ ngoài. Bản thứ hai sẽ biến mất khi vLLM có API <code>load_weights</code> thưa. PR sắp ra mắt.</li>
+<li><strong>Nhịp độ anchor cố định.</strong> Hiện tại chúng tôi đổ một anchor đầy đủ sau mỗi $N$ bước. Một chính sách thích ứng (&ldquo;tạo anchor khi độ lệch tích lũy vượt quá X&rdquo;) sẽ cắt giảm chi phí anchor trong các đợt chạy dài.</li>
+<li><strong>Bộ huấn luyện FSDP2 đa nút.</strong> <code>BF16ChangeDetector</code> được xây dựng xung quanh các hook optimizer theo từng tiến trình. Nó sẽ tổng quát hóa sạch sẽ cho FSDP2, nhưng chúng tôi chưa đo lường nó ở quy mô đa nút. Có một mục <code>TODO</code> trong PR mang tên chúng tôi.</li>
+<li><strong>Kết nối vào bộ tối ưu hóa.</strong> Nỗ lực dự đoán mặt nạ chỉ từ $(m, v)$ cho kết quả thu hồi thấp, nghĩa là ngưỡng bf16 phân tích đang làm điều gì đó tinh tế hơn công thức trong sách giáo khoa. Chúng tôi rất muốn nghe từ bất kỳ ai đã giải quyết được vấn đề này.</li>
+<li><strong>Kết hợp với nén trên đường truyền.</strong> Safetensors thưa và gzip theo từng phân đoạn là hai thứ độc lập. Chúng tôi chưa thử kết hợp chúng, mặc dù không mong đợi mức tăng nén khổng lồ.</li>
+</ul>
+<h2 id="8-hãy-thử-nó">8. Hãy thử nó</h2>
+<ul>
+<li>PR: <a href="https://github.com/huggingface/trl/pull/5417">huggingface/trl#5417</a>. Nhánh là <code>delta-weight-sync</code>.</li>
+<li>Ví dụ Wordle đầy đủ: <code>examples/scripts/openenv/async_wordle.py</code>.</li>
+<li>Dockerfile cho Spaces: <code>examples/scripts/openenv/vllm_space/</code> và <code>examples/scripts/openenv/wordle_space/</code>.</li>
+<li>Đọc thêm: bài viết <a href="https://huggingface.co/blog/async-rl-landscape">toàn cảnh RL bất đồng bộ</a> của chúng tôi, bài <a href="https://fireworks.ai/blog/frontier-rl-is-cheaper-than-you-think">1 TB của Fireworks</a>, báo cáo <a href="https://huggingface.co/papers/2603.24477">Cursor Composer 2</a>.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/delta-weight-sync">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/27-may-2026/">27 May 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-25/43b721/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3" alt="Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-25T00:00:00&#43;00:00">May 25, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Tìm hiểu về Harness, Scaffold và các thuật ngữ quan trọng liên quan đến AI Agent</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-11/956aa9/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.cokh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Hai năm sử dụng AI cục bộ trên laptop- Khi các mô hình mở vượt xa định luật Moore" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-11T00:00:00&#43;00:00">May 11, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Hai năm sử dụng AI cục bộ trên laptop- Khi các mô hình mở vượt xa định luật Moore</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Chia sẻ về trải nghiệm sử dụng AI cục bộ trên máy tính xách tay trong hai năm qua</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-27/2c02f5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://x.ai/images/og/news.png" alt="Sử dụng Grok trong Kilo Code" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Sử dụng Grok trong Kilo Code</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-27/e68523/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-25/43b721/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3" alt="Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-15/f0037a/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/jWCnXbTk4WOb4I-UCpEX8rGzMlm_OklNPajrFu8pIZgfXZy1Y5e3KBB7OpwY24qZLUb-d7XkNBVvHrKX3Feslhzd7sk-kep69PWmkiKatr11bdWRImM=w704-h704-n-nu" alt="AlphaEvolve- Cách tác nhân lập trình hỗ trợ bởi Gemini mở rộng tầm ảnh hưởng trên nhiều lĩnh vực" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">AlphaEvolve- Cách tác nhân lập trình hỗ trợ bởi Gemini mở rộng tầm ảnh hưởng trên nhiều lĩnh vực</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-15/171df5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/-vq4-6YwC_q2Cvmf0sWvACgIa4effjxRf_BQ_JTFiUN26n6sPB9wpEQ92qls93CFJ9B15ZclMTh8bXrf21J6Wl9tpZFVySijDwaGlzHztwcI0zk7cw=w2464-h2464-n-nu" alt="Tái hình dung con trỏ chuột cho kỷ nguyên AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Tái hình dung con trỏ chuột cho kỷ nguyên AI</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
