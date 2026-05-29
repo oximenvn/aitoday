@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Phân tích hiệu năng CUDA trong PyTorch (Phần 1)- Hướng dẫn cho người mới bắt đầu về torch.profiler | AI Today - SkyAI</title>
+
+<meta name="description" content="Hướng dẫn cơ bản về cách sử dụng torch.profiler để phân tích hiệu năng CUDA trong PyTorch">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Phân tích hiệu năng CUDA trong PyTorch (Phần 1)- Hướng dẫn cho người mới bắt đầu về torch.profiler</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Hướng dẫn cơ bản về cách sử dụng torch.profiler để phân tích hiệu năng CUDA trong PyTorch </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-05-29T00:00:00&#43;00:00">May 29, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            26 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Phân tích hiệu năng CUDA trong PyTorch (Phần 1)- Hướng dẫn cho người mới bắt đầu về torch.profiler">
+        <figcaption class="text-center italic text-xs">Hướng dẫn cơ bản về cách sử dụng torch.profiler để phân tích hiệu năng CUDA trong PyTorch</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="phân-tích-hiệu-năng-trong-pytorch-phần-1-hướng-dẫn-cho-người-mới-bắt-đầu-về-torchprofiler">Phân tích hiệu năng trong PyTorch (Phần 1): Hướng dẫn cho người mới bắt đầu về torch.profiler</h1>
+<blockquote>
+<p><em>Những gì bạn không thể phân tích, bạn không thể tối ưu hóa.</em></p></blockquote>
+<p>Cho dù bạn đang cố gắng tăng số lượng token mỗi giây cho một Mô hình Ngôn ngữ Lớn (LLM), cắt giảm vài mili giây thời gian suy luận, hay chỉ đơn giản là muốn hiểu tại sao vòng lặp huấn luyện của bạn chạy chậm hơn so với thông số kỹ thuật, con đường cuối cùng đều dẫn đến việc phân tích hiệu năng (profiling).</p>
+<p>Tuy nhiên, việc phân tích hiệu năng có một &ldquo;ngưỡng nhập môn&rdquo; khá dốc. Các bản trace là những bức tường dày đặc các hình chữ nhật đầy màu sắc. Các sự kiện mang những cái tên đáng sợ. Hầu hết các hướng dẫn đều giả định rằng bạn đã biết cách đọc chúng. Vì vậy, ngay cả khi <em>biết</em> mình nên phân tích, việc mở một bản trace có thể mang lại cảm giác như một công việc nặng nề nên để lại sau (hoặc để cho người khác làm). Bài viết này, và loạt bài mà nó khởi đầu, là nỗ lực của chúng tôi nhằm hạ thấp ngưỡng nhập môn đó.</p>
+<p>Đây là bài mở đầu của chuỗi bài <strong>Profiling in PyTorch</strong>, nơi chúng ta sẽ chậm rãi xây dựng kỹ năng đọc các bản trace của profiler và sử dụng nó để thúc đẩy tối ưu hóa. Kế hoạch như sau:</p>
+<ol>
+<li><strong>Phần 1 (bài này):</strong> Bắt đầu với thao tác đơn giản nhất có thể, một phép nhân ma trận theo sau là phép cộng bias, và học cách đọc những gì profiler trả về.</li>
+<li><strong>Phần 2:</strong> Mở rộng lên <code>nn.Linear</code> và một mạng MLP nhỏ, sử dụng các bản trace để thúc đẩy tối ưu hóa và xem xét các <code>kernels</code> bên dưới.</li>
+<li><strong>Phần 3:</strong> Áp dụng tất cả vào các Mô hình Ngôn ngữ Lớn với thư viện <code>transformers</code>.</li>
+</ol>
+<p>Chúng tôi ghi lại hành trình này từ góc nhìn của một người mới bắt đầu. Không yêu cầu điều kiện tiên quyết nào ngoài kiến thức cơ bản về PyTorch. Hãy coi đây là một bài đọc thư giãn với một vài khoảnh khắc &ldquo;Aha!&rdquo;. Cấu trúc của bài viết được thiết kế theo hướng đặt câu hỏi: chúng ta mở một bản trace, hỏi &ldquo;đợi đã, tại sao <em>điều đó</em> lại xảy ra?&rdquo;, và đuổi theo câu trả lời cho đến khi hiểu ra vấn đề. Đến cuối bài, bạn sẽ biết:</p>
+<ul>
+<li>Cách thiết lập <code>torch.profiler</code> và những gì nó thực sự trả về.</li>
+<li>Cách đọc bảng profiler và bản trace (luồng CPU, luồng GPU và những khoảng trống đáng nghi ở giữa).</li>
+<li>Chuỗi sự kiện từ một lời gọi Python cho đến tận một CUDA kernel.</li>
+<li>Những gì thay đổi (và điều thú vị hơn là những gì <strong>không</strong> thay đổi) khi bạn sử dụng <code>torch.compile</code>.</li>
+</ul>
+<p>Trước khi bắt đầu, hai định nghĩa sẽ giúp bạn dễ đọc nội dung bên dưới hơn:</p>
+<ol>
+<li>Một <strong>GPU kernel</strong> là một chương trình chạy song song trên nhiều luồng (threads) của GPU.</li>
+<li>CPU <strong>lập lịch và kích hoạt (schedule and launch)</strong> các kernel này.</li>
+</ol>
+<p>Thông thường, bạn không cần tự viết GPU kernels; khi bạn sử dụng một thao tác trong PyTorch, nó sẽ tự động được dịch sang một hoặc nhiều kernel để thực hiện công việc trên GPU.</p>
+<p>Với hai ý tưởng đó, hãy bắt đầu đặt câu hỏi.</p>
+<blockquote>
+<p><strong>Lưu ý:</strong> Đây là toàn bộ mã nguồn chúng tôi sử dụng cho bài viết: <code>01_matmul_add.py</code>. Chúng tôi khuyên bạn nên mở mã nguồn này trong một tab riêng và đi qua từng bước code. Chúng tôi sử dụng GPU <code>NVIDIA A100-SXM4-80GB</code> để chạy các script.</p></blockquote>
+<h2 id="thao-tác-nhân-ma-trận-và-cộng-ma-trận">Thao tác nhân ma trận và cộng ma trận</h2>
+<p>Như Tiến sĩ Sara Hooker đã nhận định chính xác, giống như con người chủ yếu được cấu tạo từ nước, các Mạng Thần kinh Sâu chủ yếu được cấu tạo từ các phép nhân ma trận. Vì chúng cơ bản như vậy, sẽ thật đáng tiếc nếu chúng ta bắt đầu hành trình phân tích hiệu năng với bất kỳ thứ gì khác.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fn</span>(x, w, b):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> torch<span style="color:#f92672">.</span>add(torch<span style="color:#f92672">.</span>matmul(x, w), b)
+</span></span></code></pre></div><blockquote>
+<p>Phép cộng ma trận cùng với phép nhân ma trận mô phỏng cách trọng số (weights) và bias tương tác trong một neuron. Phép cộng này sẽ giúp chúng ta hiểu cách nó mở đường cho việc biên dịch (<code>compilation</code>) ở phần sau của bài viết.</p></blockquote>
+<p>Để phân tích, chúng ta sẽ sử dụng mô-đun <code>torch.profiler</code>. Các bước thực hiện bao gồm:</p>
+<ol>
+<li>Chuẩn bị mã cần phân tích (ở đây là <code>def fn</code>, bao bọc phép nhân và phép cộng ma trận).</li>
+<li><strong>Chú thích (Annotate)</strong> thuật toán. Điều này hoàn toàn tùy chọn, nhưng chúng tôi khuyên dùng. <code>record_function</code> chú thích hàm của chúng ta là <code>matmul_add</code>, giúp dễ dàng điều hướng trong các bản trace.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step</span>():
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>profiler<span style="color:#f92672">.</span>record_function(<span style="color:#e6db74">&#34;matmul_add&#34;</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> fn(x, w, b)
+</span></span></code></pre></div><ol start="3">
+<li>Bao bọc mã bằng <strong>context manager</strong> <code>torch.profiler.profile</code>.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>  <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>profiler<span style="color:#f92672">.</span>profile(
+</span></span><span style="display:flex;"><span>    activities<span style="color:#f92672">=</span>[
+</span></span><span style="display:flex;"><span>        torch<span style="color:#f92672">.</span>profiler<span style="color:#f92672">.</span>ProfilerActivity<span style="color:#f92672">.</span>CPU,  <span style="color:#75715e"># các hoạt động của cpu</span>
+</span></span><span style="display:flex;"><span>        torch<span style="color:#f92672">.</span>profiler<span style="color:#f92672">.</span>ProfilerActivity<span style="color:#f92672">.</span>CUDA, <span style="color:#75715e"># các hoạt động của gpu</span>
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>  ) <span style="color:#66d9ef">as</span> prof:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Khuyến nghị chạy sự kiện nhiều lần để &#34;làm nóng&#34; (warm up) GPU</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
+</span></span><span style="display:flex;"><span>      step()
+</span></span><span style="display:flex;"><span>      prof<span style="color:#f92672">.</span>step()
+</span></span></code></pre></div><ol start="4">
+<li>Xuất kết quả <strong>profile</strong>.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># bảng profiler</span>
+</span></span><span style="display:flex;"><span>prof<span style="color:#f92672">.</span>key_averages()<span style="color:#f92672">.</span>table(sort_by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cuda_time_total&#34;</span>, row_limit<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bản trace profiler</span>
+</span></span><span style="display:flex;"><span>prof<span style="color:#f92672">.</span>export_chrome_trace(trace_path)
+</span></span></code></pre></div><p>Profiler xuất ra hai sản phẩm riêng biệt:</p>
+<ol>
+<li><strong>Bảng profiler (Profiler table):</strong> Cung cấp tóm tắt thống kê của thuật toán. Nó trả lời câu hỏi &ldquo;Cái gì đang tốn nhiều thời gian nhất&rdquo;. Điều này rất hữu ích để tìm ra các &ldquo;điểm nóng&rdquo; (hotspots) — những sự kiện tốn nhiều thời gian nhất, có thể là nút thắt cổ chai của pipeline, hoặc một sự kiện bị kích hoạt quá nhiều lần.</li>
+<li><strong>Bản trace profiler (Profiler trace):</strong> Cung cấp góc nhìn thực thi theo thời gian. Trả lời câu hỏi &ldquo;Khi nào và Tại sao một thao tác xảy ra&rdquo;, mô tả các hoạt động diễn ra trên CPU và GPU. Điều này hữu ích khi chúng ta muốn điều tra các kernel đã được kích hoạt, bất kỳ sự chậm trễ nào trong việc kích hoạt chúng, bất kỳ sự chồng lấp (overlap) nào giữa hoạt động của CPU và GPU, v.v.</li>
+</ol>
+<p>Hãy xem cả hai hoạt động trong lần thực thi đầu tiên.</p>
+<blockquote>
+<p>Khuyến nghị chạy script này trên máy có GPU.</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run 01_matmul_add.py --size <span style="color:#ae81ff">64</span>
+</span></span></code></pre></div><p>Nếu bạn chạy script trên (trên máy có GPU), bạn sẽ tìm thấy thư mục <code>traces/01_matmul_add</code> với hai sản phẩm:
+<code>64_bf16_cold_eager.json</code>
+<code>64_bf16_cold_eager.txt</code></p>
+<!-- raw HTML omitted -->
+<p>File <code>.txt</code> chứa bảng profiler. Khi mở file, như trong Hình 1, bạn sẽ thấy một bảng lớn với cột đầu tiên là các sự kiện được kích hoạt trong phạm vi profile.</p>
+<p>Các cột khác liên quan đến thời gian sự kiện tốn trên CPU hoặc GPU. Hãy xem sự kiện nào tốn nhiều thời gian nhất và thử suy luận xem sự kiện đó có thực sự nên tốn nhiều thời gian như vậy không. Điều quan trọng là phải nhìn vào cột &ldquo;# of Calls&rdquo; để biết sự kiện đó được kích hoạt bao nhiêu lần.</p>
+<p>Nhân tiện, hãy nói về &ldquo;Self CPU/CUDA&rdquo; và &ldquo;CPU/CUDA total&rdquo;. Các cột &ldquo;Self&rdquo; đo thời gian chỉ dành cho chính sự kiện đó, không bao gồm các sự kiện con. Các cột &ldquo;total&rdquo; bao gồm cả sự kiện đó và tất cả các sự kiện con của nó. Vì vậy, nếu bạn nhìn vào &ldquo;CPU total&rdquo; của <code>matmul_add</code>, nó bao gồm thời gian thực hiện chính nó cộng với các sự kiện con mà nó kích hoạt. Đây là một sắc thái quan trọng cần lưu ý.</p>
+<p>Nếu bạn nhìn vào hai dòng cuối của bảng, bạn sẽ thấy profiler cho biết:
+<code>Self CPU time total: 2.314ms</code>
+<code>Self CUDA time total: 23.104us</code></p>
+<p>Thời gian CPU tính bằng <code>ms</code> trong khi thời gian GPU tính bằng <code>us</code>. Để dễ hình dung, thời gian tiêu tốn trên GPU (kernel <code>ampere_bf16_s16816gemm...</code>) chiếm chưa đến 1% thời gian tiêu tốn trên CPU (thao tác <code>matmul_add</code>). GPU ở trạng thái nhàn rỗi hầu hết thời gian, đây là một dấu hiệu cảnh báo đỏ ngay lập tức. Lý do là GPU có thể tính toán một phép nhân ma trận nhỏ rất nhanh, vì vậy mã của chúng ta dành phần lớn thời gian để chuẩn bị các kernel, kích hoạt chúng trên GPU, gửi dữ liệu và thu thập kết quả. Khái niệm này được gọi là thuật toán <strong>bị giới hạn bởi chi phí quản lý (overhead-bound)</strong>.</p>
+<p>Cách dễ nhất để thoát khỏi trạng thái này là sử dụng các phép nhân ma trận lớn hơn.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run 01_matmul_add.py --size <span style="color:#ae81ff">4096</span> 
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Hai dòng cuối trong Hình 2 là:
+<code>Self CPU time total: 4.908ms</code>
+<code>Self CUDA time total: 4.495ms</code></p>
+<p>Cả hai thời gian đều tính bằng ms, nghĩa là chúng ta đã tạo ra nhiều thời gian chạy GPU hơn chỉ bằng cách tăng kích thước ma trận. Trong Hình 2, bạn cũng sẽ thấy thời gian CUDA nhiều nhất hiện giờ là do GPU kernel (<code>ampere_bf16_s16816gemm_..</code>) chứ không phải do thao tác CPU kích hoạt nó (<code>matmul_add</code>). Điều này có nghĩa là chúng ta thực sự đã chuyển từ trạng thái <em>overhead-bound</em> sang <strong>bị giới hạn bởi tính toán (compute-bound)</strong>.</p>
+<p>Bây giờ chúng ta chuyển sang trực quan hóa chuỗi điều phối (dispatch chain), nằm trong các sản phẩm <code>.json</code>. Bạn có thể tải chúng lên <a href="https://ui.perfetto.dev">Perfetto UI</a> để xem trace.</p>
+<h2 id="bản-trace-64x64">Bản trace 64x64</h2>
+<!-- raw HTML omitted -->
+<p>Trong Hình 3, chúng ta thấy bản trace cho phép nhân và cộng ma trận. Ở đây, chiều rộng của thanh biểu thị thời gian diễn ra sự kiện, phân cấp theo chiều dọc là phân cấp gọi hàm, luồng CPU biểu thị các sự kiện xảy ra trên CPU, trong khi luồng GPU hiển thị các lần thực thi kernel thực tế. Bạn cũng có thể nhận thấy những khoảng trống, đó là thời gian chờ hoặc thời gian nhàn rỗi.</p>
+<p>Script được chạy với các cấu hình mặc định:</p>
+<ul>
+<li>size 64: Đầu vào, trọng số và bias có kích thước (64, 64).</li>
+<li>dtype bf16: Kiểu dữ liệu là bfloat16.</li>
+<li>no compile: Chúng ta không biên dịch các thao tác torch.</li>
+<li>no warmup: Chúng ta không làm nóng GPU trước khi phân tích.</li>
+</ul>
+<blockquote>
+<p>Với Perfetto, chúng tôi khuyên bạn nên sử dụng bàn phím để truy cập trace nhanh hơn. Có thể sử dụng &ldquo;W A S D&rdquo; để điều hướng trace.</p></blockquote>
+<!-- raw HTML omitted -->
+<p>Có hai luồng trong Hình 4, một cho hoạt động CPU và một cho hoạt động GPU. Trong luồng CPU, bạn sẽ thấy ba bước profile (bắt đầu từ <code>ProfilerStep#2</code>). Điều này đến từ <code>schedule</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>schedule <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>profiler<span style="color:#f92672">.</span>schedule(wait<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, warmup<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, active<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, repeat<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span></code></pre></div><p><code>wait</code> bỏ qua các khởi tạo gây nhiễu (<code>ProfilerStep#0</code>), <code>warmup</code> chạy qua profiler mà không ghi lại (<code>ProfilerStep#1</code>), và <code>active</code> là những gì hiển thị trong trace.</p>
+<p>Hãy cùng đóng vai thám tử để điều tra bản trace và đặt một số câu hỏi.</p>
+<h3 id="tại-sao-profilerstep2-lại-tốn-nhiều-thời-gian-đến-vậy">Tại sao ProfilerStep#2 lại tốn nhiều thời gian đến vậy?</h3>
+<!-- raw HTML omitted -->
+<p>Trong Hình 5, chúng ta thấy <code>ProfileStep#2</code> tốn nhiều thời gian hơn các bước khác, và khi nhìn kỹ, bạn sẽ thấy một mô hình tương tự với chú thích <code>matmul_add</code>. Manh mối nằm bên trong chú thích, chứ không phải chính chú thích đó:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Bước</th>
+          <th style="text-align: left"><code>matmul_add</code> bắt đầu</th>
+          <th style="text-align: left"><code>aten::matmul</code> bắt đầu</th>
+          <th style="text-align: left">Khoảng trống (gap)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">#2</td>
+          <td style="text-align: left">138.736</td>
+          <td style="text-align: left">366.493</td>
+          <td style="text-align: left">227.757 µs</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">#3</td>
+          <td style="text-align: left">517.926</td>
+          <td style="text-align: left">523.447</td>
+          <td style="text-align: left">5.521 µs</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">#4</td>
+          <td style="text-align: left">610.039</td>
+          <td style="text-align: left">614.527</td>
+          <td style="text-align: left">4.488 µs</td>
+      </tr>
+  </tbody>
+</table>
+<!-- raw HTML omitted -->
+<p>Khoảng ~228 µs trong Hình 6 là &ldquo;cửa sổ chết&rdquo; giữa lúc bắt đầu <code>record_function(&quot;matmul_add&quot;)</code> và lúc PyTorch thực sự điều phối <code>aten::matmul</code>. Điều này có thể xảy ra vì nhiều lý do, bao gồm phân bổ vùng làm việc (workspace allocations), các heuristic của cuBLAS (thư viện tăng tốc GPU độc quyền của NVIDIA để thực hiện các thao tác đại số tuyến tính cơ bản), hoặc tải mô-đun chậm (lazy module loading). Chúng ta có thể bỏ qua hoặc chạy thêm một số bước làm nóng trước khi phân tích (đây là cách làm tiêu chuẩn).</p>
+<p>Trong phân tích hiệu năng, làm nóng (warmup) là khi bạn chạy các sự kiện một vài lần trước khi thực sự phân tích. Các công việc chuẩn bị của GPU là nỗ lực một lần mà chúng ta không muốn đưa vào bản profile. Trong ví dụ của chúng ta, chúng ta có hai giai đoạn làm nóng: một là lặp qua hàm trước khi vào profiler, và hai là bên trong profiler thông qua đối số <code>warmup</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run 01_matmul_add.py --warmup
+</span></span></code></pre></div><p><a href="https://ui.perfetto.dev/#!/?url=https://huggingface.co/buckets/ariG23498/traces/resolve/01_matmul_add/64_bf16_warm_eager.json">Bản Trace Perfetto cho 64x64 có Warmup</a></p>
+<!-- raw HTML omitted -->
+<p>Trong Hình 7, chúng ta thấy mỗi bước profile tốn thời gian tương tự nhau, nhưng điều này không có nghĩa là chúng ta đã tối ưu hóa được các chi phí một lần đó. Chúng ta chỉ làm nóng để các chi phí đó không bị ghi lại trong bản profile.</p>
+<h3 id="tại-sao-có-một-khoảng-lệch-25-ms-giữa-luồng-cpu-và-luồng-gpu">Tại sao có một khoảng lệch ~2.5 ms giữa luồng CPU và luồng GPU?</h3>
+<!-- raw HTML omitted -->
+<p>Trong Hình 8, chúng ta thấy luồng CPU và GPU có một khoảng lệch khoảng 2.5 ms: đây là độ trễ sau khi CPU gửi các CUDA kernel và thời điểm chúng thực sự bắt đầu thực thi. Có người sẽ nghĩ giai đoạn làm nóng kết hợp với <code>wait</code> và <code>warmup</code> của schedule sẽ giữ cho GPU bận rộn và làm giảm khoảng lệch này.</p>
+<p>Để tìm ra điều gì đang thực sự xảy ra, hãy thay đổi schedule một chút:
+<code>- schedule = torch.profiler.schedule(wait=1, warmup=1, active=3, repeat=1)</code>
+<code>+ schedule = torch.profiler.schedule(wait=0, warmup=0, active=3, repeat=1)</code></p>
+<!-- raw HTML omitted -->
+<p>Hình 9 cho thấy có một <code>Activity Buffer Request</code> trong luồng GPU trước bất kỳ thao tác nào. Hãy phóng to thêm một chút.</p>
+<!-- raw HTML omitted -->
+<p>Khi phóng to vào trace GPU, chúng ta nhận thấy các kernel matmul và add cho <code>ProfileStep#0</code> diễn ra liên tiếp nhau, trong khi các kernel cho <code>ProfileStep#1</code> có một khoảng trống ở giữa. Giải thích hợp lý nhất là đã xảy ra hiện tượng tràn bộ đệm (overflow of buffers), và một yêu cầu bộ đệm khác (yêu cầu cấp phát bộ nhớ trên VRAM của GPU) đã được phát ra trong quá trình thực thi kernel.</p>
+<p>Cách tốt nhất để loại trừ các khả năng khác là phân tích nhiều lần lặp hơn. Chúng ta chạy với <code>active=20</code>.</p>
+<!-- raw HTML omitted -->
+<p>Như Hình 11 cho thấy, chúng ta thấy xu hướng tương tự ở <code>ProfileStep#1</code>. Điều này khớp với những phát hiện trước đó, và chúng ta có thể kết luận an toàn rằng đó thực sự là một yêu cầu bộ đệm.</p>
+<h3 id="chuỗi-sự-kiện">Chuỗi sự kiện</h3>
+<!-- raw HTML omitted -->
+<p>Trong Hình 12, chúng ta thấy các lời gọi CPU lồng nhau. Đây là một hình ảnh quan trọng để hiểu một chuỗi điều phối thực sự trông như thế nào.</p>
+<p>Chúng ta bắt đầu với <code>ProfileStep#&lt;id&gt;</code>, bao bọc bước profiling. Nhờ việc chú thích, chúng ta thấy hàng <code>matmul_add</code>. <code>matmul_add</code> bao gồm hai lời gọi <code>aten</code>, một cho nhân ma trận và một cho cộng ma trận.</p>
+<p><code>aten::matmul</code> là mức điều phối ATen mà các lời gọi matmul của người dùng trong PyTorch sẽ dẫn đến. <code>aten::mm</code> là backend nhân ma trận 2D.</p>
+<p>Một điểm thú vị là PyTorch sẽ gọi <code>aten::bmm</code> (nhân ma trận theo lô - batched matrix multiplication) nếu chúng ta thêm trục batch vào ma trận.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># thêm batch size là 8</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">8</span>, args<span style="color:#f92672">.</span>size, args<span style="color:#f92672">.</span>size, device<span style="color:#f92672">=</span>device, dtype<span style="color:#f92672">=</span>dtype)
+</span></span><span style="display:flex;"><span>w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">8</span>, args<span style="color:#f92672">.</span>size, args<span style="color:#f92672">.</span>size, device<span style="color:#f92672">=</span>device, dtype<span style="color:#f92672">=</span>dtype)
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">8</span>, args<span style="color:#f92672">.</span>size, args<span style="color:#f92672">.</span>size, device<span style="color:#f92672">=</span>device, dtype<span style="color:#f92672">=</span>dtype)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Trong Hình 13, khi thêm trục batch, <code>aten::matmul</code> hiện bao bọc một loạt các lời gọi CUDA runtime tiên quyết cùng với <code>aten::bmm</code> (thay vì <code>aten::mm</code>). Điều này cũng gợi ý về các heuristic mà cuBLAS cần thực hiện để điều phối kernel phù hợp nhất cho chương trình.</p>
+<h3 id="tại-sao-matmul-có-một-lời-gọi-cuda-runtime-bổ-sung">Tại sao matmul có một lời gọi CUDA runtime bổ sung?</h3>
+<!-- raw HTML omitted -->
+<p>Chúng ta nhận thấy đối với <code>aten::mm</code> có hai lời gọi CUDA Runtime, cụ thể là <code>cudaOccupancyMaxActiveBlocksPerMultiprocessor</code> (được đóng khung trong Hình 14) và <code>cudaLaunchKernel</code>, trong khi đối với <code>aten::add</code> chỉ có <code>cudaLaunchKernel</code>.</p>
+<p><code>cudaOccupancyMaxActiveBlocksPerMultiprocessor</code> là một lời gọi lập kế hoạch và hoàn toàn nằm ở phía CPU. Nó hỏi: &ldquo;với một hàm kernel, một kích thước block đã chọn và một kích thước bộ nhớ chia sẻ động đã chọn, có bao nhiêu block của kernel này có thể cùng tồn tại trên một SM (Streaming Multiprocessor)?&rdquo;</p>
+<p>Câu hỏi đặt ra là, tại sao chúng ta cần lập kế hoạch cho matmul mà không cần cho add?</p>
+<p>Để hiểu điều này, chúng ta phải nhìn vào dấu chân tài nguyên (resource footprint) của kernel.</p>
+<!-- raw HTML omitted -->
+<p>Trong Hình 15, ta thấy đối với phép nhân ma trận, <code>registers per thread</code> (thanh ghi mỗi luồng) và <code>shared memory</code> (bộ nhớ chia sẻ) là động (dựa trên kích thước ma trận). cuBLAS cung cấp hàng trăm biến thể kernel, và mỗi biến thể có một đường dẫn kích hoạt dựa trên heuristic cần thông tin runtime về khả năng của phần cứng. Truy vấn occupancy là một phần của heuristic đó.</p>
+<p>Từ Hình 16, chúng ta thấy dấu chân của phép cộng là 32 thanh ghi và 0 bộ nhớ chia sẻ. Điều này hiển nhiên là vừa vặn. Không có gì để truy vấn vì không có tài nguyên phần cứng nào sẽ giới hạn occupancy. Kernel này, theo thiết kế, tiêu tốn rất ít tài nguyên.</p>
+<blockquote>
+<p>Bạn có thể sử dụng điều này như một chẩn đoán nhanh khi đọc bất kỳ bản trace nào. Quét luồng CPU tìm <code>cudaOccupancyMaxActiveBlocksPerMultiprocessor</code>. Mỗi lần xuất hiện đánh dấu một kernel &ldquo;nặng, được kích hoạt thích ứng&rdquo;, thường là GEMM, conv hoặc tương tự. Các kernel không có truy vấn occupancy đi trước là nhóm elementwise/reduction mà PyTorch kích hoạt một cách máy móc.</p></blockquote>
+<h3 id="tại-sao-cudadevicesynchronize-lại-lớn-như-vậy-178-ms">Tại sao cudaDeviceSynchronize lại lớn như vậy (~1.78 ms)?</h3>
+<p><code>cudaDeviceSynchronize</code> chặn CPU cho đến khi tất cả công việc GPU trên thiết bị này kết thúc. Profiler phát ra lệnh đồng bộ này ở cuối cửa sổ active để xả (flush) các sự kiện. Nếu không có nó, thời gian chạy của kernel sẽ bị thiếu.</p>
+<p>Một lệnh đồng bộ 1.78 ms bao phủ 26 µs công việc GPU thực tế cho bạn biết rằng lần chạy này nhàn rỗi 98%. Đó là triệu chứng điển hình của trạng thái <em>overhead-bound</em>.</p>
+<h2 id="bản-trace-4096x4096">Bản trace 4096x4096</h2>
+<p>Chúng ta đã biết từ phân tích bảng profiler rằng việc cung cấp ma trận lớn hơn sẽ đưa thuật toán ra khỏi vùng <em>overhead-bound</em> và trở thành <em>compute-bound</em>. Hãy cùng xem chi tiết hơn.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run 01_matmul_add.py --size <span style="color:#ae81ff">4096</span> --warmup
+</span></span></code></pre></div><h3 id="tại-sao-cùng-một-kernel-lại-tốn-thời-gian-khác-nhau">Tại sao cùng một kernel lại tốn thời gian khác nhau?</h3>
+<!-- raw HTML omitted -->
+<p>Trong Hình 17, chúng ta thấy kernel matmul cho <code>ProfileStep#3</code> tốn nhiều thời gian hơn trên GPU so với các bước khác. Điều này đặc biệt thú vị vì các kernel được kích hoạt là hoàn toàn giống nhau, nghĩa là không có heuristic cuBLAS nào can thiệp.</p>
+<p>Bản trace trong Hình 17 chỉ ra một điểm hữu ích: thời gian chạy của kernel không phải là hằng số, ngay cả trên cùng một môi trường phần cứng chạy mã giống hệt nhau trên dữ liệu giống hệt nhau.</p>
+<p>Hãy chạy lặp lại 20 lần để quan sát.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">-</span> schedule <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>profiler<span style="color:#f92672">.</span>schedule(wait<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, warmup<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, active<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, repeat<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span> schedule <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>profiler<span style="color:#f92672">.</span>schedule(wait<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, warmup<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, active<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, repeat<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">-</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">20</span>):
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Hình 18 tiết lộ kết quả tương tự. Thời gian tính toán khác nhau có thể do nhiều nguyên nhân:</p>
+<ul>
+<li>Xung nhịp GPU khi nhàn rỗi và khi boost.</li>
+<li>Nhiệt độ GPU.</li>
+<li>Quản lý năng lượng GPU.</li>
+<li>Các công việc dọn dẹp (housekeeping) phía driver.</li>
+</ul>
+<p>Một người chỉ nhìn vào giá trị trung bình sẽ kết luận matmul tốn ~1 ms; một người nhìn vào bản trace sẽ thấy matmul tốn ~580 µs trừ khi GPU &ldquo;nổi nóng&rdquo;. Đó là hai mô hình tư duy rất khác nhau, và chỉ có một cái là đúng.</p>
+<h2 id="xem-torchcompile-hoạt-động">Xem torch.compile hoạt động</h2>
+<p>Làm việc với <code>torch.compile</code> luôn gây kinh ngạc. Bạn viết mã PyTorch eager bình thường, nhưng PyTorch cố gắng nắm bắt các vùng nặng về tensor, biến chúng thành đồ thị (graphs), tối ưu hóa chúng và chạy mã được tạo ra. Backend mặc định thường là <code>TorchInductor</code>, và pipeline tổng quát là:</p>
+<ol>
+<li><code>TorchDynamo</code> nắm bắt thực thi Python thành một đồ thị FX.</li>
+<li><code>AOTAutograd</code> chuẩn bị đồ thị forward/backward khi có gradient.</li>
+<li><code>Inductor</code> hạ cấp (lowers) đồ thị thành mã CPU hoặc GPU đã được tối ưu hóa.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run 01_matmul_add.py --size <span style="color:#ae81ff">4096</span> --warmup --compile
+</span></span></code></pre></div><p>Mã kích hoạt:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fn</span>(x, w, b):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> torch<span style="color:#f92672">.</span>add(torch<span style="color:#f92672">.</span>matmul(x, w), b)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fn <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>compile(fn) <span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>compile <span style="color:#66d9ef">else</span> fn
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Trong Hình 19, chúng ta thấy các hàng CPU mới tên là <code>Torch-Compiled Region: 0/0</code>, chỉ ra các hàm đã biên dịch đang được sử dụng.</p>
+<h3 id="chúng-ta-có-hợp-nhất-fuse-các-kernel-matmul-và-add-thành-một-không">Chúng ta có hợp nhất (fuse) các kernel matmul và add thành một không?</h3>
+<!-- raw HTML omitted -->
+<p>Nhìn vào Hình 20, chúng ta tự hỏi: liệu chúng ta có thực sự hợp nhất các thao tác nhân và cộng lại thành một không?</p>
+<p>Đây là sự hợp nhất toán tử ở mức đồ thị. Inductor đã lấy <code>torch.add(torch.matmul(x, w), b)</code> và viết lại thành một lời gọi <code>aten::addmm(b, x, w)</code> duy nhất. Điều quan trọng cần lưu ý là nó <strong>không</strong> tạo ra một CUDA kernel hợp nhất <strong>mới</strong>. Công việc GPU thực tế vẫn là <code>ampere_bf16_s16816gemm...</code>, cùng một kernel cuBLAS mà chế độ eager đã sử dụng. Vì vậy, sự &ldquo;hợp nhất&rdquo; ở đây nằm ở mức điều phối (dispatcher), không phải ở mức kernel.</p>
+<blockquote>
+<p>PyTorch cung cấp hàm <code>torch.addmm</code> thực hiện việc nhân rồi cộng trong một bước. Chúng tôi khuyến khích bạn xem bản trace của hàm này và chia sẻ quan sát bên dưới!</p></blockquote>
+<h3 id="kiến-trúc-runtime-của-torchcompile">Kiến trúc runtime của torch.compile</h3>
+<p>Hãy nhìn vào phân cấp phía CPU phản ánh kiến trúc runtime của <code>torch.compile</code>.</p>
+<p><strong>TorchDynamo Cache Lookup</strong> là nơi Dynamo kiểm tra xem lời gọi hiện tại có còn khớp với những gì đã được biên dịch với cùng hình dạng (shapes), kiểu dữ liệu (dtypes), thiết bị và siêu dữ liệu tensor hay không. Nếu có bất kỳ điểm không khớp nào, Dynamo sẽ biên dịch lại. Chi phí này phải trả cho mọi lời gọi, ngay cả sau khi biên dịch.</p>
+<p><strong>Torch-Compiled Region</strong> là wrapper để &ldquo;đi vào&rdquo; phiên bản biên dịch. <strong>AOTDispatcher Runtime Wrapper Prologue</strong> là runtime wrapper của AOT Autograd. Ngay cả khi chúng ta không cần gradient, AOTDispatcher luôn nằm trong stack để xử lý siêu dữ liệu tensor, theo dõi view, và sẽ thiết lập lượt chạy backward nếu <code>requires_grad</code> là true.</p>
+<p><strong>## Call CompiledFxGraph</strong> là nơi mã được tạo ra thực sự chạy. Chuỗi ký tự sau &ldquo;CompiledFxGraph&rdquo; là mã băm (hash) nội dung của đồ thị FX. Nó giống nhau trong cả ba bước active, xác nhận là đã hit cache.</p>
+<blockquote>
+<p>Bạn có thể tìm thấy mã được tạo ra trên đĩa tại <code>/tmp/torchinductor_&lt;user&gt;/fxgraph</code> theo mã băm này, hữu ích khi bạn muốn đọc mã Triton/C++ mà Inductor thực sự tạo ra.</p></blockquote>
+<h3 id="các-lượt-kích-hoạt-cuda-có-giảm-đi-một-nửa-không">Các lượt kích hoạt CUDA có giảm đi một nửa không?</h3>
+<!-- raw HTML omitted -->
+<p>Nhìn vào trace trong Hình 21, chúng ta rất vui khi thấy chỉ có một <code>cudaLaunchKernel</code> mỗi bước. Tuy nhiên, quan sát này mâu thuẫn với những gì chúng ta thấy trong trace GPU. Vẫn có hai kernel được kích hoạt mỗi bước: <code>Memcpy DtoD (Device -&gt; Device)</code> và GEMM. Quay lại trace CPU, chúng ta thấy mình đã bỏ sót lệnh điều phối <code>cudaMemcpyAsync</code>.</p>
+<p><code>addmm</code> tính toán <code>out = α·A·B + β·C</code>, và epilogue (phần kết) GEMM-with-bias-add của cuBLAS ghi vào một bộ đệm đích vốn đã phải chứa bias. Epilogue có thể hiểu là tất cả các thao tác xảy ra <em>sau</em> một GEMM.</p>
+<p>Vì vậy, mã được Inductor tạo ra thực hiện:</p>
+<ul>
+<li><code>out = copy(C)</code> $\rightarrow$ đó là DtoD memcpy (32 MB, tốn ~33 µs).</li>
+<li><code>out = α·(A·B) + β·out</code> $\rightarrow$ GEMM với $\alpha=\beta=1$, hợp nhất việc cộng bias vào quá trình ghi kết quả (writeback).</li>
+</ul>
+<p>Kết quả toán học vẫn như vậy. Việc cộng bias không hề miễn phí, vì chúng ta phải trả chi phí memcpy trước cộng với một epilogue GEMM đắt hơn một chút.</p>
+<p>Sự hợp nhất mà người ta kỳ vọng, nơi <code>x·w + b</code> thu gọn thành một kernel duy nhất không có lưu lượng bộ nhớ thừa, đã không xảy ra. Inductor vẫn giữ hai thao tác chạm bộ nhớ, nó chỉ dán nhãn lại việc sao chép bias thành memcpy và phép cộng thành GEMM epilogue.</p>
+<p>Một bản thực thi hợp nhất thực sự sẽ bỏ qua memcpy. Đó là những gì các kernel viết tay kiểu FlashAttention làm, và là điều Inductor có thể làm thông qua Triton codegen, nhưng đối với một phép nhân ma trận <code>4096×4096 bf16</code>, Inductor rõ ràng quyết định rằng &ldquo;sử dụng cuBLAS, thực hiện bias qua epilogue&rdquo; là con đường tốt nhất.</p>
+<h3 id="chi-phí-cpu-tăng-lên-chứ-không-giảm-đi">Chi phí CPU tăng lên chứ không giảm đi</h3>
+<p>Đây là điều dễ bị bỏ qua nhất khi so sánh giữa lần chạy eager và biên dịch:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Bước</th>
+          <th style="text-align: left">Thời gian eager (ms)</th>
+          <th style="text-align: left">Thời gian biên dịch (ms)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">#2</td>
+          <td style="text-align: left">0.1</td>
+          <td style="text-align: left">0.2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">#3</td>
+          <td style="text-align: left">0.07</td>
+          <td style="text-align: left">0.1</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">#4</td>
+          <td style="text-align: left">0.07</td>
+          <td style="text-align: left">0.1</td>
+      </tr>
+  </tbody>
+</table>
+<p>Biên dịch tốn kém hơn khoảng 2 lần trên CPU mỗi bước. Đó là vì mọi lời gọi đều phải đi qua toàn bộ stack Dynamo $\rightarrow$ AOTAutograd $\rightarrow$ Inductor, trên nền lệnh điều phối <code>aten::addmm</code> vốn đã có sẵn. Pipeline biên dịch được xây dựng cho các mô hình ML với hàng chục toán tử, nơi chi phí cho mỗi lời gọi được phân bổ (amortize). Đối với một toán tử đơn lẻ, đây giống như một loại &ldquo;thuế&rdquo;.</p>
+<blockquote>
+<p><code>torch.compile</code> có đối số <code>mode</code>. Bạn hãy đọc tài liệu và tìm xem <code>mode</code> nào có thể làm giảm chi phí CPU này nhé. 🤗</p></blockquote>
+<h2 id="bảng-tra-cứu-nhanh-đọc-trace-cheatsheet">Bảng tra cứu nhanh đọc trace (Cheatsheet)</h2>
+<p>Một tham chiếu nhanh cho các mô hình chúng ta đã đi qua. Ý tưởng là: nếu bạn thấy điều này trong trace, thì thông thường nó có nghĩa là&hellip;</p>
+<h3 id="bảng-profiler">Bảng Profiler</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Những gì bạn thấy</th>
+          <th style="text-align: left">Ý nghĩa thông thường</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>Self CPU time total</code> $\gg$ <code>Self CUDA time total</code> (CPU tính bằng ms, GPU tính bằng µs)</td>
+          <td style="text-align: left"><strong>Overhead-bound</strong>. CPU tốn nhiều thời gian điều phối hơn thời gian GPU tính toán. Hãy tăng khối lượng công việc (ma trận lớn hơn, ops theo lô) hoặc hợp nhất các lời gọi.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>Self CPU time total</code> $\approx$ <code>Self CUDA time total</code>, cả hai đều tính bằng ms</td>
+          <td style="text-align: left"><strong>Compute-bound</strong>. GPU là nút thắt cổ chai, điều này thường là điều bạn muốn.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Một sự kiện thống trị <code>CUDA total</code></td>
+          <td style="text-align: left">Đó là <strong>điểm nóng (hotspot)</strong>. Hãy bắt đầu tối ưu hóa từ đó.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Một sự kiện có <code># of Calls</code> khổng lồ</td>
+          <td style="text-align: left">Một nút thắt cổ chai tiềm năng ngay cả khi mỗi lời gọi rẻ. Kiểm tra xem nó có thể được hợp nhất hoặc chạy theo lô không.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>CPU total</code> $\gg$ <code>Self CPU</code> cho một hàng</td>
+          <td style="text-align: left">Hầu hết chi phí nằm ở các sự kiện con. Hãy đi sâu vào các sự kiện lồng nhau, đừng nhìn vào sự kiện cha.</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="luồng-cpu-cpu-lane">Luồng CPU (CPU lane)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Những gì bạn thấy</th>
+          <th style="text-align: left">Ý nghĩa thông thường</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>ProfileStep</code> đầu tiên rộng hơn nhiều so với các bước còn lại</td>
+          <td style="text-align: left"><strong>Chi phí khởi động lạnh (Cold-start overhead)</strong>: phân bổ vùng làm việc, heuristic cuBLAS, tải mô-đun chậm. Hãy thêm các lần lặp làm nóng hoặc dùng đối số <code>warmup</code> của schedule.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Khoảng trống lớn giữa lúc bắt đầu <code>record_function(&quot;...&quot;)</code> và <code>aten::*</code> đầu tiên bên trong nó</td>
+          <td style="text-align: left">Vẫn là chi phí khởi động lạnh, nhưng được phóng to. Chú thích đã bắt đầu nhưng việc điều phối vẫn chưa diễn ra.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>cudaOccupancyMaxActiveBlocksPerMultiprocessor</code> trước một <code>cudaLaunchKernel</code></td>
+          <td style="text-align: left">Một kernel &ldquo;nặng, được kích hoạt thích ứng&rdquo; (GEMM, conv, v.v.). cuBLAS đang hỏi driver xem có bao nhiêu block vừa với một SM để chọn biến thể kernel.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>cudaLaunchKernel</code> không có truy vấn occupancy đi trước</td>
+          <td style="text-align: left">Một kernel elementwise hoặc reduction với dấu chân tài nguyên cố định và nhẹ. Không cần lập kế hoạch.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>cudaDeviceSynchronize</code> dài ở cuối cửa sổ active</td>
+          <td style="text-align: left">Profiler đang xả các sự kiện. Thời gian của nó chủ yếu là do GPU hoàn thành các công việc còn tồn đọng, không phải chi phí thực tế của CPU. Một lệnh đồng bộ bao phủ công việc GPU tí hon là triệu chứng điển hình của <em>overhead-bound</em>.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>cudaMemcpyAsync</code> mà bạn không hề viết</td>
+          <td style="text-align: left">Thường là một bản sao Device-to-Device ẩn. Thường gặp khi <code>addmm</code> nạp bias vào bộ đệm đích trước khi thực hiện GEMM epilogue.</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="luồng-gpu-gpu-lane">Luồng GPU (GPU lane)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Những gì bạn thấy</th>
+          <th style="text-align: left">Ý nghĩa thông thường</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>Activity Buffer Request</code> trên luồng GPU</td>
+          <td style="text-align: left">Profiler đang phân bổ/lấp đầy bộ đệm sự kiện của chính nó. Cái đầu tiên thường gây ra khoảng lệch ban đầu giữa luồng CPU $\leftrightarrow$ GPU.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Khoảng trống giữa hai kernel trong một bước đơn lẻ</td>
+          <td style="text-align: left">Có khả năng là một yêu cầu bộ đệm khác giữa lúc thực thi. Xác nhận bằng cách chạy nhiều lần lặp: nếu nó chỉ xuất hiện một lần, đó là do profiler, không phải do mã của bạn.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Cùng một kernel có thời gian chạy khác nhau qua các bước</td>
+          <td style="text-align: left">Xung nhịp GPU, nhiệt độ, quản lý năng lượng, dọn dẹp của driver. Hãy đọc bản trace, đừng chỉ nhìn vào giá trị trung bình.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Kernel có tên như <code>ampere_bf16_s16816gemm_...</code></td>
+          <td style="text-align: left">Công việc thực tế của cuBLAS GPU cho một phép nhân ma trận. Tên kernel thường giống nhau ở chế độ eager và biên dịch cho cùng hình dạng/kiểu dữ liệu.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>Memcpy DtoD</code> ngay trước một GEMM</td>
+          <td style="text-align: left">Sao chép bias cho một epilogue <code>addmm</code>. Sự &ldquo;hợp nhất&rdquo; diễn ra ở mức điều phối, không phải trong kernel.</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="chuỗi-điều-phối-dispatch-chain">Chuỗi điều phối (Dispatch chain)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Những gì bạn thấy</th>
+          <th style="text-align: left">Ý nghĩa thông thường</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><code>ProfileStep#N</code> $\rightarrow$ <code>&lt;tên record_function&gt;</code> $\rightarrow$ <code>aten::*</code> $\rightarrow$ <code>aten::mm</code> / <code>aten::bmm</code> / <code>aten::add</code></td>
+          <td style="text-align: left">Phân cấp lời gọi lồng nhau chuẩn. &ldquo;Self time&rdquo; loại trừ con; &ldquo;Total time&rdquo; bao gồm cả con.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>aten::matmul</code> dẫn đến <code>aten::mm</code></td>
+          <td style="text-align: left">Nhân ma trận 2D $\times$ 2D.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>aten::matmul</code> dẫn đến <code>aten::bmm</code> (với các lời gọi CUDA runtime bổ sung)</td>
+          <td style="text-align: left">Nhân ma trận theo lô trên tensor 3D+. cuBLAS thực hiện nhiều heuristic hơn để chọn biến thể.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>aten::addmm(b, x, w)</code> thay vì một cặp <code>aten::add</code> + <code>aten::mm</code> riêng biệt</td>
+          <td style="text-align: left">Hợp nhất toán tử ở mức điều phối. Kernel GPU vẫn là GEMM đó, với phép cộng bias được gộp vào epilogue.</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="torchcompile">torch.compile</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Những gì bạn thấy</th>
+          <th style="text-align: left">Ý nghĩa thông thường</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Hàng <code>Torch-Compiled Region: K/M</code> trong luồng CPU</td>
+          <td style="text-align: left">Bạn đang ở trong một hàm đã biên dịch.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>TorchDynamo Cache Lookup</code> ở mọi bước</td>
+          <td style="text-align: left">Dynamo đang xác minh hình dạng/kiểu dữ liệu/thiết bị khớp với bản biên dịch trong cache. Phải trả chi phí này cho mỗi lời gọi, kể cả sau khi biên dịch.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>AOTDispatcher Runtime Wrapper Prologue</code> ngay cả khi không có gradient</td>
+          <td style="text-align: left">Runtime wrapper của AOTAutograd luôn nằm trong stack để xử lý siêu dữ liệu tensor và theo dõi view.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><code>## Call CompiledFxGraph &lt;hash&gt;</code> với cùng mã băm qua các bước</td>
+          <td style="text-align: left">Hit cache cho mã đã tạo. Mã nguồn được tạo nằm tại <code>/tmp/torchinductor_&lt;user&gt;/fxgraph/&lt;hash&gt;</code>.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Thời gian CPU mỗi bước cao hơn khi dùng <code>torch.compile</code> so với eager cho một op tí hon</td>
+          <td style="text-align: left">Điều này là bình thường. Stack Dynamo $\rightarrow$ AOTAutograd $\rightarrow$ Inductor là một khoản phí mà chỉ được bù đắp khi có nhiều toán tử.</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Chúng ta bắt đầu với một phép <code>matmul + add</code> nhỏ và sử dụng nó như một cái cớ để học cách đọc PyTorch profiler. Qua đó, chúng ta đã thu thập được một vài mô hình tư duy có thể áp dụng cho các khối lượng công việc lớn hơn. Đây là điểm dừng đầu tiên trong chuỗi bài <strong>Profiling PyTorch</strong>. Trong các bài tiếp theo, chúng ta sẽ dần rời xa &ldquo;món đồ chơi&rdquo; hai thao tác này để leo lên nấc thang phức tạp hơn, xem xét các khối xây dựng lớn hơn và cuối cùng là các mô hình thực tế.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/torch-profiler">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/may-29-2026/">May 29, 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-29/b429cb/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Dell Enterprise Hub tại Dell Tech World 2026- các mô hình mới, nền tảng mới, triển khai sản xuất nhanh hơn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-29T00:00:00&#43;00:00">May 29, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Dell Enterprise Hub tại Dell Tech World 2026- các mô hình mới, nền tảng mới, triển khai sản xuất nhanh hơn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu Dell Enterprise Hub tại Dell Tech World 2026 với các mô hình và nền tảng mới giúp tăng tốc quá trình đưa vào sản xuất</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-27/e68523/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-27T00:00:00&#43;00:00">May 27, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-29/b429cb/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Dell Enterprise Hub tại Dell Tech World 2026- các mô hình mới, nền tảng mới, triển khai sản xuất nhanh hơn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dell Enterprise Hub tại Dell Tech World 2026- các mô hình mới, nền tảng mới, triển khai sản xuất nhanh hơn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-29/c5c391/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Phân tích hiệu năng CUDA trong PyTorch (Phần 1)- Hướng dẫn cho người mới bắt đầu về torch.profiler" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Phân tích hiệu năng CUDA trong PyTorch (Phần 1)- Hướng dẫn cho người mới bắt đầu về torch.profiler</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-27/2c02f5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://x.ai/images/og/news.png" alt="Sử dụng Grok trong Kilo Code" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Sử dụng Grok trong Kilo Code</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-27/e68523/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Vận chuyển một nghìn tỷ tham số với Hub Bucket- Đồng bộ hóa trọng số delta trong TRL</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-25/43b721/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3" alt="Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Harness, Scaffold và các Thuật ngữ về AI Agent Cần Nắm Vững</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
