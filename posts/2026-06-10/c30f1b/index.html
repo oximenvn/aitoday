@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mắt, tai và giọng nói- xây dựng ngăn xếp truyền thông của Reachy Mini | AI Today - SkyAI</title>
+
+<meta name="description" content="Xây dựng ngăn xếp truyền thông của Reachy Mini">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Mắt, tai và giọng nói- xây dựng ngăn xếp truyền thông của Reachy Mini</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Xây dựng ngăn xếp truyền thông của Reachy Mini </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-06-10T00:00:00&#43;00:00">June 10, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            16 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Mắt, tai và giọng nói- xây dựng ngăn xếp truyền thông của Reachy Mini">
+        <figcaption class="text-center italic text-xs">Xây dựng ngăn xếp truyền thông của Reachy Mini</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="mắt-tai-và-giọng-nói-xây-dựng-hệ-thống-truyền-thông-media-stack-cho-reachy-mini">Mắt, tai và giọng nói: Xây dựng hệ thống truyền thông (media stack) cho Reachy Mini</h1>
+<p>Reachy Mini tương tác với môi trường xung quanh dựa trên những gì nó cảm nhận được qua camera và micrô. Do đó, việc xử lý âm thanh và hình ảnh là một phần then chốt của chú robot nhỏ này. Cả hai phiên bản, Lite và Wireless, đều có thể được sử dụng cục bộ hoặc từ xa, và chúng tôi muốn trải nghiệm đó phải thật mượt mà đối với người dùng: cùng một đoạn mã sẽ hoạt động trong mọi trường hợp.</p>
+<p>Kết quả là bạn có thể xây dựng các ứng dụng AI trực tiếp trên các luồng âm thanh và hình ảnh của Reachy Mini, và chạy chúng ở bất cứ nơi nào hợp lý: trên robot, trên laptop của bạn, hoặc trên một Hugging Face Space có hỗ trợ GPU. Bài viết này sẽ trình bày chi tiết các lựa chọn kỹ thuật và thiết kế mà chúng tôi đã áp dụng để hiện thực hóa điều đó.</p>
+<!-- raw HTML omitted -->
+<blockquote>
+<p><em>Theo dõi đối tượng chạy trên một Hugging Face Space ZeroGPU, nhận luồng camera WebRTC trực tiếp từ robot.</em></p></blockquote>
+<h2 id="phần-cứng">Phần cứng</h2>
+<p>Trước khi đi sâu vào phần mềm, hãy cùng xem qua các thiết bị phần cứng mà robot sử dụng để cảm nhận thế giới.</p>
+<p>Các thành phần của bản <a href="https://huggingface.co/docs/reachy_mini/platforms/reachy_mini_lite/hardware">Lite</a> và <a href="https://huggingface.co/docs/reachy_mini/platforms/reachy_mini/hardware">Wireless</a> được liệt kê trong các trang tài liệu tương ứng. Về cơ bản chúng giống nhau, với một vài điểm khác biệt đáng lưu ý.</p>
+<h3 id="camera">Camera</h3>
+<p>Trên cả hai phiên bản, camera được sử dụng là <a href="https://www.raspberrypi.com/products/camera-module-3/">Raspberry Pi Camera 3 Wide</a>, với các đặc điểm sau:</p>
+<ul>
+<li>Cảm biến hình ảnh Sony IMX708</li>
+<li>Độ phân giải 12 MP</li>
+<li>Lấy nét tự động (Auto focus)</li>
+<li>Kết nối MIPI DSI</li>
+</ul>
+<p>Cả hai camera đều có thể truyền phát ở độ phân giải 1920×1080 với tốc độ 60 fps, điều này rất hữu ích cho các ứng dụng theo dõi đối tượng. Dưới đây là thông số của camera rpi:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ rpicam-vid --list-cameras
+</span></span><span style="display:flex;"><span>Available cameras
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span> : imx708_wide <span style="color:#f92672">[</span>4608x2592 10-bit RGGB<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>/base/axi/pcie@1000120000/rp1/i2c@88000/imx708@1a<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Modes: <span style="color:#e6db74">&#39;SRGGB10_CSI2P&#39;</span> : 1536x864 <span style="color:#f92672">[</span>120.13 fps - <span style="color:#f92672">(</span>768, 432<span style="color:#f92672">)</span>/3072x1728 crop<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>2304x1296 <span style="color:#f92672">[</span>56.03 fps - <span style="color:#f92672">(</span>0, 0<span style="color:#f92672">)</span>/4608x2592 crop<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>4608x2592 <span style="color:#f92672">[</span>14.35 fps - <span style="color:#f92672">(</span>0, 0<span style="color:#f92672">)</span>/4608x2592 crop<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>Để trở thành thiết bị USB plug-and-play, camera của bản Lite nằm trên một bo mạch tùy chỉnh giúp nó tuân thủ chuẩn UVC. Độ phân giải tương đương, nhưng lưu ý rằng camera của bản Lite xuất ra các hình ảnh JPEG nén, sau đó sẽ được giải nén cho bạn. Tuy nhiên, tùy vào ứng dụng, bạn có thể muốn truy cập trực tiếp các khung hình JPEG.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>v4l2-ctl --device<span style="color:#f92672">=</span>/dev/video4 --list-formats-ext
+</span></span><span style="display:flex;"><span>ioctl: VIDIOC_ENUM_FMT
+</span></span><span style="display:flex;"><span>    Type: Video Capture
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#39;MJPG&#39;</span> <span style="color:#f92672">(</span>Motion-JPEG, compressed<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        Size: Discrete 3840x2592
+</span></span><span style="display:flex;"><span>            Interval: Discrete 0.033s <span style="color:#f92672">(</span>30.000 fps<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        Size: Discrete 1920x1080
+</span></span><span style="display:flex;"><span>            Interval: Discrete 0.017s <span style="color:#f92672">(</span>60.000 fps<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        Size: Discrete 3840x2160
+</span></span><span style="display:flex;"><span>            Interval: Discrete 0.033s <span style="color:#f92672">(</span>30.000 fps<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        Size: Discrete 3264x2448
+</span></span><span style="display:flex;"><span>            Interval: Discrete 0.033s <span style="color:#f92672">(</span>30.000 fps<span style="color:#f92672">)</span>
+</span></span></code></pre></div><blockquote>
+<p>Trên macOS, nguồn <code>avfvideosrc</code> (AVFoundation) của GStreamer giới hạn tốc độ khung hình ở mức 30 fps.</p></blockquote>
+<p>Camera được hiệu chuẩn bằng <a href="https://github.com/pollen-robotics/multical">multical</a>, vì vậy các thông số của nó luôn sẵn sàng cho bất kỳ tác vụ thị giác máy tính nào (xem ví dụ <code>look_at</code>).</p>
+<!-- raw HTML omitted -->
+<h3 id="âm-thanh">Âm thanh</h3>
+<p>Micrô là một phiên bản tùy chỉnh của <a href="https://wiki.seeedstudio.com/respeaker_xvf3800_introduction/">Seeed reSpeaker XVF3800</a>, một mảng micrô được xây dựng quanh chip xử lý giọng nói XMOS XVF3800:</p>
+<ul>
+<li>4 micrô kỹ thuật số PDM MEMS, được cách ly bằng gioăng silicone.</li>
+<li>Tốc độ lấy mẫu tối đa 16 kHz / độ nhạy −26 dBFS / SNR 64 dBA.</li>
+</ul>
+<p>Chúng tôi kết hợp nó với một loa 5 W / 4 Ω. Mặc dù có bốn micrô, nhưng phần sụn (firmware) sẽ trộn và làm sạch âm thanh thu được thành một tín hiệu stereo.</p>
+<p>Hệ thống âm thanh này có hai tính năng nổi bật:</p>
+<ul>
+<li><strong>Khử tiếng vang âm học (Acoustic Echo Cancellation - AEC):</strong> Lọc bỏ âm thanh phát ra từ chính loa của robot, để Reachy Mini không tự &ldquo;trò chuyện&rdquo; với chính mình. AEC được tích hợp sẵn trong micrô và luôn bật.</li>
+<li><strong>Xác định hướng âm thanh (Direction of Arrival - DoA):</strong> Xác định vị trí nguồn âm thanh trong phạm vi 180°. (Mảng micrô là dạng tuyến tính; cần bố cục hình tròn để bao phủ toàn bộ 360°). DoA được cung cấp thông qua SDK và được đọc khi ứng dụng yêu cầu.</li>
+</ul>
+<!-- raw HTML omitted -->
+<p>Các micrô đã được hiệu chuẩn với sự hợp tác của Seeed trong quá trình thiết kế. Thiết lập lý tưởng là nguồn âm thanh đối diện với robot từ khoảng cách 1m. Xa hơn mức đó, chip <a href="https://www.xmos.com/documentation/XM-014888-PC/html/modules/fwk_xvf/doc/user_guide/AA_control_command_appendix.html">XMOS XVF3800</a> cung cấp nhiều thông số mà bạn vẫn có thể tinh chỉnh nếu cấu hình mặc định không đáp ứng được nhu cầu.</p>
+<p>Khi đã có phần cứng, công việc thực sự nằm ở phần mềm: làm sao để đưa các luồng dữ liệu này đến ứng dụng của bạn, bất kể ứng dụng đó chạy ở đâu.</p>
+<h2 id="thử-thách-kỹ-thuật">Thử thách kỹ thuật</h2>
+<p>Việc truy cập luồng camera ngày nay lẽ ra phải rất đơn giản. Reachy Mini Lite có camera USB (Raspberry Pi Camera 3 Wide trên module tùy chỉnh) có thể được đọc trực tiếp từ máy tính điều khiển. Reachy Mini Wireless sử dụng cùng loại camera, nhưng nó nằm trên module tính toán nhúng của robot, vì vậy phải truy cập từ xa. SDK của chúng tôi che giấu sự khác biệt này: cùng một API sẽ trả về khung hình trên cả hai robot.</p>
+<p>Nhưng tại sao phải dừng lại ở đó? Nếu chúng tôi có thể truyền phát camera của bản Wireless từ xa, chúng tôi cũng có thể làm điều tương tự cho bản Lite, và từ bất kỳ nền tảng nào.</p>
+<p>Âm thanh cũng có những yêu cầu tương tự, nhưng có thêm một điểm đặc biệt: nó là hai chiều. Reachy Mini vừa nghe vừa nói.</p>
+<p>Để xử lý tất cả các cấu hình này với một thiết kế nhất quán duy nhất, chúng tôi đã chọn GStreamer.</p>
+<h2 id="gstreamer">GStreamer</h2>
+<p><a href="https://gstreamer.freedesktop.org/">GStreamer</a> là một thư viện đa phương tiện mã nguồn mở, được tài liệu hóa tốt, bảo trì kỹ lưỡng và đa nền tảng. Trong số nhiều tính năng, nó có thể truy cập camera và micrô, sau đó chuyển đổi dữ liệu sang bất kỳ định dạng nào cần thiết để hiển thị hoặc xử lý. GStreamer cũng đi kèm với triển khai WebRTC riêng, tiêu chuẩn hiện nay cho truyền phát phương tiện độ trễ thấp qua mạng (người đọc tò mò có thể tìm hiểu thêm <a href="https://webrtcforthecurious.com/">tại đây</a>).</p>
+<blockquote>
+<p><strong>WebRTC</strong> là công nghệ mà các trình duyệt sử dụng cho các cuộc gọi video thời gian thực. Nó thiết lập kết nối trực tiếp, độ trễ thấp giữa hai thiết bị (peer-to-peer) và truyền tải âm thanh, hình ảnh cũng như dữ liệu tùy ý. Chúng tôi sử dụng nó để truyền phát camera và micrô của robot, cũng như gửi các lệnh điều khiển ngược lại.</p></blockquote>
+<p>Hệ sinh thái plugin khổng lồ của GStreamer cũng giúp dễ dàng mở rộng khả năng của Reachy Mini. Ví dụ, các plugin <a href="https://centricular.com/devlog/2026-02/whisper/">chuyển lời nói thành văn bản (speech-to-text)</a> và <a href="https://centricular.com/devlog/2025-11/elevenlabs-speech-synthesis/">văn bản thành lời nói (text-to-speech)</a> đã có sẵn.</p>
+<p>Điều duy nhất còn thiếu là việc cài đặt dễ dàng thông qua pip. SDK của Reachy Mini cần phải đơn giản để cài đặt: không gì hơn ngoài lệnh <code>pip install reachy-mini</code>. Vì vậy, chúng tôi đã <a href="https://centricular.com/devlog/2026-02/Python-Wheels/">hợp tác với Centricular</a> để cung cấp GStreamer dưới dạng Python wheels cho tất cả mọi người.</p>
+<p>Với GStreamer đã được chọn, hãy xem cách chúng tôi lắp ráp các mảnh ghép thành kiến trúc truyền thông của Reachy Mini.</p>
+<h2 id="kiến-trúc">Kiến trúc</h2>
+<p>Kiến trúc chi tiết có trong <a href="https://huggingface.co/docs/reachy_mini/SDK/media-architecture">tài liệu chính thức</a>. Các phần dưới đây sẽ phân tích chi tiết phía server (robot) và phía client (máy tính của bạn).</p>
+<h3 id="phía-server-reachy-mini">Phía Server (Reachy Mini)</h3>
+<p>Mục tiêu ở phía server là làm cho camera và micrô có thể truy cập được từ cả client cục bộ và từ xa.</p>
+<p>&ldquo;Cục bộ&rdquo; bao gồm hai trường hợp. Trên bản Lite, SDK đọc các khung hình từ camera kết nối USB trên máy tính điều khiển. Trên bản Wireless, một ứng dụng có thể chạy trực tiếp trên module tính toán Raspberry Pi nhúng. Bản Wireless cũng được thiết kế để dùng từ xa (người dùng có thể muốn lấy khung hình bằng SDK và xử lý trên một máy tính riêng), và truy cập từ xa là bắt buộc đối với các ứng dụng web (xem phần <a href="#remote-apps">Ứng dụng từ xa</a> bên dưới). Vì vậy, bản Lite cũng cần cung cấp luồng âm thanh/hình ảnh của nó.</p>
+<p>Để đáp ứng tất cả, chúng tôi xây dựng một pipeline GStreamer duy nhất với hai đầu ra. Luồng camera được chuyển tiếp đến cả phần tử <code>webrtcsink</code> (cho client từ xa) và một điểm cuối IPC cục bộ: <code>unixfdsink</code> trên Linux và macOS, <code>win32ipcvideosink</code> trên Windows. Mục đích của việc chia luồng này là để tránh việc khóa camera cho một người dùng duy nhất: một người xem từ xa và một ứng dụng cục bộ có thể đọc luồng cùng một lúc.</p>
+<blockquote>
+<p><strong>IPC</strong> (inter-process communication - giao tiếp liên tiến trình) đơn giản là một kênh cục bộ tốc độ cao giữa hai tiến trình trên cùng một máy. Ở đây, nó cho phép ứng dụng trên thiết bị nhận các khung hình camera thô trực tiếp từ daemon mà không cần mã hóa hay giải mã trung gian.</p></blockquote>
+<p>Âm thanh đơn giản hơn vì card âm thanh có thể được mở bởi nhiều client cùng lúc. Ở phía server, chúng tôi chỉ cần định tuyến âm thanh đến phần tử WebRTC. Nếu một client cục bộ muốn mở thiết bị âm thanh, họ có thể làm trực tiếp thông qua GStreamer mà không cần IPC.</p>
+<!-- raw HTML omitted -->
+<p>Đối với những người quen thuộc với pipeline GStreamer, điều này tương đương với:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gst-launch-1.0 webrtcsink run-signalling-server<span style="color:#f92672">=</span>true meta<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;meta,name=reachymini&#34;</span> name<span style="color:#f92672">=</span>ws libcamerasrc ! capsfilter caps<span style="color:#f92672">=</span>video/x-raw,width<span style="color:#f92672">=</span>1280,height<span style="color:#f92672">=</span>720,framerate<span style="color:#f92672">=</span>60/1,format<span style="color:#f92672">=</span>YUY2,colorimetry<span style="color:#f92672">=</span>bt709,interlace-mode<span style="color:#f92672">=</span>progressive ! tee name<span style="color:#f92672">=</span>t t. ! queue ! v4l2h264enc extra-controls<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;controls,repeat_sequence_header=1&#34;</span> ! <span style="color:#e6db74">&#39;video/x-h264,level=(string)4&#39;</span> ! ws. t. ! queue ! videoconvert ! video/x-raw,format<span style="color:#f92672">=</span>BGR ! unixfdsink socket-path<span style="color:#f92672">=</span>/tmp/reachymini_camera_socket alsasrc device<span style="color:#f92672">=</span>reachymini_audio_src provide-clock<span style="color:#f92672">=</span>false ! ws.
+</span></span></code></pre></div><p>Đây là dành cho Reachy Mini Wireless (Raspberry Pi). Pipeline được điều chỉnh nhẹ cho các nền tảng khác.</p>
+<h3 id="phía-client-máy-tính-của-bạn">Phía Client (Máy tính của bạn)</h3>
+<p>Phía client phản chiếu phía server. Có hai trường hợp: client cục bộ đọc khung hình từ điểm cuối IPC cục bộ, và client từ xa nhận chúng qua WebRTC. SDK tự động phát hiện trường hợp nào đang áp dụng: nếu điểm cuối cục bộ của daemon có thể truy cập được, nó sẽ dùng IPC; nếu không, nó sẽ chuyển sang WebRTC. Dù thế nào, mã của bạn vẫn gọi cùng một API. Bạn có thể tìm thấy nhiều ví dụ trong tài liệu như <code>look at</code> hoặc <code>sound playback</code>.</p>
+<!-- raw HTML omitted -->
+<p>Cho đến nay, chúng ta đã biết SDK đọc các luồng dữ liệu như thế nào. Nhưng con đường WebRTC mở ra nhiều hơn thế: nó cho phép các ứng dụng chạy xa robot, trong trình duyệt hoặc trên một server từ xa. Hãy xem điều đó cho phép làm gì.</p>
+<p>Pipeline GStreamer để tiêu thụ các luồng dữ liệu cục bộ là:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gst-launch-1.0 unixfdsrc socket-path<span style="color:#f92672">=</span>/tmp/reachymini_camera_socket ! videoconvert ! fakesink alsasrc device<span style="color:#f92672">=</span>reachymini_audio_src ! queue ! audioconvert ! audioresample ! fakesink
+</span></span></code></pre></div><p>Và đối với client từ xa:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gst-launch-1.0 webrtcsrc signaller::uri<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ws://&lt;ip_robot&gt;:8443&#34;</span> connect-to-first-producer<span style="color:#f92672">=</span>true name<span style="color:#f92672">=</span>src src. ! videoconvert ! autovideosink src. ! autoaudiosink
+</span></span></code></pre></div><p>Trong SDK của chúng tôi, các sink là các phần tử <code>appsink</code> cung cấp các khung hình và mẫu âm thanh cho mã của bạn, nhưng các pipeline này vẫn rất hữu ích cho việc gỡ lỗi!</p>
+<h2 id="ứng-dụng-từ-xa">Ứng dụng từ xa</h2>
+<p>Một lợi thế lớn của WebRTC là ứng dụng có thể tiêu thụ luồng âm thanh/hình ảnh từ bất cứ đâu. Ngoài phương tiện truyền thông, WebRTC còn hỗ trợ trao đổi dữ liệu hai chiều, vì vậy chúng tôi cung cấp API điều khiển thông qua cùng một kết nối. Do đó, một ứng dụng từ xa có thể điều khiển robot chứ không chỉ xem.</p>
+<p>WebRTC hướng tới kết nối ngang hàng (peer-to-peer) giữa robot và ứng dụng, giúp giữ độ trễ ở mức thấp. Chúng tôi chỉ sử dụng tài khoản Hugging Face của bạn để ghép nối robot với ứng dụng trên một <a href="https://huggingface.co/spaces/pollen-robotics/reachy_mini_central">signaling server</a>: nó định danh hai điểm cuối để chúng có thể tìm thấy nhau. Ngay cả khi mọi thứ chạy trên mạng cục bộ, hai peer vẫn cần sự giới thiệu ban đầu này. Khi đã hoàn tất, dữ liệu truyền trực tiếp giữa chúng và tài khoản của bạn không còn tham gia vào quá trình này nữa. Việc dữ liệu có thực sự truyền trực tiếp hay không tùy thuộc vào nơi ứng dụng chạy, như hai phần tiếp theo sẽ giải thích.</p>
+<blockquote>
+<p><strong>Signaling server.</strong> Trước khi hai peer có thể nói chuyện trực tiếp, trước tiên họ phải tìm thấy nhau và đồng ý về cách kết nối (địa chỉ mạng, codec, khóa mã hóa). Signaling server là &ldquo;người mai mối&rdquo; chuyển tiếp cái bắt tay ban đầu này. Nó chỉ mang theo các tin nhắn thiết lập, không bao giờ mang theo âm thanh hay hình ảnh.</p></blockquote>
+<h3 id="ứng-dụng-javascript">Ứng dụng JavaScript</h3>
+<p>Gói <a href="https://www.npmjs.com/package/@pollen-robotics/reachy-mini-sdk">reachy-mini-sdk</a> cho phép bạn kết nối các ứng dụng TypeScript/JavaScript với Reachy Mini. <a href="https://huggingface.co/spaces/cduss/webrtc_example">Ví dụ WebRTC</a> trình diễn luồng video, âm thanh và điều khiển robot.</p>
+<p>Kết hợp với <a href="https://huggingface.co/docs/transformers.js/index">Transformers.js</a>, bạn có thể đưa các mô hình AI tiên tiến nhất vào robot với rất ít công sức. Nhờ WebGPU, các mô hình AI nâng cao có thể chạy trực tiếp trong trình duyệt, và vì kết nối vẫn là peer-to-peer, dữ liệu không bao giờ rời khỏi mạng cục bộ của bạn. Ví dụ, <a href="https://huggingface.co/spaces/pollen-robotics/bedtime-story-generator">trình tạo truyện kể trước khi ngủ (bedtime story generator)</a> dựa trên một LLM cục bộ (Gemma 3) và TTS cục bộ (Kokoro) để viết và kể chuyện.</p>
+<!-- raw HTML omitted -->
+<p>Về cơ bản, <code>reachy-mini-sdk.js</code> cung cấp hệ thống đường ống WebRTC để tiêu thụ luồng âm thanh/hình ảnh từ robot. Nó cũng cung cấp một module <code>host</code> xử lý kết nối với Hugging Face Spaces bằng tài khoản của bạn.</p>
+<!-- raw HTML omitted -->
+<p>Chạy mọi thứ trong trình duyệt là tuyệt vời, nhưng WebGPU bị giới hạn bởi GPU trong máy bạn, điều này có thể không đủ cho các mô hình lớn hơn. Đó là lúc tính toán từ xa (remote compute) phát huy tác dụng.</p>
+<h3 id="hugging-face-spaces">Hugging Face Spaces</h3>
+<p>Một <a href="https://huggingface.co/spaces">Space</a> nói ngắn gọn là một máy ảo từ xa, và nó có thể đi kèm với GPU mạnh mẽ. Bạn có thể kết nối Reachy Mini với một Space để đẩy các tác vụ nặng, ngốn GPU sang đó. Ví dụ, ví dụ <a href="https://huggingface.co/spaces/pollen-robotics/rf-detr-realtime-webcam">theo dõi đối tượng (object tracking)</a> tiêu thụ luồng video qua WebRTC và gửi ngược lại tư thế đầu để robot theo dõi đối tượng đã chọn.</p>
+<p>Không giống như ứng dụng trình duyệt, một Space chạy trong một trung tâm dữ liệu thay vì trên mạng cục bộ của bạn, vì vậy robot và Space thường không thể tiếp cận nhau trực tiếp. Trong trường hợp đó, luồng dữ liệu được chuyển tiếp qua một TURN server (chúng tôi dựa vào <a href="https://huggingface.co/spaces/fastrtc/turn-service">dịch vụ TURN của fastrtc</a>). Điều này thêm một bước nhảy (hop) so với đường dẫn trình duyệt peer-to-peer hoàn toàn.</p>
+<blockquote>
+<p><strong>TURN server.</strong> Khi hai peer không thể mở kết nối trực tiếp (do tường lửa, NAT, hoặc một trong hai nằm trong trung tâm dữ liệu), TURN server sẽ đóng vai trò là trạm chuyển tiếp: cả hai bên kết nối với nó, và nó chuyển tiếp phương tiện giữa họ. Nó đảm bảo khả năng kết nối, đánh đổi bằng một bước nhảy bổ sung.</p></blockquote>
+<p>Lợi thế lớn của cách tiếp cận này là người dùng cuối không phải cài đặt hay tải xuống bất cứ thứ gì. Mọi thứ, bao gồm cả các mô hình có thể nặng vài gigabyte, đều nằm trong Space. Điều này khiến Spaces trở thành một cách tuyệt vời để chia sẻ ứng dụng Reachy Mini tích hợp AI: bất kỳ ai cũng có thể thử nó từ trình duyệt, với robot trong vòng lặp và việc tính toán được xử lý sẵn cho họ.</p>
+<p><strong>Tính toán cục bộ hay từ xa là sự đánh đổi giữa sức mạnh, độ trễ và quyền riêng tư.</strong></p>
+<h2 id="độ-trễ-truyền-phát-streaming-latency">Độ trễ truyền phát (Streaming latency)</h2>
+<p>Một đặc tính chính của luồng video là độ trễ bạn trải nghiệm trước khi một khung hình đến với bạn. Độ trễ càng thấp càng tốt. Đối với bất kỳ tương tác vòng kín (closed-loop) nào như theo dõi khuôn mặt, các khung hình cần đến nhanh nhất có thể.</p>
+<p>Chúng tôi đo độ trễ từ đầu đến cuối dưới dạng độ trễ <em>glass-to-glass</em> (từ kính đến kính): thời gian một hình ảnh đi từ ống kính camera (mặt kính đầu tiên) đến màn hình (mặt kính cuối cùng). Để đo điều này, chúng tôi xây dựng một <a href="https://github.com/pollen-robotics/G2GDelay">thiết bị đơn giản</a> làm từ một đèn LED và một quang trở. Vì thiết bị này nằm ngoài hệ thống của chúng tôi (nó đo thời gian đèn LED nhấp nháy mất bao lâu để đến được quang trở), nó đưa ra phép đo thực tế, từ đầu đến cuối.</p>
+<!-- raw HTML omitted -->
+<p>Trong bài kiểm tra này, chúng tôi sử dụng Reachy Mini Wireless và một ứng dụng JavaScript chạy trong Chrome trên laptop Windows. GPU của laptop là Intel® UHD Graphics (TGL GT1) với bộ giải mã H.264 phần cứng. Robot và laptop nằm trên cùng một mạng cục bộ qua Wi-Fi dân dụng (5 GHz), trên màn hình 140 Hz.</p>
+<p>Chúng tôi đo được tổng độ trễ khoảng 100 ms.</p>
+<!-- raw HTML omitted -->
+<p>Con số này có thể thay đổi nhiều tùy thuộc vào thiết lập của bạn. Về cơ bản, độ trễ đến từ ba nơi:</p>
+<ul>
+<li><strong>Bên gửi (Robot).</strong> Phần cứng là cố định, nhưng có thể tiết kiệm được vài mili giây bằng cách tinh chỉnh driver camera, bộ mã hóa hoặc pipeline GStreamer ở mức thấp, chủ yếu bằng cách tránh các bản sao thừa và xử lý không cần thiết.</li>
+<li><strong>Mạng.</strong> Điều này phụ thuộc nhiều vào chất lượng kết nối và đường đi từ robot đến client. Trên mạng cục bộ, việc kết nối Reachy qua Wi-Fi và máy tính bằng dây vào router sẽ giúp ích. Ở khoảng cách xa (qua internet), khả năng kiểm soát tắc nghẽn của WebRTC có thể bù đắp cho sự chậm trễ bằng cách hạ thấp bitrate video, mặc dù trên Raspberry Pi điều này chỉ hoạt động với một <a href="https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/merge_requests/2893">patch</a> mà chúng tôi vừa đẩy lên. Một thông số đáng tinh chỉnh ở đây là <em>jitter buffer</em>, giúp hấp thụ sự biến thiên trong thời gian đến của các gói tin: mạng càng kém, buffer cần càng lớn, đánh đổi một chút độ trễ để có hình ảnh mượt mà hơn. Trong tương lai, <a href="https://en.wikipedia.org/wiki/QUIC">giao thức QUIC</a>, được thiết kế cho các thách thức về độ trễ thấp, có thể trở thành một giải pháp thay thế cho WebRTC, và một <a href="https://github.com/moq-dev/moq">plugin GStreamer đã tồn tại</a>. Tuy nhiên, các bài thử nghiệm đầu tiên của chúng tôi trong điều kiện mạng cục bộ không cho thấy sự cải thiện đáng kể.</li>
+<li><strong>Client.</strong> Khi một khung hình đến, nó phải được giải mã, và thời gian thực hiện việc này phụ thuộc vào phần cứng của bạn: GPU rời nhanh hơn GPU tích hợp. Sau đó, việc <a href="https://www.nvidia.com/en-us/geforce/guides/system-latency-optimization-guide/">đưa khung hình lên màn hình</a> cũng có độ trễ riêng.</li>
+</ul>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Bài viết này đã cung cấp cái nhìn tổng quan về các lựa chọn thiết kế cho phép phiên bản Lite và Wireless của Reachy Mini hoạt động mượt mà, dù là cục bộ hay từ xa. Kết quả là một API nhất quán duy nhất trên các luồng âm thanh và hình ảnh mà bạn có thể tiêu thụ từ Python hoặc trình duyệt, và một lộ trình rõ ràng để xây dựng các ứng dụng AI trên đó, cho dù bạn chạy mô hình trên robot, trên laptop hay trên một Hugging Face Space.</p>
+<p>Như thường lệ với Pollen, tất cả mã nguồn đều được <a href="https://github.com/pollen-robotics/reachy_mini">mở (open source)</a>.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/pollen-robotics/reachy-mini-media-stack">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/10-june-2026/">10 June 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-09/eaf0b5/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Cách một Agent Xây dựng Phòng triển lãm Paris 3D bằng cách Kết nối hai Hugging Face Spaces" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-09T00:00:00&#43;00:00">Jun 09, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Cách một Agent Xây dựng Phòng triển lãm Paris 3D bằng cách Kết nối hai Hugging Face Spaces</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Hướng dẫn cách một Agent xây dựng Phòng triển lãm Paris 3D bằng cách kết nối hai Hugging Face Spaces</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-05-29/b429cb/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Dell Enterprise Hub tại Dell Tech World 2026- các mô hình mới, nền tảng mới, triển khai sản xuất nhanh hơn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-05-29T00:00:00&#43;00:00">May 29, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Dell Enterprise Hub tại Dell Tech World 2026- các mô hình mới, nền tảng mới, triển khai sản xuất nhanh hơn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Giới thiệu Dell Enterprise Hub tại Dell Tech World 2026 với các mô hình và nền tảng mới giúp tăng tốc quá trình đưa vào sản xuất</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-10/82418c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/IeY6ILWavcfb8voTv3e2NZbdZhCOiTY0LnqKLS-uwWPXOSIcXiWRJdbNIZmWFSZn6i12kzWoyzo7GDIs5EybKwzfqZd2XdpfOL2l_hd8SdXXEpSGWQ=w704-h704-n-nu" alt="Dịch thuật giọng nói mượt mà, tự nhiên với Gemini 3.5 Live Translate" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dịch thuật giọng nói mượt mà, tự nhiên với Gemini 3.5 Live Translate</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-10/845656/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/bQJ5AhPtY1o-149qhqlSi5lHWJ45w50bd2LaGpexCNvUbyVbzrX0hPY7CQ3i7TDd9kfgsdbfdd_XbzjTMCwXQ5SOLTZhUUO3Lgs9srPpgtnvHgbByA=w704-h704-n-nu" alt="Đo lường tác động của việc học tập với AI tại Sierra Leone và xa hơn nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đo lường tác động của việc học tập với AI tại Sierra Leone và xa hơn nữa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-10/b6a208/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/wYry5niI4ACZS_ayQYV4ii5W0jDGE5S9Sam1QeFjtHw9fvwrggI8GVC8CDshX45OCcwkZ8OJqxUgvzKkL5ohz3axfii-wxOH0ym_G_LmFkI4RgUp=w704-h704-n-nu" alt="Giới thiệu Gemma 4 12B- một mô hình đa phương thức thống nhất, không bộ mã hóa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Giới thiệu Gemma 4 12B- một mô hình đa phương thức thống nhất, không bộ mã hóa</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-10/c30f1b/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Mắt, tai và giọng nói- xây dựng ngăn xếp truyền thông của Reachy Mini" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Mắt, tai và giọng nói- xây dựng ngăn xếp truyền thông của Reachy Mini</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-10/a57d85/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/L-kKdzeYEMiY7dcrO0NMFdxNjO3uvjUM5AwkROXrZ9Ki-y67FYV-ccpjlFA6_GCZatqjjVaSN5z-n6kQKarL3Ns1SnXuyc5o1aYx7OlT9ULYcto8eQ=w704-h704-n-nu" alt="Thúc đẩy tương lai của robot tại Châu Âu" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Thúc đẩy tương lai của robot tại Châu Âu</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
