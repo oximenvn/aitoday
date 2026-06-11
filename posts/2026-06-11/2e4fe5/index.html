@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Phân tích hiệu năng CUDA trong PyTorch (Phần 2)- Từ nn.Linear đến Fused MLP | AI Today - SkyAI</title>
+
+<meta name="description" content="Hướng dẫn phân tích hiệu năng CUDA trong PyTorch, chuyển đổi từ nn.Linear sang Fused MLP">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Phân tích hiệu năng CUDA trong PyTorch (Phần 2)- Từ nn.Linear đến Fused MLP</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Hướng dẫn phân tích hiệu năng CUDA trong PyTorch, chuyển đổi từ nn.Linear sang Fused MLP </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-06-11T00:00:00&#43;00:00">June 11, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/front/thumbnails/blog.png" alt="Phân tích hiệu năng CUDA trong PyTorch (Phần 2)- Từ nn.Linear đến Fused MLP">
+        <figcaption class="text-center italic text-xs">Hướng dẫn phân tích hiệu năng CUDA trong PyTorch, chuyển đổi từ nn.Linear sang Fused MLP</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="phân-tích-hiệu-năng-trong-pytorch-phần-2-từ-nnlinear-đến-một-fused-mlp">Phân tích hiệu năng trong PyTorch (Phần 2): Từ nn.Linear đến một Fused MLP</h1>
+<p><strong>Ngày xuất bản:</strong> 11 tháng 6, 2026</p>
+<p>Trong <a href="https://huggingface.co/blog/torch-profiler">phần đầu tiên của loạt bài &ldquo;Phân tích hiệu năng trong PyTorch&rdquo;</a>, chúng ta đã sử dụng <code>torch.add(torch.matmul(x, w), b)</code> để học cách đọc các dấu vết (traces) từ PyTorch profiler. Chúng ta cũng đã thảo luận về một số chủ đề khác như chuỗi điều phối (dispatch chain) của CPU, chi phí khởi chạy (launch overhead), sự khác biệt giữa chế độ bị giới hạn bởi chi phí quản lý (overhead-bound) và chế độ bị giới hạn bởi tính toán (compute-bound), cũng như một số cơ chế nội bộ của <code>torch.compile</code>.</p>
+<p>Trong phần thứ hai này, chúng ta sẽ tiến thêm một bước nữa. Chúng ta thay thế cặp matmul-add viết tay bằng một lớp <code>nn.Linear</code> (với <code>bias=True</code>). Đây là khối xây dựng cơ bản mà mọi mô hình deep learning đều sử dụng. Sau đó, chúng ta sẽ xếp chồng ba lớp này (trong ví dụ của chúng ta), với một hàm kích hoạt ở giữa, để tạo thành một khối Perceptron đa lớp (MLP).</p>
+<blockquote>
+<p>Các mã nguồn cho bài viết này nằm tại đây: <code>02_linear.py</code>, <code>03_simple_mlp.py</code>, và <code>03_kernels_mlp.py</code>. Tương tự như trước, bạn nên mở chúng trong một tab riêng và theo dõi mã nguồn trong khi đọc. Chúng tôi sử dụng GPU <code>NVIDIA A100-SXM4-80GB</code> để chạy các kịch bản này.</p></blockquote>
+<p>Trước khi bắt đầu, hãy nhắc lại nhanh hai khái niệm mà chúng ta sẽ xuyên suốt sử dụng:</p>
+<ol>
+<li>Một <strong>kernel</strong> GPU là một chương trình chạy song song trên nhiều luồng (threads) của GPU.</li>
+<li>CPU thực hiện <strong>lập lịch và khởi chạy (schedule and launch)</strong> các kernel này. Hầu hết các chi phí quản lý (overhead) của PyTorch mà bạn thấy trong trace profiler chính là công việc lập lịch này.</li>
+</ol>
+<h2 id="từ-matmul-add-đến-linear">Từ matmul-add đến Linear</h2>
+<p><code>nn.Linear</code> thực chất là một lớp bao bọc (wrapper) quanh phép nhân ma trận và phép cộng mà chúng ta đã phân tích ở Phần 1. Điểm khác biệt duy nhất là nó sở hữu trọng số (weight) và độ chệch (bias) dưới dạng các tham số và cung cấp phương thức <code>forward</code> quen thuộc.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># bias=True sẽ mô phỏng chính xác các thao tác nhân và cộng</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># mà chúng ta đã thấy trong phần 1 của loạt bài</span>
+</span></span><span style="display:flex;"><span>linear_layer <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(in_dim, out_dim, bias<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> linear_layer(x)
+</span></span></code></pre></div><p>Thao tác này có thể được viết là:
+<code>y = x @ w.T + b</code></p>
+<p>Trong đó <code>x</code> là đầu vào, <code>w</code> là trọng số và <code>b</code> là độ chệch. Hãy chạy <code>02_linear.py</code> và kiểm tra profile.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run 02_linear.py --batch <span style="color:#ae81ff">1024</span> --in_dim <span style="color:#ae81ff">32</span> --out_dim <span style="color:#ae81ff">64</span>
+</span></span><span style="display:flex;"><span>uvx trace-util traces -b traces
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Hình 1 cho thấy trace profiler của một lần gọi <code>forward</code> của lớp linear. Chúng ta thấy ba bước Profile (Profile Steps) ở cả luồng CPU và GPU do thiết lập <code>wait=1</code>, <code>warmup=1</code> và <code>active=3</code>.</p>
+<h3 id="phép-chuyển-vị-transpose-đang-làm-gì">Phép chuyển vị (transpose) đang làm gì?</h3>
+<!-- raw HTML omitted -->
+<p>Nếu phóng to trace profiler như trong Hình 2, chúng ta sẽ thấy một toán tử <code>aten::t</code> (chuyển vị) xuất hiện trước toán tử <code>aten::addmm</code> (nhân và cộng). Điều này cho thấy <code>nn.Linear</code> thực hiện chuyển vị tham số trọng số trước khi nhân nó với đầu vào.</p>
+<p>Một điểm quan trọng cần lưu ý là <code>aten::t</code> <strong>không thực sự sao chép hay tổ chức lại dữ liệu</strong>: nó chỉ viết lại siêu dữ liệu (metadata) của tensor (hình dạng - shape và bước nhảy - stride) trên CPU để đại diện cho ma trận đã chuyển vị. Nó không khởi chạy bất kỳ kernel nào trên GPU. Bạn có thể kiểm tra điều này bằng cách nhìn vào luồng GPU hoặc xem bảng profiler, thời gian thực thi trên CUDA của <code>aten::t</code> sẽ bằng 0.</p>
+<h3 id="tại-sao-không-có-các-kernel-mul-và-add-riêng-biệt">Tại sao không có các kernel <code>mul</code> và <code>add</code> riêng biệt?</h3>
+<!-- raw HTML omitted -->
+<p>Không có <code>aten::add</code> (phép cộng bias) trong chuỗi điều phối của lớp linear (Hình 3). Điều này là do phép cộng bias đã được <em>gộp (folded)</em> vào kernel nhân ma trận, sử dụng cái gọi là <strong>epilogue</strong>.</p>
+<p><strong>Epilogue</strong> là một tính toán nhỏ mà kernel GEMM (Nhân ma trận tổng quát) thực hiện ở bước cuối cùng, ngay trước khi ghi kết quả trở lại HBM (Bộ nhớ băng thông cao - bộ nhớ chính của GPU). Việc cộng bias, áp dụng hàm kích hoạt hoặc nhân với một hằng số đều là các epilogue điển hình. Mục đích của epilogue là tránh việc phải đọc/ghi vào HBM lần thứ hai, vì lưu lượng bộ nhớ khiến thao tác trở nên tốn kém.</p>
+<p><code>nn.Linear</code> gọi <code>torch.nn.functional.linear</code>, sau đó gọi <code>aten::linear</code>. <code>aten::linear</code> nhận thấy có bias được truyền vào, nên nó điều phối <code>aten::addmm(bias, x, weight)</code> thay vì thực hiện matmul và add riêng biệt.</p>
+<p>Kernel GEMM của cuBLAS chạy trên GPU có sẵn một biến thể cộng bias, và đó là kernel mà <code>aten::addmm</code> chọn. Phép cộng không bao giờ xuất hiện dưới dạng một kernel riêng biệt vì nó là <strong>một phần của quá trình ghi kết quả của kernel matmul</strong>.</p>
+<h2 id="liệu-compile-có-giúp-ích-cho-một-lớp-linear-duy-nhất">Liệu &ndash;compile có giúp ích cho một lớp Linear duy nhất?</h2>
+<p>Hãy thử biên dịch lời gọi <code>forward</code> và xem trace profiler.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run 02_linear.py --batch <span style="color:#ae81ff">1024</span> --in_dim <span style="color:#ae81ff">32</span> --out_dim <span style="color:#ae81ff">64</span> --compile
+</span></span><span style="display:flex;"><span>uvx trace-util traces -b traces
+</span></span></code></pre></div><p>Nếu so sánh trace giữa chế độ Eager và Compiled cho một lớp <code>nn.Linear</code>, bạn sẽ thấy:</p>
+<ul>
+<li>Cùng một kernel cuBLAS GEMM trên GPU.</li>
+<li>Cùng một toán tử <code>aten::addmm</code> trên CPU.</li>
+<li>Một vài hàng bổ sung trên luồng CPU đặc thù cho quá trình biên dịch.</li>
+</ul>
+<p>Điều này rất đáng lưu ý. Một phản xạ phổ biến là sử dụng <code>torch.compile</code> bất cứ khi nào mô hình cảm thấy chậm. Nhưng đối với một phép GEMM-với-bias đơn lẻ, trình biên dịch có rất ít việc để làm. Điều này không phải là lỗi, mà vì trình biên dịch cần nhiều hơn một thao tác để có thể thực hiện việc hợp nhất (fusing).</p>
+<h3 id="phép-chuyển-vị-biến-đi-đâu-bố-cục-kernel-và-pre-ops">Phép chuyển vị biến đi đâu? Bố cục Kernel và Pre-ops</h3>
+<p>Một người đọc kỹ hai trace (Eager vs Compile) sẽ nhận thấy chuỗi điều phối CPU ở chế độ Eager có nhiều thành phần hơn.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Để hiểu <code>aten::t</code> thực sự làm gì, chúng ta cần nói về <em>strides</em> (bước nhảy) và <em>views</em> (góc nhìn).</p>
+<p>Một tensor lưu trữ dữ liệu dưới dạng một dải số phẳng, liên tục trong bộ nhớ. <code>shape</code> (hình dạng) và <code>stride</code> là siêu dữ liệu nằm trên dải đó để chỉ cho PyTorch cách đọc: stride <code>(s0, s1)</code> có nghĩa là &ldquo;nhảy <code>s0</code> phần tử để sang hàng mới, nhảy <code>s1</code> để sang cột mới&rdquo;. Khi thay đổi siêu dữ liệu này, bạn có một <em>view</em> khác của <em>cùng một</em> dữ liệu thô mà không cần sao chép:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> M <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>                   [<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>],
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>                   [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>]])
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> M<span style="color:#f92672">.</span>shape, M<span style="color:#f92672">.</span>stride()
+</span></span><span style="display:flex;"><span>(torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">2</span>]), (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>))   <span style="color:#75715e"># hai bước mỗi hàng, một bước mỗi cột</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> T <span style="color:#f92672">=</span> M<span style="color:#f92672">.</span>t()                  <span style="color:#75715e"># chuyển vị</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> T<span style="color:#f92672">.</span>shape, T<span style="color:#f92672">.</span>stride()
+</span></span><span style="display:flex;"><span>(torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]), (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>))   <span style="color:#75715e"># shape và stride bị hoán đổi, dữ liệu giữ nguyên</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> T
+</span></span><span style="display:flex;"><span>tensor([[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>]])
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> T<span style="color:#f92672">.</span>flatten()                <span style="color:#75715e"># buộc phải hiện thực hóa, dữ liệu được sắp xếp lại</span>
+</span></span><span style="display:flex;"><span>tensor([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>])
+</span></span></code></pre></div><p><code>M.t()</code> không di chuyển một con số nào. Nó trả về một view mới với các stride bị hoán đổi. Đây chính xác là những gì <code>aten::t</code> làm: nó tạo ra một view của trọng số với stride được viết lại.</p>
+<p>Như thấy ở Hình 5, <code>torch.compile</code> không loại bỏ kernel GPU; nó loại bỏ <strong>chi phí điều phối trên CPU</strong> để tạo view đó. Inductor đã theo dõi chuỗi view tại thời điểm biên dịch, tính toán stride kết quả một lần và phát ra một lời gọi <code>aten::addmm</code> trực tiếp với các stride đã được mã hóa cứng.</p>
+<p>Nếu nhìn vào luồng GPU, cả hai lần chạy đều sử dụng cùng một kernel:
+<code>cutlass_80_wmma_tensorop_bf16_s161616gemm_bf16_32x32_32x1_tn_align8</code></p>
+<p>Hậu tố <code>tn</code> trong tên kernel chính là mô tả bố cục (layout). cuBLAS và CUTLASS biên dịch sẵn các kernel riêng biệt cho mỗi tổ hợp bố cục đầu vào (<code>n</code> là không chuyển vị, <code>t</code> là có chuyển vị).</p>
+<h2 id="xếp-chồng-ba-lớp-linear-tạo-thành-mlp">Xếp chồng ba lớp Linear: Tạo thành MLP</h2>
+<p>Chúng ta sẽ phân tích hiệu năng của một Perceptron đa lớp (MLP) sử dụng biến thể kích hoạt GeGLU.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleGeGLUMLP</span>(nn<span style="color:#f92672">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, dim, hidden):
+</span></span><span style="display:flex;"><span>        super()<span style="color:#f92672">.</span>__init__()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>gate_proj <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(dim, hidden, bias<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>up_proj <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(dim, hidden, bias<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>down_proj <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(hidden, dim, bias<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forward</span>(self, x):
+</span></span><span style="display:flex;"><span>        g <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>gate_proj(x)
+</span></span><span style="display:flex;"><span>        u <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>up_proj(x)
+</span></span><span style="display:flex;"><span>        h <span style="color:#f92672">=</span> F<span style="color:#f92672">.</span>gelu(g, approximate<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tanh&#34;</span>)
+</span></span><span style="display:flex;"><span>        m <span style="color:#f92672">=</span> h <span style="color:#f92672">*</span> u
+</span></span><span style="display:flex;"><span>        y <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>down_proj(m)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> y
+</span></span></code></pre></div><p>Hãy chạy <code>03_simple_mlp.py</code> và xem trace. Chúng ta kỳ vọng thấy ba lần điều phối <code>aten::linear</code> và hai lần khởi chạy kernel pointwise (một cho GeLU và một cho phép nhân).</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Trong mỗi lượt forward, GPU chạy chính xác 5 kernel. Ba phép GEMM thực hiện một lời gọi <code>cudaOccupancyMaxActiveBlocksPerMultiprocessor</code> trước khi khởi chạy (để cuBLAS tính toán kích thước grid), trong khi các thao tác pointwise (GeLU và mul) khởi chạy trực tiếp.</p>
+<!-- raw HTML omitted -->
+<p>Các thao tác như <code>aten::t</code>, <code>aten::transpose</code>, <code>aten::reshape</code>, <code>aten::view</code> hiển thị <code>0.000us</code> thời gian CUDA vì chúng chỉ thay đổi siêu dữ liệu trên CPU.</p>
+<h3 id="tại-sao-có-hai-loại-kernel-gemm">Tại sao có hai loại kernel GEMM?</h3>
+<p>Trong trace, chúng ta thấy:</p>
+<ul>
+<li><code>gate_proj</code> và <code>up_proj</code> sử dụng kernel <code>...128x128...stages_32x5_tn</code> (0.19ms).</li>
+<li><code>down_proj</code> sử dụng kernel <code>...128x256...stages_64x3_tn</code> (0.17ms).</li>
+</ul>
+<p>Mặc dù cả ba đều có cùng số lượng phép tính (FLOPs), nhưng <code>down_proj</code> nhanh hơn khoảng 10%. Lý do là vì hình dạng ma trận khác nhau ($N=768$ thay vì $3072$), cuBLAS chọn một &ldquo;tile&rdquo; (ô gạch) khác giúp tái sử dụng dữ liệu tốt hơn.</p>
+<h3 id="torchcompile-làm-gì-trong-trường-hợp-này"><code>torch.compile</code> làm gì trong trường hợp này?</h3>
+<p>Khi biên dịch phương thức <code>forward</code>:</p>
+<!-- raw HTML omitted -->
+<p>Trong chế độ Eager, mỗi <code>nn.Linear</code> bị mở rộng thành một chuỗi các toán tử điều phối. <code>torch.compile</code> loại bỏ chuỗi này. Chúng ta chỉ còn thấy ba lời gọi <code>aten::mm</code> thuần túy.</p>
+<h3 id="kernel-triton-được-hợp-nhất-fused">Kernel Triton được hợp nhất (Fused)</h3>
+<p>Đây là điểm mấu chốt của bài học biên dịch. Hai kernel pointwise (GeLU và mul) cùng với một phép reshape đã bị gộp thành một kernel duy nhất: <code>triton_poi_fused__unsafe_view_gelu_mul_0</code>.</p>
+<!-- raw HTML omitted -->
+<p>Tại sao điều này lại hiệu quả? Trong chế độ Eager, kết quả trung gian <code>h = gelu(g)</code> là một tensor lớn (khoảng 50 MB) được ghi vào HBM rồi ngay lập tức được đọc lại bởi kernel nhân. Việc hợp nhất giữ dữ liệu này trong các <strong>thanh ghi (registers)</strong> (bộ nhớ nằm ngay trong chip, nhanh hơn nhiều so với HBM). Một vòng lặp đọc/ghi dữ liệu trung gian qua bộ nhớ toàn cục đã bị loại bỏ.</p>
+<h2 id="sử-dụng-các-kernel-được-tinh-chỉnh-thủ-công-hand-tuned">Sử dụng các kernel được tinh chỉnh thủ công (Hand-tuned)</h2>
+<p>Thay vì để PyTorch hoặc trình biên dịch chọn kernel, chúng ta sử dụng một kernel được chuyên gia viết và tinh chỉnh thủ công thông qua thư viện <code>kernels</code> từ Hugging Face Hub (ví dụ: <code>LigerGEGLUMLP</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> kernels <span style="color:#f92672">import</span> get_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kernels_layers <span style="color:#f92672">=</span> get_kernel(<span style="color:#e6db74">&#34;kernels-community/liger-kernels&#34;</span>, version<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>layers
+</span></span><span style="display:flex;"><span>kernels_geglu_mlp <span style="color:#f92672">=</span> kernels_layers<span style="color:#f92672">.</span>LigerGEGLUMLP(Config())<span style="color:#f92672">.</span>to(device, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>bfloat16)<span style="color:#f92672">.</span>eval()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<h3 id="tại-sao-nên-dùng-thư-viện-kernels">Tại sao nên dùng thư viện <code>kernels</code>?</h3>
+<p>Viết kernel trong Triton hoặc CUDA là một chuyện, nhưng <em>triển khai</em> chúng lại là chuyện khác. Kernel phải được biên dịch chính xác cho kiến trúc GPU, phiên bản CUDA và phiên bản PyTorch của bạn. Thư viện <code>kernels</code> giải quyết vấn đề này bằng cách cung cấp các gói kernel <strong>đã được biên dịch sẵn và cố định phiên bản</strong>.</p>
+<h3 id="tại-sao-kernel-tinh-chỉnh-lại-tốt-hơn">Tại sao kernel tinh chỉnh lại tốt hơn?</h3>
+<ol>
+<li><strong>Hợp nhất được tích hợp sẵn:</strong> <code>LigerGEGLUMLP</code> chạy một kernel Triton duy nhất để tính <code>gelu(gate) * up</code> trong một lần quét. Chúng ta đạt được điều này <strong>mà không cần trình biên dịch</strong>, do đó không có chi phí từ Dynamo guards hay rủi ro biên dịch lại (Hình 13 và 14).</li>
+<li><strong>Tham số khởi chạy được tối ưu cho phần cứng:</strong> Thay vì dự đoán ngẫu nhiên, Liger chọn kích thước block dựa trên số lượng cột.</li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><strong>Sự đánh đổi:</strong> Kernel của Liger chạy trong 92.8 µs, trong khi kernel hợp nhất của Inductor (biên dịch) chạy trong 89.4 µs. Kernel biên dịch nhanh hơn vì nó được tối ưu riêng cho hình dạng chính xác <code>[8192, 3072]</code>. Nếu bạn thay đổi kích thước batch hoặc sequence, bạn sẽ phải trả chi phí biên dịch lại từ đầu.</p>
+<p>Vì vậy, lựa chọn thực sự là giữa <strong>một kernel tổng quát nhanh</strong> (Liger) và <strong>một kernel chuyên biệt cho một hình dạng đầu vào cụ thể</strong> (<code>torch.compile</code>).</p>
+<h2 id="kết-luận">Kết luận</h2>
+<p>Bảng dưới đây tổng hợp những gì mỗi bước thay đổi trên GPU và những gì giữ nguyên.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Thiết lập</th>
+          <th style="text-align: left">Thay đổi</th>
+          <th style="text-align: left">Giữ nguyên</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Eager <code>nn.Linear</code></strong></td>
+          <td style="text-align: left">Cơ bản: cộng bias đã được gộp vào epilogue của GEMM (<code>addmm</code>), nên chỉ là <em>một</em> kernel cuBLAS.</td>
+          <td style="text-align: left">—</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Compiled <code>nn.Linear</code></strong></td>
+          <td style="text-align: left">Một vài thao tác điều phối CPU (quản lý view <code>aten::t</code>) biến mất.</td>
+          <td style="text-align: left">Vẫn là một kernel cuBLAS GEMM duy nhất, giống hệt từng byte. Không có gì để hợp nhất thêm.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Eager MLP</strong></td>
+          <td style="text-align: left">5 kernel GPU: 3 GEMM + 1 GeLU + 1 mul. Dữ liệu trung gian <code>[8192, 3072]</code> phải đi một vòng qua HBM.</td>
+          <td style="text-align: left">Mỗi GEMM vẫn là kernel cuBLAS không-bias giống như lớp linear độc lập.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Compiled MLP</strong></td>
+          <td style="text-align: left">GeLU + mul + reshape gộp thành <strong>một</strong> kernel Triton; dữ liệu trung gian nằm trong thanh ghi. Chịu chi phí pre-ops (Dynamo, guards).</td>
+          <td style="text-align: left">3 GEMM không thay đổi với tên kernel cuBLAS tương tự.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Liger MLP</strong></td>
+          <td style="text-align: left">Cùng mức độ hợp nhất, nhưng được tích hợp vào kernel Triton viết tay với tham số tối ưu phần cứng, <strong>không</strong> có Dynamo, guards hay độ trễ biên dịch.</td>
+          <td style="text-align: left">3 GEMM vẫn là các kernel cuBLAS tương tự.</td>
+      </tr>
+  </tbody>
+</table>
+<p>Nếu có một thói quen cần ghi nhớ, đó là: <strong>đoán trước, rồi mới xem</strong>. Hãy xác định những gì bạn kỳ vọng trace sẽ chứa, mở nó ra, và coi bất kỳ sự sai lệch nào là điều thú vị nhất trên màn hình.</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/torch-mlp-fusion">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/11-june-2026/">11 June 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/97b631/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="36 Câu lệnh, Một Thành phố Vô tận" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-11T00:00:00&#43;00:00">Jun 11, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">36 Câu lệnh, Một Thành phố Vô tận</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Khám phá một thành phố vô tận thông qua 36 câu lệnh</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/f9dc19/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="Lolaby — Những bài hát ru được hỗ trợ bởi AI" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-11T00:00:00&#43;00:00">Jun 11, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Lolaby — Những bài hát ru được hỗ trợ bởi AI</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Các bài hát ru được tạo ra bằng trí tuệ nhân tạo</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/97b631/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="36 Câu lệnh, Một Thành phố Vô tận" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">36 Câu lệnh, Một Thành phố Vô tận</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/f9dc19/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="Lolaby — Những bài hát ru được hỗ trợ bởi AI" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Lolaby — Những bài hát ru được hỗ trợ bởi AI</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/2e4fe5/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="Phân tích hiệu năng CUDA trong PyTorch (Phần 2)- Từ nn.Linear đến Fused MLP" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Phân tích hiệu năng CUDA trong PyTorch (Phần 2)- Từ nn.Linear đến Fused MLP</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-10/82418c/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/IeY6ILWavcfb8voTv3e2NZbdZhCOiTY0LnqKLS-uwWPXOSIcXiWRJdbNIZmWFSZn6i12kzWoyzo7GDIs5EybKwzfqZd2XdpfOL2l_hd8SdXXEpSGWQ=w704-h704-n-nu" alt="Dịch thuật giọng nói mượt mà, tự nhiên với Gemini 3.5 Live Translate" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Dịch thuật giọng nói mượt mà, tự nhiên với Gemini 3.5 Live Translate</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-10/845656/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/bQJ5AhPtY1o-149qhqlSi5lHWJ45w50bd2LaGpexCNvUbyVbzrX0hPY7CQ3i7TDd9kfgsdbfdd_XbzjTMCwXQ5SOLTZhUUO3Lgs9srPpgtnvHgbByA=w704-h704-n-nu" alt="Đo lường tác động của việc học tập với AI tại Sierra Leone và xa hơn nữa" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đo lường tác động của việc học tập với AI tại Sierra Leone và xa hơn nữa</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
