@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot | AI Today - SkyAI</title>
+
+<meta name="description" content="Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-06-17T00:00:00&#43;00:00">June 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            17 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot">
+        <figcaption class="text-center italic text-xs">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="từ-hugging-face-hub-đến-phần-cứng-robot-với-strands-agents-và-lerobot">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</h1>
+<p><em>Hướng dẫn chi tiết về việc tích hợp LeRobot trong Strands Robots - một vòng lặp tác nhân (agent loop), từ tập dữ liệu trên Hub đến robot vật lý, với các tập dữ liệu mô phỏng-sang-thực tế (sim-to-real) có cùng định dạng lưu trữ và các chính sách (policies) mà bạn có thể thay đổi chỉ bằng một chuỗi ký tự.</em></p>
+<p>Nếu bạn có một robot, một thư mục dữ liệu trình diễn trên <a href="https://huggingface.co">Hugging Face Hub</a> và một nhiệm vụ mới muốn robot học, hiện nay bạn sẽ cần đến năm công cụ riêng biệt: một để ghi lại các bản trình diễn mới, một để huấn luyện, một để thử nghiệm trong mô phỏng, mã tùy chỉnh để triển khai trên phần cứng và một công cụ khác để điều phối khi bạn có nhiều hơn một robot. Các mảnh ghép này hoạt động độc lập và không giao tiếp với nhau.</p>
+<p><a href="https://github.com/strands-labs/robots">Strands Robots</a> là một SDK mã nguồn mở từ AWS (Apache 2.0) cung cấp các trừu tượng hóa robot, mô phỏng và ngăn xếp <a href="https://github.com/huggingface/lerobot">LeRobot</a> dưới dạng các <code>AgentTools</code> mà bạn có thể kết hợp thành một tác nhân Strands duy nhất. Sự tích hợp này được thiết kế tinh gọn: các tập lệnh của chính LeRobot sẽ xử lý việc ghi hình phần cứng và hiệu chuẩn, còn Strands AgentTools sẽ đảm nhận những phần mà một tác nhân thực sự điều phối. Công cụ mô phỏng ghi lại <code>LeRobotDatasets</code> theo cùng định dạng mà LeRobot ghi trên phần cứng. <a href="https://github.com/NVIDIA/Isaac-GR00T">GR00T</a> và <a href="https://strands-labs.github.io/robots/policies/lerobot-local/">LerobotLocal</a> cung cấp suy luận chính sách thông qua một giao diện chung, và các checkpoint MolmoAct2 chạy thông qua đường dẫn LerobotLocal. Một mạng lưới ngang hàng (peer mesh) giúp mở rộng tác nhân đến các robot từ xa. Định dạng tập dữ liệu được giữ nguyên chính xác như cách LeRobot ghi; vòng lặp tác nhân chính là chất keo kết nối mọi thứ.</p>
+<p>Bài viết này sẽ dẫn dắt bạn qua năm bước trong một tác nhân duy nhất: xây dựng tác nhân dựa trên LeRobot AgentTools, ghi lại một bản trình diễn dưới dạng <code>LeRobotDataset</code> trong mô phỏng, chạy một chính sách trên cùng robot đó, triển khai cùng mã tác nhân lên robot vật lý <a href="https://github.com/TheRobotStudio/SO-ARM100">SO-101</a> chỉ với một thay đổi nhỏ về đối số, và phát sóng các lệnh trên một đội robot thông qua mạng lưới <a href="https://zenoh.io">Zenoh</a>. Cuối cùng, bạn có thể nhân bản ứng dụng mẫu từ GitHub và chạy trên máy tính xách tay ở chế độ mô phỏng mà không cần phần cứng, GPU hay thông tin đăng nhập Hugging Face cho đường dẫn mặc định. Bạn có thể tìm thấy mã nguồn đi kèm tại <code>examples/lerobot/hub_to_hardware.py</code> và <code>hub_to_hardware.ipynb</code>.</p>
+<h2 id="bạn-sẽ-xây-dựng-điều-gì">Bạn sẽ xây dựng điều gì</h2>
+<p>SDK Strands Robots cung cấp ngăn xếp LeRobot dưới dạng các <code>AgentTools</code> để bạn kết hợp thành một tác nhân Strands. Tác nhân ví dụ trong bài viết này thực hiện bốn việc: ghi lại các bản trình diễn mới trong mô phỏng, đẩy kết quả lên Hub dưới dạng <code>LeRobotDataset</code>, chạy một chính sách trong mô phỏng với cùng định dạng đó, và triển khai cùng mã tác nhân lên robot vật lý chỉ bằng cách thay đổi một đối số từ khóa. Khi có nhiều robot, tác nhân có thể điều phối toàn bộ đội thông qua mạng lưới ngang hàng tích hợp sẵn. Đối với việc ghi hình và hiệu chuẩn phần cứng, các CLI của LeRobot (<code>lerobot-record</code>, <code>lerobot-calibrate</code>) sẽ xử lý việc thiết lập ban đầu; tác nhân sẽ tiếp quản từ đó.</p>
+<!-- raw HTML omitted -->
+<p><strong>Hình 1. <em>Robot(&ldquo;so100&rdquo;) mặc định là mô phỏng dựa trên MuJoCo; mode=&ldquo;real&rdquo; sẽ trả về một robot phần cứng được điều khiển bởi LeRobot. Cả hai chế độ đều chia sẻ cùng một DatasetRecorder và các nhà cung cấp chính sách, vì vậy tập dữ liệu thu thập trong mô phỏng và trên phần cứng đều sử dụng cùng một định dạng LeRobotDataset trên đĩa.</em></strong></p>
+<p>Hai lựa chọn thiết kế giúp điều này vận hành: Thứ nhất, <code>Robot(&quot;so100&quot;)</code> mặc định trả về một bản mô phỏng (không cần phần cứng, không rủi ro), và <code>mode=&quot;real&quot;</code> trả về một robot phần cứng được điều khiển bởi LeRobot. Mã tác nhân là giống hệt nhau trong cả hai chế độ. Thứ hai, <code>DatasetRecorder</code> ghi <code>LeRobotDataset</code> được dùng chung giữa <a href="https://strands-labs.github.io/robots/simulation/overview/">đường dẫn mô phỏng</a> và việc ghi hình phần cứng của LeRobot, nên một tập dữ liệu thu thập trong <a href="https://mujoco.org">MuJoCo</a> và một tập dữ liệu từ robot vật lý <a href="https://github.com/TheRobotStudio/SO-ARM100">SO-101</a> sẽ có cùng định dạng.</p>
+<p>Toàn bộ quy trình trong năm dòng Python:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> strands_robots <span style="color:#f92672">import</span> Robot
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> strands <span style="color:#f92672">import</span> Agent
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>arm <span style="color:#f92672">=</span> Robot(<span style="color:#e6db74">&#34;so100&#34;</span>) <span style="color:#75715e"># mode=&#34;sim&#34; (mặc định - an toàn, không cần phần cứng)</span>
+</span></span><span style="display:flex;"><span>agent <span style="color:#f92672">=</span> Agent(tools<span style="color:#f92672">=</span>[arm])
+</span></span><span style="display:flex;"><span>agent(<span style="color:#e6db74">&#34;Pick up the red cube&#34;</span>)
+</span></span></code></pre></div><p>Dưới đây là chi tiết những gì thực sự xảy ra bên trong lệnh gọi đó, từng bước một.</p>
+<h2 id="điều-kiện-tiên-quyết">Điều kiện tiên quyết</h2>
+<h4 id="đường-dẫn-mô-phỏng-mặc-định-tối-thiểu">Đường dẫn mô phỏng mặc định (Tối thiểu)</h4>
+<ul>
+<li>Python 3.12+, trên Linux hoặc macOS (hỗ trợ Apple Silicon cho backend MuJoCo).</li>
+<li>Một nhà cung cấp mô hình tương thích với Strands để tác nhân suy luận. <a href="https://aws.amazon.com/bedrock/">Amazon Bedrock</a> với thông tin xác thực AWS, <a href="https://docs.anthropic.com">Anthropic API</a>, OpenAI, hoặc <a href="https://ollama.com">Ollama</a> chạy cục bộ.</li>
+<li>Cài đặt Strands Robots với các tùy chọn bổ sung: <code>uv pip install &quot;strands-robots[sim-mujoco,lerobot,mesh]&quot;</code></li>
+</ul>
+<h4 id="triển-khai-phần-cứng-chính-sách-thực-và-đẩy-lên-hub-nâng-cao">Triển khai phần cứng, chính sách thực và đẩy lên Hub (Nâng cao)</h4>
+<ul>
+<li>Tài khoản Hugging Face và token có quyền ghi để đẩy tập dữ liệu và kéo các checkpoint chính sách từ Hub.</li>
+<li>Đối với đường dẫn phần cứng: một cặp robot SO-101 (follower và leader), hoặc bất kỳ robot nào được LeRobot hỗ trợ. Cả hai thiết bị cần có tệp hiệu chuẩn trong <code>~/.cache/huggingface/lerobot/calibration/</code>.</li>
+<li>Đối với suy luận GR00T cục bộ: GPU NVIDIA với ít nhất 16 GB VRAM và đã cài đặt Docker.</li>
+</ul>
+<h2 id="bước-1---thiết-lập-ví-dụ">Bước 1 - Thiết lập ví dụ</h2>
+<p>Cài đặt Strands Robots và lấy các tệp ví dụ:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv pip install <span style="color:#e6db74">&#34;strands-robots[sim-mujoco,lerobot,mesh]&#34;</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/strands-labs/robots.git
+</span></span><span style="display:flex;"><span>cd robots
+</span></span></code></pre></div><p>Xuất token Hugging Face nếu bạn muốn tác nhân đẩy tập dữ liệu hoặc kéo chính sách từ Hub. Điều này là tùy chọn cho đường dẫn mô phỏng mặc định; ví dụ này chạy hoàn toàn với chính sách Mock và ghi tập dữ liệu vào bộ nhớ đệm cục bộ mà không cần truy cập Hub.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export HF_TOKEN<span style="color:#f92672">=</span>hf_...
+</span></span></code></pre></div><p>Ví dụ có thể chạy được nằm tại <code>examples/lerobot/hub_to_hardware.py</code> (tệp Python) và <code>hub_to_hardware.ipynb</code> (notebook). Notebook là điểm khởi đầu khuyến nghị: hãy mở nó trong JupyterLab và chạy các ô từ trên xuống dưới ở chế độ mô phỏng.</p>
+<h2 id="bước-2---ghi-lại-các-bản-trình-diễn-và-đẩy-lên-hub">Bước 2 - Ghi lại các bản trình diễn và đẩy lên Hub</h2>
+<p>Công cụ mô phỏng ghi lại các <code>LeRobotDatasets</code> theo cùng định dạng mà LeRobot ghi trên phần cứng. Không yêu cầu phần cứng. Hành động <code>start_recording</code> của công cụ <code>Simulation</code> ghi thông qua cùng một lớp <code>DatasetRecorder</code>: cùng sơ đồ parquet cho trạng thái khớp và hành động, cùng bố cục MP4 cho mỗi camera. Câu lệnh cho tác nhân gần như tương tự:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> strands <span style="color:#f92672">import</span> Agent
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> strands_robots <span style="color:#f92672">import</span> Robot
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>robot <span style="color:#f92672">=</span> Robot(<span style="color:#e6db74">&#34;so100&#34;</span>)  <span style="color:#75715e"># mode=&#34;sim&#34; mặc định</span>
+</span></span><span style="display:flex;"><span>agent <span style="color:#f92672">=</span> Agent(tools<span style="color:#f92672">=</span>[robot])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>agent(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Record a demonstration of &#39;pick the red cube and place it in the box&#39; &#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;using the Mock policy provider at FPS 30. Write the dataset to &#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;my_user/cube_picking_sim and push to the Hub when done.&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p><strong>Hình 2. <em>Cảnh ghi hình trong mô phỏng MuJoCo: cánh tay SO-100 vươn tới khối lập phương màu đỏ trên mặt phẳng, được ghi lại thành một LeRobotDataset. Không cần phần cứng, không cần GPU, không cần thông tin Hugging Face cho đường dẫn mặc định này.</em></strong></p>
+<p>Chính sách Mock (giả lập) được sử dụng có chủ đích: nó tạo ra các hành động khớp giả định để quy trình chạy từ đầu đến cuối mà không cần checkpoint đã huấn luyện. Robot sẽ di chuyển ngẫu nhiên thay vì thực hiện việc gắp, nhưng bản ghi vẫn đầy đủ về cấu trúc (trạng thái khớp hợp lệ, khung hình camera hợp lệ, một tập phim LeRobotDataset đúng định dạng), mặc dù bản thân bản trình diễn không hữu ích để huấn luyện. Bước 3 bên dưới sẽ thay thế bằng GR00T hoặc LerobotLocal để có hành vi gắp thực tế. Để thấy việc gắp khối lập phương thực sự ở bước này, hãy chạy <code>--policy lerobot_local --checkpoint allenai/MolmoAct2-SO100_101</code>.</p>
+<p>Minh chứng là những gì xảy ra tiếp theo. Trình tải dữ liệu của chính LeRobot đọc dữ liệu ghi từ mô phỏng mà không cần mã đặc thù của Strands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> lerobot.datasets.lerobot_dataset <span style="color:#f92672">import</span> LeRobotDataset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dataset <span style="color:#f92672">=</span> LeRobotDataset(<span style="color:#e6db74">&#34;my_user/cube_picking_sim&#34;</span>)
+</span></span><span style="display:flex;"><span>print(dataset<span style="color:#f92672">.</span>features)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># {&#39;observation.state&#39;: Sequence(...),</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  &#39;observation.images.front&#39;: VideoFrame(...),</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  &#39;action&#39;: Sequence(...),</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  &#39;episode_index&#39;: Value(...), &#39;frame_index&#39;: Value(...), ...}</span>
+</span></span></code></pre></div><p>Từ điển <code>features</code> này giống hệt về hình dạng với bất kỳ tập dữ liệu LeRobot nào trên Hub: cùng tên cột, cùng bố cục parquet+MP4, cùng đường dẫn trình tải. Các tập lệnh huấn luyện tiêu thụ dữ liệu ghi từ phần cứng cũng sẽ tiêu thụ dữ liệu ghi từ mô phỏng mà không cần sửa đổi.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><em>Một tập phim từ LeRobotDataset đã ghi, được phát lại từ tệp MP4 của mỗi camera mà trình ghi đã tạo ra, chính là video trên đĩa mà tập lệnh huấn luyện sẽ đọc.</em></p>
+<h4 id="ghi-hình-trên-phần-cứng">Ghi hình trên phần cứng</h4>
+<p>Để ghi lại các bản trình diễn trên SO-101 vật lý thay vì mô phỏng, hãy sử dụng trực tiếp CLI ghi của LeRobot. Tích hợp của Strands không bao bọc lệnh đó dưới dạng <code>AgentTool</code> vì LeRobot đã thực hiện việc này một cách hiệu quả:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lerobot-calibrate --robot.type<span style="color:#f92672">=</span>so101_follower --robot.id<span style="color:#f92672">=</span>my_follower
+</span></span><span style="display:flex;"><span>lerobot-calibrate --robot.type<span style="color:#f92672">=</span>so101_leader   --robot.id<span style="color:#f92672">=</span>my_leader
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lerobot-record <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --robot.type<span style="color:#f92672">=</span>so101_follower --robot.id<span style="color:#f92672">=</span>my_follower <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --teleop.type<span style="color:#f92672">=</span>so101_leader  --teleop.id<span style="color:#f92672">=</span>my_leader <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --dataset.repo_id<span style="color:#f92672">=</span>my_user/cube_picking <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --dataset.single_task<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Pick up the red cube and place it in the box&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --dataset.num_episodes<span style="color:#f92672">=</span><span style="color:#ae81ff">25</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --dataset.push_to_hub<span style="color:#f92672">=</span>true
+</span></span></code></pre></div><p>Tập dữ liệu đẩy lên Hub từ lệnh này có cùng định dạng với bản ghi mô phỏng. Để tinh chỉnh chính sách trên đó, hãy chạy CLI huấn luyện của LeRobot (<code>lerobot-train</code>). Từ Bước 3 trở đi, tác nhân có thể sử dụng checkpoint gốc hoặc checkpoint đã tinh chỉnh một cách linh hoạt.</p>
+<h2 id="bước-3---chạy-một-chính-sách-trong-mô-phỏng">Bước 3 - Chạy một chính sách trong mô phỏng</h2>
+<p>Khi đã có tập dữ liệu trên Hub, bước tiếp theo là chạy một chính sách. Ví dụ này sử dụng factory <code>Robot()</code> ở chế độ mô phỏng mặc định, sau đó gắn <code>gr00t_inference</code> để tác nhân có thể quản lý container suy luận:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> strands <span style="color:#f92672">import</span> Agent
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> strands_robots <span style="color:#f92672">import</span> Robot, gr00t_inference
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>robot <span style="color:#f92672">=</span> Robot(<span style="color:#e6db74">&#34;so100&#34;</span>)  <span style="color:#75715e"># mode=&#34;sim&#34; mặc định</span>
+</span></span><span style="display:flex;"><span>agent <span style="color:#f92672">=</span> Agent(tools<span style="color:#f92672">=</span>[robot, gr00t_inference])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>agent(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Start GR00T inference on port 5555 with the cube-picking checkpoint &#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;from my_user/cube-picker. Then ask the robot to pick up the red cube.&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Ở bên dưới, tác nhân chạy <code>gr00t_inference(action=&quot;lifecycle&quot;, lifecycle=&quot;full&quot;, ...)</code> để kéo hình ảnh container GR00T, tải checkpoint từ Hub và khởi động dịch vụ suy luận. Sau đó, nó chạy hành động <code>run_policy</code> trên robot mô phỏng với <code>policy_provider=&quot;groot&quot;</code>, truyền host và port của dịch vụ GR00T trong từ điển <code>policy_config</code>. Mô phỏng sẽ tiến triển theo các phân đoạn hành động (action chunks) của chính sách, và kết quả có thể xem qua <code>Simulation.render</code>.</p>
+<!-- raw HTML omitted -->
+<p><strong>Hình 3. <em>Với một chính sách đã huấn luyện (checkpoint GR00T hoặc MolmoAct2), tác nhân điều khiển SO-100 gắp khối lập phương màu đỏ trong mô phỏng, thay thế cho hành vi của chính sách Mock.</em></strong></p>
+<p>Đối với các nhà phát triển thích suy luận trong tiến trình (không container, không ZeroMQ (ZMQ)), hãy thay thế <code>gr00t_inference</code> bằng một instance <code>LerobotLocalPolicy</code> được tải từ kho lưu trữ Hub. Nhà cung cấp sẽ định tuyến bất kỳ ID mô hình nào thuộc tổ chức <code>lerobot/</code> đến đường dẫn trong tiến trình:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> strands_robots.policies <span style="color:#f92672">import</span> create_policy
+</span></span><span style="display:flex;"><span>policy <span style="color:#f92672">=</span> create_policy(<span style="color:#e6db74">&#34;lerobot/act_aloha_sim_transfer_cube_human&#34;</span>)
+</span></span></code></pre></div><p><code>LerobotLocalPolicy</code> hỗ trợ ACT, Diffusion Policy, SmolVLA, $\pi_0$, và $\pi_{0.5}$, bất cứ thứ gì mà registry chính sách của LeRobot có thể giải quyết từ tệp <code>config.json</code>. Tính năng Real-Time Chunking sẽ tự động bật cho các chính sách flow-matching có gửi kèm <code>rtc_config</code> ($\pi_0$, SmolVLA).</p>
+<p>Cosmos 3 mới ra mắt của NVIDIA cũng có sẵn dưới dạng nhà cung cấp chính sách thông qua cùng một giao diện, vì vậy mã tác nhân vẫn giữ nguyên bất kể bạn trỏ đến nhà cung cấp nào.</p>
+<p><em>Lưu ý: LerobotLocalPolicy tải các mô hình Hugging Face với <code>trust_remote_code=True</code>. Hãy đặt <code>STRANDS_TRUST_REMOTE_CODE=1</code> để chấp nhận và chỉ tải các checkpoint từ những tổ chức bạn tin tưởng.</em></p>
+<h2 id="bước-4---triển-khai-chính-sách-lên-phần-cứng-vật-lý">Bước 4 - Triển khai chính sách lên phần cứng vật lý</h2>
+<p>Đây chính là mã từ Bước 3, chỉ thay đổi một đối số từ khóa. Factory <code>Robot</code> giờ đây trả về một robot hỗ trợ phần cứng được điều khiển bởi <code>make_robot_from_config</code> của LeRobot:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>robot <span style="color:#f92672">=</span> Robot(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;so100&#34;</span>,
+</span></span><span style="display:flex;"><span>    mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;real&#34;</span>,
+</span></span><span style="display:flex;"><span>    port<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/dev/ttyACM0&#34;</span>,
+</span></span><span style="display:flex;"><span>    data_config<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;so100_dualcam&#34;</span>,
+</span></span><span style="display:flex;"><span>    cameras<span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;front&#34;</span>: {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;opencv&#34;</span>, <span style="color:#e6db74">&#34;index_or_path&#34;</span>: <span style="color:#e6db74">&#34;/dev/video0&#34;</span>, <span style="color:#e6db74">&#34;fps&#34;</span>: <span style="color:#ae81ff">30</span>},
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;wrist&#34;</span>: {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;opencv&#34;</span>, <span style="color:#e6db74">&#34;index_or_path&#34;</span>: <span style="color:#e6db74">&#34;/dev/video2&#34;</span>, <span style="color:#e6db74">&#34;fps&#34;</span>: <span style="color:#ae81ff">30</span>},
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>agent <span style="color:#f92672">=</span> Agent(tools<span style="color:#f92672">=</span>[robot, gr00t_inference])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>agent(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Start GR00T inference on port 5555 with the cube-picking checkpoint &#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;from my_user/cube-picker. Then ask the robot to pick up the red cube.&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Câu lệnh tác nhân tương tự giờ đây chạy trên một cánh tay vật lý. Đường dẫn phần cứng sử dụng trừu tượng hóa robot của LeRobot cho các lệnh khớp và đọc camera, và container GR00T tại port 5555 tạo ra các phân đoạn hành động.</p>
+<p>Trước khi chạy trên SO-101, việc hiệu chuẩn cho cả follower và leader phải được hoàn tất. Chạy lệnh hiệu chuẩn của LeRobot (<code>lerobot-calibrate</code>) một lần cho mỗi thiết bị; các tệp sẽ nằm trong <code>~/.cache/huggingface/lerobot/calibration/</code> và bất kỳ đường dẫn mã Strands nào chạm vào phần cứng sẽ đọc từ đó.</p>
+<h2 id="bước-5---điều-phối-nhiều-robot-với-mạng-lưới-mesh">Bước 5 - Điều phối nhiều robot với mạng lưới (Mesh)</h2>
+<p>Cho đến nay chúng ta mới điều khiển từng robot một. <a href="https://strands-labs.github.io/robots/mesh/">Mạng lưới (The mesh)</a> là cách Strands Robots xử lý khi có nhiều robot. Hãy hình dung một cánh tay leader trên bàn điều khiển từ xa một cánh tay follower ở phòng khác, hoặc năm robot SO-101 cùng thực hiện một nhiệm vụ trong kho song song. Tất cả đều là các mẫu hình mạng lưới. Mesh được xây dựng trên Zenoh, một giao thức ngang hàng mã nguồn mở; bạn không cần quản lý địa chỉ IP, viết mã khám phá hay chọn broker; các robot mới sẽ xuất hiện trên mesh ngay khi chúng khởi động, và tác nhân có thể giao tiếp với tất cả chúng cùng một lúc.</p>
+<p>Mọi <code>Robot()</code> và <code>Simulation()</code> đều tự động gia nhập mạng lưới Zenoh. Công cụ <code>robot_mesh</code> cung cấp cho tác nhân từ vựng cho các hoạt động đội như khám phá, lệnh có cấu trúc, phát sóng và dừng khẩn cấp:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>agent <span style="color:#f92672">=</span> Agent(tools<span style="color:#f92672">=</span>[robot_mesh])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>agent(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;List every robot and simulation on the mesh. &#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Then send &#39;go to home pose&#39; to each one in parallel.&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Tác nhân gọi <code>robot_mesh(action=&quot;peers&quot;)</code> để liệt kê các robot cục bộ và ngang hàng được khám phá, sau đó gọi <code>robot_mesh(action=&quot;broadcast&quot;, ...)</code> để gửi lệnh có cấu trúc đến mọi robot. Thêm tùy chọn <code>[mesh-iot]</code> để định tuyến lưu lượng này qua AWS IoT Core cho các đội robot xuyên mạng.</p>
+<p>Theo mặc định, mọi hành động mesh tác động vật lý đều tạm dừng để chờ con người phê duyệt trước khi chạy: bao gồm phát sóng toàn đội, dừng khẩn cấp, và các lệnh <code>tell</code>, <code>send</code>, <code>stop</code> tới một robot đơn lẻ. Bạn có thể điều chỉnh tập hợp này bằng biến môi trường <code>STRANDS_MESH_HITL_ACTIONS</code>. Khi chạy lần đầu, bạn sẽ thấy yêu cầu <code>robot_mesh-broadcast-approval</code> trong terminal; gõ <code>y</code> (hoặc <code>yes</code>/<code>approve</code>) để cho phép. Việc phê duyệt này diễn ra độc lập với các đối số công cụ của LLM, nên nỗ lực tấn công chèn lời nhắc (prompt-injection) nhằm lén đưa cờ phê duyệt vào thân lệnh sẽ không thể vượt qua rào chắn này.</p>
+<p>Việc vận chuyển có thể mở rộng mà không cần chạm vào mã tác nhân. Mesh Zenoh tích hợp sẵn là phương án dự phòng tự động: trong LAN, Zenoh multicast xử lý khám phá ngang hàng không cần broker, và việc thêm <code>[mesh-iot]</code> định tuyến lưu lượng qua <a href="https://aws.amazon.com/iot-core/">AWS IoT Core</a> (MQTT5 với mTLS) cho các đội robot đám mây.</p>
+<p>Đối với các đội robot sản xuất, Device Connect (lớp mạng nhận biết thiết bị phát triển cùng Arm) xử lý khám phá, hiện diện, RPC có cấu trúc, định tuyến sự kiện và an toàn. Công cụ <code>robot_mesh</code> sẽ điều phối thông qua Device Connect khi có sẵn và tự động chuyển về Zenoh mesh nếu không.</p>
+<h2 id="thử-nghiệm-bằng-ứng-dụng-mẫu">Thử nghiệm bằng ứng dụng mẫu</h2>
+<p>Bản mẫu đầy đủ có trên GitHub tại <code>strands-labs/robots</code> trong thư mục <code>examples/lerobot/</code>. Nó đóng gói cả năm bước vào một tập lệnh CLI duy nhất (<code>hub_to_hardware.py</code>) và một notebook (<code>hub_to_hardware.ipynb</code>). Các thiết lập mặc định chạy từ đầu đến cuối trong mô phỏng với chính sách Mock, không cần GPU, Docker hay thông tin Hugging Face.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv pip install <span style="color:#e6db74">&#34;strands-robots[sim-mujoco,lerobot,mesh]&#34;</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/strands-labs/robots.git
+</span></span><span style="display:flex;"><span>cd robots
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>export STRANDS_MESH_LOCAL_DEV<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>python examples/lerobot/hub_to_hardware.py
+</span></span></code></pre></div><p>Tập dữ liệu ghi được sẽ nằm tại <code>~/.cache/huggingface/lerobot/local/strands-cube-pick/</code>. Để đẩy lên Hugging Face Hub, hãy truyền <code>--hf-user &lt;user-của-bạn&gt;</code> sau khi xuất <code>HF_TOKEN</code>. Để có hành vi gắp thực tế trong Bước 3, hãy truyền <code>--policy groot --checkpoint &lt;hf_repo&gt;</code> (yêu cầu Docker + GPU NVIDIA) hoặc <code>--policy lerobot_local --checkpoint &lt;hf_repo&gt;</code> (yêu cầu GPU và <code>STRANDS_TRUST_REMOTE_CODE=1</code>).</p>
+<h2 id="các-lưu-ý-về-bảo-mật">Các lưu ý về bảo mật</h2>
+<p>Những đoạn mã trên là ví dụ &ldquo;Hello World&rdquo;. Đối với các trường hợp sử dụng thực tế trong sản xuất, cần lưu ý:</p>
+<h4 id="tấn-công-chèn-lời-nhắc-prompt-injection">Tấn công chèn lời nhắc (Prompt Injection)</h4>
+<p>Cung cấp dữ liệu không đáng tin cậy cho tác nhân có thể dẫn đến chèn lời nhắc, nơi ngữ cảnh độc hại được coi là hướng dẫn của LLM. Vì robot tác động vật lý trong không gian thực, đây là rủi ro lớn. Để giảm thiểu, nhà phát triển chỉ nên cung cấp dữ liệu từ nguồn đáng tin cậy hoặc hạn chế các công cụ khả dụng cho tác nhân để ngăn chặn các hành động gây nguy hiểm.</p>
+<h4 id="hành-vi-xác-thực-robot-mesh">Hành vi xác thực Robot Mesh</h4>
+<p>Cài đặt <code>STRANDS_MESH_LOCAL_DEV=1</code> khởi tạo mạng lưới robot mà không có xác thực hoặc kiểm soát truy cập. Điều này có nghĩa là bất kỳ thiết bị nào trong cùng mạng đều có thể gửi lệnh cho đội robot. Điều này chấp nhận được trong môi trường phát triển tin cậy nhưng không phù hợp cho mạng không tin cậy hoặc sản xuất. Đối với những trường hợp này, yêu cầu sử dụng <code>STRANDS_MESH_AUTH_MODE=mtls</code>.</p>
+<h4 id="phê-duyệt-của-người-vận-hành-cho-các-hành-động-toàn-đội">Phê duyệt của người vận hành cho các hành động toàn đội</h4>
+<p>Các hành động tác động vật lý của công cụ <code>robot_mesh</code> ảnh hưởng đến các robot ngang hàng. Để ngăn tác nhân tự ý phát lệnh (hoặc do bị chèn lời nhắc), cả năm hành động chính đều được đặt rào chắn yêu cầu con người tham gia (human-in-the-loop) theo mặc định. Khi tác nhân gọi một hành động bị chặn, runtime của Strands sẽ tạm dừng vòng lặp và yêu cầu người vận hành phê duyệt.</p>
+<h2 id="dọn-dẹp">Dọn dẹp</h2>
+<p>Quy trình trên khởi động container GR00T, mở các cổng nối tiếp trên phần cứng và ghi bộ nhớ đệm tập dữ liệu cục bộ. Để đưa môi trường về trạng thái sạch:</p>
+<ul>
+<li><strong>Dừng container suy luận GR00T:</strong> <code>agent.tool.gr00t_inference(action=&quot;stop&quot;, port=5555)</code>, hoặc dùng <code>lifecycle=&quot;teardown&quot;</code> để xóa bỏ container.</li>
+<li><strong>Giải phóng các cổng nối tiếp:</strong> ngắt kết nối follower và leader SO-101.</li>
+<li><strong>Xóa bộ nhớ đệm tập dữ liệu cục bộ (tùy chọn):</strong> tập dữ liệu nằm trong <code>~/.cache/huggingface/lerobot/&lt;repo_id&gt;</code>.</li>
+</ul>
+<h2 id="tổng-kết-mọi-thứ-kết-nối-với-nhau-như-thế-nào">Tổng kết: Mọi thứ kết nối với nhau như thế nào</h2>
+<p>Lựa chọn thiết kế trung tâm của sự tích hợp này là Strands Robots không triển khai lại những gì LeRobot đã cung cấp. Trừu tượng hóa phần cứng, hiệu chuẩn và định dạng tập dữ liệu vẫn nằm ở thượng nguồn. Strands thêm bề mặt <code>AgentTool</code> để khiến chúng có thể kết hợp được thông qua ngôn ngữ tự nhiên.</p>
+<p>Hai hệ quả rút ra: Đối với người dùng, mọi tập dữ liệu trên Hub là một tài sản mà tác nhân có thể mở rộng, tinh chỉnh và triển khai mà không cần bước chuyển đổi. Đối với nhà phát triển, dữ liệu mô phỏng và dữ liệu phần cứng chia sẻ cùng một định dạng tệp, vì vậy các tập lệnh huấn luyện cho mô phỏng cũng dùng được cho phần cứng. Ranh giới giữa mô phỏng và thực tế trở thành một chi tiết triển khai, không còn là một sự chia rẽ về kiến trúc.</p>
+<h2 id="hướng-đi-tiếp-theo">Hướng đi tiếp theo</h2>
+<!-- raw HTML omitted -->
+<p><strong>Hình 4. <em>Danh mục Strands Robots bao gồm cánh tay, robot hình người, robot bốn chân và bàn tay, tất cả đều trong cùng một mô phỏng MuJoCo và đằng sau cùng một factory <code>Robot()</code>. SO-100 trong bài viết này chỉ là một trong nhiều hình thái được hỗ trợ.</em></strong></p>
+<p>Tài liệu đầy đủ của <a href="https://strands-labs.github.io/robots/">Strands Robots</a> cung cấp chi tiết về danh mục robot, mô phỏng, nhà cung cấp chính sách, mạng lưới mesh và Device Connect. Đối với các khối lượng công việc lớn hơn, kho lưu trữ <a href="https://github.com/strands-labs/robots-sim">strands-labs/robots-sim</a> cung cấp các backend mô phỏng nặng hơn bao gồm Isaac Sim và Newton.</p>
+<h2 id="tài-nguyên">Tài nguyên</h2>
+<ul>
+<li><strong>Strands Robots</strong> (SDK, AgentTools, Robot factory): <a href="https://github.com/strands-labs/robots">github.com/strands-labs/robots</a></li>
+<li><strong>Strands Robots docs</strong>: <a href="https://strands-labs.github.io/robots/">strands-labs.github.io/robots</a></li>
+<li><strong>Strands Robots Sim</strong>: <a href="https://github.com/strands-labs/robots-sim">github.com/strands-labs/robots-sim</a></li>
+<li><strong>Ví dụ</strong>: <code>examples/lerobot/hub_to_hardware.py</code> và <code>hub_to_hardware.ipynb</code></li>
+<li><strong>LeRobot</strong>: <a href="https://github.com/huggingface/lerobot">github.com/huggingface/lerobot</a> - tập dữ liệu, chính sách, driver phần cứng</li>
+<li><strong>Strands Agents SDK</strong>: <a href="https://github.com/strands-agents/harness-sdk">github.com/strands-agents/harness-sdk</a></li>
+<li><strong>SmolVLA</strong>: <a href="https://huggingface.co/lerobot/smolvla_base">huggingface.co/lerobot/smolvla_base</a></li>
+<li><strong>Pi0</strong>: <a href="https://huggingface.co/lerobot/pi0_base">huggingface.co/lerobot/pi0_base</a></li>
+<li><strong>NVIDIA Isaac-GR00T N1.7</strong>: <a href="https://huggingface.co/nvidia/GR00T-N1.7-3B">huggingface.co/nvidia/GR00T-N1.7-3B</a></li>
+<li><strong>NVIDIA Cosmos3 Nano</strong>: <a href="https://huggingface.co/nvidia/Cosmos3-Nano">huggingface.co/nvidia/Cosmos3-Nano</a></li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/amazon/strands-lerobot-hub-to-hardware">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/june-17-2026/">June 17, 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/e5d036/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-17T00:00:00&#43;00:00">Jun 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/97b631/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="36 Câu lệnh, Một Thành phố Vô tận" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-11T00:00:00&#43;00:00">Jun 11, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">36 Câu lệnh, Một Thành phố Vô tận</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Khám phá một thành phố vô tận thông qua 36 câu lệnh</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/e5d036/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/559b46/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-14/04fe63/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/2nUzfI3JKqOjHGnITM_lXdP7Bt7ZlYCKaxp25Ru7RnDxYgKcw-qwiObLBM30bdLRrq_OphRcZ1arRj_w3_Q5uVVXO5Ocwve5ciQ3ErlJnv6swT5PUQ=w704-h704-n-nu" alt="Đầu tư vào nghiên cứu an toàn AI đa tác nhân" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đầu tư vào nghiên cứu an toàn AI đa tác nhân</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-14/b7b9e6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/5PWsKTnHl71EvJKBAlb0R8ui8_0OmY1QdgddkB2NFIUbGrLRIHz7KsFD24v7fQrJvP33q1iSm_ACUT3PhaBwXEf7bmtZSICLjvnRNEUMsHVnaPg2=w704-h704-n-nu" alt="DiffusionGemma- Tạo văn bản nhanh hơn gấp 4 lần" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">DiffusionGemma- Tạo văn bản nhanh hơn gấp 4 lần</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/97b631/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="36 Câu lệnh, Một Thành phố Vô tận" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">36 Câu lệnh, Một Thành phố Vô tận</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>

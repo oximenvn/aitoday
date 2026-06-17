@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn | AI Today - SkyAI</title>
+
+<meta name="description" content="GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-06-17T00:00:00&#43;00:00">June 17, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            19 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn">
+        <figcaption class="text-center italic text-xs">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="glm-52-được-xây-dựng-cho-các-tác-vụ-dài-hạn">GLM-5.2: Được xây dựng cho các tác vụ dài hạn</h1>
+<p>Chúng tôi xin giới thiệu GLM-5.2, mô hình hàng đầu mới nhất của chúng tôi dành cho các tác vụ dài hạn (long-horizon tasks). Đây là một bước nhảy vọt về khả năng xử lý tác vụ dài hạn so với phiên bản GLM-5.1 và lần đầu tiên mang lại khả năng này trên một <strong>ngữ cảnh 1 triệu (1M) token ổn định</strong>. Những khả năng mới của GLM-5.2 bao gồm:</p>
+<ul>
+<li><strong>Ngữ cảnh 1M ổn định:</strong> Khả năng xử lý 1 triệu token một cách ổn định, duy trì hiệu quả cho các công việc dài hạn.</li>
+<li><strong>Lập trình nâng cao với nỗ lực linh hoạt:</strong> Khả năng lập trình mạnh mẽ hơn với nhiều mức độ &ldquo;nỗ lực tư duy&rdquo; (thinking effort) để cân bằng giữa hiệu suất và độ trễ.</li>
+<li><strong>Kiến trúc cải tiến:</strong> Chúng tôi đề xuất <a href="https://arxiv.org/abs/2603.12201">IndexShare</a>, giúp tái sử dụng cùng một bộ lập chỉ mục (indexer) cho mỗi bốn lớp attention thưa, giảm 2,9 lần số phép tính FLOPs trên mỗi token ở độ dài ngữ cảnh 1M. Chúng tôi cũng cải thiện lớp MTP của GLM-5.2 cho giải mã suy đoán (speculative decoding), giúp tăng chiều dài chấp nhận (acceptance length) lên đến 20%.</li>
+<li><strong>Mở hoàn toàn:</strong> Cấp phép mã nguồn mở MIT — không giới hạn khu vực, tiếp cận kỹ thuật không biên giới.</li>
+</ul>
+<p>Để hỗ trợ các tác vụ dài hạn, điều đầu tiên là phải làm cho kỹ thuật ngữ cảnh dài trở nên khả thi trong thực tế: mô hình phải duy trì chất lượng thông qua các quỹ đạo (trajectories) dài và phức tạp của tác nhân lập trình, chứ không chỉ đơn thuần là chấp nhận nhiều token hơn. Việc tuyên bố hỗ trợ ngữ cảnh 1M thì dễ, nhưng để giữ cho nó đáng tin cậy dưới áp lực kỹ thuật thực tế thì khó hơn nhiều. Vì vậy, chúng tôi đã mở rộng đáng kể quá trình huấn luyện ngữ cảnh 1M cho các kịch bản tác nhân lập trình, bao gồm triển khai quy mô lớn, nghiên cứu tự động, tối ưu hóa hiệu suất và gỡ lỗi phức tạp. Kết quả là một hệ thống ngữ cảnh dài không chỉ rộng về phạm vi mà còn chắc chắn trong thực thi: một nền tảng thực tế cho các công việc kỹ thuật bền vững.</p>
+<p>Khả năng này được phản ánh qua hiệu suất của GLM-5.2 trên ba bài kiểm tra (benchmark) lập trình dài hạn. <a href="https://www.frontierswe.com">FrontierSWE</a> đo lường xem một tác nhân có thể hoàn thành các dự án kỹ thuật mở trong khoảng thời gian từ vài giờ đến hàng chục giờ hay không, bao gồm tối ưu hóa hệ thống, xây dựng mã quy mô lớn và nghiên cứu ML ứng dụng. Trên benchmark này, GLM-5.2 chỉ kém Opus 4.8 khoảng 1%, trong khi vượt qua GPT-5.5 1% và Opus 4.7 11%. Trên <a href="https://posttrainbench.com">PostTrainBench</a>, nơi mỗi tác nhân được cấp một GPU H100 và được đánh giá bằng mức độ cải thiện các mô hình nhỏ thông qua hậu huấn luyện, GLM-5.2 vượt qua cả Opus 4.7 và GPT-5.5, chỉ đứng sau Opus 4.8. Trên <a href="https://swe-marathon.vercel.app">SWE-Marathon</a>, một benchmark kỹ thuật phần mềm cực dài bao gồm các tác vụ như xây dựng trình biên dịch, tối ưu hóa kernel và phát triển các dịch vụ cấp sản phẩm, GLM-5.2 vẫn còn dư địa để phát triển, kém Opus 4.8 13% nhưng vẫn đứng thứ hai sau dòng Opus. Trên cả ba benchmark, GLM-5.2 là mô hình mã nguồn mở xếp hạng cao nhất, cho thấy ngữ cảnh 1M đã chuyển hóa thành khả năng thực hiện thực tế cho các tác vụ dài hạn.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Trên các benchmark lập trình tiêu chuẩn, GLM-5.2 là mô hình mã nguồn mở mạnh nhất, cải thiện đáng kể so với GLM-5.1: 81.0 so với 63.5 trên Terminal-Bench 2.1 và 62.1 so với 58.4 trên SWE-bench Pro. Nó cũng thu hẹp khoảng cách với các mô hình đóng hàng đầu — trên Terminal-Bench 2.1 (81.0), nó chỉ kém Claude Opus 4.8 (85.0) vài điểm — trong khi vẫn dẫn trước Gemini 3.1 Pro.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>GLM-5.2 cũng giới thiệu khả năng kiểm soát mức độ nỗ lực (effort level control), cho phép người dùng cân bằng rõ ràng giữa khả năng của mô hình với tốc độ thực thi tác vụ và chi phí tính toán. Như trong hình, GLM-5.2 mang lại hiệu suất lập trình tác nhân mạnh hơn đáng kể so với GLM-5.1 ở cùng mức ngân sách token, với khả năng nằm khoảng giữa Claude Opus 4.7 và Claude Opus 4.8 khi tiêu thụ token tương đương. Hơn nữa, mức nỗ lực &ldquo;Max&rdquo; cho phép người dùng phân bổ thêm tính toán khi yêu cầu hiệu suất cao hơn cho các tác vụ khó, mở rộng hơn nữa khả năng lập trình của mô hình. Thiết kế này mang lại sự linh hoạt lớn cho người dùng, cho phép chọn chế độ suy luận phù hợp nhất cho từng kịch bản.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="kiến-trúc-cho-ngữ-cảnh-1m">Kiến trúc cho Ngữ cảnh 1M</h2>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h3 id="indexshare-cho-dsa">IndexShare cho DSA</h3>
+<p>Để hỗ trợ độ dài ngữ cảnh 1M, trong GLM-5.2, chúng tôi áp dụng <a href="https://arxiv.org/abs/2603.12201">IndexShare</a> để giảm chi phí tính toán của bộ lập chỉ mục trong DSA. Cụ thể, cứ mỗi 4 lớp transformer sẽ chia sẻ một bộ lập chỉ mục nhẹ. Bộ lập chỉ mục được đặt ở lớp đầu tiên trong số 4 lớp và các chỉ số topk sẽ được sử dụng cho cả 4 lớp đó. Điều này làm giảm tính toán tích vô hướng của bộ lập chỉ mục và thao tác topk ở 3/4 số lớp. GLM-5.2 được huấn luyện với IndexShare từ giai đoạn giữa của quá trình huấn luyện với độ dài chuỗi 128K, vượt trội hơn GLM-5.1 trên các benchmark ngữ cảnh dài với mức tính toán thấp hơn.</p>
+<h3 id="mtp-với-indexshare-và-kvshare">MTP với IndexShare và KVShare</h3>
+<p>Chúng tôi cải thiện lớp MTP (Multi-Token Prediction) của GLM-5.2 cho giải mã suy đoán với hai mục tiêu: 1) Giảm thiểu chi phí của lớp MTP khi đóng vai trò là mô hình nháp (draft model); 2) Tối đa hóa tỷ lệ chấp nhận của giải mã suy đoán.</p>
+<p>Đối với mục tiêu thứ nhất, chúng tôi cũng áp dụng IndexShare cho lớp MTP. Trong MTP đa bước, bộ lập chỉ mục được đặt ở bước đầu tiên và các chỉ số topk được sử dụng cho tất cả các bước tiếp theo. Tuy nhiên, khác với mô hình chính (backbone), các token đầu vào của các bước MTP khác nhau là khác nhau. Như hình dưới đây cho thấy, nếu chúng ta tái sử dụng các chỉ số topk của $h_4$ cho $h_5$, thì $h_5$ chỉ có thể chú ý (attend) đến $h_1$ đến $h_4$, chứ không phải $h_5$. Chúng tôi sẽ chứng minh rằng đặc tính này giúp đạt được mục tiêu thứ hai bằng cách loại bỏ sự sai khác giữa huấn luyện và suy luận trong lớp MTP của GLM-5.1.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Trong hình trên, chúng tôi trình bày quá trình suy luận của một lớp MTP hai bước. Ở bước thứ nhất, suy luận nhất quán với huấn luyện, với tất cả các trạng thái ẩn (hidden states) đến từ mô hình mục tiêu. Tuy nhiên, ở bước thứ hai, $h_{1:4}$ đến từ mô hình mục tiêu và $h_5$ đến từ lớp MTP. Do đó, KV cache của $h_5$ là sự pha trộn giữa $kv_{1:4}$ tính từ mô hình mục tiêu và $kv_5$ tính từ lớp MTP. Ngược lại, với IndexShare, KV cache của $h_5$ chỉ bao gồm $kv_{1:4}$, tất cả đều từ trạng thái ẩn của mô hình mục tiêu. Đối với huấn luyện, chúng tôi tái sử dụng cả KV cache và các chỉ số topk của bước MTP đầu tiên. Lưu ý rằng tương tự như GLM-5.1, các tham số của các bước MTP khác nhau cũng được chia sẻ. Hơn nữa, lấy cảm hứng từ <a href="https://arxiv.org/abs/2606.12370">https://arxiv.org/abs/2606.12370</a>, chúng tôi giới thiệu lấy mẫu loại bỏ (rejection sampling) cho giải mã suy đoán và sử dụng tổn thất TV (TV loss) cuối-đến-cuối để huấn luyện.</p>
+<p>Bảng dưới đây cho thấy kết quả thử nghiệm các kỹ thuật dựa trên chiều dài chấp nhận trong các kịch bản lập trình. Trong thí nghiệm, chúng tôi sử dụng mô hình chính và dữ liệu huấn luyện của GLM-5.1. Số bước MTP được đặt là 7 cho cả huấn luyện và suy luận. So với baseline, chiều dài chấp nhận của lớp MTP cuối cùng tăng 20%.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Phương pháp</th>
+          <th style="text-align: left">Chiều dài chấp nhận</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Baseline</td>
+          <td style="text-align: left">4.56</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">+ IndexShare + KV Share</td>
+          <td style="text-align: left">5.10</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">+ Rejection Sampling</td>
+          <td style="text-align: left">5.29</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">+ End-to-end TV Loss</td>
+          <td style="text-align: left"><strong>5.47</strong> (+20%)</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="phục-vụ-hiệu-quả-độ-dài-ngữ-cảnh-1m">Phục vụ hiệu quả độ dài ngữ cảnh 1M</h3>
+<p>Khi GLM-5.2 mở rộng độ dài ngữ cảnh tối đa từ 200K lên 1M token, khối lượng công việc lập trình dự kiến sẽ chuyển dịch đáng kể sang các prompt dài hơn. Điều này chuyển nút thắt cổ chai chính của suy luận từ tính toán sang dung lượng KV-cache, chi phí vận hành kernel ngữ cảnh dài và chi phí phía CPU. Mặc dù kiến trúc mới của GLM-5.2 giảm FLOPs tính toán trên mỗi token, nhưng nó không giảm tương ứng kích thước KV-cache trên mỗi token. Kết quả là, việc hỗ trợ ngữ cảnh dài hơn, độ đồng thời cao hơn và thông lượng token cao hơn trong điều kiện tài nguyên GPU hạn chế trở thành thách thức trung tâm cho việc tối ưu hóa công cụ suy luận.</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Để giải quyết thách thức này, chúng tôi tối ưu hóa công cụ suy luận theo ba hướng. Thứ nhất, dựa trên LayerSplit, chúng tôi giới thiệu các chiến lược song song hóa và quản lý bộ nhớ chi tiết hơn để tăng dung lượng KV-cache và cung cấp nhiều không gian cache khả dụng hơn cho các yêu cầu ngữ cảnh siêu dài. Thứ hai, chúng tôi tối ưu hóa các kernel có chi phí tăng theo độ dài ngữ cảnh và phối hợp chúng tốt hơn với pipeline truyền cache, giảm thiểu tác động của việc truyền cache lên cả hiệu suất prefill và decode. Thứ ba, chúng tôi tối ưu hóa quản lý cache phía CPU, lập lịch yêu cầu và các đường thực thi runtime để giảm &ldquo;bong bóng&rdquo; (bubbles) trong pipeline thực thi GPU và cải thiện thông lượng cuối-đến-cuối. Như trong hình, GLM-5.2 đạt được lợi thế thông lượng ngày càng lớn khi độ dài ngữ cảnh tăng, chứng minh khả năng mở rộng mạnh mẽ hơn trong các kịch bản suy luận ngữ cảnh dài.</p>
+<h2 id="slime-cho-agentic-rl">slime cho Agentic RL</h2>
+<p>Quá trình hậu huấn luyện Agentic RL của GLM-5.2 bao gồm các tác vụ ở quy mô lớn hơn, trên nhiều miền hơn và với các mẫu thực thi phức tạp hơn. Dữ liệu và tác vụ không đồng nhất cần được tổ chức trong một quy trình huấn luyện thống nhất, trong khi các tương tác dài hạn, sử dụng công cụ, phân rã tác vụ con và phản hồi môi trường đa lượt đều đặt ra yêu cầu cao hơn cho việc triển khai (rollout) và điều phối huấn luyện. Để hỗ trợ quá trình này, <code>slime</code> đóng vai trò là lớp cơ sở hạ tầng tích hợp từ huấn luyện đến triển khai suy luận quy mô lớn. Nó hỗ trợ nhiều chế độ huấn luyện và tổ chức tác vụ, bao gồm white-box rollout, black-box rollout, quỹ đạo nén (compact trajectory) và luồng công việc tác nhân con (sub-agent workflow), cho phép cùng một hệ thống mở rộng cho các khối lượng công việc RL và huấn luyện OPD lớn và phức tạp hơn. Trong quá trình hậu huấn luyện GLM-5.2, chúng tôi đã sử dụng khung <code>slime</code> để thực hiện huấn luyện OPD song song, hợp nhất hiệu quả hơn mười mô hình chuyên gia vào mô hình cuối cùng. Toàn bộ quá trình huấn luyện OPD mất khoảng hai ngày, chứng minh hiệu quả huấn luyện cao.</p>
+<p>Agentic RL cũng đặt ra yêu cầu cao hơn về tài nguyên hệ thống và cơ sở hạ tầng suy luận. <code>slime</code> cung cấp một giao diện mở và linh hoạt cho các hệ thống suy luận: phía huấn luyện có thể kết nối với các dịch vụ suy luận dưới nhiều hình thức khác nhau và thích ứng linh hoạt với các chiến lược song song, chính sách định tuyến, thiết lập phân tách PD và mẫu triển khai. Đồng thời, kinh nghiệm cấu hình, chiến lược lập lịch và các đường tối ưu hóa tích lũy trong quá trình RL rollout có thể được tái sử dụng và tinh chỉnh thêm trong giai đoạn phục vụ sản phẩm, cho phép phía huấn luyện và phía phục vụ bổ trợ cho nhau. Điều này tạo ra một con đường trực tiếp hơn từ hậu huấn luyện đến triển khai sản phẩm. Cùng với tổ chức tài nguyên huấn luyện-suy luận linh hoạt và KV-cache FP8, <code>slime</code> cung cấp hỗ trợ cơ sở hạ tầng quan trọng cho huấn luyện Agentic RL quy mô lớn của GLM-5.2, cải thiện hơn nữa hiệu quả hệ thống, thông lượng rollout và độ đồng thời suy luận quy mô lớn.</p>
+<h2 id="rl-cho-tác-vụ-dài-hạn-với-cơ-chế-chống-gian-lận-anti-hacking">RL cho Tác vụ Dài hạn với Cơ chế Chống Gian lận (Anti-hacking)</h2>
+<p><strong>RL cho Tác vụ Dài hạn.</strong> Đối với GLM-5.2, các tác vụ dài hạn tạo ra các dấu vết thực thi (execution traces) dài hơn đáng kể, và một khi quỹ đạo siêu dài bị chia nhỏ bởi quá trình nén thành nhiều dấu vết con, các lần rollout khác nhau dưới cùng một prompt sẽ tạo ra số lượng dấu vết có thể huấn luyện khác nhau với độ dài biến thiên cao. Do đó, chúng tôi chuyển từ tối ưu hóa theo nhóm sang công thức PPO dựa trên critic, học từ các lần rollout cá nhân, dựa vào critic để ước tính lợi thế (advantage) ở cấp độ token thay vì so sánh tương đối trong nhóm. Công thức đơn rollout này phù hợp tự nhiên với quá trình nén, vì nó không ràng buộc số lượng dấu vết mà một prompt tạo ra hoặc độ dài tương đối của chúng: chúng tôi đưa quá trình nén vào huấn luyện bằng cách bao gồm tất cả các dấu vết con đã nén dưới dạng quỹ đạo có thể huấn luyện và áp dụng tổn thất cấp độ token để giải quyết sự mất cân bằng về độ dài.</p>
+<p><strong>Chống Gian lận (Anti-Hack) trong tác nhân lập trình.</strong> RL lập trình đặc biệt dễ bị tổn thương bởi việc gian lận phần thưởng (reward hacking) vì phần thưởng thường là tín hiệu đạt/không đạt có thể kiểm chứng được. Chúng tôi nhận thấy GLM-5.2 có xu hướng hành vi gian lận tiềm năng nhiều hơn GLM-5.1. Điều này khiến tín hiệu kiểm chứng dễ bị tối ưu hóa, nhưng không thực sự cải thiện khả năng cơ bản của mô hình. Một tác nhân có thể đọc các tạo tác đánh giá được bảo vệ, sao chép nội dung câu trả lời từ các tài liệu tham khảo hoặc các commit cấp trên, hoặc trực tiếp lấy mã nguồn mục tiêu trong các tác vụ liên quan đến GitHub. Ví dụ, tác nhân có thể tải xuống giải pháp qua <code>curl https://raw.githubusercontent.com/&lt;path-to-file&gt;</code> hoặc thậm chí rò rỉ theo chuỗi như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>1. find /workspace -name <span style="color:#e6db74">&#34;*hidden*&#34;</span>
+</span></span><span style="display:flex;"><span>2. cat /workspace/.eval/secret_cases.json
+</span></span><span style="display:flex;"><span>3. python solve.py --case <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>cat /workspace/.eval/secret_cases.json<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>Những hành vi này làm thổi phồng phần thưởng và làm hỏng tín hiệu huấn luyện, đòi hỏi một cơ chế rõ ràng để tách biệt việc giải quyết tác vụ thực sự với các lối tắt. Để giải quyết vấn đề này, chúng tôi giới thiệu một mô-đun chống gian lận cho cả huấn luyện RL và đánh giá. Quá trình phát hiện có hai giai đoạn: một bộ lọc dựa trên quy tắc trước tiên sẽ bắt các hành vi gian lận tiềm năng để tối đa hóa tỷ lệ thu hồi (recall), sau đó một giám khảo LLM sẽ kiểm tra ý định của các hành động bị gắn cờ này để giữ tỷ lệ chính xác cao. Chúng tôi sử dụng chiến lược trực tuyến theo dõi các lời gọi công cụ ở mỗi bước. Nếu phát hiện gian lận, hệ thống sẽ chặn lời gọi đó và trả về thông tin giả làm kết quả. Quan trọng là, lớp bảo vệ trực tuyến này cho phép mô hình tiếp tục rollout ngay cả sau khi một hành động gian lận bị bắt. Bằng cách xử lý hành vi không hợp lệ cụ thể thay vì loại bỏ toàn bộ quỹ đạo, phương pháp này giúp ngăn chặn sự mất ổn định trong huấn luyện và sụp đổ mô hình vốn có thể xảy ra khi các lần rollout bị dừng đột ngột.</p>
+<h2 id="bảng-benchmark-đầy-đủ">Bảng Benchmark Đầy đủ</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Benchmark</th>
+          <th style="text-align: center">GLM-5.2</th>
+          <th style="text-align: center">GLM-5.1</th>
+          <th style="text-align: center">Qwen3.7-Max</th>
+          <th style="text-align: center">MiniMax M3</th>
+          <th style="text-align: center">DeepSeek-V4-Pro</th>
+          <th style="text-align: center">Claude Opus 4.8</th>
+          <th style="text-align: center">GPT-5.5</th>
+          <th style="text-align: center">Gemini 3.1 Pro</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Reasoning</strong></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HLE</td>
+          <td style="text-align: center">40.5</td>
+          <td style="text-align: center">31</td>
+          <td style="text-align: center">41.4</td>
+          <td style="text-align: center">37</td>
+          <td style="text-align: center">37.7</td>
+          <td style="text-align: center">49.8*</td>
+          <td style="text-align: center">41.4*</td>
+          <td style="text-align: center">45</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HLE (w/ Tools)</td>
+          <td style="text-align: center">54.7</td>
+          <td style="text-align: center">52.3</td>
+          <td style="text-align: center">53.5</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">48.2</td>
+          <td style="text-align: center">57.9*</td>
+          <td style="text-align: center">52.2*</td>
+          <td style="text-align: center">51.4*</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">CritPt</td>
+          <td style="text-align: center">16.7</td>
+          <td style="text-align: center">4.6</td>
+          <td style="text-align: center">13.4</td>
+          <td style="text-align: center">3.7</td>
+          <td style="text-align: center">12.9</td>
+          <td style="text-align: center">20.9</td>
+          <td style="text-align: center">27.1</td>
+          <td style="text-align: center">17.7</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">AIME 2026</td>
+          <td style="text-align: center">99.2</td>
+          <td style="text-align: center">95.3</td>
+          <td style="text-align: center">97</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">94.6</td>
+          <td style="text-align: center">95.7</td>
+          <td style="text-align: center">98.3</td>
+          <td style="text-align: center">98.2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HMMT Nov. 2025</td>
+          <td style="text-align: center">94.4</td>
+          <td style="text-align: center">94</td>
+          <td style="text-align: center">95</td>
+          <td style="text-align: center">84.4</td>
+          <td style="text-align: center">94.4</td>
+          <td style="text-align: center">96.5</td>
+          <td style="text-align: center">96.5</td>
+          <td style="text-align: center">94.8</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HMMT Feb. 2026</td>
+          <td style="text-align: center">92.5</td>
+          <td style="text-align: center">82.6</td>
+          <td style="text-align: center">97.1</td>
+          <td style="text-align: center">84.4</td>
+          <td style="text-align: center">95.2</td>
+          <td style="text-align: center">96.7</td>
+          <td style="text-align: center">96.7</td>
+          <td style="text-align: center">87.3</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">IMOAnswerBench</td>
+          <td style="text-align: center">91.0</td>
+          <td style="text-align: center">83.8</td>
+          <td style="text-align: center">90</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">89.8</td>
+          <td style="text-align: center">83.5</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">81</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">GPQA-Diamond</td>
+          <td style="text-align: center">91.2</td>
+          <td style="text-align: center">86.2</td>
+          <td style="text-align: center">90</td>
+          <td style="text-align: center">93</td>
+          <td style="text-align: center">90.1</td>
+          <td style="text-align: center">93.6</td>
+          <td style="text-align: center">93.6</td>
+          <td style="text-align: center">94.3</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Coding</strong></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">SWE-bench Pro</td>
+          <td style="text-align: center">62.1</td>
+          <td style="text-align: center">58.4</td>
+          <td style="text-align: center">60.6</td>
+          <td style="text-align: center">59</td>
+          <td style="text-align: center">55.4</td>
+          <td style="text-align: center">69.2</td>
+          <td style="text-align: center">58.6</td>
+          <td style="text-align: center">54.2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">NL2Repo</td>
+          <td style="text-align: center">48.9</td>
+          <td style="text-align: center">42.7</td>
+          <td style="text-align: center">47.2</td>
+          <td style="text-align: center">42.1</td>
+          <td style="text-align: center">35.5</td>
+          <td style="text-align: center">69.7</td>
+          <td style="text-align: center">50.7</td>
+          <td style="text-align: center">33.4</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">DeepSWE</td>
+          <td style="text-align: center">46.2</td>
+          <td style="text-align: center">18</td>
+          <td style="text-align: center">18</td>
+          <td style="text-align: center">20</td>
+          <td style="text-align: center">8</td>
+          <td style="text-align: center">58</td>
+          <td style="text-align: center">70</td>
+          <td style="text-align: center">10</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">ProgramBench</td>
+          <td style="text-align: center">63.7</td>
+          <td style="text-align: center">50.9</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">47.8</td>
+          <td style="text-align: center">71.9</td>
+          <td style="text-align: center">70.8</td>
+          <td style="text-align: center">39.5</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Terminal Bench 2.1 (Terminus-2)</td>
+          <td style="text-align: center">81.0</td>
+          <td style="text-align: center">63.5</td>
+          <td style="text-align: center">75</td>
+          <td style="text-align: center">65</td>
+          <td style="text-align: center">64</td>
+          <td style="text-align: center">85</td>
+          <td style="text-align: center">84</td>
+          <td style="text-align: center">74</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Terminal Bench 2.1 (Best Harness)</td>
+          <td style="text-align: center">82.7</td>
+          <td style="text-align: center">69</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">78.9</td>
+          <td style="text-align: center">83.4</td>
+          <td style="text-align: center">70.7</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">FrontierSWE (Dominance)</td>
+          <td style="text-align: center">74.4</td>
+          <td style="text-align: center">30.5</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">29.0</td>
+          <td style="text-align: center">75.1</td>
+          <td style="text-align: center">72.6</td>
+          <td style="text-align: center">39.6</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">PostTrainBench</td>
+          <td style="text-align: center">34.3</td>
+          <td style="text-align: center">20.1</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">37.2</td>
+          <td style="text-align: center">28.4</td>
+          <td style="text-align: center">21.6</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">SWE-Marathon</td>
+          <td style="text-align: center">13.0</td>
+          <td style="text-align: center">1.0</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">26.0</td>
+          <td style="text-align: center">12.0</td>
+          <td style="text-align: center">4.0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Agentic</strong></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+          <td style="text-align: center"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">MCP-Atlas (Public Set)</td>
+          <td style="text-align: center">76.8</td>
+          <td style="text-align: center">71.8</td>
+          <td style="text-align: center">76.4</td>
+          <td style="text-align: center">74.2</td>
+          <td style="text-align: center">73.6</td>
+          <td style="text-align: center">77.8</td>
+          <td style="text-align: center">75.3</td>
+          <td style="text-align: center">69.2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Tool-Decathlon</td>
+          <td style="text-align: center">48.2</td>
+          <td style="text-align: center">40.7</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">-</td>
+          <td style="text-align: center">52.8</td>
+          <td style="text-align: center">59.9</td>
+          <td style="text-align: center">55.6</td>
+          <td style="text-align: center">48.8</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="bắt-đầu-với-glm-52">Bắt đầu với GLM-5.2</h2>
+<h3 id="sử-dụng-glm-52-với-kế-hoạch-lập-trình-glm-glm-coding-plan">Sử dụng GLM-5.2 với Kế hoạch Lập trình GLM (GLM Coding Plan)</h3>
+<p>Hãy thử <strong>GLM-5.2</strong> trong các tác nhân lập trình yêu thích của bạn — <strong>ZCode, Claude Code, OpenCode</strong>, và nhiều hơn nữa. <a href="https://docs.z.ai/devpack/overview">https://docs.z.ai/devpack/overview</a></p>
+<p><strong>Đối với những người đăng ký GLM Coding Plan:</strong> Chúng tôi đã triển khai GLM-5.2 cho tất cả người dùng Coding Plan. Bạn có thể kích hoạt GLM-5.2 ngay bây giờ bằng cách cập nhật tên mô hình thành <code>&quot;GLM-5.2&quot;</code> (hoặc <code>GLM-5.2[1m]</code> trong Claude Code để kích hoạt độ dài ngữ cảnh 1M). Bạn cũng có thể chọn các mức độ tư duy khác nhau, High hoặc Max, tùy thuộc vào tác vụ. Vì là mô hình mạnh nhất của chúng tôi, GLM-5.2 tiêu tốn hạn mức (quota) gấp 3 lần trong giờ cao điểm và 2 lần trong giờ thấp điểm. Như một chương trình khuyến mãi có thời hạn đến cuối tháng 9, việc sử dụng trong giờ thấp điểm sẽ được tính mức 1x. (Giờ cao điểm là 14:00–18:00 UTC+8 (giờ Bắc Kinh) hàng ngày).</p>
+<p>Bạn thích giao diện đồ họa (GUI)? Chúng tôi cung cấp <a href="https://zcode.z.ai"><strong>ZCode</strong></a> — một tác nhân máy tính chạy bằng GLM-5.2, với lệnh <code>/goal</code> cho các tác vụ dài hạn, phát triển từ xa qua SSH và điều khiển thiết bị di động. <strong>Ưu đãi đặc biệt</strong>: sử dụng GLM-5.2 thông qua Coding Plan bên trong ZCode và nhận hạn mức hiệu dụng gấp 1.5 lần cho đến ngày 30 tháng 6.</p>
+<p><strong>Bắt đầu xây dựng ngay:</strong> <a href="https://z.ai/subscribe">https://z.ai/subscribe</a></p>
+<h3 id="chat-với-glm-52-trên-zai">Chat với GLM-5.2 trên Z.ai</h3>
+<p>GLM-5.2 hiện đã có mặt trên <a href="https://chat.z.ai">Z.ai</a>.</p>
+<h3 id="triển-khai-glm-52-cục-bộ">Triển khai GLM-5.2 cục bộ</h3>
+<p>Trọng số mô hình của GLM-5.2 được cung cấp công khai trên <a href="https://huggingface.co/zai-org/GLM-5.2">HuggingFace</a> và <a href="https://modelscope.cn/models/ZhipuAI/GLM-5.2">ModelScope</a>. Để triển khai cục bộ, GLM-5.2 hỗ trợ các khung suy luận bao gồm transformers, vLLM, SGLang, xLLM, ktransformers.</p>
+<h2 id="chú-thích">Chú thích</h2>
+<ul>
+<li><strong>Humanity’s Last Exam (HLE) &amp; các tác vụ suy luận khác</strong>: Chúng tôi sử dụng các tham số lấy mẫu <code>temperature=1.0</code>, <code>top_p=0.95</code> để đánh giá. Chúng tôi đánh giá với độ dài tạo tối đa là <code>163,840</code> token. Theo mặc định, chúng tôi báo cáo tập con chỉ văn bản; kết quả đánh dấu * là từ tập đầy đủ. Đối với AIME, HMMT và IMOAnswerBench, chúng tôi đánh giá mỗi câu hỏi bằng prompt hệ thống sau: <code>Your response should be in the following format:\nExplanation: {your explanation for your final answer}\nExact Answer: {your succinct, final answer}\nConfidence: {your confidence score between 0% and 100% for your answer}.</code> Chúng tôi sử dụng GPT-5.5 (medium) làm mô hình giám khảo. Đối với HLE-with-tools, chúng tôi sử dụng độ dài ngữ cảnh tối đa là 300,000 token, không có chiến lược quản lý ngữ cảnh.</li>
+<li><strong>SWE-Bench Pro</strong>: Chúng tôi chạy bộ SWE-Bench Pro với OpenHands sử dụng một prompt hướng dẫn tùy chỉnh. Cài đặt: <code>temperature=1</code>, <code>top_p=1</code>, <code>max_new_tokens=32k</code>, với cửa sổ ngữ cảnh 400K.</li>
+<li><strong>NL2Repo</strong>: Chúng tôi đánh giá NL2Repo với <code>temperature=1.0</code>, <code>top_p=1.0</code>, và <code>max_new_tokens=48k</code> dưới ngữ cảnh 400k. Để ngăn chặn gian lận, chúng tôi sử dụng phán quyết dựa trên quy tắc và LLM để ngăn chặn các hành vi độc hại (ví dụ: thao tác pip hoặc curl trái phép).</li>
+<li><strong>DeepSWE</strong>: Chúng tôi chạy DeepSWE với khung đánh giá pier chính thức và bộ harness mini-swe-agent (<code>temperature=1.0</code>, <code>top_p=1.0</code>, <code>timeout=2h</code>, ngữ cảnh 400K). Mỗi tác vụ được giải quyết trong một container cô lập với 2 CPU, 8 GB RAM và không có quyền truy cập internet.</li>
+<li><strong>ProgramBench</strong>: Chúng tôi đánh giá ProgramBench (200 instance) với Claude-Code 2.1.156 sử dụng <code>temperature=1.0, top_p=1.0, max_tokens=64000, max_turns=2000, sample_timeout=6h, reasoning_effort=max</code>, với cửa sổ ngữ cảnh 400K. Mỗi instance chạy trong một sandbox (4 CPU, 8 GB RAM) với quyền truy cập internet bị vô hiệu hóa.</li>
+<li><strong>Terminal-Bench 2.1 (Terminus 2)</strong>: Chúng tôi đánh giá Terminal-Bench 2.1 với khung Terminus-2 sử dụng <code>parser=json</code>, <code>timeout=4h</code>, <code>temperature=1.0</code>, <code>top_p=1.0</code>, <code>max_new_tokens=48k</code>, <code>max_episodes=500</code>, với cửa sổ ngữ cảnh 256K. Giới hạn tài nguyên được khống chế ở 4 CPU và 8 GB RAM.</li>
+<li><strong>Terminal-Bench 2.1 (Claude Code)</strong>: Chúng tôi đánh giá trong Claude Code 2.1.167 với <code>temperature=1.0, top_p=0.95, max_new_tokens=131072</code>. Chúng tôi ghi đè <code>max_new_tokens</code> thành 128k thông qua một proxy trong suốt, bỏ qua giới hạn 64k của CLI để khôi phục khả năng cấu hình của <code>CLAUDE_CODE_MAX_OUTPUT_TOKENS</code>. Chúng tôi loại bỏ giới hạn thời gian thực (wall-clock time), trong khi vẫn giữ các ràng buộc CPU và bộ nhớ cho mỗi tác vụ. Điểm số là trung bình của 5 lần chạy.</li>
+<li><strong>MCP-Atlas</strong>: Tất cả các mô hình được đánh giá ở chế độ suy nghĩ (think mode) trên tập con công khai 500 tác vụ với thời gian chờ 10 phút mỗi tác vụ. Chúng tôi sử dụng Gemini-3.0-Pro làm mô hình giám khảo.</li>
+<li><strong>Tool-Decathlon</strong>: Chúng tôi sử dụng dịch vụ đánh giá chính thức và đặt <code>max_token</code> là 128K.</li>
+<li><strong>FrontierSWE</strong>: Việc đánh giá được thực hiện bởi <a href="https://www.proximal.ai">Proximal</a> với độ dài ngữ cảnh 1M, mức nỗ lực tối đa và tối đa 128K token đầu ra. Điểm Dominance được báo cáo tính đến ngày 16/06/2026.</li>
+<li><strong>PostTrainBench</strong>: Việc đánh giá được thực hiện bởi <a href="https://posttrainbench.com">PostTrainBench</a> với độ dài ngữ cảnh 1M, mức nỗ lực tối đa và tối đa 128K token đầu ra.</li>
+<li><strong>SWE-Marathon</strong>: Việc đánh giá được thực hiện bởi <a href="https://www.abundant.ai">Abundant AI</a> với độ dài ngữ cảnh 1M, mức nỗ lực tối đa và tối đa 128K token đầu ra.</li>
+</ul>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/zai-org/glm-52-blog">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/june-17-2026/">June 17, 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/559b46/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-17T00:00:00&#43;00:00">Jun 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/97b631/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="36 Câu lệnh, Một Thành phố Vô tận" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-11T00:00:00&#43;00:00">Jun 11, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">36 Câu lệnh, Một Thành phố Vô tận</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Khám phá một thành phố vô tận thông qua 36 câu lệnh</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/e5d036/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/559b46/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-14/04fe63/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/2nUzfI3JKqOjHGnITM_lXdP7Bt7ZlYCKaxp25Ru7RnDxYgKcw-qwiObLBM30bdLRrq_OphRcZ1arRj_w3_Q5uVVXO5Ocwve5ciQ3ErlJnv6swT5PUQ=w704-h704-n-nu" alt="Đầu tư vào nghiên cứu an toàn AI đa tác nhân" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đầu tư vào nghiên cứu an toàn AI đa tác nhân</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-14/b7b9e6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/5PWsKTnHl71EvJKBAlb0R8ui8_0OmY1QdgddkB2NFIUbGrLRIHz7KsFD24v7fQrJvP33q1iSm_ACUT3PhaBwXEf7bmtZSICLjvnRNEUMsHVnaPg2=w704-h704-n-nu" alt="DiffusionGemma- Tạo văn bản nhanh hơn gấp 4 lần" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">DiffusionGemma- Tạo văn bản nhanh hơn gấp 4 lần</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-11/97b631/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="36 Câu lệnh, Một Thành phố Vô tận" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">36 Câu lệnh, Một Thành phố Vô tận</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
