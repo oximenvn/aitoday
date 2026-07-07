@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LeRobot v0.6.0- Tưởng tượng, Đánh giá, Cải thiện | AI Today - SkyAI</title>
+
+<meta name="description" content="Giới thiệu phiên bản LeRobot v0.6.0 với các khả năng tưởng tượng, đánh giá và cải thiện">
+      <link rel="stylesheet" href="/css/main.min.584aed796ba9d245f84009d57da9662e9c02059611972780263728b442fc25ff.css" integrity="sha256-WErteWup0kX4QAnVfalmLpwCBZYRlyeAJjcotEL8Jf8=" crossorigin="anonymous">
+
+<link rel="icon" type="image/svg+xml" href="https://aitoday.skyai.vn/favicon.svg"> 
+<link rel="icon" type="image/x-icon" href="https://aitoday.skyai.vn/favicon.ico"> 
+<link rel="icon" type="image/png" sizes="16x16" href="https://aitoday.skyai.vn/favicon.png"> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://aitoday.skyai.vn/favicon-32.png"> 
+<link rel="icon" type="image/png" sizes="64x64" href="https://aitoday.skyai.vn/favicon-64.png"> 
+
+</head>
+<body>
+  <header class="py-6 border-b"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col">
+	<div class="flex items-center">
+		<div class="flex items-center">
+			<button class="flex items-center space-x-2 rounded-full border py-1 pr-[5px] pl-3 group bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="menu-bar">
+				<svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+				</svg>
+				<span class="bg-blue-500 fill-white rounded-full p-1.5">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-spin bi bi-egg-fried fill-white" viewBox="0 0 16 16">
+						<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+						<path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"></path>
+					</svg>
+				</span>
+			</button>
+			<div class="relative rounded-full py-1.5 px-6 bg-zinc-100 hover:bg-zinc-200 text-xl font-bold uppercase mx-2">
+				<h2><a class="before:content-[''] before:z-10 before:top-0 before:right-0 before:left-0 before:bottom-0 before:absolute before:pointer-events-auto" href="https://aitoday.skyai.vn/">AI Today - SkyAI</a></h2>
+			</div>
+		</div>
+		<div class="flex items-center ml-auto">
+			<button class="flex items-center rounded-full p-3 bg-zinc-100 hover:bg-zinc-200 toggle-button" data-target="search-bar">
+				<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+					<path id="path1" class="transition-all ease-linear" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+					<path id="path2" class="transition-all ease-linear hidden" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+  <nav id="menu-bar" class="block mt-3 close">
+    <ul class="flex items-center flex flex-nowrap whitespace-nowrap overflow-x-auto space-x-4">
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/">Home</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200">About</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Tags</a>
+    </li>
+    <li class="my-2">
+      <a class="rounded-full border px-6 py-2 bg-zinc-100 hover:bg-zinc-200" href="/tags/">Taxonomy</a>
+    </li>
+    </ul>
+  </nav>
+<div id="search-bar" class="block mt-3 close">
+	<form id="search" class="flex items-stretch">
+		<input class="w-full block px-6 py-2 rounded-l-full focus:outline-none border border-zinc-200" type="text" placeholder="Search...">
+		<button class="flex items-center px-7 py-2.5 rounded-r-full border border-zinc-200 ">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="group-hover:animate-pulse" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+			</svg>
+		</button>
+	</form>
+</div>
+</div></header>
+  <main class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"><div id="breadcrumb" class="max-w-7xl mx-auto py-8">
+	<ul class="flex space-x-4 text-sm text-zinc-500">
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/">AI Today - SkyAI</a>
+		</li>
+		<li class="after:content-['❯'] after:ml-4 after:opacity-30 last:after:content-none uppercase">
+			<a href="https://aitoday.skyai.vn/posts/">Posts</a>
+		</li>
+	</ul>
+</div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+
+  <article class="md:col-span-2 prose lg:prose-lg">
+
+    <header class="not-prose">
+      
+      <h1 id="title" class="text-4xl font-bold leading-normal">LeRobot v0.6.0- Tưởng tượng, Đánh giá, Cải thiện</h1>
+
+      <div id="lead" class="my-6">
+
+        <p class="font-bold">Giới thiệu phiên bản LeRobot v0.6.0 với các khả năng tưởng tượng, đánh giá và cải thiện </p>
+
+      </div>
+      
+      <div id="writer" class="flex items-center space-x-4"><ul class="flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+          
+          <li class="font-semibold my-2"></li>
+          
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2"><time datetime="2026-07-07T00:00:00&#43;00:00">July 7, 2026</time>
+          </li>
+
+          <li class="before:content-['•'] before:mr-2 before:opacity-50 my-2">
+            11 min read
+          </li>
+
+        </ul>
+
+      </div>
+      
+    </header>
+
+    <figure id="featureimage" class="rounded-xl aspect-video">
+
+          <img class="rounded-lg" src="https://huggingface.co/front/thumbnails/blog.png" alt="LeRobot v0.6.0- Tưởng tượng, Đánh giá, Cải thiện">
+        <figcaption class="text-center italic text-xs">Giới thiệu phiên bản LeRobot v0.6.0 với các khả năng tưởng tượng, đánh giá và cải thiện</figcaption>
+
+    </figure>
+
+    <div id="content" class="mb-14">
+      <h1 id="lerobot-v060-tưởng-tượng-đánh-giá-cải-tiến">LeRobot v0.6.0: Tưởng tượng, Đánh giá, Cải tiến</h1>
+<p>Bản phát hành mới này tập trung vào việc hoàn thiện vòng lặp học tập của robot: các chính sách (policy) có khả năng tưởng tượng tương lai trước khi hành động, các mô hình phần thưởng (reward models) thông báo khi nào robot thành công, một giao diện dòng lệnh (CLI) triển khai giúp biến các thất bại thành dữ liệu huấn luyện, và sáu điểm chuẩn (benchmark) mô phỏng mới để đo lường tất cả. Ngoài ra, bản cập nhật còn mang đến khả năng cảm biến độ sâu, chú thích tập dữ liệu bằng VLM, mã hóa video tùy chỉnh, huấn luyện đám mây trên HF Jobs và quy trình cài đặt tinh gọn hơn nhiều.</p>
+<h2 id="tldr">TL;DR</h2>
+<p>LeRobot v0.6.0 giới thiệu các chính sách mô hình thế giới (VLA-JEPA, FastWAM, LingBot-VA) học cách tưởng tượng tương lai, một loạt các VLA mới (GR00T N1.7, MolmoAct2, EO-1, EVO1, Multitask DiT), và API mô hình phần thưởng mới (Robometer, TOPReward). Phiên bản này cung cấp sáu điểm chuẩn mô phỏng mới được thống nhất dưới <code>lerobot-eval</code>, CLI <code>lerobot-rollout</code> với các hiệu chỉnh con người trong vòng lặp (human-in-the-loop) kiểu DAgger, huấn luyện FSDP và huấn luyện đám mây trên HF Jobs. Các tập dữ liệu hiện hỗ trợ độ sâu, quy trình chú thích ngôn ngữ tự động, mã hóa video tùy chỉnh và tốc độ tải dữ liệu nhanh hơn tới 2 lần, tất cả trên một nền tảng cài đặt nhẹ hơn.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/lerobot-blog/release-v0.6.0/lerobot%20v0.6.0.png" alt="LeRobot 0.6.0"></p>
+<h2 id="mục-lục">Mục lục</h2>
+<ul>
+<li><a href="#mo-hinh-the-gioi-cac-chinh-sach-biet-tuong-tuong">Mô hình thế giới: Các chính sách biết tưởng tượng</a>
+<ul>
+<li><a href="#vla-jepa">VLA-JEPA</a></li>
+<li><a href="#lingbot-va">LingBot-VA</a></li>
+<li><a href="#fastwam">FastWAM</a></li>
+</ul>
+</li>
+<li><a href="#vla-kho-mo-hinh-tiep-tuc-mo-rong">VLA: Kho mô hình tiếp tục mở rộng</a>
+<ul>
+<li><a href="#gr00t-n17">GR00T N1.7</a></li>
+<li><a href="#molmoact2">MolmoAct2</a></li>
+<li><a href="#eo-1">EO-1</a></li>
+<li><a href="#multitask-dit">Multitask DiT</a></li>
+<li><a href="#evo1">EVO1</a></li>
+</ul>
+</li>
+<li><a href="#mo-hinh-phan-thuong-biet-khi-nao-robot-thanh-cong">Mô hình phần thưởng: Biết khi nào robot thành công</a>
+<ul>
+<li><a href="#robometer">Robometer</a></li>
+<li><a href="#topreward">TOPReward</a></li>
+</ul>
+</li>
+<li><a href="#tap-du-lieu-tai-nhanh-hon-du-lieu-phong-phu-hon">Tập dữ liệu: Tải nhanh hơn, dữ liệu phong phú hơn</a>
+<ul>
+<li><a href="#codec-cua-ban-luat-cua-ban">Codec của bạn, luật của bạn</a></li>
+<li><a href="#ho-tro-do-sau-toan-dien">Hỗ trợ độ sâu toàn diện</a></li>
+<li><a href="#chu-thich-ngon-ngu-quy-mo-lon">Chú thích ngôn ngữ quy mô lớn</a></li>
+<li><a href="#toc-do-tai-du-lieu-nhanh-hon-toi-2-lan">Tốc độ tải dữ liệu nhanh hơn tới 2 lần</a></li>
+</ul>
+</li>
+<li><a href="#diem-chuan-mot-cli-de-danh-gia-tat-ca">Điểm chuẩn: Một CLI để đánh giá tất cả</a></li>
+<li><a href="#huan-luyen-suy-luan">Huấn luyện &amp; Suy luận</a>
+<ul>
+<li><a href="#lerobot-rollout-trien-khai-rieng-biet"><code>lerobot-rollout</code>: CLI triển khai riêng biệt</a></li>
+<li><a href="#fsdp-huan-luyen-mo-hinh-lon-hon-gpu-cua-ban">FSDP: Huấn luyện mô hình lớn hơn GPU của bạn</a></li>
+<li><a href="#huan-luyen-dam-mau-voi-hf-jobs">Huấn luyện đám mây với HF Jobs</a></li>
+</ul>
+</li>
+<li><a href="#ma-nguon-tinh-gon-va-sach-se-hon">Mã nguồn: Tinh gọn và sạch sẽ hơn</a></li>
+<li><a href="#cong-dong-he-sinh-thai">Cộng đồng &amp; Hệ sinh thái</a></li>
+<li><a href="#loi-ket">Lời kết</a></li>
+</ul>
+<h2 id="mô-hình-thế-giới-các-chính-sách-biết-tưởng-tượng">Mô hình thế giới: Các chính sách biết tưởng tượng</h2>
+<p>Thế giới robot đang đặt ra một câu hỏi lớn: liệu các mô hình thế giới (world models) có thực sự giúp ích cho các chính sách của robot? v0.6.0 mang đến ba chính sách cho LeRobot để trả lời câu hỏi đó. Mỗi chính sách đều học cách tưởng tượng tương lai như một phần của quá trình huấn luyện, và mỗi loại chọn một cách tiếp cận khác nhau để đảm bảo chi phí vận hành hợp lý.</p>
+<h3 id="vla-jepa">VLA-JEPA</h3>
+<p>VLA-JEPA huấn luyện một VLA nhỏ gọn (xây dựng trên Qwen3-VL-2B) để dự đoán tương lai trong không gian tiềm ẩn (latent space) trong khi học cách hành động: trong quá trình huấn luyện, một mô hình thế giới JEPA phải dự đoán các khung hình sắp tới từ chính hành động của mô hình. Điểm mấu chốt là mô hình thế giới này sẽ biến mất khi suy luận (inference), vì vậy bạn có được sự giám sát của mô hình thế giới mà không tốn thêm chi phí suy luận. Ba checkpoint sẵn sàng sử dụng đã có trên Hub, bao gồm một bản base được huấn luyện trước trên DROID để tinh chỉnh:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lerobot-train <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --policy.path<span style="color:#f92672">=</span>lerobot/VLA-JEPA-Pretrain <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --dataset.repo_id<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>HF_USER<span style="color:#e6db74">}</span>/my_dataset <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --policy.repo_id<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>HF_USER<span style="color:#e6db74">}</span>/my_finetuned_policy
+</span></span></code></pre></div><h3 id="lingbot-va">LingBot-VA</h3>
+<p>LingBot-VA tiến xa hơn một bước: một mô hình hành động-video tự hồi quy (autoregressive) dự đoán video và hành động trong tương lai cùng nhau, theo từng phân đoạn (chunk), và đưa các quan sát thực tế trở lại để giữ cho sự tưởng tượng luôn sát với thực tế. Bạn thậm chí có thể lưu lại những gì robot đã tưởng tượng (<code>--policy.save_predicted_video=true</code>) và so sánh với những gì thực sự xảy ra. Quá trình suy luận chạy trên một GPU 24–32 GB duy nhất.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/lerobot-blog/release-v0.6.0/gifs/lingbot_va_viz_1.gif" alt="LingBot-VA tưởng tượng vs thực tế"></p>
+<h3 id="fastwam">FastWAM</h3>
+<p>FastWAM đặt ra câu hỏi: liệu các mô hình hành động thế giới có cần tưởng tượng tương lai trong thời gian kiểm tra? Nó kết hợp một chuyên gia tạo video ~5B với một chuyên gia hành động nhỏ gọn trong một mạng duy nhất, vì vậy mô hình thực sự học cách &ldquo;mơ&rdquo; về các quá trình triển khai của chính nó. Khi suy luận, nó bỏ qua bước mơ và trực tiếp khử nhiễu các phân đoạn hành động.</p>
+<h2 id="vla-kho-mô-hình-tiếp-tục-mở-rộng">VLA: Kho mô hình tiếp tục mở rộng</h2>
+<h3 id="gr00t-n17">GR00T N1.7</h3>
+<p>Chúng tôi đã nâng cấp tích hợp NVIDIA GR00T lên GR00T N1.7, thế hệ mô hình nền tảng đa hình thể (cross-embodiment) mới nhất của NVIDIA. N1.7 thay thế VLM trước đó bằng Cosmos-Reason2-2B (xây dựng trên Qwen3-VL) cấp dữ liệu cho một đầu ra hành động khớp luồng (flow-matching action head). Flash-attention hiện là tùy chọn, vì vậy chỉ cần <code>pip install 'lerobot[groot]'</code> là hoạt động.</p>
+<blockquote>
+<p><strong>Lưu ý:</strong> GR00T N1.7 thay thế N1.5 trong LeRobot. Nếu bạn cần N1.5, hãy cài đặt phiên bản <code>lerobot==0.5.1</code>.</p></blockquote>
+<h3 id="molmoact2">MolmoAct2</h3>
+<p>MolmoAct2, mô hình hành động-ngôn ngữ-thị giác của Viện AI Allen, hiện đã được đưa vào LeRobot với đầy đủ vòng đời: tinh chỉnh (full hoặc LoRA), đánh giá và triển khai trên robot thực. Các checkpoint có sẵn với hiệu chỉnh calib tích hợp cho phép bạn chạy zero-shot trên SO-100/101:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lerobot-rollout <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --policy.path<span style="color:#f92672">=</span>lerobot/MolmoAct2-SO100_101-LeRobot <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --robot.type<span style="color:#f92672">=</span>so100_follower <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --robot.port<span style="color:#f92672">=</span>/dev/ttyACM0 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --robot.cameras<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{cam0: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}, cam1: {type: opencv, index_or_path: 2, width: 640, height: 480, fps: 30}}&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --task<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pick up the red cube&#34;</span> --duration<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>
+</span></span></code></pre></div><p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/lerobot-blog/release-v0.6.0/gifs/molmoact2_4.gif" alt="MolmoAct2 Zero-Shot trong LeRobot"></p>
+<h3 id="eo-1">EO-1</h3>
+<p>EO-1, một VLA được huấn luyện trước trên dữ liệu đan xen thị giác-văn bản-hành động, đã gia nhập LeRobot: sử dụng khung xương Qwen2.5-VL-3B với đầu ra hành động khớp luồng. Bạn có thể huấn luyện nó bằng quy trình <code>lerobot-train</code> tiêu chuẩn với <code>--policy.type=eo1</code>.</p>
+<h3 id="multitask-dit">Multitask DiT</h3>
+<p>Chính sách Multitask Diffusion Transformer mang công thức Large Behavior Models của TRI đến LeRobot: một bộ biến đổi khuếch tán (diffusion transformer) khoảng 450M tham số, điều kiện hóa bởi nhúng CLIP thị giác và ngôn ngữ, cho phép một mô hình học nhiều tác vụ được chọn thông qua ngôn ngữ tự nhiên.</p>
+<h3 id="evo1">EVO1</h3>
+<p>VLA không nhất thiết phải khổng lồ. EVO1 gói gọn chính sách của mình trong 0,77B tham số, sử dụng khung xương InternVL3-1B, đủ nhỏ để tinh chỉnh và chạy trong thời gian thực trên các GPU khiêm tốn.</p>
+<h2 id="mô-hình-phần-thưởng-biết-khi-nào-robot-thành-công">Mô hình phần thưởng: Biết khi nào robot thành công</h2>
+<p>Việc phát hiện thành công và ước tính tiến độ là những mảnh ghép còn thiếu trong vòng lặp học tập robot, và v0.6.0 đã giải quyết điều này. LeRobot hiện có API mô hình phần thưởng thống nhất (<code>lerobot.rewards</code>), bao gồm:</p>
+<h3 id="robometer">Robometer</h3>
+<p>Robometer là một mô hình phần thưởng đa năng được huấn luyện trước: chỉ cần trỏ <code>lerobot/Robometer-4B</code> vào bất kỳ tập dữ liệu LeRobot nào, nó sẽ chấm điểm tiến độ tác vụ và sự thành công từ video thô cộng với hướng dẫn ngôn ngữ mà không cần huấn luyện riêng cho từng tác vụ.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/lerobot-blog/release-v0.6.0/gifs/rm_robometer.gif" alt="LeRobot Robometer"></p>
+<h3 id="topreward">TOPReward</h3>
+<p>TOPReward hoạt động hoàn toàn zero-shot: không cần trọng số phần thưởng. Nó bao bọc một VLM có sẵn (Qwen3-VL) và đọc xác suất log của token &ldquo;True&rdquo; dựa trên video quỹ đạo và hướng dẫn tác vụ. Bất kỳ VLM đủ năng lực nào cũng có thể trở thành một hàm phần thưởng.</p>
+<h2 id="tập-dữ-liệu-tải-nhanh-hơn-dữ-liệu-phong-phú-hơn">Tập dữ liệu: Tải nhanh hơn, dữ liệu phong phú hơn</h2>
+<h3 id="codec-của-bạn-luật-của-bạn">Codec của bạn, luật của bạn</h3>
+<p>Việc ghi hình không còn bị gò bó trong một codec cố định. Các tùy chọn <code>--dataset.rgb_encoder.*</code> mới cho phép tùy chỉnh toàn diện (codec, chất lượng, định dạng pixel, GOP, presets), và <code>vcodec=auto</code> sẽ tự động tìm kiếm các bộ mã hóa phần cứng như NVENC, VideoToolbox, VAAPI và QSV trước khi quay về bộ mã hóa phần mềm AV1 mặc định.</p>
+<h3 id="hỗ-trợ-độ-sâu-toàn-diện">Hỗ trợ độ sâu toàn diện</h3>
+<p>Kết nối Intel RealSense, đặt <code>use_depth: true</code>, và LeRobot sẽ ghi lại bản đồ độ sâu toàn diện: thu thập theo đơn vị milimet, nén thành luồng video độ sâu 12-bit nhỏ gọn cùng với camera RGB, và giải mã ngược lại đơn vị vật lý khi huấn luyện.</p>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/lerobot-blog/release-v0.6.0/gifs/depth2.gif" alt="Camera độ sâu LeRobot"></p>
+<h3 id="chú-thích-ngôn-ngữ-quy-mô-lớn">Chú thích ngôn ngữ quy mô lớn</h3>
+<p>Tập dữ liệu của bạn giờ đây không chỉ là một chuỗi văn bản cho mỗi tập phim (episode). Các tập dữ liệu LeRobot hiện lưu trữ các chú thích ngôn ngữ phong phú (các tác vụ con có mốc thời gian, kế hoạch, bộ nhớ, hiệu chỉnh, lời nói và các cặp VQA cho từng camera). CLI <code>lerobot-annotate</code> mới sẽ tự động điền các thông tin này bằng một VLM theo dõi các tập phim của bạn.</p>
+<h3 id="tốc-độ-tải-dữ-liệu-nhanh-hơn-tới-2-lần">Tốc độ tải dữ liệu nhanh hơn tới 2 lần</h3>
+<p>Huấn luyện trên các tập dữ liệu video hiện nhanh hơn tới ~2 lần: khung hình từ nhiều camera được giải mã song song, các worker dataloader vận chuyển các khung hình uint8 nhỏ gọn, và các worker bền vững giữ cho bộ nhớ đệm giải mã tồn tại qua các epoch.</p>
+<h2 id="điểm-chuẩn-một-cli-để-đánh-giá-tất-cả">Điểm chuẩn: Một CLI để đánh giá tất cả</h2>
+<p>v0.6.0 biến LeRobot thành một trung tâm đánh giá thực thụ với sáu điểm chuẩn mô phỏng mới, tất cả đều chạy qua một CLI <code>lerobot-eval</code> duy nhất:</p>
+<ul>
+<li><strong>LIBERO-plus</strong>: Kiểm tra sức bền của VLA với khoảng 10.000 biến thể bị nhiễu của LIBERO trên bảy trục (ánh sáng, góc nhìn camera, hướng dẫn viết lại).</li>
+<li><strong>RoboTwin 2.0</strong>: Bao gồm 50 tác vụ thao tác hai tay trên SAPIEN với ngẫu nhiên hóa miền mạnh mẽ.</li>
+<li><strong>RoboCasa365</strong>: Trải dài 365 tác vụ nhà bếp trong 2.500 nhà bếp được tạo theo quy trình.</li>
+<li><strong>RoboCerebra</strong>: Đánh giá hành vi tầm xa với các tập phim chuỗi từ 3 đến 6 mục tiêu con.</li>
+<li><strong>RoboMME</strong>: Một bài kiểm tra trí nhớ: liệu chính sách của bạn có thể đếm số lần lặp lại, theo dõi vật thể bị ẩn và bắt chước các quy trình đã trình diễn?</li>
+<li><strong>VLABench</strong>: Kiểm tra kiến thức và lập luận trong thao tác, từ các câu hỏi vật lý đến các tác vụ phức hợp.</li>
+</ul>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/lerobot-blog/release-v0.6.0/gifs/benchmarks2.gif" alt="Điểm chuẩn LeRobot"></p>
+<h2 id="huấn-luyện--suy-luận">Huấn luyện &amp; Suy luận</h2>
+<h3 id="lerobot-rollout-cli-triển-khai-riêng-biệt"><code>lerobot-rollout</code>: CLI triển khai riêng biệt</h3>
+<p>Việc triển khai chính sách giờ đây là một quy trình riêng biệt với <code>lerobot-rollout</code>. Có nhiều chiến lược: <code>base</code> chỉ chạy chính sách; <code>sentry</code> ghi hình liên tục; <code>highlight</code> lưu N giây cuối cùng khi nhấn phím; <code>episodic</code> theo quy trình ghi hình tập phim cổ điển; và <code>dagger</code> biến việc triển khai thành thu thập dữ liệu.</p>
+<p>Với chiến lược DAgger, bạn theo dõi chính sách chạy, nhấn phím ngay khi nó sai, giành quyền điều khiển bằng cánh tay dẫn đường (leader arm) để ghi lại hiệu chỉnh, rồi trả lại quyền điều khiển.</p>
+<h3 id="fsdp-huấn-luyện-mô-hình-lớn-hơn-gpu-của-bạn">FSDP: Huấn luyện mô hình lớn hơn GPU của bạn</h3>
+<p>LeRobot hiện hỗ trợ FSDP (fully sharded data parallel) thông qua Accelerate: các tham số, gradient và trạng thái tối ưu hóa được phân mảnh trên nhiều GPU. Bạn thậm chí có thể tiếp tục một lần chạy FSDP trên một số lượng GPU khác.</p>
+<h3 id="huấn-luyện-đám-mây-với-hf-jobs">Huấn luyện đám mây với HF Jobs</h3>
+<p>Không có GPU? Không vấn đề gì. Lệnh <code>lerobot-train</code> giờ đây có thể chạy trên đám mây chỉ bằng cách thêm một flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lerobot-train <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --dataset.repo_id<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>HF_USER<span style="color:#e6db74">}</span>/so101_test <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --policy.type<span style="color:#f92672">=</span>act <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --policy.repo_id<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>HF_USER<span style="color:#e6db74">}</span>/my_policy <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --job.target<span style="color:#f92672">=</span>a10g-small
+</span></span></code></pre></div><h2 id="mã-nguồn-tinh-gọn-và-sạch-sẽ-hơn">Mã nguồn: Tinh gọn và sạch sẽ hơn</h2>
+<ul>
+<li><code>pip install lerobot</code> giờ đây thực sự nhẹ, giảm khoảng 40% các phụ thuộc cơ bản. Các tính năng bổ sung được chia thành các nhóm như <code>[training]</code>, <code>[core_scripts]</code>, <code>[evaluation]</code>.</li>
+<li>Hỗ trợ PyTorch 2.7–2.11, với các bản wheel CUDA 12.8 được ghim sẵn cho cài đặt <code>uv</code> trên Linux.</li>
+<li><code>--display_mode=foxglove</code> cho phép truyền trực tiếp quá trình điều khiển, ghi hình và triển khai đến Foxglove, công cụ trực quan hóa phổ biến trong giới robot.</li>
+<li>Hệ thống plugin hiện bao phủ tất cả năm loại thành phần: robot, camera, thiết bị điều khiển, chính sách và môi trường.</li>
+</ul>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/lerobot-blog/release-v0.6.0/gifs/LeLab.gif" alt="LeLab - Giao diện người dùng cho LeRobot"></p>
+<h2 id="cộng-đồng--hệ-sinh-thái">Cộng đồng &amp; Hệ sinh thái</h2>
+<ul>
+<li><strong>LeLab</strong>: Đưa toàn bộ quy trình LeRobot (hiệu chỉnh, điều khiển, ghi hình, huấn luyện, triển khai) vào giao diện trình duyệt, không cần CLI.</li>
+<li><strong>Isaac Teleop</strong>: Cho phép điều khiển SO-101 bằng tay cầm VR thông qua stack Isaac Teleop của NVIDIA.</li>
+<li><strong>Hướng dẫn phần cứng</strong>: Giải đáp câu hỏi về loại GPU cần thiết và thời gian huấn luyện dự kiến cho từng loại chính sách.</li>
+<li><strong>Hướng dẫn thêm chính sách</strong>: Chỉ dẫn cách đóng gói chính sách của riêng bạn dưới dạng plugin mà không cần gửi PR.</li>
+</ul>
+<h2 id="lời-kết">Lời kết</h2>
+<p>Ngoài những tính năng chính, v0.6.0 bao gồm hàng trăm bản sửa lỗi, cải thiện tài liệu và nâng cấp chất lượng trải nghiệm người dùng trên toàn bộ mã nguồn.</p>
+<p>Chúng tôi xin gửi lời cảm ơn chân thành đến cộng đồng. Bản phát hành này bao gồm công sức từ các đội ngũ học thuật, công nghiệp và những người đam mê, những người đã chọn LeRobot làm ngôi nhà cho các mô hình và điểm chuẩn của họ.</p>
+<p>Hãy cùng chờ đón những điều tiếp theo 🤗 Bắt đầu tại <a href="https://github.com/huggingface/lerobot">đây</a>!
+– Đội ngũ LeRobot ❤️</p>
+<h3 id="link-bài-viết-gốc"><a href="https://huggingface.co/blog/lerobot-release-v060">Link bài viết gốc</a></h3>
+
+
+    <ul id="taxonomy" class="not-prose flex items-center space-x-4 flex-nowrap whitespace-nowrap overflow-x-auto">
+
+      <li class="font-semibold my-4">Tags:</li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/ai/">Ai</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/july-7-2026/">July 7, 2026</a></li>
+        <li ><a class="py-2 px-6 border rounded-full hover:bg-zinc-100 active:bg-zinc-300" href="/tags/huggingface.co/">Huggingface.co</a></li>
+    </ul>
+</div>
+
+    <footer id="content-footer" class="not-prose">
+
+      
+
+      <div id="author-box" class="my-8 md:my-14 border p-8 bg-zinc-100 rounded-2xl">
+
+        <img class="w-20 h-20 rounded-full" src="" alt="">
+
+        <h2 class="text-xl font-bold my-4">Writter by : </h2>
+
+        <p class="mb-4"></p>
+
+        <ul class="flex flex-wrap space-x-4">
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+              </svg>
+              <span class="ml-2">Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://facebook.com/luat.skyai/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+              </svg>
+              <span class="ml-2">Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center decoration-auto hover:underline" href="https://luat.skyai.vn/" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+
+              </svg>
+              <span class="ml-2">Instagram</span>
+            </a>
+          </li>
+
+        </ul>
+        
+      </div>
+
+      <div id="related-post" class="">
+
+        <h2 class="text-xl md:text-2xl font-bold mb-6 md:mb-8">Recommended for You</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/e5d036/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-17T00:00:00&#43;00:00">Jun 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</p>
+
+	</div>
+</article><article class="relative group bg-zinc-100 hover:bg-blue-100 rounded-3xl">
+	
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/559b46/"></a>
+
+	<figure class="w-full aspect-video overflow-hidden rounded-3xl">
+
+			<img class="object-cover group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot" style="width: 100%; height: 100%; object-fit: cover;">
+
+	  </figure>
+
+	<div class="p-6">
+
+		<time datetime="2026-06-17T00:00:00&#43;00:00">Jun 17, 2026</time>
+
+		<h3 class="my-4 text-2xl font-bold">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</h3>
+
+		<p class="text-normal leading-normal text-zinc-500 line-clamp-2">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</p>
+
+	</div>
+</article>
+          
+        </div>
+      </div>
+
+    </footer>
+
+  </article>
+
+  
+  <aside class="md:col-span-1"><div class="lg:sticky lg:top-8"><div class="rounded-2xl p-4 bg-zinc-100 mb-10">
+
+		<img class="aspect-video rounded" src="/images/email-3249062_1280_by-Muhammad-Ribkhan-Pixabay.jpg" alt="Banner Email Marketing">
+
+		<p class="text-right text-xs mt-2 leading-none text-zinc-500">Adversitiment</p>
+
+</div><div class="space-y-6">
+
+		<h2 class="font-bold text-xl mb-8">Recent Post</h2>
+
+		<article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-07-07/b79c71/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.co/front/thumbnails/blog.png" alt="LeRobot v0.6.0- Tưởng tượng, Đánh giá, Cải thiện" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">LeRobot v0.6.0- Tưởng tượng, Đánh giá, Cải thiện</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/e5d036/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">GLM-5.2- Được xây dựng cho các nhiệm vụ dài hạn</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-17/559b46/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://huggingface.coKh%c3%b4ng%20c%c3%b3%20link%20h%c3%acnh%20%e1%ba%a3nh" alt="Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Từ Hugging Face Hub đến phần cứng robot với Strands Agents và LeRobot</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-14/04fe63/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/2nUzfI3JKqOjHGnITM_lXdP7Bt7ZlYCKaxp25Ru7RnDxYgKcw-qwiObLBM30bdLRrq_OphRcZ1arRj_w3_Q5uVVXO5Ocwve5ciQ3ErlJnv6swT5PUQ=w704-h704-n-nu" alt="Đầu tư vào nghiên cứu an toàn AI đa tác nhân" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">Đầu tư vào nghiên cứu an toàn AI đa tác nhân</h3>
+	</div>
+</article><article class="relative group flex flex-row">
+	<a class="insert-link" href="https://aitoday.skyai.vn/posts/2026-06-14/b7b9e6/"></a>
+	<figure class="basis-1/3 aspect-square overflow-hidden rounded-2xl bg-zinc-100">
+
+		  <img class="object-cover h-full w-full group-hover:scale-105 transition duration-500 cursor-pointer" src="https://lh3.googleusercontent.com/5PWsKTnHl71EvJKBAlb0R8ui8_0OmY1QdgddkB2NFIUbGrLRIHz7KsFD24v7fQrJvP33q1iSm_ACUT3PhaBwXEf7bmtZSICLjvnRNEUMsHVnaPg2=w704-h704-n-nu" alt="DiffusionGemma- Tạo văn bản nhanh hơn gấp 4 lần" style="width: 100%; height: 100%; object-fit: cover;" style="width: 100%; height: 100%; object-fit: cover;">
+
+	</figure>
+	<div class="basis-2/3 self-center ml-4">
+		<h3 class="font-bold group-hover:underline decoration-auto">DiffusionGemma- Tạo văn bản nhanh hơn gấp 4 lần</h3>
+	</div>
+</article>
+		
+	</div>
+
+</div>
+</aside>
+
+</div>
+  
+</main>
+  <footer class="bg-zinc-100 py-10 md:py-14"><div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+
+  <div class="flex flex-wrap space-y-6 mb-4">
+
+    <div class="w-full md:w-3/5 flex flex-col space-y-4 md:pr-8 lg:pr-10">
+
+      <a class="flex items-center group" href="https://aitoday.skyai.vn/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="mr-2 group-hover:animate-spin" viewBox="0 0 16 16">
+          <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+        </svg>
+        
+        <span class="text-2xl font-semibold uppercase">AI Today - SkyAI</span>
+      </a>
+
+      <p class="font-semibold">
+        Theo dõi các tiến bộ mới nhất về Trí tuệ nhân tạo.<br>Trực tiếp từ các nhà phát hành AI trên thế giới.
+      </p>
+
+      <p>Đem trí tuệ nhân tạo đến mọi người dân, doanh nghiệp Việt, góp phần giúp Việt Nam phát triển mạnh mẽ trong kỷ nguyên số. Nội dung được cập nhật tự động bằng máy.</p>
+
+    </div>
+
+    <div class="self-center flex flex-col w-full md:w-2/5">
+
+<ul id="social-media" class="flex items-center space-x-4">
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.facebook.com/luat.skyai/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.twitter.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.github.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+			</svg>
+		</a>
+	</li>
+	<li>
+		<a class="w-12 h-12 rounded-full bg-white hover:bg-zinc-200 flex items-center justify-center p-2" href="https://www.instagram.com/#" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+				  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+			</svg>
+		</a>
+	</li>
+</ul>
+
+    </div>
+    
+  </div>
+
+  <div class="my-8">
+    <ul class="flex items-center space-x-4">
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/">Home</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="">About</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Tags</a></li>
+      
+        <li><a class="decoration-auto hover:underline font-semibold" href="/tags/">Taxonomy</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="border-t pt-4">
+
+    <p class="text-sm">Copyright © 2026. All rights reserved. <a href="https://home.skyai.vn/" target="_blank" rel="noopener">SkyAI.vn</a></p>
+
+  </div>
+  
+</div>
+</footer>
+      <script defer src="/js/insertoggle.474f9b0e08021c6519cff4e46df14ccf148285b2d3a23d6321d6e10f25c291fb.js" integrity="sha256-R0&#43;bDggCHGUZz/TkbfFMzxSChbLToj1jIdbhDyXCkfs=" crossorigin="anonymous"></script>
+</body>
+</html>
